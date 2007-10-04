@@ -17,3 +17,11 @@ role :db,  "eccles.spanner.org", :primary => true
 set :deploy_to, "/var/www/#{application}"
 set :mongrel_conf, "#{current_path}/config/mongrel_cluster.yml"
 set :user, 'spanner'
+
+namespace :deploy do
+  task :after_update do
+    sudo "ln -s #{shared_path}/assets/node #{current_release}/public/node" 
+    sudo "ln -s #{shared_path}/assets/source #{current_release}/public/source" 
+    sudo "ln -s #{shared_path}/assets/person #{current_release}/public/person"
+  end
+end
