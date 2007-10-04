@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<movie width="320" height="263" framerate="31">
+  <clip import="build/classes.swf" />
+  <clip import="build/VideoSymbol.swf" />
+  <frame>
+  	<library>
+      <clip id="FLVDisplay" class="org.flowplayer.FLVDisplay"/>
+      <clip id="FlowTracker" class="org.flowplayer.ProgressTracker"/>
+      <clip id="FlowPlayer" class="org.flowplayer.FlowPlayer"/>
+      <clip id="ToggleLoopButton" class="org.flowplayer.ToggleLoopButton"/>
+      <clip id="PlayListView" class="org.flowplayer.playlist.PlayListView"/>
+      <clip id="PlayListStripe" class="org.flowplayer.playlist.PlayListStripe"/>
+      <clip id="ScrollBar" class="org.flowplayer.playlist.ScrollBar"/>
+	  
+	  <font id="vera" import="resources/VeraIt.ttf" glyphs="ABCDEFGHIJKLMNOPQRSTUVWXZabcdefghijklmnopqrstuvwxz?!/-:,. 1234567890"/>
+	  
+	  <clip id="mcFLVVideo" import="build/VideoSymbol.swf" />
+	  <place id="FlowPlayer" name="player" x="0" y="0" depth="1000" />
+    </library>
+  </frame>
+</movie>

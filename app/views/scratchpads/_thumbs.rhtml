@@ -1,0 +1,11 @@
+<h1>scratchpad: <%= @scratchpad.name %></h1>
+
+<p class="small">This pad belongs to <%= @scratchpad.user.name %>. View as: 
+  thumbs |
+  <%= link_to 'list', :controller => 'scratchpads', :action => 'show', :id => @scratchpad, :display => 'list' %> | 
+  <%= link_to 'printable', :controller => 'scratchpads', :action => 'show', :id => @scratchpad, :display => 'full' %>
+</p>
+
+<% @scratchpad.scraps.each do |paddy| %>
+  <%= render :partial => "#{paddy.class.to_s.downcase}", :locals => { :paddy => paddy }%>
+<% end %>

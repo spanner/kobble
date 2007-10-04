@@ -1,0 +1,9 @@
+<div id="inputform">
+
+<h1>New recording <a href="#" class="cancel" onclick="cancel_page(); return false;">back</a></h1>
+
+<%= start_form_tag( {:action => 'create'}, :multipart => true) %>
+  <%= render :partial => 'form' %>
+<%= end_form_tag %>
+
+</div>

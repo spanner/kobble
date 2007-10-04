@@ -1,0 +1,49 @@
+<%= error_messages_for 'source' %>
+
+<!--[form:source]-->
+
+<p><label for="source_name">Recording Name</label><br/>
+<%= text_field 'source', 'name', 'style' => "width: 360px;", :onfocus => "ts('name')", :onblur => "tr('name')" %>  <br />
+  <span class="formnote">only the inner circle will see raw sources</span></p>
+
+<p><label for="node_file">Audio or video file:</label><br />
+<%= file_column_field "source", "clip" %><br />
+<span class="formnote">click and navigate to your file. mp3 audio or mpeg video, please.</span></p>
+
+<p><label for="source_person_id">Main speaker</label><br />
+  <%= select("source", "person_id", @personoptions, {:include_blank => true}, {:style => 'width: 360px'}) %>
+</p>
+
+</p>
+
+<p><label for="source_body">Transcript</label><br/>
+<%= text_area 'source', 'body', 'rows' => 12, 'style' => "width: 360px;", :onfocus => "ts('body')", :onblur => "tr('body')" %><br />
+<span class="formnote">plain text or textile format, please.</span>
+</p>
+
+<div>
+  <%= submit_tag "Store Recording" %>
+  <%= link_to 'cancel', :action => 'list' %>
+</div>
+
+<p><label for="source_synopsis">Synopsis</label><br />
+<%= text_area 'source', 'synopsis', 'rows' => 4, 'style' => "width: 360px;" %> <br />
+<span class="formnote"><a href="#" class="shower" id="formattingguide">guide</a>  | <a href="#" class="previewer" onclick="reloadPreview('source_synopsis', 'textilepreview');">preview</a></span></p>
+
+<p><label for="source_notes">Notes</label><br />
+<%= text_area 'source', 'notes', 'rows' => 4, 'style' => "width: 360px;" %>  <br />
+<span class="formnote"><a href="#" class="shower" id="formattingguide">guide</a>  | <a href="#" class="previewer" onclick="reloadPreview('source_notes', 'textilepreview');">preview</a></span></p>
+
+<p><label for="keyword_list">Choose or create tags</label><br />
+<textarea id="keyword_list" name="keyword_list" cols="32" rows="6" style="width: 360px;" class="kwinput"></textarea><br />
+<span class="formnote">start typing here and the help window will provide lists of matching tags. You can make a new keyword just by typing it: please try to place it in the taxonomy /like/this.</span>
+</p>
+
+<span class="formnote">this is adapted from a script by Jeff Minard</span>
+
+<div>
+  <%= submit_tag "Store Recording" %>
+  <%= link_to 'cancel', :action => 'list' %>
+</div>
+
+<!--[eoform:source]-->

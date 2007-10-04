@@ -1,0 +1,19 @@
+<div id="tab_<%= @bundle.id || 'new' %>_describebundle" class="tab">
+
+  <h2>Describe Set</h2>
+
+  <p>Here you can edit, add (or create) tags and other descriptive qualities.</p>
+
+    <%= error_messages_for 'bundle' %>
+  
+    <p><label for="bundle_bundletype_id">(optional) type of set: </label>
+    <%= select("bundle", "bundletype_id", @bundletypeoptions, {:include_blank => true}, {:style => 'width: 120px'}) %>
+    </p>
+
+    <p><label for="keyword_list">Choose or create tags</label><br />
+    <textarea id="keyword_list" name="keyword_list" cols="32" rows="6" style="width: 360px;" class="kwinput" onfocus="ts('tags');"></textarea>
+    </p>
+    
+    <%= submit_tag "Store Set" %>
+
+</div>

@@ -1,0 +1,65 @@
+  <h1>search by keyword</h1>
+
+  <% if @nodes %>
+    <p>
+    <% if @nodes.length %>
+      <% if @query %>
+        <% if @nodes.length > 1 %>
+          Here's a list of all the snippets linked to any keyword
+        <% else %>
+          This is the only snippet linked to a keyword 
+        <% end %>
+        whose name contains <strong><%= @query %></strong>:
+      <% else %>
+        The list below shows snippets tagged with 
+        <% if @tags.length > 1 %>
+          all of the tags
+        <% else %>
+          the keyword
+        <% end %>
+        <% for kw in @tags %>
+          <%= link_to kw.name, :action => 'show', :id => kw %><% if kw == @tags.last %>.<% elsif @tags.length > 1 && kw == @tags[@tags.length-2] %> and<% else %>,<% end%>
+        <% end %>
+      <% end %>
+    <% else %>
+      <% if @query %>
+        Sorry: there are no snippets in the system linked to tags whose names contain '<%= @query %>'.
+      <% else %>
+        Sorry: we found no snippets matching all of
+        <% for kw in @tags %>
+          <%= link_to kw.name, :action => 'show', :id => kw %><% if kw == @tags.last %>.<% elsif @tags.length > 1 && kw == @tags[@tags.length-2] %> and<% else %>,<% end%>
+        <% end %>
+        <% if @nodes.length %>
+          <% if @tags.length > 1 %>
+
+          <% else %>
+            Select more than one keyword from the list below to see a more useful cross-reference among them.
+          <% end %>
+        <% end %>
+      <% end %>
+      </p>
+    <% end %>
+      
+    <%= render :partial => 'nodes/listheader' %>
+    <%= render :partial => 'nodes/list', :collection => @nodes %>
+    <%= render :partial => 'nodes/listfooter' %>
+  <% end %>
+
+  <p>Enter a fragment of keyword here, and we'll go and find every snippet linked to a keyword that contains your fragment. This is a useful bodge while the tags are a bit messy: type in  <tt>interdisc</tt>  and you'll get the snippets associated with either 'interdisciplinary' or 'interdisciplinarity', as well as any misspellings. </p>
+  
+  <%= start_form_tag ({:action => 'search'}, {:method => 'get'}) %>
+    <input type="text" name="query" size="32" style="width: 320px;" value="<%= @query %>">
+    <input type="submit" value="start search">
+  <%= end_form_tag %>
+
+  <p>Or choose one or more tags from this list to get a list of all the snippets that match all the tags:</p>
+  
+  <%= start_form_tag ({:action => 'search'}, {:method => 'get'}) %>
+    <select name="tags[]" multiple="multiple" size="12" style="width: 540px;">
+    <%= options_for_select(@keywordoptions, @tags.collect{ |kw| kw.id }) %>
+    </select><br />
+    <input type="submit" value="start search">
+  <%= end_form_tag %>
+  
+
+

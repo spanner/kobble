@@ -1,0 +1,49 @@
+#!/usr/bin/perl
+
+use strict;
+use MP3::Info;
+use MPEG::Audio::Frame;
+use Getopt::Long;
+use File::Basename;
+
+my $fromfile = '';	# source file (absolute or relative path)
+my $in = 0;		# start of excerpt (float in seconds)
+my $out = 0;		# end of excerpt (float in seconds)
+my $tofile = '';	# destination file (absolute or relative path)
+
+GetOptions( 'file=s' => \$fromfile,  'to:s' => \$tofile, 'in:f' => \$in, 'out:f' => \$out );
+
+die ("\nNo input file specified. Please supply a -file parameter.\n\n") unless $fromfile;
+die ("\nPlease specify at least one of the -in and -out parameters.\n\n") unless ($in || $out);
+
+if ($out) {
+	my $info = get_mp3info($fromfile);
+	$out = 0 if $out > $info->{SECS};
+	undef $info;
+}
+
+unless ($tofile) {
+	my ($name, $path, $suffix) = fileparse($fromfile, '.mp3');
+	$tofile = $path . $name . '_' . ($in || 'x') . '_' . ($out || 'x') . $suffix;
+	warn "default output file will be '$tofile'\n";
+}
+
+unless (-e $tofile && -s _ && -C _ > -C $fromfile) {
+	my $shuttle = 0;
+	my $frame;
+	
+	open (FROMF, "<$fromfile") || die("open file failed < $fromfile: $!");
+	open (TOF, ">$tofile") || die("open file failed > $tofile: $!");
+	tie *MP3, 'MPEG::Audio::Frame', *FROMF;
+	
+	SCAN: while (<MP3>) {
+		$shuttle += $_->seconds;
+		print TOF $_->asbin if $shuttle > $in;
+		last SCAN if $out && $out != 'x' && $shuttle >= $out;
+	}
+	
+	close FROMF || die("close file failed > $fromfile: $!");
+	close TOF || die("close file failed > $tofile: $!");
+}
+
+print $tofile;

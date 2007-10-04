@@ -1,0 +1,4 @@
+<% if @helptext %>
+  <h2><%= @helptext.name %></h2>
+  <%= @helptext.nice('body') %>
+<% else %>no help available<% end %>

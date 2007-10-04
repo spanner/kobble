@@ -1,0 +1,22 @@
+<% if list %>
+ 
+  <div class="listrow <%= cycle("odd", "even", :name => "itemlist") %>">
+   	<div class="icon" id="collection_<%= list.id %>">
+     	<%= link_to( image_tag("/images/furniture/icons/generic.png", :size => "75x75", :border => 0, :alt => 'set'), {:controller => 'user', :action => 'choosecollection', :id => list}) %>
+   	</div>
+
+    <h2><%= link_to( "#{list.name}", {:controller => 'user', :action => 'choosecollection', :id => list}) %></h2>
+    <p>
+      <% if list.description %><%= truncate( list.description, 240 ) %><br /><% end %>
+      <span class="footnote">
+        created by <%= link_to (list.user.name, :controller => 'user', :action => 'show', :id => list.user) if list.user %>.
+        Contains 
+        <% if list.nodes.size > 0 %><%= list.nodes.size %> fragments<% end %>
+        <% if list.bundles.size > 0 and list.nodes.size > 0 %>and<% end%>
+        <% if list.bundles.size > 0 %><%= list.bundles.size %>sets<% end %>
+      </span>
+    </p>
+
+  </div>
+
+<% end %>

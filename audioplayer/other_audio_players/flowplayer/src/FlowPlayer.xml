@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<movie width="320" height="263" framerate="31">
+  <clip import="build/classes.swf" />
+  <clip import="build/VideoSymbol.swf" />
+  <frame>
+  	<library>
+      <clip id="PlayButton" import="resources/PlayButton.png"/>
+      <clip id="PauseButton" import="resources/PauseButton.png"/>
+      <clip id="LoopOnButton" import="resources/LoopOnButton.png"/>
+      <clip id="LoopOffButton" import="resources/LoopOffButton.png"/>
+      <clip id="UpButton" import="resources/UpButton.png"/>
+      <clip id="DownButton" import="resources/DownButton.png"/>
+      <clip id="NextButton" import="resources/NextButton.png"/>
+      <clip id="PrevButton" import="resources/PrevButton.png"/>
+      <clip id="Dragger" import="resources/Dragger.png"/>
+      <clip id="Scroller" import="resources/Scroller.png"/>
+	  
+      <clip id="FLVDisplay" class="org.flowplayer.FLVDisplay"/>
+      <clip id="FlowTracker" class="org.flowplayer.ProgressTracker"/>
+      <clip id="FlowPlayer" class="org.flowplayer.FlowPlayer"/>
+      <clip id="ToggleLoopButton" class="org.flowplayer.ToggleLoopButton"/>
+      <clip id="PlayListView" class="org.flowplayer.playlist.PlayListView"/>
+      <clip id="PlayListStripe" class="org.flowplayer.playlist.PlayListStripe"/>
+      <clip id="ScrollBar" class="org.flowplayer.playlist.ScrollBar"/>
+	  
+	  <font id="vera" import="resources/VeraIt.ttf" glyphs="ABCDEFGHIJKLMNOPQRSTUVWXZabcdefghijklmnopqrstuvwxz?!/-:,. 1234567890"/>
+	  
+	  <clip id="mcFLVVideo" import="build/VideoSymbol.swf" />
+	  <place id="FlowPlayer" name="player" x="0" y="0" depth="1000" />
+    </library>
+  </frame>
+</movie>

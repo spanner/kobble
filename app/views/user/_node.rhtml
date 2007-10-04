@@ -1,0 +1,13 @@
+<% paddy ||= node %>
+<div class="padthumb draggable selectable" id="pad_node_<%= paddy.id %>">
+  <div class="dragicon"<% if paddy.image %><% @temp = paddy %> style="background-image: url('<%= url_for_file_column("temp", "image", "thumb") %>');"<% end %>>
+  <%if paddy.image %>     
+    <%= image_tag("/images/furniture/smallframes/white.png", :size => "75x75", :border => 0, :alt => '') %></div>
+  <% else %>
+    <%= image_tag("/images/furniture/icons/doc_white.png", :size => "75x75", :border => 0, :alt => '') %></div>
+  <% end %>
+
+  <div class="thumblabel">
+    <strong><span class='nodename'><%= paddy.name %></span></strong>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+<% paddy ||= bundle %>
+
+<div class="padthumb draggable selectable" id="pad_bundle_<%= paddy.id %>">
+  <div class="dragicon">
+    <a href="/bundles/show/<%= paddy.id %>?bare=1" title="<%= paddy.name %>" class="inplace">
+    <%= image_tag("/images/furniture/icons/set.png", :size => "75x75", :border => 0, :alt => 'set') %>
+    </a>
+  </div>
+  <div class="thumblabel">
+    <strong><span class='nodename'><%= paddy.name %></span></strong>
+  </div>
+</div>

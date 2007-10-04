@@ -1,0 +1,37 @@
+<%
+  playername ||= 'spannerplayer';
+  divname ||= 'player';
+  mp3url ||= 'nope.mp3';
+  mp3in ||= 0;
+  mp3out ||= 0;
+  autostart ||= 'false';
+%>
+
+<div id="<%= divname %>" class="player" style="width: 300px;">
+  <object 
+    classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000"
+    codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,0,0" 
+    width="300" 
+    height="31" 
+    id="<%= playername %>" 
+    align="middle"
+  >
+  <param name="flashvars" value="mp3url=<%= mp3url %>&autostart=<% autostart %>&mp3in=<%= mp3in %>&mp3out=<%= mp3out %>" />
+  <param name="allowScriptAccess" value="sameDomain" />
+  <param name="movie" value="/flash/spannerplayer.swf" />
+  <param name="quality" value="high" />
+  <param name="bgcolor" value="#ffffff" />
+  <embed 
+    src="/flash/spannerplayer.swf?mp3url=<%= mp3url %>&autostart=<% autostart %>&mp3in=<%= mp3in %>&mp3out=<%= mp3out %>" 
+    quality="high" 
+    bgcolor="#ffffff" 
+    width="300" 
+    height="31" 
+    name="<%= playername %>" 
+    align="middle" 
+    allowScriptAccess="sameDomain" 
+    type="application/x-shockwave-flash" 
+    pluginspage="http://www.macromedia.com/go/getflashplayer" 
+  />
+  </object>
+</div>

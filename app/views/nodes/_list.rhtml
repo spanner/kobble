@@ -1,0 +1,12 @@
+<% if list %>
+ 
+  <div class="listrow <%= cycle("odd", "even", :name => "itemlist") %>">
+    <%= render :partial => 'shared/icon', :locals => { :this => list, :with_caption => false } %>
+    <h2><%= link_to( "#{list.name}", {:controller => 'nodes', :action => 'show', :id => list}) %></h2>
+    <p>
+      <%= truncate( list.body, 240 ) %><br />
+      <span class="footnote">Taken from <%= link_to (list.source.name, :controller => 'sources', :action => 'show', :id => list.source) if list.source %> by <%= link_to (list.user.name, :controller => 'users', :action => 'show', :id => list.user) if list.user %>.</span>
+    </p>
+  </div>
+
+<% end %>

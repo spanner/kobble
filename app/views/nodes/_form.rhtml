@@ -1,0 +1,52 @@
+<div id="tab_<%= @node.id || 'new' %>_editnode" class="tab">
+
+  <%= error_messages_for 'node' %>
+
+  <!--[form:node]-->
+  <div>
+  <input type="hidden" name="displayformat" value="<%= params[:display] %>" />
+  <input type="hidden" name="bare" value="<%= params[:bare] %>" />
+  </div>
+
+  <div>
+  <p><label for="node_name">Segment name</label><br />
+  <%= text_field 'node', 'name', :style => "width: 360px;", :onfocus => "ts('name')", :onblur => "tr('name')" %></p>
+
+  <% if @node.source %>
+    <input type="hidden" name="node[source_id]" value="<%= @node.source.id %>" />
+  <% else %>
+    <p><label for="node_playfrom">Taken from:</label><br />
+    <%= select("node", "source_id", @sourceoptions, {:include_blank => true, :prompt => 'Taken from...'}, {:style => 'width: 240px'}) %></p>
+  <% end %>
+
+  <table><tr><td>
+  <p><label for="node_playfrom">Start:</label><br />
+  <%= text_field 'node', 'playfrom', :style =>  "width: 120px;", :onfocus => "ts('time')", :onblur => "tr('time')" %></p>
+  </td><td>
+  <p><label for="node_playto">Stop:</label><br />
+  <%= text_field 'node', 'playto', :style =>  "width: 120px;", :onfocus => "ts('time')", :onblur => "tr('time')" %></p>
+  </td></tr></table>
+
+  <p><label for="node_image">Illustration:</label><br />
+  <%= file_column_field "node", "image" %>
+  </p>
+
+  <% if @node.image %>
+    <p class="formnote">Current image is <a href="<%= url_for_file_column("node","image","preview") %>" class="inplace"><%= url_for_file_column("node","image") %></a> (relative path is <%= @node.image_relative_path %>)</p>
+  <% end %>
+
+  <p><label for="node_body">Original text (or transcript)</label><br />
+  <%= text_area 'node', 'body', 'rows' => 12, :style => "width: 360px;", :onfocus => "ts('body')", :onblur => "tr('body')" %>
+  </p>
+
+  <div>
+  <%= submit_tag "Store Snippet" %>
+  </div>
+
+  </div>
+
+  <%= render :partial => 'shared/formatting' %>
+
+  <!--[eoform:node]-->
+
+</div>

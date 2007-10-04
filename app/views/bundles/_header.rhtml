@@ -1,0 +1,27 @@
+<div class="header">
+  <div class="icon draggable" id="bundle_<%= @bundle.id %>">
+    <%= image_tag("/images/furniture/icons/generic.png", :size => "75x75", :border => 0, :alt => 'set') %>
+    <div class="label hide">
+      <span class='bundlename'><%= truncate(@bundle.name, length=32, truncate_string='...') %></span>
+    </div>
+  </div>
+
+  <h1><%= @bundle.name %></h1>
+
+  <p class="small">This set belongs to <%= link_to @bundle.user.name, :controller => 'user', :action => 'show', :id => @bundle.user %>.
+    View as: 
+    <%= link_to_unless_current 'thumbs', :controller => 'bundles', :action => 'show', :id => @bundle, :display => 'thumbs' %> | 
+    <%= link_to_unless_current 'list', :controller => 'bundles', :action => 'show', :id => @bundle, :display => 'listed' %> | 
+    <%= link_to_unless_current 'printable', :controller => 'bundles', :action => 'show', :id => @bundle, :display => 'full' %>
+    or 
+    <% if session['user'].role == 'admin' || session['user'] == @bundle.user %>
+      <%= link_to 'edit', :action => 'edit', :id => @bundle %> |
+      <%= link_to 'delete', {:action => 'edit', :id => @bundle}, {:confirm => "Really delete the bundle #{@bundle.name}?"} %> |
+    <% end %>
+    <%= link_to 'more sets', :action => 'list' %>
+    <% unless @display == 'thumbs' %>
+      <br />view as thumbs to edit set members
+    <% end %>
+  </p>
+</div>
+

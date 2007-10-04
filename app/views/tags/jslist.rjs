@@ -1,0 +1,48 @@
+var kwmemo = {};
+var keywords = new Array(<%= @kwtree.collect{|kw| "'#{escape_javascript(kw)}'" }.join(",\n") %>);
+
+function showKeywordHints () {
+	var input = simplify( this.value.substr( this.value.lastIndexOf(',') + 1, this.value.length ) );
+  console.log('input: ' + input);
+  
+  if (kwmemo[input]){
+    console.log('cache hit! ' + input);
+    
+  } else {
+    var matches = new Array;
+  	emboldener = new RegExp("(" + input + ")","ig");
+	  spacer = new RegExp("\/", "ig");
+
+    for (i=0;i<keywords.length;i++) {
+  		kw = simplify(keywords[i]);
+      if (kw.indexOf(input) > -1)
+        matches[matches.length] = kw;
+    }
+    kwmemo[input] = matches;
+  }
+  
+  $('#tipbox').html('<strong>click on a keyword to append it to your list:</strong><ul id="kwlinks"></ul>')
+	for (i=0;(i<kwmemo[input].length);i++) {
+	  breakable = kwmemo[input][i].replace(spacer, '/ ').replace(emboldener,"<b>$1</b>");
+    $('#kwlinks').append('<li><a href="#" class="kwfiller">' + breakable + '</a></li>');
+  }
+  $('#kwlinks').find('a.kwfiller').bind('click', appendKeyword);
+}
+
+function appendKeyword () {
+  console.log('appendKeyWord!');
+  unbold = new RegExp("<\/?b>", "ig");
+  unspace = new RegExp("\/ ", "g");
+  kw = $(this).html();
+  chosenkw = simplify(kw.replace(unbold,'').replace(unspace, '/'));
+  oldkwlist = $(".kwinput").val();
+  newkwlist = (oldkwlist && oldkwlist.indexOf(',') > -1) ?
+    oldkwlist.substr(0, oldkwlist.lastIndexOf(',')) + ', ' + chosenkw + ', ':
+    chosenkw + ', ';
+  $(".kwinput").val(newkwlist);
+  $(".kwinput").get(0).focus();
+}
+
+function simplify(s) {
+  return s.toLowerCase().replace(/^[ \s\f\t\n\r]+/,'').replace(/[ \s\f\t\n\r]+$/,'');
+}

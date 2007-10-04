@@ -1,0 +1,71 @@
+<% @thisnode = full || @node %>
+<% @source = @thisnode.source if @thisnode %>
+
+<div class="floatcolumn" id="nodetags">
+  <%= render :partial => 'nodes/slide', :locals => {:slide => @thisnode, :omit_caption => true} %>
+
+  <h2>tags</h2>
+  <ul id="keywordlist">
+    <% for kw in @thisnode.tags.uniq %>
+      <li><%= link_to kw.name, {:action => 'show', :controller => 'tags', :id => kw}, { :title => kw.parentage } %></li>
+    <% end %>
+  </ul>
+  <h2>
+    related items
+  </h2>
+  <p>
+    to be continued
+  </p>
+</div>
+
+<h1>
+  <%= @thisnode.name %><br />
+  <a href="/nodes/edit/<%= @thisnode.id %>">edit</a>
+  <a href="#" class="cancel">back</a>
+</h1>
+
+<% if @thisnode.source && @thisnode.source.clip %>
+  <%= render :partial => 'shared/player', :locals => {
+    :divname => 'nodeplayback',
+    :mp3url => @thisnode.clip
+  } %>
+<% end %>
+
+<p class="small" style="clear: left;">
+  <% if @thisnode.source %>taken from <%= link_to @thisnode.source.name, :action => 'show', :controller => 'sources', :id => @thisnode.source %><% end %>
+  <% if @thisnode.user %>by <%= link_to @thisnode.user.name, :action => 'show', :controller => 'user', :id => @thisnode.user %><% end %>
+  <% if @thisnode.source || @thisnode.user %><br /><% end %>
+  <strong>synopsis:</strong> <%= @thisnode.synopsis %>
+</p>
+
+<% if @thisnode.warnings.length > 0 %>
+  <p class="small warning">
+    <%= render :partial => 'warnings/oneliner', :collection => @thisnode.warnings %>
+  </p>
+<% end %>
+
+<% if @thisnode.source && @thisnode.source.warnings.length > 0 %>
+  <p class="small">
+  <%= render :partial => 'warnings/oneliner', :collection => @thisnode.source.warnings %>
+  </p>
+<% end %>
+
+<% if @thisnode.source && @thisnode.source.person && @thisnode.source.person.warnings.length > 0 %>
+  <p class="small">
+  <%= render :partial => 'warnings/oneliner', :collection => @thisnode.source.person.warnings %>
+  </p>
+<% end %>
+
+</td></tr></table>
+
+
+<h2>transcript</h2>
+
+<p class="small"><a href="#" class="swaptranscript">show textile markup</a></p>
+<div class="nicetranscript"><%= @thisnode.nice('body') %></div>
+<div class="rawtranscript"><%= simple_format(@thisnode.body) %></div>
+<p class="small"><a href="#" class="swaptranscript">show textile markup</a></p>
+
+<script type="text/javascript">
+  node = <%= @thisnode.id %>
+</script>  

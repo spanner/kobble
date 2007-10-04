@@ -1,0 +1,36 @@
+<div class="floatcolumn selectfrom" id="bundlenodes" style="width: 200px; padding: 20px; padding-top: 0;">
+
+  <div id="bundle_<%= paddy.id %>" class="dragtofrom">
+    <h2>
+      snippets in this set
+    </h2>
+    <div class="activearea">
+    <%= render :partial => 'bundles/member', :collection => paddy.members %>
+    </div>
+    <p class="addhere small" style="clear: both; padding-top: 60px;">Drag items into or out of this space to edit the set.</p>
+  </div>
+
+  <h2>
+    tags
+  </h2>
+  <p>
+    <% for kw in paddy.tags %>
+      <%= link_to kw.name, :controller => 'tags', :action => 'show', :id => kw %><br />
+    <% end %>
+  </p>
+
+  <h2>
+    related items
+  </h2>
+  <p>
+    to be continued
+  </p>
+
+</div>
+
+<h1><img src="/images/furniture/icons/set.png" width="75" height="75" alt="Set"/><%= paddy.name %></h1>
+
+<%= paddy.nice('body') %>
+
+<%= link_to 'Edit', :action => 'edit', :id => paddy %> |
+<%= link_to 'Back', :action => 'list' %>

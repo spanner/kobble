@@ -1,0 +1,14 @@
+<%= render :partial => 'header' %>
+
+<div style="clear: both">
+<%= pretty(@bundle.body) %>
+</div>
+
+<div style="padding-left: 30px; border-left: 1px dashed #666;">
+  <% @bundle.members.each do |member| %>
+    <div class="separated">
+      <% type = member.class.to_s.downcase %>
+      <%= render :partial => "shared/#{type}", :locals => { type.intern => member }%>
+    </div>
+  <% end %>
+</div>

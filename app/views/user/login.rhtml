@@ -1,0 +1,39 @@
+<div title="<%= title_helper %>" class="form">
+
+  <h1>welcome to the device</h1>
+
+  <p>This system is private. Please log in below.</p>
+
+  <div id="inputform">
+    <%= start_form_tag_helper  %>
+      <table>
+        <%= form_input :text_field, "login", :size => 30 %>
+        <%= form_input :password_field, "password", :size => 30 %>
+        <tr>
+          <td></td>
+          <td><%= button_helper 'login' %>
+          <%= link_to "forgotten password?", {:action => 'forgot_password'}, :class => 'formnote' %>
+          
+          <p class="footnote">
+            Through the unknown, unremembered gate<br />
+            When the last of earth left to discover<br />
+            Is that which was the beginning;<br />
+            At the source of the longest river<br />
+            The voice of the hidden waterfall<br />
+            And the children in the apple-tree<br />
+            Not known, because not looked for<br />
+            But heard, half-heard, in the stillness<br />
+            Between two waves of the sea.<br />
+          </p>
+ 
+          </td>
+        </tr>
+      </table>
+        
+      <p>If you were heading to a particular address when so rudely interrupted then you will be conveyed there upon successful login. If not, then we will find out whether or not I have remembered to create a welcome page.</p>
+
+    <%= end_form_tag %>
+  </div>
+  
+  
+</div>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<movie width="320" height="240" framerate="31">
+
+  <frame>
+  	<library>
+      <video id="videoObj" width="320" height="240" />
+	  <place id="videoObj" name="video" x="0" y="0" depth="1000"/>
+    </library>
+  </frame>
+</movie>

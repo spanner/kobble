@@ -1,0 +1,18 @@
+<%= error_messages_for 'keyword' %>
+
+<script type="text/javascript">
+<!--
+  collection = new Array(<%= @kwtree.collect{|kw| "'#{escape_javascript(kw)}'" }.join(",\n") %>);
+//-->
+</script>
+
+<!--[form:keyword]-->
+<p><label for="keyword_parentage">Keyword name (and family tree)</label><br />
+<input type="text" id="keyword_parentage" name="parentage" size="50" value="<%= @keyword.parentage %>" style="width: 360px;" class="wickEnabled"/><br />
+<span class="formnote">as you type, existing tags will appear as options. Please use them to place this keyword correctly in the hierarchy.</span>
+</p>
+
+<p><label for="keyword_description">Description</label><br />
+<%= text_area 'keyword', 'description', :rows => 6, :style => 'width: 360px;'  %></p>
+<!--[eoform:keyword]-->
+

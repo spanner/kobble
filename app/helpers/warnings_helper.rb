@@ -1,0 +1,2 @@
+module WarningsHelper
+end

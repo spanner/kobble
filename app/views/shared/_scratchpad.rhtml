@@ -1,0 +1,7 @@
+<div id="scratchpad_<%= scratchpad.id %>" class="scratchpage">
+  <ul class="sortable">
+    <%= render :partial => 'scratchpads/scrap', :collection => scratchpad.scraps, :locals => { :scratchpad => scratchpad } %>
+  </ul>
+	<div class="waitforit"><p><img src="/images/furniture/signals/wait_og.gif" width="16" height="16" alt="hold it hold it"> loading</p></div>
+	<div class="controls"><a href="#" class="reorder">reorder</a></div>
+</div>

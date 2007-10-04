@@ -1,0 +1,10 @@
+<% if list %>
+ 
+  <div class="listrow <%= cycle("odd", "even", :name => "itemlist") %>">
+    <h2><%= link_to( "#{list.name}", {:action => 'show', :id => list}) %></h2>
+    <p>
+      <%= truncate( list.description, 240 ) %><br />
+    </p>
+  </div>
+
+<% end %>

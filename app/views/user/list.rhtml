@@ -1,0 +1,14 @@
+<h1>Users</h1>
+
+<p>This list shows users of this system. They may also be but typically are not <%= link_to 'speakers', { :controller => 'people', :action => 'list' } %> of source material.</p>
+  
+<%= render :partial => 'listheader' %>
+<%= render :partial => 'list', :collection => @users %>
+<%= render :partial => 'listfooter' %>
+		
+<div class="stretcher">
+	<%= link_to( "+ new user", { :action => 'new' } ) %>
+</div>
+
+<%= link_to 'Previous page', { :page => @user_pages.current.previous } if @user_pages.current.previous %>
+<%= link_to 'Next page', { :page => @user_pages.current.next } if @user_pages.current.next %> 

@@ -1,0 +1,31 @@
+<% if @source.nodes && @source.nodes.length > 0 %>
+  <div class="floatcolumn dragfrom" id="recordingnodes" style="width: 175px;">
+    <h2>
+      taken from<br />
+      this source
+    </h2>
+    <div id="nodelist">
+      <%= render :partial => 'node', :collection => @source.nodes %>
+    </div>
+    <p class="small stretcher">&nbsp;</p>
+  </div>
+<% end %>
+
+<h1><%= @source.name %> <%= link_to 'edit', :action => 'edit', :id => @source %></h1>
+
+<% if @source.clip %>
+  <%= render :partial => 'shared/player', :locals => {
+    :mp3url => url_for_file_column("source", "clip"),
+    :divname => 'recordingplayback',
+  } %>
+
+  <p><%= link_to('create excerpt') %></p>
+
+<% end %>
+
+<% if @source.synopsis && @source.synopsis.length > 0 %>
+  <p class="small"><strong>synopsis:</strong><%= @source.synopsis %></p>
+  <h2>full transcript</h2>
+<% end %>
+
+<div class="nicetranscript"><%= pretty(@source.body) %></div>

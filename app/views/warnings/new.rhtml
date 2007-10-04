@@ -1,0 +1,12 @@
+<h1>attach a warning</h1>
+
+<% if @warning.offender %>
+  <p>You are attaching a warning note to the <%= @warning.offender.class.to_s.downcase %> <%= link_to @warning.offender.name, :controller => @warning.offender.class.to_s.downcase.pluralize, :action => 'show', :id => @warning.offender %>
+
+  <%= start_form_tag :action => 'create' %>
+    <%= render :partial => 'form' %>
+    <%= submit_tag "Create" %>
+  <%= end_form_tag %>
+
+  <%= link_to 'Back', :action => 'list' %>
+<% end %>

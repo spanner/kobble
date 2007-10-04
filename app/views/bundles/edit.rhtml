@@ -1,0 +1,20 @@
+<div class="tabchooser">
+  
+  <h1>Edit <%= link_to @bundle.name, :action => 'show', :id => @bundle.id %></h1>
+
+  <p class="tabset">
+    <a href="#" class="tabheader" id="bundle_<%= @bundle.id %>_editbundle">set title and text</a>
+    <a href="#" class="tabheader" id="bundle_<%= @bundle.id %>_choosemembers">set members</a>
+    <a href="#" class="tabheader" id="bundle_<%= @bundle.id %>_describebundle">set description</a>
+  </p>
+
+  <%= start_form_tag :action => 'update', :id => @bundle %>
+    <%= render :partial => 'form' %>
+    <%= render :partial => 'choosemembers' %>
+    <%= render :partial => 'describe' %>
+  <%= end_form_tag %>
+
+  <%= link_to 'Show', :action => 'show', :id => @bundle %> |
+  <%= link_to 'Back', :action => 'list' %>
+
+</div>

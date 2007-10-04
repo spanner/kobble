@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+        "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html>
+<head>
+
+<title>d e v i c e . 1</title>
+<script language="JavaScript" type="text/javascript" src="js/device.js"></script>
+<script language="JavaScript" type="text/javascript" src="js/scratchpad.js"></script>
+<script language="JavaScript" type="text/javascript" src="js/context.js"></script>
+
+<link rel="stylesheet" href="stylesheets/device.css" type="text/css" />
+</head>
+
+<body>
+
+<div id="scratchpad" class="bobbing">
+	
+	<div id="scratchpadhelp">
+		<p><strong>scratch pad</strong><br>
+		<span class="small">drag any item here to keep it for later</span><p>
+	</div>
+	
+	<div class="scratchpadslot"></div>
+	<a href="javascript:scrollPadLeft()" id="Padlefthref"><img src="images/scratchpad/Pad-leftarrow-dis.png" width="20" height="55" id="Padleft" style="display: block" border="0"></a>
+	<a href="javascript:scrollPadRight()" id="Padrighthref"><img src="images/scratchpad/Pad-rightarrow-dis.png" width="20" height="55" id="Padright" style="display: block" border="0"></a>
+</div>
+
+<div id="pagecontent" class="bobbing">
+
+	<div id="preamble">
+		<p>here we might have some preamble and patter, and on the right a minimum of landmark navigation</p>
+	</div>
+	
+	<h1>various interesting things</h1>
+	
+	<div id="summary">
+		<p>Perhaps we'll also take this opportunity to talk about why the things are interesting and how they might be made more so.</p>
+	</div>
+	
+	<div id="itemtable">
+	
+		<div class="draggable node" id="node-1-text">
+			<div class="textnode"><strong>In the department</strong> of -- but it is better not to mention the department. There is nothing more irritable than departments, regiments, courts of justice...</div>
+			<div class="nodeback"><strong>it's the back!</strong></div>
+		</div>
+		<div class="draggable node" id="node-2-image">
+			<div class="imagenode" style="background-image: url('images/samples/spanner.png')"><img src="images/furniture/frames/white.png" alt="node-2" width="167" height="167"></div>
+			<div class="nodeback"><strong>it's the back!</strong></div>
+		</div>
+		<div class="draggable node" id="node-3-image">
+			<div class="imagenode" style="background-image: url('images/samples/orchid.png')"><img src="images/furniture/frames/white.png" alt="node-3" width="167" height="167"></div>
+			<div class="nodeback"><strong>it's the back!</strong></div>
+		</div>
+		<div class="draggable node" id="node-4-image" style="background-image: url('images/samples/berries.png')">
+			<div class="imagenode"></div>
+			<div class="nodeback"><strong>it's the back!</strong></div>
+		</div>
+		<div class="draggable node" id="node-5-image">
+			<div class="imagenode" style="background-image: url('images/samples/glaxo.png')"><img src="images/furniture/frames/white.png" alt="node-4" width="167" height="167"></div>
+			<div class="nodeback"><strong>it's the back!</strong></div>
+		</div>
+		<div class="draggable node" id="node-6-text">
+			<div class="textnode"><strong>In the department</strong> of -- but it is better not to mention the department. There is nothing more irritable than departments, regiments, courts of justice...</div>
+			<div class="nodeback"><strong>it's the back!</strong></div>
+		</div>
+		<div class="draggable node" id="node-7-image">
+			<div class="imagenode" style="background-image: url('images/samples/horsey.png')"><img src="images/furniture/frames/white.png" alt="node-4" width="167" height="167"></div>
+			<div class="nodeback"><strong>it's the back!</strong></div>
+		</div>
+		<div class="draggable node" id="node-8-image">
+			<div class="imagenode" style="background-image: url('images/samples/wellies.png')"><img src="images/furniture/frames/white.png" alt="node-4" width="167" height="167"></div>
+			<div class="nodeback"><strong>it's the back!</strong></div>
+		</div>
+	
+	</div>
+	
+	<div id="fixer">&nbsp;</div>
+	
+	<div id="debugoutput"></div>
+
+</div>
+
+<div id="leftblock" class="bobbing">
+	<div id="nav"><a href="/" class="mi"><b>home</b></a>
+	<a href="/delivery/index.shtml" class="mi"
+	>navigation</a>
+	</div>
+</div>
+
+<div id="dragsprite"><img src="images/icons/doc.gif" name="dragimage" id="dragimage" width="75" height="75"></div>
+
+</body>
+</html>

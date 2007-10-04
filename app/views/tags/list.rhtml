@@ -1,0 +1,52 @@
+<div id="preamble">
+	<p>here we might have some preamble and patter, and on the right a minimum of landmark navigation</p>
+</div>
+
+<h1>Keywords</h1>
+
+<div id="summary">
+	<p>Click on a keyword to see all the segments and other objects currently associated with it.</p>
+</div>
+
+
+<%= link_to 'Previous page', { :page => @keyword_pages.current.previous } if @keyword_pages.current.previous %>
+<%= link_to 'Next page', { :page => @keyword_pages.current.next } if @keyword_pages.current.next %> 
+
+<table class="itemlist">
+  <thead>
+    <tr>
+    <th>Path</th>
+    <th>Segments</th>
+    <th>Sets</th>
+    <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+
+	  <% for keyword in @tags %>
+      <tr class="<%= cycle("odd", "even", :name => "itemtable") %>">
+        <td><%= link_to( "#{keyword.name}", :action => 'show', :id => keyword) %></td>
+        <td><%= keyword.nodes.count %></td>
+        <td><%= keyword.bundles.count %></td>
+        <td><%= link_to 'Show', :action => 'show', :id => keyword %> | <%= link_to 'Edit', :action => 'edit', :id => keyword %> | <%= link_to 'Destroy', { :action => 'destroy', :id => keyword }, :confirm => 'Are you sure?', :post => true %></td>
+      </tr>
+  	<% end %>
+
+    </tbody>
+  </table>
+
+    <div id="fixer">
+    	<%= link_to( "<strong>&gt; new keyword</strong>", 
+    	  {
+    		  :action => 'new',
+    		  :width => '800',
+    		  :height => '580',
+    		}, {
+    		  :class => 'inplace',
+    		}
+    	) %>
+    </div>
+  </div>
+
+<%= link_to 'Previous page', { :page => @keyword_pages.current.previous } if @keyword_pages.current.previous %>
+<%= link_to 'Next page', { :page => @keyword_pages.current.next } if @keyword_pages.current.next %> 

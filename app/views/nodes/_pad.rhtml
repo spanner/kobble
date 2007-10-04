@@ -1,0 +1,20 @@
+<% @thisnode = pad || @node %>
+<% colour = colour_code(@thisnode) %>
+
+<div class="padthumb draggable selectable" id="pad_<%= @thisnode.id %>" style="cursor: move;">
+
+  <div class="dragicon"<% if @thisnode.image %> style="background-image: url('<%= url_for_file_column("thisnode", "image", "thumb") %>');"<% end %>>
+    <% if @thisnode.image %>     
+      <%= image_tag("/images/furniture/smallframes/#{colour}.png", :size => "75x75", :border => 0, :alt => '') %></div>
+    <% else %>
+    <%= image_tag("/images/furniture/icons/doc_#{colour}.png", :size => "75x75", :border => 0, :alt => '') %></div>
+    <% end %>
+
+    <div class="thumblabel">
+      <strong><span class='nodename'><%= @thisnode.name %></span></strong>
+    </div>
+  </div>
+</div>
+
+
+

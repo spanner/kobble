@@ -1,0 +1,2 @@
+module BundletypesHelper
+end

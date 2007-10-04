@@ -1,0 +1,2 @@
+module BundleAjaxHelper
+end

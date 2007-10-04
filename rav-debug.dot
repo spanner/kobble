@@ -1,0 +1,539 @@
+digraph G {
+  bgcolor = "transparent"
+
+  node [
+    shape = "record"
+    style = "filled"
+    fontname = "Verdana"
+    fontsize = 9
+  ]
+
+  graph [
+    fontname = "Verdana"
+    fontsize = 14
+    style = "filled"
+    fillcolor = "white"
+  ]
+
+  
+    subgraph cluster_models {
+      label = "Models"
+
+      node [ fillcolor = "#f1ffe8" ]
+
+      
+        
+          "Cluster" [
+            
+            label = "{ Cluster | <id> id (integer) | <name> name (string) | <user_id> user_id (integer) | <clustertype_id> clustertype_id (integer) | <body> body (text) }"
+          ]
+        
+
+        
+          
+            
+          
+            
+              
+              "Cluster" -> "Node" [ label = "nodes" ];
+            
+          
+            
+          
+            
+              
+              "Cluster" -> "Keyword" [ label = "keywords" ];
+            
+          
+            
+              
+              "Cluster" -> "Cluster" [ label = "superclusters" ];
+            
+          
+            
+              
+              "Cluster" -> "Scratchpad" [ label = "scratchpads" ];
+            
+          
+            
+              
+              "Cluster" -> "Warning" [ label = "warnings" ];
+            
+          
+            
+              
+              "Cluster" -> "MembersSupercluster" [ label = "members superclusters as child" ];
+            
+          
+            
+              
+              "Cluster" -> "PaddiesScratchpad" [ label = "paddies scratchpads" ];
+            
+          
+            
+              
+              "Cluster" -> "Cluster" [ label = "clusters" ];
+            
+          
+            
+              
+              "Cluster" -> "MembersSupercluster" [ label = "members superclusters" ];
+            
+          
+        
+
+        
+      
+        
+          "Clustertype" [
+            
+            label = "{ Clustertype | <id> id (integer) | <name> name (string) | <ordered> ordered (integer) }"
+          ]
+        
+
+        
+          
+        
+
+        
+      
+        
+          "Helptext" [
+            
+            label = "{ Helptext | <id> id (integer) | <name> name (string) | <body> body (text) | <user_id> user_id (integer) }"
+          ]
+        
+
+        
+          
+            
+          
+        
+
+        
+      
+        
+          "Keyword" [
+            
+            label = "{ Keyword | <id> id (integer) | <parent_id> parent_id (integer) | <name> name (string) | <description> description (text) | <colour> colour (string) | <nodes> nodes (integer) | <keywords_count> keywords_count (integer) | <user_id> user_id (integer) }"
+          ]
+        
+
+        
+          
+            
+              
+              "Keyword" -> "Node" [ label = "nodes" ];
+            
+          
+            
+              
+              "Keyword" -> "Recording" [ label = "recordings" ];
+            
+          
+            
+          
+            
+          
+            
+              
+              "Keyword" -> "Keyword" [ label = "children" ];
+            
+          
+            
+              
+              "Keyword" -> "Warning" [ label = "warnings" ];
+            
+          
+            
+              
+              "Keyword" -> "Cluster" [ label = "clusters" ];
+            
+          
+            
+              
+              "Keyword" -> "Person" [ label = "people" ];
+            
+          
+        
+
+        
+      
+        
+          "MembersSupercluster" [
+            
+            label = "{ MembersSupercluster | <supercluster_id> supercluster_id (integer) | <member_id> member_id (integer) | <member_type> member_type (string) | <id> id (integer) }"
+          ]
+        
+
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+
+        
+      
+        
+          "Node" [
+            
+            label = "{ Node | <id> id (integer) | <name> name (string) | <synopsis> synopsis (text) | <notes> notes (text) | <body> body (text) | <person_id> person_id (integer) | <user_id> user_id (integer) | <recording_id> recording_id (integer) | <status> status (string) | <rating> rating (integer) | <image> image (string) | <clip> clip (string) | <playfrom> playfrom (integer) | <playto> playto (integer) | <keywords_count> keywords_count (integer) }"
+          ]
+        
+
+        
+          
+            
+          
+            
+          
+            
+          
+            
+              
+              "Node" -> "Keyword" [ label = "keywords" ];
+            
+          
+            
+              
+              "Node" -> "Cluster" [ label = "superclusters" ];
+            
+          
+            
+              
+              "Node" -> "Warning" [ label = "warnings" ];
+            
+          
+            
+              
+              "Node" -> "Scratchpad" [ label = "scratchpads" ];
+            
+          
+            
+              
+              "Node" -> "PaddiesScratchpad" [ label = "paddies scratchpads" ];
+            
+          
+            
+              
+              "Node" -> "Cluster" [ label = "clusters" ];
+            
+          
+            
+              
+              "Node" -> "MembersSupercluster" [ label = "members superclusters" ];
+            
+          
+        
+
+        
+      
+        
+          "PaddiesScratchpad" [
+            
+            label = "{ PaddiesScratchpad | <id> id (integer) | <scratchpad_id> scratchpad_id (integer) | <paddy_type> paddy_type (string) | <paddy_id> paddy_id (integer) }"
+          ]
+        
+
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        
+
+        
+      
+        
+          "Person" [
+            
+            label = "{ Person | <id> id (integer) | <name> name (string) | <image> image (string) | <description> description (text) | <notes> notes (text) | <node_count> node_count (integer) }"
+          ]
+        
+
+        
+          
+            
+              
+              "Person" -> "Node" [ label = "nodes" ];
+            
+          
+            
+              
+              "Person" -> "Recording" [ label = "recordings" ];
+            
+          
+            
+              
+              "Person" -> "Keyword" [ label = "keywords" ];
+            
+          
+            
+              
+              "Person" -> "Warning" [ label = "warnings" ];
+            
+          
+        
+
+        
+      
+        
+          "Recording" [
+            
+            label = "{ Recording | <id> id (integer) | <name> name (string) | <notes> notes (text) | <synopsis> synopsis (text) | <person_id> person_id (integer) | <user_id> user_id (integer) | <body> body (text) | <clip> clip (string) | <duration> duration (integer) | <rating> rating (integer) }"
+          ]
+        
+
+        
+          
+            
+              
+              "Recording" -> "Node" [ label = "nodes" ];
+            
+          
+            
+          
+            
+          
+            
+              
+              "Recording" -> "Keyword" [ label = "keywords" ];
+            
+          
+            
+              
+              "Recording" -> "Warning" [ label = "warnings" ];
+            
+          
+            
+              
+              "Recording" -> "Person" [ label = "people" ];
+            
+          
+        
+
+        
+      
+        
+          "Scratchpad" [
+            
+            label = "{ Scratchpad | <id> id (integer) | <name> name (string) | <user_id> user_id (integer) }"
+          ]
+        
+
+        
+          
+            
+          
+            
+              
+              "Scratchpad" -> "Node" [ label = "nodes" ];
+            
+          
+            
+              
+              "Scratchpad" -> "PaddiesScratchpad" [ label = "paddies scratchpads" ];
+            
+          
+            
+              
+              "Scratchpad" -> "Cluster" [ label = "clusters" ];
+            
+          
+        
+
+        
+      
+        
+          "User" [
+            
+            label = "{ User | <id> id (integer) | <login> login (string) | <salted_password> salted_password (string) | <email> email (string) | <diminutive> diminutive (string) | <firstname> firstname (string) | <lastname> lastname (string) | <salt> salt (string) | <verified> verified (integer) | <role> role (string) | <security_token> security_token (string) | <token_expiry> token_expiry (datetime) | <created_at> created_at (datetime) | <updated_at> updated_at (datetime) | <logged_in_at> logged_in_at (datetime) | <deleted> deleted (integer) | <delete_after> delete_after (datetime) }"
+          ]
+        
+
+        
+          
+            
+              
+              "User" -> "Node" [ label = "nodes" ];
+            
+          
+            
+              
+              "User" -> "Recording" [ label = "recordings" ];
+            
+          
+            
+              
+              "User" -> "Keyword" [ label = "keywords" ];
+            
+          
+            
+              
+              "User" -> "Scratchpad" [ label = "scratchpads" ];
+            
+          
+            
+              
+              "User" -> "Cluster" [ label = "clusters" ];
+            
+          
+            
+              
+              "User" -> "Helptext" [ label = "helptexts" ];
+            
+          
+        
+
+        
+      
+        
+          "UserNotify" [
+            label = "UserNotify"
+          ]
+        
+
+        
+
+        
+      
+        
+          "Warning" [
+            
+            label = "{ Warning | <id> id (integer) | <body> body (text) | <offender_type> offender_type (string) | <offender_id> offender_id (integer) | <user_id> user_id (integer) | <warningtype_id> warningtype_id (string) }"
+          ]
+        
+
+        
+          
+            
+          
+            
+          
+            
+          
+        
+
+        
+      
+        
+          "Warningtype" [
+            
+            label = "{ Warningtype | <id> id (integer) | <name> name (string) | <prevents_use> prevents_use (integer) }"
+          ]
+        
+
+        
+          
+        
+
+        
+      
+    }
+  
+
+  
+    subgraph cluster_controllers {
+      label = "Controllers"
+
+      node [ fillcolor = "#ffe8e8" ]
+
+      
+        "ClustersController" [
+          
+          label = "{ ClustersController | <index> index | <addmembers> addmembers | <update> update | <choose_layout> choose_layout | <show> show | <removemembers> removemembers | <list> list | <new> new | <create> create | <destroy> destroy | <edit> edit }"
+        ]
+
+        "ApplicationController" -> "ClustersController"
+      
+        "ClustertypesController" [
+          
+          label = "{ ClustertypesController | <index> index | <update> update | <show> show | <list> list | <new> new | <create> create | <destroy> destroy | <edit> edit }"
+        ]
+
+        "ApplicationController" -> "ClustertypesController"
+      
+        "HelptextsController" [
+          
+          label = "{ HelptextsController | <index> index | <for> for | <update> update | <show> show | <list> list | <new> new | <create> create | <destroy> destroy | <edit> edit }"
+        ]
+
+        "ApplicationController" -> "HelptextsController"
+      
+        "KeywordsController" [
+          
+          label = "{ KeywordsController | <index> index | <tree> tree | <search> search | <update> update | <keylist> keylist | <show> show | <treemap> treemap | <list> list | <new> new | <create> create | <destroy> destroy | <edit> edit }"
+        ]
+
+        "ApplicationController" -> "KeywordsController"
+      
+        "NodesController" [
+          
+          label = "{ NodesController | <index> index | <update> update | <choose_layout> choose_layout | <show> show | <list> list | <new> new | <create> create | <destroy> destroy | <edit> edit }"
+        ]
+
+        "ApplicationController" -> "NodesController"
+      
+        "PeopleController" [
+          
+          label = "{ PeopleController | <index> index | <update> update | <show> show | <list> list | <new> new | <create> create | <destroy> destroy | <edit> edit }"
+        ]
+
+        "ApplicationController" -> "PeopleController"
+      
+        "RecordingsController" [
+          
+          label = "{ RecordingsController | <index> index | <update> update | <choose_layout> choose_layout | <show> show | <list> list | <new> new | <create> create | <destroy> destroy | <edit> edit }"
+        ]
+
+        "ApplicationController" -> "RecordingsController"
+      
+        "ScratchpadsController" [
+          
+          label = "{ ScratchpadsController | <index> index | <emptyscratch> emptyscratch | <update> update | <scratch> scratch | <show> show | <unscratch> unscratch | <list> list | <new> new | <create> create | <destroy> destroy | <edit> edit }"
+        ]
+
+        "ApplicationController" -> "ScratchpadsController"
+      
+        "UserController" [
+          
+          label = "{ UserController | <index> index | <change_password> change_password | <generate_filled_in> generate_filled_in | <generate_blank> generate_blank | <protect?> protect? | <help> help | <signup> signup | <logout> logout | <me> me | <forgot_password> forgot_password | <show> show | <login> login | <welcome> welcome | <restore_deleted> restore_deleted | <list> list | <new> new | <delete> delete | <destroy> destroy | <edit> edit }"
+        ]
+
+        "ApplicationController" -> "UserController"
+      
+        "WarningsController" [
+          
+          label = "{ WarningsController | <index> index | <update> update | <show> show | <list> list | <new> new | <create> create | <destroy> destroy | <edit> edit }"
+        ]
+
+        "ApplicationController" -> "WarningsController"
+      
+        "WarningtypesController" [
+          
+          label = "{ WarningtypesController | <index> index | <update> update | <show> show | <list> list | <new> new | <create> create | <destroy> destroy | <edit> edit }"
+        ]
+
+        "ApplicationController" -> "WarningtypesController"
+      
+        "ApplicationController" [
+          
+          label = "{ ApplicationController | <kwtree> kwtree | <local_request?> local_request? | <choose_layout> choose_layout | <keywords_from_list> keywords_from_list }"
+        ]
+
+        
+      
+    }
+  
+}

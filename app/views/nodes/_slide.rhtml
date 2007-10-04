@@ -1,0 +1,23 @@
+<div class="slide draggable" id="node_<%= slide.id %>">
+
+<% @this = slide %>
+<% with_caption ||= false %>
+<% thisperson = @this.person %>
+<% thisperson ||= @this.source.person if @this.source %>
+
+  <div class="slidefront">
+    <%=
+      if (@this.image) 
+        image_tag(url_for_file_column("this", "image", "slide"), :size => "135x135", :border => 0, :alt => '')
+      else 
+        "<p>#{truncate(@this.body, 320, '...')}</p>"
+      end
+    %>
+  </div>
+  <div class="label<% unless with_caption %> hide<% end %>">
+    <span class='nodename'><%= truncate(@this.name, length=128, truncate_string='...') %></span><br />
+    <% if @this.source %>from <%= link_to (@this.source.name, :controller => 'sources', :action => 'show', :id => @this.source) %><% end %>
+  </div>
+</div>
+
+<% @this = nil %>

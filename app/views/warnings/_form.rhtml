@@ -1,0 +1,22 @@
+<%= error_messages_for 'warning' %>
+
+<!--[form:warning]-->
+
+<% if @warning.offender %>
+  <input type="hidden" name="warning[offender_type]" value="<%= @warning.offender.class %>">
+  <input type="hidden" name="warning[offender_id]" value="<%= @warning.offender.id %>">
+<% end %>
+
+<p><label for="warning_warningtype">Warning type:</label><br />
+<%= select("warning", "warningtype_id", @warningtype_options, {:include_blank => true}, {:style => 'width: 360px'}) %><br />
+<span class="formnote">You can omit this if none of them suit</span>
+</p>
+
+<p><label for="warning_body">Body</label><br/>
+<%= text_area 'warning', 'body', 'rows' => 12, :style => "width: 360px;", :onfocus => "ts('warning')", :onblur => "tr('warning')" %>
+</p>
+
+<%= submit_tag 'Store warning' %>
+
+<!--[eoform:warning]-->
+

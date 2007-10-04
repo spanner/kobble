@@ -1,0 +1,11 @@
+<%= error_messages_for 'scratchpad' %>
+<input type="hidden" name ="id" value="<%= @scratchpad.id %>">
+
+<!--[form:scratchpad]-->
+<p class="small"><label for="scratchpad_name">scratchpad name:</label><br/>
+<%= text_field 'scratchpad', 'name', :style => "width: 120px;" %>
+<input type="submit" value="change"><br />
+<a href="#" id="cancel_<%= @scratchpad.id %>">cancel</a>
+</p>
+<!--[eoform:scratchpad]-->
+

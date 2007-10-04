@@ -1,0 +1,10 @@
+<h1><%= @person.name %></h1>
+
+<%  if @person.description %>
+  <%= pretty(@person.description) %>
+<% else %>
+  <p>No description given.</p>
+<% end %>
+
+<%= link_to 'Edit', :action => 'edit', :id => @person %> |
+<%= link_to 'Back', :action => 'list' %>

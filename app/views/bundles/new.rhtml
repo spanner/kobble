@@ -1,0 +1,22 @@
+<div class="tabchooser">
+  
+  <h1>Create a new set
+  </h1>
+
+  <% if @selectednodes && @selectednodes.length == 1 %>
+    <p class="warning">A set with only one snippet is possible but not usual. Are you sure that's what you want to do?</p>
+  <% end%>
+
+  <p class="tabset">
+    <a href="#" class="tabheader" id="bundle_<%= @bundle.id || 'new' %>_editbundle">set title and text</a>
+    <a href="#" class="tabheader" id="bundle_<%= @bundle.id || 'new' %>_choosemembers">set members</a>
+    <a href="#" class="tabheader" id="bundle_<%= @bundle.id || 'new' %>_describebundle">set description</a>
+  </p>
+
+  <%= start_form_tag :action => 'create' %>
+    <%= render :partial => 'form' %>
+    <%= render :partial => 'choosemembers' %>
+    <%= render :partial => 'describe' %>
+  <%= end_form_tag %>
+
+</div>

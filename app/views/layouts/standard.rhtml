@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+        "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<% 
+  @thisuser ||= User.find(session['user'].id)
+  @scratchpads ||= @thisuser.find_or_create_scratchpads()
+%>
+
+<html>
+<head>
+  <title>Device: <%= controller.action_name %></title>
+  <script type="text/javascript" src="/js/mootools.js"></script>
+  <script type="text/javascript" src="/js/scratchpad.js"></script>
+  <script type="text/javascript" src="/js/spoke.js"></script>
+  <link rel="stylesheet" href="/stylesheets/spoke.css" type="text/css" />
+</head>
+<body>
+
+  <div id="canvas">
+   
+    <%= @content_for_layout %>
+
+  </div>
+
+  <div id="mastfoot">
+    <div id="logo">
+      <a href="/"><img src="/images/furniture/layout/sparklogo.png" width="49" height="39" alt="sparknow"></a>
+    </div>  
+          
+    <div id="navigation">
+      <%= link_to 'collections', {:controller => 'collections'}, {:class => (request.parameters[:controller] == 'collections' ? 'fg' : '')} %>
+      <%= link_to 'sources', {:controller => 'sources'}, {:class => (request.parameters[:controller] == 'sources' ? 'fg' : '')} %>
+      <%= link_to 'fragments', {:controller => 'nodes'}, {:class => (request.parameters[:controller] == 'nodes' ? 'fg' : '')} %>
+      <%= link_to 'sets', {:controller => 'bundles'}, {:class => (request.parameters[:controller] == 'bundles' ? 'fg' : '')} %>
+      <%= link_to 'people', {:controller => 'people'}, {:class => (request.parameters[:controller] == 'people' ? 'fg' : '')} %>
+      <%= link_to 'tags', {:controller => 'tags'}, {:class => (request.parameters[:controller] == 'tags' ? 'fg' : '')} %>
+      <%= link_to 'maps', {}, {:class => (request.parameters[:controller] == 'maps' ? 'fg' : '')} %>
+    
+      <div id="notification">
+        <%= flash[:notice] %>
+      </div>  
+    </div>
+  </div>
+
+  <div id="scratchpad">
+    <div id="scratchtabs">
+      <% for pad in @scratchpads %>
+        <a href="#" class="padtab" id="tab_scratchpad_<%= pad.id %>"><%= pad.name %></a>
+      <% end %>
+      <a href="#" class="padtab" id="tab_scratchpad_new">new pad</a>
+    </div>
+
+     <%= render :partial => 'shared/scratchpad', :collection => @scratchpads %>
+
+     <div id="scratchpad_new" class="scratchpad">
+        <p>ask for name and choose colour</p>
+     </div>    
+  </div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,16 @@
+<tr class="<%= cycle("odd", "even", :name => "itemtable") %>">
+  <td><%= link_to( "<strong>#{list.name}</strong>", :action => 'show', :id => list) %></td>
+  <td><%= list.login %></td>
+  <td><%= link_to list.email %></td>
+  <td><%= list.sources.count if list.sources %></td>
+  <td><%= list.nodes.count if list.nodes %></td>
+  <td><%= list.bundles.count if list.bundles %></td>
+  <td><%= list.tags.count if list.tags %></td>
+
+
+  <td>
+  <% if session['user'].role == 'admin '%> 
+    <%= link_to 'Show', :action => 'show', :id => list %> | <%= link_to 'Edit', :action => 'edit', :id => list %> | <%= link_to 'Destroy', { :action => 'destroy', :id => list }, :confirm => 'Are you sure?', :post => true %>
+  <% end %>
+  </td>
+</tr>

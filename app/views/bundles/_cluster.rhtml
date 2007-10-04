@@ -1,0 +1,12 @@
+<% member ||= bundle %>
+
+<div class="setthumb draggable selectable" id="pad_bundle_<%= member.id %>">
+  <div class="dragicon">
+    <a href="/bundles/show/<%= member.id %>?bare=1" title="<%= member.name %>" class="inplace">
+    <%= image_tag("/images/furniture/icons/set.png", :size => "75x75", :border => 0, :alt => 'set') %>
+    </a>
+  </div>
+  <div class="thumblabel">
+    <strong><span class='nodename'><%= member.name %></span></strong>
+  </div>
+</div>

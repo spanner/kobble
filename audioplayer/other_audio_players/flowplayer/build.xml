@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+
+<!--
+    Build file for FlowPlayer.
+    Copyright 2005-2006 Anssi Piirainen
+-->
+
+<project name="Flow" default="build" basedir=".">
+
+	<!-- Release number -->
+	<property name="release" value="1.5" />
+	
+	<!-- Dependency locations, configure these according to your installation locations: -->
+	<property name="logger-dir" value="/home/anssi/projects/LB.Log"/>
+	<property name="as2lib-dir" value="/home/anssi/projects/as2lib/src" />
+
+	<!-- Locations inside the project, no need to modify normally -->
+	<property name="dist-dir" location="dist"/>
+	<property name="src-dir" location="src"/>
+	<property name="resource-dir" location="resources"/>
+	<property name="build-dir" location="build"/>
+	<property name="images-dir" location="images"/>
+	<property name="compiler-exec" value="/opt/mtasc/mtasc"/>
+	
+	<property name="classpath" value="${src-dir}:/opt/mtasc/std:${logger-dir}:${as2lib-dir}"/>
+	
+	<target name="clean">
+		<delete dir="${build-dir}"/>
+		<delete dir="${dist-dir}"/>
+	</target>
+	
+    <target name="build-classes">
+		<swfmill src="${src-dir}/VideoSymbol.xml" dest="${build-dir}/VideoSymbol.swf" cmd="simple"/>
+		
+		<mtasc srcdir="${src-dir}" swf="${build-dir}/classes.swf" header="1:1:30" split="false" mtasc="${compiler-exec}" 
+			classpath="${classpath}" trace="Log.addMessage" />            
+    </target>
+	
+	<target description="Builds the players" name="build" depends="prepare, build-classes">
+
+		<swfmill src="${src-dir}/FlowPlayer.xml" dest="${build-dir}/FlowPlayer.swf" cmd="simple"/>
+		<swfmill src="${src-dir}/FlowPlayerLight.xml" dest="${build-dir}/FlowPlayerLight.swf" cmd="simple"/>
+		
+		<copy todir="${build-dir}">
+			<fileset dir="${src-dir}">
+				<include name="FlowPlayer.html"/>
+				<include name="flowPlayer.js"/>
+			</fileset>
+			<fileset dir="${basedir}">
+				<include name="ounasvaara.flv"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target description="Prepares the distribution packages" name="dist" depends="source-dist, bin-dist" />
+	
+	<target name="source-dist" depends="build">
+		<zip zipfile="${dist-dir}/flowplayer-${release}-src.zip">
+			<fileset dir="." includes="src/**/*.as, src/FlowPlayer.html, src/*.xml, src/*xml, src/flowPlayer.js" />
+			<fileset dir="." includes="resources/*" />
+			<fileset dir=".">
+				<include name="LICENSE.txt" />
+				<include name="README.txt" />
+				<include name="build.xml" />
+			</fileset>
+		</zip>
+	</target>
+	
+	<target name="bin-dist" depends="build">
+		<zip zipfile="${dist-dir}/flowplayer-${release}.zip">
+			<fileset dir="${build-dir}" includes="FlowPlayer.swf" />
+			<fileset dir="${build-dir}" includes="FlowPlayerLight.swf" />
+			<fileset dir="${src-dir}" includes="FlowPlayer.html" />
+			<!--<fileset dir="${src-dir}" includes="flowPlayer.js" />-->
+			<fileset dir=".">
+				<include name="LICENSE.txt" />
+				<include name="README.txt" />
+			</fileset>
+		</zip>
+	</target>
+		
+	<target name="prepare">
+		<mkdir dir="${dist-dir}"/>
+		<mkdir dir="${build-dir}"/>
+	</target>
+</project>
