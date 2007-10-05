@@ -247,7 +247,7 @@ class UserController < ApplicationController
 
   # Generate a template user for certain actions on get
   def generate_blank
-#    logger.debug "generate_blank!"
+    logger.debug "generate_blank!"
     case request.method
     when :get
       @user = User.new
@@ -259,7 +259,7 @@ class UserController < ApplicationController
 
   # Generate a template user for certain actions on get
   def generate_filled_in
-#    logger.debug "generate_filled_in!"
+    logger.debug "generate_filled_in!"
     @user = session['user']
     case request.method
     when :get

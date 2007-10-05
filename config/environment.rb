@@ -26,6 +26,8 @@ Rails::Initializer.run do |config|
   # config.log_level = :debug
 
   config.logger = Logger.new
+  config.log_level = :debug
+  config.log_path = "log/spoke.log"
 
   # Use the database for sessions instead of the file system
   # (create the session table with 'rake db:sessions:create')
