@@ -28,6 +28,7 @@ Rails::Initializer.run do |config|
   config.logger = Logger.new
   config.log_level = :debug
   config.log_path = "log/spoke.log"
+  config.active_record.colorize_logging = true
 
   # Use the database for sessions instead of the file system
   # (create the session table with 'rake db:sessions:create')
