@@ -1,8 +1,8 @@
 class Source < ActiveRecord::Base
 
-  belongs_to :user                  # owner
-  belongs_to :person                # person represented in material
-  has_and_belongs_to_many :people   # others present in material
+  belongs_to :created_by, :class_name => 'User', :foreign_key => 'created_by'
+  belongs_to :updated_by, :class_name => 'User', :foreign_key => 'updated_by'
+  belongs_to :user                  # the speaker or author may or may not have a login
   has_many :nodes                   # excerpted to
   
   file_column :clip

@@ -44,7 +44,6 @@ class NodesController < ApplicationController
     @node.playto = params[:outat]
 
   	@sourceoptions = Source.find(:all, :order => 'name').map {|u| [u.name, u.id]}    
-  	@peopleoptions = Person.find(:all, :order => 'name').map {|u| [u.name, u.id]}
     @default_person = Person.find(2)
   end
 
@@ -57,7 +56,6 @@ class NodesController < ApplicationController
       redirect_to :action => 'show', :id => @node
     else
     	@sourceoptions = Source.find(:all, :order => 'name').map {|u| [u.name, u.id]}    
-    	@peopleoptions = Person.find(:all, :order => 'name').map {|u| [u.name, u.id]}
       render :action => 'new'
     end
   end
@@ -65,7 +63,6 @@ class NodesController < ApplicationController
   def edit
     @node = Node.find(params[:id])
   	@sourceoptions = Source.find(:all, :order => 'name').map {|u| [u.name, u.id]}    
-  	@peopleoptions = Person.find(:all, :order => 'name').map {|u| [u.name, u.id]}
   end
 
   def update
@@ -78,7 +75,6 @@ class NodesController < ApplicationController
     else
       flash[:notice] = 'failed to update.'
     	@sourceoptions = Source.find(:all, :order => 'name').map {|u| [u.name, u.id]}    
-    	@peopleoptions = Person.find(:all, :order => 'name').map {|u| [u.name, u.id]}
       render :action => 'edit'
     end
   end

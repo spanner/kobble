@@ -1,16 +1,27 @@
 require 'digest/sha1'
-class User < ActiveRecord::Base
-  # Virtual attribute for the unencrypted password
-  attr_accessor :password
 
+class User < ActiveRecord::Base
+  belongs_to :created_by, :class_name => 'User', :foreign_key => 'created_by' # some users can create other users
+  belongs_to :updated_by, :class_name => 'User', :foreign_key => 'updated_by'
+  belongs_to :collection      # for editors and higher this is a changeable value that indicates foreground collection
   has_many :sources
   has_many :nodes
+end
+
+class LoginUser < User
+  attr_accessor :password
   has_many :bundles
   has_many :tags
   has_many :scratchpads
   has_many :warnings
 
-  belongs_to :collection    # storing currently active collection. doesn't really belong_to
+  file_column :image, :magick => { 
+    :versions => { 
+      "thumb" => "56x56!", 
+      "slide" => "135x135!", 
+      "preview" => "750x540>" 
+    }
+  }
 
   validates_presence_of     :login, :email
   validates_presence_of     :password,                   :if => :password_required?

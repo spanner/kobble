@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 28) do
+ActiveRecord::Schema.define(:version => 35) do
 
   create_table "bundles", :force => true do |t|
     t.column "name",           :string
@@ -10,6 +10,10 @@ ActiveRecord::Schema.define(:version => 28) do
     t.column "clustertype_id", :integer
     t.column "body",           :text
     t.column "collection_id",  :integer
+    t.column "created_by",     :integer
+    t.column "updated_by",     :integer
+    t.column "created_at",     :datetime
+    t.column "updated_at",     :datetime
   end
 
   create_table "bundletypes", :force => true do |t|
@@ -31,7 +35,11 @@ ActiveRecord::Schema.define(:version => 28) do
     t.column "user_id",     :integer
     t.column "name",        :string
     t.column "description", :text
-    t.column "status",      :string,  :limit => 20
+    t.column "status",      :string,   :limit => 20
+    t.column "created_by",  :integer
+    t.column "updated_by",  :integer
+    t.column "created_at",  :datetime
+    t.column "updated_at",  :datetime
   end
 
   create_table "collections_users", :force => true do |t|
@@ -78,42 +86,26 @@ ActiveRecord::Schema.define(:version => 28) do
     t.column "synopsis",       :text
     t.column "notes",          :text
     t.column "body",           :text
-    t.column "person_id",      :integer
     t.column "user_id",        :integer
     t.column "source_id",      :integer
     t.column "status",         :string
     t.column "rating",         :integer
     t.column "image",          :string
     t.column "clip",           :string
-    t.column "playfrom",       :integer, :limit => 10, :precision => 10, :scale => 0
-    t.column "playto",         :integer, :limit => 10, :precision => 10, :scale => 0
+    t.column "playfrom",       :integer,  :limit => 10, :precision => 10, :scale => 0
+    t.column "playto",         :integer,  :limit => 10, :precision => 10, :scale => 0
     t.column "keywords_count", :integer
-  end
-
-  create_table "nodes_people", :force => true do |t|
-    t.column "person_id", :integer
-    t.column "node_id",   :integer
+    t.column "collection_id",  :integer
+    t.column "created_by",     :integer
+    t.column "updated_by",     :integer
+    t.column "created_at",     :datetime
+    t.column "updated_at",     :datetime
   end
 
   create_table "offenders_warnings", :force => true do |t|
     t.column "warning_id",    :integer
     t.column "offender_type", :string,  :limit => 20
     t.column "offender_id",   :integer
-  end
-
-  create_table "paddies_users", :force => true do |t|
-    t.column "user_id",    :integer
-    t.column "paddy_id",   :integer
-    t.column "paddy_type", :string,  :limit => 20
-  end
-
-  create_table "people", :force => true do |t|
-    t.column "name",          :string
-    t.column "image",         :string
-    t.column "description",   :text
-    t.column "notes",         :text
-    t.column "node_count",    :integer
-    t.column "collection_id", :integer
   end
 
   create_table "people_sources", :force => true do |t|
@@ -145,50 +137,68 @@ ActiveRecord::Schema.define(:version => 28) do
     t.column "name",          :string
     t.column "notes",         :text
     t.column "synopsis",      :text
-    t.column "person_id",     :integer
     t.column "user_id",       :integer
     t.column "body",          :text
     t.column "clip",          :string
-    t.column "duration",      :integer, :limit => 10, :precision => 10, :scale => 0
+    t.column "duration",      :integer,  :limit => 10, :precision => 10, :scale => 0
     t.column "rating",        :integer
     t.column "collection_id", :integer
+    t.column "created_by",    :integer
+    t.column "updated_by",    :integer
+    t.column "created_at",    :datetime
+    t.column "updated_at",    :datetime
   end
 
   create_table "tags", :force => true do |t|
     t.column "parent_id",      :integer
     t.column "name",           :string
     t.column "description",    :text
-    t.column "colour",         :string,  :limit => 7
+    t.column "colour",         :string,   :limit => 7
     t.column "nodes",          :integer
     t.column "keywords_count", :integer
     t.column "user_id",        :integer
+    t.column "created_by",     :integer
+    t.column "updated_by",     :integer
+    t.column "created_at",     :datetime
+    t.column "updated_at",     :datetime
   end
 
   create_table "users", :force => true do |t|
-    t.column "login",           :string,   :limit => 80, :default => "", :null => false
-    t.column "salted_password", :string,   :limit => 40, :default => "", :null => false
-    t.column "email",           :string,   :limit => 60, :default => "", :null => false
-    t.column "diminutive",      :string,   :limit => 40
-    t.column "firstname",       :string,   :limit => 40
-    t.column "lastname",        :string,   :limit => 40
-    t.column "salt",            :string,   :limit => 40, :default => "", :null => false
-    t.column "verified",        :integer,                :default => 0
-    t.column "role",            :string,   :limit => 40
-    t.column "security_token",  :string,   :limit => 40
-    t.column "token_expiry",    :datetime
-    t.column "created_at",      :datetime
-    t.column "updated_at",      :datetime
-    t.column "logged_in_at",    :datetime
-    t.column "deleted",         :integer,                :default => 0
-    t.column "delete_after",    :datetime
+    t.column "login",                     :string,   :limit => 80, :default => "",     :null => false
+    t.column "crypted_password",          :string,   :limit => 40, :default => "",     :null => false
+    t.column "email",                     :string,   :limit => 60, :default => "",     :null => false
+    t.column "diminutive",                :string,   :limit => 40
+    t.column "firstname",                 :string,   :limit => 40
+    t.column "lastname",                  :string,   :limit => 40
+    t.column "salt",                      :string,   :limit => 40, :default => "",     :null => false
+    t.column "verified",                  :integer,                :default => 0
+    t.column "role",                      :string,   :limit => 40
+    t.column "remember_token",            :string,   :limit => 40
+    t.column "remember_token_expires_at", :datetime
+    t.column "created_at",                :datetime
+    t.column "updated_at",                :datetime
+    t.column "logged_in_at",              :datetime
+    t.column "deleted",                   :integer,                :default => 0
+    t.column "delete_after",              :datetime
+    t.column "collection_id",             :integer
+    t.column "status",                    :integer
+    t.column "image",                     :string
+    t.column "description",               :text
+    t.column "created_by",                :integer
+    t.column "updated_by",                :integer
+    t.column "type",                      :string,                 :default => "User"
   end
 
   create_table "warnings", :force => true do |t|
     t.column "body",           :text
-    t.column "offender_type",  :string,  :limit => 20
+    t.column "offender_type",  :string,   :limit => 20
     t.column "offender_id",    :integer
     t.column "user_id",        :integer
     t.column "warningtype_id", :string
+    t.column "created_by",     :integer
+    t.column "updated_by",     :integer
+    t.column "created_at",     :datetime
+    t.column "updated_at",     :datetime
   end
 
   create_table "warningtypes", :force => true do |t|

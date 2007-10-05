@@ -1,11 +1,11 @@
 class Collection < ActiveRecord::Base
 
-  belongs_to :user
-  has_and_belongs_to_many :users
+  belongs_to :created_by, :class_name => 'User', :foreign_key => 'created_by'
+  belongs_to :updated_by, :class_name => 'User', :foreign_key => 'updated_by'
 
+  has_many :users
   has_many :bundles
   has_many :sources
-  has_many :people
   has_many :nodes
   
 end

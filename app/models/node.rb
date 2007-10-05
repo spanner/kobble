@@ -1,11 +1,11 @@
 class Node < ActiveRecord::Base
 
-  belongs_to :source
-  belongs_to :user
-  belongs_to :person
-  belongs_to :collection
+  belongs_to :created_by, :class_name => 'User', :foreign_key => 'created_by'
+  belongs_to :updated_by, :class_name => 'User', :foreign_key => 'updated_by'
 
-  has_and_belongs_to_many :people
+  belongs_to :user          # the speaker and/or owner is not necessarily the creator
+  belongs_to :source
+  belongs_to :collection
 
   file_column :image, :magick => { 
     :versions => { 

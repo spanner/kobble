@@ -1,7 +1,6 @@
 class Tag < ActiveRecord::Base
   belongs_to :user
-  has_many_polymorphs :marks, :from => [:nodes, :people, :sources, :bundles]
-
+  has_many_polymorphs :marks, :from => [:nodes, :sources, :bundles, :user]
   acts_as_tree :order => 'name', :counter_cache => true
   
   public
