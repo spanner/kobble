@@ -10,8 +10,8 @@ set :repository, "http://svn.spanner.org/#{application}/trunk"
 # your SCM below:
 # set :scm, :subversion
 
-role :web, "seagoon.spanner.org", :primary => true
-role :app, "seagoon.spanner.org", "bluebottle.spanner.org"
+role :web, "bluebottle.spanner.org", :primary => true
+role :app, "bluebottle.spanner.org", :primary => true
 role :db,  "eccles.spanner.org", :primary => true
 
 set :deploy_to, "/var/www/#{application}"

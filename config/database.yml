@@ -32,4 +32,4 @@ production:
   database: spoke_production
   username: spanner
   password: monkey
-  host: localhost
+  host: eccles.spanner.org
