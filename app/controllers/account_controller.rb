@@ -15,7 +15,6 @@ class AccountController < ApplicationController
     if logged_in?
       if params[:remember_me] == "1"
         self.current_user.remember_me
-        logger.warn('!!! found a user')
         cookies[:auth_token] = { :value => self.current_user.remember_token , :expires => self.current_user.remember_token_expires_at }
       end
       redirect_back_or_default(:controller => '/account', :action => 'index')

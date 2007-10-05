@@ -1,6 +1,6 @@
 --- 
 cwd: /var/www/spoke/current
 port: "8020"
-environment: production
+environment: development
 pid_file: log/mongrel.pid
 servers: 3
