@@ -7,10 +7,10 @@ module UserSystem
     :admin_email => 'will@spanner.org',
 
     # Sent in emails to users
-    :app_url => 'http://localhost:3000/',
+    :app_url => 'http://spoke.spanner.org/',
 
     # Sent in emails to users
-    :app_name => 'the device',
+    :app_name => 'spoke',
 
     # Email charset
     :mail_charset => 'utf-8',

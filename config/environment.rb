@@ -9,7 +9,7 @@
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
-require 'has_many_polymorphs' 
+require 'has_many_polymorphs'
 
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence those specified here
@@ -35,7 +35,7 @@ Rails::Initializer.run do |config|
   # config.active_record.schema_format = :sql
 
   # Activate observers that should always be running
-  # config.active_record.observers = :cacher, :garbage_collector
+  config.active_record.observers = :cacher, :garbage_collector
 
   # Make Active Record use UTC-base instead of local time
   # config.active_record.default_timezone = :utc
