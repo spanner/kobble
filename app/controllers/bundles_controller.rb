@@ -49,7 +49,7 @@ class BundlesController < ApplicationController
 
   def create
     @bundle = Bundle.new(params[:bundle])
-    @bundle.user = session['user']
+    @bundle.user = current_user
     if @bundle.save
       members = []
       params[:members].each do |m|

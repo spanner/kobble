@@ -50,7 +50,7 @@ class NodesController < ApplicationController
 
   def create
     @node = Node.new(params[:node])
-    @node.user = session['user']
+    @node.user = current_user
     if @node.save
       @node.tags << tags_from_list(params[:keyword_list])
       flash[:notice] = 'Segment created.'

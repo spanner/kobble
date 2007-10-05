@@ -10,6 +10,10 @@ class CollectionsController < ApplicationController
   verify :method => :post, :only => [ :destroy, :create, :update ],
          :redirect_to => { :action => :list }
 
+  def set_context
+    @display = 'list'
+  end
+
   def list
     perpage = params[:perpage] || (@display == 'thumb') ? 100 : 40
     sort = case params[:sort]

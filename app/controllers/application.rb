@@ -1,23 +1,17 @@
 # Filters added to this controller will be run for all controllers in the application.
 # Likewise, all the methods added will be available for all controllers.
-require 'localization'
-require 'user_system'
 
 class ApplicationController < ActionController::Base
-  include Localization
-  include UserSystem
-  helper :user
-  model  :user
+  include AuthenticatedSystem
+
   before_filter :login_required
   before_filter :set_context
   layout :choose_layout
   
   def set_context
-    if session['user'] then
-      @user = User.find(session['user'])
-      @active_collection = @user.collection
-      @display = 'list'
-    end
+    @display = 'list'
+    @active_collection = current_user.collection
+    redirect_to :controller => 'collections', :action => 'index' unless @active_collection
   end
   
   def limit_to_active_collection
@@ -25,11 +19,11 @@ class ApplicationController < ActionController::Base
   end
   
   def choose_layout
-    session['user'] ? 'standard' : 'login'
+    logged_in? ? 'standard' : 'login'
   end
     
   def local_request?
-    session['user'] && @user.role == 'admin'
+    logged_in? && current_user.is_admin? == 'admin'
   end
   
   def kwtree

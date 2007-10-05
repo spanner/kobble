@@ -78,7 +78,7 @@ class ScratchpadsController < ApplicationController
 
   def create # ahah only
     @scratchpad = Scratchpad.new(params[:scratchpad])
-    @scratchpad.user ||= session['user']
+    @scratchpad.user ||= current_user
     @scratchpad.name ||= 'pad'
     if @scratchpad.save!
       flash[:notice] = 'Scratchpad was successfully created.'

@@ -9,7 +9,7 @@
 
 
   <td>
-  <% if session['user'].role == 'admin '%> 
+  <% if current_user.is_admin? %> 
     <%= link_to 'Show', :action => 'show', :id => list %> | <%= link_to 'Edit', :action => 'edit', :id => list %> | <%= link_to 'Destroy', { :action => 'destroy', :id => list }, :confirm => 'Are you sure?', :post => true %>
   <% end %>
   </td>

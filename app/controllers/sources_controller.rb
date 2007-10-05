@@ -38,7 +38,7 @@ class SourcesController < ApplicationController
 
   def create
     @source = Source.new(params[:source])
-    @source.user = session['user']
+    @source.user = current_user
     if @source.save
       flash[:notice] = 'Source object successfully created.'
       redirect_to :action => 'list'

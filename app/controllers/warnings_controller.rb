@@ -30,7 +30,7 @@ class WarningsController < ApplicationController
 
   def create
     @warning = Warning.new(params[:warning])
-    @warning.user = session['user']
+    @warning.user = current_user
     if @warning.save
       flash[:notice] = 'Warning was successfully created.'
       redirect_to :controller => @warning.offender.class.to_s.downcase.pluralize, :action => 'show', :id => @warning.offender

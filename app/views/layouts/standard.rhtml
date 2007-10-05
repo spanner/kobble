@@ -2,8 +2,7 @@
         "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 
 <% 
-  @thisuser ||= User.find(session['user'].id)
-  @scratchpads ||= @thisuser.find_or_create_scratchpads()
+  @scratchpads ||= current_user.find_or_create_scratchpads
 %>
 
 <html>

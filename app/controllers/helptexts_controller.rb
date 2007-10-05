@@ -31,7 +31,7 @@ class HelptextsController < ApplicationController
 
   def create
     @helptext = Helptext.new(params[:helptext])
-    @helptext.user = session['user']
+    @helptext.user = current_user
     if @helptext.save
       flash[:notice] = 'Helptext was successfully created.'
       redirect_to :action => 'list'

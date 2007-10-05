@@ -16,5 +16,9 @@ module ApplicationHelper
       'white'
     end
   end
-    
+  
+  def title_helper
+    "#{@controller.controller_class_name} #{@controller.action_name}"
+  end
+  
 end

@@ -29,10 +29,10 @@ Rails::Initializer.run do |config|
   # (create the session table with 'rake db:sessions:create')
   
   config.action_controller.session_store = :active_record_store
-  config.logger = Logger.new(File.dirname(__FILE__) + "/../log/#{RAILS_ENV}.log")
-  config.log_level = :debug
-  config.log_path = "log/spoke.log"
-  config.active_record.colorize_logging = true
+  # config.logger = Logger.new(File.dirname(__FILE__) + "/../log/#{RAILS_ENV}.log")
+  # config.log_level = :debug
+  # config.log_path = "log/spoke.log"
+  # config.active_record.colorize_logging = true
 
   # Use SQL instead of Active Record's schema dumper when creating the test database.
   # This is necessary if your schema can't be completely dumped by the schema dumper, 
