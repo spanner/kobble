@@ -10,6 +10,7 @@
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 require 'has_many_polymorphs'
+require 'logger'
 
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence those specified here
