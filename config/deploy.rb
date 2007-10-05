@@ -15,10 +15,9 @@ role :app, "bluebottle.spanner.org", :primary => true
 role :db,  "eccles.spanner.org", :primary => true
 
 set :deploy_to, "/var/www/#{application}"
-set :mongrel_conf, "#{current_path}/config/mongrel_cluster.yml"
+set :mongrel_conf, "/etc/mongrel_cluster/#{application}.yml" 
 set :user, 'spanner'
-set :checkout, "export"
-set :use_sudo, false
+set :deploy_via, :remote_cache
 
 namespace :deploy do
   task :after_update do
@@ -27,11 +26,15 @@ namespace :deploy do
     sudo "ln -s #{shared_path}/assets/person #{current_release}/public/person"
     run "ln -s #{shared_path}/config/database.yml #{current_release}/config/database.yml" 
   end
-  task :spinner, :roles => :app do
-    send(run_method, "cd #{deploy_to}/#{current_dir} && mongrel_rails cluster::start")
+	
+  task :start, :roles => :app do
+    sudo "mongrel_rails cluster::start -C #{mongrel_conf}" 
+  end
+  task :stop, :roles => :app do
+    sudo "mongrel_rails cluster::stop -C #{mongrel_conf}" 
   end
   task :restart, :roles => :app do
-    send(run_method, "cd #{deploy_to}/#{current_dir} && mongrel_rails cluster::restart")
+    sudo "mongrel_rails cluster::restart -C #{mongrel_conf}" 
   end
 end
 
