@@ -17,7 +17,7 @@ role :db,  "eccles.spanner.org", :primary => true
 set :deploy_to, "/var/www/#{application}"
 set :mongrel_conf, "#{current_path}/config/mongrel_cluster.yml"
 set :user, 'spanner'
-set :checkout, "export" 
+set :checkout, "export"
 set :use_sudo, false
 
 namespace :deploy do
@@ -28,10 +28,10 @@ namespace :deploy do
     run "ln -s #{shared_path}/config/database.yml #{current_release}/config/database.yml" 
   end
   task :spinner, :roles => :app do
-    send(run_method, “cd #{deploy_to}/#{current_dir} && mongrel_rails cluster::start”)
+    send(run_method, "cd #{deploy_to}/#{current_dir} && mongrel_rails cluster::start")
   end
   task :restart, :roles => :app do
-    send(run_method, “cd #{deploy_to}/#{current_dir} && mongrel_rails cluster::restart”)
+    send(run_method, "cd #{deploy_to}/#{current_dir} && mongrel_rails cluster::restart")
   end
 end
 
