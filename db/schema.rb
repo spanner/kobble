@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 35) do
+ActiveRecord::Schema.define(:version => 37) do
 
   create_table "bundles", :force => true do |t|
     t.column "name",           :string
@@ -14,21 +14,9 @@ ActiveRecord::Schema.define(:version => 35) do
     t.column "updated_by",     :integer
     t.column "created_at",     :datetime
     t.column "updated_at",     :datetime
-  end
-
-  create_table "bundletypes", :force => true do |t|
-    t.column "name",    :string
-    t.column "ordered", :integer
-  end
-
-  create_table "clusters_keywords", :id => false, :force => true do |t|
-    t.column "cluster_id", :integer
-    t.column "keyword_id", :integer
-  end
-
-  create_table "clusters_users", :id => false, :force => true do |t|
-    t.column "cluster_id", :integer
-    t.column "user_id",    :integer
+    t.column "observations",   :text
+    t.column "emotions",       :text
+    t.column "arising",        :text
   end
 
   create_table "collections", :force => true do |t|
@@ -40,33 +28,6 @@ ActiveRecord::Schema.define(:version => 35) do
     t.column "updated_by",  :integer
     t.column "created_at",  :datetime
     t.column "updated_at",  :datetime
-  end
-
-  create_table "collections_users", :force => true do |t|
-    t.column "collection_id", :integer
-    t.column "user_id",       :integer
-    t.column "status",        :integer
-  end
-
-  create_table "helptexts", :force => true do |t|
-    t.column "name",    :string
-    t.column "body",    :text
-    t.column "user_id", :integer
-  end
-
-  create_table "keywords_nodes", :id => false, :force => true do |t|
-    t.column "node_id",    :integer
-    t.column "keyword_id", :integer
-  end
-
-  create_table "keywords_people", :force => true do |t|
-    t.column "person_id",  :integer
-    t.column "keyword_id", :integer
-  end
-
-  create_table "keywords_recordings", :force => true do |t|
-    t.column "recording_id", :integer
-    t.column "keyword_id",   :integer
   end
 
   create_table "marks_tags", :force => true do |t|
@@ -100,6 +61,10 @@ ActiveRecord::Schema.define(:version => 35) do
     t.column "updated_by",     :integer
     t.column "created_at",     :datetime
     t.column "updated_at",     :datetime
+    t.column "observations",   :text
+    t.column "emotions",       :text
+    t.column "arising",        :text
+    t.column "question_id",    :integer
   end
 
   create_table "offenders_warnings", :force => true do |t|
@@ -108,9 +73,17 @@ ActiveRecord::Schema.define(:version => 35) do
     t.column "offender_id",   :integer
   end
 
-  create_table "people_sources", :force => true do |t|
-    t.column "person_id", :integer
-    t.column "source_id", :integer
+  create_table "questions", :force => true do |t|
+    t.column "created_by",   :integer
+    t.column "updated_by",   :integer
+    t.column "created_at",   :datetime
+    t.column "updated_at",   :datetime
+    t.column "prompt",       :text
+    t.column "guidance",     :text
+    t.column "observations", :text
+    t.column "emotions",     :text
+    t.column "arising",      :text
+    t.column "survey_id",    :integer
   end
 
   create_table "scraps_scratchpads", :force => true do |t|
@@ -147,6 +120,18 @@ ActiveRecord::Schema.define(:version => 35) do
     t.column "updated_by",    :integer
     t.column "created_at",    :datetime
     t.column "updated_at",    :datetime
+    t.column "observations",  :text
+    t.column "emotions",      :text
+    t.column "arising",       :text
+  end
+
+  create_table "surveys", :force => true do |t|
+    t.column "created_by",  :integer
+    t.column "updated_by",  :integer
+    t.column "created_at",  :datetime
+    t.column "updated_at",  :datetime
+    t.column "title",       :string
+    t.column "description", :text
   end
 
   create_table "tags", :force => true do |t|
@@ -199,11 +184,6 @@ ActiveRecord::Schema.define(:version => 35) do
     t.column "updated_by",     :integer
     t.column "created_at",     :datetime
     t.column "updated_at",     :datetime
-  end
-
-  create_table "warningtypes", :force => true do |t|
-    t.column "name",         :string
-    t.column "prevents_use", :integer
   end
 
 end

@@ -1,0 +1,31 @@
+<%= error_messages_for 'question' %>
+
+<!--[form:question]-->
+<p><label for="question_created_by">Created by</label><br/>
+<%= text_field 'question', 'created_by'  %></p>
+
+<p><label for="question_updated_by">Updated by</label><br/>
+<%= text_field 'question', 'updated_by'  %></p>
+
+<p><label for="question_created_at">Created at</label><br/>
+<%= datetime_select 'question', 'created_at'  %></p>
+
+<p><label for="question_updated_at">Updated at</label><br/>
+<%= datetime_select 'question', 'updated_at'  %></p>
+
+<p><label for="question_prompt">Prompt</label><br/>
+<%= text_area 'question', 'prompt'  %></p>
+
+<p><label for="question_guidance">Guidance</label><br/>
+<%= text_area 'question', 'guidance'  %></p>
+
+<p><label for="question_observations">Observations</label><br/>
+<%= text_area 'question', 'observations'  %></p>
+
+<p><label for="question_emotions">Emotions</label><br/>
+<%= text_area 'question', 'emotions'  %></p>
+
+<p><label for="question_arising">Arising</label><br/>
+<%= text_area 'question', 'arising'  %></p>
+<!--[eoform:question]-->
+
