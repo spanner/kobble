@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   
   # this is user review and management for admins
-  # alogging in and registration is in account_controller
+  # logging in and registration is in account_controller
 
   def index
     list

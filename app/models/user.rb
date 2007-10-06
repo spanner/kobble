@@ -6,14 +6,14 @@ class User < ActiveRecord::Base
   belongs_to :collection      # for editors and higher this is a changeable value that indicates foreground collection
   has_many :sources
   has_many :nodes
-end
-
-class LoginUser < User
-  attr_accessor :password
   has_many :bundles
   has_many :tags
   has_many :scratchpads
   has_many :warnings
+end
+
+class LoginUser < User
+  attr_accessor :password
 
   file_column :image, :magick => { 
     :versions => { 
