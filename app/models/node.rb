@@ -2,7 +2,7 @@ class Node < ActiveRecord::Base
 
   belongs_to :creator, :class_name => 'User', :foreign_key => 'created_by'
   belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
-  belongs_to :speaker, :class_name => 'User', :foreign_key => 'user_id'
+  belongs_to :speaker, :class_name => 'User', :foreign_key => 'speaker_id'
 
   belongs_to :question
   belongs_to :source

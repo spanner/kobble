@@ -38,6 +38,7 @@ class SourcesController < ApplicationController
   def create
     @source = Source.new(params[:source])
     if @source.save
+      # @source.tags << tags_from_list(params[:tag_list])
       flash[:notice] = 'Source object successfully created.'
       redirect_to :action => 'list'
     else

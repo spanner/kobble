@@ -50,7 +50,7 @@ class NodesController < ApplicationController
   def create
     @node = Node.new(params[:node])
     if @node.save
-      @node.tags << tags_from_list(params[:keyword_list])
+      @node.tags << tags_from_list(params[:tag_list])
       flash[:notice] = 'Segment created.'
       redirect_to :action => 'show', :id => @node
     else

@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 37) do
+ActiveRecord::Schema.define(:version => 38) do
 
   create_table "bundles", :force => true do |t|
     t.column "name",           :string
@@ -19,16 +19,6 @@ ActiveRecord::Schema.define(:version => 37) do
     t.column "arising",        :text
   end
 
-  create_table "clusters_keywords", :id => false, :force => true do |t|
-    t.column "cluster_id", :integer
-    t.column "keyword_id", :integer
-  end
-
-  create_table "clusters_users", :id => false, :force => true do |t|
-    t.column "cluster_id", :integer
-    t.column "user_id",    :integer
-  end
-
   create_table "collections", :force => true do |t|
     t.column "user_id",     :integer
     t.column "name",        :string
@@ -38,12 +28,6 @@ ActiveRecord::Schema.define(:version => 37) do
     t.column "updated_by",  :integer
     t.column "created_at",  :datetime
     t.column "updated_at",  :datetime
-  end
-
-  create_table "collections_users", :force => true do |t|
-    t.column "collection_id", :integer
-    t.column "user_id",       :integer
-    t.column "status",        :integer
   end
 
   create_table "marks_tags", :force => true do |t|
@@ -63,7 +47,7 @@ ActiveRecord::Schema.define(:version => 37) do
     t.column "synopsis",       :text
     t.column "notes",          :text
     t.column "body",           :text
-    t.column "user_id",        :integer
+    t.column "speaker_id",     :integer
     t.column "source_id",      :integer
     t.column "status",         :string
     t.column "rating",         :integer
@@ -87,11 +71,6 @@ ActiveRecord::Schema.define(:version => 37) do
     t.column "warning_id",    :integer
     t.column "offender_type", :string,  :limit => 20
     t.column "offender_id",   :integer
-  end
-
-  create_table "people_sources", :force => true do |t|
-    t.column "person_id", :integer
-    t.column "source_id", :integer
   end
 
   create_table "questions", :force => true do |t|
@@ -132,7 +111,7 @@ ActiveRecord::Schema.define(:version => 37) do
     t.column "name",          :string
     t.column "notes",         :text
     t.column "synopsis",      :text
-    t.column "user_id",       :integer
+    t.column "speaker_id",    :integer
     t.column "body",          :text
     t.column "clip",          :string
     t.column "duration",      :integer,  :limit => 10, :precision => 10, :scale => 0
@@ -176,6 +155,7 @@ ActiveRecord::Schema.define(:version => 37) do
     t.column "crypted_password",          :string,   :limit => 40, :default => "",     :null => false
     t.column "email",                     :string,   :limit => 60, :default => "",     :null => false
     t.column "diminutive",                :string,   :limit => 40
+    t.column "honorific",                 :string
     t.column "firstname",                 :string,   :limit => 40
     t.column "lastname",                  :string,   :limit => 40
     t.column "salt",                      :string,   :limit => 40, :default => "",     :null => false
