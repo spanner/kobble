@@ -1,0 +1,8 @@
+<% for column in Survey.content_columns %>
+<p>
+  <b><%= column.human_name %>:</b> <%=h @survey.send(column.name) %>
+</p>
+<% end %>
+
+<%= link_to 'Edit', :action => 'edit', :id => @survey %> |
+<%= link_to 'Back', :action => 'list' %>

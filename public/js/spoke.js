@@ -2,12 +2,21 @@
 
 window.addEvent('domready', function(){
   scratch = new Scratchpad( $E('#scratchpad') );
+
   $ES('.draggable').each(function(item) {
   	item.addEvent('mousedown', function(e) {
   		e = new Event(e).stop();
 			new Draggee(this, e);
   	});
   });
+
+	$ES('a.formcontrol').each(function (a) {
+		a.addEvent('click', function (e) { 
+			$E('#' + this.id.replace('show','hide')).show(); 
+			e.preventDefault();
+		})
+	})
+
 });
 
 // element ids in spoke have a standard format: tag_type_id, where tag is an arbitrary identifier used to identify eg tab family, and type and id denote an object

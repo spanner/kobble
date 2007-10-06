@@ -1,8 +1,9 @@
 class Source < ActiveRecord::Base
 
-  belongs_to :created_by, :class_name => 'User', :foreign_key => 'created_by'
-  belongs_to :updated_by, :class_name => 'User', :foreign_key => 'updated_by'
-  belongs_to :user                  # the speaker or author may or may not have a login
+  belongs_to :creator, :class_name => 'User', :foreign_key => 'created_by'
+  belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
+  belongs_to :speaker, :class_name => 'User', :foreign_key => 'user_id'
+
   has_many :nodes                   # excerpted to
   
   file_column :clip

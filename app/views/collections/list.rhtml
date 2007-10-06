@@ -12,5 +12,11 @@
   <p class="addhere listfoot">
     pages <%= paginating_links(@collections, {:window_size => 3}, {}) %>
   </p>
+
+	<% if current_user.is_admin? %>
+		<p>
+			<%= link_to 'Create a new collection', :action => 'new' %>
+		</p>
+	<% end %>
   
 </div>

@@ -7,6 +7,7 @@ class Surveying < ActiveRecord::Migration
         table.column :updated_at, :datetime
         table.column :title, :string
         table.column :description, :text
+        table.column :collection_id, :integer
       end
 
       create_table :questions do |table|
@@ -20,6 +21,7 @@ class Surveying < ActiveRecord::Migration
         table.column :emotions, :text
         table.column :arising, :text
         table.column :survey_id, :integer
+        table.column :collection_id, :integer
       end
 
       add_column :nodes, :question_id, :integer

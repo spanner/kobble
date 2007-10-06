@@ -1,7 +1,7 @@
 <% pagetitle = controller.controller_name.camelize unless pagetitle %>
 
 <h1>
-	<span class="emphatic"><%= @active_collection.name %></span>
+	<span class="emphatic"><%= @current_collection.name %></span>
   <%= render :partial => 'shared/logo' %>
   <%= pagetitle %>
 	<% if list.size > list.page_size %>
@@ -28,3 +28,10 @@
 		<p>There are no <%= pagetitle %> to display in this collection</p>
 	<% end %>
 </div>
+
+<% if @current_user.is_editor? %>
+	<p>
+		<%= link_to 'Create a new x', :action => 'new' %>
+	</p>
+<% end %>
+

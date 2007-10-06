@@ -5,7 +5,9 @@
     <h2><%= link_to( "#{list.name}", {:controller => 'nodes', :action => 'show', :id => list}) %></h2>
     <p>
       <%= truncate( list.body, 240 ) %><br />
-      <span class="footnote">Taken from <%= link_to (list.source.name, :controller => 'sources', :action => 'show', :id => list.source) if list.source %> by <%= link_to (list.user.name, :controller => 'users', :action => 'show', :id => list.user) if list.user %>.</span>
+      <span class="footnote">
+				Taken from <%= link_to (list.source.name, :controller => 'sources', :action => 'show', :id => list.source) if list.source %> 
+				by <%= link_to (list.creator.name, :controller => 'users', :action => 'show', :id => list.creator) if list.creator %>.</span>
     </p>
   </div>
 

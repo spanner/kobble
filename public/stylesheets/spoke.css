@@ -97,7 +97,7 @@ span.separator {
 h4 {
   font-size: 14px;
   font-weight: lighter;
-  font-family: HelveticaNeue-Roman, helvetica, arial, sans-serif;
+  font-family: HelveticaNeue-Black, helvetica, arial, sans-serif;
   letter-spacing: -0.05em;
   line-height: 1.2;
   margin-bottom: 0;
@@ -113,7 +113,21 @@ blockquote {
   color: #695D54;
 }
 
+label {
+  font-size: 18px;
+  font-weight: lighter;
+  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
+  letter-spacing: -0.05em;
+  line-height: 1.2;
+}
 
+
+
+
+
+
+
+/* layout and special formatting */
 
 
 
@@ -292,13 +306,17 @@ div.setdragicon p {
   color:#559DC4;
 }
 
+h3.formcontrol {
+	margin: 0;
+}
 
+div.formbuttons {
+	margin: 40px 0 0 0;
+}
 
-
-
-
-
-
+form p, form h3, input.standard, textarea.standard, select.standard {
+	width: 540px;
+}
 
 
 

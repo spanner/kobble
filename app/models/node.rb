@@ -1,9 +1,10 @@
 class Node < ActiveRecord::Base
 
-  belongs_to :created_by, :class_name => 'User', :foreign_key => 'created_by'
-  belongs_to :updated_by, :class_name => 'User', :foreign_key => 'updated_by'
+  belongs_to :creator, :class_name => 'User', :foreign_key => 'created_by'
+  belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
+  belongs_to :speaker, :class_name => 'User', :foreign_key => 'user_id'
 
-  belongs_to :user          # the speaker and/or owner is not necessarily the creator
+  belongs_to :question
   belongs_to :source
   belongs_to :collection
 

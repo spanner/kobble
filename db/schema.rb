@@ -19,6 +19,16 @@ ActiveRecord::Schema.define(:version => 37) do
     t.column "arising",        :text
   end
 
+  create_table "clusters_keywords", :id => false, :force => true do |t|
+    t.column "cluster_id", :integer
+    t.column "keyword_id", :integer
+  end
+
+  create_table "clusters_users", :id => false, :force => true do |t|
+    t.column "cluster_id", :integer
+    t.column "user_id",    :integer
+  end
+
   create_table "collections", :force => true do |t|
     t.column "user_id",     :integer
     t.column "name",        :string
@@ -28,6 +38,12 @@ ActiveRecord::Schema.define(:version => 37) do
     t.column "updated_by",  :integer
     t.column "created_at",  :datetime
     t.column "updated_at",  :datetime
+  end
+
+  create_table "collections_users", :force => true do |t|
+    t.column "collection_id", :integer
+    t.column "user_id",       :integer
+    t.column "status",        :integer
   end
 
   create_table "marks_tags", :force => true do |t|
@@ -73,17 +89,23 @@ ActiveRecord::Schema.define(:version => 37) do
     t.column "offender_id",   :integer
   end
 
+  create_table "people_sources", :force => true do |t|
+    t.column "person_id", :integer
+    t.column "source_id", :integer
+  end
+
   create_table "questions", :force => true do |t|
-    t.column "created_by",   :integer
-    t.column "updated_by",   :integer
-    t.column "created_at",   :datetime
-    t.column "updated_at",   :datetime
-    t.column "prompt",       :text
-    t.column "guidance",     :text
-    t.column "observations", :text
-    t.column "emotions",     :text
-    t.column "arising",      :text
-    t.column "survey_id",    :integer
+    t.column "created_by",    :integer
+    t.column "updated_by",    :integer
+    t.column "created_at",    :datetime
+    t.column "updated_at",    :datetime
+    t.column "prompt",        :text
+    t.column "guidance",      :text
+    t.column "observations",  :text
+    t.column "emotions",      :text
+    t.column "arising",       :text
+    t.column "survey_id",     :integer
+    t.column "collection_id", :integer
   end
 
   create_table "scraps_scratchpads", :force => true do |t|
@@ -126,12 +148,13 @@ ActiveRecord::Schema.define(:version => 37) do
   end
 
   create_table "surveys", :force => true do |t|
-    t.column "created_by",  :integer
-    t.column "updated_by",  :integer
-    t.column "created_at",  :datetime
-    t.column "updated_at",  :datetime
-    t.column "title",       :string
-    t.column "description", :text
+    t.column "created_by",    :integer
+    t.column "updated_by",    :integer
+    t.column "created_at",    :datetime
+    t.column "updated_at",    :datetime
+    t.column "title",         :string
+    t.column "description",   :text
+    t.column "collection_id", :integer
   end
 
   create_table "tags", :force => true do |t|

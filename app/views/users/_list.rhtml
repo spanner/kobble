@@ -1,16 +1,22 @@
-<tr class="<%= cycle("odd", "even", :name => "itemtable") %>">
-  <td><%= link_to( "<strong>#{list.name}</strong>", :action => 'show', :id => list) %></td>
-  <td><%= list.login %></td>
-  <td><%= link_to list.email %></td>
-  <td><%= list.sources.count if list.sources %></td>
-  <td><%= list.nodes.count if list.nodes %></td>
-  <td><%= list.bundles.count if list.bundles %></td>
-  <td><%= list.tags.count if list.tags %></td>
+<% if list %>
+ 
+  <div class="listrow <%= cycle("odd", "even", :name => "itemlist") %>">
+    <%= render :partial => 'shared/icon', :locals => { :this => list, :with_caption => false } %>
+    <h2><% if list.can_login? %><strong><% end %><%= link_to( "#{list.name}", {:controller => 'nodes', :action => 'show', :id => list}) %><% if list.can_login? %></strong><% end %></h2>
+    <p>
+      <% if list.description %><%= truncate( list.description, 240 ) %><br /><% end %>
+      <span class="footnote">
+				speaks or writes in <%= pluralize(list.nodes.count, 'fragment') %> 
+				and <%= pluralize(list.sources.count, 'document or recording', 'documents or recordings') %>.
+				<% if list.can_login? %>
+					<br />
+					creator of <%= pluralize(list.created_nodes.count, 'fragment') %>,
+					<%= pluralize(list.created_sources.count, 'document or recording', 'documents or recordings') %>
+					and <%= pluralize(list.created_bundles.count, 'set') %> in this collection.
+				<% end %>
+			</span>
+    </p>
+  </div>
 
+<% end %>
 
-  <td>
-  <% if current_user.is_admin? %> 
-    <%= link_to 'Show', :action => 'show', :id => list %> | <%= link_to 'Edit', :action => 'edit', :id => list %> | <%= link_to 'Destroy', { :action => 'destroy', :id => list }, :confirm => 'Are you sure?', :post => true %>
-  <% end %>
-  </td>
-</tr>

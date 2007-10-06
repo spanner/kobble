@@ -1,15 +1,47 @@
 require 'digest/sha1'
 
 class User < ActiveRecord::Base
-  belongs_to :created_by, :class_name => 'User', :foreign_key => 'created_by' # some users can create other users
-  belongs_to :updated_by, :class_name => 'User', :foreign_key => 'updated_by'
+  belongs_to :creator, :class_name => 'User', :foreign_key => 'created_by'
+  belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
   belongs_to :collection      # for editors and higher this is a changeable value that indicates foreground collection
-  has_many :sources
-  has_many :nodes
-  has_many :bundles
-  has_many :tags
+
+  has_many :sources, :class_name => 'Source', :foreign_key => 'user_id'
+  has_many :nodes, :class_name => 'Node', :foreign_key => 'user_id'
+
+  has_many :created_nodes, :class_name => 'Node', :foreign_key => 'created_by', :conditions => ['collection_id = ?', :current_collection]
+  has_many :created_sources, :class_name => 'Source', :foreign_key => 'created_by', :conditions => ['collection_id = ?', :current_collection]
+  has_many :created_bundles, :class_name => 'Bundle', :foreign_key => 'created_by', :conditions => ['collection_id = ?', :current_collection]
+  
   has_many :scratchpads
   has_many :warnings
+
+  def name
+    return self.diminutive if self.diminutive
+    return self.firstname + ' ' + self.lastname
+  end
+  
+  def is_editor?
+    false
+  end
+
+  def is_admin?
+    false
+  end
+  
+  def is_developer?
+    false
+  end
+  
+  def can_login?
+    false
+  end
+  
+  private 
+  
+  def current_collection
+    Collection.current_collection
+  end
+  
 end
 
 class LoginUser < User
@@ -35,11 +67,6 @@ class LoginUser < User
 
   # spoke custom methods
   
-  def name
-    return self.diminutive if self.diminutive
-    return self.firstname + ' ' + self.lastname
-  end
-  
   def find_or_create_scratchpads
     if (self.scratchpads.size == 0)
       (1..4).each do |i|
@@ -49,16 +76,20 @@ class LoginUser < User
     self.scratchpads
   end
 
-  def is_editor
-    self.status >= 100
+  def can_login?
+    status && status > 0
+  end
+
+  def is_editor?
+    status >= 100
   end
 
   def is_admin?
-    self.status >= 200
+    status >= 200
   end
   
   def is_developer?
-    self.status >= 300
+    status >= 300
   end
   
   # rest is standard acts_as_authenticated

@@ -9,13 +9,12 @@ class ApplicationController < ActionController::Base
   layout :choose_layout
   
   def set_context
-    @display = 'list'
-    @active_collection = current_user.collection
-    redirect_to :controller => 'collections', :action => 'index' unless @active_collection
+    Collection.current_collection = @current_collection = current_collection
+    redirect_to :controller => 'collections', :action => 'index' unless @current_collection
   end
   
   def limit_to_active_collection
-    ["collection_id = ?", @active_collection]
+    ["collection_id = ?", current_collection]
   end
   
   def choose_layout

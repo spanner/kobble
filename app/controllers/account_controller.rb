@@ -48,7 +48,6 @@ class AccountController < ApplicationController
     if(current_user && collection) then
       current_user.collection = collection
       current_user.save!
-      @active_collection = collection
       redirect_to :controller => 'nodes', :action => 'index'
     else
       flash['notice'] = "no such collection?"

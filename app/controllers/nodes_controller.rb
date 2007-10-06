@@ -11,6 +11,11 @@ class NodesController < ApplicationController
          :redirect_to => { :action => :list }
 
   def list
+    @display = case params['display']
+      when "thumb" then "thumb"
+      when "slide" then "slide"
+      else "list"
+    end
     perpage = params[:perpage] || (@display == 'thumb') ? 100 : 40
     sort = case params[:sort]
       when "name"  then "name"
@@ -21,11 +26,6 @@ class NodesController < ApplicationController
     end
 
     @nodes = Node.find(:all, :conditions => limit_to_active_collection, :page => {:size => perpage, :sort => sort, :current => params[:page]})
-    @display = case params['display']
-      when "thumb" then "thumb"
-      when "slide" then "slide"
-      else "list"
-    end
   end
 
   def show
@@ -49,7 +49,6 @@ class NodesController < ApplicationController
 
   def create
     @node = Node.new(params[:node])
-    @node.user = current_user
     if @node.save
       @node.tags << tags_from_list(params[:keyword_list])
       flash[:notice] = 'Segment created.'

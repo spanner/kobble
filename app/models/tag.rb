@@ -1,6 +1,8 @@
 class Tag < ActiveRecord::Base
-  belongs_to :user
-  has_many_polymorphs :marks, :from => [:nodes, :sources, :bundles, :users]
+  belongs_to :creator, :class_name => 'User', :foreign_key => 'created_by'
+  belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
+
+  has_many_polymorphs :marks, :from => [:nodes, :sources, :bundles, :users, :questions]
   acts_as_tree :order => 'name', :counter_cache => true
   
   public

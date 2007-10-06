@@ -1,21 +1,38 @@
+class Node < ActiveRecord::Base
+  belongs_to :user
+  
+end
+class Bundle < ActiveRecord::Base
+  belongs_to :user
+  
+end
 class User < ActiveRecord::Base
   
 end
 class Person < ActiveRecord::Base
 
+  belongs_to :collection
+  
   def to_user 
     nameparts = name.split(' ')
     firstname = nameparts.shift
     lastname = nameparts.join(' ')
-    u = User.create (
-      :firstname => firstname,
-      :lastname => lastname,
-      :image => image,
-      :description => description,
-      :collection => collection
+    u = User.find (:first, 
+      :conditions => ['firstname = ? AND lastname = ?', firstname, lastname]
     )
-    puts "new User: #{u.lastname}, #{u.firstname}"
-    u.save!
+    if (u.nil?) then
+      u = User.create (
+        :firstname => firstname,
+        :lastname => lastname,
+        :image => image,
+        :description => description,
+        :collection => collection
+      )
+      u.save!
+      puts "new User #{u.id}: #{u.lastname}, #{u.firstname}"
+    else
+      puts "existing User #{u.id}"
+    end
     u
   end
 end
@@ -40,6 +57,19 @@ class PeopleIntoUsers < ActiveRecord::Migration
       s.user = s.person.to_user
       s.save!
     end
+    
+    Node.find(:all).each do |n|
+      n.created_by = n.user
+      n.user = n.source ? n.source.user : nil
+      n.save
+    end
+
+    Bundle.find(:all).each do |b|
+      b.created_by = b.user
+      b.user = nil
+      b.save
+    end
+
   end
 
   def self.down

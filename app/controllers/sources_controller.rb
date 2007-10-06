@@ -33,12 +33,10 @@ class SourcesController < ApplicationController
 
   def new
     @source = Source.new
-  	@personoptions = Person.find(:all, :order => 'name').map {|u| [u.name, u.id]}
   end
 
   def create
     @source = Source.new(params[:source])
-    @source.user = current_user
     if @source.save
       flash[:notice] = 'Source object successfully created.'
       redirect_to :action => 'list'

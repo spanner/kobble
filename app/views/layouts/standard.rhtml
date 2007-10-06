@@ -33,10 +33,11 @@
       <%= link_to 'sets', {:controller => 'bundles'}, {:class => (request.parameters[:controller] == 'bundles' ? 'fg' : '')} %>
       <%= link_to 'people', {:controller => 'users'}, {:class => (request.parameters[:controller] == 'users' ? 'fg' : '')} %>
       <%= link_to 'tags', {:controller => 'tags'}, {:class => (request.parameters[:controller] == 'tags' ? 'fg' : '')} %>
-      <%= link_to 'maps', {}, {:class => (request.parameters[:controller] == 'maps' ? 'fg' : '')} %>
+      <%= link_to 'questions', {:controller => 'questions'}, {:class => (request.parameters[:controller] == 'questions' ? 'fg' : '')} %>
     
       <div id="notification">
         <%= flash[:notice] %>
+				status is <%= @current_user.status %> and editor is <%= @current_user.is_editor? %>
       </div>  
     </div>
   </div>

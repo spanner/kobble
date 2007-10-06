@@ -1,0 +1,22 @@
+<%= error_messages_for 'survey' %>
+
+<!--[form:survey]-->
+<p><label for="survey_created_by">Created by</label><br/>
+<%= text_field 'survey', 'created_by'  %></p>
+
+<p><label for="survey_updated_by">Updated by</label><br/>
+<%= text_field 'survey', 'updated_by'  %></p>
+
+<p><label for="survey_created_at">Created at</label><br/>
+<%= datetime_select 'survey', 'created_at'  %></p>
+
+<p><label for="survey_updated_at">Updated at</label><br/>
+<%= datetime_select 'survey', 'updated_at'  %></p>
+
+<p><label for="survey_title">Title</label><br/>
+<%= text_field 'survey', 'title'  %></p>
+
+<p><label for="survey_description">Description</label><br/>
+<%= text_area 'survey', 'description'  %></p>
+<!--[eoform:survey]-->
+

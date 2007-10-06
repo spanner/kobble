@@ -20,7 +20,7 @@
     <p>
       <%= truncate( list.body, 240 ) %><br />
       <span class="footnote">
-        created by <%= link_to (list.user.name, :controller => 'users', :action => 'show', :id => list.user) if list.user %>.
+        created by <%= link_to (list.creator.name, :controller => 'users', :action => 'show', :id => list.creator) if list.creator %>.
         Contains 
         <% if list.nodes.size > 0 %><%= list.nodes.size %> fragments<% end %>
         <% if list.bundles.size > 0 and list.nodes.size > 0 %>and<% end%>

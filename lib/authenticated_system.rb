@@ -17,6 +17,11 @@ module AuthenticatedSystem
       @current_user = new_user
     end
     
+    # handy access to the foreground collection
+    def current_collection
+      current_user && current_user.collection
+    end
+    
     # Check if the user is authorized.
     #
     # Override this method in your controllers if you want to restrict access
@@ -30,7 +35,7 @@ module AuthenticatedSystem
     #    current_user.login != "bob"
     #  end
     def authorized?
-      true
+      current_user.can_login?
     end
 
     # Filter method to enforce a login requirement.
