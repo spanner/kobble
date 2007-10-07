@@ -1,52 +1,81 @@
-<div id="tab_<%= @node.id || 'new' %>_editnode" class="tab">
+ <%= error_messages_for 'node' %>
 
-  <%= error_messages_for 'node' %>
+<p>
+	'Fragments' are individual pieces of evidence. 
+	Often they are excerpts from a <%= link_to 'source document', :controller => 'sources', :action => 'list' %>, 
+	or responses to a <%= link_to 'question', :controller => 'questions', :action => 'list' %>, 
+	but they don't have to: if you spot something small and useful, feed it in as a disconnected fragment.</p>
 
-  <!--[form:node]-->
-  <div>
-  <input type="hidden" name="displayformat" value="<%= params[:display] %>" />
-  <input type="hidden" name="bare" value="<%= params[:bare] %>" />
-  </div>
+ <div>
+ <p><label for="node_name">Fragment name</label><br />
+ <%= text_field 'node', 'name', :style => "width: 360px;", :onfocus => "ts('name')", :onblur => "tr('name')" %></p>
 
-  <div>
-  <p><label for="node_name">Segment name</label><br />
-  <%= text_field 'node', 'name', :style => "width: 360px;", :onfocus => "ts('name')", :onblur => "tr('name')" %></p>
+<p><label for="node_synopsis">Synopsis</label><br />
+<%= text_area 'node', 'synopsis', 'rows' => 4, 'class' => "standard" %> <br />
+<span class="formnote">textile format, please.</span>
 
-  <% if @node.source %>
-    <input type="hidden" name="node[source_id]" value="<%= @node.source.id %>" />
-  <% else %>
-    <p><label for="node_playfrom">Taken from:</label><br />
-    <%= select("node", "source_id", @sourceoptions, {:include_blank => true, :prompt => 'Taken from...'}, {:style => 'width: 240px'}) %></p>
-  <% end %>
+<p><label for="node_body">Text (or transcript)</label><br/>
+<%= text_area 'node', 'body', 'rows' => 12, 'class' => "standard" %><br />
+<span class="formnote">textile format, please.</span>
+</p>
 
-  <table><tr><td>
-  <p><label for="node_playfrom">Start:</label><br />
-  <%= text_field 'node', 'playfrom', :style =>  "width: 120px;", :onfocus => "ts('time')", :onblur => "tr('time')" %></p>
-  </td><td>
-  <p><label for="node_playto">Stop:</label><br />
-  <%= text_field 'node', 'playto', :style =>  "width: 120px;", :onfocus => "ts('time')", :onblur => "tr('time')" %></p>
-  </td></tr></table>
+<h3><a href="#" class="displaycontrol" id="show_node_source">+ choose source document</a></h3>
 
-  <p><label for="node_image">Illustration:</label><br />
-  <%= file_column_field "node", "image" %>
-  </p>
+<div class="hidden" id="hide_node_source">
+  <p>
+	<label for="node_source_id">Taken from:</label><br />
+  <%= select("node", "source_id", @current_collection.sources.collect{|u| [u.name, u.id] }, {:include_blank => true, :prompt => 'Taken from...'}, {:style => 'width: 240px'}) %>
+	</p>
+</div>
 
+<h3><a href="#" class="displaycontrol" id="show_source_clip">+ add audio or video</a></h3>
+
+<div class="hidden" id="hide_source_clip">
+	<p>You can either choose a section of the audio (or video) belonging to the source document by entering start and finish times here, or override that file by giving this fragment a clip of its own.</p>
+	<div style="float: left; width: 180px;">
+		<p><label for="node_playfrom">Start (seconds):</label><br />
+		<%= text_field 'node', 'playfrom', :style =>  "width: 180px;" %></p>
+	</div>
+	<div style="float: left; width: 180px; margin-left: 10px">
+		<p><label for="node_playto">Stop (seconds):</label><br />
+		<%= text_field 'node', 'playto', :style =>  "width: 180px;" %></p>
+	</div>
+
+	<div style="clear: both;">
+		<p><label for="node_playto">...or upload a new clip</label><br />
+		<%= file_column_field "source", "clip" %></p>
+	</div>
+</div>
+
+<h3><a href="#" class="displaycontrol" id="show_node_speaker">+ choose or create speaker</a></h3>
+
+<div class="hidden" id="hide_node_speaker">
+	<p><label for="node_speaker_id">Main speaker (defaults to main speaker of source if source is given)</label><br />
+	  <%= select("node", "speaker_id", @current_collection.users.collect{|u| [u.name, u.id] }, {:include_blank => true}, {:class => 'standard'}) %>
+	</p>
+</div>
+
+<%= render :partial => 'shared/edit_fieldnotes', :locals => {:item => @node} %>
+
+<h3><a href="#" class="displaycontrol" id="show_image">+ <%= @node.new_record? ? 'add' : 'edit' %> image</a></h3>
+
+<div class="hidden" id="hide_image">
   <% if @node.image %>
-    <p class="formnote">Current image is <a href="<%= url_for_file_column("node","image","preview") %>" class="inplace"><%= url_for_file_column("node","image") %></a> (relative path is <%= @node.image_relative_path %>)</p>
-  <% end %>
-
-  <p><label for="node_body">Original text (or transcript)</label><br />
-  <%= text_area 'node', 'body', 'rows' => 12, :style => "width: 360px;", :onfocus => "ts('body')", :onblur => "tr('body')" %>
+	<div style="float: left; margin-right: 10px;">
+		<a href="<%= url_for_file_column("node", "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column("node", "image", "thumb"), :size => "56x56", :border => 0, :alt => '') %></a>
+	</div>
+	<% end %>
+	
+  <p><label for="source_image">Upload a new image:</label><br />
+  <%= file_column_field "source", "image" %>
   </p>
-
-  <div>
-  <%= submit_tag "Store Snippet" %>
-  </div>
-
-  </div>
-
-  <%= render :partial => 'shared/formatting' %>
-
-  <!--[eoform:node]-->
 
 </div>
+
+<%= render :partial => 'shared/edit_tags', :locals => {:item => @node} %>
+
+<div class="formbuttons">
+<%= submit_tag "Store Fragment" %> 	or
+  <%= link_to 'cancel', :action => 'list' %>
+</div>
+

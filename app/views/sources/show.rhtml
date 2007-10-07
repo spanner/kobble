@@ -1,17 +1,98 @@
-<% if @source.nodes && @source.nodes.length > 0 %>
-  <div class="floatcolumn dragfrom" id="recordingnodes" style="width: 175px;">
-    <h2>
-      taken from<br />
-      this source
-    </h2>
-    <div id="nodelist">
-      <%= render :partial => 'node', :collection => @source.nodes %>
-    </div>
-    <p class="small stretcher">&nbsp;</p>
-  </div>
-<% end %>
+<div class="header">
+	<%= render :partial => 'shared/icon', :locals => { :this => @source, :with_caption => false } %>
+	<h1 class="pagetitle"><%= @source.name %></h1>
+</div>
 
-<h1><%= @source.name %> <%= link_to 'edit', :action => 'edit', :id => @source %></h1>
+<div class="floatcolumn" style="width: 175px;">
+	<h2>
+		<% if @source.image %>
+			<a href="#" class="displaycontrol" id="show_image">+ show image</a>
+		<% else %>
+			<span class="pale">- no image</span>
+		<% end %>
+	</h2>
+	
+ 	<% if @source.image %>
+  	<div class="hidden" id="hide_image">
+			<%= image_tag(url_for_file_column("source", "image", "slide"), :size => "135x135", :border => 0, :alt => '') %>
+   	</div>
+	<% end %>
+
+	<h2>
+		<% if @source.synopsis && @source.synopsis.length > 0 %>
+			<a href="#" class="displaycontrol" id="show_synopsis">+ show synopsis</a>
+		<% else %>
+			<span class="pale">- no synopsis</span>
+		<% end %>
+	</h2>
+	
+ 	<% if @source.synopsis %>
+  	<div class="hidden" id="hide_synopsis">
+		  <%= pretty(@source.synopsis) %>
+   	</div>
+	<% end %>
+
+ 	<h2>
+		<% if @source.nodes_count > 0 %>
+			<a href="#" class="displaycontrol" id="show_fragments">+ show fragments</a>
+		<% else %>
+			<span class="pale">- no fragments</span>
+		<% end %>
+	</h2>
+		
+	<% if @source.nodes_count > 0 %>
+    <div class="hidden" id="hide_fragments">
+      <%= render :partial => 'node', :collection => @source.nodes %>
+			<p class="clear small">You can drag items from here too.</p>
+    </div>
+	<% end %>
+
+	<% if current_user.is_editor? %>
+	 	<h2>
+			<% if @source.has_notes? %>
+				<a href="#" class="displaycontrol" id="show_fieldnotes">+ show field notes</a>
+			<% else %>
+				<span class="pale">- no field notes</span>
+			<% end %>
+		</h2>
+
+		<% if @source.has_notes? %>
+	    <div class="hidden" id="hide_fieldnotes">
+				<% if @source.observations %>
+					<p><strong>Observations:</strong> <%= @source.observations %></p>
+				<% end %>
+
+				<% if @source.emotions %>
+					<p><strong>Emotional responses:</strong> <%= @source.emotions %></p>
+				<% end %>
+
+				<% if @source.arising %>
+					<p><strong>Connections or ideas:</strong> <%= @source.arising %></p>
+				<% end %>
+			</div>
+		<% end %>
+	<% end %>
+
+	<h2>
+		<% if @source.has_tags? %>
+			<a href="#" class="displaycontrol" id="show_tags">+ show tags</a>
+		<% else %>
+			<span class="pale">- no tags</span>
+		<% end %>
+	</h2>
+	
+	<% if @source.has_tags? %>
+  <div class="hidden" id="hide_tags">
+		
+   </div>
+	<% end %>
+	
+	<p class="bigp">
+		<%= link_to '+ extract fragment', {:controller => 'nodes', :action => 'new'}, {:class => 'additem'} %><br />
+		<%= link_to '+ edit source', {:action => 'edit', :id => @source}, {:class => 'edititem'} %><br />
+		<%= link_to '+ remove source', {:action => 'destroy', :id => @source}, {:class => 'removeitem', :confirm => "do you really want to completely get rid of #{@source.name}?"} %>
+	</p>
+</div>
 
 <% if @source.clip %>
   <%= render :partial => 'shared/player', :locals => {
@@ -19,13 +100,8 @@
     :divname => 'recordingplayback',
   } %>
 
-  <p><%= link_to('create excerpt') %></p>
+  <p class="bigp"><%= link_to('+ create audio fragment') %></p>
 
-<% end %>
-
-<% if @source.synopsis && @source.synopsis.length > 0 %>
-  <p class="small"><strong>synopsis:</strong><%= @source.synopsis %></p>
-  <h2>full transcript</h2>
 <% end %>
 
 <div class="nicetranscript"><%= pretty(@source.body) %></div>

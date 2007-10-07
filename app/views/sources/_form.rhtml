@@ -15,14 +15,20 @@
 <span class="formnote">textile format, please.</span>
 </p>
 
-<h3 class="formcontrol"><a href="#" class="formcontrol" id="show_source_clip">+ add audio or video</a></h3>
+<h3><a href="#" class="displaycontrol" id="show_source_clip">+ <%= @source.clip ? 'edit' : 'add' %> audio or video</a></h3>
 
 <div class="hidden" id="hide_source_clip">
-	<%= file_column_field "source", "clip" %><br />
-	<span class="formnote">click and navigate to your file. mp3 audio or mpeg video, please.</span></p>
+	<% if @source.clip %>
+	  <%= render :partial => 'shared/player', :locals => {
+	    :mp3url => @source.clip
+	  } %>
+	<% end %>
+	
+	<p><label for="node_playto">Upload a new clip</label><br />
+	<%= file_column_field "source", "clip" %></p>
 </div>
 
-<h3 class="formcontrol"><a href="#" class="formcontrol" id="show_source_speaker">+ choose speaker</a></h3>
+<h3><a href="#" class="displaycontrol" id="show_source_speaker">+ choose speaker</a></h3>
 
 <div class="hidden" id="hide_source_speaker">
 	<p><label for="source_speaker_id">Main speaker</label><br />
@@ -30,34 +36,23 @@
 	</p>
 </div>
 
-<h3 class="formcontrol"><a href="#" class="formcontrol" id="show_source_fieldnotes">+ add field notes</a></h3>
+<%= render :partial => 'shared/edit_fieldnotes', :locals => {:item => @source} %>
 
-<div class="hidden" id="hide_source_fieldnotes">
-	<p>
-		<label for="source_observations">Observations</label><br/>
-		<%= text_area 'source', 'observations', 'rows' => 6, 'class' => "standard" %><br />
-		<span class="formnote">textile format, please.</span>
-	</p>
-	<p>
-		<label for="source_emotions">Emotions</label><br/>
-		<%= text_area 'source', 'emotions', 'rows' => 6, 'class' => "standard" %><br />
-		<span class="formnote">textile format, please.</span>
-	</p>
-	<p>
-		<label for="source_arising">Leads and follow-up</label><br/>
-		<%= text_area 'source', 'arising', 'rows' => 6, 'class' => "standard" %><br />
-		<span class="formnote">textile format, please.</span>
-	</p>
+<h3><a href="#" class="displaycontrol" id="show_image">+ <%= @source.new_record? ? 'add' : 'edit' %> image</a></h3>
+
+<div class="hidden" id="hide_image">
+  <% if @source.image %>
+	<div style="float: left; margin-right: 10px;">
+		<a href="<%= url_for_file_column("source", "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column("source", "image", "thumb"), :size => "56x56", :border => 0, :alt => '') %></a>
+	</div>
+	<% end %>
+
+  <p><label for="source_image">Upload a new image:</label><br />
+  <%= file_column_field "source", "image" %>
+  </p>
 </div>
 	
-<h3 class="formcontrol"><a href="#" class="formcontrol" id="show_source_tags">+ add tags</a></h3>
-
-<div class="hidden" id="hide_source_tags">
-	<p><label for="keyword_list">Choose or create tags</label><br />
-	<textarea id="keyword_list" name="keyword_list" cols="32" rows="6" class="standard"></textarea><br />
-	<span class="formnote">start typing here and the help window will provide lists of matching tags. You can make a new keyword just by typing it: please try to place it in the taxonomy /like/this.</span>
-	</p>
-</div>
+<%= render :partial => 'shared/edit_tags', :locals => {:item => @source} %>
 
 <div class="formbuttons">
   <%= submit_tag "Store Document" %> or

@@ -8,13 +8,13 @@ class Node < ActiveRecord::Base
   belongs_to :source
   belongs_to :collection
 
+  file_column :clip
   file_column :image, :magick => { 
     :versions => { 
       "thumb" => "56x56!", 
       "slide" => "135x135!", 
       "preview" => "750x540>" 
-    },
-    :store_dir => "ul"
+    }
   }
   
   def clip

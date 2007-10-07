@@ -13,10 +13,17 @@ class Source < ActiveRecord::Base
       "thumb" => "56x56!", 
       "slide" => "135x135!", 
       "preview" => "750x540>" 
-    },
-    :store_dir => "ul"
+    }
   }
 
   public 
+  
+  def has_notes?
+    true unless observations.nil? && emotions.nil? && arising.nil?
+  end
+
+  def has_tags?
+    false
+  end
 
 end

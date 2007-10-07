@@ -11,7 +11,7 @@ class AccountController < ApplicationController
 
   def login
     return unless request.post?
-    self.current_user = User.authenticate(params[:login], params[:password])
+    self.current_user = LoginUser.authenticate(params[:login], params[:password])
     if logged_in?
       if params[:remember_me] == "1"
         self.current_user.remember_me
@@ -23,7 +23,7 @@ class AccountController < ApplicationController
   end
 
   def signup
-    @user = User.new(params[:user])
+    @user = LoginUser.new(params[:user])
     return unless request.post?
     @user.save!
     self.current_user = @user

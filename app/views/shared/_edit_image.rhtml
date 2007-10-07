@@ -1,0 +1,15 @@
+<% @imageitem = item %>
+
+<h3><a href="#" class="displaycontrol" id="show_image">+ <%= @imageitem.new_record? ? 'add' : 'edit' %> image</a></h3>
+
+<div class="hidden" id="hide_image">
+  <p><label for="<%= item.class.to_s.downcase %>_image">Upload a new image:</label><br />
+  <%= file_column_field "imageitem", "image" %>
+  </p>
+
+  <% if item.image %>
+    <p class="formnote">Current image is <a href="<%= url_for_file_column("imageitem","image","preview") %>"><%= url_for_file_column("imageitem","image") %></a> (relative path is <%= @imageitem.image_relative_path %>)</p>
+  <% end %>
+</div>
+
+<% @imageitem = nil %>

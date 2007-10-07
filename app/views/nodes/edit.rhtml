@@ -1,19 +1,6 @@
-<div class="tabchooser">
-  <h1>Edit <%= link_to @node.name, :action => 'show', :id => @node %></h1>
+<h1 class="pagetitle">Edit fragment <%= link_to @node.name, :action => 'show', :id => @node %></h1>
 
-  <p class="tabset">
-    <a href="#" class="tabheader" id="node_<%= @node.id || 'new' %>_editnode">title and text</a>
-    <a href="#" class="tabheader" id="node_<%= @node.id || 'new' %>_describenode">description</a>
-    <a href="#" class="tabheader" id="node_<%= @node.id || 'new' %>_nodewarnings">warnings</a>
-  </p>
+<%= start_form_tag ({:action => 'update', :id => @node}, :multipart => true) %>
+  <%= render :partial => 'form' %>
+<%= end_form_tag %>
 
-  <%= start_form_tag ({:action => 'update', :id => @node}, :multipart => true) %>
-    <%= render :partial => 'form' %>
-    <%= render :partial => 'describe' %>
-    <%= render :partial => 'warnings' %>
-  <%= end_form_tag %>
-
-  <%= link_to 'Show', :action => 'show', :id => @node %> |
-  <%= link_to 'List', :action => 'list' %>
-
-</div>

@@ -114,7 +114,7 @@ var Scratchpage = new Class({
         scratchpage.waitsignal.hide();
         var newitem = new Element('li').addClass('draggable').setHTML(this.response.text).inject(scratchpage.list);
       	new Fx.Styles(newitem, {duration:1000, wait:false}).start({'background-color': ['#559DC4','#695D54']});
-        confirm('item added to scratchpad');
+        announce('item added to scratchpad');
 				scratch.makeUnreceptive();
       },
       onFailure: function () { 
@@ -124,7 +124,7 @@ var Scratchpage = new Class({
     });
 		this.sortCall = new XHR({
       method: 'get',
-      onSuccess: function () { confirm('scratchpad reordered');	},
+      onSuccess: function () { announce('scratchpad reordered');	},
       onFailure: function () { error('scratchpad reorder failed'); },
 		});
 	},

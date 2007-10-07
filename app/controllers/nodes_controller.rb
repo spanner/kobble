@@ -54,14 +54,12 @@ class NodesController < ApplicationController
       flash[:notice] = 'Segment created.'
       redirect_to :action => 'show', :id => @node
     else
-    	@sourceoptions = Source.find(:all, :order => 'name').map {|u| [u.name, u.id]}    
       render :action => 'new'
     end
   end
 
   def edit
     @node = Node.find(params[:id])
-  	@sourceoptions = Source.find(:all, :order => 'name').map {|u| [u.name, u.id]}    
   end
 
   def update
@@ -73,7 +71,6 @@ class NodesController < ApplicationController
       redirect_to :action => 'show', :id => @node
     else
       flash[:notice] = 'failed to update.'
-    	@sourceoptions = Source.find(:all, :order => 'name').map {|u| [u.name, u.id]}    
       render :action => 'edit'
     end
   end

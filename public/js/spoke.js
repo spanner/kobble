@@ -10,9 +10,16 @@ window.addEvent('domready', function(){
   	});
   });
 
-	$ES('a.formcontrol').each(function (a) {
+	$ES('a.displaycontrol').each(function (a) {
 		a.addEvent('click', function (e) { 
-			$E('#' + this.id.replace('show','hide')).show(); 
+			var toggled = $E('#' + this.id.replace('show','hide'))
+			if (toggled.getStyle('display') == 'none') {
+				this.setText(this.getText().replace('+', '-').replace('show', 'hide'));
+				toggled.show();
+			} else {
+				this.setText(this.getText().replace('-', '+').replace('hide', 'show'));
+				toggled.hide();
+			}
 			e.preventDefault();
 		})
 	})
@@ -32,7 +39,7 @@ function idParts (el) {
   return splut;
 }
 
-function confirm (message) {
+function announce (message) {
   $E('#notification').setText(message);
   var notifyfx = new Fx.Styles($E('#mastfoot'), {duration:1000, wait:false});
   notifyfx.start({

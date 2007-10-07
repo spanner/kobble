@@ -1,0 +1,23 @@
+<% @fieldnotesitem = item %>
+
+<h3 style="clear:both;"><a href="#" class="displaycontrol" id="show_source_fieldnotes">+ <%= @fieldnotesitem.new_record? ? 'add' : 'edit' %> field notes</a></h3>
+
+<div class="hidden" id="hide_source_fieldnotes">
+	<p>
+		<label for="source_observations">Observations</label><br/>
+		<%= text_area 'fieldnotesitem', 'observations', 'rows' => 6, 'class' => "standard" %><br />
+		<span class="formnote">textile format, please.</span>
+	</p>
+	<p>
+		<label for="source_emotions">Emotions</label><br/>
+		<%= text_area 'fieldnotesitem', 'emotions', 'rows' => 6, 'class' => "standard" %><br />
+		<span class="formnote">textile format, please.</span>
+	</p>
+	<p>
+		<label for="source_arising">Leads and follow-up</label><br/>
+		<%= text_area 'fieldnotesitem', 'arising', 'rows' => 6, 'class' => "standard" %><br />
+		<span class="formnote">textile format, please.</span>
+	</p>
+</div>
+
+<% @fieldnotesitem = nil %>

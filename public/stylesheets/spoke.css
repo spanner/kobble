@@ -66,7 +66,7 @@ h1 {
   line-height:  1.2;
 }
 
-h2, h3 {
+h2, h3, p.bigp {
   margin-bottom: 0;
   font-size: 20px;
   font-weight: lighter;
@@ -105,7 +105,7 @@ h4 {
 
 p.footnote, .formnote {
   font-size: 0.7em;
-  line-height: 1.4;
+  line-height: 1.1;
   color: #695D54;
 }
 
@@ -242,6 +242,9 @@ div.header p {
   margin-top: 0;
 }
 
+div#hide_synopsis {
+	color: #559DC4;
+}
 
 #dragsprite  { 
 	left: 10px;
@@ -306,7 +309,7 @@ div.setdragicon p {
   color:#559DC4;
 }
 
-h3.formcontrol {
+h3.displaycontrol {
 	margin: 0;
 }
 
@@ -316,9 +319,18 @@ div.formbuttons {
 
 form p, form h3, input.standard, textarea.standard, select.standard {
 	width: 540px;
+	clear: both;
 }
 
-
+a.additem {
+	color: green;
+}
+a.edititem {
+	color: #A0A500;
+}
+a.removeitem {
+	color: red;
+}
 
 #canvas {
 	padding: 0;
@@ -556,10 +568,12 @@ img.logo {
   margin-bottom:9px;
 }
 
-
-
-
-
+p.synopsis {
+  font-family: Helvetica, arial, sans-serif;
+  font-size: 0.8em;
+  line-height: 1.3;
+	color: #695D54;
+}
 
 div.floatcolumn {
   float: right;
@@ -589,6 +603,9 @@ div.floatcolumn ul li {
   list-style: none;
 }
 
+div.marginblock {
+	margin: 20px 0 0 0;
+}
 
 ul.taglist {
   font-size: 0.7em;

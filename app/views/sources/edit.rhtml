@@ -1,8 +1,5 @@
-<h1>Editing source</h1>
+<h1 class="pagetitle">Edit source document <%= link_to @source.name, :action => 'show', :id => @source %></h1>
 
 <%= start_form_tag ({:action => 'update', :id => @source}, :multipart => true) %>
   <%= render :partial => 'form' %>
 <%= end_form_tag %>
-
-<%= link_to 'Show', :action => 'show', :id => @source %> |
-<%= link_to 'Back', :action => 'list' %>

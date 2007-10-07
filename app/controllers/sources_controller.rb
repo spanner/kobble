@@ -48,7 +48,6 @@ class SourcesController < ApplicationController
 
   def edit
     @source = Source.find(params[:id])
-  	@personoptions = Person.find(:all, :order => 'name').map {|u| [u.name, u.id]}
   end
 
   def update
