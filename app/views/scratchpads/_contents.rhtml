@@ -1,0 +1,5 @@
+<% pad = @scratchpad unless pad %>
+<ul>
+  <%= render :partial => 'scratchpads/scrap', :collection => pad.scraps, :locals => { :scratchpad => pad } %>
+</ul>
+<div class="waitforit" style="display:none;"><p><img src="/images/furniture/signals/wait_og.gif" width="16" height="16" alt="hold it hold it"> loading</p></div>

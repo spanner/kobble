@@ -1,8 +1,0 @@
-<% scrap ||= node %>
-<% colour = colour_code(scrap) %>
-
-<div class="padthumb draggable selectable" id="pad_node_<%= scrap.id %>">
-
-  <%= render :partial => 'shared/icon', :locals => { :this => scrap, :with_caption => true } %>
-
-</div>
