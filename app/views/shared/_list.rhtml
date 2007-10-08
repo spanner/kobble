@@ -1,9 +1,7 @@
 <% pagetitle = controller.controller_name.camelize unless pagetitle %>
 
 <h1>
-	<span class="emphatic"><%= @current_collection.name %></span>
-  <%= render :partial => 'shared/logo' %>
-  <%= pagetitle %>
+	<span class="emphatic"><sup><%= @current_collection.name %></sup></span> <%= pagetitle %>
 	<% if list.size > list.page_size %>
   	<span class="pagination"><%= paginating_links(list, {:window_size => 3, :params => {:display => @display}}, {}) %></span>
 	<% end %>
@@ -21,7 +19,7 @@
 <% end %>
 
 <div id="listing">
-	<% if list.size > 0 %>
+	<% if list && list.size > 0 %>
   	<%= render :partial => @display, :collection => list %>
 		<%= render :partial => 'shared/pagination', :locals => { :list => list } %>
 	<% else %>

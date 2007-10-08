@@ -1,17 +1,15 @@
 <div class="header">
-  <div class="icon draggable" id="bundle_<%= @bundle.id %>">
-    <%= image_tag("/images/furniture/icons/generic.png", :size => "75x75", :border => 0, :alt => 'set') %>
-    <div class="label hide">
-      <span class='bundlename'><%= truncate(@bundle.name, length=32, truncate_string='...') %></span>
-    </div>
-  </div>
+	<%= render :partial => 'shared/icon', :locals => { 
+		:this => @bundle.image.nil? ? @bundle.members.detect { |m| ! m.image.nil? } : @bundle, 
+		:linked => @bundle
+	} %>
 
-  <h1><%= @bundle.name %></h1>
+  <h1 class="pagetitle"><%= @bundle.name %></h1>
 
-  <p class="small">This set belongs to <%= link_to @bundle.creator.name, :controller => 'user', :action => 'show', :id => @bundle.creator %>.
+  <p class="small">This set created by <%= link_to @bundle.creator.name, :controller => 'user', :action => 'show', :id => @bundle.creator %>.
     View as: 
     <%= link_to_unless_current 'thumbs', :controller => 'bundles', :action => 'show', :id => @bundle, :display => 'thumbs' %> | 
-    <%= link_to_unless_current 'list', :controller => 'bundles', :action => 'show', :id => @bundle, :display => 'listed' %> | 
+    <%= link_to_unless_current 'list', :controller => 'bundles', :action => 'show', :id => @bundle, :display => 'list' %> | 
     <%= link_to_unless_current 'printable', :controller => 'bundles', :action => 'show', :id => @bundle, :display => 'full' %>
     or 
     <% if current_user.is_admin? || current_user == @bundle.creator %>

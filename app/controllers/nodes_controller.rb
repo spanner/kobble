@@ -29,9 +29,7 @@ class NodesController < ApplicationController
   end
 
   def show
-    if @display != 'list' && @display != 'slide' && @display != 'thumb' 
-      @display = 'full'
-    end
+    @display = 'full'
     @node = Node.find(params[:id])
     @node.tags.uniq!
   end

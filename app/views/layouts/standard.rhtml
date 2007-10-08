@@ -10,7 +10,6 @@
   <title>Device: <%= controller.action_name %></title>
   <script type="text/javascript" src="/js/mootools.js"></script>
   <script type="text/javascript" src="/js/slimbox.js"></script>
-  <script type="text/javascript" src="/js/scratchpad.js"></script>
   <script type="text/javascript" src="/js/spoke.js"></script>
   <link rel="stylesheet" href="/stylesheets/spoke.css" type="text/css" />
   <link rel="stylesheet" href="/stylesheets/slimbox.css" type="text/css" />
@@ -43,7 +42,7 @@
     </div>
   </div>
 
-  <div id="scratchpad">
+  <div id="scratchpad" class="dropzone">
     <div id="scratchtabs">
       <% for pad in @scratchpads %>
         <a href="#" class="padtab" id="tab_scratchpad_<%= pad.id %>"><%= pad.name %></a>
@@ -58,7 +57,15 @@
      </div>    
   </div>
 
+	<script type="text/javascript">
+	//<![CDATA[
 
+	display = "<%= @display %>";
+
+	//]]>
+	</script>
+
+	
 
 </body>
 </html>

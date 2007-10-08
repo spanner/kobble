@@ -1,5 +1,3 @@
-<%= render :partial => "bundles/#{member.class.to_s.downcase}", 
-  :locals => {
-    :member => member,
-  } 
+<%= 
+	render :partial => "#{member.class.to_s.downcase.pluralize}/#{@display}", :locals => {@display.intern => member}
 %>

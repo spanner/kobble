@@ -22,12 +22,11 @@ class BundlesController < ApplicationController
     @bundles = Bundle.find(:all, :conditions => limit_to_active_collection, :page => {:size => perpage, :sort => sort, :current => params[:page]})
   end
 
-
   def show
     @display = case params['display']
       when "full" then "full"
-      when "listed" then "listed"
-      else "thumbs"
+      when "list" then "list"
+      else "thumb"
     end
     @bundle = Bundle.find(params[:id])
   end
@@ -88,45 +87,34 @@ class BundlesController < ApplicationController
     end
   end
 
-  def addmembers
+  def add
+    @display = case params['display']
+      when "full" then "full"
+      when "list" then "list"
+      else "thumb"
+    end
     @bundle = Bundle.find(params[:id])
     @added = []
-    if (params[:node]) then
-      params[:node].each do |n|
-        node = Node.find(n)
-        @bundle.members << node
-        @added << node
+    if (@bundle && params[:scrap]) then
+      params[:scrap].split('|').each do |s|
+        input = s.split('_')
+        @added.push(input[0].camelize.constantize.find(input[1]))
       end
-    end
-    if (params[:bundle]) then
-      params[:bundle].each do |c|
-        bundle = Bundle.find(c)
-        
-        # this needs to be turned into a proper loop jumper
-        if (bundle != @bundle)
-          @bundle.members << bundle
-          @added << bundle
-        end
-      end
+      @added.uniq!  
+      @bundle.members << @added.reject { |s| s == @bundle or @bundle.members.detect {|m| s == m } } 
     end
     render :layout => false
   end
 
-  def removemembers
+  def remove
     @bundle = Bundle.find(params[:id])
     @deleted = []
-    if (params[:node]) then
-      params[:node].each do |n|
-        node = Node.find(n)
-        @bundle.members.delete(node)
-        @deleted << node
-      end
-    end
-    if (params[:bundle]) then
-      params[:bundle].each do |n|
-        bundle = Bundle.find(n)
-        @bundle.members.delete(bundle)
-        @deleted << bundle
+    if (@bundle && params[:scrap]) then
+      params[:scrap].split('|').each do |s|
+        input = s.split('_')
+        scrap = input[0].camelize.constantize.find(input[1])
+        @bundle.members.delete(scrap) if scrap
+        @deleted << scrap
       end
     end
     render :layout => false

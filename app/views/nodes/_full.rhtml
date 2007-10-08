@@ -8,26 +8,26 @@
 <div class="floatcolumn" style="width: 175px;">
 	<h2>
 		<% if @thisnode.image %>
-			<a href="#" class="displaycontrol" id="show_image">+ show image</a>
+			<a href="#" class="displaycontrol" id="show_node_<%= @thisnode.id %>_image">+ show image</a>
 		<% else %>
 			<span class="pale">- no image</span>
 		<% end %>
 	</h2>
  	<% if @thisnode.image %>
-  	<div class="hidden" id="hide_image">
+  	<div class="hidden" id="hide_node_<%= @thisnode.id %>_image">
 			<a href="<%= url_for_file_column("thisnode", "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column("thisnode", "image", "slide"), :size => "135x135", :border => 0, :alt => '') %></a>
    	</div>
 	<% end %>
 
 	<h2>
 		<% if @thisnode.source || @thisnode.question %>
-			<a href="#" class="displaycontrol" id="show_origin">+ show origins</a>
+			<a href="#" class="displaycontrol" id="show_node_<%= @thisnode.id %>_origin">+ show origins</a>
 		<% else %>
 			<span class="pale">- no source doc</span>
 		<% end %>
 	</h2>
  	<% if @thisnode.source || @thisnode.question %>
-  	<div class="hidden" id="hide_origin">
+  	<div class="hidden" id="hide_node_<%= @thisnode.id %>_origin">
 			<% if @thisnode.source %>
 				<p>
 				  <% if @thisnode.source %>taken from <%= link_to @thisnode.source.name, :action => 'show', :controller => 'sources', :id => @thisnode.source %><% end %>
@@ -44,14 +44,14 @@
 	<% if current_user.is_editor? %>
 	 	<h2>
 			<% if @thisnode.has_notes? %>
-				<a href="#" class="displaycontrol" id="show_fieldnotes">+ show field notes</a>
+				<a href="#" class="displaycontrol" id="show_node_<%= @thisnode.id %>_fieldnotes">+ show field notes</a>
 			<% else %>
 				<span class="pale">- no field notes</span>
 			<% end %>
 		</h2>
 
 		<% if @thisnode.has_notes? %>
-	    <div class="hidden" id="hide_fieldnotes">
+	    <div class="hidden" id="hide_node_<%= @thisnode.id %>_fieldnotes">
 				<% if @thisnode.observations %>
 					<p><strong>Observations:</strong> <%= @thisnode.observations %></p>
 				<% end %>
@@ -69,14 +69,14 @@
 
 	<h2>
 		<% if @thisnode.has_tags? %>
-			<a href="#" class="displaycontrol" id="show_tags">+ show tags</a>
+			<a href="#" class="displaycontrol" id="show_node_<%= @thisnode.id %>_tags">+ show tags</a>
 		<% else %>
 			<span class="pale">- no tags</span>
 		<% end %>
 	</h2>
 	
 	<% if @thisnode.has_tags? %>
-  <div class="hidden" id="hide_tags">
+  <div class="hidden" id="hide_node_<%= @thisnode.id %>_tags">
 		
    </div>
 	<% end %>

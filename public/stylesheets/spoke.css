@@ -230,6 +230,10 @@ div.header div.icon {
   margin-bottom: 0;
 }
 
+div.header {
+	clear: both;
+}
+
 div.header h1 {
   padding: 0;
   padding-top: 14px;

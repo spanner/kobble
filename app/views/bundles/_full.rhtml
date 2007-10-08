@@ -1,5 +1,3 @@
-<%= render :partial => 'header' %>
-
 <div style="clear: both">
 <%= @bundle.body.formatted %>
 </div>
@@ -8,7 +6,7 @@
   <% @bundle.members.each do |member| %>
     <div class="separated">
       <% type = member.class.to_s.downcase %>
-      <%= render :partial => "shared/#{type}", :locals => { type.intern => member }%>
+      <%= render :partial => "#{type}/full", :locals => { type.intern => member }%>
     </div>
   <% end %>
 </div>

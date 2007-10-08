@@ -6,4 +6,13 @@ class Bundle < ActiveRecord::Base
 
   has_many_polymorphs :members, :as => 'superbundle', :from => [:nodes, :sources, :tags, :bundles, :questions]
 
+  file_column :image, :magick => { 
+    :versions => { 
+      "thumb" => "56x56!", 
+      "slide" => "135x135!", 
+      "preview" => "750x540>" 
+    }
+  }
+
 end
+

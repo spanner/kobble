@@ -3,7 +3,7 @@
 	linked = this unless linked
 	default = 'generic' unless default
 	draggedid = "#{linked.class.to_s.downcase}_#{linked.id}" unless draggedid 
-	caption = truncate(this.name, length=32, truncate_string='...') unless caption 
+	caption = truncate(linked.name, length=32, truncate_string='...') unless caption 
 	with_caption = false unless with_caption
 %>
 

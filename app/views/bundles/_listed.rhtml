@@ -1,7 +1,9 @@
-<%= render :partial => 'header' %>
+<%= 
+	@bundle.members.each do |m|
+		render :partial => "#{m.class.to_s.downcase.pluralize}/list"
+	end
+%>
 
 <div style="clear: both">
-<%= @bundle.body.formatted %>
+	<%= @bundle.body.formatted %>
 </div>
-
-<%= render :partial => "nodes/list", :collection => @bundle.nodes %>

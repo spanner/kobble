@@ -10,7 +10,7 @@ class ScratchpadsController < ApplicationController
   # ajax add/remove/sort scratchpad items (scraps)
   # all scraps are identified by the string 'class_id'
   
-  def scratch
+  def add
     @pad = Scratchpad.find(params[:id])
     if (@pad && params[:scrap]) then
       @scraps = []
@@ -23,7 +23,7 @@ class ScratchpadsController < ApplicationController
     render :layout => false
   end
 
-  def unscratch
+  def remove
     @pad = Scratchpad.find(params[:id])
     if (@pad && params[:scrap]) then
       @scraps = []

@@ -10,6 +10,7 @@ class ApplicationController < ActionController::Base
   layout :choose_layout
   
   def set_context
+    @display = 'list'
     EditObserver.current_user = current_user
     Collection.current_collection = EditObserver.current_collection = @current_collection = current_collection
     redirect_to :controller => 'collections', :action => 'index' unless @current_collection
