@@ -29,7 +29,6 @@ var Dropon = new Class({
 		this.isopen = false;
 		this.wasopen = false;
 		this.receiptAction = 'add';		// default. works for sets and scratchpads
-		this.dropcall = new Xcall(this);
 		this.spinner = $E('div.waitforit', this.container);
 		this.container.dropzone = this;
   },
@@ -69,33 +68,27 @@ var Dropon = new Class({
 		} else if (this.contains(draggee)) {
 			error('we already have that one');
 			draggee.release();
+			
 		} else {
+			draggee.disappear();
 			new Ajax(this.actionURL(), {
 				method : 'get',
 				data : 'scrap=' + draggee.tag,
-				evalResponse : true,
+				evalResponse : false,
+				update: this.recipient(),
 			  onRequest: function () { drop.waiting(); },
-			  onComplete: function () { drop.notWaiting(); },
+			  onComplete: function () { 
+				  $ES('.draggable').each(function(item) {
+				  	item.addEvent('mousedown', function(e) {
+				  		e = new Event(e).preventDefault();
+							new Draggee(this, e);
+				  	});
+				  });
+				},
 			  onFailure: function () { drop.notWaiting(); error('ajax call failed'); },
 			}).request();
-			
-//	    this.dropcall.send(draggee.tag);	// onSuccess trigger in xcall calls this.receiveResponse
-			draggee.disappear();
 		}
   },
-	receiveResponse: function (response) {
-		var recp = this.recipient();
-		
-
-
-		
-		console.log("got this response text:");
-		console.log(response.text);
-
-
-
-		
-	},
 	actionURL: function (argument) { 
 		var parts = idParts(this.container);
 		return '/' + parts['type'] + 's/' + this.receiptAction + '/' + parts['id']; 
@@ -124,7 +117,6 @@ var Scratchpad = Dropon.extend({
 	recipient: function () { return this.foreground.list; },
 	actionURL: function (argument) { return '/scratchpads/add/' + this.foreground.spokeID; },
 	contents: function () { return this.foreground.contents(); },
-	contains: function (draggee) { return this.foreground.contents(draggee); },
   addPages: function(elements){
 		var pad = this;
 	  elements.each(function(element){
@@ -176,9 +168,6 @@ var Scratchpage = new Class({
 	contents: function () {
 		return this.list.getChildren().map(function(el){ return el.id; });
 	},
-  contains: function (draggee) {
-		this.scrapids.contains(draggee.tag);
-  },
 });
 
 var Draggee = new Class({
@@ -226,37 +215,6 @@ var Draggee = new Class({
 	},
 	
 });
-
-
-
-
-var Xcall = new Class({
-	initialize: function (sender) {
-		this.sender = sender;
-		this.xhr = new XHR({
-		  method: 'get',
-		  onRequest: function () { 
-				sender.waiting();
-			},
-		  onSuccess: function () {
-				sender.notWaiting();
-				sender.receiveResponse(this.response);
-		    announce('ajax call successful');
-		  },
-		  onFailure: function () { 
-				sender.notWaiting();
-		    error('ajax call failed');
-		  },
-		});
-	},
-	send: function (objectTag) {
-		var qs = 'scrap=' + objectTag;
-		console.log("calling " + this.sender.actionURL() + ' with qs ' + qs);
-		this.xhr.send(this.sender.actionURL(), qs);
-	}
-});
-
-
 
 
 
@@ -344,8 +302,7 @@ window.addEvent('domready', function(){
 
   $ES('.draggable').each(function(item) {
   	item.addEvent('mousedown', function(e) {
-  		e = new Event(e);
-			e.preventDefault();
+  		e = new Event(e).preventDefault();
 			new Draggee(this, e);
   	});
   });
