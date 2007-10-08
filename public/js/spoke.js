@@ -31,6 +31,7 @@ var Dropon = new Class({
 		this.receiptAction = 'add';		// default. works for sets and scratchpads
 		this.dropcall = new Xcall(this);
 		this.spinner = $E('div.waitforit', this.container);
+		this.container.dropzone = this;
   },
 	waitsignal: function () {
 		return this.spinner;
@@ -61,13 +62,24 @@ var Dropon = new Class({
 	contents: function () { return $ES('.draggable', this.container).map(function(el){ return el.id; }); },
 	contains: function (draggee) { return this.contents().contains(draggee.tag); },
 	receiveDrop: function (draggee) {
-		if (this.container == draggee.fromdrop) {
+		drop = this;
+		if (this == draggee.fromdrop) {
 			draggee.release();
+			
 		} else if (this.contains(draggee)) {
 			error('we already have that one');
 			draggee.release();
 		} else {
-	    this.dropcall.send(draggee.tag);	// onSuccess trigger in xcall calls this.receiveResponse
+			new Ajax(this.actionURL(), {
+				method : 'get',
+				data : 'scrap=' + draggee.tag,
+				evalResponse : true,
+			  onRequest: function () { drop.waiting(); },
+			  onComplete: function () { drop.notWaiting(); },
+			  onFailure: function () { drop.notWaiting(); error('ajax call failed'); },
+			}).request();
+			
+//	    this.dropcall.send(draggee.tag);	// onSuccess trigger in xcall calls this.receiveResponse
 			draggee.disappear();
 		}
   },
@@ -150,6 +162,7 @@ var Scratchpage = new Class({
 		this.tab.addEvent('click', function (e) { scratchpad.tabClick(element.id); e.preventDefault; })
 		this.body = $(element);
 		this.spinner = $E('div.waitforit', this.body);
+		this.list.dropzone = this;
 	},
   makeForeground: function(){
     this.body.show();
@@ -213,6 +226,9 @@ var Draggee = new Class({
 	},
 	
 });
+
+
+
 
 var Xcall = new Class({
 	initialize: function (sender) {
@@ -293,8 +309,8 @@ function sleepDroppers () {
 
 function lookForDropper (element) {
 	var p = element.getParent();
-	if (element.hasClass('dropzone')) {
-		return element;
+	if (element.dropzone) {
+		return element.dropzone;
 	} else if (p && p.getParent) {
 		return lookForDropper( p );
 	} else {
