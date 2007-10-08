@@ -1,7 +1,7 @@
 <%= render :partial => 'header' %>
 
 <div style="clear: both">
-<%= pretty(@bundle.body) %>
+<%= @bundle.body.formatted %>
 </div>
 
 <div id="bundle_<%= @bundle.id %>" class="dragtofrom">

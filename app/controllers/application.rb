@@ -3,6 +3,7 @@
 
 class ApplicationController < ActionController::Base
   include AuthenticatedSystem
+  include StringExtensions
 
   before_filter :login_required
   before_filter :set_context

@@ -1,7 +1,7 @@
 <%= render :partial => 'header' %>
 
 <div style="clear: both">
-<%= pretty(@bundle.body) %>
+<%= @bundle.body.formatted %>
 </div>
 
 <div style="padding-left: 30px; border-left: 1px dashed #666;">

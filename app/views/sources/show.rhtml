@@ -14,21 +14,7 @@
 	
  	<% if @source.image %>
   	<div class="hidden" id="hide_image">
-			<%= image_tag(url_for_file_column("source", "image", "slide"), :size => "135x135", :border => 0, :alt => '') %>
-   	</div>
-	<% end %>
-
-	<h2>
-		<% if @source.synopsis && @source.synopsis.length > 0 %>
-			<a href="#" class="displaycontrol" id="show_synopsis">+ show synopsis</a>
-		<% else %>
-			<span class="pale">- no synopsis</span>
-		<% end %>
-	</h2>
-	
- 	<% if @source.synopsis %>
-  	<div class="hidden" id="hide_synopsis">
-		  <%= pretty(@source.synopsis) %>
+			<a href="<%= url_for_file_column("source", "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column("source", "image", "slide"), :size => "135x135", :border => 0, :alt => '') %></a>
    	</div>
 	<% end %>
 
@@ -94,6 +80,11 @@
 	</p>
 </div>
 
+<div class="synopsis">
+	<h2>synopsis</h2>
+  <%= @source.synopsis.formatted %>
+</div>
+
 <% if @source.clip %>
   <%= render :partial => 'shared/player', :locals => {
     :mp3url => url_for_file_column("source", "clip"),
@@ -104,4 +95,6 @@
 
 <% end %>
 
-<div class="nicetranscript"><%= pretty(@source.body) %></div>
+<div class="transcript">
+	<%= @source.body.formatted %>
+</div>

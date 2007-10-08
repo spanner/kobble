@@ -4,5 +4,6 @@ class Question < ActiveRecord::Base
   belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
   belongs_to :survey
   belongs_to :collection
+  has_many :nodes
 
 end

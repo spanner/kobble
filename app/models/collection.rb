@@ -7,6 +7,8 @@ class Collection < ActiveRecord::Base
   has_many :bundles
   has_many :sources
   has_many :nodes
+  has_many :surveys
+  has_many :questions
   
   cattr_accessor :current_collection
   

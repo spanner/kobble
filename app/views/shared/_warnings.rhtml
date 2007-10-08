@@ -1,0 +1,11 @@
+<% if this.warnings.length > 0 %>
+  <p class="small warning">
+    <%= render :partial => 'warnings/oneliner', :collection => this.warnings %>
+  </p>
+<% end %>
+
+<% if this.source && this.source.warnings.length > 0 %>
+  <p class="small">
+  <%= render :partial => 'warnings/oneliner', :collection => this.source.warnings %>
+  </p>
+<% end %>

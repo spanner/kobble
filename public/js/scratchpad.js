@@ -173,6 +173,7 @@ var Draggee = new Class({
 		this.type = parts['type'];
 		this.id = parts['id'];
 		this.original = element;
+		this.link = $E('a', element);
 		this.backto = this.original.getCoordinates(); // returns an object with keys left/top/bottom/right
 		var draggee = this;
 		this.clone = this.original.clone()
@@ -180,7 +181,12 @@ var Draggee = new Class({
 			.setStyles({'opacity': 0.8, 'position': 'absolute'})
 			.addEvent('emptydrop', function() { 
 				scratch.makeUnreceptive();
-				draggee.flyback();
+				whereupon = this.getCoordinates();
+				if (draggee.backto['left'] - whereupon['left'] < 10 && draggee.backto['top'] - whereupon['top'] < 10) {
+					draggee.doClick();
+				} else {
+					draggee.flyback();
+				}
 			})
 			.inject(document.body);
 			
@@ -196,6 +202,11 @@ var Draggee = new Class({
 		draggee = this;
 		if (this.clone) this.clone.effects({duration: 400, transition:Fx.Transitions.Back.easeOut}).start(draggee.backto).chain(function(){ draggee.disappear() });
 	},
+	doClick: function (e) {
+		draggee = this;
+		draggee.disappear();
+		window.location = this.link.href;
+	}
 });
 
 var Droppee = new Class({

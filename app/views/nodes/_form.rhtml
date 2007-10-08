@@ -8,14 +8,14 @@
 
  <div>
  <p><label for="node_name">Fragment name</label><br />
- <%= text_field 'node', 'name', :style => "width: 360px;", :onfocus => "ts('name')", :onblur => "tr('name')" %></p>
+ <%= text_field 'node', 'name', :class => "standard" %></p>
 
 <p><label for="node_synopsis">Synopsis</label><br />
-<%= text_area 'node', 'synopsis', 'rows' => 4, 'class' => "standard" %> <br />
+<%= text_area 'node', 'synopsis', 'rows' => 4, :class => "standard" %> <br />
 <span class="formnote">textile format, please.</span>
 
 <p><label for="node_body">Text (or transcript)</label><br/>
-<%= text_area 'node', 'body', 'rows' => 12, 'class' => "standard" %><br />
+<%= text_area 'node', 'body', 'rows' => 12, :class => "standard" %><br />
 <span class="formnote">textile format, please.</span>
 </p>
 
@@ -24,7 +24,16 @@
 <div class="hidden" id="hide_node_source">
   <p>
 	<label for="node_source_id">Taken from:</label><br />
-  <%= select("node", "source_id", @current_collection.sources.collect{|u| [u.name, u.id] }, {:include_blank => true, :prompt => 'Taken from...'}, {:style => 'width: 240px'}) %>
+  <%= select("node", "source_id", @current_collection.sources.collect{|u| [u.name, u.id] }, {:include_blank => true}, {:class => 'standard'}) %>
+	</p>
+</div>
+
+<h3><a href="#" class="displaycontrol" id="show_node_question">+ choose question</a></h3>
+
+<div class="hidden" id="hide_node_question">
+  <p>
+	<label for="node_source_id">In response to:</label><br />
+  <%= select("node", "source_id", @current_collection.questions.collect{|q| [q.name, q.id] }, {:include_blank => true}, {:class => 'standard'}) %>
 	</p>
 </div>
 

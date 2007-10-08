@@ -1,7 +1,7 @@
 <%= render :partial => 'header' %>
 
 <div style="clear: both">
-<%= pretty(@bundle.body) %>
+<%= @bundle.body.formatted %>
 </div>
 
 <%= render :partial => "nodes/list", :collection => @bundle.nodes %>

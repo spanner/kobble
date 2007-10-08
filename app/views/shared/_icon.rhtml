@@ -1,18 +1,19 @@
 <% 
 	@this = this
+	linked = this unless linked
 	default = 'generic' unless default
-	draggedid = "#{@this.class.to_s.downcase}_#{@this.id}" unless draggedid 
+	draggedid = "#{linked.class.to_s.downcase}_#{linked.id}" unless draggedid 
 	caption = truncate(this.name, length=32, truncate_string='...') unless caption 
 	with_caption = false unless with_caption
 %>
 
 <div class="icon draggable" id="<%= draggedid %>">
   <div class="dragicon">
-    <% if @this.image %>     
-      <%= image_tag(url_for_file_column("this", "image", "thumb"), :size => "56x56", :border => 0, :alt => '') %>
-    <% else %>
-      <%= image_tag("/images/furniture/icons/#{default}.png", :size => "56x56", :border => 0, :alt => '') %>
-    <% end %>
+		<%= 
+			imagetag = image_tag(@this.image ? url_for_file_column("this", "image", "thumb") : "/images/furniture/icons/#{default}.png", :size => "56x56", :border => 0, :alt => '')
+			link_to(imagetag, :controller => linked.class.to_s.downcase.pluralize, :action => 'show', :id => linked)
+		%>
+
   </div>
 
   <div class="label<% unless with_caption %> hide<% end %>">

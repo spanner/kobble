@@ -1,28 +1,96 @@
 <% @thisnode = full || @node %>
-<% @source = @thisnode.source if @thisnode %>
 
-<div class="floatcolumn" id="nodetags">
-  <%= render :partial => 'nodes/slide', :locals => {:slide => @thisnode, :omit_caption => true} %>
-
-  <h2>tags</h2>
-  <ul id="keywordlist">
-    <% for kw in @thisnode.tags.uniq %>
-      <li><%= link_to kw.name, {:action => 'show', :controller => 'tags', :id => kw}, { :title => kw.parentage } %></li>
-    <% end %>
-  </ul>
-  <h2>
-    related items
-  </h2>
-  <p>
-    to be continued
-  </p>
+<div class="header">
+	<%= render :partial => 'shared/icon', :locals => { :this => @thisnode, :with_caption => false } %>
+	<h1 class="pagetitle"><%= @thisnode.name %></h1>
 </div>
 
-<h1>
-  <%= @thisnode.name %><br />
-  <a href="/nodes/edit/<%= @thisnode.id %>">edit</a>
-  <a href="#" class="cancel">back</a>
-</h1>
+<div class="floatcolumn" style="width: 175px;">
+	<h2>
+		<% if @thisnode.image %>
+			<a href="#" class="displaycontrol" id="show_image">+ show image</a>
+		<% else %>
+			<span class="pale">- no image</span>
+		<% end %>
+	</h2>
+ 	<% if @thisnode.image %>
+  	<div class="hidden" id="hide_image">
+			<a href="<%= url_for_file_column("thisnode", "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column("thisnode", "image", "slide"), :size => "135x135", :border => 0, :alt => '') %></a>
+   	</div>
+	<% end %>
+
+	<h2>
+		<% if @thisnode.source || @thisnode.question %>
+			<a href="#" class="displaycontrol" id="show_origin">+ show origins</a>
+		<% else %>
+			<span class="pale">- no source doc</span>
+		<% end %>
+	</h2>
+ 	<% if @thisnode.source || @thisnode.question %>
+  	<div class="hidden" id="hide_origin">
+			<% if @thisnode.source %>
+				<p>
+				  <% if @thisnode.source %>taken from <%= link_to @thisnode.source.name, :action => 'show', :controller => 'sources', :id => @thisnode.source %><% end %>
+				  <% if @thisnode.creator %>by <%= link_to @thisnode.creator.name, :action => 'show', :controller => 'user', :id => @thisnode.creator %><% end %>
+				  <% if @thisnode.source || @thisnode.creator %><% end %>
+				</p>
+			<% end %>
+			<% if @thisnode.question %>
+				Considered a response to the question <%= link_to @thisnode.question.prompt, :controller => 'questions', :action => 'show', :id => @thisnode.question %>.
+			<% end %>
+   	</div>
+	<% end %>
+
+	<% if current_user.is_editor? %>
+	 	<h2>
+			<% if @thisnode.has_notes? %>
+				<a href="#" class="displaycontrol" id="show_fieldnotes">+ show field notes</a>
+			<% else %>
+				<span class="pale">- no field notes</span>
+			<% end %>
+		</h2>
+
+		<% if @thisnode.has_notes? %>
+	    <div class="hidden" id="hide_fieldnotes">
+				<% if @thisnode.observations %>
+					<p><strong>Observations:</strong> <%= @thisnode.observations %></p>
+				<% end %>
+
+				<% if @thisnode.emotions %>
+					<p><strong>Emotional responses:</strong> <%= @thisnode.emotions %></p>
+				<% end %>
+
+				<% if @thisnode.arising %>
+					<p><strong>Connections or ideas:</strong> <%= @thisnode.arising %></p>
+				<% end %>
+			</div>
+		<% end %>
+	<% end %>
+
+	<h2>
+		<% if @thisnode.has_tags? %>
+			<a href="#" class="displaycontrol" id="show_tags">+ show tags</a>
+		<% else %>
+			<span class="pale">- no tags</span>
+		<% end %>
+	</h2>
+	
+	<% if @thisnode.has_tags? %>
+  <div class="hidden" id="hide_tags">
+		
+   </div>
+	<% end %>
+	
+	<p class="bigp">
+		<%= link_to '+ edit fragment', {:action => 'edit', :id => @thisnode}, {:class => 'edititem'} %><br />
+		<%= link_to '+ remove fragment', {:action => 'destroy', :id => @thisnode}, {:class => 'removeitem', :confirm => "do you really want to completely get rid of #{@thisnode.name}?"} %>
+	</p>
+</div>
+
+<div class="synopsis">
+	<h2>synopsis</h2>
+  <%= @thisnode.synopsis.formatted %>
+</div>
 
 <% if @thisnode.source && @thisnode.source.clip %>
   <%= render :partial => 'shared/player', :locals => {
@@ -31,41 +99,9 @@
   } %>
 <% end %>
 
-<p class="small" style="clear: left;">
-  <% if @thisnode.source %>taken from <%= link_to @thisnode.source.name, :action => 'show', :controller => 'sources', :id => @thisnode.source %><% end %>
-  <% if @thisnode.user %>by <%= link_to @thisnode.user.name, :action => 'show', :controller => 'user', :id => @thisnode.user %><% end %>
-  <% if @thisnode.source || @thisnode.user %><br /><% end %>
-  <strong>synopsis:</strong> <%= @thisnode.synopsis %>
-</p>
+<%= render :partial => 'shared/warnings', :locals => {:this => @thisnode} %>
 
-<% if @thisnode.warnings.length > 0 %>
-  <p class="small warning">
-    <%= render :partial => 'warnings/oneliner', :collection => @thisnode.warnings %>
-  </p>
-<% end %>
-
-<% if @thisnode.source && @thisnode.source.warnings.length > 0 %>
-  <p class="small">
-  <%= render :partial => 'warnings/oneliner', :collection => @thisnode.source.warnings %>
-  </p>
-<% end %>
-
-<% if @thisnode.source && @thisnode.source.person && @thisnode.source.person.warnings.length > 0 %>
-  <p class="small">
-  <%= render :partial => 'warnings/oneliner', :collection => @thisnode.source.person.warnings %>
-  </p>
-<% end %>
-
-</td></tr></table>
-
-
-<h2>transcript</h2>
-
-<p class="small"><a href="#" class="swaptranscript">show textile markup</a></p>
-<div class="nicetranscript"><%= @thisnode.nice('body') %></div>
-<div class="rawtranscript"><%= simple_format(@thisnode.body) %></div>
-<p class="small"><a href="#" class="swaptranscript">show textile markup</a></p>
-
-<script type="text/javascript">
-  node = <%= @thisnode.id %>
-</script>  
+<div class="transcript">
+	<h2>text or transcript</h2>
+	<%= @thisnode.body.formatted %>
+</div>

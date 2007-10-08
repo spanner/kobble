@@ -64,14 +64,22 @@ class Node < ActiveRecord::Base
     read_attribute(:playto)
   end
   
-  def has_warnings
+  def has_warnings?
     
   end
   
-  def has_fatal_warnings
+  def has_fatal_warnings?
   
   end
-  
+    
+  def has_notes?
+    true unless observations.nil? && emotions.nil? && arising.nil?
+  end
+
+  def has_tags?
+    false
+  end
+
   private
   
   def to_seconds (timecode)
