@@ -439,6 +439,44 @@ div.player {
 	margin: 20px 0 20px 0;
 }
 
+div.dropzone {
+	width: 700px;
+	padding: 0;
+	background-repeat: repeat-x;
+	background-position: top left;
+	background-image: url(/images/furniture/layout/greyfadetop.png);
+}
+
+div.dropcontents {
+	padding: 20px;
+	min-height: 200px;
+}
+
+.drophere {
+	background-image: url(/images/furniture/layout/bluefadetop.png);
+}
+
+div.dropzonebottom {
+	width: 700px;
+	height: 80px;
+	padding: 0;
+	clear:both;
+	background-repeat: repeat-x;
+	background-position: bottom left;
+	background-image: url(/images/furniture/layout/greyfadebottom.png);
+}
+
+div.dropzonebottom p {
+  margin: 20px;
+  font-size: 20px;
+  font-weight: lighter;
+  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
+  letter-spacing: -0.02em;
+  line-height:  32px;
+	color:#B2AAA4;
+	text-align: center;
+}
+
 #scratchpad {
   position: fixed;
   bottom: 0;
@@ -446,6 +484,7 @@ div.player {
   height: 127px;
   width: 200px;
   overflow: hidden;
+	border: 1px solid white;
 }
 
 #scratchtabs {
@@ -505,6 +544,7 @@ div.scratchpage ul {
   color: white;
 	padding:0;
 	list-style: none;
+	min-height:1000px;
 }
 
 div.scratchpage li {

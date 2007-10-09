@@ -34,8 +34,8 @@ var Dropon = new Class({
 		this.removeAction = 'remove';			// default works for sets and scratchpads and tags
 		this.container.dropzone = this;
   },
-	waitsignal: function () { return $ES('div.waitforit', this.container); },
-	recipient: function () { return this.container; },
+	waitsignal: function () { return $E('div.waitforit', this.container); },
+	recipient: function () { return $E('div.dropcontents', this.container); },
 	contents: function () { return $ES('.draggable', this.container).map(function(el){ return el.id; }); },
 	contains: function (draggee) { return this.contents().contains(draggee.tag); },
 	makeReceptive: function (draggee) {
@@ -43,8 +43,17 @@ var Dropon = new Class({
 			var dropon = this;
 			this.container.addEvents({
 				'drop': function() { sleepDroppers(); dropon.receiveDrop(draggee); },
-				'over': function() { if (!dropon.isopen) { dropon.wasopen = false; dropon.open(); }; },
-				'leave': function() { if (!dropon.wasopen) dropon.close(); }
+				'over': function() { 
+					if (!dropon.isopen) { 
+						dropon.wasopen = false; 
+						dropon.open(); 
+					};
+					draggee.appearance(draggee.origin == dropon ? 'normal' : 'droppable');
+				},
+				'leave': function() { 
+					if (!dropon.wasopen) dropon.close(); 
+					draggee.appearance(draggee.origin ? 'deletable' : 'normal');
+				}
 			});
 			this.isreceptive = true;
 			return this.container;
@@ -71,7 +80,10 @@ var Dropon = new Class({
 			draggee.disappear();
 			new Ajax(this.addURL(), {
 				method : 'get',
-				data : 'scrap=' + draggee.tag,
+				data : {
+					'scrap': draggee.tag,
+					'display': display
+				},
 				evalResponse : false,
 				update: this.recipient(),
 			  onRequest: function () { drop.waiting(); },
@@ -168,7 +180,10 @@ var Scratchpage = new Class({
 		this.tag = element.id;
 		this.list = $E('ul', element);
 		this.tab = $E('a#tab_' + this.tag);
-		this.tab.addEvent('click', function (e) { scratchpad.tabClick(element.id); e.preventDefault; })
+		this.tab.addEvent('click', function (e) { 
+			e.preventDefault(); 
+			scratchpad.tabClick(element.id); 
+		});
 		this.body = $(element);
 		this.list.dropzone = this;
 	},
@@ -234,17 +249,13 @@ var Draggee = new Class({
 			wait:true
 		}).start({ 
 			'width': 0,
+			'height': 0,
 		}).chain(function () { container.remove(); });
 	},
 	remove: function () {
-		console.log('removing');
-		console.log(this.original);
-		console.log('from');
-		console.log(this);
 	  this.original.remove();
 	},
 	release: function () {
-		console.log('drag released');
 		this.moved() ? this.flyback() : this.doClick();
 	},
 	moved: function () {
@@ -259,12 +270,23 @@ var Draggee = new Class({
 		this.disappear();
 		window.location = this.link.href;
 	},
-	waiting: function (argument) {
-		$E('img', this.original).setProperty('src', '/images/furniture/signals/wait_32.gif');
+	appearance: function (signal) {
+		switch (signal){
+			case 'waiting': 
+				$E('img', this.clone).setProperty('src', '/images/furniture/signals/wait_32.gif');
+				break;
+			case 'droppable': 
+				$E('img', this.clone).setProperty('src', '/images/furniture/signals/droppable.png');
+				break;
+			case 'deletable': 
+				$E('img', this.clone).setProperty('src', '/images/furniture/signals/deletable.png');
+				break;
+			default: 
+				$E('img', this.clone).setProperty('src', this.imgsrc);
+		}
 	},
-	notWaiting: function (argument) {
-		$E('img', this.original).setProperty('src', this.imgsrc);
-	},
+	waiting: function () { this.appearance('waiting'); },
+	notWaiting: function () { this.appearance('normal'); },
 });
 
 
