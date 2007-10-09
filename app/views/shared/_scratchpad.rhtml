@@ -1,6 +1,3 @@
 <div id="scratchpad_<%= scratchpad.id %>" class="scratchpage">
-  <ul>
-    <%= render :partial => 'scratchpads/scrap', :collection => scratchpad.scraps, :locals => { :scratchpad => scratchpad } %>
-  </ul>
-	<div class="waitforit"><p><img src="/images/furniture/signals/wait_og.gif" width="16" height="16" alt="hold it hold it"> loading</p></div>
+	<%= render :partial => 'scratchpads/contents', :locals => {:pad => scratchpad} %>
 </div>

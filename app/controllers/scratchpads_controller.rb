@@ -11,42 +11,43 @@ class ScratchpadsController < ApplicationController
   # all scraps are identified by the string 'class_id'
   
   def add
-    @pad = Scratchpad.find(params[:id])
-    if (@pad && params[:scrap]) then
+    @scratchpad = Scratchpad.find(params[:id])
+    if (@scratchpad && params[:scrap]) then
       @scraps = []
       params[:scrap].split('|').each do |s|
         input = s.split('_')
-        @scraps.push(input[0].camelize.constantize.find(input[1]))
+        scrap = input[0].camelize.constantize.find(input[1])
+        @scraps.push(scrap) if scrap
       end    
-      @pad.scraps << @scraps
+      @scratchpad.scraps << @scraps
     end
     render :layout => false
   end
 
   def remove
-    @pad = Scratchpad.find(params[:id])
-    if (@pad && params[:scrap]) then
+    @scratchpad = Scratchpad.find(params[:id])
+    if (@scratchpad && params[:scrap]) then
       @scraps = []
       params[:scrap].split('|').each do |s|
         input = s.split('_')
         @scraps.push(input[0].camelize.constantize.find(input[1]))
       end    
-      @pad.scraps.delete(@scraps)
+      @scratchpad.scraps.delete(@scraps)
     end
     render :layout => false
   end
 
   def reorder 
-     @pad = Scratchpad.find(params[:id]) 
-     if (@pad && params[:scraps]) then
+     @scratchpad = Scratchpad.find(params[:id]) 
+     if (@scratchpad && params[:scraps]) then
        @scraps = []
        params[:scrap].split('|').each do |s|
          input = s.split('_')
          @scraps.push(input[0].camelize.constantize.find(input[1]))
        end    
      end
-     @pad.scraps.clear
-     @pad.scraps << @scraps
+     @scratchpad.scraps.clear
+     @scratchpad.scraps << @scraps
      render :nothing => true 
    end 
 

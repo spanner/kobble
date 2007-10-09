@@ -562,11 +562,20 @@ div.waitforit p {
   font-size: 16px;
   line-height: 32px;
 	margin:0;
-	margin-left: 12px;
+}
+
+div.waitforit img {
+	margin: 0 8px 0 8px;
 }
 
 div.scratchpage div.controls a {
 	color: white;
+}
+
+img.dragwait {
+	margin: 12px;
+	background-color: white;
+	display: none;
 }
 
 img.logo {
