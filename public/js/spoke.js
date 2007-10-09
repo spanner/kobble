@@ -202,10 +202,6 @@ var Draggee = new Class({
 	initialize: function(element, event){
 		this.original = $E('div.thumb', element);
 		if (!this.original) this.original = element;
-		
-		console.log('original is ');
-		console.log(this.original);
-
 		this.container = element;
 		this.tag = element.id;
 		this.link = $E('a', element);
@@ -223,8 +219,6 @@ var Draggee = new Class({
 			})
 			.inject(document.body);
 		
-		console.log(this.clone);
-
   	var label = $E('div.label', this.clone);
     if (label) label.show();
 
@@ -233,9 +227,6 @@ var Draggee = new Class({
 		}).start(event);
 	},
 	removeIfDraggedOut: function () {
-		console.log('item origin is ');
-		console.log(this.origin);
-		
 		if (this.origin) {
 			this.origin.removeDrop(this);
 		} else {
