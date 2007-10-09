@@ -27,12 +27,13 @@ class ScratchpadsController < ApplicationController
   def remove
     @scratchpad = Scratchpad.find(params[:id])
     if (@scratchpad && params[:scrap]) then
-      @scraps = []
+      @deleted = []
       params[:scrap].split('|').each do |s|
         input = s.split('_')
-        @scraps.push(input[0].camelize.constantize.find(input[1]))
+        scrap = input[0].camelize.constantize.find(input[1])
+        @deleted.push(scrap) if scrap
       end    
-      @scratchpad.scraps.delete(@scraps)
+      @scratchpad.scraps.delete(@deleted)
     end
     render :layout => false
   end

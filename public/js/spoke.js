@@ -102,18 +102,14 @@ var Dropon = new Class({
   },
 	removeDrop: function (draggee) {
 		drop = this;
-		if (this == draggee.origin) {
-			draggee.disappear();
-			new Ajax(this.removeURL(), {
-				method : 'get',
-				data : 'scrap=' + draggee.tag,
-			  onRequest: function () { draggee.waiting(); },
-			  onSuccess: function () { announce(this.response.text); draggee.fadeAndRemove(); },
-			  onFailure: function () { draggee.notWaiting(); },
-			}).request();
-		} else {
-			error("not from round here");
-		}
+		draggee.disappear();
+		new Ajax(this.removeURL(), {
+			method : 'get',
+			data : 'scrap=' + draggee.tag,
+		  onRequest: function () { draggee.waiting(); },
+		  onSuccess: function () { announce(this.response.text); draggee.fadeAndRemove(); },
+		  onFailure: function () { draggee.notWaiting(); },
+		}).request();
 	},
 	addURL: function (argument) { 
 		var parts = idParts(this.container);
@@ -144,7 +140,8 @@ var Scratchpad = Dropon.extend({
 	},
 	waitsignal: function () { return this.foreground.waitsignal(); },
 	recipient: function () { return this.foreground.list; },
-	actionURL: function (argument) { return '/scratchpads/add/' + this.foreground.spokeID; },
+	addURL: function (argument) { return '/scratchpads/add/' + this.foreground.spokeID; },
+	removeURL: function (argument) { return '/scratchpads/remove/' + this.foreground.spokeID; },
 	contents: function () { return this.foreground.contents(); },
   addPages: function(elements){
 		var pad = this;
@@ -198,27 +195,36 @@ var Scratchpage = new Class({
 	},
 	waitsignal: function () { return $ES('div.waitforit', this.body); },
 	contents: function () { return this.list.getChildren().map(function(el){ return el.id; }); },
+	removeDrop: function (draggee) { scratchpad.removeDrop(draggee) },
 });
 
 var Draggee = new Class({
 	initialize: function(element, event){
-		this.original = element;
-		this.container = element.getParent();
+		this.original = $E('div.thumb', element);
+		if (!this.original) this.original = element;
+		
+		console.log('original is ');
+		console.log(this.original);
+
+		this.container = element;
 		this.tag = element.id;
 		this.link = $E('a', element);
 		this.backto = element.getCoordinates(); // returns an object with keys left/top/bottom/right
 		this.origin = lookForDropper(element);
 		this.imgsrc = $E('img', element).getProperty('src');
 		var draggee = this;
+		
 		this.clone = this.original.clone()
 		  .setStyles(this.backto)
-			.setStyles({'opacity': 0.8, 'position': 'absolute'})
+			.setStyles({'opacity': 0.8, 'position': 'absolute', 'display': 'block'})
 			.addEvent('emptydrop', function() { 
 				sleepDroppers();
 				draggee.removeIfDraggedOut();
 			})
 			.inject(document.body);
 		
+		console.log(this.clone);
+
   	var label = $E('div.label', this.clone);
     if (label) label.show();
 
@@ -227,6 +233,9 @@ var Draggee = new Class({
 		}).start(event);
 	},
 	removeIfDraggedOut: function () {
+		console.log('item origin is ');
+		console.log(this.origin);
+		
 		if (this.origin) {
 			this.origin.removeDrop(this);
 		} else {

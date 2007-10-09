@@ -1,6 +1,6 @@
 <% if list %>
  
-  <div class="listrow <%= cycle("odd", "even", :name => "itemlist") %>">
+  <div class="listrow">
     <%= render :partial => 'shared/icon', :locals => { :this => list, :with_caption => false } %>
     <h2><%= link_to( "#{list.name}", {:controller => 'nodes', :action => 'show', :id => list}) %></h2>
     <p>
@@ -10,5 +10,4 @@
 				by <%= link_to (list.creator.name, :controller => 'users', :action => 'show', :id => list.creator) if list.creator %>.</span>
     </p>
   </div>
-
 <% end %>
