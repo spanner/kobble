@@ -2,35 +2,6 @@
 
   <p>This is just a basic list, to begin with. It will get more useful.</p>
   
-  <p class="small">Other users: 
-    <% for u in @users %><% unless u == @user %>
-      <%= link_to u.name, { :id => u } %> |
-    <% end %><% end %>
-  </p>
-  
-  <% recordings = @user.sources %>
-  <% if recordings.size > 0 %>
-    <h2>sources</h2>
-    <%= render :partial => 'recordings/listheader' %>
-    <%= render :partial => 'recordings/list', :collection => recordings %>
-    <%= render :partial => 'recordings/listfooter' %>
-  <% end %>
-  
-  <% nodes = @user.nodes %>
-  <% if nodes.size > 0 %>
-    <h2>snippets</h2>
-    <%= render :partial => 'nodes/listheader' %>
-    <%= render :partial => 'nodes/list', :collection => nodes %>
-    <%= render :partial => 'nodes/listfooter' %>
-  <% end %>
-
-  <% bundles = @user.bundles %>
-  <% if bundles.size > 0 %>
-    <h2>bundles</h2>
-    <%= render :partial => 'bundles/listheader' %>
-    <%= render :partial => 'bundles/list', :collection => bundles %>
-    <%= render :partial => 'bundles/listfooter' %>
-  <% end %>
 
 
   <%= link_helper 'welcome_logout', :action => 'logout' %>

@@ -8,6 +8,6 @@ ActionController::Routing::Routes.draw do |map|
 
   map.connect ':controller/:action/:id'
 
-  map.connect '', :controller => 'nodes', :action => 'index'
+  map.connect '', :controller => 'account', :action => 'index'
 
 end

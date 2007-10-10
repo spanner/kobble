@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 41) do
+ActiveRecord::Schema.define(:version => 42) do
 
   create_table "bundles", :force => true do |t|
     t.column "name",           :string
@@ -25,14 +25,17 @@ ActiveRecord::Schema.define(:version => 41) do
     t.column "user_id",            :integer
     t.column "name",               :string
     t.column "description",        :text
-    t.column "status",             :string,   :limit => 20
+    t.column "status",             :string,   :limit => 20, :default => "0"
     t.column "created_by",         :integer
     t.column "updated_by",         :integer
     t.column "created_at",         :datetime
     t.column "updated_at",         :datetime
     t.column "allow_registration", :integer
     t.column "invitation",         :text
-    t.column "confirmation",       :text
+    t.column "welcome",            :text
+    t.column "privacy",            :text
+    t.column "tag",                :string
+    t.column "url",                :string
   end
 
   create_table "marks_tags", :force => true do |t|
@@ -176,12 +179,14 @@ ActiveRecord::Schema.define(:version => 41) do
     t.column "deleted",                   :integer,                :default => 0
     t.column "delete_after",              :datetime
     t.column "collection_id",             :integer
-    t.column "status",                    :integer
+    t.column "status",                    :integer,                :default => 0
     t.column "image",                     :string
     t.column "description",               :text
     t.column "created_by",                :integer
     t.column "updated_by",                :integer
     t.column "type",                      :string,                 :default => "User"
+    t.column "activated_at",              :datetime
+    t.column "activation_code",           :string,   :limit => 40
   end
 
   create_table "warnings", :force => true do |t|

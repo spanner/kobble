@@ -2,7 +2,7 @@ class AccountController < ApplicationController
   skip_before_filter :login_required
   
   def index
-    redirect_to(:action => 'signup') unless logged_in?
+    # redirect_to(:action => 'login') unless logged_in?
   end
 
   def set_context
@@ -44,7 +44,7 @@ class AccountController < ApplicationController
         self.current_user.remember_me
         cookies[:auth_token] = { :value => self.current_user.remember_token , :expires => self.current_user.remember_token_expires_at }
       end
-      redirect_back_or_default(:controller => '/account', :action => 'index')
+      redirect_back_or_default(:controller => '/')
       flash[:notice] = "Logged in successfully"
     end
   end

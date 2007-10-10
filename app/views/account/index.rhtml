@@ -1,17 +1,25 @@
-<% if !current_user %>
+<% if current_user == :false %>
 
-	<p>please log in.</p>
+	<h1 class="pagetitle"><%= @current_collection.name %></h1>
 
-<% elsif current_user.recently_activated? %>
+	<%= @current_collection.welcome.formatted %>
 
-	<h1>Hello <%= current_user.firstname %> and welcome!</h1>
+<% elsif current_user && current_user.activated? %>
 
-	<p>Your account is now active and you can feel free to explore the currently very limited range of options available.</p>
+	<% if current_user.recently_activated? %>
+		<h1>Hello <%= current_user.firstname %> and welcome!</h1>
+		<p>Thank you. Your account is now active and you can feel free to explore the (currently rather limited!) range of options available.</p>
+	<% else %>
+		<h1>Hello again <%= current_user.name %></h1>
+	<% end %>
+	
+	<h2>Background</h2>
 
-<% elsif current_user.activated? %>
+	<h2>Latest news</h2>
 
-	<h1>Hello again <%= current_user.firstname %></h1>
+	<h2>Discussion</h2>
 
+	<h2>Invite a friend</h2>
 
 <% else %>
 

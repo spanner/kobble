@@ -5,7 +5,10 @@
      	<%= link_to( image_tag("/images/furniture/icons/generic.png", :size => "75x75", :border => 0, :alt => 'set'), {:controller => 'account', :action => 'choosecollection', :id => list}) %>
    	</div>
 
-    <h2><%= link_to( "#{list.name}", {:controller => 'account', :action => 'choosecollection', :id => list}) %></h2>
+    <h2>
+			<%= link_to( "#{list.name}", {:controller => 'account', :action => 'choosecollection', :id => list}) %>
+			<% if current_user.is_admin? %><%= link_to 'edit', {:action => 'edit', :id => list}, {:class => 'edititem'} %><% end %>
+		</h2>
     <p>
       <% if list.description %><%= truncate( list.description, 240 ) %><br /><% end %>
       <span class="footnote">

@@ -2,7 +2,7 @@
  
   <div class="listrow <%= cycle("odd", "even", :name => "itemlist") %>">
     <%= render :partial => 'shared/icon', :locals => { :this => list, :with_caption => false } %>
-    <h2><% if list.can_login? %><strong><% end %><%= link_to( "#{list.name}", {:controller => 'nodes', :action => 'show', :id => list}) %><% if list.can_login? %></strong><% end %></h2>
+    <h2><% if list.can_login? %><strong><% end %><%= link_to( "#{list.name}", {:action => 'show', :id => list}) %><% if list.can_login? %></strong><% end %></h2>
     <p>
       <% if list.description %><%= truncate( list.description, 240 ) %><br /><% end %>
       <span class="footnote">

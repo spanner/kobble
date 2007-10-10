@@ -5,8 +5,8 @@ class User < ActiveRecord::Base
   belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
   belongs_to :collection      # for editors and higher this is a changeable value that indicates foreground collection
 
-  has_many :sources, :class_name => 'Source', :foreign_key => 'user_id'
-  has_many :nodes, :class_name => 'Node', :foreign_key => 'user_id'
+  has_many :sources, :class_name => 'Source', :foreign_key => 'speaker_id'
+  has_many :nodes, :class_name => 'Node', :foreign_key => 'speaker_id'
 
   has_many :created_nodes, :class_name => 'Node', :foreign_key => 'created_by', :conditions => ['collection_id = ?', :current_collection]
   has_many :created_sources, :class_name => 'Source', :foreign_key => 'created_by', :conditions => ['collection_id = ?', :current_collection]
