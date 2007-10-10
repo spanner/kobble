@@ -1,4 +1,7 @@
-<% pagetitle = controller.controller_name.camelize unless pagetitle %>
+<% 
+	listedtype = controller.controller_name.sub('_controller', '')
+	pagetitle = listedtype unless pagetitle 
+%>
 
 <h1>
 	<% if @current_user.is_admin? %>
@@ -34,7 +37,7 @@
 
 <% if @current_user.is_editor? %>
 	<p>
-		<%= link_to 'Create a new x', :action => 'new' %>
+		<%= link_to  "Add a new #{listedtype.singularize}", {:action => 'new'}, {:class => 'additem'} %>
 	</p>
 <% end %>
 

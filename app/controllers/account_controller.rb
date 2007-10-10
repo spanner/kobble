@@ -46,6 +46,8 @@ class AccountController < ApplicationController
       end
       redirect_back_or_default(:controller => '/')
       flash[:notice] = "Logged in successfully"
+    else
+      @error = true
     end
   end
 

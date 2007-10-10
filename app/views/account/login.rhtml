@@ -9,7 +9,14 @@
 
 	<h1 class="pagetitle">Hello and<br />welcome to spoke</h1>
 	<p>This system is private. Please log in below.</p>
+	
+<% end %>
 
+<% if @error %>
+	<p class="haserror">
+		Sorry: we don't recognise that combination of username and password.<br />
+		If you've forgotten your password we can always <%= link_to 'make you a new one', :action => 'repassword' %>.
+	</p>
 <% end %>
 	
  <div id="inputform">
@@ -25,7 +32,7 @@
 
 		<p>
 			<%= submit_tag 'Log in' %>
-      	<%= link_to "forgotten password?", {:action => 'password_reminder'}, :class => 'formnote' %>
+      	<%= link_to "forgotten password?", {:action => 'repassword'}, :class => 'formnote' %>
 		</p>
 
       <p class="footnote">

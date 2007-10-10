@@ -325,15 +325,33 @@ form p, form h3, input.standard, textarea.standard, select.standard {
 	clear: both;
 }
 
-a.additem {
-	color: green;
+a.additem, a.edititem, a.removeitem {
+	display: block;
+	height: 20px;
+	font-size: 18px;
+	line-height: 20px;
+  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
+  letter-spacing: -0.05em;
+	padding-left: 24px;
+	background-repeat: no-repeat;
+	background-position: top left;
+	margin-bottom: 3px;
 }
-a.edititem {
-	color: #A0A500;
+	
+a.additem { 
+	color: #a0a500;
+	background-image: url('/images/furniture/buttons/add.png');
 }
-a.removeitem {
-	color: red;
+a.edititem { 
+	color: #559dc4; 
+	background-image: url('/images/furniture/buttons/edit.png');
 }
+a.removeitem { 
+	color: #823433; 
+	background-image: url('/images/furniture/buttons/delete.png');
+}
+
+
 
 #canvas {
 	padding: 0;

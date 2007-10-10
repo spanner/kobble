@@ -3,7 +3,7 @@
 
   <div class="listrow <%= cycle("odd", "even", :name => "itemlist") %>">
 
-    <%= render :partial => 'shared/icon', :locals => { :this => list.image.nil? ? list.speaker : list, :linked => list } %>
+    <%= render :partial => 'shared/icon', :locals => { :this => list, :linked => list } %>
 
     <h2><%= link_to( "#{list.name}", {:controller => 'sources', :action => 'show', :id => list}, {:class => 'inplace'}) %></h2>
     <p>

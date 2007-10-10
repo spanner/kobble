@@ -18,7 +18,6 @@ class SourcesController < ApplicationController
      when "date_reverse" then "date"
      else "name"
    end
-
    @sources = Source.find(:all, :conditions => limit_to_active_collection, :page => {:size => perpage, :sort => sort, :current => params[:page]})
    @display = case params['display']
      when "thumb" then "thumb"
