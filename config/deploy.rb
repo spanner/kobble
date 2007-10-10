@@ -21,20 +21,20 @@ set :deploy_via, :remote_cache
 
 namespace :deploy do
   task :after_update do
-    sudo "ln -s #{shared_path}/assets/node #{current_release}/public/node" 
-    sudo "ln -s #{shared_path}/assets/source #{current_release}/public/source" 
-    sudo "ln -s #{shared_path}/assets/person #{current_release}/public/person"
+    run "ln -s #{shared_path}/assets/node #{current_release}/public/node" 
+    run "ln -s #{shared_path}/assets/source #{current_release}/public/source" 
+    run "ln -s #{shared_path}/assets/person #{current_release}/public/person"
     run "ln -s #{shared_path}/config/database.yml #{current_release}/config/database.yml" 
   end
 	
   task :start, :roles => :app do
-    sudo "mongrel_rails cluster::start -C #{mongrel_conf}" 
+    run "mongrel_rails cluster::start -C #{mongrel_conf}" 
   end
   task :stop, :roles => :app do
-    sudo "mongrel_rails cluster::stop -C #{mongrel_conf}" 
+    run "mongrel_rails cluster::stop -C #{mongrel_conf}" 
   end
   task :restart, :roles => :app do
-    sudo "mongrel_rails cluster::restart -C #{mongrel_conf}" 
+    run "mongrel_rails cluster::restart -C #{mongrel_conf}" 
   end
 end
 
