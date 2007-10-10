@@ -1,5 +1,6 @@
 class CollectionsController < ApplicationController
   layout :choose_layout
+  
 
   def index
     list

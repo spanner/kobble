@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 40) do
+ActiveRecord::Schema.define(:version => 41) do
 
   create_table "bundles", :force => true do |t|
     t.column "name",           :string
@@ -18,17 +18,21 @@ ActiveRecord::Schema.define(:version => 40) do
     t.column "emotions",       :text
     t.column "arising",        :text
     t.column "image",          :string
+    t.column "synopsis",       :string
   end
 
   create_table "collections", :force => true do |t|
-    t.column "user_id",     :integer
-    t.column "name",        :string
-    t.column "description", :text
-    t.column "status",      :string,   :limit => 20
-    t.column "created_by",  :integer
-    t.column "updated_by",  :integer
-    t.column "created_at",  :datetime
-    t.column "updated_at",  :datetime
+    t.column "user_id",            :integer
+    t.column "name",               :string
+    t.column "description",        :text
+    t.column "status",             :string,   :limit => 20
+    t.column "created_by",         :integer
+    t.column "updated_by",         :integer
+    t.column "created_at",         :datetime
+    t.column "updated_at",         :datetime
+    t.column "allow_registration", :integer
+    t.column "invitation",         :text
+    t.column "confirmation",       :text
   end
 
   create_table "marks_tags", :force => true do |t|
@@ -41,6 +45,7 @@ ActiveRecord::Schema.define(:version => 40) do
     t.column "superbundle_id", :integer
     t.column "member_id",      :integer
     t.column "member_type",    :string,  :limit => 20
+    t.column "position",       :integer
   end
 
   create_table "nodes", :force => true do |t|

@@ -113,6 +113,28 @@ class AccountControllerTest < Test::Unit::TestCase
     assert !@controller.send(:logged_in?)
   end
 
+  def test_should_activate_user
+    assert_nil User.authenticate('arthur', 'test')
+    get :activate, :activation_code => users(:arthur).activation_code
+    assert_equal users(:arthur), User.authenticate('arthur', 'test')
+  end
+
+  def test_should_not_activate_nil
+    get :activate, :activation_code => nil
+    assert_activate_error
+  end
+
+  def test_should_not_activate_bad
+    get :activate, :activation_code => 'foobar'
+    assert flash.has_key?(:error), "Flash should contain error message." 
+    assert_activate_error
+  end
+
+  def assert_activate_error
+    assert_response :success
+    assert_template "account/activate" 
+  end
+
   protected
     def create_user(options = {})
       post :signup, :user => { :login => 'quire', :email => 'quire@example.com', 

@@ -12,4 +12,7 @@ class Collection < ActiveRecord::Base
   
   cattr_accessor :current_collection
   
+  def allows_registration?
+    allow_registration > 0
+  end
 end

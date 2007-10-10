@@ -28,7 +28,7 @@
     </div>  
           
     <div id="navigation">
-      <%= link_to 'collections', {:controller => 'collections'}, {:class => (request.parameters[:controller] == 'collections' ? 'fg' : '')} %>
+      <% if @current_user.is_admin? %><%= link_to 'collections', {:controller => 'collections'}, {:class => (request.parameters[:controller] == 'collections' ? 'fg' : '')} %><% end %>
       <%= link_to 'sources', {:controller => 'sources'}, {:class => (request.parameters[:controller] == 'sources' ? 'fg' : '')} %>
       <%= link_to 'fragments', {:controller => 'nodes'}, {:class => (request.parameters[:controller] == 'nodes' ? 'fg' : '')} %>
       <%= link_to 'sets', {:controller => 'bundles'}, {:class => (request.parameters[:controller] == 'bundles' ? 'fg' : '')} %>

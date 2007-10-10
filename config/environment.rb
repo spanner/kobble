@@ -41,12 +41,13 @@ Rails::Initializer.run do |config|
   # Activate observers that should always be running
   # config.active_record.observers = :cacher, :garbage_collector
 
-  config.active_record.observers = :edit_observer
+  config.active_record.observers = :edit_observer, :user_observer
 
   # Make Active Record use UTC-base instead of local time
   # config.active_record.default_timezone = :utc
   
   # See Rails::Configuration for more options
+  
 end
 
 
@@ -63,7 +64,3 @@ end
 
 # as per  http://wiki.rubyonrails.com/rails/pages/SaltedLoginGeneratorQuickstart
 
-require 'environments/localization_environment'
-require 'localization'
-Localization::load_localized_strings
-require 'environments/user_environment'

@@ -1,16 +1,72 @@
-<%= error_messages_for :user %>
-<% form_for :user do |f| -%>
-	<p><label for="login">Login</label><br/>
-	<%= f.text_field :login %></p>
+<% if !@current_collection.nil? && @current_collection.allows_registration? %>
 
-	<p><label for="email">Email</label><br/>
-	<%= f.text_field :email %></p>
+	<div style="width: 800px;">
 
-	<p><label for="password">Password</label><br/>
-	<%= f.password_field :password %></p>
+		<h1 class="pagetitle"><%= @current_collection.name %></h1>
+		
+		<div id="signupnote">
+			<% if @user.errors && !@user.errors.empty? %>
+				<p class="haserror">Sorry: there were some problems. Please check the marked fields and try again.</p>
+			<% end %>
 
-	<p><label for="password_confirmation">Confirm Password</label><br/>
-	<%= f.password_field :password_confirmation %></p>
+			<%= @current_collection.invitation.formatted %>
 
-	<p><%= submit_tag 'Sign up' %></p>
-<% end -%>
+			<p>If you have already registered, you need only <%= link_to 'log in', :action => 'login' %>.</p>
+		</div>
+
+		<div id="signupform">
+			<% form_for :user do |f| -%>
+
+				<input type="hidden" name="user[collection_id]" id="user_collection_id" value="<%= @current_collection.id %>">
+				
+				<p><label for="login">Your first name</label>
+				<%= f.text_field :firstname %>
+				<% if @user.errors.on(:firstname) %><div class="formError">this <%= @user.errors.on(:firstname).to_a.last %></div><% end %>
+				</p>
+
+				<p><label for="login">Surname</label>
+				<%= f.text_field :lastname %>
+				<% if @user.errors.on(:lastname) %><div class="formError">this <%= @user.errors.on(:lastname).to_a.last %></div><% end %>
+				</p>
+
+				<p><label for="email">and email address</label>
+				<%= f.text_field :email %>
+				<% if @user.errors.on(:email) %><div class="formError">this <%= @user.errors.on(:email).to_a.last %></div><% end %>
+				</p>
+
+				<p><label for="login">A login username</label>
+				<%= f.text_field :login %>
+				<% if @user.errors.on(:login) %><div class="formError">this username <%= @user.errors.on(:login).to_a.last %></div><% end %>
+				</p>
+
+				<p><label for="password">and password</label>
+				<%= f.password_field :password %>
+				<% if @user.errors.on(:password) %><div class="formError">this <%= @user.errors.on(:password).to_a.last %></div><% end %>
+				</p>
+
+				<p><label for="password_confirmation">Confirm the password</label>
+				<%= f.password_field :password_confirmation %>
+				<% if @user.errors.on(:password_confirmation) %><div class="formError">this <%= @user.errors.on(:password_confirmation).to_a.last %></div><% end %>
+				</p>
+
+				<p><%= submit_tag 'Sign up' %></p>
+
+			<% end %>
+		</div>
+		
+		<div id="privacynote">
+			<h2>privacy statement</h2>
+			<%= @current_collection.privacy.formatted %>
+			<p>If you don't agree with these terms, please don't sign up!</p>
+		</div>
+
+	</div>
+	
+<% else %>
+
+	<h1 class="pagetitle">Welcome to spoke</h1>
+	<p>Sorry: this is a private system
+
+<% end %>
+
+

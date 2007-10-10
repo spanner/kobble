@@ -15,6 +15,17 @@ class User < ActiveRecord::Base
   has_many :scratchpads
   has_many :warnings
 
+  validates_presence_of :firstname, :lastname
+  attr_protected :activated_at
+
+  file_column :image, :magick => { 
+    :versions => { 
+      "thumb" => "56x56!", 
+      "slide" => "135x135!", 
+      "preview" => "750x540>" 
+    }
+  }
+  
   def name
     return self.diminutive if self.diminutive
     return self.firstname + ' ' + self.lastname
@@ -45,17 +56,10 @@ class User < ActiveRecord::Base
 end
 
 class LoginUser < User
+  before_create :make_activation_code
   attr_accessor :password
 
-  file_column :image, :magick => { 
-    :versions => { 
-      "thumb" => "56x56!", 
-      "slide" => "135x135!", 
-      "preview" => "750x540>" 
-    }
-  }
-
-  validates_presence_of     :login, :email
+  validates_presence_of     :login
   validates_presence_of     :password,                   :if => :password_required?
   validates_presence_of     :password_confirmation,      :if => :password_required?
   validates_length_of       :password, :within => 4..40, :if => :password_required?
@@ -95,8 +99,23 @@ class LoginUser < User
   # rest is standard acts_as_authenticated
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   def self.authenticate(login, password)
-    u = find_by_login(login) # need to get the salt
+    u = find :first, :conditions => ['login = ? and activated_at IS NOT NULL', login]
     u && u.authenticated?(password) ? u : nil
+  end
+
+  def activate
+    @activated = true
+    self.activated_at = Time.now.utc
+    self.activation_code = nil
+    self.save!
+  end
+
+  def recently_activated?
+    @activated
+  end
+
+  def activated?
+    activated_at != nil
   end
 
   # Encrypts some data with the salt.
@@ -140,5 +159,9 @@ class LoginUser < User
     
     def password_required?
       crypted_password.blank? || !password.blank?
+    end
+    
+    def make_activation_code
+      self.activation_code = Digest::SHA1.hexdigest( Time.now.to_s.split(//).sort_by {rand}.join )
     end
 end

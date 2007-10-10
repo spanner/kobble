@@ -1,13 +1,40 @@
 class AccountController < ApplicationController
   skip_before_filter :login_required
-
-  # say something nice, you goof!  something sweet.
+  
   def index
-    redirect_to(:action => 'signup') unless logged_in? || User.count > 0
+    redirect_to(:action => 'signup') unless logged_in?
   end
 
   def set_context
+    Collection.current_collection = UserObserver.current_collection = @current_collection = Collection.find(params[:id] || 2)
   end
+  
+  def signup
+    @user = LoginUser.new(params[:user])
+    return unless request.post?
+    @user.save!
+    @user.collection = @current_collection
+    @user.save
+    self.current_user = @user
+    redirect_to :controller => '/account', :action => 'index'
+    flash[:notice] = "Thanks for signing up!"
+  rescue ActiveRecord::RecordInvalid
+    render :action => 'signup'
+  end
+  
+  def activate
+    flash.clear  
+    return if params[:id].nil? and params[:activation_code].nil?
+    activator = params[:id] || params[:activation_code]
+    @user = User.find_by_activation_code(activator) 
+    if @user and @user.activate
+      self.current_user = @user
+      redirect_to :controller => '/account', :action => 'index'
+      flash[:notice] = "Your account has been activated." 
+    else
+      flash[:error] = "Unable to activate your account. Please check activation code." 
+    end
+  end  
 
   def login
     return unless request.post?
@@ -22,17 +49,6 @@ class AccountController < ApplicationController
     end
   end
 
-  def signup
-    @user = LoginUser.new(params[:user])
-    return unless request.post?
-    @user.save!
-    self.current_user = @user
-    redirect_back_or_default(:controller => '/account', :action => 'index')
-    flash[:notice] = "Thanks for signing up!"
-  rescue ActiveRecord::RecordInvalid
-    render :action => 'signup'
-  end
-  
   def logout
     self.current_user.forget_me if logged_in?
     cookies.delete :auth_token

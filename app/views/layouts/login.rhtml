@@ -2,7 +2,7 @@
         "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>
 <head>
-  <title>Spoke!</title>
+  <title><% if logged_in? %><%= current_user.collection.name %><% else %>spoke!<% end %></title>
   <link rel="stylesheet" href="/stylesheets/spoke.css" type="text/css" />
 </head>
 <body>

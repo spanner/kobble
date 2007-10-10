@@ -1,0 +1,21 @@
+Hello <%= @user.name %>.
+
+An account has been created for you at the <%= @collection.name %> and to activate it all you need to do is visit this address:
+
+  <%= @url %>
+
+Or paste this code into the 'activation code' box that may still be in front of you:
+
+	<%= @user.activation_code %>
+
+On this occasion you will be logged in automatically, but on later visits you may also need to know that the username and password you chose were:
+
+  Username: <%= @user.login %>
+  Password: <%= @user.password %>
+
+Thank you very much for joining us,
+
+will
+
+
+ps. if the machinery ever gives you any trouble, please write to me on william.ross@sparknow.net (or just reply to this message).

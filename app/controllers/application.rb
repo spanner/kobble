@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
   end
   
   def choose_layout
-    logged_in? ? 'standard' : 'login'
+    logged_in? && activated? ? 'standard' : 'login'
   end
     
   def local_request?

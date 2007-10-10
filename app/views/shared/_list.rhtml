@@ -1,7 +1,12 @@
 <% pagetitle = controller.controller_name.camelize unless pagetitle %>
 
 <h1>
-	<span class="emphatic"><sup><%= @current_collection.name %></sup></span> <%= pagetitle %>
+	<% if @current_user.is_admin? %>
+		<sup><%= link_to @current_collection.tag, :controller => 'collections', :action => 'show', :id => @current_collection %></sup>
+	<% end %>
+	
+	 <%= pagetitle %>
+	
 	<% if list.size > list.page_size %>
   	<span class="pagination"><%= paginating_links(list, {:window_size => 3, :params => {:display => @display}}, {}) %></span>
 	<% end %>

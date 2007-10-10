@@ -1,8 +1,26 @@
-<% for column in Collection.content_columns %>
-<p>
-  <b><%= column.human_name %>:</b> <%=h @collection.send(column.name) %>
-</p>
-<% end %>
+<h1 class="pagetitle">
+	<%= @collection.name %>
+	<% if @current_user.is_admin? %>
+		<%= link_to 'edit', :action => 'edit', :id => @collection %>
+	<% end %>
+</h1>
 
-<%= link_to 'Edit', :action => 'edit', :id => @collection %> |
-<%= link_to 'Back', :action => 'list' %>
+<p class="small">
+	tag: <%= @collection.tag %><br />
+	status: <%= @collection.status %><br />
+	allows registration: <%= @collection.allow_registration ? 'yes' : 'no' %>
+</p>
+
+<%= @collection.description.formatted %>
+
+<h2>Invitation</h2>
+
+<%= @collection.invitation.formatted if @collection.invitation %>
+
+<h2>Privacy Statement</h2>
+
+<%= @collection.privacy.formatted if @collection.privacy %>
+
+<h2>Welcome text</h2>
+
+<%= @collection.confirmation.formatted if @collection.confirmation %>

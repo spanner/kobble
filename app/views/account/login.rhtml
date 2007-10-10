@@ -1,37 +1,45 @@
 
-  <h1 class="pagetitle">welcome to spoke</h1>
+<% if @current_collection and @current_collection.allow_registration %>
 
-  <p>This system is private. Please log in below.</p>
+ 	<h1 class="pagetitle">Hello and welcome to the<br />
+	<%= @current_collection.name %></h1>
+	<p>Please log in below. If you haven't already, you will first need to <%= link_to 'set up an account', :controller => 'account', :action => 'signup', :id => @current_collection.id %>.</p>
 
-  <div id="inputform">
-		<% form_tag do -%>
+<% else %>
 
-			<p><label for="login">Login</label><br/>
-			<%= text_field_tag 'login' %></p>
+	<h1 class="pagetitle">Hello and<br />welcome to spoke</h1>
+	<p>This system is private. Please log in below.</p>
 
-			<p><label for="password">Password</label><br/>
-			<%= password_field_tag 'password' %></p>
+<% end %>
+	
+ <div id="inputform">
+	<% form_tag do -%>
 
-			<p><%= check_box_tag 'remember_me' %> <label for="remember_me">Remember me</label></p>
+		<p><label for="login">Login</label><br/>
+		<%= text_field_tag 'login' %></p>
 
-			<p>
-				<%= submit_tag 'Log in' %>
-       	<%= link_to "forgotten password?", {:action => 'forgot_password'}, :class => 'formnote' %>
-			</p>
+		<p><label for="password">Password</label><br/>
+		<%= password_field_tag 'password' %></p>
 
-       <p class="footnote">
-         Through the unknown, unremembered gate<br />
-         When the last of earth left to discover<br />
-         Is that which was the beginning;<br />
-         At the source of the longest river<br />
-         The voice of the hidden waterfall<br />
-         And the children in the apple-tree<br />
-         Not known, because not looked for<br />
-         But heard, half-heard, in the stillness<br />
-         Between two waves of the sea.<br />
-       </p>
-        
-		<% end -%>
-  </div>
-  
-  
+		<p><%= check_box_tag 'remember_me' %> <label for="remember_me">Remember me</label></p>
+
+		<p>
+			<%= submit_tag 'Log in' %>
+      	<%= link_to "forgotten password?", {:action => 'password_reminder'}, :class => 'formnote' %>
+		</p>
+
+      <p class="footnote">
+        Through the unknown, unremembered gate<br />
+        When the last of earth left to discover<br />
+        Is that which was the beginning;<br />
+        At the source of the longest river<br />
+        The voice of the hidden waterfall<br />
+        And the children in the apple-tree<br />
+        Not known, because not looked for<br />
+        But heard, half-heard, in the stillness<br />
+        Between two waves of the sea.<br />
+      </p>
+       
+	<% end -%>
+ </div>
+ 
