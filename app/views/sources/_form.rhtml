@@ -20,7 +20,7 @@
 <div class="hidden" id="hide_source_clip">
 	<% if @source.clip %>
 	  <%= render :partial => 'shared/player', :locals => {
-	    :mp3url => @source.clip
+	    :mp3url => url_for_file_column("source", "clip")
 	  } %>
 	<% end %>
 	

@@ -10,6 +10,9 @@
   <title>Device: <%= controller.action_name %></title>
   <script type="text/javascript" src="/js/mootools.js"></script>
   <script type="text/javascript" src="/js/slimbox.js"></script>
+	<script type="text/javascript" src="/swiff/Swiff.Base.js"></script>
+	<script type="text/javascript" src="/swiff/Swiff.Uploader.js"></script>
+	<script type="text/javascript" src="/js/FancyUpload.js"></script>
   <script type="text/javascript" src="/js/spoke.js"></script>
   <link rel="stylesheet" href="/stylesheets/spoke.css" type="text/css" />
   <link rel="stylesheet" href="/stylesheets/slimbox.css" type="text/css" />
@@ -36,11 +39,9 @@
 	      <%= link_to 'people', {:controller => 'users'}, {:class => (request.parameters[:controller] == 'users' ? 'fg' : '')} %>
 	      <%= link_to 'tags', {:controller => 'tags'}, {:class => (request.parameters[:controller] == 'tags' ? 'fg' : '')} %>
 	      <%= link_to 'questions', {:controller => 'questions'}, {:class => (request.parameters[:controller] == 'questions' ? 'fg' : '')} %>
+	      <%= link_to 'log out', {:controller => 'account', :action => 'logout'} %>
     	<% else %>
-	      <%= link_to 'home', {:controller => 'sources'}, {:class => (request.parameters[:controller] == 'sources' ? 'fg' : '')} %>
-	      <%= link_to 'blog', {:controller => 'nodes'}, {:class => (request.parameters[:controller] == 'nodes' ? 'fg' : '')} %>
-	      <%= link_to 'discussion', {:controller => 'bundles'}, {:class => (request.parameters[:controller] == 'bundles' ? 'fg' : '')} %>
-	      <%= link_to 'questions', {:controller => 'bundles'}, {:class => (request.parameters[:controller] == 'bundles' ? 'fg' : '')} %>
+      	<%= link_to 'log out', {:controller => 'account', :action => 'logout'} %>
     	<% end %>
       <div id="notification">
         <%= flash[:notice] %>
