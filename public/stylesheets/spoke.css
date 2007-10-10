@@ -337,7 +337,7 @@ a.removeitem {
 
 #canvas {
 	padding: 0;
-	margin: 25px 100px 106px 83px;
+	margin: 35px 100px 106px 83px;
 }
 
 #listing {
@@ -744,6 +744,11 @@ div.textfaq {
 	margin-right: 30px;
 }
 
+div.textfaq img {
+	float: left;
+	margin: 10px;
+}
+
 a.signup {
 	display: block;
 	background-position: top left;
@@ -754,7 +759,7 @@ a.signup {
 	color: white;
 	font-size: 20px;
 	white-space: nowrap;
-	padding: 0 0 0 60px;
+	padding: 0 0 0 55px;
 	overflow: hidden;
 }
 

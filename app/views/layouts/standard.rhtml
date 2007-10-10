@@ -27,15 +27,21 @@
       <a href="/"><img src="/images/furniture/layout/sparklogo.png" width="49" height="39" alt="sparknow"></a>
     </div>  
           
-    <div id="navigation">
-      <% if @current_user.is_admin? %><%= link_to 'collections', {:controller => 'collections'}, {:class => (request.parameters[:controller] == 'collections' ? 'fg' : '')} %><% end %>
-      <%= link_to 'sources', {:controller => 'sources'}, {:class => (request.parameters[:controller] == 'sources' ? 'fg' : '')} %>
-      <%= link_to 'fragments', {:controller => 'nodes'}, {:class => (request.parameters[:controller] == 'nodes' ? 'fg' : '')} %>
-      <%= link_to 'sets', {:controller => 'bundles'}, {:class => (request.parameters[:controller] == 'bundles' ? 'fg' : '')} %>
-      <%= link_to 'people', {:controller => 'users'}, {:class => (request.parameters[:controller] == 'users' ? 'fg' : '')} %>
-      <%= link_to 'tags', {:controller => 'tags'}, {:class => (request.parameters[:controller] == 'tags' ? 'fg' : '')} %>
-      <%= link_to 'questions', {:controller => 'questions'}, {:class => (request.parameters[:controller] == 'questions' ? 'fg' : '')} %>
-    
+ 		<% if @current_user.is_editor? %>
+	   <div id="navigation">
+	      <% if @current_user.is_admin? %><%= link_to 'collections', {:controller => 'collections'}, {:class => (request.parameters[:controller] == 'collections' ? 'fg' : '')} %><% end %>
+	      <%= link_to 'sources', {:controller => 'sources'}, {:class => (request.parameters[:controller] == 'sources' ? 'fg' : '')} %>
+	      <%= link_to 'fragments', {:controller => 'nodes'}, {:class => (request.parameters[:controller] == 'nodes' ? 'fg' : '')} %>
+	      <%= link_to 'sets', {:controller => 'bundles'}, {:class => (request.parameters[:controller] == 'bundles' ? 'fg' : '')} %>
+	      <%= link_to 'people', {:controller => 'users'}, {:class => (request.parameters[:controller] == 'users' ? 'fg' : '')} %>
+	      <%= link_to 'tags', {:controller => 'tags'}, {:class => (request.parameters[:controller] == 'tags' ? 'fg' : '')} %>
+	      <%= link_to 'questions', {:controller => 'questions'}, {:class => (request.parameters[:controller] == 'questions' ? 'fg' : '')} %>
+    	<% else %>
+	      <%= link_to 'home', {:controller => 'sources'}, {:class => (request.parameters[:controller] == 'sources' ? 'fg' : '')} %>
+	      <%= link_to 'blog', {:controller => 'nodes'}, {:class => (request.parameters[:controller] == 'nodes' ? 'fg' : '')} %>
+	      <%= link_to 'discussion', {:controller => 'bundles'}, {:class => (request.parameters[:controller] == 'bundles' ? 'fg' : '')} %>
+	      <%= link_to 'questions', {:controller => 'bundles'}, {:class => (request.parameters[:controller] == 'bundles' ? 'fg' : '')} %>
+    	<% end %>
       <div id="notification">
         <%= flash[:notice] %>
       </div>  
