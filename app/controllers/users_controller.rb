@@ -49,7 +49,8 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(params[:user])
+    model = params[:user][:login] ? LoginUser : User
+    @user = model.new(params[:user])
     if @user.save
       flash[:notice] = 'User created.'
       redirect_to :action => 'show', :id => @user

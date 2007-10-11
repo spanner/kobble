@@ -25,6 +25,9 @@ class User < ActiveRecord::Base
       "preview" => "750x540>" 
     }
   }
+
+  attr_accessor :password
+  attr_accessor :confirm_password
   
   def name
     return self.diminutive if self.diminutive
@@ -57,7 +60,6 @@ end
 
 class LoginUser < User
   before_create :make_activation_code
-  attr_accessor :password
 
   validates_presence_of     :login
   validates_presence_of     :password,                   :if => :password_required?
@@ -149,7 +151,9 @@ class LoginUser < User
     save(false)
   end
 
-#  protected
+  public
+  
+  protected
     # before filter 
     def encrypt_password
       return if password.blank?

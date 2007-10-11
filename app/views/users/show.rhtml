@@ -57,7 +57,8 @@
 <p>
 	<% if @user.can_login? %>
 		login: <%= @user.login %><br />
-		last seen: <%= logged_in_at.ago %><br />
+		activated? <%= @user.activated? ? 'yes' : 'no' %><br />
+		last logged in: <%= @user.logged_in_at || 'never' %><br />
 	<% else %>
 		<em>non-login user</em><br />
 	<% end %>

@@ -2,19 +2,21 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 43) do
+ActiveRecord::Schema.define(:version => 44) do
 
   create_table "blogentries", :force => true do |t|
     t.column "created_by",    :integer
     t.column "updated_by",    :integer
     t.column "created_at",    :datetime
     t.column "updated_at",    :datetime
-    t.column "title",         :string
+    t.column "name",          :string
     t.column "introduction",  :text
     t.column "body",          :text
     t.column "collection_id", :integer
     t.column "node_id",       :string
     t.column "image",         :string
+    t.column "clip",          :string
+    t.column "caption",       :text
   end
 
   create_table "bundles", :force => true do |t|
@@ -183,7 +185,7 @@ ActiveRecord::Schema.define(:version => 43) do
     t.column "lastname",                  :string,   :limit => 40
     t.column "salt",                      :string,   :limit => 40, :default => "",     :null => false
     t.column "verified",                  :integer,                :default => 0
-    t.column "role",                      :string,   :limit => 40
+    t.column "role",                      :string
     t.column "remember_token",            :string,   :limit => 40
     t.column "remember_token_expires_at", :datetime
     t.column "created_at",                :datetime
@@ -200,6 +202,8 @@ ActiveRecord::Schema.define(:version => 43) do
     t.column "type",                      :string,                 :default => "User"
     t.column "activated_at",              :datetime
     t.column "activation_code",           :string,   :limit => 40
+    t.column "workplace",                 :string
+    t.column "phone",                     :string
   end
 
   create_table "warnings", :force => true do |t|
