@@ -321,6 +321,7 @@ module FileColumn # :nodoc:
     def move_from(local_dir, just_uploaded)
       # create a directory named after the primary key, first
       FileUtils.mkdir(@dir) unless File.exists?(@dir)
+      FileUtils.chmod_R 0755, @dir
 
       # move the temporary files over
       FileUtils.cp Dir.glob(File.join(local_dir, "*")), @dir
@@ -332,6 +333,8 @@ module FileColumn # :nodoc:
                      |e| File.exists?(File.join(local_dir, File.basename(e)))
                    })
       
+      # added by will to fix permissions problems
+      FileUtils.chmod 0664, Dir.glob(File.join(@dir, "*"))
     end
 
     def upload(file)
