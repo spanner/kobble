@@ -1,0 +1,11 @@
+<% if minilist %>
+ 
+    <p>
+			<strong><%= link_to( "#{minilist.name}", {:controller => 'blogentries', :action => 'show', :id => minilist}) %></strong><br />
+			<%= truncate( minilist.introduction, 240 ) %><br />
+    	<span class="footnote">
+				Posted on <%= minilist.created_at.to_date.to_s :short %> by <%= minilist.creator.name %>
+			</span>
+    </p>
+
+<% end %>

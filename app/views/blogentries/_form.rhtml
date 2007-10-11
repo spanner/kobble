@@ -1,28 +1,63 @@
 <%= error_messages_for 'blogentry' %>
 
 <!--[form:blogentry]-->
-<p><label for="blogentry_created_by">Created by</label><br/>
-<%= text_field 'blogentry', 'created_by'  %></p>
 
-<p><label for="blogentry_updated_by">Updated by</label><br/>
-<%= text_field 'blogentry', 'updated_by'  %></p>
+<p><label for="blogentry_name">Heading</label><br/>
+<%= text_field 'blogentry', 'name', :class => "standard"  %></p>
 
-<p><label for="blogentry_created_at">Created at</label><br/>
-<%= datetime_select 'blogentry', 'created_at'  %></p>
+<p><label for="node_synopsis">Synopsis</label><br />
+<%= text_area 'blogentry', 'introduction', 'rows' => 4, :class => "standard" %> <br />
+<span class="formnote">This will appear by itself in lists and above the body text on the blog entry page. Textile format, please.</span>
+</p>
 
-<p><label for="blogentry_updated_at">Updated at</label><br/>
-<%= datetime_select 'blogentry', 'updated_at'  %></p>
+<p><label for="node_body">Main body text</label><br/>
+<%= text_area 'blogentry', 'body', 'rows' => 12, :class => "standard" %><br />
+<span class="formnote">This will only appear on the blog entry page below the introduction.</span>
+</p>
 
-<p><label for="blogentry_title">Title</label><br/>
-<%= text_field 'blogentry', 'title'  %></p>
+<p>There are two ways to add illustration to a blog entry. Either upload a picture or clip in the usual way, or choose a fragment from the list and borrow the image or clip from there. If is possible to do all three, by the way, but the page is likely to look a bit ropy.</p>
 
-<p><label for="blogentry_introduction">Introduction</label><br/>
-<%= text_area 'blogentry', 'introduction'  %></p>
+<h3><a href="#" class="displaycontrol" id="show_blogentry_node">+ display a fragment</a></h3>
 
-<p><label for="blogentry_body">Body</label><br/>
-<%= text_area 'blogentry', 'body'  %></p>
+<div class="hidden" id="hide_blogentry_node">
+  <p>
+	<label for="blogentry_node_id">Display the image and clip from:</label><br />
+  <%= select("blogentry", "node_id", @current_collection.questions.collect{|q| [q.name, q.id] }, {:include_blank => true}, {:class => 'standard'}) %>
+	</p>
+</div>
 
-<p><label for="blogentry_image">Image</label><br/>
-<%= text_field 'blogentry', 'image'  %></p>
+<h3><a href="#" class="displaycontrol" id="show_blogentry_clip">+ <%= @blogentry.clip ? 'edit' : 'add' %> audio or video</a></h3>
+
+<div class="hidden" id="hide_blogentry_clip">
+	<% if @blogentry.clip %>
+	  <%= render :partial => 'shared/player', :locals => {
+	    :mp3url => url_for_file_column("blogentry", "clip")
+	  } %>
+	<% end %>
+	
+	<p><label for="node_playto">Upload a new clip</label><br />
+	<%= file_column_field "blogentry", "clip" %></p>
+</div>
+
+<h3><a href="#" class="displaycontrol" id="show_image">+ <%= @blogentry.new_record? ? 'add' : 'edit' %> image</a></h3>
+
+<div class="hidden" id="hide_image">
+  <% if @blogentry.image %>
+	<div style="float: left; margin-right: 10px;">
+		<a href="<%= url_for_file_column("blogentry", "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column("blogentry", "image", "thumb"), :size => "56x56", :border => 0, :alt => '') %></a>
+	</div>
+	<% end %>
+	
+  <p><label for="blogentry_image">Upload a new image:</label><br />
+  <%= file_column_field "blogentry", "image" %>
+  </p>
+
+</div>
+
+<div class="formbuttons">
+  <%= submit_tag "Store Blog Entry" %> or
+  <%= link_to 'cancel', :action => 'list' %>
+</div>
+
 <!--[eoform:blogentry]-->
 

@@ -3,10 +3,9 @@
   <div class="listrow">
     <%= render :partial => 'shared/icon', :locals => { :this => list, :with_caption => false } %>
     <h2><%= link_to( "#{list.name}", {:controller => 'blogentries', :action => 'show', :id => list}) %></h2>
-		<p><%= list.introduction %><br />
-    	<span class="footnote">
-				Posted at <% list.created_at %> by <%= list.creator.name %>
-			</span>
+		<p>
+			<span class="footnote">Posted at <%= list.created_at.to_date.to_s :long %> by <%= list.creator.name %></span>
     </p>
+		<%= truncate(list.introduction.formatted, 360) %>
   </div>
 <% end %>

@@ -1,8 +1,20 @@
-<% for column in Blogentry.content_columns %>
-<p>
-  <b><%= column.human_name %>:</b> <%=h @blogentry.send(column.name) %>
-</p>
-<% end %>
+<div class="floatcolumn" style="width: 175px;">
+	<% if @blogentry.image %>
+	<a href="<%= url_for_file_column("blogentry", "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column("blogentry", "image", "slide"), :size => "175x175", :border => 0, :alt => '') %></a>
+	<% end %>
+</div>
 
-<%= link_to 'Edit', :action => 'edit', :id => @blogentry %> |
-<%= link_to 'Back', :action => 'list' %>
+<h1 class="pagetitle">
+	<%= @blogentry.name %>
+	<% if @current_user.is_editor? %>
+		<%= link_to 'edit', :action => 'edit', :id => @blogentry %>
+	<% end %>
+</h1>
+
+<%= @blogentry.introduction.formatted if @blogentry.introduction %>
+
+<%= @blogentry.body.formatted if @blogentry.body %>
+
+<h2>Recent blogging</h2>
+
+<%= render :partial => 'blogentries/list', :collection => @current_collection.blogentries, :limit => 6 %>
