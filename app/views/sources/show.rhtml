@@ -4,6 +4,20 @@
 </div>
 
 <div class="floatcolumn" style="width: 175px;">
+ 	<h2>
+		<% if @source.circumstances.nil? or @source.circumstances.length == 0 %>
+			<span class="pale">- circumstances</span>
+		<% else %>
+			<a href="#" class="displaycontrol" id="show_circumstances">+ circumstances</a>
+		<% end %>
+	</h2>
+
+	<% unless @source.circumstances.nil? %>
+    <div class="hidden" id="hide_circumstances">
+			<%= @source.circumstances.formatted %>
+		</div>
+	<% end %>
+
 	<h2>
 		<% if @source.image %>
 			<a href="#" class="displaycontrol" id="show_image">+ show image</a>
