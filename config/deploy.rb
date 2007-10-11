@@ -24,6 +24,7 @@ namespace :deploy do
     run "ln -s #{shared_path}/assets/node #{current_release}/public/node" 
     run "ln -s #{shared_path}/assets/source #{current_release}/public/source" 
     run "ln -s #{shared_path}/assets/person #{current_release}/public/person"
+    run "ln -s #{shared_path}/assets/blogentry #{current_release}/public/blogentry"
     run "ln -s #{shared_path}/config/database.yml #{current_release}/config/database.yml" 
   end
 	

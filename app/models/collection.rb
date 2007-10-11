@@ -9,6 +9,7 @@ class Collection < ActiveRecord::Base
   has_many :nodes
   has_many :surveys
   has_many :questions
+  has_many :blogentries
   
   cattr_accessor :current_collection
   

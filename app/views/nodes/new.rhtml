@@ -1,18 +1,11 @@
-<div class="tabchooser">
+<h1>
+	<% if @node.source %>Excerpt a new snippet from 
+		<%= link_to @node.source.name, {:controller => 'sources', :action => 'show', :id => @node.source} %>
+	<% else %>
+		Create a new fragment
+	<% end %>
+</h1>
 
-  <h1><% if @node.source %>Excerpt a new snippet from 
-  <%= link_to @node.source.name, {:controller => 'sources', :action => 'show', :id => @node.source} %><% else %>Create a new snippet<% end %>
-  <a href="#" class="cancel">cancel</a>
-  </h1>
-
-  <p class="tabset">
-    <a href="#" class="tabheader" id="node_<%= @node.id || 'new' %>_editnode">title and text</a>
-    <a href="#" class="tabheader" id="node_<%= @node.id || 'new' %>_describenode">description</a>
-  </p>
-
-  <%= start_form_tag( {:action => 'create'}, :id => 'nodeform', :multipart => true) %>
-   <%= render :partial => 'form' %>
-   <%= render :partial => 'describe' %>
-  <%= end_form_tag %>
-  </div>
-</div>
+<%= start_form_tag( {:action => 'create'}, :id => 'nodeform', :multipart => true) %>
+ <%= render :partial => 'form' %>
+<%= end_form_tag %>

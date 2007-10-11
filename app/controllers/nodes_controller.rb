@@ -40,9 +40,6 @@ class NodesController < ApplicationController
     @node.body = URI.unescape(params[:excerpt]) if params[:excerpt]
     @node.playfrom = params[:inat]
     @node.playto = params[:outat]
-
-  	@sourceoptions = Source.find(:all, :order => 'name').map {|u| [u.name, u.id]}    
-    @default_person = Person.find(2)
   end
 
   def create

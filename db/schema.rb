@@ -2,7 +2,20 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 42) do
+ActiveRecord::Schema.define(:version => 43) do
+
+  create_table "blogentries", :force => true do |t|
+    t.column "created_by",    :integer
+    t.column "updated_by",    :integer
+    t.column "created_at",    :datetime
+    t.column "updated_at",    :datetime
+    t.column "title",         :string
+    t.column "introduction",  :text
+    t.column "body",          :text
+    t.column "collection_id", :integer
+    t.column "node_id",       :string
+    t.column "image",         :string
+  end
 
   create_table "bundles", :force => true do |t|
     t.column "name",           :string

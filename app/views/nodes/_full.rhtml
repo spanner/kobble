@@ -82,8 +82,9 @@
 	<% end %>
 	
 	<p class="bigp">
-		<%= link_to '+ edit fragment', {:action => 'edit', :id => @thisnode}, {:class => 'edititem'} %><br />
-		<%= link_to '+ remove fragment', {:action => 'destroy', :id => @thisnode}, {:class => 'removeitem', :confirm => "do you really want to completely get rid of #{@thisnode.name}?"} %>
+		<%= link_to 'edit fragment', {:action => 'edit', :id => @thisnode}, {:class => 'edititem'} %>
+		<%= link_to 'remove fragment', {:action => 'destroy', :id => @thisnode}, {:class => 'removeitem', :confirm => "do you really want to completely get rid of #{@thisnode.name}?"} %>
+		<%= link_to 'create another fragment', {:action => 'new'}, {:class => 'additem'} %>
 	</p>
 </div>
 

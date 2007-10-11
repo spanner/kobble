@@ -1,0 +1,28 @@
+<%= error_messages_for 'blogentry' %>
+
+<!--[form:blogentry]-->
+<p><label for="blogentry_created_by">Created by</label><br/>
+<%= text_field 'blogentry', 'created_by'  %></p>
+
+<p><label for="blogentry_updated_by">Updated by</label><br/>
+<%= text_field 'blogentry', 'updated_by'  %></p>
+
+<p><label for="blogentry_created_at">Created at</label><br/>
+<%= datetime_select 'blogentry', 'created_at'  %></p>
+
+<p><label for="blogentry_updated_at">Updated at</label><br/>
+<%= datetime_select 'blogentry', 'updated_at'  %></p>
+
+<p><label for="blogentry_title">Title</label><br/>
+<%= text_field 'blogentry', 'title'  %></p>
+
+<p><label for="blogentry_introduction">Introduction</label><br/>
+<%= text_area 'blogentry', 'introduction'  %></p>
+
+<p><label for="blogentry_body">Body</label><br/>
+<%= text_area 'blogentry', 'body'  %></p>
+
+<p><label for="blogentry_image">Image</label><br/>
+<%= text_field 'blogentry', 'image'  %></p>
+<!--[eoform:blogentry]-->
+
