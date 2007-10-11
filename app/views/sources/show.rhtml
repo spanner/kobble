@@ -77,6 +77,7 @@
 		<%= link_to 'extract fragment', {:controller => 'nodes', :action => 'new'}, {:class => 'additem'} %>
 		<%= link_to 'edit source', {:action => 'edit', :id => @source}, {:class => 'edititem'} %>
 		<%= link_to 'remove source', {:action => 'destroy', :id => @source}, {:class => 'removeitem', :confirm => "do you really want to completely get rid of #{@source.name}?"} %>
+		<%= link_to 'upload another source', {:action => 'new'}, {:class => 'additem'} %>
 	</p>
 </div>
 

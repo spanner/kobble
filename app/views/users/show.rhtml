@@ -1,11 +1,75 @@
-<h1>user: <%= @user.name %></h1>
-
-  <p>This is just a basic list, to begin with. It will get more useful.</p>
-  
-
-
-  <%= link_helper 'welcome_logout', :action => 'logout' %>
+<div class="header">
+	<%= render :partial => 'shared/icon', :locals => { :this => @user, :with_caption => false } %>
+	<h1 class="pagetitle"><%= @user.name %></h1>
 </div>
 
-<%= link_to 'Edit', :action => 'edit', :id => @user %> |
-<%= link_to 'Back', :action => 'list' %>
+<div class="floatcolumn" style="width: 175px;">
+	<h2>
+		<% if @user.image %>
+			<a href="#" class="displaycontrol" id="show_image">+ show image</a>
+		<% else %>
+			<span class="pale">- no image</span>
+		<% end %>
+	</h2>
+	
+ 	<% if @user.image %>
+  	<div class="hidden" id="hide_image">
+			<a href="<%= url_for_file_column("source", "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column("source", "image", "slide"), :size => "135x135", :border => 0, :alt => '') %></a>
+   	</div>
+	<% end %>
+
+ 	<h2>
+		<% if @user.nodes_count > 0 %>
+			<a href="#" class="displaycontrol" id="show_fragments">+ show fragments</a>
+		<% else %>
+			<span class="pale">- no fragments</span>
+		<% end %>
+	</h2>
+		
+	<% if @user.nodes_count > 0 %>
+    <div class="hidden" id="hide_fragments">
+      <%= render :partial => 'node', :collection => @user.nodes %>
+			<p class="clear small">You can drag items from here too.</p>
+    </div>
+	<% end %>
+
+	<h2>
+		<% if @user.has_tags? %>
+			<a href="#" class="displaycontrol" id="show_tags">+ show tags</a>
+		<% else %>
+			<span class="pale">- no tags</span>
+		<% end %>
+	</h2>
+	
+	<% if @user.has_tags? %>
+  <div class="hidden" id="hide_tags">
+		
+   </div>
+	<% end %>
+	
+	<p class="bigp">
+		<%= link_to 'edit user', {:action => 'edit', :id => @user}, {:class => 'edititem'} %>
+		<%= link_to 'remove user', {:action => 'destroy', :id => @user}, {:class => 'removeitem', :confirm => "do you really want to completely get rid of #{@user.name}?"} %>
+		<%= link_to 'create a new user', {:action => 'new'}, {:class => 'additem'} %>
+	</p>
+</div>
+
+<p>
+	<% if @user.can_login? %>
+		login: <%= @user.login %><br />
+		last seen: <%= logged_in_at.ago %><br />
+	<% else %>
+		<em>non-login user</em><br />
+	<% end %>
+	email address: <%= @user.email %><br />
+	workplace: <%= @user.workplace %><br />
+	role: <%= @user.role %><br />
+	phone: <%= @user.role %>
+</p>
+
+<% if @user.description? %>
+	<div class="synopsis">
+		<h2>description</h2>
+	  <%= @user.description.formatted %>
+	</div>
+<% end %>

@@ -56,6 +56,9 @@ a:hover {
   display: none;
 }
 
+em {
+	color: #CC6E1F;
+}
 /* standard formatting */
 
 h1 {
@@ -356,6 +359,7 @@ a.removeitem {
 #canvas {
 	padding: 0;
 	margin: 35px 100px 106px 83px;
+	max-width: 820px;
 }
 
 #listing {

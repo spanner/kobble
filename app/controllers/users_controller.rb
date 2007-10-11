@@ -46,10 +46,32 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new
-    render :action => 'signup'
   end
-  
-  def welcome
-    render :layout => 'standard'
+
+  def create
+    @user = User.new(params[:user])
+    if @user.save
+      flash[:notice] = 'User created.'
+      redirect_to :action => 'show', :id => @user
+    else
+      render :action => 'new'
+    end
   end
+
+  def edit
+    userid = params[:id] || $current_user.id
+    @user = User.find(userid)
+  end
+
+  def update
+    @user = User.find(params[:user])
+    if @user.update_attributes(params[:user])
+      flash[:notice] = 'User was updated.'
+      redirect_to :action => 'show', :id => @user
+    else
+      flash[:notice] = 'failed to update.'
+      render :action => 'edit'
+    end
+  end
+
 end
