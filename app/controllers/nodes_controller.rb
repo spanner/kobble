@@ -61,7 +61,7 @@ class NodesController < ApplicationController
     @node = Node.find(params[:id])
     if @node.update_attributes(params[:node])
       @node.tags.clear
-      @node.tags << tags_from_list(params[:keyword_list])
+      @node.tags << tags_from_list(params[:tag_list])
       flash[:notice] = 'Node was successfully updated.'
       redirect_to :action => 'show', :id => @node
     else

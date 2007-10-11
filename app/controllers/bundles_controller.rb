@@ -34,33 +34,22 @@ class BundlesController < ApplicationController
   def new
     @bundle = Bundle.new
     @members = []
-    params[:scraps].each do |m|
-      fragments = m.split('_', 2)
-      if (fragments[0] == 'node')
-        @members << Node.find(fragments[1])
-      elsif (fragments[0] == 'bundle')
-        @members << Bundle.find(fragments[1])
-      end
+    params[:scrap].split('|').each do |s|
+      input = s.split('_')
+      @bundle.members << input[0].camelize.constantize.find(input[1])
     end
     @members.uniq!
-  	@bundletypeoptions = Bundletype.find(:all, :order => 'name').map {|u| [u.name, u.id]}
   end
 
   def create
     @bundle = Bundle.new(params[:bundle])
     if @bundle.save
       members = []
-      params[:members].each do |m|
-        fragments = m.split('_', 2)
-        if (fragments[0] == 'node')
-          members << Node.find(fragments[1])
-        elsif (fragments[0] == 'bundle')
-          members << Bundle.find(fragments[1])
-        end
+      @bundle.tags << tags_from_list(params[:tag_list])
+      params[:scrap].each do |s|
+        input = s.split('_')
+        @bundle.members << input[0].camelize.constantize.find(input[1])
       end
-      logger.debug("members are #{members}")
-      @bundle.members << members
-      @bundle.tags << tags_from_list(params[:keyword_list])
 
       flash[:notice] = 'Bundle was successfully created.'
       redirect_to :controller => 'bundles', :action => 'list'
@@ -71,15 +60,13 @@ class BundlesController < ApplicationController
 
   def edit
     @bundle = Bundle.find(params[:id])
-    @members = @bundle.members
-  	@bundletypeoptions = Bundletype.find(:all, :order => 'name').map {|u| [u.name, u.id]}
   end
 
   def update
     @bundle = Bundle.find(params[:id])
-    @bundle.nodes = Node.find( params[:nodes] ) if params[:nodes]
-    @bundle.tags = tags_from_list(params[:keyword_list])
     if @bundle.update_attributes(params[:bundle])
+      @bundle.tags.clear
+      @bundle.tags << tags_from_list(params[:tag_list])
       flash[:notice] = 'Bundle was successfully updated.'
       redirect_to :action => 'show', :id => @bundle
     else

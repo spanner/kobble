@@ -7,4 +7,9 @@ class Question < ActiveRecord::Base
   has_many :nodes
   acts_as_list :scope => :survey 
 
+
+  def tag_list
+    tags.map {|t| t.name }.uniq.join(', ')
+  end
+
 end

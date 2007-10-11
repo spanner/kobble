@@ -130,5 +130,9 @@ class Node < ActiveRecord::Base
   end
   
   public
+
+  def tag_list
+    tags.map {|t| t.name }.uniq.join(', ')
+  end
   
 end

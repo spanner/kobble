@@ -2,18 +2,32 @@
 
 <p>'Source documents' are whole texts or recordings, uploaded intact and suitable for segmenting. At the moment we can accept text, mp3 audio and mpeg video. Pdfs will be edible soon, and other media formats will follow as they are needed.</p>
 
-<p><label for="source_name">Document name</label><br/>
+<p><label for="source_name">Document name</label><br />
 <%= text_field 'source', 'name', 'class' => "standard" %>  <br />
-<span class="formnote"></span></p>
-
-<p><label for="source_synopsis">Synopsis</label><br />
-<%= text_area 'source', 'synopsis', 'rows' => 4, 'class' => "standard" %> <br />
-<span class="formnote">textile format, please.</span>
-
-<p><label for="source_body">Text (or transcript)</label><br/>
-<%= text_area 'source', 'body', 'rows' => 12, 'class' => "standard" %><br />
-<span class="formnote">textile format, please.</span>
+<span class="formnote"></span>
 </p>
+
+<p><label for="source_synopsis">Circumstances</label><br />
+<%= text_area 'source', 'circumstances', 'rows' => 4, 'class' => "standard" %> <br />
+<span class="formnote"><%= link_to 'textile format', 'http://hobix.com/textile/' %>, please.</span>
+</p>
+
+<p><label for="source_synopsis">Synopsis or description</label><br />
+<%= text_area 'source', 'synopsis', 'rows' => 6, 'class' => "standard" %> <br />
+<span class="formnote"><%= link_to 'textile format', 'http://hobix.com/textile/' %>, please.</span>
+</p>
+
+
+<h3><a href="#" class="displaycontrol" id="show_source_body">+ <%= @source.clip ? 'edit' : 'add' %> text or transcript</a></h3>
+
+<div class="hidden" id="hide_source_body">
+	<p><label for="source_body">Text (or transcript)</label><br />
+	<%= text_area 'source', 'body', 'rows' => 12, 'class' => "standard" %><br />
+	<span class="formnote"><%= link_to 'textile format', 'http://hobix.com/textile/' %>, please.</span>
+	</p>
+</div>
+
+<%= render :partial => 'shared/edit_tags', :locals => {:item => @source} %>
 
 <h3><a href="#" class="displaycontrol" id="show_source_clip">+ <%= @source.clip ? 'edit' : 'add' %> audio or video</a></h3>
 
@@ -25,7 +39,8 @@
 	<% end %>
 	
 	<p><label for="node_playto">Upload a new clip</label><br />
-	<%= file_column_field "source", "clip" %></p>
+	<%= file_column_field "source", "clip" %>
+	</p>
 </div>
 
 <h3><a href="#" class="displaycontrol" id="show_source_speaker">+ choose speaker</a></h3>
@@ -52,8 +67,6 @@
   </p>
 </div>
 	
-<%= render :partial => 'shared/edit_tags', :locals => {:item => @source} %>
-
 <div class="formbuttons">
   <%= submit_tag "Store Document" %> or
   <%= link_to 'cancel', :action => 'list' %>

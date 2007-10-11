@@ -37,7 +37,7 @@ class SourcesController < ApplicationController
   def create
     @source = Source.new(params[:source])
     if @source.save
-      # @source.tags << tags_from_list(params[:tag_list])
+      @source.tags << tags_from_list(params[:tag_list])
       flash[:notice] = 'Source object successfully created.'
       redirect_to :action => 'list'
     else
@@ -52,6 +52,10 @@ class SourcesController < ApplicationController
   def update
     @source = Source.find(params[:id])
     if @source.update_attributes(params[:source])
+      
+      @source.tags.clear
+      @source.tags << tags_from_list(params[:tag_list])
+      
       flash[:notice] = 'Source object successfully updated.'
       redirect_to :action => 'show', :id => @source
     else

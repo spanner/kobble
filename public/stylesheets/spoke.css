@@ -328,6 +328,10 @@ form p, form h3, input.standard, textarea.standard, select.standard {
 	clear: both;
 }
 
+input.tagbox {
+	width: 520px;
+}
+
 a.additem, a.edititem, a.removeitem {
 	display: block;
 	height: 20px;
@@ -670,7 +674,7 @@ div.floatcolumn {
   float: right;
   width: 160px;
   margin-top: 0;
-  margin-bottom: 10px;
+  margin-bottom: 40px;
   margin-left: 40px;
   margin-right: 0;
   padding: 0;

@@ -55,7 +55,6 @@ class TagsController < ApplicationController
     #   @tags = []
     #   @nodes = nil
     # end
-    @tagoptions = Tag.find(:all, :order => 'name').map {|k| [k.name, k.id]}    
   end
 
   def taglist
@@ -65,12 +64,16 @@ class TagsController < ApplicationController
     render :layout => false
   end
   
+  def matching
+    @tags = Tag.find(:all, :conditions => "name like '#{params[:stem]}%'").collect {|t| "'#{t.name}'"}
+    render :layout => false
+  end
+  
   # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
   verify :method => :post, :only => [ :destroy, :create, :update ],
          :redirect_to => { :action => :list }
   
   def list
-    conditions = ["name LIKE ?", "%#{params[:query]}%"] unless params[:query].nil?
 
     sort = case params['sort']
      when "name"  then "name"

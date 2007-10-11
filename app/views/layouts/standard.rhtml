@@ -9,13 +9,14 @@
 <head>
   <title>Device: <%= controller.action_name %></title>
   <script type="text/javascript" src="/js/mootools.js"></script>
+  <script type="text/javascript" src="/js/extensions.js"></script>
   <script type="text/javascript" src="/js/slimbox.js"></script>
-	<script type="text/javascript" src="/swiff/Swiff.Base.js"></script>
-	<script type="text/javascript" src="/swiff/Swiff.Uploader.js"></script>
-	<script type="text/javascript" src="/js/FancyUpload.js"></script>
+	<script type="text/javascript" src="/js/Autocompleter.js"></script>
+	<script type="text/javascript" src="/js/scratchpad.js"></script>
   <script type="text/javascript" src="/js/spoke.js"></script>
   <link rel="stylesheet" href="/stylesheets/spoke.css" type="text/css" />
   <link rel="stylesheet" href="/stylesheets/slimbox.css" type="text/css" />
+  <link rel="stylesheet" href="/stylesheets/Autocompleter.css" type="text/css" />
 </head>
 <body>
 
@@ -27,7 +28,7 @@
 
   <div id="mastfoot">
     <div id="logo">
-      <a href="/"><img src="/images/furniture/layout/sparklogo.png" width="49" height="39" alt="sparknow"></a>
+      <a href="/"><img src="/images/furniture/layout/sparklogo.png" width="49" height="39" alt="sparknow" /></a>
     </div>  
           
  		<% if @current_user.is_editor? %>

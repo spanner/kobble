@@ -1,0 +1,9 @@
+<% @user = user unless @user %>
+
+<p><label for="user_firstname">First name</label><br/>
+<%= text_field 'user', 'firstname', 'class' => "standard" %>  <br />
+<span class="formnote"></span></p>
+
+<p><label for="user_lastname">Surname</label><br/>
+<%= text_field 'user', 'lastname', 'class' => "standard" %>  <br />
+<span class="formnote"></span></p>

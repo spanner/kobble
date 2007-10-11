@@ -68,9 +68,9 @@
 	</h2>
 	
 	<% if @source.has_tags? %>
-  <div class="hidden" id="hide_tags">
-		
-   </div>
+  	<ul class="hidden" id="hide_tags">
+			<%= render :partial => "tags/minilist", :collection => @source.tags.uniq %>
+  	</ul>
 	<% end %>
 	
 	<p class="bigp">

@@ -76,7 +76,7 @@ class LoginUser < User
   def find_or_create_scratchpads
     if (self.scratchpads.size == 0)
       (1..4).each do |i|
-        self.scratchpads << Scratchpad.new( :user => @thisuser, :name => "pad{i}" )
+        self.scratchpads << Scratchpad.new( :user => @thisuser, :name => "pad#{i}" )
       end
     end
     self.scratchpads

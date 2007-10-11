@@ -28,17 +28,10 @@ class ApplicationController < ActionController::Base
     logged_in? && current_user.is_admin? == 'admin'
   end
   
-  def kwtree
-    tags = Keyword.find(:all, :include => :parent)
-    tags.collect{ |kw| kw.parentage }.sort!
-  end
-
-  def tags_from_list (branchlist)
-    return unless branchlist;
-    branches = branchlist.split(/[,;]\s*/)
-    branches.collect!{ |b| 
-      Keyword.find_or_create_branch( b.split(/\/\s*/) )
-    }
+  def tags_from_list (taglist)
+    tags = taglist.split(/[,;]\s*/).uniq
+    tags.map! { |name| Tag.find_or_create_by_name( name ) }
+    tags
   end
   
 end
