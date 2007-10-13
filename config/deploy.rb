@@ -29,13 +29,13 @@ namespace :deploy do
   end
 	
   task :start, :roles => :app do
-    run "mongrel_rails cluster::start -C #{mongrel_conf}" 
+    sudo "mongrel_rails cluster::start -C #{mongrel_conf}" 
   end
   task :stop, :roles => :app do
-    run "mongrel_rails cluster::stop -C #{mongrel_conf}" 
+    sudo "mongrel_rails cluster::stop -C #{mongrel_conf}" 
   end
   task :restart, :roles => :app do
-    run "mongrel_rails cluster::restart -C #{mongrel_conf}" 
+    sudo "mongrel_rails cluster::restart -C #{mongrel_conf}" 
   end
 end
 

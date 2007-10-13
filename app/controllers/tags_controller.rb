@@ -65,7 +65,7 @@ class TagsController < ApplicationController
   end
   
   def matching
-    @tags = Tag.find(:all, :conditions => "name like '#{params[:stem]}%'").collect {|t| "'#{t.name}'"}
+    @tags = Tag.find(:all, :conditions => "name like '#{params[:stem]}%' and collection_id = #{Collection.current_collection.id}").collect {|t| "'#{t.name}'"}
     render :layout => false
   end
   

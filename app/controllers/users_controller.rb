@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   # logging in and registration is in account_controller
 
   def limit_to_active_collection
-    ["collection_id = ? or status > 0", current_collection]
+    ["collection_id = ? or status >= 200", current_collection]
   end
 
   def index

@@ -268,9 +268,6 @@ var Draggee = new Class({
 // and to show nicely formatted lists
 
 var TagSuggestion = Autocompleter.Ajax.Json.extend({
-
-
-
 	updateChoices: function(choices) {
 		this.choices.empty();
 		this.selected = null;

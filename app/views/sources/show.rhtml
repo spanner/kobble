@@ -13,21 +13,21 @@
 	</h2>
 
 	<% unless @source.circumstances.nil? %>
-    <div class="hidden" id="hide_circumstances">
+    <div class="marginal hidden" id="hide_circumstances">
 			<%= @source.circumstances.formatted %>
 		</div>
 	<% end %>
 
 	<h2>
 		<% if @source.image %>
-			<a href="#" class="displaycontrol" id="show_image">+ show image</a>
+			<a href="#" class="displaycontrol" id="show_image">- hide image</a>
 		<% else %>
 			<span class="pale">- no image</span>
 		<% end %>
 	</h2>
 	
  	<% if @source.image %>
-  	<div class="hidden" id="hide_image">
+  	<div class="marginal" id="hide_image">
 			<a href="<%= url_for_file_column("source", "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column("source", "image", "slide"), :size => "135x135", :border => 0, :alt => '') %></a>
    	</div>
 	<% end %>
@@ -41,7 +41,7 @@
 	</h2>
 		
 	<% if @source.nodes_count > 0 %>
-    <div class="hidden" id="hide_fragments">
+    <div class="marginal hidden" id="hide_fragments">
       <%= render :partial => 'node', :collection => @source.nodes %>
 			<p class="clear small">You can drag items from here too.</p>
     </div>
@@ -57,7 +57,7 @@
 		</h2>
 
 		<% if @source.has_notes? %>
-	    <div class="hidden" id="hide_fieldnotes">
+	    <div class="marginal hidden" id="hide_fieldnotes">
 				<% if @source.observations %>
 					<p><strong>Observations:</strong> <%= @source.observations %></p>
 				<% end %>
@@ -82,7 +82,7 @@
 	</h2>
 	
 	<% if @source.has_tags? %>
-  	<ul class="hidden" id="hide_tags">
+  	<ul class="marginal hidden" id="hide_tags">
 			<%= render :partial => "tags/minilist", :collection => @source.tags.uniq %>
   	</ul>
 	<% end %>
@@ -95,10 +95,19 @@
 	</p>
 </div>
 
-<div class="synopsis">
-	<h2>synopsis</h2>
-  <%= @source.synopsis.formatted %>
-</div>
+<% unless @source.body.nil? or @source.body.length == 0 %>
+	<h2>
+		<% if ! @source.synopsis.nil? and @source.synopsis.length != 0 %>
+			<a href="#" class="displaycontrol" id="show_synopsis">+ show synopsis</a>
+		<% else %>
+			<span class="pale">- synopsis</span>
+		<% end %>
+	</h2>
+	<div class="synopsis hidden" id="hide_synopsis">
+	 	<%= @source.synopsis.formatted %>
+	</div>
+<% end %>
+
 
 <% if @source.clip %>
   <%= render :partial => 'shared/player', :locals => {
@@ -107,9 +116,14 @@
   } %>
 
   <p class="bigp"><%= link_to('+ create audio fragment') %></p>
-
 <% end %>
 
-<div class="transcript">
-	<%= @source.body.formatted %>
-</div>
+<% if @source.body.nil? or @source.body.length == 0 %>
+	<div class="synopsis">
+		<%= @source.synopsis.formatted %>
+	</div>
+<% else %>
+	<div class="transcript">
+		<%= @source.body.formatted %>
+	</div>
+<% end %>
