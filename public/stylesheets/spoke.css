@@ -758,37 +758,3 @@ p.haserror {
 	font-weight: bold;
 }
 
-div.textpage {
-	width: 820px;
-}
-
-div.textfaq {
-	float: left;
-	width: 240px;
-	font-size: 80%;
-	color: #695D54;
-	margin-right: 30px;
-}
-
-div.textfaq img {
-	float: left;
-	margin: 10px;
-}
-
-a.signup {
-	display: block;
-	background-position: top left;
-	background-repeat: no-repeat;
-	background-image: url('/images/furniture/layout/biglinkbg.png');
-	height: 39px;
-	line-height: 42px;
-	color: white;
-	font-size: 20px;
-	white-space: nowrap;
-	padding: 0 0 0 55px;
-	overflow: hidden;
-}
-
-a.signup:hover {
-	background-image: url('/images/furniture/layout/biglinkhover.png');
-}

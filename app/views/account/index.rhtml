@@ -1,8 +1,20 @@
+<% @show_field = 'welcome' unless @show_field %>
+
 <% if current_user == :false %>
 
-	<h1 class="pagetitle"><%= @current_collection.name %></h1>
+	<h1><% if @show_field == 'welcome' %><span class="pale">Welcome to the</span> <% else %><span class="pale"><% end %><%= @current_collection.name %><% unless @show_field == 'welcome' %></span> <%= @show_field %><% end %></h1>
+	
+	<p>
+		<%= link_to_unless_current 'welcome', '/' %> |
+		<%= link_to_unless_current 'background', '/background' %> |
+		<%= link_to_unless_current 'faq', '/faq' %> |
+		<%= link_to_unless_current 'sign up', '/account/signup' %> |
+		<%= link_to_unless_current 'log in', '/account/login' %>
+	</p>
 
-	<%= @current_collection.welcome.formatted %>
+	<%= 
+		@current_collection.send(@show_field).formatted
+	%>
 
 <% elsif current_user && current_user.activated? %>
 

@@ -2,7 +2,15 @@ class AccountController < ApplicationController
   skip_before_filter :login_required
   
   def index
-    # redirect_to(:action => 'login') unless logged_in?
+    render :layout => @current_collection.tag.to_s
+  end
+  def background
+    @show_field = 'background'
+    render :action => 'index', :layout => @current_collection.tag.to_s
+  end
+  def faq
+    @show_field = 'faq'
+    render :action => 'index', :layout => @current_collection.tag.to_s
   end
 
   def set_context

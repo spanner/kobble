@@ -1,4 +1,5 @@
-﻿var scratchpad = null;
+﻿var accordion = null;
+var scratchpad = null;
 var display = null;
 var droppers = [];
 var clickthreshold = 20;
@@ -81,6 +82,18 @@ window.addEvent('domready', function(){
 			}
 		});
 	});
+
+  if ($E('h2.accordion')) {
+    accordion = new Accordion('h2.accordion', 'div.accordion', {
+    	opacity: false,
+    	onActive: function(toggler, element){
+    		toggler.setStyle('color', '#ff3300');
+    	},
+    	onBackground: function(toggler, element){
+    		toggler.setStyle('color', '#222');
+    	}
+    });
+  }
 });
 
 

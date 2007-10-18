@@ -11,16 +11,20 @@
 	allows registration: <%= @collection.allow_registration ? 'yes' : 'no' %>
 </p>
 
-<%= @collection.description.formatted %>
+<%= @collection.description.formatted unless @collection.description.nil? %>
 
 <h2>Invitation</h2>
 
-<%= @collection.invitation.formatted if @collection.invitation %>
+<%= @collection.invitation.formatted unless @collection.invitation.nil? %>
 
 <h2>Privacy Statement</h2>
 
-<%= @collection.privacy.formatted if @collection.privacy %>
+<%= @collection.privacy.formatted unless @collection.privacy.nil? %>
 
 <h2>Welcome text</h2>
 
-<%= @collection.welcome.formatted if @collection.welcome %>
+<%= @collection.welcome.formatted unless @collection.welcome.nil? %>
+
+<h2>Background text</h2>
+
+<%= @collection.background.formatted unless @collection.background.nil? %>

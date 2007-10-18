@@ -8,6 +8,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.connect ':controller/:action/:id'
 
+  map.connect '/background', :controller => 'account', :action => 'background'
   map.connect '', :controller => 'account', :action => 'index'
 
 end

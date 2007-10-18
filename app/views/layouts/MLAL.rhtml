@@ -2,8 +2,9 @@
         "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>
 <head>
-  <title><% if logged_in? %><%= current_user.collection.name %><% else %>spoke!<% end %></title>
+  <title>Welcome to the Knowledge Transfer Programme</title>
   <link rel="stylesheet" href="/stylesheets/spoke.css" type="text/css" />
+  <link rel="stylesheet" href="/stylesheets/mlal.css" type="text/css" />
   <script type="text/javascript" src="/js/mootools.js"></script>
   <script type="text/javascript" src="/js/extensions.js"></script>
 	<script type="text/javascript" src="/js/Autocompleter.js"></script>
@@ -12,7 +13,7 @@
 </head>
 <body>
 
-  <div id="canvas">
+  <div id="pageholder">
    
 <%= @content_for_layout %>
 

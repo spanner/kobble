@@ -1,0 +1,31 @@
+/* 
+  sparrow layout: v1.0
+  spark blue: #559DC4
+  warm grey 11: #695D54
+  spark orange: #CC6E1F
+  warm grey 5: #B2AAA4
+*/
+
+div#pageholder {
+  width: 460px;
+  margin: 40px auto;
+  padding-left: 140px;
+}
+
+a.signup {
+	display: block;
+	background-position: top left;
+	background-repeat: no-repeat;
+	background-image: url('/images/furniture/layout/biglinkbg.png');
+	height: 39px;
+	line-height: 42px;
+	color: white;
+	font-size: 20px;
+	white-space: nowrap;
+	padding: 0 0 0 55px;
+	overflow: hidden;
+}
+
+a.signup:hover {
+	background-image: url('/images/furniture/layout/biglinkhover.png');
+}
