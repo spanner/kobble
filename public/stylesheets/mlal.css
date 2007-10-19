@@ -12,6 +12,9 @@ div#pageholder {
 div#mlalheader {
   width: 100%;
   background-color: #559DC4;
+	background-image: url(/images/furniture/layout/mlalbg.png);
+  background-position: bottom left;
+  background-repeat: repeat-x;
   border: 1px solid #559DC4;
   padding: 0;
 }
