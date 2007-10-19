@@ -3,12 +3,14 @@
 	<%= @current_collection.invitation.formatted %>
 
 	<% if @user.errors && !@user.errors.empty? %>
-		<p class="haserror">Sorry: there were some problems. Please check the highlighted fields and try again.</p>
+		<p class="haserror">
+			<img src="/images/furniture/signals/warning.png" width="20" height="20" alt="Warning" style="float: left; margin-right: 3px;">
+			Sorry: there were some problems. Please check the highlighted fields and try again.</p>
 	<% end %>
 
 	<p>If you have already registered, you need only <%= link_to 'log in', :action => 'login' %>.</p>
 
-	<div id="signupform">
+	<div id="mainform">
 
 	<% form_for :user do |f| -%>
 

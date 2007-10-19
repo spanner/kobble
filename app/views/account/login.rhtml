@@ -1,9 +1,7 @@
 
 <% if @current_collection and @current_collection.allow_registration %>
 
- 	<h1 class="pagetitle">Hello and welcome to the<br />
-	<%= @current_collection.name %></h1>
-	<p>Please log in below. If you haven't already, you will first need to <%= link_to 'set up an account', :controller => 'account', :action => 'signup', :id => @current_collection.id %>.</p>
+	<p>Please log in below. If you haven't already, you will first need to <%= link_to 'set up an account', :controller => 'account', :action => 'signup' %>.</p>
 
 <% else %>
 
@@ -34,18 +32,6 @@
 			<%= submit_tag 'Log in' %>
       	<%= link_to "forgotten password?", {:action => 'repassword'}, :class => 'formnote' %>
 		</p>
-
-      <p class="footnote">
-        Through the unknown, unremembered gate<br />
-        When the last of earth left to discover<br />
-        Is that which was the beginning;<br />
-        At the source of the longest river<br />
-        The voice of the hidden waterfall<br />
-        And the children in the apple-tree<br />
-        Not known, because not looked for<br />
-        But heard, half-heard, in the stillness<br />
-        Between two waves of the sea.<br />
-      </p>
        
 	<% end -%>
  </div>

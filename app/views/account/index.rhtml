@@ -1,6 +1,6 @@
 <% @show_field = 'welcome' unless @show_field %>
 
-<% if current_user == :false %>
+<% if @show_field || current_user == :false %>
 
 	<%= @current_collection.send(@show_field).formatted %>
 	

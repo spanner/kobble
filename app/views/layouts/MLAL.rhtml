@@ -1,8 +1,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
         "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<% @pagetitle = 'sign up' -%>
+<% @pagetitle = 'log in' if request.request_parameters['action'] == 'login' -%>
+<% @pagetitle = @show_field if @show_field -%>
 <html>
 <head>
-  <title>Welcome to the Knowledge Transfer Programme</title>
+  <title>Knowledge Transfer Programme : <%= @pagetitle %></title>
   <link rel="stylesheet" href="/stylesheets/spoke.css" type="text/css" />
   <link rel="stylesheet" href="/stylesheets/mlal.css" type="text/css" />
   <script type="text/javascript" src="/js/mootools.js"></script>
@@ -13,16 +17,24 @@
 </head>
 <body>
 
+<%= %>
+
 <div id="mlalheader">
 	<h1>
-		<%= @current_collection.name %> <span class="bright"><%= @show_field %></span></h1>
+		<%= @current_collection.name %> <span class="bright"><%= @pagetitle %></span></h1>
 	</h1>
 	<div id="mlalnavigation">
-		<%= link_to 'welcome', '/', {:class => @request.request_parameters['action'] == 'index' ? 'fg' : ''} %>
-		<%= link_to 'background', '/background', {:class => @request.request_parameters['action'] == 'background' ? 'fg' : ''} %>
-		<%= link_to 'questions', '/faq', {:class => @request.request_parameters['action'] == 'faq' ? 'fg' : ''} %>
-		<%= link_to 'sign up', '/account/signup', {:class => @request.request_parameters['action'] == 'signup' ? 'fg' : ''} %>
-		<%= link_to 'log in', '/account/login', {:class => @request.request_parameters['action'] == 'login' ? 'fg' : ''} %>
+		<%= link_to 'welcome', '/', {:class => request.request_parameters['action'] == 'index' ? 'fg' : ''} %>
+		<%= link_to 'background', '/background', {:class => request.request_parameters['action'] == 'background' ? 'fg' : ''} %>
+		<%= link_to 'questions', '/faq', {:class => request.request_parameters['action'] == 'faq' ? 'fg' : ''} %>
+		<% if current_user %>
+			<%= link_to 'blog', '/blog', {:class => request.request_parameters['action'] == 'blog' ? 'fg' : ''} %>
+			<%= link_to 'discussion', '/discussion', {:class => request.request_parameters['action'] == 'discussion' ? 'fg' : ''} %>
+			<%= link_to 'log out', '/account/logout', {:class => request.request_parameters['action'] == 'login' ? 'fg' : ''} %>
+		<% else %>
+			<%= link_to 'sign up', '/account/signup', {:class => request.request_parameters['action'] == 'signup' ? 'fg' : ''} %>
+			<%= link_to 'log in', '/account/login', {:class => request.request_parameters['action'] == 'login' ? 'fg' : ''} %>
+		<% end %>
 	</div>
 </div>
 
