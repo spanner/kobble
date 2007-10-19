@@ -7,16 +7,81 @@
 */
 
 div#pageholder {
+}
+
+div#mlalheader {
+  width: 100%;
+  background-color: #559DC4;
+  border: 1px solid #559DC4;
+  padding: 0;
+}
+
+div#mlalheader h1 {
+  width: 460px;
+  margin: 20px auto;
+  line-height: 1.1;
+}
+
+div#mlalheader h1 span.bright {
+  color: white;
+}
+
+div#mlalnavigation {
+  width: 460px;
+  margin: 0 auto;
+  height: 27px;
+}
+
+div#mlalnavigation a, div#mlalnavigation a:link {
+  display: block;
+	float: left;
+  margin: 0 1px 5px 0;
+  padding: 4px 6px 4px 6px;
+  background-color: white;
+	background-repeat: repeat-x;
+	background-position: bottom left;
+	background-image: url(/images/furniture/layout/upwhitetabbg.png);
+  text-decoration: none;
+  font-size: 14px;
+  height: 18px;
+  line-height: 18px;
+  overflow: hidden;
+  color: #695D54;
+  font-family: helvetica, arial, sans;
+  margin-top: 2px;
+}
+
+div#mlalnavigation a.fg {
+	background-image: none;
+  height: 22px;
+  padding-top:6px;
+  margin-top: 0;
+  color: #000;
+}
+
+div#mlalnavigation a.louder {
+  color: #559DC4;
+}
+
+div#mlalnavigation a:hover {
+  border: 0;
+  background-image:none;
+  color: #559DC4;
+}
+
+div#mlalbody, div#mlallogos {
   width: 460px;
   margin: 40px auto;
-  padding-left: 140px;
 }
+
+
+
 
 a.signup {
 	display: block;
 	background-position: top left;
 	background-repeat: no-repeat;
-	background-image: url('/images/furniture/layout/biglinkbg.png');
+	background-image: url(/images/furniture/layout/biglinkbg.png);
 	height: 39px;
 	line-height: 42px;
 	color: white;
@@ -27,5 +92,59 @@ a.signup {
 }
 
 a.signup:hover {
-	background-image: url('/images/furniture/layout/biglinkhover.png');
+	background-image: url(/images/furniture/layout/biglinkhover.png);
 }
+
+
+
+
+/* signup page */
+
+div#signupnote {
+}
+
+div#signupform {
+}
+
+div#signupform input, div#signupform label  {
+	display: block;
+	width: 460px;
+}
+
+div#signupform p {
+	margin-bottom: 0;
+}
+
+div#privacystatement {
+  margin-top: 60px;
+	color: #695D54;
+}
+
+div.errorExplanation {
+	color: #CC6E1F;
+}
+
+div.errorExplanation ul {
+	padding: 0;
+	list-style: none;
+}
+
+div.errorExplanation li {
+	font-weight: bold;
+}
+
+div.formError, label.formError {
+	color: #CC6E1F; 
+}
+
+div.fieldWithErrors input {
+	background-image: url(/images/furniture/signals/fieldproblem.png);
+	background-position: top right;
+	background-repeat: no-repeat;
+}
+
+p.haserror {
+	color: #CC6E1F;
+	font-weight: bold;
+}
+

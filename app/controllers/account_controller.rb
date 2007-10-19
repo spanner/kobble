@@ -1,20 +1,25 @@
 class AccountController < ApplicationController
   skip_before_filter :login_required
+  layout :choose_layout
   
   def index
-    render :layout => @current_collection.tag.to_s
+    @show_field = 'welcome' unless @show_field
   end
   def background
     @show_field = 'background'
-    render :action => 'index', :layout => @current_collection.tag.to_s
+    render :action => 'index'
   end
   def faq
     @show_field = 'faq'
-    render :action => 'index', :layout => @current_collection.tag.to_s
+    render :action => 'index'
   end
 
   def set_context
     Collection.current_collection = UserObserver.current_collection = @current_collection = Collection.find(params[:id] || 2)
+  end
+  
+  def choose_layout
+    @current_collection.tag.to_s
   end
   
   def signup

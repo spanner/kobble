@@ -13,11 +13,28 @@
 </head>
 <body>
 
-  <div id="pageholder">
-   
+<div id="mlalheader">
+	<h1>
+		<%= @current_collection.name %> <span class="bright"><%= @show_field %></span></h1>
+	</h1>
+	<div id="mlalnavigation">
+		<%= link_to 'welcome', '/', {:class => @request.request_parameters['action'] == 'index' ? 'fg' : ''} %>
+		<%= link_to 'background', '/background', {:class => @request.request_parameters['action'] == 'background' ? 'fg' : ''} %>
+		<%= link_to 'questions', '/faq', {:class => @request.request_parameters['action'] == 'faq' ? 'fg' : ''} %>
+		<%= link_to 'sign up', '/account/signup', {:class => @request.request_parameters['action'] == 'signup' ? 'fg' : ''} %>
+		<%= link_to 'log in', '/account/login', {:class => @request.request_parameters['action'] == 'login' ? 'fg' : ''} %>
+	</div>
+</div>
+
+<div id="mlalbody">
+ 
 <%= @content_for_layout %>
 
-  </div>
+</div>
 
+<div id="mlallogos" style="margin-top: 40px">
+	<a href="http://www.lda.gov.uk"><img src="/images/logos/ldalogo.png" width="100" height="59" alt="London Development Agency logo" style="margin-right: 20px;"></a><a href="http://www.mlalondon.org.uk"><img src="/images/logos/mlalogo.png" width="100" height="57" alt="MLA London logo" style="margin-right: 20px;"></a><a href="http://www.sparknow.net"><img src="/images/logos/sparklogo.png" width="73" height="59" alt="Sparknow logo"></a>
+</div>
+	
 </body>
 </html>
