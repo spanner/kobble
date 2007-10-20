@@ -1,25 +1,19 @@
 <% @fieldnotesitem = item %>
 
-<h3 style="clear:both;"><a href="#" class="displaycontrol" id="show_source_fieldnotes">+ <%= @fieldnotesitem.new_record? ? 'add' : 'edit' %> field notes</a></h3>
+<a href="#" class="displaycontrol" id="show_fieldnotes">+ <%= @fieldnotesitem.new_record? ? 'add' : 'edit' %> field notes</a>
 
-<div id="hide_source_fieldnotes">
-	<p>
-		<label for="source_synopsis">Circumstances</label><br />
-		<%= text_area 'source', 'circumstances', 'rows' => 4, 'class' => "standard" %>
-	</p>
+<div id="hide_fieldnotes" class="slideable">
+		<label for="source_synopsis">Circumstances<br />
+		<%= text_area 'fieldnotesitem', 'circumstances', 'rows' => 4, 'class' => "standard" %></label><br />
 
-	<p>
-		<label for="source_observations">Observations</label><br/>
-		<%= text_area 'fieldnotesitem', 'observations', 'rows' => 6, 'class' => "standard" %>
-	</p>
-	<p>
-		<label for="source_emotions">Emotions</label><br/>
-		<%= text_area 'fieldnotesitem', 'emotions', 'rows' => 6, 'class' => "standard" %>
-	</p>
-	<p>
-		<label for="source_arising">Leads and follow-up</label><br/>
-		<%= text_area 'fieldnotesitem', 'arising', 'rows' => 6, 'class' => "standard" %>
-	</p>
+		<label for="source_observations">Observations<br/>
+		<%= text_area 'fieldnotesitem', 'observations', 'rows' => 6, 'class' => "standard" %></label><br />
+
+		<label for="source_emotions">Emotions<br/>
+		<%= text_area 'fieldnotesitem', 'emotions', 'rows' => 6, 'class' => "standard" %></label><br />
+
+		<label for="source_arising">Leads and follow-up<br/>
+		<%= text_area 'fieldnotesitem', 'arising', 'rows' => 6, 'class' => "standard" %></label><br />
 </div>
 
 <% @fieldnotesitem = nil %>

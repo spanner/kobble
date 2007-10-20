@@ -6,9 +6,6 @@
  * @license		MIT-style license
  * @author		Harald Kirschner <mail [at] digitarald.de>
  * @copyright	Author
-
-	(and butchered a bit by will)
-
  */
 var Autocompleter = {};
 
@@ -155,9 +152,8 @@ Autocompleter.Base = new Class({
 	},
 
 	prefetch: function() {
-		var val = this.element.getValueAfterLastComma();
-		if (val.length < this.options.minLength) this.hideChoices();
-		else if (val == this.queryValue) this.showChoices();
+		if (this.element.value.length < this.options.minLength) this.hideChoices();
+		else if (this.element.value == this.queryValue) this.showChoices();
 		else this.query();
 	},
 
@@ -180,8 +176,7 @@ Autocompleter.Base = new Class({
 	},
 
 	choiceSelect: function(el) {
-		this.observer.value = el.inputValue;
-		this.element.setValueAfterLastComma(el.inputValue + ', ');
+		this.observer.value = this.element.value = el.inputValue;
 		this.hideChoices();
 		this.fireEvent('onSelect', [this.element], 20);
 	},
@@ -233,7 +228,7 @@ Autocompleter.Local = Autocompleter.Base.extend({
 
 	query: function() {
 		this.hideChoices();
-		this.queryValue = this.element.getValueAfterLastComma();
+		this.queryValue = this.element.value;
 		this.updateChoices(this.filterTokens());
 	},
 
@@ -269,7 +264,7 @@ Autocompleter.Ajax.Base = Autocompleter.Base.extend({
 
 	query: function(){
 		var data = $extend({}, this.options.postData);
-		data[this.options.postVar] = this.element.getValueAfterLastComma();
+		data[this.options.postVar] = this.element.value;
 		this.fireEvent('onRequest', [this.element, this.ajax]);
 		this.ajax.request(data);
 	},
@@ -295,6 +290,7 @@ Autocompleter.Ajax.Json = Autocompleter.Ajax.Base.extend({
 	queryResponse: function(resp) {
 		this.parent(resp);
 		var choices = Json.evaluate(resp || false);
+		console.log(choices);
 		if (!choices || !choices.length) return;
 		this.updateChoices(choices);
 	}

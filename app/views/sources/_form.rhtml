@@ -6,52 +6,21 @@
 <%= text_field 'source', 'name', 'class' => "standard" %>
 </p>
 
+<%= render :partial => 'shared/edit_tags', :locals => {:item => @source} %>
+
 <p><label for="source_synopsis">Synopsis or description</label><br />
 <%= text_area 'source', 'synopsis', 'rows' => 6, 'class' => "standard" %>
 </p>
 
-<h3><a href="#" class="displaycontrol" id="show_source_body">+ <%= @source.clip ? 'edit' : 'add' %> text or transcript</a></h3>
+<%= render :partial => 'shared/edit_body', :locals => {:item => @source} %>
 
-<div id="hide_source_body">
-	<p><label for="source_body">Text (or transcript)</label><br />
-	<%= text_area 'source', 'body', 'rows' => 12, 'class' => "standard" %><br />
-	<span class="formnote"><%= link_to 'textile format', 'http://hobix.com/textile/' %>, please.</span>
-	</p>
-</div>
+<%= render :partial => 'shared/edit_image', :locals => {:item => @source} %>
 
-<%= render :partial => 'shared/edit_tags', :locals => {:item => @source} %>
-
-<h3><a href="#" class="displaycontrol" id="show_source_clip">+ <%= @source.clip ? 'edit' : 'add' %> audio or video</a></h3>
-
-<div id="hide_source_clip">
-	<% if @source.clip %>
-	  <%= render :partial => 'shared/player', :locals => {
-	    :mp3url => url_for_file_column("source", "clip")
-	  } %>
-	<% end %>
-	
-	<p><label for="node_playto">Upload a new clip</label><br />
-	<%= file_column_field "source", "clip" %>
-	</p>
-</div>
+<%= render :partial => 'shared/edit_clip', :locals => {:item => @source} %>
 
 <%= render :partial => 'shared/edit_speaker', :locals => {:item => @source} %>
 
 <%= render :partial => 'shared/edit_fieldnotes', :locals => {:item => @source} %>
-
-<h3><a href="#" class="displaycontrol" id="show_image">+ <%= @source.new_record? ? 'add' : 'edit' %> image</a></h3>
-
-<div id="hide_image">
-  <% if @source.image %>
-	<div style="float: left; margin-right: 10px;">
-		<a href="<%= url_for_file_column("source", "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column("source", "image", "thumb"), :size => "56x56", :border => 0, :alt => '') %></a>
-	</div>
-	<% end %>
-
-  <p><label for="source_image">Upload a new image:</label><br />
-  <%= file_column_field "source", "image" %>
-  </p>
-</div>
 	
 <div class="formbuttons">
   <%= submit_tag "Store Document" %> or

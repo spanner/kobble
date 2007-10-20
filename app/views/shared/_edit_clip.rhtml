@@ -1,0 +1,13 @@
+<% @clipped = item %>
+
+<a href="#" class="displaycontrol" id="show_clip">+ <%= @clipped.clip ? 'edit' : 'add' %> audio or video</a>
+
+<div id="hide_clip" class="slideable">
+	<% if @clipped.clip %>
+	  <%= render :partial => 'shared/player', :locals => {
+	    :mp3url => url_for_file_column("source", "clip")
+	  } %>
+	<% end %>
+	
+	<label for="node_playto">Upload a new clip: <%= file_column_field "clipped", "clip" %></label>
+</div>

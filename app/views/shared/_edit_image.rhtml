@@ -1,15 +1,17 @@
 <% @imageitem = item %>
 
-<h3><a href="#" class="displaycontrol" id="show_image">+ <%= @imageitem.new_record? ? 'add' : 'edit' %> image</a></h3>
+<a href="#" class="displaycontrol" id="show_image">+ <%= @imageitem.new_record? ? 'add' : 'edit' %> image</a>
 
-<div class="hidden" id="hide_image">
-  <p><label for="<%= item.class.to_s.downcase %>_image">Upload a new image:</label><br />
-  <%= file_column_field "imageitem", "image" %>
-  </p>
+<div id="hide_image" class="slideable">
 
-  <% if item.image %>
-    <p class="formnote">Current image is <a href="<%= url_for_file_column("imageitem","image","preview") %>"><%= url_for_file_column("imageitem","image") %></a> (relative path is <%= @imageitem.image_relative_path %>)</p>
-  <% end %>
+  <% if @imageitem.image %>
+	<div style="float: left; margin-right: 10px;">
+		<a href="<%= url_for_file_column("imageitem", "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column("imageitem", "image", "thumb"), :size => "56x56", :border => 0, :alt => '') %></a>
+	</div>
+	<% end %>
+
+  <label for="<%= item.class.to_s.downcase %>_image">Upload a new image: <%= file_column_field "imageitem", "image" %></label>
+
 </div>
 
 <% @imageitem = nil %>

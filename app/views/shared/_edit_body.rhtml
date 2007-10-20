@@ -1,0 +1,8 @@
+<% @embodied = item %>
+
+<a href="#" class="displaycontrol" id="show_body">+ <%= @embodied.body.nil? ? 'add' : 'edit' %> text or transcript</a>
+
+<div id="hide_body" class="slideable">
+	<label for="source_body">Text (or transcript)</label><br />
+	<%= text_area 'embodied', 'body', 'rows' => 12, 'class' => "standard" %>
+</div>

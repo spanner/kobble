@@ -47,11 +47,8 @@ window.addEvent('domready', function(){
 	  var slid = $E( '#' + a.id.replace('show','hide') );
     if (slid) {
       var slide = new Fx.Slide( slid, {
-        transition: Fx.Transitions.Cubic.easeOut,
-        onComplete: function () { 
-          console.log('done: margin-top is ' + slid.getStyle('margin-top'));
-          a.setText(parseInt(slid.getStyle('margin-top')) < 0 ? a.getText().replace('-', '+') : a.getText().replace('+', '-')); 
-        },
+        transition: Fx.Transitions.Bounce.easeOut,
+        onStart: function () { a.hide(); },
       });
       slide.hide();
   		a.addEvent('click', function (e) {
@@ -78,8 +75,8 @@ window.addEvent('domready', function(){
 	$ES('input.tagbox').each(function (element, i) {
 		new TagSuggestion(element, '/tags/matching', {
 			postVar: 'stem',
-			'onRequest': function(el) { element.addClass('waiting'); },
-			'onComplete': function(el) { element.removeClass('waiting'); }
+			onRequest: function(el) { element.addClass('waiting'); },
+			onComplete: function(el) { element.removeClass('waiting'); }
 		});
 	});
   

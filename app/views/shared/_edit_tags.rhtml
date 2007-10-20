@@ -1,12 +1,11 @@
 <% @taggeditem = item %>
 
-<h3><a href="#" class="displaycontrol" id="show_tags">+ <%= @taggeditem.new_record? ? 'add' : 'edit' %> tags</a></h3>
+<a href="#" class="displaycontrol" id="show_tags">+ <%= @taggeditem.new_record? ? 'add' : 'edit' %> tags</a>
 
-<div id="hide_tags">
-	<p><label for="tag_list">Choose or create tags</label><br />
+<div id="hide_tags" class="slideable">
+	<label for="tag_list">Choose or create tags</label><br />
 	<input id="tag_list" name="tag_list" class="standard tagbox" value="<%= @taggeditem.tag_list %>" /><br />
 	<span class="formnote">
 		start typing here and a drop-down list of matching tags will appear. Click the one you want to use, or carry on typing to create a new one.
 	</span>
-	</p>
 </div>

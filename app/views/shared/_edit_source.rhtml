@@ -1,10 +1,8 @@
 <% @sourced = item %>
 
-<h3><a href="#" class="displaycontrol" id="show_source">+ choose source document</a></h3>
+<a href="#" class="displaycontrol" id="show_source">+ choose source document</a>
 
-<div id="hide_source">
-  <p>
-	<label for="node_source_id">Taken from:</label><br />
-  <%= select("sourced", "source_id", @current_collection.sources.collect{|u| [u.name, u.id] }, {:include_blank => true}, {:class => 'standard'}) %>
-	</p>
+<div id="hide_source" class="slideable">
+	<label for="node_source_id">Taken from:<br />
+  <%= select("sourced", "source_id", @current_collection.sources.collect{|u| [u.name, u.id] }, {:include_blank => true}, {:class => 'standard'}) %></label>
 </div>

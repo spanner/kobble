@@ -263,28 +263,6 @@ var Draggee = new Class({
 	notWaiting: function () { this.appearance('normal'); },
 });
 
-
-// here we jump on harald kremer's autocompleter to make it work only on the last entry in a commented list
-// and to show nicely formatted lists
-
-var TagSuggestion = Autocompleter.Ajax.Json.extend({
-	updateChoices: function(choices) {
-		this.choices.empty();
-		this.selected = null;
-		if (!choices || !choices.length) return;
-		if (this.options.maxChoices < choices.length) choices.length = this.options.maxChoices;
-		choices.each(this.options.injectChoice || function(choice, i){
-			var el = new Element('li').setHTML(this.markQueryValue(choice));
-			el.inputValue = choice;
-			this.addChoiceEvents(el).injectInside(this.choices);
-		}, this);
-		this.showChoices();
-	},
-	
-});
-
-
-
 function wakeDroppers (draggee) {
 	return droppers.map(function(d){ return d.makeReceptive(draggee); });
 }
