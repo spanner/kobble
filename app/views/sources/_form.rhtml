@@ -3,24 +3,16 @@
 <p>'Source documents' are whole texts or recordings, uploaded intact and suitable for segmenting. At the moment we can accept text, mp3 audio and mpeg video. Pdfs will be edible soon, and other media formats will follow as they are needed.</p>
 
 <p><label for="source_name">Document name</label><br />
-<%= text_field 'source', 'name', 'class' => "standard" %>  <br />
-<span class="formnote"></span>
-</p>
-
-<p><label for="source_synopsis">Circumstances</label><br />
-<%= text_area 'source', 'circumstances', 'rows' => 4, 'class' => "standard" %> <br />
-<span class="formnote"><%= link_to 'textile format', 'http://hobix.com/textile/' %>, please.</span>
+<%= text_field 'source', 'name', 'class' => "standard" %>
 </p>
 
 <p><label for="source_synopsis">Synopsis or description</label><br />
-<%= text_area 'source', 'synopsis', 'rows' => 6, 'class' => "standard" %> <br />
-<span class="formnote"><%= link_to 'textile format', 'http://hobix.com/textile/' %>, please.</span>
+<%= text_area 'source', 'synopsis', 'rows' => 6, 'class' => "standard" %>
 </p>
-
 
 <h3><a href="#" class="displaycontrol" id="show_source_body">+ <%= @source.clip ? 'edit' : 'add' %> text or transcript</a></h3>
 
-<div class="hidden" id="hide_source_body">
+<div id="hide_source_body">
 	<p><label for="source_body">Text (or transcript)</label><br />
 	<%= text_area 'source', 'body', 'rows' => 12, 'class' => "standard" %><br />
 	<span class="formnote"><%= link_to 'textile format', 'http://hobix.com/textile/' %>, please.</span>
@@ -31,7 +23,7 @@
 
 <h3><a href="#" class="displaycontrol" id="show_source_clip">+ <%= @source.clip ? 'edit' : 'add' %> audio or video</a></h3>
 
-<div class="hidden" id="hide_source_clip">
+<div id="hide_source_clip">
 	<% if @source.clip %>
 	  <%= render :partial => 'shared/player', :locals => {
 	    :mp3url => url_for_file_column("source", "clip")
@@ -43,19 +35,13 @@
 	</p>
 </div>
 
-<h3><a href="#" class="displaycontrol" id="show_source_speaker">+ choose speaker</a></h3>
-
-<div class="hidden" id="hide_source_speaker">
-	<p><label for="source_speaker_id">Main speaker</label><br />
-	  <%= select("source", "speaker_id", @current_collection.users.collect{|u| [u.name, u.id] }, {:include_blank => true}, {:class => 'standard'}) %>
-	</p>
-</div>
+<%= render :partial => 'shared/edit_speaker', :locals => {:item => @source} %>
 
 <%= render :partial => 'shared/edit_fieldnotes', :locals => {:item => @source} %>
 
 <h3><a href="#" class="displaycontrol" id="show_image">+ <%= @source.new_record? ? 'add' : 'edit' %> image</a></h3>
 
-<div class="hidden" id="hide_image">
+<div id="hide_image">
   <% if @source.image %>
 	<div style="float: left; margin-right: 10px;">
 		<a href="<%= url_for_file_column("source", "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column("source", "image", "thumb"), :size => "56x56", :border => 0, :alt => '') %></a>

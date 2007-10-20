@@ -1,0 +1,9 @@
+<% @spoken = item %>
+
+<h3><a href="#" class="displaycontrol" id="show_speaker">+ <%= @spoken.new_record? ? 'choose or create' : 'amend' %> speaker</a></h3>
+
+<div id="hide_speaker">
+	<p><label for="node_speaker_id">Primary speaker</label> <%= link_to "create a new speaker", '#' %><br />
+	  <%= select("node", "speaker_id", @current_collection.users.collect{|u| [u.name, u.id] }, {:include_blank => true}, {:class => 'standard'}) %>
+	</p>
+</div>

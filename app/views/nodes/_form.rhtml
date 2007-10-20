@@ -13,37 +13,35 @@
 </p>
 
 <p><label for="node_synopsis">Synopsis</label><br />
-<%= text_area 'node', 'synopsis', 'rows' => 4, :class => "standard" %> <br />
-<span class="formnote">textile format, please.</span>
+<%= text_area 'node', 'synopsis', 'rows' => 4, :class => "standard" %>
 </p>
 
-<p><label for="node_body">Text (or transcript)</label><br/>
-<%= text_area 'node', 'body', 'rows' => 12, :class => "standard" %><br />
-<span class="formnote">textile format, please.</span>
-</p>
+<h3><a href="#" class="displaycontrol" id="show_node_text">+ add text or transcript</a></h3>
 
-<h3><a href="#" class="displaycontrol" id="show_node_source">+ choose source document</a></h3>
-
-<div class="hidden" id="hide_node_source">
-  <p>
-	<label for="node_source_id">Taken from:</label><br />
-  <%= select("node", "source_id", @current_collection.sources.collect{|u| [u.name, u.id] }, {:include_blank => true}, {:class => 'standard'}) %>
+<div id="hide_node_text">
+	<p><label for="node_body">Text (or transcript)</label><br/>
+	<%= text_area 'node', 'body', 'rows' => 12, :class => "standard" %>
 	</p>
 </div>
 
-<h3><a href="#" class="displaycontrol" id="show_node_question">+ choose question</a></h3>
+<%= render :partial => 'shared/edit_tags', :locals => {:item => @node} %>
 
-<div class="hidden" id="hide_node_question">
-  <p>
-	<label for="node_source_id">In response to:</label><br />
-  <%= select("node", "source_id", @current_collection.questions.collect{|q| [q.name, q.id] }, {:include_blank => true}, {:class => 'standard'}) %>
-	</p>
-</div>
+<%= render :partial => 'shared/edit_source', :locals => {:item => @node} %>
+
+<%= render :partial => 'shared/edit_question', :locals => {:item => @node} %>
 
 <h3><a href="#" class="displaycontrol" id="show_source_clip">+ add audio or video</a></h3>
 
-<div class="hidden" id="hide_source_clip">
-	<p>You can either choose a section of the audio (or video) belonging to the source document by entering start and finish times here, or override that file by giving this fragment a clip of its own.</p>
+<div id="hide_source_clip">
+	<p>You can choose a section of the audio (or video) belonging to the source document by entering start and finish times here:</p>
+
+	<% if !@node.source.nil? && @node.source.clip %>
+		<% @source = node.source %>
+	  <%= render :partial => 'shared/player', :locals => {
+	    :mp3url => url_for_file_column("source", "clip")
+	  } %>
+	<% end %>
+
 	<div style="float: left; width: 180px;">
 		<p><label for="node_playfrom">Start (seconds):</label><br />
 		<%= text_field 'node', 'playfrom', :style =>  "width: 180px;" %></p>
@@ -53,25 +51,21 @@
 		<%= text_field 'node', 'playto', :style =>  "width: 180px;" %></p>
 	</div>
 
+	<p>Or just give this fragment a clip of its own:</p>
+	
 	<div style="clear: both;">
-		<p><label for="node_playto">...or upload a new clip</label><br />
+		<p><label for="node_playto">Upload a new clip</label><br />
 		<%= file_column_field "source", "clip" %></p>
 	</div>
 </div>
 
-<h3><a href="#" class="displaycontrol" id="show_node_speaker">+ choose or create speaker</a></h3>
-
-<div class="hidden" id="hide_node_speaker">
-	<p><label for="node_speaker_id">Main speaker (defaults to main speaker of source if source is given)</label><br />
-	  <%= select("node", "speaker_id", @current_collection.users.collect{|u| [u.name, u.id] }, {:include_blank => true}, {:class => 'standard'}) %>
-	</p>
-</div>
+<%= render :partial => 'shared/edit_speaker', :locals => {:item => @node} %>
 
 <%= render :partial => 'shared/edit_fieldnotes', :locals => {:item => @node} %>
 
 <h3><a href="#" class="displaycontrol" id="show_image">+ <%= @node.new_record? ? 'add' : 'edit' %> image</a></h3>
 
-<div class="hidden" id="hide_image">
+<div id="hide_image">
   <% if @node.image %>
 	<div style="float: left; margin-right: 10px;">
 		<a href="<%= url_for_file_column("node", "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column("node", "image", "thumb"), :size => "56x56", :border => 0, :alt => '') %></a>

@@ -320,16 +320,12 @@ h3.displaycontrol {
 }
 
 div.formbuttons {
+  clear: both;
 	margin: 40px 0 0 0;
 }
 
 form p, form h3, input.standard, textarea.standard, select.standard {
 	width: 540px;
-	clear: both;
-}
-
-input.tagbox {
-	width: 520px;
 }
 
 a.additem, a.edititem, a.removeitem {
@@ -700,5 +696,65 @@ ul.taglist {
   font-size: 0.7em;
   line-height: 1.2; 
   clear: left;
+}
+
+input.waiting {
+ 	background-image: url('/images/furniture/signals/wait_32.gif');
+ 	background-position: top right;
+ 	background-repeat: no-repeat;
+}
+
+/* snipper */
+
+#overlay {
+	position: absolute;
+	left: 0;
+	width: 100%;
+	background-color: #fff;
+	cursor: pointer;
+}
+
+#snipper {
+	position: absolute;
+  left: 150px;
+  top: 70px;
+  width: 530px;
+  height: 493px;
+ 	background-image: url('/images/furniture/layout/snipperbg.png');
+ 	background-position: top left;
+ 	background-repeat: no-repeat;
+  padding: 0 10px;
+  overflow: hidden;
+}
+
+#snipper h1 {
+  white-space: nowrap;
+  margin: 20px 10px 6px 40px;
+  color: white;
+}
+
+#snipper form {
+  margin: 0 40px;
+}
+
+#snipper form p {
+  margin: 5px 0;
+}
+
+#snipper a, #snipper a:link; #snipper a:visited {
+  color: white;
+}
+
+#snipper input.standard, #snipper textarea.standard, #snipper select.standard {
+ 	width: 420px;
+	clear: both; 
+}
+
+div.bigspinner {
+  width: 500px;
+  height: 300px;
+ 	background-image: url('/images/furniture/signals/wait_32.gif');
+ 	background-position: center center;
+ 	background-repeat: no-repeat;
 }
 

@@ -34,6 +34,11 @@ class NodesController < ApplicationController
     @node.tags.uniq!
   end
 
+  def snipper
+    @node = Node.new(params[:node])
+    render :layout => false
+  end
+
   def new
     @node = Node.new
     @node.source = Source.find(params[:source]) if params[:source] && params[:source] != ""

@@ -2,7 +2,7 @@
 
 <h3><a href="#" class="displaycontrol" id="show_tags">+ <%= @taggeditem.new_record? ? 'add' : 'edit' %> tags</a></h3>
 
-<div class="hidden" id="hide_tags">
+<div id="hide_tags">
 	<p><label for="tag_list">Choose or create tags</label><br />
 	<input id="tag_list" name="tag_list" class="standard tagbox" value="<%= @taggeditem.tag_list %>" /><br />
 	<span class="formnote">

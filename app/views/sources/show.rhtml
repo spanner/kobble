@@ -1,4 +1,4 @@
-<div class="header">
+<div class="header" id="source_<%= @source.id %>">
 	<%= render :partial => 'shared/icon', :locals => { :this => @source, :with_caption => false } %>
 	<h1 class="pagetitle"><%= @source.name %></h1>
 </div>
@@ -88,7 +88,7 @@
 	<% end %>
 	
 	<p class="bigp">
-		<%= link_to 'extract fragment', {:controller => 'nodes', :action => 'new'}, {:class => 'additem'} %>
+		<%= link_to 'extract fragment', {:controller => 'nodes', :action => 'new'}, {:class => 'additem snipper'} %>
 		<%= link_to 'edit source', {:action => 'edit', :id => @source}, {:class => 'edititem'} %>
 		<%= link_to 'remove source', {:action => 'destroy', :id => @source}, {:class => 'removeitem', :confirm => "do you really want to completely get rid of #{@source.name}?"} %>
 		<%= link_to 'upload another source', {:action => 'new'}, {:class => 'additem'} %>
@@ -112,10 +112,9 @@
 <% if @source.clip %>
   <%= render :partial => 'shared/player', :locals => {
     :mp3url => url_for_file_column("source", "clip"),
-    :divname => 'sourceplayback',
   } %>
 
-  <p class="bigp"><%= link_to('+ create audio fragment') %></p>
+	<p class="bigp"><%= link_to 'create audio fragment', {:controller => 'nodes', :action => 'new'}, {:class => 'additem snipper'} %></p>
 <% end %>
 
 <% if @source.body.nil? or @source.body.length == 0 %>
