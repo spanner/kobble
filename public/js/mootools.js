@@ -1,1 +1,1 @@
-mootools-1.11-full.js
+mootools-release-1.11.js
