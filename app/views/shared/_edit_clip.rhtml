@@ -1,8 +1,6 @@
-<% @clipped = item %>
-
-<a href="#" class="displaycontrol disappears" id="show_clip">+ <%= @clipped.clip ? 'edit' : 'add' %> audio or video</a>
+<a href="#" class="displaycontrol disappears" id="show_clip">+ <%= item.clip ? 'edit' : 'add' %> audio or video</a>
 
 <div id="hide_clip" class="slideable">
-	<label for="<% @clipped.class.to_s.downcase %>_clip">Upload a new clip: <%= file_column_field "clipped", "clip" %></label><% if @clipped.clip %><br />
-	<span class="pale">current clip is <%= @clipped.clip_relative_path %></span><% end %>
+	<label for="<% item.class.to_s.downcase %>_clip">Upload a new clip: <%= file_column_field item.class.to_s.downcase, "clip" %></label><% if item.clip %><br />
+	<span class="pale">current clip is <%= item.clip_relative_path %></span><% end %>
 </div>

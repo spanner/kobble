@@ -1,19 +1,15 @@
-<% @fieldnotesitem = item %>
-
-<a href="#" class="displaycontrol disappears" id="show_fieldnotes">+ <%= @fieldnotesitem.new_record? ? 'add' : 'edit' %> field notes</a>
+<a href="#" class="displaycontrol disappears" id="show_fieldnotes">+ <%= item.new_record? ? 'add' : 'edit' %> field notes</a>
 
 <div id="hide_fieldnotes" class="slideable">
 		<label for="source_synopsis">Circumstances<br />
-		<%= text_area 'fieldnotesitem', 'circumstances', 'rows' => 4, 'class' => "standard" %></label><br />
+		<%= text_area item.class.to_s.downcase, 'circumstances', 'rows' => 4, 'class' => "standard" %></label><br />
 
 		<label for="source_observations">Observations<br/>
-		<%= text_area 'fieldnotesitem', 'observations', 'rows' => 6, 'class' => "standard" %></label><br />
+		<%= text_area item.class.to_s.downcase, 'observations', 'rows' => 6, 'class' => "standard" %></label><br />
 
 		<label for="source_emotions">Emotions<br/>
-		<%= text_area 'fieldnotesitem', 'emotions', 'rows' => 6, 'class' => "standard" %></label><br />
+		<%= text_area item.class.to_s.downcase, 'emotions', 'rows' => 6, 'class' => "standard" %></label><br />
 
 		<label for="source_arising">Leads and follow-up<br/>
-		<%= text_area 'fieldnotesitem', 'arising', 'rows' => 6, 'class' => "standard" %></label><br />
+		<%= text_area item.class.to_s.downcase, 'arising', 'rows' => 6, 'class' => "standard" %></label><br />
 </div>
-
-<% @fieldnotesitem = nil %>

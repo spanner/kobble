@@ -1,10 +1,8 @@
-<% @spoken = item %>
-
-<a href="#" class="displaycontrol disappears" id="show_speaker">+ <%= @spoken.new_record? ? 'choose or create' : 'amend' %> speaker</a>
+<a href="#" class="displaycontrol disappears" id="show_speaker">+ <%= item.new_record? ? 'choose or create' : 'amend' %> speaker</a>
 
 <div id="hide_speaker" class="slideable">
-	<label for="node_speaker_id">Primary speaker<br />
-	  <%= select("node", "speaker_id", @current_collection.users.collect{|u| [u.name, u.id] }, {:include_blank => true}, {:class => 'standard'}) %></label><br />
+	<label for="<%= item.class.to_s.downcase %>_speaker_id">Primary speaker<br />
+	  <%= select(item.class.to_s.downcase, "speaker_id", @current_collection.users.collect{|u| [u.name, u.id] }, {:include_blank => true}, {:class => 'standard'}) %></label><br />
 	<%= link_to "create a new speaker", '#' %>
 
 </div>

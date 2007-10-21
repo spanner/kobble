@@ -1,9 +1,7 @@
-<% @questionable = item %>
-
-<a href="#" class="displaycontrol disappears" id="show_question">+ <%= @questionable.new_record? ? 'choose or create' : 'change' %> question</a>
+<a href="#" class="displaycontrol disappears" id="show_question">+ <%= item.new_record? ? 'choose or create' : 'change' %> question</a>
 
 <div id="hide_question" class="slideable">
-	<label for="<%= @questionable.class.to_s.downcase %>_source_id">In response to:<br />
-  <%= select("questionable", "question_id", @current_collection.questions.collect{|q| [q.name, q.id] }, {:include_blank => true}, {:class => 'standard'}) %></label><br />
+	<label for="<%= item.class.to_s.downcase %>_source_id">In response to:<br />
+  <%= select(item.class.to_s.downcase, "question_id", @current_collection.questions.collect{|q| [q.name, q.id] }, {:include_blank => true}, {:class => 'standard'}) %></label><br />
 	<%= link_to "create a new question", '#' %>
 </div>
