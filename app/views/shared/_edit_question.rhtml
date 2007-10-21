@@ -1,6 +1,6 @@
 <% @questionable = item %>
 
-<a href="#" class="displaycontrol" id="show_question">+ <%= @questionable.new_record? ? 'choose or create' : 'change' %> question</a>
+<a href="#" class="displaycontrol disappears" id="show_question">+ <%= @questionable.new_record? ? 'choose or create' : 'change' %> question</a>
 
 <div id="hide_question" class="slideable">
 	<label for="<%= @questionable.class.to_s.downcase %>_source_id">In response to:<br />

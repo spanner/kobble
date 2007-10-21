@@ -1,3 +1,5 @@
 <div id="scratchpad_<%= scratchpad.id %>" class="scratchpage">
-	<%= render :partial => 'scratchpads/contents', :locals => {:pad => scratchpad} %>
+	<ul>
+		<%= render :partial => 'scratchpads/contents', :locals => {:pad => scratchpad} %>
+	</ul>
 </div>

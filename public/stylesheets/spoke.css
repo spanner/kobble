@@ -121,12 +121,17 @@ label {
   font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
   letter-spacing: -0.05em;
   line-height: 20px;
+  clear: both;
 }
 
 a.displaycontrol {
   display: block;
   margin: 0;
   color: #559DC4;
+}
+
+a.emptylist {
+  color: #695D54;
 }
 
 div.slideable {
@@ -335,6 +340,14 @@ form p, form h3, input.standard, textarea.standard, select.standard {
 	width: 540px;
 }
 
+input.titular {
+	width: 540px;
+  height: 22px;
+  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
+  font-size: 18px;
+  line-height: 22px;
+}
+
 a.additem, a.edititem, a.removeitem {
 	display: block;
 	height: 20px;
@@ -464,6 +477,8 @@ a.removeitem {
 }
 
 div.player {
+  width: 300px;
+  height: 32px;
 	margin: 20px 0 20px 0;
 }
 
@@ -660,17 +675,12 @@ div.synopsis {
 	clear: left;
 }
 
-div.synopsis p {
+div.synopsis p, div.marginal p, ul.marginal li {
   font-family: Helvetica, arial, sans-serif;
   font-size: 0.8em;
   line-height: 1.3;
 	color: #695D54;
 	margin-top: 0;
-}
-
-div.synopsis h2 {
-	color: #695D54;
-	margin-bottom: 0;
 }
 
 div.floatcolumn {
@@ -689,6 +699,7 @@ div.floatcolumn h2 {
 
 div.floatcolumn ul {
   padding: 0;
+  margin: 0;
 }
 
 div.floatcolumn p, div.floatcolumn li {
@@ -711,7 +722,7 @@ div.marginblock {
 	position: absolute;
 	left: 0;
 	width: 100%;
-	background-color: #fff;
+	background-color: #000;
 	cursor: pointer;
 }
 
@@ -729,13 +740,14 @@ div.marginblock {
 }
 
 #snipper h1 {
-  white-space: nowrap;
-  margin: 20px 10px 6px 40px;
+  max-height: 56px;
+  overflow: hidden;
+  margin: 20px 10px 6px 20px;
   color: white;
 }
 
 #snipper form {
-  margin: 0 40px;
+  margin: 0 20px;
 }
 
 #snipper form p {
@@ -746,20 +758,31 @@ div.marginblock {
   color: white;
 }
 
-#snipper input.standard, #snipper textarea.standard, #snipper select.standard {
- 	width: 420px;
+#snipper input.titular, #snipper input.standard, #snipper textarea.standard, #snipper select.standard {
+ 	width: 460px;
 	clear: both; 
 }
 
 div.bigspinner {
   width: 500px;
-  height: 300px;
- 	background-image: url('/images/furniture/signals/wait_32.gif');
+  height: 460px;
+ 	background-image: url('/images/furniture/signals/wait_32_ob.gif');
  	background-position: center center;
  	background-repeat: no-repeat;
 }
 
+li.waiter {
+ 	background-image: url('/images/furniture/signals/wait_16_grey.gif');
+ 	background-position: center center;
+ 	background-repeat: no-repeat;
+ 	height: 20px;
+}
 
+div.scratchpage ul li.waiter {
+  width: 36px;
+ 	height: 28px;
+ 	background-image: url('/images/furniture/signals/wait_og.gif');
+}
 
 /* taglist */
 

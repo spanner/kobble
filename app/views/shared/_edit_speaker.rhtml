@@ -1,6 +1,6 @@
 <% @spoken = item %>
 
-<a href="#" class="displaycontrol" id="show_speaker">+ <%= @spoken.new_record? ? 'choose or create' : 'amend' %> speaker</a>
+<a href="#" class="displaycontrol disappears" id="show_speaker">+ <%= @spoken.new_record? ? 'choose or create' : 'amend' %> speaker</a>
 
 <div id="hide_speaker" class="slideable">
 	<label for="node_speaker_id">Primary speaker<br />

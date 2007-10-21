@@ -3,108 +3,102 @@
 	<h1 class="pagetitle"><%= @source.name %></h1>
 </div>
 
-<div class="floatcolumn" style="width: 175px;">
+<div id="margin" class="floatcolumn" style="width: 175px;">
  	<h2>
-		<% if @source.circumstances.nil? or @source.circumstances.length == 0 %>
-			<span class="pale">- circumstances</span>
-		<% else %>
-			<a href="#" class="displaycontrol" id="show_circumstances">+ circumstances</a>
-		<% end %>
+		<a href="#" class="displaycontrol<% if @source.circumstances.nil? or @source.circumstances.length == 0 %> emptylist<% end %>" id="show_circumstances">+ circumstances</a>
 	</h2>
 
-	<% unless @source.circumstances.nil? %>
-    <div class="marginal hidden" id="hide_circumstances">
-			<%= @source.circumstances.formatted %>
+    <div class="marginal" id="hide_circumstances">
+			<% if @source.circumstances.nil? or @source.circumstances.length %>
+				<p>None given</p>
+			<% else %>
+				<%= @source.circumstances.formatted %>
+			<% end %>
 		</div>
-	<% end %>
 
 	<h2>
-		<% if @source.image %>
-			<a href="#" class="displaycontrol" id="show_image">- hide image</a>
-		<% else %>
-			<span class="pale">- no image</span>
-		<% end %>
+		<a href="#" class="displaycontrol<% unless @source.image %> emptylist<% end %>" id="show_image">+ image</a>
 	</h2>
 	
- 	<% if @source.image %>
   	<div class="marginal" id="hide_image">
-			<a href="<%= url_for_file_column("source", "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column("source", "image", "slide"), :size => "135x135", :border => 0, :alt => '') %></a>
+		 	<% if @source.image %>
+				<a href="<%= url_for_file_column("source", "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column("source", "image", "slide"), :size => "135x135", :border => 0, :alt => '') %></a>
+			<% else %>
+				<p>No image.</p>
+			<% end %>
    	</div>
-	<% end %>
 
  	<h2>
-		<% if @source.nodes_count > 0 %>
-			<a href="#" class="displaycontrol" id="show_fragments">+ show fragments</a>
-		<% else %>
-			<span class="pale">- no fragments</span>
-		<% end %>
+		<a href="#" class="displaycontrol<% if @source.nodes.empty? %> emptylist<% end %>" id="show_fragments">+ fragments</a>
 	</h2>
 		
-	<% if @source.nodes_count > 0 %>
-    <div class="marginal hidden" id="hide_fragments">
-      <%= render :partial => 'node', :collection => @source.nodes %>
-			<p class="clear small">You can drag items from here too.</p>
-    </div>
-	<% end %>
-
+   <div class="marginal" id="hide_fragments">
+		<% if !@source.nodes.empty? %>
+			<ul id="nodelist">
+	      <%= render :partial => 'nodes/minilist', :collection => @source.nodes %>
+			</ul>
+		<% else %>
+			<p>No fragments.</p>
+		<% end %>
+   </div>
+	
 	<% if current_user.is_editor? %>
 	 	<h2>
-			<% if @source.has_notes? %>
-				<a href="#" class="displaycontrol" id="show_fieldnotes">+ show field notes</a>
-			<% else %>
-				<span class="pale">- no field notes</span>
-			<% end %>
+			<a href="#" class="displaycontrol<% unless @source.has_notes? %> emptylist<% end %>" id="show_fieldnotes">+ field notes</a>
 		</h2>
 
-		<% if @source.has_notes? %>
-	    <div class="marginal hidden" id="hide_fieldnotes">
-				<% if @source.observations %>
-					<p><strong>Observations:</strong> <%= @source.observations %></p>
-				<% end %>
-
-				<% if @source.emotions %>
-					<p><strong>Emotional responses:</strong> <%= @source.emotions %></p>
-				<% end %>
-
-				<% if @source.arising %>
-					<p><strong>Connections or ideas:</strong> <%= @source.arising %></p>
+	    <div class="marginal" id="hide_fieldnotes">
+				<% if @source.has_notes? %>
+					<% unless @source.observations.nil? %>
+						<%= "*Observations*: #{@source.observations}".formatted %>
+					<% end %>
+					<% unless @source.emotions.nil? %>
+						<%= "*Emotions*: #{@source.emotions}".formatted %>
+					<% end %>
+					<% unless @source.arising.nil? %>
+						<%= "*Connections*: #{@source.arising}".formatted %>
+					<% end %>
+				<% else %>
+					<p>No field notes.</p>
 				<% end %>
 			</div>
-		<% end %>
 	<% end %>
 
 	<h2>
-		<% if @source.has_tags? %>
-			<a href="#" class="displaycontrol" id="show_tags">+ show tags</a>
-		<% else %>
-			<span class="pale">- no tags</span>
-		<% end %>
+		<a href="#" class="displaycontrol<% unless @source.has_tags? %> emptylist<% end %>" id="show_tags">+ tags</a>
 	</h2>
 	
 	<% if @source.has_tags? %>
-  	<ul class="marginal hidden" id="hide_tags">
+  	<ul class="marginal" id="hide_tags">
 			<%= render :partial => "tags/minilist", :collection => @source.tags.uniq %>
   	</ul>
+	<% else %>
+		<p>No tags.</p>
 	<% end %>
 	
-	<p class="bigp">
-		<%= link_to 'extract fragment', {:controller => 'nodes', :action => 'new'}, {:class => 'additem snipper'} %>
-		<%= link_to 'edit source', {:action => 'edit', :id => @source}, {:class => 'edititem'} %>
-		<%= link_to 'remove source', {:action => 'destroy', :id => @source}, {:class => 'removeitem', :confirm => "do you really want to completely get rid of #{@source.name}?"} %>
-		<%= link_to 'upload another source', {:action => 'new'}, {:class => 'additem'} %>
-	</p>
+	<% if @current_user.is_editor? %>
+		<h2>
+			<a href="#" class="displaycontrol editor" id="show_admin">+ admin controls</a>
+		</h2>
+    <div class="marginal" id="hide_admin">
+			<%= link_to 'extract fragment', {:controller => 'nodes', :action => 'new'}, {:class => 'additem snipper'} %>
+			<%= link_to 'edit source', {:action => 'edit', :id => @source}, {:class => 'edititem'} %>
+			<%= link_to 'remove source', {:action => 'destroy', :id => @source}, {:class => 'removeitem', :confirm => "do you really want to completely get rid of #{@source.name}?"} %>
+			<%= link_to 'upload another source', {:action => 'new'}, {:class => 'additem'} %>
+		</div>
+	<% end %>
 </div>
 
 <% unless @source.body.nil? or @source.body.length == 0 %>
 	<h2>
 		<% if ! @source.synopsis.nil? and @source.synopsis.length != 0 %>
-			<a href="#" class="displaycontrol" id="show_synopsis">+ show synopsis</a>
+			<a href="#" class="displaycontrol disappears" id="show_synopsis">+ synopsis</a>
 		<% else %>
 			<span class="pale">- synopsis</span>
 		<% end %>
 	</h2>
-	<div class="synopsis hidden" id="hide_synopsis">
-	 	<%= @source.synopsis.formatted %>
+	<div class="synopsis" id="hide_synopsis">
+	 	<%= "*synopsis*: 	#{@source.synopsis}".formatted %>
 	</div>
 <% end %>
 

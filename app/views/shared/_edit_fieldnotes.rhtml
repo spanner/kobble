@@ -1,6 +1,6 @@
 <% @fieldnotesitem = item %>
 
-<a href="#" class="displaycontrol" id="show_fieldnotes">+ <%= @fieldnotesitem.new_record? ? 'add' : 'edit' %> field notes</a>
+<a href="#" class="displaycontrol disappears" id="show_fieldnotes">+ <%= @fieldnotesitem.new_record? ? 'add' : 'edit' %> field notes</a>
 
 <div id="hide_fieldnotes" class="slideable">
 		<label for="source_synopsis">Circumstances<br />

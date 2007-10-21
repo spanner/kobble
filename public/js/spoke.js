@@ -1,4 +1,4 @@
-﻿var accordion = null;
+﻿var slides = {};
 var scratchpad = null;
 var display = null;
 var droppers = [];
@@ -23,7 +23,7 @@ function announce (message) {
   $E('#notification').setText(message);
   var notifyfx = new Fx.Styles($E('#mastfoot'), {duration:1000, wait:false});
   notifyfx.start({
-		'background-color': ['#00ff00','#559DC4'],
+		'background-color': ['#CC6E1F','#559DC4']
 	}).chain(clearnotification);
 }
 
@@ -31,29 +31,48 @@ function error (message) {
   $E('#notification').setText(message);
   var notifyfx = new Fx.Styles($E('#mastfoot'), {duration:2000, wait:false});
   notifyfx.start({
-		'background-color': ['#ff0000','#559DC4'],
-	}).chain(clearnotification);
+		'background-color': ['#ff0000','#559DC4']
+	}).chain(clearnotification());
 }
 
 function clearnotification (delay) {
   $E('#notification').setText('');
 }
 
+function flash (element) {
+  var flashfx = new Fx.Styles(element, {duration:1000, wait:false});
+  var bgbackto = element.getStyle('background-color');
+  if (bgbackto == 'transparent') bgbackto = '#ffffff';
+  var fgbackto = element.getStyle('color');
+  flashfx.start({
+		'background-color': ['#CC6E1F',bgbackto],
+		'color': ['#CC6E1F',fgbackto]
+  });
+}
+
+
+
+
 // now to set it all going
 
 window.addEvent('domready', function(){
 
 	$ES('a.displaycontrol').each(function (a) {
-	  var slid = $E( '#' + a.id.replace('show','hide') );
+	  var tag = a.id.replace('show','hide');
+	  var slid = $E( '#' + tag );
     if (slid) {
-      var slide = new Fx.Slide( slid, {
+      slides[tag] = new Fx.Slide( slid, {
         transition: Fx.Transitions.Bounce.easeOut,
-        onStart: function () { a.hide(); },
+        onStart: function () { 
+          if (a.hasClass('disappears')) a.hide(); 
+          else a.setText(slides[tag].open ? a.getText().replace('-','+') : a.getText().replace('+','-'));
+        },
       });
-      slide.hide();
+      if (!a.hasClass('defaultopen')) slides[tag].hide(); 
   		a.addEvent('click', function (e) {
+  		  this.blur();
       	e = new Event(e);
-      	slide.toggle();
+      	slides[tag].toggle();
       	e.stop();
   			e.preventDefault();
   		});
@@ -67,7 +86,7 @@ window.addEvent('domready', function(){
 
   $ES('.draggable').each(function(item) {
   	item.addEvent('mousedown', function(e) {
-  		e = new Event(e).preventDefault();
+  		e = new Event(e);
 			new Draggee(this, e);
   	});
   });
@@ -82,6 +101,8 @@ window.addEvent('domready', function(){
   
   $ES('a.snipper').each( function (element) {
     element.addEvent('click', function (e) {
+      e.preventDefault();
+      this.blur();
       snip = new Snipper(element, e);
     })
 

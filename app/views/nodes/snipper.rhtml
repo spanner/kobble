@@ -6,10 +6,12 @@
 	<% end %>
 </h1>
 
-<%= form_tag( {:action => 'create'}, :id => 'nodeform', :multipart => true) %>
+<%= form_tag( {:action => 'snip'}, :id => 'nodeform', :multipart => true) %>
+	<%= hidden_field_tag 'node[source_id]', @node.source.id %>
+	<% unless @node.source.speaker.nil? %><%= hidden_field_tag 'node[speaker_id]', @node.source.speaker.id %><% end %>
 
 	<p><label for="node_name">Fragment name</label><br/>
- 	<%= text_field 'node', 'name', :class => "standard" %>
+ 	<%= text_field 'node', 'name', :class => "titular" %>
 	</p>
 
 	<p><label for="node_synopsis">Synopsis</label><br />
@@ -36,8 +38,8 @@
 	<% end %>
 
 	<div class="formbuttons clear">
-	<%= submit_tag "Store Fragment" %> 	or
-	  <%= link_to 'cancel', :action => 'list' %>
+		<%= submit_tag "Store Fragment" %> 	or
+	  <%= link_to 'cancel', {:contrller => 'sources', :action => 'show', :id => @node.source}, {:class => 'cancel'} %>
 	</div>
 
 <%= end_form_tag %>

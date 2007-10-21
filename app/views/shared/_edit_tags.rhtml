@@ -1,6 +1,6 @@
 <% @taggeditem = item %>
 
-<a href="#" class="displaycontrol" id="show_tags">+ <%= @taggeditem.new_record? ? 'add' : 'edit' %> tags</a>
+<a href="#" class="displaycontrol disappears" id="show_tags">+ <%= @taggeditem.new_record? ? 'add' : 'edit' %> tags</a>
 
 <div id="hide_tags" class="slideable">
 	<label for="tag_list">Choose or create tags</label><br />
