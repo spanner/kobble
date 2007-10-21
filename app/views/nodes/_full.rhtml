@@ -7,85 +7,88 @@
 
 <div class="floatcolumn" style="width: 175px;">
 	<h2>
-		<% if @thisnode.image %>
-			<a href="#" class="displaycontrol" id="show_node_<%= @thisnode.id %>_image">+ show image</a>
-		<% else %>
-			<span class="pale">- no image</span>
-		<% end %>
+		<a href="#" class="displaycontrol<% unless @node.image %> emptylist<% end %>" id="show_image">+ image</a>
 	</h2>
- 	<% if @thisnode.image %>
-  	<div class="hidden" id="hide_node_<%= @thisnode.id %>_image">
-			<a href="<%= url_for_file_column("thisnode", "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column("thisnode", "image", "slide"), :size => "135x135", :alt => '') %></a>
-   	</div>
-	<% end %>
+	
+ 	<div class="marginal" id="hide_image">
+	 	<% if @node.image %>
+			<a href="<%= url_for_file_column("node", "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column("node", "image", "slide"), :size => "135x135", :alt => '') %></a>
+		<% else %>
+			<p>No image.</p>
+		<% end %>
+  </div>
 
 	<h2>
-		<% if @thisnode.source || @thisnode.question %>
-			<a href="#" class="displaycontrol" id="show_node_<%= @thisnode.id %>_origin">+ show origins</a>
-		<% else %>
-			<span class="pale">- no source doc</span>
-		<% end %>
+		<a href="#" class="displaycontrol<% unless @thisnode.source || @thisnode.question %> emptylist<% end %>" id="show_origins">+ origins</a>
 	</h2>
- 	<% if @thisnode.source || @thisnode.question %>
-  	<div class="hidden" id="hide_node_<%= @thisnode.id %>_origin">
+	
+ 	<div class="marginal" id="hide_origins">
+		<% if @thisnode.source || @thisnode.question %>
+		<p>
 			<% if @thisnode.source %>
-				<p>
-				  <% if @thisnode.source %>taken from <%= link_to @thisnode.source.name, :action => 'show', :controller => 'sources', :id => @thisnode.source %><% end %>
-				  <% if @thisnode.creator %>by <%= link_to @thisnode.creator.name, :action => 'show', :controller => 'user', :id => @thisnode.creator %><% end %>
-				  <% if @thisnode.source || @thisnode.creator %><% end %>
-				</p>
+			  <% if @thisnode.source %>taken from <%= link_to @thisnode.source.name, :action => 'show', :controller => 'sources', :id => @thisnode.source %><br /><% end %>
+			  <% if @thisnode.creator %>by <%= link_to @thisnode.creator.name, :action => 'show', :controller => 'user', :id => @thisnode.creator %><% end %>
 			<% end %>
 			<% if @thisnode.question %>
 				Considered a response to the question <%= link_to @thisnode.question.prompt, :controller => 'questions', :action => 'show', :id => @thisnode.question %>.
 			<% end %>
-   	</div>
-	<% end %>
+			</p>
+		<% else %>
+			<p>No origins recorded.</p>
+ 		<% end %>
+  </div>
 
 	<% if current_user.is_editor? %>
-	 	<h2>
-			<% if @thisnode.has_notes? %>
-				<a href="#" class="displaycontrol" id="show_node_<%= @thisnode.id %>_fieldnotes">+ show field notes</a>
-			<% else %>
-				<span class="pale">- no field notes</span>
-			<% end %>
+		<h2>
+			<a href="#" class="displaycontrol<% unless @thisnode.has_notes? %> emptylist<% end %>" id="show_fieldnotes">+ field notes</a>
 		</h2>
 
-		<% if @thisnode.has_notes? %>
-	    <div class="hidden" id="hide_node_<%= @thisnode.id %>_fieldnotes">
-				<% if @thisnode.observations %>
-					<p><strong>Observations:</strong> <%= @thisnode.observations %></p>
-				<% end %>
+	 	<div class="marginal" id="hide_fieldnotes">
 
-				<% if @thisnode.emotions %>
-					<p><strong>Emotional responses:</strong> <%= @thisnode.emotions %></p>
-				<% end %>
+			<% if @thisnode.has_notes? %>
+		    <div class="hidden" id="hide_node_<%= @thisnode.id %>_fieldnotes">
+					<% if @thisnode.observations %>
+						<p><strong>Observations:</strong> <%= @thisnode.observations %></p>
+					<% end %>
 
-				<% if @thisnode.arising %>
-					<p><strong>Connections or ideas:</strong> <%= @thisnode.arising %></p>
-				<% end %>
-			</div>
-		<% end %>
+					<% if @thisnode.emotions %>
+						<p><strong>Emotional responses:</strong> <%= @thisnode.emotions %></p>
+					<% end %>
+
+					<% if @thisnode.arising %>
+						<p><strong>Connections or ideas:</strong> <%= @thisnode.arising %></p>
+					<% end %>
+				</div>
+			<% else %>
+				<p>No origins recorded.</p>
+			<% end %>
+		</div>
 	<% end %>
 
 	<h2>
-		<% if @thisnode.has_tags? %>
-			<a href="#" class="displaycontrol" id="show_node_<%= @thisnode.id %>_tags">+ show tags</a>
-		<% else %>
-			<span class="pale">- no tags</span>
-		<% end %>
+		<a href="#" class="displaycontrol<% unless @thisnode.has_tags? %> emptylist<% end %>" id="show_tags">+ tags</a>
 	</h2>
 	
-	<% if @thisnode.has_tags? %>
-  <div class="hidden" id="hide_node_<%= @thisnode.id %>_tags">
-		
-   </div>
+  <div class="marginal" id="hide_tags">
+		<% if @node.has_tags? %>
+  	<ul>
+			<%= render :partial => "tags/minilist", :collection => @node.tags.uniq %>
+  	</ul>
+		<% else %>
+			<p>No tags.</p>
+		<% end%>
+  </div>
+
+	<% if @current_user.is_editor? %>
+		<h2>
+			<a href="#" class="displaycontrol editor" id="show_admin">+ admin controls</a>
+		</h2>
+    <div class="marginal" id="hide_admin">
+			<%= link_to 'edit fragment', {:action => 'edit', :id => @thisnode}, {:class => 'edititem'} %>
+			<%= link_to 'remove fragment', {:action => 'destroy', :id => @thisnode}, {:class => 'removeitem', :confirm => "do you really want to completely get rid of #{@thisnode.name}?"} %>
+			<%= link_to 'create another fragment', {:action => 'new'}, {:class => 'additem'} %>
+		</div>
 	<% end %>
-	
-	<p class="bigp">
-		<%= link_to 'edit fragment', {:action => 'edit', :id => @thisnode}, {:class => 'edititem'} %>
-		<%= link_to 'remove fragment', {:action => 'destroy', :id => @thisnode}, {:class => 'removeitem', :confirm => "do you really want to completely get rid of #{@thisnode.name}?"} %>
-		<%= link_to 'create another fragment', {:action => 'new'}, {:class => 'additem'} %>
-	</p>
 </div>
 
 <div class="synopsis">

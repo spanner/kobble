@@ -126,7 +126,7 @@ label {
 
 a.displaycontrol {
   display: block;
-  margin: 0;
+  margin: 5px 0 0 0;
   color: #559DC4;
 }
 
@@ -619,6 +619,10 @@ div.scratchpage li img {
 
 div.scratchpage li a:hover {
   background-color: #798286;
+}
+
+div.scratchpage li small {
+  color: #B2AAA4;
 }
 
 div.scratchpage p {
