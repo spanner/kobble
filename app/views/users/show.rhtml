@@ -14,7 +14,7 @@
 	
  	<% if @user.image %>
   	<div class="hidden" id="hide_image">
-			<a href="<%= url_for_file_column("source", "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column("source", "image", "slide"), :size => "135x135", :border => 0, :alt => '') %></a>
+			<a href="<%= url_for_file_column("source", "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column("source", "image", "slide"), :size => "135x135", :alt => '') %></a>
    	</div>
 	<% end %>
 

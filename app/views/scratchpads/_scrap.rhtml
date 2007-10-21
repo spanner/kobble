@@ -1,5 +1,5 @@
-<li id="<%= scrap.class.to_s.downcase %>_<%= scrap.id %>" class="draggable">
-	<img src="/images/furniture/icons/listicon.png" width="16" height="16" alt="*" class="handle">
+<li id="padded_<%= scrap.class.to_s.downcase %>_<%= scrap.id %>" class="draggable">
+	<img src="/images/furniture/icons/listicon.png" width="16" height="16" alt="*" class="handle" />
   <%= link_to( scrap.name, {:controller => scrap.class.to_s.downcase.pluralize, :action => 'show', :id => scrap}) %>
 	
 	<div class="thumb" style="display:none;">

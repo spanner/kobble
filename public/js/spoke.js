@@ -14,7 +14,7 @@ function idParts (el) {
   var splut = {
     'id' : parts[parts.length-1],
     'type' : parts[parts.length-2],
-    'tag' : parts[parts.length-3]
+    'context' : parts[parts.length-3]
   }
   return splut;
 }

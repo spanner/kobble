@@ -6,7 +6,7 @@
   <div class="slidefront">
     <%=
       if (@this.image) 
-        image_tag(url_for_file_column("this", "image", "slide"), :size => "135x135", :border => 0, :alt => '')
+        image_tag(url_for_file_column("this", "image", "slide"), :size => "135x135", :alt => '')
       else 
         "<p>#{truncate(@this.body, 320, '...')}</p>"
       end

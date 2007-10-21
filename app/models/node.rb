@@ -17,13 +17,13 @@ class Node < ActiveRecord::Base
     }
   }
   
-  def clip
+  def clipped
     clipfile = read_attribute(:clip)
     unless (clipfile)
       if (self.source && self.source.clip) then
         sourcefile = self.source.clip
         if (self.playfrom || self.playto) then
-          logger.debug("#{RAILS_ROOT}/audiocutter/mp3cut -file #{sourcefile} -in #{self.playfrom} -out #{self.playto}")
+          logger.warn("#{RAILS_ROOT}/audiocutter/mp3cut -file #{sourcefile} -in #{self.playfrom} -out #{self.playto}")
           clipfile = File.basename(`#{RAILS_ROOT}/audiocutter/mp3cut -file #{sourcefile} -in #{self.playfrom} -out #{self.playto}`);
           write_attribute(:clip, clipfile)
         else
@@ -32,10 +32,6 @@ class Node < ActiveRecord::Base
       end
     end
     "/#{self.source.clip_options[:base_url]}/#{self.source.clip_relative_dir}/#{clipfile}"
-  end
-
-  def clip=(path)
-    write_attribute(:clip, path)
   end
   
   def duration

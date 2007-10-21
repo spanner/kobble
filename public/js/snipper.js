@@ -34,7 +34,7 @@
     // retrieve node-creation form using values pulled from page
     var snipper = this;
 		new Ajax('/nodes/snipper', {
-			method: 'post',
+			method: 'get',
 			data: {
 				'node[body]': getSelectedText(),
 				'node[playfrom]': getPlayerIn(),
@@ -143,5 +143,6 @@ var getPlayerOut = function () {
 };
 
 var getSourceID = function () {
-  return $E('div.header').id.replace('source_', '');
+  var splut = idParts($E('div.header'));
+  return splut['id'];
 }

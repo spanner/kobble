@@ -1,4 +1,4 @@
-<div class="header" id="source_<%= @source.id %>">
+<div class="header" id="header_source_<%= @source.id %>">
 	<%= render :partial => 'shared/icon', :locals => { :this => @source, :with_caption => false } %>
 	<h1 class="pagetitle"><%= @source.name %></h1>
 </div>
@@ -22,7 +22,7 @@
 	
   	<div class="marginal" id="hide_image">
 		 	<% if @source.image %>
-				<a href="<%= url_for_file_column("source", "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column("source", "image", "slide"), :size => "135x135", :border => 0, :alt => '') %></a>
+				<a href="<%= url_for_file_column("source", "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column("source", "image", "slide"), :size => "135x135", :alt => '') %></a>
 			<% else %>
 				<p>No image.</p>
 			<% end %>

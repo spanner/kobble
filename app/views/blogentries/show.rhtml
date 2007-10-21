@@ -1,6 +1,6 @@
 <div class="floatcolumn" style="width: 175px;">
 	<% if @blogentry.image %>
-	<a href="<%= url_for_file_column("blogentry", "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column("blogentry", "image", "slide"), :size => "175x175", :border => 0, :alt => '') %></a>
+	<a href="<%= url_for_file_column("blogentry", "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column("blogentry", "image", "slide"), :size => "175x175", :alt => '') %></a>
 	<% end %>
 </div>
 

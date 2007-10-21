@@ -15,7 +15,7 @@
 	</h2>
  	<% if @thisnode.image %>
   	<div class="hidden" id="hide_node_<%= @thisnode.id %>_image">
-			<a href="<%= url_for_file_column("thisnode", "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column("thisnode", "image", "slide"), :size => "135x135", :border => 0, :alt => '') %></a>
+			<a href="<%= url_for_file_column("thisnode", "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column("thisnode", "image", "slide"), :size => "135x135", :alt => '') %></a>
    	</div>
 	<% end %>
 
@@ -93,10 +93,10 @@
   <%= @thisnode.synopsis.formatted %>
 </div>
 
-<% if @thisnode.source && @thisnode.source.clip %>
+<% if @thisnode.source && @thisnode.source.clip_relative_path %>
   <%= render :partial => 'shared/player', :locals => {
     :divname => 'nodeplayback',
-    :mp3url => @thisnode.clip
+    :mp3url => @thisnode.clipped
   } %>
 <% end %>
 

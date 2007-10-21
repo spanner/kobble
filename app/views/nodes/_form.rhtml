@@ -68,7 +68,7 @@
 <div id="hide_image">
   <% if @node.image %>
 	<div style="float: left; margin-right: 10px;">
-		<a href="<%= url_for_file_column("node", "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column("node", "image", "thumb"), :size => "56x56", :border => 0, :alt => '') %></a>
+		<a href="<%= url_for_file_column("node", "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column("node", "image", "thumb"), :size => "56x56", :alt => '') %></a>
 	</div>
 	<% end %>
 	

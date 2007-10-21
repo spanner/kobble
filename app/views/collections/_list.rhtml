@@ -2,7 +2,7 @@
  
   <div class="listrow <%= cycle("odd", "even", :name => "itemlist") %>">
    	<div class="icon" id="collection_<%= list.id %>">
-     	<%= link_to( image_tag("/images/furniture/icons/generic.png", :size => "75x75", :border => 0, :alt => 'set'), {:controller => 'account', :action => 'choosecollection', :id => list}) %>
+     	<%= link_to( image_tag("/images/furniture/icons/generic.png", :size => "75x75", :alt => 'set'), {:controller => 'account', :action => 'choosecollection', :id => list}) %>
    	</div>
 
     <h2>

@@ -6,7 +6,7 @@
 
   <% if @imageitem.image %>
 	<div style="float: left; margin-right: 10px;">
-		<a href="<%= url_for_file_column("imageitem", "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column("imageitem", "image", "thumb"), :size => "56x56", :border => 0, :alt => '') %></a>
+		<a href="<%= url_for_file_column("imageitem", "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column("imageitem", "image", "thumb"), :size => "56x56", :alt => '') %></a>
 	</div>
 	<% end %>
 

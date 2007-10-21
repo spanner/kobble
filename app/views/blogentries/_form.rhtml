@@ -44,7 +44,7 @@
 <div class="hidden" id="hide_image">
   <% if @blogentry.image %>
 	<div style="float: left; margin-right: 10px;">
-		<a href="<%= url_for_file_column("blogentry", "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column("blogentry", "image", "thumb"), :size => "56x56", :border => 0, :alt => '') %></a>
+		<a href="<%= url_for_file_column("blogentry", "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column("blogentry", "image", "thumb"), :size => "56x56", :alt => '') %></a>
 	</div>
 	<% end %>
 	
