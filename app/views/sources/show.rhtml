@@ -33,13 +33,13 @@
 	</h2>
 		
   <div class="marginal" id="hide_fragments">
-		<% if !@source.nodes.empty? %>
-			<ul id="nodelist">
+		<ul id="nodelist">
+			<% if !@source.nodes.empty? %>
 	      <%= render :partial => 'nodes/minilist', :collection => @source.nodes %>
+			<% else %>
+				<li class="removewhenfilled">No fragments.</li>
+			<% end %>
 			</ul>
-		<% else %>
-			<p>No fragments.</p>
-		<% end %>
   </div>
 	
 	<% if current_user.is_editor? %>

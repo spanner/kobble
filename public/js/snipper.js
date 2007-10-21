@@ -105,6 +105,7 @@
         var newnode = snipper.responseholder.getFirst();
         this.waiter.remove();
         newnode.injectTop(nodelist);
+        $E('li.removewhenfilled', nodelist).remove();
         newnode.addEvent('mousedown', function(e) { new Draggee(this, new Event(e)); });
         announce('fragment created');
         flash(newnode);
