@@ -17,6 +17,13 @@ class Node < ActiveRecord::Base
     }
   }
   
+  attr_writer :associations
+  after_create :update_associations
+  
+  
+  
+  
+  
   def clipped
     clipfile = read_attribute(:clip)
     unless (clipfile)

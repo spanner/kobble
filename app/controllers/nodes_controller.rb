@@ -68,7 +68,7 @@ class NodesController < ApplicationController
       render :action => 'new'
     end
   end
-
+  
   def edit
     @node = Node.find(params[:id])
   end
