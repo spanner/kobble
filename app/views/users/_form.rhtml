@@ -3,6 +3,7 @@
 <p>'users' here come in two kinds: there are people that we just refer to, and people who can log in and act within the system (as well as being referred to). They are stored together, so that anyone who features as a speaker can also be invited in to act as an editor.</p>
 
 <%= render :partial => 'basics' %>
+<%= render :partial => 'shared/edit_image', :locals => {:item => @user} %>
 
 <h3><a href="#" class="displaycontrol" id="show_user_login">+ make login user</a></h3>
 
