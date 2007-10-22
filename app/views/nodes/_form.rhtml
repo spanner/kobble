@@ -36,7 +36,7 @@
 	<p>You can choose a section of the audio (or video) belonging to the source document by entering start and finish times here:</p>
 
 	<% if !@node.source.nil? && @node.source.clip %>
-		<% @source = node.source %>
+		<% @source = @node.source %>
 	  <%= render :partial => 'shared/player', :locals => {
 	    :mp3url => url_for_file_column("source", "clip")
 	  } %>
