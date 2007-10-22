@@ -136,15 +136,8 @@
   
   page_update: function () {
     this.hide();
-    
     var newitem = this.responseholder.getFirst();
-    console.log('responseholder children are');
-    console.log(this.responseholder.getChildren());
-    
     var recipient = this.target();
-    console.log('recipient is');
-    console.log(recipient);
-
     newitem.injectInside(recipient);
     announce('new item created');
   },

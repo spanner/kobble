@@ -101,6 +101,7 @@ window.addEvent('domready', function(){
   
   $ES('a.modalform').each( function (element) {
     element.addEvent('click', function (e) {
+      e = new Event(e);
       e.preventDefault();
       this.blur();
       new ModalForm(this, e);
@@ -109,6 +110,7 @@ window.addEvent('domready', function(){
 
   $ES('a.snipper').each( function (element) {
     element.addEvent('click', function (e) {
+      e = new Event(e);
       e.preventDefault();
       this.blur();
       snip = new Snipper(element, e);
