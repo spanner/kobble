@@ -121,7 +121,6 @@ label {
   font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
   letter-spacing: -0.05em;
   line-height: 20px;
-  margin-top: 12px;
   clear: both;
 }
 
@@ -136,7 +135,7 @@ a.emptylist {
 }
 
 div.slideable {
-  margin: 0 0 10px 0;
+  margin: 0 0 20px 0;
 }
 
 
