@@ -720,74 +720,6 @@ div.marginblock {
  	background-repeat: no-repeat;
 }
 
-/* snipper */
-
-#overlay {
-	position: absolute;
-	left: 0;
-	width: 100%;
-	background-color: #000;
-	cursor: pointer;
-}
-
-#snipper {
-	position: absolute;
-  left: 150px;
-  top: 70px;
-  width: 530px;
-  height: 493px;
- 	background-image: url('/images/furniture/layout/snipperbg.png');
- 	background-position: top left;
- 	background-repeat: no-repeat;
-  padding: 0 10px;
-  overflow: hidden;
-}
-
-#snipper h1 {
-  max-height: 56px;
-  overflow: hidden;
-  margin: 20px 10px 6px 20px;
-  color: white;
-}
-
-#snipper form {
-  margin: 0 20px;
-}
-
-#snipper form p {
-  margin: 5px 0;
-}
-
-#snipper a, #snipper a:link; #snipper a:visited {
-  color: white;
-}
-
-#snipper input.titular, #snipper input.standard, #snipper textarea.standard, #snipper select.standard {
- 	width: 460px;
-	clear: both; 
-}
-
-div.bigspinner {
-  width: 500px;
-  height: 460px;
- 	background-image: url('/images/furniture/signals/wait_32_ob.gif');
- 	background-position: center center;
- 	background-repeat: no-repeat;
-}
-
-li.waiter {
- 	background-image: url('/images/furniture/signals/wait_16_grey.gif');
- 	background-position: center center;
- 	background-repeat: no-repeat;
-  width: 36px;
- 	height: 22px;
-}
-
-div.scratchpage ul li.waiter {
-  width: 36px;
- 	height: 28px;
- 	background-image: url('/images/furniture/signals/wait_og.gif');
-}
 
 /* taglist */
 
@@ -887,3 +819,89 @@ div.taglist-holder ul li.taglist-highlight em
 }
 
 
+
+/* snipper and other floating dialogs */
+
+#overlay {
+	position: absolute;
+	left: 0;
+	width: 100%;
+	background-color: #000;
+	cursor: pointer;
+}
+
+#floater {
+	position: absolute;
+  left: 150px;
+  top: 70px;
+  width: 510px;
+  max-height: 800px;
+ 	background-image: url('/images/furniture/layout/snipperbg.png');
+ 	background-position: bottom right;
+ 	background-repeat: no-repeat;
+  padding: 0 10px;
+  overflow: hidden;
+}
+
+#floater h1 {
+  max-height: 56px;
+  overflow: hidden;
+  margin: 20px 10px 6px 20px;
+  color: white;
+}
+
+#floater form {
+  margin: 0 20px;
+}
+
+#floater form p {
+  margin: 5px 0;
+}
+
+#floater a, #floater a:link; #floater a:visited {
+  color: white;
+}
+
+#floater input.titular, #floater input.standard, #floater textarea.standard, #floater select.standard {
+ 	width: 460px;
+	clear: both; 
+}
+
+#floater a.canceller, #floater a.canceller:visited {
+  color: white;
+  font-size: 20px;
+  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
+  margin: 6px 10px 6px 20px;
+}
+
+div.bigspinner {
+  width: 500px;
+  height: 200px;
+ 	background-image: url('/images/furniture/signals/wait_32_ob.gif');
+ 	background-position: center center;
+ 	background-repeat: no-repeat;
+}
+
+li.waiter {
+ 	background-image: url('/images/furniture/signals/wait_16_grey.gif');
+ 	background-position: center center;
+ 	background-repeat: no-repeat;
+  width: 36px;
+ 	height: 22px;
+}
+
+div.scratchpage ul li.waiter {
+  width: 36px;
+ 	height: 28px;
+ 	background-image: url('/images/furniture/signals/wait_og.gif');
+}
+
+
+
+
+select.loud {
+  width: 200px;
+  height: 200px;
+  background-color: red;
+  color: white;
+}

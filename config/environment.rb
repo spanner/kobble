@@ -11,6 +11,7 @@
 require File.join(File.dirname(__FILE__), 'boot')
 # require File.join(File.dirname(__FILE__), 'log4r')
 require 'has_many_polymorphs'
+require 'active_record_extensions'
 require 'logger'
 
 RAILS_DEFAULT_LOGGER = Logger.new("#{RAILS_ROOT}/log/#{RAILS_ENV}.log") unless RAILS_DEFAULT_LOGGER
@@ -62,5 +63,4 @@ end
 
 # Include your application configuration below
 
-# as per  http://wiki.rubyonrails.com/rails/pages/SaltedLoginGeneratorQuickstart
 
