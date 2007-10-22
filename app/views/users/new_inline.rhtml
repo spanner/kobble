@@ -1,7 +1,6 @@
 <h1>Create a new person</h1>
 <%= form_tag( {:action => 'create'}) %>
 <%= render :partial => 'basics' %>
-<%= render :partial => 'shared/edit_image', :locals => {:item => @person} %>
 
 <div class="formbuttons clear">
   <%= submit_tag "create speaker and return" %>
