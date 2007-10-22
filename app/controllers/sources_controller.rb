@@ -36,9 +36,6 @@ class SourcesController < ApplicationController
 
   def create
     @source = Source.new(params[:source])
-    @source.speaker = new_speaker(params[:speaker]) if params[:speaker]
-    @source.occasion = new_occasion(params[:occasion]) if params[:occasion]
-    @source.question = new_question(params[:question]) if params[:question]
     if @source.save
       @source.tags << tags_from_list(params[:tag_list])
       flash[:notice] = 'Source object successfully created.'

@@ -50,6 +50,10 @@ class User < ActiveRecord::Base
     false
   end
   
+  def recently_activated?
+    false
+  end
+  
   private 
   
   def current_collection
@@ -83,7 +87,7 @@ class LoginUser < User
   end
 
   def can_login?
-    status && status > 0
+    !status.nil? and status > 0 and !login.nil? and login != '' and !email.nil?
   end
 
   def is_editor?

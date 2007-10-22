@@ -2,7 +2,7 @@
 
 <div id="hide_speaker" class="slideable">
 	<label for="<%= item.class.to_s.downcase %>_speaker_id">Primary speaker<br />
-	  <%= select(item.class.to_s.downcase, "speaker_id", @current_collection.users.collect{|u| [u.name, u.id] }, {:include_blank => true}, {:class => 'standard'}) %></label><br />
-	<%= link_to "create a new speaker", '#' %>
-
+	  <%= select(item.class.to_s.downcase, "speaker_id", @current_collection.users.collect{|u| [u.name, u.id] }, {:include_blank => true}, {:class => 'standard'}) %>
+	</label><br />
+	<%= link_to "create a new speaker", {:controller => 'users', :action => 'new'}, {:class=>'modalform', :target => "#{item.class.to_s.downcase}_speaker_id"} %>
 </div>

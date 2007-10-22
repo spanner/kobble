@@ -2,7 +2,7 @@
 
 <h1 class="pagetitle">Edit blog entry <%= link_to @blogentry.name, :action => 'show', :id => @blogentry %></h1>
 
-<%= start_form_tag ({:action => 'update', :id => @blogentry}, :multipart => true) %>
+<%= form_tag ({:action => 'update', :id => @blogentry}, :multipart => true) %>
   <%= render :partial => 'form' %>
 <%= end_form_tag %>
 

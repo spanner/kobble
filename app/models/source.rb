@@ -4,8 +4,9 @@ class Source < ActiveRecord::Base
   belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
   belongs_to :speaker, :class_name => 'User', :foreign_key => 'speaker_id'
   belongs_to :collection
+  belongs_to :occasion
 
-  has_many :nodes                   # excerpted to
+  has_many :nodes                     # excerpted to
   
   file_column :clip
   file_column :image, :magick => { 
@@ -15,6 +16,7 @@ class Source < ActiveRecord::Base
       "preview" => "750x540>" 
     }
   }
+
 
   public 
   

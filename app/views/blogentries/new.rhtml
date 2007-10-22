@@ -2,7 +2,7 @@
 
 <h1 class="pagetitle">Create a new blog entry</h1>
 
-<%= start_form_tag( {:action => 'create'}, :multipart => true) %>
+<%= form_tag( {:action => 'create'}, :multipart => true) %>
   <%= render :partial => 'form' %>
 <%= end_form_tag %>
 

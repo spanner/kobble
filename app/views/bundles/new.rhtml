@@ -13,7 +13,7 @@
     <a href="#" class="tabheader" id="bundle_<%= @bundle.id || 'new' %>_describebundle">set description</a>
   </p>
 
-  <%= start_form_tag :action => 'create' %>
+  <%= form_tag :action => 'create' %>
     <%= render :partial => 'form' %>
     <%= render :partial => 'choosemembers' %>
     <%= render :partial => 'describe' %>

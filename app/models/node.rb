@@ -8,6 +8,9 @@ class Node < ActiveRecord::Base
   belongs_to :source
   belongs_to :collection
 
+  allow_secondary_creation :speaker   # defined in lib/active_record_extensions: allows side-effect creation of new associated objects
+  allow_secondary_creation :question
+
   file_column :clip
   file_column :image, :magick => { 
     :versions => { 
@@ -16,13 +19,6 @@ class Node < ActiveRecord::Base
       "preview" => "750x540>" 
     }
   }
-  
-  attr_writer :associations
-  after_create :update_associations
-  
-  
-  
-  
   
   def clipped
     clipfile = read_attribute(:clip)
