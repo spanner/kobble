@@ -1,81 +1,9 @@
-<div class="header" id="header_source_<%= @source.id %>">
-	<%= render :partial => 'shared/icon', :locals => { :this => @source, :with_caption => false } %>
-	<h1 class="pagetitle"><%= @source.name %></h1>
+<div class="header" id="header_occasion_<%= @occasion.id %>">
+	<%= render :partial => 'shared/icon', :locals => { :this => @occasion, :with_caption => false } %>
+	<h1 class="pagetitle"><%= @occasion.name %></h1>
 </div>
 
-<div id="margin" class="floatcolumn" style="width: 175px;">
- 	<h2>
-		<a href="#" class="displaycontrol<% if @source.circumstances.nil? or @source.circumstances.length == 0 %> emptylist<% end %>" id="show_circumstances">+ circumstances</a>
-	</h2>
-
-   <div class="marginal" id="hide_circumstances">
-		<% if @source.circumstances.nil? or @source.circumstances.length %>
-			<p>None given</p>
-		<% else %>
-			<%= @source.circumstances.formatted %>
-		<% end %>
-	</div>
-
-	<h2>
-		<a href="#" class="displaycontrol<% unless @source.image %> emptylist<% end %>" id="show_image">+ image</a>
-	</h2>
-	
- 	<div class="marginal" id="hide_image">
-	 	<% if @source.image %>
-			<a href="<%= url_for_file_column("source", "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column("source", "image", "slide"), :size => "135x135", :alt => '') %></a>
-		<% else %>
-			<p>No image.</p>
-		<% end %>
-  </div>
-
- 	<h2>
-		<a href="#" class="displaycontrol<% if @source.nodes.empty? %> emptylist<% end %>" id="show_fragments">+ fragments</a>
-	</h2>
-		
-  <div class="marginal" id="hide_fragments">
-		<ul id="nodelist">
-			<% if !@source.nodes.empty? %>
-	      <%= render :partial => 'nodes/minilist', :collection => @source.nodes %>
-			<% else %>
-				<li class="removewhenfilled">No fragments.</li>
-			<% end %>
-			</ul>
-  </div>
-	
-	<% if current_user.is_editor? %>
-	 	<h2>
-			<a href="#" class="displaycontrol<% unless @source.has_notes? %> emptylist<% end %>" id="show_fieldnotes">+ field notes</a>
-		</h2>
-
-    <div class="marginal" id="hide_fieldnotes">
-			<% if @source.has_notes? %>
-				<% unless @source.observations.nil? %>
-					<%= "*Observations*: #{@source.observations}".formatted %>
-				<% end %>
-				<% unless @source.emotions.nil? %>
-					<%= "*Emotions*: #{@source.emotions}".formatted %>
-				<% end %>
-				<% unless @source.arising.nil? %>
-					<%= "*Connections*: #{@source.arising}".formatted %>
-				<% end %>
-			<% else %>
-				<p>No field notes.</p>
-			<% end %>
-		</div>
-	<% end %>
-
-	<h2>
-		<a href="#" class="displaycontrol<% unless @source.has_tags? %> emptylist<% end %>" id="show_tags">+ tags</a>
-	</h2>
-	
-	<% if @source.has_tags? %>
-  	<ul class="marginal" id="hide_tags">
-			<%= render :partial => "tags/minilist", :collection => @source.tags.uniq %>
-  	</ul>
-	<% else %>
-		<p>No tags.</p>
-	<% end %>
-	
+<div id="margin" class="floatcolumn" style="width: 175px;">	
 	<% if @current_user.is_editor? %>
 		<h2>
 			<a href="#" class="displaycontrol editor" id="show_admin">+ admin controls</a>
@@ -89,34 +17,6 @@
 	<% end %>
 </div>
 
-<% unless @source.body.nil? or @source.body.length == 0 %>
-	<h2>
-		<% if ! @source.synopsis.nil? and @source.synopsis.length != 0 %>
-			<a href="#" class="displaycontrol disappears" id="show_synopsis">+ synopsis</a>
-		<% else %>
-			<span class="pale">- synopsis</span>
-		<% end %>
-	</h2>
-	<div class="synopsis" id="hide_synopsis">
-	 	<%= "*synopsis*: 	#{@source.synopsis}".formatted %>
-	</div>
-<% end %>
+<h2>documents associated with this occasion</h2>
 
-
-<% if @source.clip %>
-  <%= render :partial => 'shared/player', :locals => {
-    :mp3url => url_for_file_column("source", "clip"),
-  } %>
-
-	<p class="bigp"><%= link_to 'create audio fragment', {:controller => 'nodes', :action => 'new'}, {:class => 'additem snipper'} %></p>
-<% end %>
-
-<% if @source.body.nil? or @source.body.length == 0 %>
-	<div class="synopsis">
-		<%= @source.synopsis.formatted %>
-	</div>
-<% else %>
-	<div class="transcript">
-		<%= @source.body.formatted %>
-	</div>
-<% end %>
+<p>...</p>

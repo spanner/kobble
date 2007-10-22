@@ -1,0 +1,12 @@
+<h1>Store a new occasion</h1>
+<%= form_tag( {:action => 'create'}) %>
+
+<p><label for="occasion_name">Name or description</label><br />
+<%= text_field 'occasion', 'name', 'class' => "standard" %>
+</p>
+
+<div class="formbuttons clear">
+  <%= submit_tag "store occasion and return" %>
+</div>
+
+<%= end_form_tag %>
