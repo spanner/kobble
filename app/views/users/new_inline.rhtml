@@ -2,7 +2,7 @@
 <%= form_tag( {:action => 'create'}) %>
 <%= render :partial => 'basics' %>
 
-<label for="<%= item.class.to_s.downcase %>_image">Upload a new image: <%= file_column_field item.class.to_s.downcase, "image" %></label>
+<label for="user_image">Upload a new image: <%= file_column_field "user", "image" %></label>
 
 <div class="formbuttons clear">
   <%= submit_tag "create speaker and return" %>
