@@ -111,6 +111,6 @@ var TagSuggestion = Autocompleter.Ajax.Json.extend({
 	},
 	markQueryValue: function(txt) {
 		return (this.options.markQuery && this.queryValue) ? txt.replace(new RegExp('(' + this.queryValue.escapeRegExp() + ')', 'i'), '<em>$1</em>') : txt;
-	},
+	}
 });
 

@@ -66,7 +66,7 @@ window.addEvent('domready', function(){
         onStart: function () { 
           if (a.hasClass('disappears')) a.hide(); 
           else a.setText(slides[tag].open ? a.getText().replace('-','+') : a.getText().replace('+','-'));
-        },
+        }
       });
       if (!a.hasClass('defaultopen')) slides[tag].hide(); 
   		a.addEvent('click', function (e) {

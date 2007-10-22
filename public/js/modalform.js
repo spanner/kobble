@@ -68,7 +68,7 @@
 			update: this.formholder,
 		  onRequest: function () {form.waiting();},
 		  onComplete: function () {form.gotform();},
-		  onFailure: function () {form.failed();},
+		  onFailure: function () {form.failed();}
 		}).request();
   },
   

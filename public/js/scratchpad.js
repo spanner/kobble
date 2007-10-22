@@ -75,7 +75,7 @@ var Dropon = new Class({
 			  onFailure: function () { 
 			    drop.notWaiting(); 
 			    error('ajax call failed'); 
-			  },
+			  }
 			}).request();
 		}
   },

@@ -68,13 +68,15 @@
 		<a href="#" class="displaycontrol<% unless @source.has_tags? %> emptylist<% end %>" id="show_tags">+ tags</a>
 	</h2>
 	
-	<% if @source.has_tags? %>
-  	<ul class="marginal" id="hide_tags">
-			<%= render :partial => "tags/minilist", :collection => @source.tags.uniq %>
-  	</ul>
-	<% else %>
-		<p>No tags.</p>
-	<% end %>
+  <div class="marginal" id="hide_tags">
+		<% if @source.has_tags? %>
+	  	<ul class="marginal">
+				<%= render :partial => "tags/minilist", :collection => @source.tags.uniq %>
+	  	</ul>
+		<% else %>
+			<p>No tags.</p>
+		<% end %>
+	</div>
 	
 	<% if @current_user.is_editor? %>
 		<h2>
