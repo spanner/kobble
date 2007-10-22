@@ -87,7 +87,7 @@ var Dropon = new Class({
 			data : 'scrap=' + draggee.tag,
 		  onRequest: function () { draggee.pendingdestruction(); },
 		  onSuccess: function () { announce(this.response.text); draggee.fadeAndRemove(); },
-		  onFailure: function () { draggee.reprieved(); },
+		  onFailure: function () { draggee.reprieved(); }
 		}).request();
 	},
 	addURL: function (argument) { 
@@ -109,7 +109,7 @@ var Dropon = new Class({
 	},
 	toggle: function (delay) { this.isopen ? this.close(delay) : this.open(delay); },
 	open: function (delay) { this.container.addClass('drophere')},
-	close: function (delay) { this.container.removeClass('drophere')},
+	close: function (delay) { this.container.removeClass('drophere')}
 });
 
 var Scratchpad = Dropon.extend({
@@ -154,7 +154,7 @@ var Scratchpad = Dropon.extend({
 	close: function (delay) {
     this.container.fireEvent('contract', null, delay); 
     this.isopen = false;
-	},
+	}
 });
 
 var Scratchpage = new Class({
@@ -178,7 +178,9 @@ var Scratchpage = new Class({
     this.body.hide();
     this.tab.removeClass('fg');
 	},
-	contents: function () { return this.list.getChildren().map(function(el){ return el.id; }); },
+	contents: function () { 
+	  return this.list.getChildren().map(function(el){ return el.id; }); 
+	}
 });
 
 var Draggee = new Class({
@@ -229,7 +231,7 @@ var Draggee = new Class({
 			duration:600,
 			wait:false
 		}).start({ 
-			'opacity': 0,
+			'opacity': 0
 		});
 	  new Fx.Styles(container, {
 			duration:600,
@@ -238,7 +240,7 @@ var Draggee = new Class({
 		}).start({ 
 			'width': 0,
 			'height': 0,
-			'opacity': 0,
+			'opacity': 0
 		});
 	},
 	remove: function () {
