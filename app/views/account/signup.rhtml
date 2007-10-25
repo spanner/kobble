@@ -1,6 +1,6 @@
-<% if !@current_collection.nil? && @current_collection.allows_registration? %>
+<% if !current_collection.nil? && current_collection.allows_registration? %>
 
-	<%= @current_collection.invitation.formatted %>
+	<%= current_collection.invitation.formatted %>
 
 	<% if @user.errors && !@user.errors.empty? %>
 		<p class="haserror">
@@ -14,7 +14,7 @@
 
 	<% form_for :user do |f| -%>
 
-		<input type="hidden" name="user[collection_id]" id="user_collection_id" value="<%= @current_collection.id %>">
+		<input type="hidden" name="user[collection_id]" id="user_collection_id" value="<%= current_collection.id %>">
 	
 		<p><label for="login"<%= ' class="formError"' if @user.errors.on(:firstname) %>>Your first name</label>
 		<%= f.text_field :firstname %>
@@ -53,7 +53,7 @@
 	
 	<div id="privacystatement">
 		<h2>privacy statement</h2>
-		<%= @current_collection.privacy.formatted %>
+		<%= current_collection.privacy.formatted %>
 		<p>If you don't agree with these terms, please don't sign up!</p>
 	</div>
 	

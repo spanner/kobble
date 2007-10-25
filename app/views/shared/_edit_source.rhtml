@@ -2,5 +2,5 @@
 
 <div id="hide_source" class="slideable">
 	<label for="<%= item.class.to_s.downcase %>_source_id">Taken from:<br />
-  <%= select(item.class.to_s.downcase, "source_id", @current_collection.sources.collect{|u| [u.name, u.id] }, {:include_blank => true}, {:class => 'standard'}) %></label>
+  <%= select(item.class.to_s.downcase, "source_id", current_collection.sources.collect{|u| [u.name, u.id] }, {:include_blank => true}, {:class => 'standard'}) %></label>
 </div>

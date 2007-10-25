@@ -1,0 +1,13 @@
+<h2>
+	<a href="#" class="displaycontrol<% if item.nodes.empty? %> emptylist<% end %>" id="show_fragments">+ fragments</a>
+</h2>
+	
+<div class="marginal" id="hide_fragments">
+	<ul id="nodelist">
+		<% if !item.nodes.empty? %>
+      <%= render :partial => 'nodes/minilist', :collection => item.nodes %>
+		<% else %>
+			<li class="removewhenfilled">No fragments.</li>
+		<% end %>
+		</ul>
+</div>

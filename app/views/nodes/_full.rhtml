@@ -6,80 +6,18 @@
 </div>
 
 <div class="floatcolumn" style="width: 175px;">
-	<h2>
-		<a href="#" class="displaycontrol<% unless @node.image %> emptylist<% end %>" id="show_image">+ image</a>
-	</h2>
+
+	<%= render :partial => 'shared/show_image', :locals => {:item => @thisnode} %>
+
+	<%= render :partial => 'shared/show_origins', :locals => {:item => @thisnode} %>
 	
- 	<div class="marginal" id="hide_image">
-	 	<% if @node.image %>
-			<a href="<%= url_for_file_column("node", "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column("node", "image", "slide"), :size => "135x135", :alt => '') %></a>
-		<% else %>
-			<p>No image.</p>
-		<% end %>
-  </div>
+	<%= render :partial => 'shared/show_field_notes', :locals => {:item => @thisnode} %>
 
-	<h2>
-		<a href="#" class="displaycontrol<% unless @thisnode.source || @thisnode.question %> emptylist<% end %>" id="show_origins">+ origins</a>
-	</h2>
-	
- 	<div class="marginal" id="hide_origins">
-		<% if @thisnode.source || @thisnode.question %>
-		<p>
-			<% if @thisnode.source %>
-			  <% if @thisnode.source %>taken from <%= link_to @thisnode.source.name, :action => 'show', :controller => 'sources', :id => @thisnode.source %><br /><% end %>
-			  <% if @thisnode.creator %>by <%= link_to @thisnode.creator.name, :action => 'show', :controller => 'user', :id => @thisnode.creator %><% end %>
-			<% end %>
-			<% if @thisnode.question %>
-				Considered a response to the question <%= link_to @thisnode.question.prompt, :controller => 'questions', :action => 'show', :id => @thisnode.question %>.
-			<% end %>
-			</p>
-		<% else %>
-			<p>No origins recorded.</p>
- 		<% end %>
-  </div>
+	<%= render :partial => 'shared/show_tags', :locals => {:item => @thisnode} %>
 
-	<% if current_user.is_editor? %>
-		<h2>
-			<a href="#" class="displaycontrol<% unless @thisnode.has_notes? %> emptylist<% end %>" id="show_fieldnotes">+ field notes</a>
-		</h2>
+	<%= render :partial => 'shared/show_topics', :locals => {:item => @thisnode} %>
 
-	 	<div class="marginal" id="hide_fieldnotes">
-
-			<% if @thisnode.has_notes? %>
-		    <div class="hidden" id="hide_node_<%= @thisnode.id %>_fieldnotes">
-					<% if @thisnode.observations %>
-						<p><strong>Observations:</strong> <%= @thisnode.observations %></p>
-					<% end %>
-
-					<% if @thisnode.emotions %>
-						<p><strong>Emotional responses:</strong> <%= @thisnode.emotions %></p>
-					<% end %>
-
-					<% if @thisnode.arising %>
-						<p><strong>Connections or ideas:</strong> <%= @thisnode.arising %></p>
-					<% end %>
-				</div>
-			<% else %>
-				<p>No origins recorded.</p>
-			<% end %>
-		</div>
-	<% end %>
-
-	<h2>
-		<a href="#" class="displaycontrol<% unless @thisnode.has_tags? %> emptylist<% end %>" id="show_tags">+ tags</a>
-	</h2>
-	
-  <div class="marginal" id="hide_tags">
-		<% if @node.has_tags? %>
-  	<ul>
-			<%= render :partial => "tags/minilist", :collection => @node.tags.uniq %>
-  	</ul>
-		<% else %>
-			<p>No tags.</p>
-		<% end%>
-  </div>
-
-	<% if @current_user.is_editor? %>
+	<% if editor? %>
 		<h2>
 			<a href="#" class="displaycontrol editor" id="show_admin">+ admin controls</a>
 		</h2>

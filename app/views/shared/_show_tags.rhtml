@@ -1,0 +1,13 @@
+<h2>
+	<a href="#" class="displaycontrol<% unless item.has_tags? %> emptylist<% end %>" id="show_tags">+ tags</a>
+</h2>
+
+<div class="marginal" id="hide_tags">
+	<% if item.has_tags? %>
+  	<ul class="marginal">
+			<%= render :partial => "tags/minilist", :collection => item.tags.uniq %>
+  	</ul>
+	<% else %>
+		<p>No tags.</p>
+	<% end %>
+</div>

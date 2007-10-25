@@ -5,6 +5,7 @@ class Blogentry < ActiveRecord::Base
 
   belongs_to :node
   belongs_to :collection
+  has_many :topics, :as => :subject
 
   file_column :clip
   file_column :image, :magick => { 

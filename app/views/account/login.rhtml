@@ -1,5 +1,5 @@
 
-<% if @current_collection and @current_collection.allow_registration %>
+<% if current_collection and current_collection.allow_registration %>
 
 	<p>Please log in below. If you haven't already, you will first need to <%= link_to 'set up an account', :controller => 'account', :action => 'signup' %>.</p>
 

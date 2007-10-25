@@ -6,7 +6,7 @@
 
 <h1 class="pagetitle">
 	<%= @blogentry.name %>
-	<% if @current_user.is_editor? %>
+	<% if editor? %>
 		<%= link_to 'edit', :action => 'edit', :id => @blogentry %>
 	<% end %>
 </h1>
@@ -17,4 +17,4 @@
 
 <h2>Recent blogging</h2>
 
-<%= render :partial => 'blogentries/list', :collection => @current_collection.blogentries, :limit => 6 %>
+<%= render :partial => 'blogentries/list', :collection => current_collection.blogentries, :limit => 6 %>

@@ -2,6 +2,6 @@
 
 <div id="hide_question" class="slideable">
 	<label for="<%= item.class.to_s.downcase %>_source_id">In response to:<br />
-  <%= select(item.class.to_s.downcase, "question_id", @current_collection.questions.collect{|q| [q.name, q.id] }, {:include_blank => true}, {:class => 'standard'}) %></label><br />
+  <%= select(item.class.to_s.downcase, "question_id", current_collection.questions.collect{|q| [q.name, q.id] }, {:include_blank => true}, {:class => 'standard'}) %></label><br />
 	<%= link_to "create a new question", '#' %>
 </div>

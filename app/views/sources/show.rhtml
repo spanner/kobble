@@ -4,81 +4,20 @@
 </div>
 
 <div id="margin" class="floatcolumn" style="width: 175px;">
- 	<h2>
-		<a href="#" class="displaycontrol<% if @source.circumstances.nil? or @source.circumstances.length == 0 %> emptylist<% end %>" id="show_circumstances">+ circumstances</a>
-	</h2>
 
-   <div class="marginal" id="hide_circumstances">
-		<% if @source.circumstances.nil? or @source.circumstances.length %>
-			<p>None given</p>
-		<% else %>
-			<%= @source.circumstances.formatted %>
-		<% end %>
-	</div>
+	<%= render :partial => 'shared/show_circumstances', :locals => {:item => @source} %>
 
-	<h2>
-		<a href="#" class="displaycontrol<% unless @source.image %> emptylist<% end %>" id="show_image">+ image</a>
-	</h2>
+	<%= render :partial => 'shared/show_image', :locals => {:item => @source} %>
+
+	<%= render :partial => 'shared/show_nodes', :locals => {:item => @source} %>
 	
- 	<div class="marginal" id="hide_image">
-	 	<% if @source.image %>
-			<a href="<%= url_for_file_column("source", "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column("source", "image", "slide"), :size => "135x135", :alt => '') %></a>
-		<% else %>
-			<p>No image.</p>
-		<% end %>
-  </div>
+	<%= render :partial => 'shared/show_field_notes', :locals => {:item => @source} %>
 
- 	<h2>
-		<a href="#" class="displaycontrol<% if @source.nodes.empty? %> emptylist<% end %>" id="show_fragments">+ fragments</a>
-	</h2>
-		
-  <div class="marginal" id="hide_fragments">
-		<ul id="nodelist">
-			<% if !@source.nodes.empty? %>
-	      <%= render :partial => 'nodes/minilist', :collection => @source.nodes %>
-			<% else %>
-				<li class="removewhenfilled">No fragments.</li>
-			<% end %>
-			</ul>
-  </div>
-	
-	<% if current_user.is_editor? %>
-	 	<h2>
-			<a href="#" class="displaycontrol<% unless @source.has_notes? %> emptylist<% end %>" id="show_fieldnotes">+ field notes</a>
-		</h2>
+	<%= render :partial => 'shared/show_tags', :locals => {:item => @source} %>
 
-    <div class="marginal" id="hide_fieldnotes">
-			<% if @source.has_notes? %>
-				<% unless @source.observations.nil? %>
-					<%= "*Observations*: #{@source.observations}".formatted %>
-				<% end %>
-				<% unless @source.emotions.nil? %>
-					<%= "*Emotions*: #{@source.emotions}".formatted %>
-				<% end %>
-				<% unless @source.arising.nil? %>
-					<%= "*Connections*: #{@source.arising}".formatted %>
-				<% end %>
-			<% else %>
-				<p>No field notes.</p>
-			<% end %>
-		</div>
-	<% end %>
-
-	<h2>
-		<a href="#" class="displaycontrol<% unless @source.has_tags? %> emptylist<% end %>" id="show_tags">+ tags</a>
-	</h2>
+	<%= render :partial => 'shared/show_topics', :locals => {:item => @source} %>
 	
-  <div class="marginal" id="hide_tags">
-		<% if @source.has_tags? %>
-	  	<ul class="marginal">
-				<%= render :partial => "tags/minilist", :collection => @source.tags.uniq %>
-	  	</ul>
-		<% else %>
-			<p>No tags.</p>
-		<% end %>
-	</div>
-	
-	<% if @current_user.is_editor? %>
+	<% if editor? %>
 		<h2>
 			<a href="#" class="displaycontrol editor" id="show_admin">+ admin controls</a>
 		</h2>

@@ -1,7 +1,5 @@
 module AuthenticatedSystem
   protected
-    # Returns true or false if the user is logged in.
-    # Preloads @current_user with the user model if they're logged in.
 
     def logged_in?
       current_user != :false
@@ -10,22 +8,39 @@ module AuthenticatedSystem
     def activated?
       logged_in? && current_user.activated?
     end
+
+    def admin?
+      logged_in? && current_user.admin?
+    end
+
+    def editor?
+      logged_in? && current_user.editor?
+    end
     
-    # Accesses the current user from the session.
     def current_user
       @current_user ||= (session[:user] && User.find_by_id(session[:user])) || :false
     end
     
-    # Store the given user in the session.
     def current_user=(new_user)
       session[:user] = (new_user.nil? || new_user.is_a?(Symbol)) ? nil : new_user.id
       @current_user = new_user
+      # this is used while we're logged in to know which threads are new, etc
+      # session[:last_active] = @current_user.last_seen_at
+      session[:topics] = session[:forums] = {}
+      # update_last_seen_at
     end
-    
+
     # handy access to the foreground collection
     def current_collection
-      current_user && current_user.collection
+      @current_collection ||= (current_user != :false && current_user.collection) || Collection.find(2) || :false
     end
+    
+    def update_last_seen_at
+      return unless logged_in?
+      User.update_all ['last_seen_at = ?', Time.now.utc], ['id = ?', current_user.id] 
+      current_user.last_seen_at = Time.now.utc
+    end
+    
     
     # Check if the user is authorized.
     #
@@ -60,7 +75,7 @@ module AuthenticatedSystem
     def login_required
       username, passwd = get_auth_data
       self.current_user ||= User.authenticate(username, passwd) || :false if username && passwd
-      logged_in? && authorized? ? true : access_denied
+      logged_in? ? true : access_denied
     end
     
     # Redirect as appropriate when an access request fails.

@@ -7,6 +7,7 @@ class Node < ActiveRecord::Base
   belongs_to :question
   belongs_to :source
   belongs_to :collection
+  has_many :topics, :as => :subject
 
   file_column :clip
   file_column :image, :magick => { 
@@ -74,6 +75,10 @@ class Node < ActiveRecord::Base
 
   def has_tags?
     false
+  end
+  
+  def find_some_text
+    !synopsis.nil? && synopsis.length > 0 ? synopsis : body
   end
 
   private

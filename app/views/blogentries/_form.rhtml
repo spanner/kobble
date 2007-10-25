@@ -17,42 +17,16 @@
 
 <p>There are two ways to add illustration to a blog entry. Either upload a picture or clip in the usual way, or choose a fragment from the list and borrow the image or clip from there. If is possible to do all three, by the way, but the page is likely to look a bit ropy.</p>
 
-<h3><a href="#" class="displaycontrol" id="show_blogentry_node">+ display a fragment</a></h3>
+<a href="#" class="displaycontrol" id="show_blogentry_node">+ display a fragment</a>
 
-<div class="hidden" id="hide_blogentry_node">
-  <p>
+<div id="hide_blogentry_node">
 	<label for="blogentry_node_id">Display the image and clip from:</label><br />
-  <%= select("blogentry", "node_id", @current_collection.questions.collect{|q| [q.name, q.id] }, {:include_blank => true}, {:class => 'standard'}) %>
-	</p>
+  <%= select("blogentry", "node_id", current_collection.nodes.collect{|q| [q.name, q.id] }, {:include_blank => true}, {:class => 'standard'}) %>
 </div>
 
-<h3><a href="#" class="displaycontrol" id="show_blogentry_clip">+ <%= @blogentry.clip ? 'edit' : 'add' %> audio or video</a></h3>
+<%= render :partial => 'shared/edit_image', :locals => {:item => @blogentry} %>
 
-<div class="hidden" id="hide_blogentry_clip">
-	<% if @blogentry.clip %>
-	  <%= render :partial => 'shared/player', :locals => {
-	    :mp3url => url_for_file_column("blogentry", "clip")
-	  } %>
-	<% end %>
-	
-	<p><label for="node_playto">Upload a new clip</label><br />
-	<%= file_column_field "blogentry", "clip" %></p>
-</div>
-
-<h3><a href="#" class="displaycontrol" id="show_image">+ <%= @blogentry.new_record? ? 'add' : 'edit' %> image</a></h3>
-
-<div class="hidden" id="hide_image">
-  <% if @blogentry.image %>
-	<div style="float: left; margin-right: 10px;">
-		<a href="<%= url_for_file_column("blogentry", "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column("blogentry", "image", "thumb"), :size => "56x56", :alt => '') %></a>
-	</div>
-	<% end %>
-	
-  <p><label for="blogentry_image">Upload a new image:</label><br />
-  <%= file_column_field "blogentry", "image" %>
-  </p>
-
-</div>
+<%= render :partial => 'shared/edit_clip', :locals => {:item => @blogentry} %>
 
 <div class="formbuttons">
   <%= submit_tag "Store Blog Entry" %> or

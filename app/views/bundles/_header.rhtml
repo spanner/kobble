@@ -12,7 +12,7 @@
     <%= link_to_unless_current 'list', :controller => 'bundles', :action => 'show', :id => @bundle, :display => 'list' %> | 
     <%= link_to_unless_current 'printable', :controller => 'bundles', :action => 'show', :id => @bundle, :display => 'full' %>
     or 
-    <% if current_user.is_admin? || current_user == @bundle.creator %>
+    <% if admin? || current_user == @bundle.creator %>
       <%= link_to 'edit', :action => 'edit', :id => @bundle %> |
       <%= link_to 'delete', {:action => 'edit', :id => @bundle}, {:confirm => "Really delete the bundle #{@bundle.name}?"} %> |
     <% end %>

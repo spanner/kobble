@@ -62,4 +62,7 @@ end
 
 # Include your application configuration below
 
+WhiteListHelper.tags.merge(%w(object param embed))
+
+
 

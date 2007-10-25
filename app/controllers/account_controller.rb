@@ -1,32 +1,31 @@
 class AccountController < ApplicationController
   skip_before_filter :login_required
   layout :choose_layout
+  before_filter :set_context
   
   def index
     @show_field = 'welcome' unless @show_field
   end
+  
   def background
     @show_field = 'background'
     render :action => 'index'
   end
+  
   def faq
     @show_field = 'faq'
     render :action => 'index'
   end
-
-  def set_context
-    Collection.current_collection = UserObserver.current_collection = @current_collection = Collection.find(params[:id] || 2)
-  end
   
   def choose_layout
-    @current_collection.tag.to_s
+    (current_collection == :false) ? 'login' : current_collection.abbreviation.to_s
   end
   
   def signup
     @user = LoginUser.new(params[:user])
     return unless request.post?
     @user.save!
-    @user.collection = @current_collection
+    @user.collection = current_collection
     @user.save
     self.current_user = @user
     redirect_to :controller => '/account', :action => 'index'
@@ -57,7 +56,7 @@ class AccountController < ApplicationController
         self.current_user.remember_me
         cookies[:auth_token] = { :value => self.current_user.remember_token , :expires => self.current_user.remember_token_expires_at }
       end
-      redirect_back_or_default(:controller => current_user.is_editor? ? 'nodes' : '/')
+      redirect_back_or_default(:controller => current_user.editor? ? 'nodes' : '/')
       flash[:notice] = "Logged in successfully"
     else
       @error = true

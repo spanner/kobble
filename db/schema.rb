@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 50) do
+ActiveRecord::Schema.define(:version => 53) do
 
   create_table "blogentries", :force => true do |t|
     t.column "created_by",    :integer
@@ -36,6 +36,8 @@ ActiveRecord::Schema.define(:version => 50) do
     t.column "synopsis",       :string
   end
 
+  add_index "bundles", ["collection_id"], :name => "index_bundles_on_collection"
+
   create_table "collections", :force => true do |t|
     t.column "user_id",            :integer
     t.column "name",               :string
@@ -55,17 +57,41 @@ ActiveRecord::Schema.define(:version => 50) do
     t.column "faq",                :text
   end
 
+  create_table "forums", :force => true do |t|
+    t.column "name",             :string
+    t.column "description",      :string
+    t.column "topics_count",     :integer,  :default => 0
+    t.column "posts_count",      :integer,  :default => 0
+    t.column "position",         :integer
+    t.column "description_html", :text
+    t.column "collection_id",    :integer
+    t.column "created_at",       :datetime
+    t.column "created_by",       :integer
+    t.column "updated_at",       :datetime
+    t.column "updated_by",       :integer
+  end
+
   create_table "marks_tags", :force => true do |t|
     t.column "tag_id",    :integer
     t.column "mark_type", :string,  :limit => 20
     t.column "mark_id",   :integer
   end
 
+  add_index "marks_tags", ["mark_type", "mark_id"], :name => "index_tag_marks"
+
   create_table "members_superbundles", :force => true do |t|
     t.column "superbundle_id", :integer
     t.column "member_id",      :integer
     t.column "member_type",    :string,  :limit => 20
     t.column "position",       :integer
+  end
+
+  add_index "members_superbundles", ["member_type", "member_id"], :name => "index_bundle_members"
+
+  create_table "monitorships", :force => true do |t|
+    t.column "topic_id", :integer
+    t.column "user_id",  :integer
+    t.column "active",   :boolean, :default => true
   end
 
   create_table "nodes", :force => true do |t|
@@ -95,15 +121,20 @@ ActiveRecord::Schema.define(:version => 50) do
     t.column "cirumstances",   :text
   end
 
+  add_index "nodes", ["collection_id"], :name => "index_nodes_on_collection"
+  add_index "nodes", ["source_id"], :name => "index_nodes_on_source"
+  add_index "nodes", ["question_id"], :name => "index_nodes_on_question"
+
   create_table "occasions", :force => true do |t|
-    t.column "created_by",  :integer
-    t.column "updated_by",  :integer
-    t.column "created_at",  :datetime
-    t.column "updated_at",  :datetime
-    t.column "name",        :string
-    t.column "description", :text
-    t.column "image",       :string
-    t.column "clip",        :string
+    t.column "created_by",    :integer
+    t.column "updated_by",    :integer
+    t.column "created_at",    :datetime
+    t.column "updated_at",    :datetime
+    t.column "name",          :string
+    t.column "description",   :text
+    t.column "image",         :string
+    t.column "clip",          :string
+    t.column "collection_id", :integer
   end
 
   create_table "offenders_warnings", :force => true do |t|
@@ -111,6 +142,21 @@ ActiveRecord::Schema.define(:version => 50) do
     t.column "offender_type", :string,  :limit => 20
     t.column "offender_id",   :integer
   end
+
+  create_table "posts", :force => true do |t|
+    t.column "topic_id",      :integer
+    t.column "body",          :text
+    t.column "forum_id",      :integer
+    t.column "body_html",     :text
+    t.column "collection_id", :integer
+    t.column "created_at",    :datetime
+    t.column "created_by",    :integer
+    t.column "updated_at",    :datetime
+    t.column "updated_by",    :integer
+  end
+
+  add_index "posts", ["forum_id", "created_at"], :name => "index_posts_on_forum_id"
+  add_index "posts", ["created_by", "created_at"], :name => "index_posts_oncreator_id"
 
   create_table "questions", :force => true do |t|
     t.column "created_by",    :integer
@@ -165,7 +211,10 @@ ActiveRecord::Schema.define(:version => 50) do
     t.column "arising",       :text
     t.column "image",         :string
     t.column "circumstances", :text
+    t.column "occasion_id",   :integer
   end
+
+  add_index "sources", ["collection_id"], :name => "index_sources_on_collection"
 
   create_table "surveys", :force => true do |t|
     t.column "created_by",    :integer
@@ -192,6 +241,29 @@ ActiveRecord::Schema.define(:version => 50) do
     t.column "collection_id",  :integer
     t.column "image",          :string
   end
+
+  create_table "topics", :force => true do |t|
+    t.column "forum_id",      :integer
+    t.column "user_id",       :integer
+    t.column "title",         :string
+    t.column "hits",          :integer,  :default => 0
+    t.column "sticky",        :integer,  :default => 0
+    t.column "posts_count",   :integer,  :default => 0
+    t.column "replied_at",    :datetime
+    t.column "locked",        :boolean,  :default => false
+    t.column "replied_by",    :integer
+    t.column "last_post_id",  :integer
+    t.column "blogentry_id",  :integer
+    t.column "collection_id", :integer
+    t.column "created_at",    :datetime
+    t.column "created_by",    :integer
+    t.column "updated_at",    :datetime
+    t.column "updated_by",    :integer
+  end
+
+  add_index "topics", ["forum_id"], :name => "index_topics_on_forum_id"
+  add_index "topics", ["forum_id", "sticky", "replied_at"], :name => "index_topics_on_sticky_and_replied_at"
+  add_index "topics", ["forum_id", "replied_at"], :name => "index_topics_on_forum_id_and_replied_at"
 
   create_table "users", :force => true do |t|
     t.column "login",                     :string,   :limit => 80, :default => "",     :null => false
@@ -222,7 +294,11 @@ ActiveRecord::Schema.define(:version => 50) do
     t.column "activation_code",           :string,   :limit => 40
     t.column "workplace",                 :string
     t.column "phone",                     :string
+    t.column "last_seen_at",              :datetime
   end
+
+  add_index "users", ["login"], :name => "index_users_on_login"
+  add_index "users", ["last_seen_at"], :name => "index_users_on_last_seen_at"
 
   create_table "warnings", :force => true do |t|
     t.column "body",           :text

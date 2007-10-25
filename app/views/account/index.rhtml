@@ -1,8 +1,8 @@
 <% @show_field = 'welcome' unless @show_field %>
 
-<% if @show_field || current_user == :false %>
+<% if @show_field || !current_user %>
 
-	<%= @current_collection.send(@show_field).formatted %>
+	<%= current_collection.send(@show_field).formatted %>
 	
 <% elsif current_user && current_user.activated? %>
 

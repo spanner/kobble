@@ -7,7 +7,7 @@
 
     <h2>
 			<%= link_to( "#{list.name}", {:controller => 'account', :action => 'choosecollection', :id => list}) %>
-			<% if current_user.is_admin? %><%= link_to 'edit', {:action => 'edit', :id => list}, {:class => 'edititem'} %><% end %>
+			<% if admin? %><%= link_to 'edit', {:action => 'edit', :id => list}, {:class => 'edititem'} %><% end %>
 		</h2>
     <p>
       <% if list.description %><%= truncate( list.description, 240 ) %><br /><% end %>

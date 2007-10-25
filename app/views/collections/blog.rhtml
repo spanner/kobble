@@ -1,6 +1,6 @@
 <h1 class="pagetitle">
 	<%= @collection.name %>
-	<% if @current_user.is_admin? %>
+	<% if admin? %>
 		<%= link_to 'edit', {:action => 'edit', :id => @collection}, {:class => 'edititem'} %>
 	<% end %>
 </h1>

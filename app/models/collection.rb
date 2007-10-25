@@ -11,6 +11,9 @@ class Collection < ActiveRecord::Base
   has_many :questions
   has_many :blogentries
   has_many :occasions
+  has_many :forums
+  has_many :topics
+  has_many :posts
   
   cattr_accessor :current_collection
   

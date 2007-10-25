@@ -1,12 +1,12 @@
 <h1 class="pagetitle">
 	<%= @collection.name %>
-	<% if @current_user.is_admin? %>
+	<% if admin? %>
 		<%= link_to 'edit', :action => 'edit', :id => @collection %>
 	<% end %>
 </h1>
 
 <p class="small">
-	tag: <%= @collection.tag %><br />
+	tag: <%= @collection.abbreviation %><br />
 	status: <%= @collection.status %><br />
 	allows registration: <%= @collection.allow_registration ? 'yes' : 'no' %>
 </p>

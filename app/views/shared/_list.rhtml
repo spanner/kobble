@@ -4,8 +4,8 @@
 %>
 
 <h1>
-	<% if @current_user.is_admin? %>
-		<sup><%= link_to @current_collection.tag, :controller => 'collections', :action => 'show', :id => @current_collection %></sup>
+	<% if admin? %>
+		<sup><%= link_to current_collection.abbreviation, :controller => 'collections', :action => 'show', :id => current_collection %></sup>
 	<% end %>
 	
 	 <%= pagetitle %>
@@ -35,7 +35,7 @@
 	<% end %>
 </div>
 
-<% if @current_user.is_editor? %>
+<% if editor? %>
 	<p>
 		<%= link_to  "Add a new #{listedtype.singularize}", {:action => 'new'}, {:class => 'additem'} %>
 	</p>

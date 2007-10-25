@@ -7,6 +7,7 @@ class Source < ActiveRecord::Base
   belongs_to :occasion
 
   has_many :nodes                     # excerpted to
+  has_many :topics, :as => :subject
   
   file_column :clip
   file_column :image, :magick => { 

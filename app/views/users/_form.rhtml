@@ -27,7 +27,7 @@
 		<option value="0">no login</option>
 		<option value="1" selected>reader</option>
 		<option value="100">editor</option>
-		<% if current_user.is_admin? %><option value="200">administrator</option><% end %>
+		<% if admin? %><option value="200">administrator</option><% end %>
 		<% if current_user.is_developer? %><option value="300">developer</option><% end %>
 	</select>
 	</p>

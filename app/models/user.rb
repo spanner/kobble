@@ -34,15 +34,15 @@ class User < ActiveRecord::Base
     return self.firstname + ' ' + self.lastname
   end
   
-  def is_editor?
+  def editor?
     false
   end
 
-  def is_admin?
+  def admin?
     false
   end
   
-  def is_developer?
+  def developer?
     false
   end
   
@@ -58,6 +58,12 @@ class User < ActiveRecord::Base
   
   def current_collection
     Collection.current_collection
+  end
+
+  public
+  
+  def self.currently_online
+    User.find(:all, :conditions => ["last_seen_at > ?", Time.now.utc-5.minutes])
   end
   
 end
@@ -90,11 +96,11 @@ class LoginUser < User
     !status.nil? and status > 0 and !login.nil? and login != '' and !email.nil?
   end
 
-  def is_editor?
+  def editor?
     status >= 100
   end
 
-  def is_admin?
+  def admin?
     status >= 200
   end
   
@@ -154,8 +160,6 @@ class LoginUser < User
     self.remember_token            = nil
     save(false)
   end
-
-  public
   
   protected
     # before filter 

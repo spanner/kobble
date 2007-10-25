@@ -21,7 +21,7 @@
 
 <div id="mlalheader">
 	<h1>
-		<%= @current_collection.name %> <span class="bright"><%= @pagetitle %></span></h1>
+		<%= current_collection.name %> <span class="bright"><%= @pagetitle %></span></h1>
 	</h1>
 	<div id="mlalnavigation">
 		<%= link_to 'welcome', '/', {:class => request.request_parameters['action'] == 'index' ? 'fg' : ''} %>
