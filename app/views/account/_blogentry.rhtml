@@ -1,7 +1,13 @@
 <div class="listrow">
+	<% if blogentry.image %>
+		<div style="float: right; width: 56px; margin: 10px 0 10px 10px;">
+			<% @be = blogentry %>
+			<%= link_to( image_tag(url_for_file_column('be', "image", "thumb"), :width => '56px', :height => '56px'), {:action => 'blogentry', :id => blogentry}) %>
+		</div>
+	<% end %>
 	<h2>
 	 	<%= image_tag "clearbits/comment.gif", :class => 'icon blue' %>
-		<%= link_to( "#{blogentry.name}", {:action => 'blogentry', :id => blogentry}) %>
+		<%= link_to( blogentry.name, {:action => 'blogentry', :id => blogentry}) %>
 	</h2>
 	<p>
 		<span class="footnote">
@@ -9,5 +15,5 @@
 			<%= pluralize(blogentry.posts_count, 'comment') %>.
 		</span>
 	</p>
-	<%= blogentry.introduction.formatted %>
+	<%= truncate(blogentry.body, 360).formatted %>
 </div>

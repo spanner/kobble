@@ -716,6 +716,10 @@ div.marginblock {
  	background-repeat: no-repeat;
 }
 
+div.waiting {
+  height: 100px;
+}
+
 div.floatcolumn ul {
   margin: 0;
   list-style-image: url(/images/furniture/icons/listicon_blue.png);
@@ -921,6 +925,7 @@ div.comment {
   margin: 0 0 12px 0;
   border: 1px solid #B2AAA4;
   padding: 8px;
+  font-size: 85%;
 }
 
 div.comment p {
@@ -967,9 +972,18 @@ h2 img.icon {
   margin: 2px 6px 0 0;
 }
 
+div.preview {
+  background-color: #559DC4;
+  color: white;
+}
 
+div.preview span.loud {
+  color: #ff0;
+}
 
-
+div.preview a {
+  color: #CC6E1F;
+}
 
 /* wrestled from beast */
 

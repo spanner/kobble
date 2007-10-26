@@ -20,9 +20,10 @@ div#mlalheader {
 }
 
 div#mlalheader h1 {
-  width: 460px;
-  margin: 20px auto;
+  width: 540px;
+  margin: 18px auto;
   line-height: 1.1;
+  font-size: 20px;
 }
 
 div#mlalheader h1 span.bright {
@@ -30,7 +31,7 @@ div#mlalheader h1 span.bright {
 }
 
 div#mlalnavigation {
-  width: 460px;
+  width: 540px;
   margin: 0 auto;
   height: 27px;
 }
@@ -73,12 +74,12 @@ div#mlalnavigation a:hover {
 }
 
 div#mlalbody {
-  width: 460px;
+  width: 540px;
   margin: 40px auto;
 }
 
 div#mlallogos {
-  width: 460px;
+  width: 540px;
   margin: 120px auto;
 }
 
@@ -125,7 +126,7 @@ div#mainform {
 
 div#mainform input, div#mainform label  {
 	display: block;
-	width: 460px;
+	width: 540px;
 	height: 16px;
 	line-height: 16px;
 }
@@ -170,4 +171,5 @@ p.haserror {
 div.editlinks {
   margin: 80px 0;
 }
+
 

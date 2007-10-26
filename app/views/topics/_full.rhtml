@@ -13,54 +13,54 @@
 
 <table border="0" cellspacing="0" cellpadding="0" class="posts wide">
 <% for post in @posts do %>
-<% unless post == @posts.first %>
-<tr class="spacer">
-  <td colspan="2">
-    <a name="<%= post.dom_id %>" id="<%= post.dom_id %>">&nbsp;</a>
-  </td>
-</tr>
-<% end %>
-<tr class="post hentry" id="<%= post.dom_id %>-row">
-  <td class="author vcard">
+	<% unless post == @posts.first %>
+	<tr class="spacer">
+	  <td colspan="2">
+	    <a name="<%= post.dom_id %>" id="<%= post.dom_id %>">&nbsp;</a>
+	  </td>
+	</tr>
+	<% end %>
+	<tr class="post hentry" id="<%= post.dom_id %>-row">
+	  <td class="author vcard">
 
-    <div class="date">
-      <a href="#<%= post.dom_id %>" rel="bookmark">
-      <abbr class="updated" title="<%= post.created_at.xmlschema %>">
-      <%= time_ago_in_words(post.created_at) %>
-      </abbr>
-      </a>
-    </div>
+	    <div class="date">
+	      <a href="#<%= post.dom_id %>" rel="bookmark">
+	      <abbr class="updated" title="<%= post.created_at.xmlschema %>">
+	      <%= time_ago_in_words(post.created_at) %>
+	      </abbr>
+	      </a>
+	    </div>
 		
-    <span class="fn"><%= link_to truncate(h(post.creator.name), 15), user_path(post.creator), :class => (post.creator == @posts.first.creator ? "threadauthor" : nil) %></span>
-    <% if post.creator.admin? %>
-    <span class="admin">
-      <% if post.creator.admin? %>
-      	Administrator
-      <% elsif post.creator.editor? %>
-      	Editor
-      <% end %>
-    </span>
-    <% end %>
-    <span class="posts"><%= pluralize(post.creator.posts_count, 'post') %> 
+	    <span class="fn"><%= link_to truncate(h(post.creator.name), 15), user_path(post.creator), :class => (post.creator == @posts.first.creator ? "threadauthor" : nil) %></span>
+	    <% if post.creator.admin? %>
+	    <span class="admin">
+	      <% if post.creator.admin? %>
+	      	Administrator
+	      <% elsif post.creator.editor? %>
+	      	Editor
+	      <% end %>
+	    </span>
+	    <% end %>
+	    <span class="posts"><%= pluralize(post.creator.posts_count, 'post') %> 
 
-    <% if logged_in? && post.editable_by?(current_user) -%>
-    <p>
-      <span class="edit">
-        <%= ajax_spinner_for "edit-post-#{post.id}", "spinner_bounce.gif" %>
-        <%= link_to_remote('Edit post', 
-              {:url => edit_post_path(:forum_id => @forum, :topic_id => @topic, :id => post), :method => :get,
-               :before => "EditForm.init(#{post.id});", :condition => "!EditForm.isEditing(#{post.id})" }, 
-              {:href => edit_post_path(:forum_id => @forum, :topic_id => @topic, :id => post, :page => params[:page]), :class => "utility"}) %>
-      </span>
-    </p>
-    <% end -%>
+	    <% if logged_in? && post.editable_by?(current_user) -%>
+	    <p>
+	      <span class="edit">
+	        <%= ajax_spinner_for "edit-post-#{post.id}", "spinner_bounce.gif" %>
+	        <%= link_to_remote('Edit post', 
+	              {:url => edit_post_path(:forum_id => @forum, :topic_id => @topic, :id => post), :method => :get,
+	               :before => "EditForm.init(#{post.id});", :condition => "!EditForm.isEditing(#{post.id})" }, 
+	              {:href => edit_post_path(:forum_id => @forum, :topic_id => @topic, :id => post, :page => params[:page]), :class => "utility"}) %>
+	      </span>
+	    </p>
+	    <% end -%>
 
 
-  </td>
-  <td class="body entry-content" id="post-body-<%= post.id %>">
-    <%= post.body.formatted %>
-  </td>
-</tr>
+	  </td>
+	  <td class="body entry-content" id="post-body-<%= post.id %>">
+	    <%= post.body.formatted %>
+	  </td>
+	</tr>
 <% end %>
 <tr>
   <td style="vertical-align: top;">

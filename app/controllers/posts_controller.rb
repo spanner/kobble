@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_filter :find_post,      :except => [:index, :create, :monitored, :search]
+  before_filter :find_post, :except => [:index, :create, :monitored, :search, :preview]
   @@query_options = { :per_page => 25, :select => 'posts.*, topics.title as topic_title, forums.name as forum_name', :joins => 'inner join topics on posts.topic_id = topics.id inner join forums on topics.forum_id = forums.id', :order => 'posts.created_at desc' }
 
   def index
@@ -33,6 +33,18 @@ class PostsController < ApplicationController
     end
   end
 
+  def preview
+    @topic = Topic.find_by_id_and_forum_id(params[:topic_id],params[:forum_id], :include => :forum)
+    @forum = @topic.forum
+    @post  = @topic.posts.build(params[:post])
+    @post.created_by = current_user
+    @post.created_at = Time.now()
+    respond_to do |format|
+      format.js {render :layout => false}
+      format.html
+    end
+  end
+  
   def create
     @topic = Topic.find_by_id_and_forum_id(params[:topic_id],params[:forum_id], :include => :forum)
     if @topic.locked?
@@ -49,9 +61,11 @@ class PostsController < ApplicationController
     end
     @forum = @topic.forum
     @post  = @topic.posts.build(params[:post])
-    @post.user = current_user
     @post.save!
     respond_to do |format|
+      format.js do
+        render :layout => false
+      end
       format.html do
         redirect_to topic_path(:forum_id => params[:forum_id], :id => params[:topic_id], :anchor => @post.dom_id, :page => params[:page] || '1')
       end

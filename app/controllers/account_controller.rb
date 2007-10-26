@@ -13,6 +13,11 @@ class AccountController < ApplicationController
     @pagetitle = @show_field
   end
   
+  def welcome
+    @pagetitle = @show_field = 'welcome '
+    render :action => 'index'
+  end
+
   def background
     @pagetitle = @show_field = 'background'
     render :action => 'index'

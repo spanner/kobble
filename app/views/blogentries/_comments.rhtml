@@ -17,7 +17,7 @@
 			<div class="comment">
 				<p class="commentheader<% if post.creator.editor? %> admin<% end %>">
 		     	<%= image_tag "clearbits/comment.gif", :class => 'icon', :title => post.creator.editor? ? 'admin' : 'visitor' %>
-					<%= link_to truncate(h(post.creator.name), 48), user_path(post.creator), :class => (post.creator == @posts.first.creator ? "threadauthor" : nil) %>
+					<%= h(post.creator.name) %>
 					<span class="when"><%= time_ago_in_words(post.created_at) %></span>
 				</p>
 
@@ -29,20 +29,19 @@
 	<% end %>
 	
 	<div id="hide_reply" class="comment slideable">
-	  <%= content_tag 'p', h(flash[:bad_reply]), :class => 'notice' if flash[:bad_reply] %>
-	  <% form_for :post, :url => posts_path(:forum_id => @forum, :topic_id => @topic, :page => @topic.last_page) do |f| -%>
+	  <% form_for :post, :url => preview_path(:forum_id => @forum, :topic_id => @topic) do |f| -%>
 			<p class="commentheader">
 	     	<%= image_tag "clearbits/comment.gif", :class => 'icon', :title => current_user.editor? ? 'admin' : 'visitor' %>
-				<%= link_to truncate(h(current_user.name), 48), user_path(current_user) %>
+				<%= h(current_user.name) %>
 			</p>
-
+			
       <%= f.text_area :body, :rows => 8 %><br />
      	<%= submit_tag "Preview Comment" %> <span class="button_or">or <%= link_to_function 'cancel', "$E('show_reply').slide.slideOut();" %></span>
 
 	  <% end -%>
 	</div>
 
-	<%= link_to 'Add comment', {:controller => 'posts', :action => 'new', :topic_id => @topic, :forum_id => @forum}, {:id => 'show_reply', :class => "displaycontrol additem", :style => 'margin: 6px 0;'} %>
+	<%= link_to 'Add comment', {:controller => 'posts', :action => 'new', :topic_id => @topic, :forum_id => @forum}, {:id => 'show_reply', :class => "displaycontrol additem disappears", :style => 'margin: 6px 0;'} %>
 
 	<% if @post_pages and @post_pages.current.next %>
 	<p style="float:right;"><%= link_to "Next page", { :page => @post_pages.current.next }.merge(params.reject{|k,v| k=="page"})  %></p>

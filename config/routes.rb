@@ -33,6 +33,7 @@ ActionController::Routing::Routes.draw do |map|
   map.blogentry '/blogentry/:id', :controller => 'account', :action => 'blogentry'
   map.blog '/blog', :controller => 'account', :action => 'blog'
   map.discussion '/discussion', :controller => 'account', :action => 'blog'
+  map.preview '/forums/:forum_id/topics/:topic_id/preview', :controller => 'posts', :action => 'preview'
 
   map.connect ':controller/:action/:id'
   
