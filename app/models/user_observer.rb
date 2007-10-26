@@ -4,7 +4,7 @@ class UserObserver < ActiveRecord::Observer
   cattr_accessor :current_collection
 
   def after_create(user)
-    if (!user.email.nil? && user.can_login?) then
+    if (user.can_login?) then
       UserNotifier.deliver_signup_notification(user, @@current_collection)
     end
   end

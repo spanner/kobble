@@ -22,8 +22,12 @@ module AuthenticatedSystem
     end
     
     def current_user=(new_user)
+      logger.warn "+++ setting current user to #{new_user}"
+
       session[:user] = (new_user.nil? || new_user.is_a?(Symbol)) ? nil : new_user.id
       @current_user = new_user
+      
+      
       # this is used while we're logged in to know which threads are new, etc
       # session[:last_active] = @current_user.last_seen_at
       session[:topics] = session[:forums] = {}

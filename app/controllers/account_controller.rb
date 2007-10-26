@@ -1,6 +1,6 @@
 class AccountController < ApplicationController
   before_filter :set_context
-  before_filter :login_required, :only => [:blog, :discussion]
+  before_filter :login_required, :only => [:blog, :discussion, :me]
   layout :choose_layout
   
   def choose_layout
@@ -67,9 +67,11 @@ class AccountController < ApplicationController
     @user.save!
     @user.collection = current_collection
     @user.save
-    self.current_user = @user
-    redirect_to :controller => '/account', :action => 'index'
+    session[:user] = @user.id
+    current_user = @user
+    session[:topics] = session[:forums] = {}
     flash[:notice] = "Thanks for signing up!"
+    redirect_to :controller => '/account', :action => 'index'
   rescue ActiveRecord::RecordInvalid
     render :action => 'signup'
   end

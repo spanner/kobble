@@ -27,7 +27,7 @@
 		<%= link_to 'questions', '/faq', {:class => @pagetitle == 'faq' ? 'fg' : ''} %>
 		<% if logged_in? %>
 			<%= link_to 'blog', '/blog', {:class => @pagetitle == 'blog' ? 'fg' : ''} %>
-			<%= link_to 'you', '/me', {:class => @pagetitle == 'me' ? 'fg' : ''} %>
+			<%= link_to 'you', '/me', {:class => @pagetitle == 'you' ? 'fg' : ''} %>
 			<%= link_to 'log out', '/account/logout' %>
 		<% else %>
 			<%= link_to 'sign up', '/account/signup', {:class => @pagetitle == 'signup' ? 'fg' : ''} %>
@@ -39,6 +39,10 @@
 <div id="mlalbody">
  
 <%= @content_for_layout %>
+
+<pre>
+	<%= debug(current_user) %>
+</pre>
 
 </div>
 
