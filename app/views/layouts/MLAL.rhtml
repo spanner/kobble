@@ -25,7 +25,7 @@
 		<%= link_to 'welcome', '/', {:class => @pagetitle == 'welcome' ? 'fg' : ''} %>
 		<%= link_to 'background', '/background', {:class => @pagetitle == 'background' ? 'fg' : ''} %>
 		<%= link_to 'questions', '/faq', {:class => @pagetitle == 'faq' ? 'fg' : ''} %>
-		<% if current_user %>
+		<% if logged_in? %>
 			<%= link_to 'blog', '/blog', {:class => @pagetitle == 'blog' ? 'fg' : ''} %>
 			<%= link_to 'log out', '/account/logout' %>
 		<% else %>
