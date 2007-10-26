@@ -60,16 +60,18 @@ ActiveRecord::Schema.define(:version => 55) do
   end
 
   create_table "forums", :force => true do |t|
-    t.column "name",          :string
-    t.column "description",   :string
-    t.column "topics_count",  :integer,  :default => 0
-    t.column "posts_count",   :integer,  :default => 0
-    t.column "position",      :integer
-    t.column "collection_id", :integer
-    t.column "created_at",    :datetime
-    t.column "created_by",    :integer
-    t.column "updated_at",    :datetime
-    t.column "updated_by",    :integer
+    t.column "name",             :string
+    t.column "description",      :string
+    t.column "topics_count",     :integer,  :default => 0
+    t.column "posts_count",      :integer,  :default => 0
+    t.column "position",         :integer
+    t.column "description_html", :text
+    t.column "collection_id",    :integer
+    t.column "created_at",       :datetime
+    t.column "created_by",       :integer
+    t.column "updated_at",       :datetime
+    t.column "updated_by",       :integer
+    t.column "visibility",       :integer,  :default => 0
   end
 
   create_table "marks_tags", :force => true do |t|
@@ -106,8 +108,8 @@ ActiveRecord::Schema.define(:version => 55) do
     t.column "rating",         :integer
     t.column "image",          :string
     t.column "clip",           :string
-    t.column "playfrom",       :decimal,  :precision => 10, :scale => 2
-    t.column "playto",         :decimal,  :precision => 10, :scale => 2
+    t.column "playfrom",       :integer,  :limit => 10, :precision => 10, :scale => 0
+    t.column "playto",         :integer,  :limit => 10, :precision => 10, :scale => 0
     t.column "keywords_count", :integer
     t.column "collection_id",  :integer
     t.column "created_by",     :integer
@@ -118,8 +120,8 @@ ActiveRecord::Schema.define(:version => 55) do
     t.column "emotions",       :text
     t.column "arising",        :text
     t.column "question_id",    :integer
+    t.column "circumstances",  :text
     t.column "original_text",  :text
-    t.column "cirumstances",   :text
   end
 
   add_index "nodes", ["collection_id"], :name => "index_nodes_on_collection"
@@ -179,6 +181,8 @@ ActiveRecord::Schema.define(:version => 55) do
     t.column "scrap_id",      :integer
     t.column "position",      :integer
   end
+
+  add_index "scraps_scratchpads", ["scrap_type", "scrap_id"], :name => "index_scratchpad_scraps"
 
   create_table "scratchpads", :force => true do |t|
     t.column "name",    :string
@@ -245,7 +249,6 @@ ActiveRecord::Schema.define(:version => 55) do
 
   create_table "topics", :force => true do |t|
     t.column "forum_id",      :integer
-    t.column "user_id",       :integer
     t.column "title",         :string
     t.column "hits",          :integer,  :default => 0
     t.column "sticky",        :integer,  :default => 0
@@ -255,6 +258,7 @@ ActiveRecord::Schema.define(:version => 55) do
     t.column "replied_by",    :integer
     t.column "last_post_id",  :integer
     t.column "collection_id", :integer
+    t.column "speaker_id",    :integer
     t.column "created_at",    :datetime
     t.column "created_by",    :integer
     t.column "updated_at",    :datetime
@@ -296,10 +300,11 @@ ActiveRecord::Schema.define(:version => 55) do
     t.column "activation_code",           :string,   :limit => 40
     t.column "workplace",                 :string
     t.column "phone",                     :string
+    t.column "posts_count",               :integer,                :default => 0
     t.column "last_seen_at",              :datetime
-    t.column "posts_count",               :integer
   end
 
+  add_index "users", ["collection_id"], :name => "index_users_on_collection"
   add_index "users", ["login"], :name => "index_users_on_login"
   add_index "users", ["last_seen_at"], :name => "index_users_on_last_seen_at"
 
