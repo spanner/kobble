@@ -1,0 +1,13 @@
+<% if editor? %>
+	<h2>
+		<a href="#" class="displaycontrol<% if item.created_posts.empty? %> emptylist<% end %>" id="show_messages">+ messages</a>
+	</h2>
+	
+	<div class="marginal" id="hide_fragments">
+		<ul id="nodelist">
+			<% if !item.created_posts.empty? %>
+	      <%= render :partial => 'nodes/minilist', :collection => item.created_posts %>
+			<% end %>
+			</ul>
+	</div>
+<% end %>

@@ -39,7 +39,7 @@ class UsersController < ApplicationController
   end
   
   def show
-    userid = params[:id] || $current_user.id
+    userid = params[:id] || current_user.id
     @user = User.find(userid)
     @users = User.find(:all)
   end
@@ -53,8 +53,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    model = params[:user][:login] ? LoginUser : User
-    @user = model.new(params[:user])
+    @user = User.new(params[:user])
     if @user.save
       flash[:notice] = 'User created.'
       respond_to do |format|
@@ -67,12 +66,12 @@ class UsersController < ApplicationController
   end
 
   def edit
-    userid = params[:id] || $current_user.id
+    userid = (current_user.editor? ? params[:id] : nil) || current_user.id
     @user = User.find(userid)
   end
 
   def update
-    @user = User.find(params[:user])
+    @user = User.find(params[:id])
     if @user.update_attributes(params[:user])
       flash[:notice] = 'User was updated.'
       redirect_to :action => 'show', :id => @user

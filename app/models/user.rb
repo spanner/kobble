@@ -1,22 +1,36 @@
 require 'digest/sha1'
 
 class User < ActiveRecord::Base
+  attr_protected :activated_at
+  attr_accessor :password
+  attr_accessor :password_confirmation
+  attr_accessor :old_password
+
   belongs_to :creator, :class_name => 'User', :foreign_key => 'created_by'
   belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
-  belongs_to :collection      # for editors and higher this is a changeable value that indicates foreground collection
+  belongs_to :collection      # for editors and higher this is a changeable value that indicates foreground collection. for readers it is fixed at signup
 
   has_many :sources, :class_name => 'Source', :foreign_key => 'speaker_id'
   has_many :nodes, :class_name => 'Node', :foreign_key => 'speaker_id'
+  has_many :scratchpads
+  has_many :warnings
 
   has_many :created_nodes, :class_name => 'Node', :foreign_key => 'created_by', :conditions => ['collection_id = ?', :current_collection]
   has_many :created_sources, :class_name => 'Source', :foreign_key => 'created_by', :conditions => ['collection_id = ?', :current_collection]
   has_many :created_bundles, :class_name => 'Bundle', :foreign_key => 'created_by', :conditions => ['collection_id = ?', :current_collection]
-  
-  has_many :scratchpads
-  has_many :warnings
+  has_many :created_blogentries, :class_name => 'Blogentry', :foreign_key => 'created_by', :conditions => ['collection_id = ?', :current_collection]
+  has_many :created_forums, :class_name => 'Forum', :foreign_key => 'created_by', :conditions => ['collection_id = ?', :current_collection]
+  has_many :created_topics, :class_name => 'Topic', :foreign_key => 'created_by', :conditions => ['collection_id = ?', :current_collection]
+  has_many :created_posts, :class_name => 'Post', :foreign_key => 'created_by', :conditions => ['collection_id = ?', :current_collection]
 
-  validates_presence_of :firstname, :lastname
-  attr_protected :activated_at
+  validates_presence_of     :firstname, :lastname
+  validates_presence_of     :login,                      :if => :login_required?
+  validates_presence_of     :password,                   :if => :password_required?
+  validates_length_of       :password, :within => 4..40, :if => :password_required?
+  validates_confirmation_of :password,                   :if => :password_required?
+  validates_length_of       :login,    :within => 3..40
+  validates_length_of       :email,    :within => 3..100
+  validates_uniqueness_of   :login, :email, :case_sensitive => false
 
   file_column :image, :magick => { 
     :versions => { 
@@ -26,59 +40,7 @@ class User < ActiveRecord::Base
     }
   }
 
-  attr_accessor :password
-  attr_accessor :confirm_password
-  
-  def name
-    return self.diminutive if self.diminutive
-    return self.firstname + ' ' + self.lastname
-  end
-  
-  def editor?
-    false
-  end
-
-  def admin?
-    false
-  end
-  
-  def developer?
-    false
-  end
-  
-  def can_login?
-    false
-  end
-  
-  def recently_activated?
-    false
-  end
-  
-  private 
-  
-  def current_collection
-    Collection.current_collection
-  end
-
-  public
-  
-  def self.currently_online
-    User.find(:all, :conditions => ["last_seen_at > ?", Time.now.utc-5.minutes])
-  end
-  
-end
-
-class LoginUser < User
   before_create :make_activation_code
-
-  validates_presence_of     :login
-  validates_presence_of     :password,                   :if => :password_required?
-  validates_presence_of     :password_confirmation,      :if => :password_required?
-  validates_length_of       :password, :within => 4..40, :if => :password_required?
-  validates_confirmation_of :password,                   :if => :password_required?
-  validates_length_of       :login,    :within => 3..40
-  validates_length_of       :email,    :within => 3..100
-  validates_uniqueness_of   :login, :email, :case_sensitive => false
   before_save :encrypt_password
 
   # spoke custom methods
@@ -161,6 +123,20 @@ class LoginUser < User
     save(false)
   end
   
+  def name
+    return firstname + ' ' + lastname
+  end
+  
+  def best_name
+    diminutive.nil? ? name : diminutive
+  end
+  
+  public
+  
+    def self.currently_online
+      User.find(:all, :conditions => ["last_seen_at > ?", Time.now.utc-5.minutes])
+    end
+  
   protected
     # before filter 
     def encrypt_password
@@ -170,7 +146,11 @@ class LoginUser < User
     end
     
     def password_required?
-      crypted_password.blank? || !password.blank?
+      !login.blank? && (crypted_password.blank? || !password.blank?)
+    end
+
+    def login_required?
+      !password.blank? || !crypted_password.blank?
     end
     
     def make_activation_code

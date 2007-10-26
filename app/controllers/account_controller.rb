@@ -28,6 +28,11 @@ class AccountController < ApplicationController
     render :action => 'index'
   end
   
+  def me
+    @pagetitle = 'you'
+    @user = current_user
+  end
+  
   def blog
     @pagetitle = 'blog'
     @blogentries = Blogentry.find(:all, 
@@ -38,7 +43,10 @@ class AccountController < ApplicationController
         :current => params[:page]
       }
     )
-  end  
+  end 
+  
+  def discussion
+  end
 
   def blogentry
     @pagetitle = 'blog'
@@ -54,7 +62,7 @@ class AccountController < ApplicationController
 
   def signup
     @pagetitle = 'signup'
-    @user = LoginUser.new(params[:user])
+    @user = User.new(params[:user])
     return unless request.post?
     @user.save!
     @user.collection = current_collection
@@ -83,7 +91,7 @@ class AccountController < ApplicationController
   def login
     @pagetitle = 'login'
     return unless request.post?
-    self.current_user = LoginUser.authenticate(params[:login], params[:password])
+    self.current_user = User.authenticate(params[:login], params[:password])
     if logged_in?
       if params[:remember_me] == "1"
         self.current_user.remember_me

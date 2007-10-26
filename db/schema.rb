@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 55) do
+ActiveRecord::Schema.define(:version => 58) do
 
   create_table "blogentries", :force => true do |t|
     t.column "created_by",    :integer
@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(:version => 55) do
     t.column "node_id",       :string
     t.column "image",         :string
     t.column "clip",          :string
-    t.column "caption",       :text
+    t.column "caption",       :string
   end
 
   create_table "bundles", :force => true do |t|
@@ -55,8 +55,8 @@ ActiveRecord::Schema.define(:version => 55) do
     t.column "url",                :string
     t.column "background",         :text
     t.column "faq",                :text
-    t.column "blogging_forum",     :integer
-    t.column "editorial_forum",    :integer
+    t.column "blog_forum_id",      :integer
+    t.column "editorial_forum_id", :integer
   end
 
   create_table "forums", :force => true do |t|
@@ -272,14 +272,14 @@ ActiveRecord::Schema.define(:version => 55) do
   add_index "topics", ["forum_id", "replied_at"], :name => "index_topics_on_forum_id_and_replied_at"
 
   create_table "users", :force => true do |t|
-    t.column "login",                     :string,   :limit => 80, :default => "",     :null => false
-    t.column "crypted_password",          :string,   :limit => 40, :default => "",     :null => false
-    t.column "email",                     :string,   :limit => 60, :default => "",     :null => false
+    t.column "login",                     :string,   :limit => 80, :default => "", :null => false
+    t.column "crypted_password",          :string,   :limit => 40, :default => "", :null => false
+    t.column "email",                     :string,   :limit => 60, :default => "", :null => false
     t.column "diminutive",                :string,   :limit => 40
     t.column "honorific",                 :string
     t.column "firstname",                 :string,   :limit => 40
     t.column "lastname",                  :string,   :limit => 40
-    t.column "salt",                      :string,   :limit => 40, :default => "",     :null => false
+    t.column "salt",                      :string,   :limit => 40, :default => "", :null => false
     t.column "verified",                  :integer,                :default => 0
     t.column "role",                      :string
     t.column "remember_token",            :string,   :limit => 40
@@ -295,13 +295,13 @@ ActiveRecord::Schema.define(:version => 55) do
     t.column "description",               :text
     t.column "created_by",                :integer
     t.column "updated_by",                :integer
-    t.column "type",                      :string,                 :default => "User"
     t.column "activated_at",              :datetime
     t.column "activation_code",           :string,   :limit => 40
     t.column "workplace",                 :string
     t.column "phone",                     :string
     t.column "posts_count",               :integer,                :default => 0
     t.column "last_seen_at",              :datetime
+    t.column "postcode",                  :string,   :limit => 8
   end
 
   add_index "users", ["collection_id"], :name => "index_users_on_collection"

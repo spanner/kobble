@@ -2,10 +2,6 @@ ActionController::Routing::Routes.draw do |map|
                                 
   map.home '', :controller => 'account', :action => 'welcome'
 
-  map.resources :users, :member => { :admin => :post } do |user|
-    user.resources :moderators
-  end
-
   map.resources :forums do |forum|
     forum.resources :topics, :name_prefix => nil do |topic|
       topic.resources :posts, :name_prefix => nil
@@ -32,8 +28,11 @@ ActionController::Routing::Routes.draw do |map|
   map.background '/background', :controller => 'account', :action => 'background'
   map.blogentry '/blogentry/:id', :controller => 'account', :action => 'blogentry'
   map.blog '/blog', :controller => 'account', :action => 'blog'
-  map.discussion '/discussion', :controller => 'account', :action => 'blog'
+  map.discussion '/discussion', :controller => 'account', :action => 'discussion'
+  map.me '/me', :controller => 'account', :action => 'me'
   map.preview '/forums/:forum_id/topics/:topic_id/preview', :controller => 'posts', :action => 'preview'
+
+  map.user '/users/:action/:id', :controller => 'users'
 
   map.connect ':controller/:action/:id'
   

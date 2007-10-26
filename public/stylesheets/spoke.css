@@ -1288,7 +1288,23 @@ table.topics tr td .flag {
 
 
 
+div.nomugshot, div.mugshot {
+  width: 135px;
+  height: 135px;
+  border: 1px solid #695D54;
+  margin: 0 0 20px 0;
+}
 
+div.nomugshot {
+	background-repeat: repeat-x;
+	background-position: top left;
+	background-image: url(/images/furniture/icons/default_mugshot.png);
+}
+
+div.nomugshot p {
+  margin: 40px 14px;
+  font-size: 10px;
+}
 
 
 

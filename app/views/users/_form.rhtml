@@ -5,9 +5,9 @@
 <%= render :partial => 'basics' %>
 <%= render :partial => 'shared/edit_image', :locals => {:item => @user} %>
 
-<h3><a href="#" class="displaycontrol" id="show_user_login">+ make login user</a></h3>
+<a href="#" class="displaycontrol" id="show_user_login">+ make login user</a>
 
-<div class="hidden" id="hide_user_login">
+<div class="slideable" id="hide_user_login">
 	
 	<p><label for="user_login">Login name</label><br/>
 	<%= text_field 'user', 'login', 'class' => "standard" %>  <br />
@@ -33,9 +33,9 @@
 	</p>
 </div>
 
-<h3><a href="#" class="displaycontrol" id="show_user_detail">+ add contact information</a></h3>
+<a href="#" class="displaycontrol" id="show_user_detail">+ add contact information</a>
 
-<div class="hidden" id="hide_user_detail">
+<div class="slideable" id="hide_user_detail">
 	
 	<p><label for="user_login">Role</label><br/>
 	<%= text_field 'user', 'role', 'class' => "standard" %>  <br />

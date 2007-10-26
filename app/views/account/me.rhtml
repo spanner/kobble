@@ -1,6 +1,5 @@
 <% itsme = (current_user.id == @user.id) -%>
 
-
 <div class="floatcolumn" style="width: 135px;">
  	<% if @user.image %>
 		<div class="mugshot">
@@ -10,25 +9,6 @@
 		<div class="nomugshot">
 			<p><% if itsme %>You haven't <%= link_to "provided a picture", :action => 'edit' %> yet.<% else %>No pictures!<% end %></p>
 		</div>
-	<% end %>
-
-	<% if editor? %>
-		<p>
-		<% if @user.can_login? %>
-			login: <%= @user.login %><br />
-			activated? <%= @user.activated? ? 'yes' : 'no' %><br />
-			last logged in: <%= @user.logged_in_at || 'never' %><br />
-		<% else %>
-			<em>non-login user</em><br />
-		<% end %>
-		email address: <%= @user.email %><br />
-		workplace: <%= @user.workplace %><br />
-		role: <%= @user.role %><br />
-		phone: <%= @user.role %>
-		</p>
-
-		<%= render :partial => 'shared/show_tags', :locals => {:item => @user} %>
-		<%= render :partial => 'shared/show_admin', :locals => {:item => @user} %>
 	<% end %>
 	
 	<% if itsme %>

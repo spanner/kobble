@@ -47,7 +47,7 @@ class PeopleIntoUsers < ActiveRecord::Migration
   
   def self.up
     User.find(:all).each do |u|
-       u.type = 'LoginUser'
+       u.type = 'User'
        u.save!
      end
      
