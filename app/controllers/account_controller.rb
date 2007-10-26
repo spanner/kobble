@@ -14,7 +14,7 @@ class AccountController < ApplicationController
   end
   
   def welcome
-    @pagetitle = @show_field = 'welcome '
+    @pagetitle = @show_field = 'welcome'
     render :action => 'index'
   end
 
