@@ -6,8 +6,6 @@ class EditObserver < ActiveRecord::Observer
   
   def before_create(model)
     
-    STDERR.puts("!!! giving custody to #{@@current_user.name}. current_user method call returns #{current_user.name}")
-    
     model.collection = @@current_collection
     model.creator = @@current_user
     model.created_at = Time.now
