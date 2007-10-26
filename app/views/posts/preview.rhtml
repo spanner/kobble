@@ -1,0 +1,15 @@
+<p class="commentheader<% if @post.creator.editor? %> admin<% end %>">
+  	<%= image_tag "clearbits/comment.gif", :class => 'icon', :title => @post.creator.editor? ? 'admin' : 'visitor' %>
+	<%= h(@post.creator.name) %>
+	<span class="loud">preview</span>
+</p>
+<%= @post.body.formatted %>
+
+<%= form_tag( {:action => 'create'}, {:class=>'confirmation'}) %>
+
+	<%= hidden_field_tag 'forum_id', @forum.id %>
+	<%= hidden_field_tag 'topic_id', @topic.id %>
+	<%= hidden_field_tag 'post[body]', escape_once(@post.body) %>
+  <%= submit_tag "Add comment" %> or <%= link_to "edit again", '#', :class => 'revise' %>
+
+<%= end_form_tag %>
