@@ -7,12 +7,12 @@
 		</div>
 	<% else %>
 		<div class="nomugshot">
-			<p><% if itsme %>You haven't <%= link_to "provided a picture", :action => 'edit' %> yet.<% else %>No pictures!<% end %></p>
+			<p><% if itsme %>You haven't <%= link_to "provided a picture", :controller => 'users', :action => 'edit' %> yet.<% else %>No pictures!<% end %></p>
 		</div>
 	<% end %>
 	
 	<% if itsme %>
-		<%= link_to 'Edit your description and preferences', {:action => 'edit'}, {:class => "edititem"} %>
+		<%= link_to 'Edit your description and preferences', {:controller => 'users', :action => 'edit'}, {:class => "edititem"} %>
 	<% end %>
 </div>
 
@@ -30,7 +30,7 @@
 
 <% if @user.description.nil? %>
 	<p>
-		<% if itsme %>You haven't <%= link_to "provided a biog", :action => 'edit' %> yet.<% else %>Not given yet.<% end %>
+		<% if itsme %>You haven't <%= link_to "provided a biog", :controller => 'users',  :action => 'edit' %> yet.<% else %>Not given yet.<% end %>
 	</p>
 <% else %>
 	<h2>description</h2>

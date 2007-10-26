@@ -1,6 +1,6 @@
 <div id="inputform">
 
-	<% if editor? %>
+	<% if nil && admin? %>
 		<h1 class="pagetitle">Edit <%= link_to @user.name, :action => 'show', :id => @user %></h1>
 
 		<%= form_tag( {:controller => 'users', :action => 'update', :id => @user}, :multipart => true) %>
@@ -13,8 +13,6 @@
 		<%= form_tag( {:controller => 'users', :action => 'update', :id => @user}, :multipart => true) %>
 		  <%= render :partial => 'self_form' %>
 		<%= end_form_tag %>
-
-
 
 	<% end %>
 </div>
