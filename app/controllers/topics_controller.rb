@@ -1,5 +1,6 @@
 class TopicsController < ApplicationController
   before_filter :find_forum_and_topic, :except => :index
+  skip_before_filter :editor_required
 #  before_filter :update_last_seen_at, :only => :show
   
   def index

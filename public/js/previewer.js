@@ -66,6 +66,7 @@
     this.recipient.show();
     this.form.remove();
     this.waiter.remove();
+    $ES('#nocomment').setText('Comments');
     flash(this.container)
   },
 

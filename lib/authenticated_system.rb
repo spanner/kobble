@@ -9,6 +9,10 @@ module AuthenticatedSystem
       logged_in? && current_user.activated?
     end
 
+    def developer?
+      logged_in? && current_user.developer?
+    end
+
     def admin?
       logged_in? && current_user.admin?
     end
@@ -82,6 +86,34 @@ module AuthenticatedSystem
       logged_in? ? true : access_denied
     end
     
+    # Filter methods to enforce status requirements.
+    #
+    # To require admin? for all actions, use this:
+    #
+    #   before_filter :admin_required
+    #
+    # likewise :editor_required and :developer_required
+    #
+    # other options as for :login_required and other filters
+
+    def admin_required
+      username, passwd = get_auth_data
+      self.current_user ||= User.authenticate(username, passwd) || :false if username && passwd
+      admin? ? true : access_denied
+    end
+
+    def editor_required
+      username, passwd = get_auth_data
+      self.current_user ||= User.authenticate(username, passwd) || :false if username && passwd
+      editor? ? true : access_denied
+    end
+
+    def developer_required
+      username, passwd = get_auth_data
+      self.current_user ||= User.authenticate(username, passwd) || :false if username && passwd
+      developer? ? true : access_denied
+    end
+
     # Redirect as appropriate when an access request fails.
     #
     # The default action is to redirect to the login screen.

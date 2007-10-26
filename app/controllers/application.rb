@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   include StringExtensions
 
   helper_method :current_user, :current_collection, :logged_in?, :admin?, :editor?, :last_active
-  before_filter :login_required
+  before_filter :editor_required  
   before_filter :set_context
   layout :choose_layout
   
@@ -32,7 +32,7 @@ class ApplicationController < ActionController::Base
   end
     
   def local_request?
-    logged_in? && current_user.admin? == 'admin'
+    admin?
   end
   
   def tags_from_list (taglist)

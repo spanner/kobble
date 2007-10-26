@@ -5,13 +5,16 @@ class EditObserver < ActiveRecord::Observer
   cattr_accessor :current_collection
   
   def before_create(model)
+    
+    STDERR.puts("!!! giving custody to #{@@current_user.name}. current_user method call returns #{current_user.name}")
+    
     model.collection = @@current_collection
-    model.created_by = @@current_user
+    model.creator = @@current_user
     model.created_at = Time.now
   end
   
   def before_update(model)
-    model.updated_by = @@current_user
+    model.updater = @@current_user
     model.updated_at = Time.now
   end
 end

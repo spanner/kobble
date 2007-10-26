@@ -1,6 +1,7 @@
 class AccountController < ApplicationController
   before_filter :set_context
   before_filter :login_required, :only => [:blog, :discussion, :me]
+  skip_before_filter :editor_required  
   layout :choose_layout
   
   def choose_layout
@@ -68,7 +69,7 @@ class AccountController < ApplicationController
     @user.collection = current_collection
     @user.save
     session[:user] = @user.id
-    current_user = @user
+    self.current_user = @user
     session[:topics] = session[:forums] = {}
     flash[:notice] = "Thanks for signing up!"
     redirect_to :controller => '/account', :action => 'index'
