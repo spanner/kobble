@@ -9,6 +9,8 @@
 	<%= render :partial => 'shared/show_image', :locals => {:item => @blogentry} %>
 	<%= render :partial => 'shared/show_topics', :locals => {:item => @blogentry} %>
 	<%= render :partial => 'shared/show_admin', :locals => {:item => @blogentry} %>
+	
+	<p><%= link_to "public version", blogentry_path(@blogentry), {:class => 'previewitem'} %></p>
 </div>
 
 <div class="synopsis">

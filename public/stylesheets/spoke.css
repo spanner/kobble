@@ -348,7 +348,7 @@ input.titular {
   line-height: 22px;
 }
 
-a.additem, a.edititem, a.removeitem {
+a.additem, a.edititem, a.removeitem, a.previewitem {
 	display: block;
 	height: 20px;
 	font-size: 18px;
@@ -372,6 +372,10 @@ a.edititem {
 a.removeitem { 
 	color: #823433; 
 	background-image: url('/images/furniture/buttons/delete.png');
+}
+a.previewitem { 
+	color: #a0a500; 
+	background-image: url('/images/furniture/buttons/preview.png');
 }
 
 

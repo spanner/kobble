@@ -15,11 +15,15 @@
 			<li><%= link_to b.name, :id => b%></li>
 		<% end %>
 		</ul>
+		
+		<%= render :partial => 'shared/show_admin', :locals => {:item => @blogentry} %>
+		
 	</div>
 
 	<div id="blogbody">
 		<%= @blogentry.body.formatted if @blogentry.body %>
 	</div>
+	
 </div>
 
 <%= render :partial => 'blogentries/comments' %>
