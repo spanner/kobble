@@ -44,7 +44,7 @@ img {
 }
 
 a, a:link, a:visited {
-  color:#695D54;
+  color:#559DC4;
   text-decoration: none;
 }
 
@@ -701,10 +701,6 @@ div.floatcolumn h2 {
   margin: 0;
 }
 
-div.floatcolumn ul {
-  padding: 0;
-  margin: 0;
-}
 
 div.floatcolumn p, div.floatcolumn li {
 /*	font-size: 80%;*/
@@ -720,6 +716,15 @@ div.marginblock {
  	background-repeat: no-repeat;
 }
 
+div.floatcolumn ul {
+  margin: 0;
+  list-style-image: url(/images/furniture/icons/listicon_blue.png);
+  padding: 0 0 0 24px;
+}
+
+li.additem a, li.additem a:visited {
+  color: #a0a500;
+}
 
 /* taglist */
 
@@ -899,6 +904,73 @@ div.scratchpage ul li.waiter {
 
 
 
+
+/* comments and comment form */
+
+div.blogentry {
+  width: 540px;
+  
+}
+
+div.comments {
+  width: 540px;
+  
+}
+
+div.comment {
+  margin: 0 0 12px 0;
+  border: 1px solid #B2AAA4;
+  padding: 8px;
+}
+
+div.comment p {
+  margin: 0 0 6px 0;
+}
+
+p.commentheader
+{
+  margin-bottom: 0;
+  font-size: 18px;
+  font-weight: lighter;
+  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
+  letter-spacing: -0.02em;
+  line-height:  1.2;
+}
+
+p.commentheader img {
+  float: left; 
+  margin: 1px 6px 0 0;
+}
+
+p.commentheader img.icon {
+  background-color:#695D54;
+}
+
+p.admin a {
+  color:#559DC4;
+}
+
+p.admin img.icon {
+  background-color:#559DC4;
+}
+
+div.comment textarea {
+  width: 508px;
+}
+
+p.commentheader span.when {
+  color: #B2AAA4;
+}
+
+h2 img.icon {
+  float: left; 
+  margin: 2px 6px 0 0;
+}
+
+
+
+
+
 /* wrestled from beast */
 
 p.online {margin-bottom:0;}
@@ -912,86 +984,136 @@ img.icon
 }
 img.reply { float:right; }
 img.orange { background-color:darkorange; }
-img.grey { background-color:#ccc; }
-img.darkgrey { background-color:#999; }
+img.grey { background-color:#B2AAA4; }
+img.darkgrey { background-color:#695D54; }
 img.green { background-color:#0c0;}
+img.blue { background-color:#559DC4;}
 
 .post .author .icon
 {
 	float:right;
 }
 
+.post .author .edit a
+{
+  font-size:0.7em;
+  color:#666;
+}
+
+.post .author img {
+	float:left; 
+	margin-right:0.5em;
+	}
+.post .author
+{
+	border-top:2px solid #eee;
+	padding:5px 10px;
+	background:#eee;
+	font-weight:bold;
+	color:#333;
+	font-size:0.9em;
+	min-height:32px;
+	width:10em;
+	min-width:8em;
+	vertical-align:top;
+}
+
+.post .author .posts,
+.post .author .admin
+{
+	display:block;
+	font-size:0.75em;
+	color:black;
+	color:#666;
+}
+.post .author a
+{
+	color:#333;
+	text-decoration:none;
+}
+.post .author a.threadauthor
+{
+	color:#080;
+}
+.post .author a:hover
+{
+	color:#369;
+	text-decoration:underline;
+}
+
+.post .date
+{
+	font-size:0.75em;
+	color:#666;
+	font-weight:normal;
+	margin-bottom:0.5em;
+}
+
+.posts .post .body
+{
+	border-top:2px solid #eee;
+	font-size:0.9em;
+	padding:10px 20px;
+}
+
+.posts .post .body blockquote
+{
+	border:1px solid #cda;
+	border-left:3px solid #9a7;
+	border-right:0;
+	background:#efc;
+	padding:1px 10px;
+	margin-left:0;
+}
+
+.posts .post .body pre
+{
+	font-size:0.8em;
+	background:#eee;
+	padding:5px 10px;
+	border:1px solid #ccc;
+	border-left:3px solid #ddd;
+	border-right:0;
+	overflow:auto;
+	font-family: "Monaco", "Bitstream Vera Sans Mono", "Courier New", serif;
+}
+
+.posts .post .body a:hover { color:brown; }
+
+.posts .post .body blockquote p
+{
+	margin:0.5em 0;	
+}
+
+.post .body p.topic
+{
+  font-size:0.8em;
+  font-weight:bold;
+  background:#eee;
+  padding:2px 10px;
+}
+
+
+
 /* reply */
 
-div.editbox
-{
-	background:url(/images/reply_background.png);
-	border:2px solid #333;
-	border-width:2px 0;
-	position:fixed;
-	bottom:0;
-	left:0;
-	width:100%;
-	padding:6px 0 7px;
-	z-index:50;
+
+td.replybox{
+	border-top:2px solid #eee;
+	padding:5px 10px;
+/*  background:#eee;*/
+	font-weight:bold;
+	color:#333;
+	font-size:0.9em;
+	min-height:32px;
+	width:10em;
+	min-width:8em;
+	vertical-align:top;
 }
 
-div.editbox .container
-{
-	width:92%;
-	margin:0 auto;
-	min-width:760px;
-}
 
-div.editbox p { margin:0.5em 0;}
-div.editbox textarea
-{
-  width:100%;
-	background:white;
-	opacity:1;
-	font-size:0.8em;
-	font-family: 'Lucida Grande', Tahoma, Arial, Helvetica, sans-serif;
-}
-div.editbox .button_or a
-{
-  color:#ccc;
-}
-div.editbox table td { border:0; }
-div.editbox a.utility
-{
-  color: #f99;
-  font-size: 0.65em;
-  padding: 2px 5px 4px;
-  display: block;
-  font-family: 'Lucida Grande', Tahoma, Arial, Helvetica, sans-serif;
-  float: right;
-  text-align: right;
-  margin-top: 0.2em;
-}
 
-div.editbox h5
-{
-  background:#222;
-  color:white;
-  padding:2px 10px 3px;
-  font-size:0.7em;
-  margin:0.2em 0 0.5em;
-}
 
-div.editbox p.help span,
-div.editbox ul.help span { color:#666; }
-div.editbox p.help,
-div.editbox ul.help
-{
-  padding:3px 10px;
-  font-size:0.75em;
-  color:#ccc;
-  font-family: 'Lucida Grande', Tahoma, Arial, Helvetica, sans-serif;
-}
-div.editbox ul.help { margin:0; }
-
-div.editbox ul.help {
-  list-style-type:none; }
   
 #monitor_topic a
 {
@@ -1009,10 +1131,9 @@ div.editbox ul.help {
 
 p.subtitle
 {
-	font-family: 'Lucida Grande', Tahoma, Arial, Helvetica, sans-serif;
+  font-family: Helvetica, arial, sans-serif;
 	font-size:0.75em;
 	color:#888;
-	font-weight:bold;
 	margin-top:-0.8em;
 }
 p.subtitle img { vertical-align: bottom; }
@@ -1021,7 +1142,7 @@ div.stats
 {
 	margin-top:2em;
 	background:#ded;
-	font-family: 'Lucida Grande', Tahoma, Arial, Helvetica, sans-serif;
+  font-family: Helvetica, arial, sans-serif;
 	font-size:0.8em;
 	padding:15px 15px;
 	border:2px solid #393;
@@ -1044,7 +1165,7 @@ table.nopad td
 table
 {
 	border-collapse:collapse;
-	font-family: 'Lucida Grande', Tahoma, Arial, Helvetica, sans-serif;
+  font-family: Helvetica, arial, sans-serif;
 }
 table.wide {	
   width:100%; 
@@ -1071,12 +1192,13 @@ table.forums tr th {
 }
 
 table.forums tr td h2 {
-  margin: 0;
-  font-size: 28px;
+  margin: 3px 0;
+  font-size: 24px;
 }
 
 table.forums tr td p {
-  margin: 0;	
+  margin: 0 0 7px 0;
+  font-size: 85%;
 }
 
 table.forums tr td {
@@ -1116,18 +1238,22 @@ table tr td.lp {
 table tr td.lp span { color:#666; }
 table tr td.lp span a { color:#369; }
 
-table.topics tr td.c1
- {	border-right:0; padding-right:2px; }
- table.topics tr td.c2
-  {	border-left:0; padding-left:2px; }
+table.topics tr td.c1 {	
+  border-right:0; 
+  padding-right:2px; 
+  vertical-align: top;
+}
 
+table.topics tr td.c2 {	
+  border-left:0; 
+  padding-left:2px; 
+}
 
 table.topics tr td.c3 { border-left:0; }
 
 table.forums tr td.c1 {	border-right:0; padding-right:5px; padding-top:7px; }
 table.forums tr td.c2 {	border-width:1px 0; padding-left:5px; }
 table.forums tr td.c3 {	border-left:0; padding-left:5px; }
-
 
 table.topics tr td.c2 small a,
 .crumbs small a

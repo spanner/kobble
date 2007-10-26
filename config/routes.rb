@@ -30,8 +30,9 @@ ActionController::Routing::Routes.draw do |map|
   map.activate 'activate/:key', :controller => 'account', :action => 'activate'
   map.faq '/faq', :controller => 'account', :action => 'faq'
   map.background '/background', :controller => 'account', :action => 'background'
-  map.blog '/blog', :controller => 'blogentries', :action => 'index'
-  map.discussion '/discussion', :controller => 'forums', :action => 'index'
+  map.blogentry '/blogentry/:id', :controller => 'account', :action => 'blogentry'
+  map.blog '/blog', :controller => 'account', :action => 'blog'
+  map.discussion '/discussion', :controller => 'account', :action => 'blog'
 
   map.connect ':controller/:action/:id'
   

@@ -43,7 +43,6 @@ class AddDiscussion < ActiveRecord::Migration
       t.column "locked",           :boolean,  :default => false
       t.column "replied_by",       :integer
       t.column "last_post_id",     :integer
-      t.column "blogentry_id",     :integer
       t.column "collection_id",    :integer
       t.column "speaker_id",       :integer
       t.column "created_at",       :datetime

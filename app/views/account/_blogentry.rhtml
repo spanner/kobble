@@ -1,0 +1,13 @@
+<div class="listrow">
+	<h2>
+	 	<%= image_tag "clearbits/comment.gif", :class => 'icon blue' %>
+		<%= link_to( "#{blogentry.name}", {:action => 'blogentry', :id => blogentry}) %>
+	</h2>
+	<p>
+		<span class="footnote">
+			Posted by <%= blogentry.creator.name %> <%= time_ago_in_words(blogentry.created_at) %>. 
+			<%= pluralize(blogentry.posts_count, 'comment') %>.
+		</span>
+	</p>
+	<%= blogentry.introduction.formatted %>
+</div>

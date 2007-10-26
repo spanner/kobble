@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 53) do
+ActiveRecord::Schema.define(:version => 55) do
 
   create_table "blogentries", :force => true do |t|
     t.column "created_by",    :integer
@@ -51,24 +51,25 @@ ActiveRecord::Schema.define(:version => 53) do
     t.column "invitation",         :text
     t.column "welcome",            :text
     t.column "privacy",            :text
-    t.column "tag",                :string
+    t.column "abbreviation",       :string
     t.column "url",                :string
     t.column "background",         :text
     t.column "faq",                :text
+    t.column "blogging_forum",     :integer
+    t.column "editorial_forum",    :integer
   end
 
   create_table "forums", :force => true do |t|
-    t.column "name",             :string
-    t.column "description",      :string
-    t.column "topics_count",     :integer,  :default => 0
-    t.column "posts_count",      :integer,  :default => 0
-    t.column "position",         :integer
-    t.column "description_html", :text
-    t.column "collection_id",    :integer
-    t.column "created_at",       :datetime
-    t.column "created_by",       :integer
-    t.column "updated_at",       :datetime
-    t.column "updated_by",       :integer
+    t.column "name",          :string
+    t.column "description",   :string
+    t.column "topics_count",  :integer,  :default => 0
+    t.column "posts_count",   :integer,  :default => 0
+    t.column "position",      :integer
+    t.column "collection_id", :integer
+    t.column "created_at",    :datetime
+    t.column "created_by",    :integer
+    t.column "updated_at",    :datetime
+    t.column "updated_by",    :integer
   end
 
   create_table "marks_tags", :force => true do |t|
@@ -253,12 +254,13 @@ ActiveRecord::Schema.define(:version => 53) do
     t.column "locked",        :boolean,  :default => false
     t.column "replied_by",    :integer
     t.column "last_post_id",  :integer
-    t.column "blogentry_id",  :integer
     t.column "collection_id", :integer
     t.column "created_at",    :datetime
     t.column "created_by",    :integer
     t.column "updated_at",    :datetime
     t.column "updated_by",    :integer
+    t.column "subject_type",  :string
+    t.column "subject_id",    :integer
   end
 
   add_index "topics", ["forum_id"], :name => "index_topics_on_forum_id"
@@ -295,6 +297,7 @@ ActiveRecord::Schema.define(:version => 53) do
     t.column "workplace",                 :string
     t.column "phone",                     :string
     t.column "last_seen_at",              :datetime
+    t.column "posts_count",               :integer
   end
 
   add_index "users", ["login"], :name => "index_users_on_login"

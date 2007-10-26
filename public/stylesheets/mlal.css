@@ -72,13 +72,27 @@ div#mlalnavigation a:hover {
   color: #559DC4;
 }
 
-div#mlalbody, div#mlallogos {
+div#mlalbody {
   width: 460px;
   margin: 40px auto;
 }
 
+div#mlallogos {
+  width: 460px;
+  margin: 120px auto;
+}
 
+div#rightcolumn {
+  width: 135px;
+  float: right;
+  margin: 0 0 20px 30px;
+}
 
+div#rightcolumn ul {
+  list-style-image: url(/images/furniture/icons/listicon_blue.png);
+  margin: 10px 0 0 0;
+  padding-left: 24px;
+}
 
 a.signup {
 	display: block;
@@ -151,5 +165,9 @@ div.fieldWithErrors input {
 p.haserror {
 	color: #ff3e15;
 	font-weight: bold;
+}
+
+div.editlinks {
+  margin: 80px 0;
 }
 

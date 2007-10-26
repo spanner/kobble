@@ -1,27 +1,54 @@
 class AccountController < ApplicationController
-  skip_before_filter :login_required
-  layout :choose_layout
   before_filter :set_context
+  before_filter :login_required, :only => [:blog, :discussion]
+  layout :choose_layout
   
+  def choose_layout
+    return current_collection.abbreviation.to_s if current_collection
+    return 'login'
+  end
+
   def index
     @show_field = 'welcome' unless @show_field
+    @pagetitle = @show_field
   end
   
   def background
-    @show_field = 'background'
+    @pagetitle = @show_field = 'background'
     render :action => 'index'
   end
   
   def faq
-    @show_field = 'faq'
+    @pagetitle = @show_field = 'faq'
     render :action => 'index'
   end
   
-  def choose_layout
-    (current_collection == :false) ? 'login' : current_collection.abbreviation.to_s
+  def blog
+    @pagetitle = 'blog'
+    @blogentries = Blogentry.find(:all, 
+      :conditions => limit_to_active_collection, 
+      :page => {
+        :size => 25, 
+        :sort => 'date DESC', 
+        :current => params[:page]
+      }
+    )
+  end  
+
+  def blogentry
+    @pagetitle = 'blog'
+    @blogentry = Blogentry.find(params[:id])
+    @forum = current_collection.blog_forum
+    @topic = @blogentry.topics.first
+    @topic.hit! unless logged_in? and @topic.created_by == current_user
+    @post_pages, @posts = paginate(:posts, :per_page => 25, :order => 'posts.created_at', :include => :creator, :conditions => ['posts.topic_id = ?', @topic.id])
+    @posts.shift  # remove the original post: it just duplicates the blog entry
+    @post = Post.new
+    @blogentries = Blogentry.find(:all, :conditions => limit_to_active_collection, :page => {:size => 6, :sort => 'date DESC'})
   end
-  
+
   def signup
+    @pagetitle = 'signup'
     @user = LoginUser.new(params[:user])
     return unless request.post?
     @user.save!
@@ -49,6 +76,7 @@ class AccountController < ApplicationController
   end  
 
   def login
+    @pagetitle = 'login'
     return unless request.post?
     self.current_user = LoginUser.authenticate(params[:login], params[:password])
     if logged_in?

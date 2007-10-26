@@ -8,7 +8,6 @@
   <td style="text-align:right">
     <label>Position</label><br />
     <%= form.text_field :position, :size => 5 %>
-
   </td>
 </table>
 
@@ -16,3 +15,13 @@
 <p id="forum_descripion">
 <label>Description</label><br />
 <%= form.text_area :description, :rows => 7 %></p>
+
+<p>
+<label for="forum_visibility">Visible to:</label><br />
+<select name="forum[visibility]">
+	<option value="0" selected="selected">everyone (who is logged in)</option>
+	<option value="100">editors of this collection</option>
+	<% if admin? %><option value="200">administrators of the site</option><% end %>
+	<% if current_user.is_developer? %><option value="300">developers of the site</option><% end %>
+</select>
+</p>

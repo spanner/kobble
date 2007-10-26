@@ -1,0 +1,10 @@
+<% if editor? %>
+	<h2>
+		<a href="#" class="displaycontrol editor" id="show_admin">+ admin controls</a>
+	</h2>
+  <div class="marginal" id="hide_admin">
+		<%= link_to "edit #{item.class.to_s.downcase}", {:action => 'edit', :id => item}, {:class => 'edititem'} %>
+		<%= link_to "remove #{item.class.to_s.downcase}", {:action => 'destroy', :id => item}, {:class => 'removeitem', :confirm => "do you really want to completely get rid of #{item.name}?"} %>
+		<%= link_to "add another #{item.class.to_s.downcase}", {:action => 'new'}, {:class => 'additem'} %>
+	</div>
+<% end %>

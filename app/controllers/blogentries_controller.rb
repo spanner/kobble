@@ -16,6 +16,12 @@ class BlogentriesController < ApplicationController
 
   def show
     @blogentry = Blogentry.find(params[:id])
+    @forum = current_collection.blog_forum
+    @topic = @blogentry.topics.first
+    @topic.hit! unless logged_in? and @topic.created_by == current_user
+    @post_pages, @posts = paginate(:posts, :per_page => 25, :order => 'posts.created_at', :include => :creator, :conditions => ['posts.topic_id = ?', @topic.id])
+    @posts.shift  # remove the original post: it just duplicates the blog entry
+    @post = Post.new
   end
 
   def new

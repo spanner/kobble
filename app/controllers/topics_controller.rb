@@ -1,8 +1,7 @@
 class TopicsController < ApplicationController
   before_filter :find_forum_and_topic, :except => :index
-  before_filter :login_required, :only => [:new, :create, :edit, :update, :destroy]
 #  before_filter :update_last_seen_at, :only => :show
-
+  
   def index
     respond_to do |format|
       format.html { redirect_to forum_path(params[:forum_id]) }
@@ -43,9 +42,9 @@ class TopicsController < ApplicationController
   def create
     # this is icky - move the topic/first post workings into the topic model?
     Topic.transaction do
-      @topic  = @forum.topics.build(params[:topic])
+      @topic = @forum.topics.build(params[:topic])
       assign_protected
-      @post   = @topic.posts.build(params[:topic])
+      @post = @topic.posts.build(params[:topic])
       @post.topic=@topic
       # only save topic if post is valid so in the view topic will be a new record if there was an error
       @topic.body = @post.body # incase save fails and we go back to the form

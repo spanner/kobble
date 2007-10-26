@@ -21,8 +21,14 @@ class ApplicationController < ActionController::Base
     ["collection_id = ?", current_collection]
   end
   
+  def limit_to_active_collection_and_visible
+    ["collection_id = ? and visibility <= ?", current_collection, current_user.status]
+  end
+
   def choose_layout
-    logged_in? && activated? ? 'standard' : 'login'
+    return 'standard' if logged_in? && editor?
+    return current_collection.abbreviation.to_s if current_collection
+    return 'login'
   end
     
   def local_request?

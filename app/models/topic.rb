@@ -3,8 +3,8 @@ class Topic < ActiveRecord::Base
   belongs_to :creator, :class_name => 'User', :foreign_key => 'created_by'
   belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
   belongs_to :speaker, :class_name => 'User', :foreign_key => 'speaker_id'
-
   belongs_to :forum, :counter_cache => true
+  
   has_many :monitorships
   has_many :monitors, :through => :monitorships, :conditions => ['monitorships.active = ?', true], :source => :user, :order => 'users.login'
   
@@ -17,7 +17,8 @@ class Topic < ActiveRecord::Base
   belongs_to :replied_by_user, :foreign_key => "replied_by", :class_name => "User"
   belongs_to :subject, :polymorphic => true
   
-  validates_presence_of :forum, :title, :body
+  validates_presence_of :forum, :title
+  
   before_create :set_default_replied_at_and_sticky
   before_save   :check_for_changing_forums
 
@@ -25,6 +26,10 @@ class Topic < ActiveRecord::Base
   # to help with the create form
   attr_accessor :body
 
+  def name
+    title
+  end
+  
   def check_for_changing_forums
     return if new_record?
     old=Topic.find(id)

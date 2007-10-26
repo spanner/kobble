@@ -3,7 +3,7 @@ class ForumsController < ApplicationController
   before_filter :find_or_initialize_forum, :except => :index
 
   def index
-    @forums = Forum.find(:all, :conditions => limit_to_active_collection, :order => "position")
+    @forums = Forum.find(:all, :conditions => limit_to_active_collection_and_visible, :order => "position")
     # reset the page of each forum we have visited when we go back to index
     session[:forum_page]=nil
     respond_to do |format|

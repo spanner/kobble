@@ -1,20 +1,21 @@
-<div class="floatcolumn" style="width: 175px;">
-	<% if @blogentry.image %>
-	<a href="<%= url_for_file_column("blogentry", "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column("blogentry", "image", "slide"), :size => "175x175", :alt => '') %></a>
-	<% end %>
+<div id="header">
+	<h1 class="pagetitle">
+		<%= render :partial => 'shared/icon', :locals => { :this => @blogentry, :with_caption => false } %>
+		<%= @blogentry.name %>
+	</h1>
 </div>
 
-<h1 class="pagetitle">
-	<%= @blogentry.name %>
-	<% if editor? %>
-		<%= link_to 'edit', :action => 'edit', :id => @blogentry %>
-	<% end %>
-</h1>
+<div id="margin" class="floatcolumn" style="width: 175px;">
+	<%= render :partial => 'shared/show_image', :locals => {:item => @blogentry} %>
+	<%= render :partial => 'shared/show_topics', :locals => {:item => @blogentry} %>
+	<%= render :partial => 'shared/show_admin', :locals => {:item => @blogentry} %>
+</div>
 
-<%= @blogentry.introduction.formatted if @blogentry.introduction %>
+<div class="synopsis">
+ 	<%= "*Introduction*: 	#{@blogentry.introduction}".formatted %>
+</div>
 
-<%= @blogentry.body.formatted if @blogentry.body %>
+<%= @blogentry.body.formatted %>
 
-<h2>Recent blogging</h2>
+<%= render :partial => 'comments' %>
 
-<%= render :partial => 'blogentries/list', :collection => current_collection.blogentries, :limit => 6 %>

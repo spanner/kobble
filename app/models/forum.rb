@@ -25,5 +25,11 @@ class Forum < ActiveRecord::Base
       @last_post ||= find(:first, :include => :creator)
     end
   end
+  
+  def visible_to?(user)
+    return true unless visibility.nil? or visibility == 0
+    return false if user.status.nil? or user.status == 0
+    visibility >= user.status
+  end
 
 end

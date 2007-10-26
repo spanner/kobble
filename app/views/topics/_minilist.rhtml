@@ -1,0 +1,10 @@
+<li id="node_<%= minilist.id %>" class="marginal draggable">
+  <%= link_to( minilist.name, {:controller => 'topics', :action => 'show', :id => minilist}) %>
+	
+	<div class="thumb" style="display:none;">
+	<%= render :partial => 'shared/icon', :locals => { 
+		:this => minilist, 
+		:with_caption => false,
+	} %>
+	</div>
+</li>

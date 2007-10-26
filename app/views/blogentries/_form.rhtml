@@ -5,12 +5,12 @@
 <p><label for="blogentry_name">Heading</label><br/>
 <%= text_field 'blogentry', 'name', :class => "standard"  %></p>
 
-<p><label for="node_synopsis">Synopsis</label><br />
+<p><label for="blogentry_introduction">Introduction</label><br />
 <%= text_area 'blogentry', 'introduction', 'rows' => 4, :class => "standard" %> <br />
 <span class="formnote">This will appear by itself in lists and above the body text on the blog entry page. Textile format, please.</span>
 </p>
 
-<p><label for="node_body">Main body text</label><br/>
+<p><label for="blogentry_body">Main body text</label><br/>
 <%= text_area 'blogentry', 'body', 'rows' => 12, :class => "standard" %><br />
 <span class="formnote">This will only appear on the blog entry page below the introduction.</span>
 </p>

@@ -21,10 +21,10 @@
 
 <table border="0" cellspacing="0" cellpadding="0" class="wide topics">
 <tr>
-  <th class="la" colspan="2"><%= 'Topic'[:topic_title] %></th>
-  <th width="1%"><%= 'Posts'[:posts_title] %></th>
-  <th width="1%"><%= 'Views'[:views_title] %></th>
-  <th class="la"><%= 'Last post'[:last_post] %></th>
+  <th class="la" colspan="2">Topic</th>
+  <th width="1%">Posts</th>
+  <th width="1%">Views</th>
+  <th class="la">Last post</th>
 </tr>
 <% for topic in @topics %>
 <tr class="hentry">
@@ -39,37 +39,39 @@
     end
     %>
     <% if recent_topic_activity(topic) %>
-    <%= image_tag "clearbits/#{icon}.gif", :class => "icon green", :title => "Recent activity"[]+"#{post}" %>
+    	<%= image_tag "clearbits/#{icon}.gif", :class => "icon green", :title => "Recent activity #{post}" %>
     <% else %>
-      <%= image_tag "clearbits/#{icon}.gif", :class => "icon grey #{color}", :title => "No recent activity"[]+"#{post}" %>
+      <%= image_tag "clearbits/#{icon}.gif", :class => "icon grey #{color}", :title => "No recent activity #{post}" %>
     <% end %>
   </td>
   <td class="c2">
-    <%= "Sticky"[:sticky_title]+": <strong>" if topic.sticky? %>
+    <%= "Sticky: <strong>" if topic.sticky? %>
     <%= topic_title_link (topic), :class => "entry-title", :rel => "bookmark" %>
     <%#= link_to h(topic.title), topic_path(@forum, topic), :class => "entry-title", :rel => "bookmark" %>
     <%= "</strong>" if topic.sticky? %>
     <% if topic.paged? -%>
     <small><%= link_to 'last'[], topic_path(:forum_id => @forum, :id => topic, :page => topic.last_page) %></small>
     <% end -%>
+		<% unless topic.subject.nil? %><br />
+			<span class="small">concerns <%= link_to topic.subject.name, :controller => topic.subject.class.to_s.downcase.pluralize, :action => 'show' %></span>
+		<% end %>
+
   </td>
   <td class="ca inv stat"><%= topic.posts_count-1 %></td>
   <td class="ca inv stat"><%= number_with_delimiter(topic.views) %></td>
   <td class="lp">
-    <abbr class="updated" title="<%= topic.replied_at.xmlschema %>"><%= time_ago_in_words(topic.replied_at) %></abbr>
-    <%= 'by {user}'[:by_user, "<span class=\"author\"><strong class=\"fn\">#{h(topic.replied_by_user.display_name)}</strong></span>"] %>
-    <span><%= link_to 'view'[], topic_path(:forum_id => @forum, :id => topic, :page => topic.last_page, :anchor => "posts-#{topic.last_post_id}") %></span>
+    <%= link_to ( "<strong class=\"fn\">#{time_ago_in_words(topic.replied_at)}</strong> by #{topic.replied_by_user.name}", topic_path(:forum_id => @forum, :id => topic, :page => topic.last_page, :anchor => "posts-#{topic.last_post_id}"), :class => 'updated', :title => topic.replied_at.xmlschema ) %>
   </td>
 </tr>
 <% end %>
 </table>
 
 <% if @topic_pages and @topic_pages.current.next %>
-<p style="float:right;"><%= link_to 'Next page'[:next_page], { :page => @topic_pages.current.next }.merge(params.reject{|k,v| k=="page"})  %></p>
+<p style="float:right;"><%= link_to 'Next page', { :page => @topic_pages.current.next }.merge(params.reject{|k,v| k=="page"})  %></p>
 <% end %>
 
 <% if @topic_pages.page_count > 1 -%>
-<p class="pages"><%= 'Pages'[:pages_title] %>: <strong><%= pagination_links @topic_pages, :window_size => 10 %></strong></p>
+<p class="pages">Pages: <strong><%= pagination_links @topic_pages, :window_size => 10 %></strong></p>
 <% end -%>
 
 <% if logged_in? %>

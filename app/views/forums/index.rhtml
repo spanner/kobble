@@ -21,7 +21,7 @@
   <tr>
     <td class="vat c1">
       <% if recent_forum_activity(forum) %>
-      	<%= image_tag "clearbits/comment.gif", :class => "icon green", :title => 'Recent activity' %>
+      	<%= image_tag "clearbits/comment.gif", :class => "icon blue", :title => 'Recent activity' %>
       <% else %>
       	<%= image_tag "clearbits/comment.gif", :class => "icon grey", :title => 'No recent activity' %>
       <% end %>
@@ -65,7 +65,7 @@
 <div class="stats">
 <div class="users">
 <% unless online_users.empty? %>
-Users online: <%= online_users.map { |u| link_to "<strong>#{h u.display_name}</strong>", user_path(u) } * ", " %><br />
+Users online: <%= online_users.map { |u| link_to "<strong>#{h u.name}</strong>", user_path(u) } * ", " %><br />
 <% end %>
 </div>
 </div>
