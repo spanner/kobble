@@ -1,5 +1,7 @@
 <% itsme = (current_user.id == @user.id) -%>
 
+<h1 class="pagetitle"><%= @user.name %></h1>
+
 <div class="floatcolumn" style="width: 135px;">
  	<% if @user.image %>
 		<div class="mugshot">
@@ -16,11 +18,9 @@
 	<% end %>
 </div>
 
-<h1 class="pagetitle"><%= @user.name %></h1>
-
 <p>
 <% if @user.can_login? %>
-	last here: <%= @user.logged_in_at.nil? ? 'never' : time_ago_in_words(@user.logged_in_at) %><br />
+	last here: <%= @user.last_login.nil? ? 'never' : time_ago_in_words(@user.last_login) %><br />
 <% else %>
 	<em>non-login user</em><br />
 <% end %>
@@ -33,7 +33,6 @@
 		<% if itsme %>You haven't <%= link_to "provided a biog", :controller => 'users',  :action => 'edit' %> yet.<% else %>Not given yet.<% end %>
 	</p>
 <% else %>
-	<h2>description</h2>
 	<%= @user.description.formatted %>
 <% end %>
 

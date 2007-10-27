@@ -1,6 +1,13 @@
-<%= error_messages_for 'user' %>
+<% if @user.errors && !@user.errors.empty? %>
+	<p class="haserror">
+		<img src="/images/furniture/signals/warning.png" width="20" height="20" alt="Warning" style="float: left; margin-right: 3px;">
+		Sorry: there were some problems. Please check the highlighted fields and try again.</p>
+<% end %>
 
-<p>You can use this form to change your password, add a bit more information about yourself and upload a picture. Everything is optional apart from the first three. More preferences will follow.</p>
+<p>
+	You can use this form to change your password, add a bit more information about yourself and upload a picture. 
+	Everything is optional apart from the first three questions, which you have already answered:
+</p>
 
 <%= render :partial => 'basics' %>
 
@@ -22,7 +29,10 @@
   <%= link_to 'cancel', :action => 'show' %>
 </div>
 
-<p style="clear: both;">If you would like to change your password, please enter the current one first. This is to make sure that you're you and not just to be annoying. (If the problem is that you don't know your current password, there is an option on the login form to <%= link_to "generate a new one", :controller => 'accounts', :action => 'newpassword' %>.)</p>
+<p style="clear: both;">
+	If you would like to change your password, please enter the current one first. This is to make sure that you're you, and not just to be annoying.
+	(If the problem is that you don't know your current password, there is an option on the login form to <%= link_to "generate a new one", :controller => 'account', :action => 'repassword' %>.)
+</p>
 
 <p><label for="user_old_password">Present password</label><br/>
 <%= password_field 'user', 'old_password', 'class' => "standard" %></p>

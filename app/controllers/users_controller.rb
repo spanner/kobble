@@ -1,10 +1,13 @@
 class UsersController < ApplicationController
+
+  before_filter :editor_required, :except => [:edit, :update, :show]
+  before_filter :activation_required, :only => [:edit, :update, :show]
   
   # this is user review and management for admins
   # logging in and registration is in account_controller
 
   def limit_to_active_collection
-    ["collection_id = ? or status >= 200", current_collection]
+    ["users.collection_id = ? or users.status >= 200", current_collection]
   end
 
   def index
@@ -67,14 +70,20 @@ class UsersController < ApplicationController
 
   def edit
     userid = (current_user.editor? ? params[:id] : nil) || current_user.id
+    @pagetitle = 'you' unless current_user.editor?
     @user = User.find(userid)
   end
 
   def update
-    @user = User.find(params[:id])
+    if (current_user.editor?)
+      userid = params[:id] || current_user.id
+    else
+      userid = current_user[:id]
+    end
+    @user = User.find(userid)
     if @user.update_attributes(params[:user])
       flash[:notice] = 'User was updated.'
-      redirect_to :action => 'show', :id => @user
+      redirect_to (current_user.editor? ? {:action => 'show', :id => @user} : {:controller => 'account', :action => 'me'})
     else
       flash[:notice] = 'failed to update.'
       render :action => 'edit'

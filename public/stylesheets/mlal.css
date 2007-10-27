@@ -63,6 +63,10 @@ div#mlalnavigation a.fg {
   color: #000;
 }
 
+div#mlalnavigation a.dim {
+	background-image: url(/images/furniture/layout/updimtabbg.png);
+}
+
 div#mlalnavigation a.louder {
   color: #559DC4;
 }

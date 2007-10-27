@@ -24,11 +24,14 @@
 	<div id="mlalnavigation">
 		<%= link_to 'welcome', '/', {:class => @pagetitle == 'welcome' ? 'fg' : ''} %>
 		<%= link_to 'background', '/background', {:class => @pagetitle == 'background' ? 'fg' : ''} %>
-		<%= link_to 'questions', '/faq', {:class => @pagetitle == 'faq' ? 'fg' : ''} %>
+		<%= link_to 'faq', '/faq', {:class => @pagetitle == 'faq' ? 'fg' : ''} %>
 		<% if logged_in? %>
-			<%= link_to 'blog', '/blog', {:class => @pagetitle == 'blog' ? 'fg' : ''} %>
-			<%= link_to 'you', '/me', {:class => @pagetitle == 'you' ? 'fg' : ''} %>
-			<%= link_to 'log out', '/account/logout' %>
+			<% inactive_class = activated? ? '' : 'dim' %>
+			<%= link_to 'blog', '/blog', {:class => @pagetitle == 'blog' ? 'fg' : inactive_class} %>
+			<%= link_to 'discussion', '/discussion', {:class => @pagetitle == 'discussion' ? 'fg' : inactive_class} %>
+			<%= link_to 'questions', '/questions', {:class => @pagetitle == 'questions' ? 'fg' : inactive_class} %>
+			<%= link_to 'you', '/me', {:class => @pagetitle == 'you' ? 'fg' : inactive_class} %>
+			<%= link_to 'log out', '/account/logout', {:class => inactive_class} %>
 		<% else %>
 			<%= link_to 'sign up', '/account/signup', {:class => @pagetitle == 'signup' ? 'fg' : ''} %>
 			<%= link_to 'log in', '/account/login', {:class => @pagetitle == 'login' ? 'fg' : ''} %>

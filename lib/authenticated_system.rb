@@ -95,21 +95,23 @@ module AuthenticatedSystem
     # other options as for :login_required and other filters
 
     def admin_required
-      username, passwd = get_auth_data
-      self.current_user ||= User.authenticate(username, passwd) || :false if username && passwd
-      admin? ? true : access_denied
+      logger.warn "!!! admin_required"
+      (login_required && admin?) ? true : access_insufficient
     end
 
     def editor_required
-      username, passwd = get_auth_data
-      self.current_user ||= User.authenticate(username, passwd) || :false if username && passwd
-      editor? ? true : access_denied
+      logger.warn "!!! editor_required"
+      (login_required && editor?) ? true : access_insufficient
     end
 
     def developer_required
-      username, passwd = get_auth_data
-      self.current_user ||= User.authenticate(username, passwd) || :false if username && passwd
-      developer? ? true : access_denied
+      logger.warn "!!! developer_required"
+      (login_required && developer?) ? true : access_insufficient
+    end
+
+    def activation_required
+      logger.warn "!!! activation_required"
+      (login_required && activated?) ? true : access_inactive
     end
 
     # Redirect as appropriate when an access request fails.
@@ -134,6 +136,25 @@ module AuthenticatedSystem
       end
       false
     end  
+    
+    def access_insufficient
+      respond_to do |accepts|
+        accepts.html do
+          store_location
+          redirect_to :controller => '/account', :action => 'forbidden'
+        end
+        accepts.xml do
+          headers["Status"]           = "Unauthorized"
+          headers["WWW-Authenticate"] = %(Basic realm="Web Password")
+          render :text => "Insufficient authority", :status => '401 Unauthorized'
+        end
+      end
+      false
+    end  
+    
+    def access_inactive
+      redirect_to :controller => '/account', :action => 'index'
+    end
     
     # Store the URI of the current request in the session.
     #

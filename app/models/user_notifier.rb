@@ -11,6 +11,13 @@ class UserNotifier < ActionMailer::Base
     @subject    += 'Your account has been activated!'
     @body[:url]  = "#{collection.url}/account"
   end
+
+  def newpassword(user, collection)
+    setup_email(user, collection)
+    @subject    += 'Your provisional new password'
+    @body[:url]  = "http://#{collection.url}/account/activate/#{user.activation_code}"
+    @body[:code]  = user.activation_code
+  end
   
   protected
   def setup_email(user, collection)

@@ -1,6 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
                                 
-  map.home '', :controller => 'account', :action => 'welcome'
+  map.home '', :controller => 'account', :action => 'index'
 
   map.resources :forums do |forum|
     forum.resources :topics, :name_prefix => nil do |topic|
@@ -29,6 +29,7 @@ ActionController::Routing::Routes.draw do |map|
   map.blogentry '/blogentry/:id', :controller => 'account', :action => 'blogentry'
   map.blog '/blog', :controller => 'account', :action => 'blog'
   map.discussion '/discussion', :controller => 'account', :action => 'discussion'
+  map.discussion '/questions', :controller => 'account', :action => 'questions'
   map.me '/me', :controller => 'account', :action => 'me'
   map.preview '/forums/:forum_id/topics/:topic_id/preview', :controller => 'posts', :action => 'preview'
 

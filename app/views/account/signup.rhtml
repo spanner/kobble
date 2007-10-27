@@ -16,7 +16,7 @@
 
 		<input type="hidden" name="user[collection_id]" id="user_collection_id" value="<%= current_collection.id %>">
 	
-		<p><label for="login"<%= ' class="formError"' if @user.errors.on(:firstname) %>>Your first name</label>
+		<p><label for="login"<%= ' class="formError"' if @user.errors.on(:firstname) %>>Your first name(s)</label>
 		<%= f.text_field :firstname %>
 		<% if @user.errors.on(:firstname) %><div class="formError">this <%= @user.errors.on(:firstname).to_a.last %></div><% end %>
 		</p>

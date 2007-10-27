@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   include AuthenticatedSystem
   include StringExtensions
 
-  helper_method :current_user, :current_collection, :logged_in?, :admin?, :editor?, :last_active
+  helper_method :current_user, :current_collection, :logged_in?, :activated?, :admin?, :editor?, :last_active
   before_filter :editor_required  
   before_filter :set_context
   layout :choose_layout
@@ -17,12 +17,19 @@ class ApplicationController < ActionController::Base
     redirect_to :controller => 'collections', :action => 'index' if logged_in? && current_collection == :false
   end
   
-  def limit_to_active_collection
-    ["collection_id = ?", current_collection]
+  def limit_to_active_collection(klass=nil)
+    t = klass ? "#{klass.table_name}." : ''
+    ["#{t}collection_id = ?", current_collection]
   end
   
-  def limit_to_active_collection_and_visible
-    ["collection_id = ? and visibility <= ?", current_collection, current_user.status]
+  def limit_to_active_collection_and_visible(klass=nil)
+    t = klass ? "#{klass.table_name}." : ''
+    ["#{t}collection_id = ? and #{t}visibility <= ?", current_collection, current_user.status]
+  end
+
+  def limit_to_active_collection_and_this_week(klass=nil)
+    t = klass ? "#{klass.table_name}." : ''
+    ["#{t}collection_id = ? and #{t}created_at >= ?", current_collection, (Time.now - (86400 * 7)).utc]
   end
 
   def choose_layout

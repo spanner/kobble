@@ -260,6 +260,13 @@ div.header p {
   margin-top: 0;
 }
 
+ul.starry {
+  font-size: 16px;
+  list-style-image: url(/images/furniture/icons/listicon_blue.png);
+  padding: 0 0 0 24px;
+}
+
+
 div#hide_synopsis {
 	color: #559DC4;
 }

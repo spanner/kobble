@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 58) do
+ActiveRecord::Schema.define(:version => 59) do
 
   create_table "blogentries", :force => true do |t|
     t.column "created_by",    :integer
@@ -290,7 +290,7 @@ ActiveRecord::Schema.define(:version => 58) do
     t.column "deleted",                   :integer,                :default => 0
     t.column "delete_after",              :datetime
     t.column "collection_id",             :integer
-    t.column "status",                    :integer,                :default => 0
+    t.column "status",                    :integer,                :default => 10
     t.column "image",                     :string
     t.column "description",               :text
     t.column "created_by",                :integer
@@ -302,6 +302,7 @@ ActiveRecord::Schema.define(:version => 58) do
     t.column "posts_count",               :integer,                :default => 0
     t.column "last_seen_at",              :datetime
     t.column "postcode",                  :string,   :limit => 8
+    t.column "new_password",              :string
   end
 
   add_index "users", ["collection_id"], :name => "index_users_on_collection"

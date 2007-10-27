@@ -70,28 +70,37 @@ class User < ActiveRecord::Base
     status >= 300
   end
   
-  # rest is standard acts_as_authenticated
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   def self.authenticate(login, password)
     u = find :first, :conditions => ['login = ? and activated_at IS NOT NULL', login]
-    u && u.authenticated?(password) ? u : nil
+    return nil unless u && u.authenticated?(password)
+    u.last_login = Time.now.utc
+    u.save!
+    u
   end
 
   def activate
     @activated = true
-    self.activated_at = Time.now.utc
+    self.last_login = self.activated_at = Time.now.utc
     self.activation_code = nil
     self.save!
   end
 
-  def recently_activated?
+  # did they activate in this request?
+  def justnow_activated?
     @activated
+  end
+
+  # did they activate within the last five minutes?
+  def recently_activated?
+    return false unless activated?
+    (Time.now - activated_at) <= 300
   end
 
   def activated?
     activated_at != nil
   end
-
+  
   # Encrypts some data with the salt.
   def self.encrypt(password, salt)
     Digest::SHA1.hexdigest("--#{salt}--#{password}--")
@@ -131,6 +140,20 @@ class User < ActiveRecord::Base
     diminutive.nil? ? name : diminutive
   end
   
+  def provisional_new_password
+    new_password = generate_password(12)
+    make_activation_code
+  end
+  
+  def accept_new_password(newpass=nil)
+    return false unless password && newpass == new_password
+    self.password = self.new_password
+    self.new_password = nil
+    self.activation_code = nil
+    self.last_login = Time.now.utc
+    self.save!
+  end
+  
   public
   
     def self.currently_online
@@ -138,6 +161,7 @@ class User < ActiveRecord::Base
     end
   
   protected
+  
     # before filter 
     def encrypt_password
       return if password.blank?
@@ -152,8 +176,13 @@ class User < ActiveRecord::Base
     def login_required?
       !password.blank? || !crypted_password.blank?
     end
-    
+
     def make_activation_code
       self.activation_code = Digest::SHA1.hexdigest( Time.now.to_s.split(//).sort_by {rand}.join )
+    end
+
+    def generate_password(length=8)
+      chars = ("a".."z").to_a + ("A".."Z").to_a + ("1".."9").to_a
+      Array.new(length, '').collect{chars[rand(chars.size)]}.join
     end
 end

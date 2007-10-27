@@ -1,9 +1,9 @@
-<div class="comment">
-	<p class="footnote">in <%= link_to single.topic.name, :controller => 'topics', :action => 'show', :id => single.topic %>
+<p>in <%= link_to single.topic.name, :controller => 'topics', :action => 'show', :id => single.topic %>:</p>
 
+<div class="comment">
 	<p class="commentheader<% if single.creator.editor? %> admin<% end %>">
    	<%= image_tag "clearbits/comment.gif", :class => 'icon', :title => single.creator.editor? ? 'admin' : 'visitor' %>
-		<%= h(singles.creator.name) %>
+		<%= h(single.creator.name) %>
 		<span class="when"><%= time_ago_in_words(single.created_at) %></span>
 	</p>
 

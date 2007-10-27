@@ -1,5 +1,5 @@
 class EditObserver < ActiveRecord::Observer
-  observe User, Source, Node, Bundle, Tag, Occasion, Warning, Question, Survey, Blogentry, Forum, Topic, Post
+  observe Source, Node, Bundle, Tag, Occasion, Warning, Question, Survey, Blogentry, Forum, Topic, Post
   
   cattr_accessor :current_user
   cattr_accessor :current_collection
@@ -8,11 +8,11 @@ class EditObserver < ActiveRecord::Observer
     
     model.collection = @@current_collection
     model.creator = @@current_user
-    model.created_at = Time.now
+    # model.created_at = Time.now
   end
   
   def before_update(model)
     model.updater = @@current_user
-    model.updated_at = Time.now
+    # model.updated_at = Time.now
   end
 end

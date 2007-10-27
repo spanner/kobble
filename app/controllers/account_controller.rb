@@ -1,6 +1,6 @@
 class AccountController < ApplicationController
   before_filter :set_context
-  before_filter :login_required, :only => [:blog, :discussion, :me]
+  before_filter :activation_required, :only => [:blog, :discussion, :questions, :me, :logout]
   skip_before_filter :editor_required  
   layout :choose_layout
   
@@ -10,8 +10,13 @@ class AccountController < ApplicationController
   end
 
   def index
-    @show_field = 'welcome' unless @show_field
-    @pagetitle = @show_field
+    @pagetitle = 'welcome'
+    if activated?
+      logger.warn "!!! retrieving recent items"
+      @blogentries = Blogentry.find(:all, :conditions => limit_to_active_collection_and_this_week(Blogentry), :include => 'creator')
+      @posts = Post.find(:all, :conditions => limit_to_active_collection_and_this_week(Post), :include => 'creator')
+      @questions = Question.find(:all, :conditions => limit_to_active_collection_and_this_week(Question), :include => 'creator')
+    end
   end
   
   def welcome
@@ -47,6 +52,9 @@ class AccountController < ApplicationController
   end 
   
   def discussion
+  end
+
+  def questions
   end
 
   def blogentry
@@ -89,7 +97,39 @@ class AccountController < ApplicationController
     else
       flash[:error] = "Unable to activate your account. Please check activation code." 
     end
-  end  
+  end 
+  
+  def resend_activation
+    
+  end
+
+  def repassword
+    @pagetitle = 'reset'
+    return unless request.post?
+    return @error = "Please enter an email address." unless params[:email] && !params[:email].nil? 
+    @user = User.find_by_email(params[:email])
+    return @error = "Sorry: The email address <strong>#{params[:email]}</strong> is not known here." unless @user
+    unless (@user.activated)
+      @error = "Sorry: You can't change the password for an account that hasn't been activated. We have resent the activation message instead. Clicking the activation link will log you in and allow you to change your password." 
+      UserNotifier.deliver_activation(user, current_collection)
+    end
+    @user.provisional_new_password
+    UserNotifier.deliver_newpassword(user, current_collection)
+  end
+  
+  def fix_password
+    activator = params[:id] || params[:activation_code]
+    newpass = params[:password]
+    redirect_to :action => 'repassword' if activator.nil?
+    @user = User.find_by_activation_code(activator)
+    if @user and @user.accept_new_password(newpass)
+      self.current_user = @user
+      redirect_to :controller => '/account', :action => 'index'
+      flash[:notice] = "Your password has been reset. Click on the 'you' tab to change it to something more memorable." 
+    else
+      flash[:error] = "Unable to reset your password. Please check activation code." 
+    end
+  end
 
   def login
     @pagetitle = 'login'
@@ -115,6 +155,10 @@ class AccountController < ApplicationController
     redirect_back_or_default(:controller => '/account', :action => 'index')
   end
 
+  def forbidden
+    flash[:error] = "Access Denied." 
+  end
+
   # user's active collection preference is carried in collection relationship
   
   def choosecollection
@@ -128,4 +172,5 @@ class AccountController < ApplicationController
       render :action => 'index'
     end
   end
+    
 end
