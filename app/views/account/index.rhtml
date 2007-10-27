@@ -1,6 +1,6 @@
-<% if current_user && !@show_field %>
+<% if logged_in? && !@show_field %>
 
-	<% if current_user.activated? %>
+	<% if activated? %>
 
 		<% if current_user.recently_activated? %>
 			<h1>Hello <%= current_user.firstname %>, and welcome!</h1>
