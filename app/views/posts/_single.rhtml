@@ -4,7 +4,7 @@
 	<p class="commentheader<% if single.creator.editor? %> admin<% end %>">
    	<%= image_tag "clearbits/comment.gif", :class => 'icon', :title => single.creator.editor? ? 'admin' : 'visitor' %>
 		<%= h(single.creator.name) %>
-		<span class="when"><%= single.created_at %></span>
+		<span class="when"><%= time_ago_in_words(single.created_at) %> ago</span>
 	</p>
 
 	<%= single.body.formatted %>

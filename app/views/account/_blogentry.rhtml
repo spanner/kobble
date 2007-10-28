@@ -12,6 +12,7 @@
 	<p>
 		<span class="footnote">
 			Posted by <%= blogentry.creator.name %>
+			<span class="when"><%= time_ago_in_words(blogentry.created_at) %> ago</span>
 			<%= pluralize(blogentry.posts_count, 'comment') %>.
 		</span>
 	</p>

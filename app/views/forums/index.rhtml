@@ -42,7 +42,7 @@
     <td class="inv lp">
       <% if forum.posts.last %>
         
-        <span><%= link_to "#{time_ago_in_words( forum.posts.last.created_at )} by <strong>#{forum.posts.last.creator.name}</strong>", topic_path(
+        <span><%= link_to "#{time_ago_in_words( forum.posts.last.created_at )} ago by <strong>#{forum.posts.last.creator.name}</strong>", topic_path(
 											:forum_id => forum, 
 											:id => forum.posts.last.topic_id, 
 											:page => forum.posts.last.topic.last_page, 

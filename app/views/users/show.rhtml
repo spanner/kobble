@@ -40,7 +40,7 @@
 
 <p>
 <% if @user.can_login? %>
-	last here: <%= @user.logged_in_at.nil? ? 'never' : time_ago_in_words(@user.logged_in_at) %><br />
+	last here: <%= @user.logged_in_at.nil? ? 'never' : time_ago_in_words(@user.logged_in_at) %> ago<br />
 <% else %>
 	<em>non-login user</em><br />
 <% end %>

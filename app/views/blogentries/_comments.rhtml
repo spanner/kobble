@@ -18,7 +18,7 @@
 				<p class="commentheader<% if post.creator.editor? %> admin<% end %>">
 		     	<%= image_tag "clearbits/comment.gif", :class => 'icon', :title => post.creator.editor? ? 'admin' : 'visitor' %>
 					<%= h(post.creator.name) %>
-					<span class="when"><%= time_ago_in_words(post.created_at) %></span>
+					<span class="when"><%= time_ago_in_words(post.created_at) %> ago</span>
 					<%= link_to 'edit', {:controller => 'posts', :action => 'edit', :id => post, :forum_id => post.forum_id, :topic_id => post.topic_id}, {:class => 'editinplace', :id => "edit_comment_#{post.id}"} if editor? %>
 				</p>
 				<div class="commentbody" id="comment_<%= post.id %>">

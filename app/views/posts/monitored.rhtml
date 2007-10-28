@@ -33,7 +33,7 @@
     <div class="date">
       <abbr class="updated" title="<%= post.created_at.xmlschema %>">
       <% if post.created_at > Time.now.utc-24.hours%>
-      <%= time_ago_in_words(post.created_at).sub(/about /, '') %>
+      <%= time_ago_in_words(post.created_at).sub(/about /, '') %> ago
       <% else %>
       <%= post.created_at.strftime("%b %e, %Y"[:date_format])%>
       <% end %>
