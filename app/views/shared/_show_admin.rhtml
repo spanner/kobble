@@ -1,6 +1,6 @@
 <% if editor? %>
 	<h2>
-		<a href="#" class="displaycontrol editor" id="show_admin">+ admin</a>
+		<a href="#" class="displaycontrol editor" id="show_admin">admin</a>
 	</h2>
   <div class="marginal" id="hide_admin">
 		<%= link_to "edit", {:controller => item.class.to_s.downcase.pluralize, :action => 'edit', :id => item}, {:class => 'edititem'} %>

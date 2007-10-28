@@ -19,7 +19,7 @@
 		     	<%= image_tag "clearbits/comment.gif", :class => 'icon', :title => post.creator.editor? ? 'admin' : 'visitor' %>
 					<%= h(post.creator.name) %>
 					<span class="when"><%= time_ago_in_words(post.created_at) %></span>
-					<%= link_to 'edit', {:controller => 'posts', :action => 'edit', :id => post, :forum_id => post.forum_id}, {:class => 'editinplace', :id => "edit_comment_#{post.id}"} %>
+					<%= link_to 'edit', {:controller => 'posts', :action => 'edit', :id => post, :forum_id => post.forum_id, :topic_id => post.topic_id}, {:class => 'editinplace', :id => "edit_comment_#{post.id}"} if editor? %>
 				</p>
 				<div class="commentbody" id="comment_<%= post.id %>">
 				<%= post.body.formatted %>
@@ -31,11 +31,10 @@
 	<% end %>
 	
 	<div class="comment">
-		<div id="reply">
-		<%= link_to 'Add comment', {:controller => 'posts', :action => 'new', :topic_id => @topic, :forum_id => @forum}, {:id => 'edit_reply', :class => "editinplace additem", :style => 'margin: 6px 0;'} %>
-		</div>
+		<div id="reply" class="newcommentmarker"></div>
 	</div>
 
+	<%= link_to 'Add comment', {:controller => 'posts', :action => 'new', :topic_id => @topic, :forum_id => @forum}, {:id => 'edit_reply', :class => "additem editinplace onlyonce", :style => 'margin: 6px 0;'} %>
 
 	<% if @post_pages and @post_pages.current.next %>
 	<p style="float:right;"><%= link_to "Next page", { :page => @post_pages.current.next }.merge(params.reject{|k,v| k=="page"})  %></p>

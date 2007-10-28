@@ -939,6 +939,10 @@ div.comment {
   font-size: 85%;
 }
 
+div.newcommentmarker {
+  min-height: 20px;
+}
+
 div.comment p {
   margin: 0 0 6px 0;
 }

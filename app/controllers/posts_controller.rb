@@ -37,7 +37,8 @@ class PostsController < ApplicationController
   end
 
   def new
-    @post = @topic.posts.build()
+    @post = @topic.posts.build
+    @post.forum = @forum
     respond_to do |format|
       format.html { redirect_to topic_path(@forum.id, @topic.id) }
       format.js { render :template => 'posts/newinplace', :layout => false }
@@ -45,7 +46,7 @@ class PostsController < ApplicationController
   end
 
   def preview
-    @post  = @topic.posts.build(params[:post])
+    @post = @topic.posts.build(params[:post])
     @post.created_by = current_user
     @post.created_at = Time.now()
     respond_to do |format|
@@ -53,7 +54,7 @@ class PostsController < ApplicationController
       format.html
     end
   end
-  
+    
   def create
     @topic = Topic.find_by_id_and_forum_id(params[:topic_id],params[:forum_id], :include => :forum)
     if @topic.locked?
@@ -93,7 +94,7 @@ class PostsController < ApplicationController
   def edit
     respond_to do |format| 
       format.html
-      format.js { render :template => 'posts/editinplace', :layout => :false }
+      format.js { render :template => 'posts/editinplace', :layout => false }
     end
   end
   
@@ -107,7 +108,7 @@ class PostsController < ApplicationController
       format.html do
         redirect_to topic_path(:forum_id => params[:forum_id], :id => params[:topic_id], :anchor => @post.dom_id, :page => params[:page] || '1')
       end
-      format.js
+      format.js { render :layout => false }
       format.xml { head 200 }
     end
   end

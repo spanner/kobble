@@ -1,17 +1,17 @@
-﻿var Editor = new Class ({
+﻿var editor = null;
+
+var Editor = new Class ({
   initialize: function (a, e) {
+    editor = this;
     this.link = a
 	  var tag = a.id.replace('edit_','');
-    console.log('eip: tag is' + tag);
     this.subject = $E('#' + tag);
-    console.log('eip: subject is');
-    console.log(this.subject);
-    this.original = this.subject.clone();
     this.dimensions = this.subject.getCoordinates();
     this.fonts = this.subject.getStyles('font-family', 'font-size', 'line-height', 'letter-spacing');
-		this.wrapper = new Element('div', {'styles': $extend(this.subject.getStyles('margin'), {'overflow': 'hidden'})}).injectAfter(this.subject).adopt(this.subject);
+		this.wrapper = new Element('div', {'styles': {'overflow': 'hidden'}, 'class': 'editwrapper'}).injectAfter(this.subject);
     this.formholder = new Element('div', {'style': 'display: none;'}).injectTop(this.wrapper);
     this.previewholder = new Element('div', {'style': 'display: none;'}).injectTop(this.wrapper);
+    this.resizer = new Fx.Style(this.wrapper, 'height', {duration:500});
 		this.getForm();
   },
   
@@ -19,8 +19,22 @@
     return this.link.getProperty('href')
   },
   
-  getForm: function () {
+  resizetocontain: function (element) {
+    var height = element.getCoordinates()['height'];
+    if (height) this.resizer.start(height)
+  },
+  
+  closewrapper: function () {
     ed = this;
+    this.formholder.hide();
+    this.previewholder.hide();
+    this.resizer.start(0).chain(function () { ed.wrapper.remove(); });
+  },
+  
+  getForm: function () {
+    this.link.hide();
+    ed = this;
+    this.wrapper.setStyles({'width': this.dimensions.width, 'height': this.dimensions.height});
 		new Ajax(this.url(), {
 			method: 'get',
 			update: ed.formholder,
@@ -31,15 +45,12 @@
   },
   
   gotForm: function () {
-    this.wrapper.addClass('editinplace');
     this.form = $E('form', this.formholder);
     this.form.onsubmit = this.getPreview.bind(this);
-    // this.input = this.form.getFirst();
-    // this.input.setStyles(this.dimensions);
-    // this.input.setStyles(this.fonts);
-    // this.input.addClass('editinplace');
+    $E('a.cancel', this.formholder).onclick = this.cancel.bind(this);
     this.notWaiting();
     this.formholder.show();
+    this.resizetocontain(this.formholder);
   },
   
   getPreview: function (e) {
@@ -59,23 +70,24 @@
   // if not, we move the returned html into the original element and call finish.
   
   gotPreview: function () {
-    this.wrapper.removeClass('editinplace');
     this.previewform = $E('form', this.previewholder);
     if (this.previewform) {
-      this.wrapper.addClass('preview');
       this.previewform.onsubmit = this.confirm.bind(this);
       console.log(this.previewform);
       $E('a.revise', this.previewholder).onclick = this.revise.bind(this);
+      $E('a.cancel', this.previewholder).onclick = this.cancel.bind(this);
   		this.notWaiting();
       this.previewholder.show();
+      this.resizetocontain(this.previewholder);
     } else {
       this.previewholder.show();
-      flash(this.previewholder);
+      this.resizetocontain(this.previewholder);
+      this.subject.replaceWith(this.previewholder.clone());
+      this.finished();
     }
   },
   
   confirm: function (e) {
-    this.wrapper.removeClass('preview');
     e = new Event(e).stop();
     e.preventDefault();
     var p = this;
@@ -90,12 +102,11 @@
   },
   
   revise :function (e) {
-    this.wrapper.removeClass('preview');
-    this.wrapper.addClass('editinplace');
     e = new Event(e).stop();
     e.preventDefault();
     this.previewholder.hide();
     this.formholder.show();
+    this.resizetocontain(this.formholder);
   },
     
   waiting: function () {
@@ -110,18 +121,29 @@
   },
   
   finished: function () {
+    console.log('finished!')
+    if (this.link && !this.link.hasClass('onlyonce')) this.link.show();
     this.notWaiting();
-    this.formholder.remove();
-    this.previewholder.remove();
     this.subject.show();
+    this.closewrapper();
+    flash(this.subject);
+  },
+  
+  cancel: function (e) {
+    console.log('cancelled!')
+    if (this.link) this.link.show();
+    e = new Event(e).stop();
+    e.preventDefault();
+    this.notWaiting();
+    this.subject.show();
+    this.closewrapper();
   },
   
   failed: function () {
-    this.wrapper.removeClass('editinplace');
-    this.wrapper.removeClass('preview');
-    this.wrapper.addClass('editfailed');
+    console.log('failed!')
+    if (this.link) this.link.show();
     this.notWaiting();
     this.subject.show();
-    flash(this.subject);
+    this.closewrapper();
   }
 });

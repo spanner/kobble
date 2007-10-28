@@ -117,14 +117,13 @@ window.addEvent('domready', function(){
     });
   });
 
-  $ES('a.editinplace').each( function (element) {
-    console.log('eip link: ' + element.id);
-    element.addEvent('click', function (e) {
-      console.log('edit in place!');
+  $ES('a.editinplace').each( function (a) {
+    a.addEvent('click', function (e) {
+      a.setText('+ ' + a.getText());
       e = new Event(e).stop();
       e.preventDefault();
       this.blur();
-      ed = new Editor(element, e);
+      ed = new Editor(a, e);
     });
   });
 });
