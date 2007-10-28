@@ -122,7 +122,7 @@ class PostsController < ApplicationController
       format.html do
         redirect_to topic_path(:forum_id => params[:forum_id], :id => params[:topic_id], :page => params[:page]) unless performed?
       end
-      format.js { render :nothing => true }
+      format.js { render :layout => false }
       format.xml { head 200 }
     end
   end
