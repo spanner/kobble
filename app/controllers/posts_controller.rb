@@ -1,5 +1,6 @@
 class PostsController < ApplicationController
-  before_filter :find_post, :except => [:index, :create, :monitored, :search, :preview]
+  before_filter :find_post, :except => [:index, :new, :create, :monitored, :search, :preview]
+  before_filter :find_forum_and_topic, :only => [:new, :create, :preview]
   before_filter :editor_required, :only => [:edit, :update, :destroy]
 
   @@query_options = { :per_page => 25, :select => 'posts.*, topics.title as topic_title, forums.name as forum_name', :joins => 'inner join topics on posts.topic_id = topics.id inner join forums on topics.forum_id = forums.id', :order => 'posts.created_at desc' }
@@ -35,14 +36,20 @@ class PostsController < ApplicationController
     end
   end
 
+  def new
+    @post = @topic.posts.build()
+    respond_to do |format|
+      format.html { redirect_to topic_path(@forum.id, @topic.id) }
+      format.js { render :template => 'posts/newinplace', :layout => false }
+    end
+  end
+
   def preview
-    @topic = Topic.find_by_id_and_forum_id(params[:topic_id],params[:forum_id], :include => :forum)
-    @forum = @topic.forum
     @post  = @topic.posts.build(params[:post])
     @post.created_by = current_user
     @post.created_at = Time.now()
     respond_to do |format|
-      format.js {render :layout => false}
+      format.js { render :layout => false }
       format.html
     end
   end
@@ -86,7 +93,7 @@ class PostsController < ApplicationController
   def edit
     respond_to do |format| 
       format.html
-      format.js
+      format.js { render :template => 'posts/editinplace', :layout => :false }
     end
   end
   
@@ -127,6 +134,11 @@ class PostsController < ApplicationController
       @post = Post.find_by_id_and_topic_id_and_forum_id(params[:id], params[:topic_id], params[:forum_id]) || raise(ActiveRecord::RecordNotFound)
     end
     
+    def find_forum_and_topic
+      @forum = Forum.find(params[:forum_id])
+      @topic = @forum.topics.find(params[:topic_id]) if params[:topic_id]
+    end
+
     def render_posts_or_xml(template_name = action_name)
       respond_to do |format|
         format.html { render :action => "#{template_name}.rhtml" }

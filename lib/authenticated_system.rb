@@ -79,6 +79,7 @@ module AuthenticatedSystem
     #   skip_before_filter :login_required
     #
     def login_required
+      logger.warn "!!! login_required"
       username, passwd = get_auth_data
       self.current_user ||= User.authenticate(username, passwd) || :false if username && passwd
       logged_in? ? true : access_denied
@@ -96,22 +97,26 @@ module AuthenticatedSystem
 
     def admin_required
       logger.warn "!!! admin_required"
-      (login_required && admin?) ? true : access_insufficient
+      return false unless login_required
+      admin? ? true : access_insufficient
     end
 
     def editor_required
       logger.warn "!!! editor_required"
-      (login_required && editor?) ? true : access_insufficient
+      return false unless login_required
+      editor? ? true : access_insufficient
     end
 
     def developer_required
       logger.warn "!!! developer_required"
-      (login_required && developer?) ? true : access_insufficient
+      return false unless login_required
+      developer? ? true : access_insufficient
     end
 
     def activation_required
       logger.warn "!!! activation_required"
-      (login_required && activated?) ? true : access_inactive
+      return false unless login_required
+      activated? ? true : access_inactive
     end
 
     # Redirect as appropriate when an access request fails.
@@ -122,7 +127,9 @@ module AuthenticatedSystem
     # behavior in case the user is not authorized
     # to access the requested action.  For example, a popup window might
     # simply close itself.
+    
     def access_denied
+      logger.warn "!!! access_denied"
       respond_to do |accepts|
         accepts.html do
           store_location
@@ -138,6 +145,7 @@ module AuthenticatedSystem
     end  
     
     def access_insufficient
+      logger.warn "!!! access_insufficient"
       respond_to do |accepts|
         accepts.html do
           store_location
@@ -153,7 +161,19 @@ module AuthenticatedSystem
     end  
     
     def access_inactive
-      redirect_to :controller => '/account', :action => 'index'
+      logger.warn "!!! access_inactive"
+      respond_to do |accepts|
+        accepts.html do
+          store_location
+          redirect_to :controller => '/account', :action => 'index'
+        end
+        accepts.xml do
+          headers["Status"]           = "Unauthorized"
+          headers["WWW-Authenticate"] = %(Basic realm="Web Password")
+          render :text => "Account not activated", :status => '401 Unauthorized'
+        end
+      end
+      false
     end
     
     # Store the URI of the current request in the session.

@@ -1,7 +1,7 @@
 <p class="commentheader<% if @post.creator.editor? %> admin<% end %>">
   	<%= image_tag "clearbits/comment.gif", :class => 'icon', :title => @post.creator.editor? ? 'admin' : 'visitor' %>
 	<%= h(@post.creator.name) %>
-	<span class="loud">preview</span>
+	<span class="when">preview</span>
 </p>
 <%= @post.body.formatted %>
 

@@ -116,6 +116,17 @@ window.addEvent('domready', function(){
       snip = new Snipper(element, e);
     });
   });
+
+  $ES('a.editinplace').each( function (element) {
+    console.log('eip link: ' + element.id);
+    element.addEvent('click', function (e) {
+      console.log('edit in place!');
+      e = new Event(e).stop();
+      e.preventDefault();
+      this.blur();
+      ed = new Editor(element, e);
+    });
+  });
 });
 
 

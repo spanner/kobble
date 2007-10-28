@@ -3,4 +3,5 @@
 	<%= h(@post.creator.name) %>
 	<span class="when"><%= time_ago_in_words(@post.created_at) %></span>
 </p>
+
 <%= @post.body.formatted %>

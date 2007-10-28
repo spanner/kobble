@@ -1,0 +1,12 @@
+<% form_for :post, :url => preview_path(:forum_id => @forum, :topic_id => @topic) do |f| -%>
+	<p class="commentheader">
+   	<%= image_tag "clearbits/comment.gif", :class => 'icon', :title => current_user.editor? ? 'admin' : 'visitor' %>
+		<%= h(current_user.name) %>
+		<span class="when">now</span>		
+	</p>
+	<div class="commentbody">
+  <%= f.text_area :body, :rows => 8 %><br />
+	</div>
+ 	<%= submit_tag "Preview Comment" %> <span class="button_or">or cancel</span>
+
+<% end -%>

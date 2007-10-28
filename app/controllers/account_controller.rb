@@ -1,7 +1,7 @@
 class AccountController < ApplicationController
   before_filter :set_context
-  before_filter :activation_required, :only => [:blog, :discussion, :questions, :me, :logout]
   skip_before_filter :editor_required  
+  before_filter :activation_required, :only => [:blog, :discussion, :questions, :me, :logout]
   layout :choose_layout
   
   def choose_layout

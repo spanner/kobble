@@ -19,30 +19,16 @@ function flash (element) {
 
 window.addEvent('domready', function(){
 
-	$ES('a.displaycontrol').each(function (a) {
-	  var tag = a.id.replace('show','hide');
-	  var slid = $E( '#' + tag );
-    if (slid) {
-      slides[tag] = new Fx.Slide( slid, {
-        transition: Fx.Transitions.Bounce.easeOut,
-        onStart: function () { 
-          if (a.hasClass('disappears')) a.hide(); 
-          else a.setText(slides[tag].open ? a.getText().replace('-','+') : a.getText().replace('+','-'));
-        }
-      });
-      if (!a.hasClass('defaultopen')) slides[tag].hide(); 
-  		a.addEvent('click', function (e) {
-  		  this.blur();
-      	e = new Event(e);
-      	slides[tag].toggle();
-      	e.stop();
-  			e.preventDefault();
-  		});
-    }
-	});
-
-  var commenter = $E('div#hide_reply');
-  if (commenter) new Previewer(commenter);
+  $ES('a.editinplace').each( function (element) {
+    console.log('eip link: ' + element.id);
+    element.addEvent('click', function (e) {
+      console.log('edit in place!');
+      e = new Event(e).stop();
+      e.preventDefault();
+      this.blur();
+      ed = new Editor(element, e);
+    });
+  });
 
 });
 
