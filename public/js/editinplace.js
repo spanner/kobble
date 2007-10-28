@@ -168,7 +168,7 @@ var Deleter= new Class({
   delete: function () {
     del = this;
 		this.req = new Ajax(this.url(), {
-			method: 'post',
+			method: 'get',
 		  onRequest: function () {del.waiting();},
 		  onComplete: function () {del.finished();},
 		  onFailure: function () {del.failed();}

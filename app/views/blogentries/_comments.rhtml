@@ -5,7 +5,7 @@
 	<% else %>
 		<h2>Comments</h2>
 		<p class="subtitle">
-			<%= pluralize(@topic.posts.count, 'comment') %>, 
+			<%= pluralize(@topic.posts.count - 1, 'comment') %>, 
 			<%= pluralize(@topic.voice_count, 'voice') %>
 		</p>
 
