@@ -290,7 +290,6 @@ Autocompleter.Ajax.Json = Autocompleter.Ajax.Base.extend({
 	queryResponse: function(resp) {
 		this.parent(resp);
 		var choices = Json.evaluate(resp || false);
-		console.log(choices);
 		if (!choices || !choices.length) return;
 		this.updateChoices(choices);
 	}

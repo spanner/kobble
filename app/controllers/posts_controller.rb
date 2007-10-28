@@ -115,13 +115,14 @@ class PostsController < ApplicationController
 
   def destroy
     @post.destroy
-    flash[:notice] = "Post of '{title}' was deleted."[:post_deleted_message, CGI::escapeHTML(@post.topic.title)]
+    flash[:notice] = "One post attached to #{CGI::escapeHTML(@post.topic.title)} was deleted."
     # check for posts_count == 1 because its cached and counting the currently deleted post
     @post.topic.destroy and redirect_to forum_path(params[:forum_id]) if @post.topic.posts_count == 1
     respond_to do |format|
       format.html do
         redirect_to topic_path(:forum_id => params[:forum_id], :id => params[:topic_id], :page => params[:page]) unless performed?
       end
+      format.js { render :nothing => true }
       format.xml { head 200 }
     end
   end

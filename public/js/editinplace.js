@@ -1,11 +1,9 @@
-﻿var editor = null;
-
-var Editor = new Class ({
+﻿var Editor = new Class ({
   initialize: function (a, e) {
-    editor = this;
     this.link = a
 	  var tag = a.id.replace('edit_','');
     this.subject = $E('#' + tag);
+    this.subject.getParent().show();
     this.dimensions = this.subject.getCoordinates();
     this.fonts = this.subject.getStyles('font-family', 'font-size', 'line-height', 'letter-spacing');
 		this.wrapper = new Element('div', {'styles': {'overflow': 'hidden'}, 'class': 'editwrapper'}).injectAfter(this.subject);
@@ -73,7 +71,6 @@ var Editor = new Class ({
     this.previewform = $E('form', this.previewholder);
     if (this.previewform) {
       this.previewform.onsubmit = this.confirm.bind(this);
-      console.log(this.previewform);
       $E('a.revise', this.previewholder).onclick = this.revise.bind(this);
       $E('a.cancel', this.previewholder).onclick = this.cancel.bind(this);
   		this.notWaiting();
@@ -121,7 +118,6 @@ var Editor = new Class ({
   },
   
   finished: function () {
-    console.log('finished!')
     if (this.link && !this.link.hasClass('onlyonce')) this.link.show();
     this.notWaiting();
     this.subject.show();
@@ -130,7 +126,6 @@ var Editor = new Class ({
   },
   
   cancel: function (e) {
-    console.log('cancelled!')
     if (this.link) this.link.show();
     e = new Event(e).stop();
     e.preventDefault();
@@ -140,10 +135,65 @@ var Editor = new Class ({
   },
   
   failed: function () {
-    console.log('failed!')
     if (this.link) this.link.show();
     this.notWaiting();
     this.subject.show();
     this.closewrapper();
   }
+});
+
+var Deleter= new Class({
+  initialize: function (a, e) {
+    this.link = a;
+    this.signal = $E('img', a);
+	  var tag = a.id.replace('delete_','');
+    this.subject = $E('#' + tag);
+    this.fader = new Fx.Styles(this.subject, {duration:400});
+    this.req = null;
+    if (this.confirm()) this.delete(); 
+  },
+
+  url: function () {
+    return this.link.getProperty('href')
+  },
+  
+  title: function (argument) {
+    return this.link.getProperty('title')
+  },
+
+  confirm: function () {
+    return confirm("are you sure you want to " + this.title() + '?');
+  },
+  
+  delete: function () {
+    del = this;
+		this.req = new Ajax(this.url(), {
+			method: 'post',
+		  onRequest: function () {del.waiting();},
+		  onComplete: function () {del.finished();},
+		  onFailure: function () {del.failed();}
+		}).request();
+  }, 
+  
+  waiting: function () {
+    this.signal.setProperty('src', '/images/furniture/signals/wait_16_blue.gif');
+  },
+  
+  notWaiting: function () {
+    this.signal.setProperty('src', '/images/furniture/buttons/delete.png');
+  },
+  
+  finished: function (argument) {
+    console.log('finished!');
+    this.fader.start({
+      'opacity': 0,
+      'height': 0
+    }).chain(function () { this.element.remove() })
+  },
+  
+  failed: function (argument) {
+    this.notWaiting();
+    alert('deletion failed');
+  }
+  
 });

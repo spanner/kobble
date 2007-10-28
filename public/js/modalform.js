@@ -8,7 +8,6 @@
 		this.spinner = new Element('div', {'class': 'bigspinner'}).injectInside(this.floater);
 		this.formholder = new Element('div', {'id': 'modalform'}).injectInside(this.floater).hide();
     this.responseholder = new Element(this.responseholdertype());
-    console.log(this.responseholder);
 		this.form = null;
 		this.overlay.onclick = this.hide.bind(this);
     this.waiter = null;
@@ -26,7 +25,6 @@
   // by default we get this from the 'target' property of the source link
   target: function () {
     var targetid = this.source.getProperty('target');
-    console.log('targetid is ' + targetid);
     return $E('#' + targetid);
   },
   

@@ -99,8 +99,6 @@ var Dropon = new Class({
 		return '/' + parts['type'] + 's/' + this.removeAction + '/' + parts['id']; 
 	},
 	waiting: function () { 
-	  console.log('recipient is ');
-	  console.log(this.recipient());
 	  this.waitsignal = this.waiter(); 
 	  this.waitsignal.injectInside(this.recipient());
 	},
