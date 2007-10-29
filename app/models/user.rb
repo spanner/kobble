@@ -141,14 +141,16 @@ class User < ActiveRecord::Base
   end
   
   def provisional_new_password
-    new_password = generate_password(12)
-    make_activation_code
+    self.new_password = generate_password(12)
+    self.make_activation_code
+    self.save!
+    self.new_password
   end
   
   def accept_new_password(newpass=nil)
-    return false unless password && newpass == new_password
     self.password = self.new_password
     self.new_password = nil
+    self.crypted_password = nil
     self.activation_code = nil
     self.last_login = Time.now.utc
     self.save!

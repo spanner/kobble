@@ -119,20 +119,19 @@ class AccountController < ApplicationController
     return @error = "Please enter an email address." unless params[:email] && !params[:email].nil? 
     @user = User.find_by_email(params[:email])
     return @error = "Sorry: The email address <strong>#{params[:email]}</strong> is not known here." unless @user
-    unless (@user.activated)
-      @error = "Sorry: You can't change the password for an account that hasn't been activated. We have resent the activation message instead. Clicking the activation link will log you in and allow you to change your password." 
+    unless (@user.activated?)
       UserNotifier.deliver_activation(user, current_collection)
+      return @error = "Sorry: You can't change the password for an account that hasn't been activated. We have resent the activation message instead. Clicking the activation link will log you in and allow you to change your password." 
     end
-    @user.provisional_new_password
-    UserNotifier.deliver_newpassword(user, current_collection)
+    newpass = @user.provisional_new_password
+    UserNotifier.deliver_newpassword(@user, current_collection)
   end
   
-  def fix_password
+  def fixpassword
     activator = params[:id] || params[:activation_code]
-    newpass = params[:password]
     redirect_to :action => 'repassword' if activator.nil?
     @user = User.find_by_activation_code(activator)
-    if @user and @user.accept_new_password(newpass)
+    if @user and @user.accept_new_password
       self.current_user = @user
       redirect_to :controller => '/account', :action => 'index'
       flash[:notice] = "Your password has been reset. Click on the 'you' tab to change it to something more memorable." 

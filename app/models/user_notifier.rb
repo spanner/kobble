@@ -15,8 +15,9 @@ class UserNotifier < ActionMailer::Base
   def newpassword(user, collection)
     setup_email(user, collection)
     @subject    += 'Your provisional new password'
-    @body[:url]  = "http://#{collection.url}/account/activate/#{user.activation_code}"
+    @body[:url]  = "http://#{collection.url}/account/fixpassword/#{user.activation_code}"
     @body[:code]  = user.activation_code
+    @body[:password]  = user.new_password
   end
   
   protected
