@@ -19,11 +19,7 @@
 </div>
 
 <p>
-<% if @user.can_login? %>
 	last here: <%= @user.last_login.nil? ? 'never' : time_ago_in_words(@user.last_login) %> ago<br />
-<% else %>
-	<em>non-login user</em><br />
-<% end %>
 </p>
 
 <h3><%= 'Your ' if itsme %>description</h3>
