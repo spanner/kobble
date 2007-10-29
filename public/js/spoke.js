@@ -50,11 +50,6 @@ function flash (element) {
   });
 }
 
-
-
-
-// now to set it all going
-
 window.addEvent('domready', function(){
 
 	$ES('a.displaycontrol').each(function (a) {

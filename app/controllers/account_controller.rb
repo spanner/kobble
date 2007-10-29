@@ -53,6 +53,15 @@ class AccountController < ApplicationController
   end 
   
   def discussion
+    @pagetitle = 'discussion'
+    @discussions = Forum.find(:all, 
+      :conditions => limit_to_active_collection_and_visible, 
+      :page => {
+        :size => 25, 
+        :sort => 'date DESC', 
+        :current => params[:page]
+      }
+    )
   end
 
   def questions

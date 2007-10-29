@@ -1,0 +1,25 @@
+<p>We'll use this blog to talk about questions, problems, discoveries and eventually conclusions. Each entry has a conversation associated with it, and we'd love to hear what you think.</p>
+
+<% if @blogentries.size %>
+	<% if @blogentries.size > @blogentries.page_size %>
+		<p class="pagination">pages: <%= paginating_links(@blogentries, {:window_size => 3}) %></p>
+	<% end %>
+
+	<%= render :partial => 'blogentry', :collection => @blogentries %>
+
+	<% if @blogentries.size > @blogentries.page_size %>
+		<p class="pagination">pages: <%= paginating_links(@blogentries, {:window_size => 3}) %></p>
+	<% end %>
+	
+<% else %>
+
+	<p>this blog is empty</p>
+
+<% end %>
+
+
+<% if editor? %>
+	<div class="editlinks">
+	<%= link_to 'edit blog', {:controller => 'blogentries', :action => 'index'}, {:class => 'edititem'} %>
+	</div>
+<% end %>

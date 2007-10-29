@@ -1,0 +1,25 @@
+<p>There are two kinds of discussion here: the comments attached to blog entries, and these more open-ended conversations about the project, its opportunities and the difficulties we encounter.</p>
+
+<% if @discussions.size %>
+	<% if @discussions.size > @discussions.page_size %>
+		<p class="pagination">pages: <%= paginating_links(@discussions, {:window_size => 3}) %></p>
+	<% end %>
+
+	<%= render :partial => 'forum', :collection => @discussions %>
+
+	<% if @discussions.size > @discussions.page_size %>
+		<p class="pagination">pages: <%= paginating_links(@discussions, {:window_size => 3}) %></p>
+	<% end %>
+	
+<% else %>
+
+	<p>There are no discussions to show here.</p>
+
+<% end %>
+
+
+<% if editor? %>
+	<div class="editlinks">
+	<%= link_to 'edit discussions', {:controller => 'forums', :action => 'index'}, {:class => 'edititem'} %>
+	</div>
+<% end %>

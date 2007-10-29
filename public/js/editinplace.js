@@ -144,21 +144,22 @@
 
 var Deleter= new Class({
   initialize: function (a, e) {
-    this.link = a;
-    this.signal = $E('img', a);
-	  var tag = a.id.replace('delete_','');
-    this.subject = $E('#' + tag);
-    this.fader = new Fx.Styles(this.subject, {duration:400});
-    this.req = null;
-    if (this.confirm()) this.delete(); 
+    if (this.confirm()) {
+      this.link = a;
+      this.signal = $E('img', a);
+      this.subject = $E('#' + a.id.replace('delete_',''));
+      this.fader = new Fx.Styles(this.subject, {duration:400});
+      this.req = null;
+      this.delete();
+    }
   },
 
   url: function () {
-    return this.link.getProperty('href')
+    return this.link.getProperty('href');
   },
   
   title: function (argument) {
-    return this.link.getProperty('title')
+    return this.link.getProperty('title');
   },
 
   confirm: function () {
