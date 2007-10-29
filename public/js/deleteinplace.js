@@ -1,4 +1,5 @@
 ﻿var Deleter= new Class({
+  
   initialize: function (a, e) {
     this.link = a;
     this.signal = $E('img', a);
