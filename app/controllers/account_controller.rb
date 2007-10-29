@@ -15,7 +15,7 @@ class AccountController < ApplicationController
     if activated?
       logger.warn "!!! retrieving recent items"
       @blogentries = Blogentry.find(:all, :conditions => limit_to_active_collection_and_this_week(Blogentry), :include => 'creator')
-      @posts = Post.find(:all, :conditions => limit_to_active_collection_and_this_week(Post), :include => 'creator')
+      @topics = Topic.find(:all, :conditions => limit_to_active_collection_and_this_week(Topic), :include => 'creator')
       @questions = Question.find(:all, :conditions => limit_to_active_collection_and_this_week(Question), :include => 'creator')
     end
   end
@@ -69,14 +69,14 @@ class AccountController < ApplicationController
 
   def blogentry
     @pagetitle = 'blog'
+    @blogentries = Blogentry.find(:all, :conditions => limit_to_active_collection, :page => {:size => 6, :sort => 'date DESC'})
     @blogentry = Blogentry.find(params[:id])
     @forum = current_collection.blog_forum
     @topic = @blogentry.topics.first
     @topic.hit! unless logged_in? and @topic.created_by == current_user
     @post_pages, @posts = paginate(:posts, :per_page => 25, :order => 'posts.created_at', :include => :creator, :conditions => ['posts.topic_id = ?', @topic.id])
-    @posts.shift  # remove the original post: it just duplicates the blog entry
+    # @posts.shift  # remove the original post: it just duplicates the blog entry
     @post = Post.new
-    @blogentries = Blogentry.find(:all, :conditions => limit_to_active_collection, :page => {:size => 6, :sort => 'date DESC'})
   end
 
   def signup

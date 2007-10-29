@@ -15,9 +15,9 @@
 		<h2>What you can do</h2>
 		
 		<ul class="starry">
-			<li><a href="/questions">help us out by answering the occasional question</a></li>
+			<li><a href="#" class="pale">help us out by answering the occasional question</a></li>
 			<li><a href="/blog">read the blog and add comments</a></li>
-			<!-- <li><a href="/discussion">join the discussion</a></li> -->
+			<li><a href="/discussion">join the discussion</a></li>
 			<!-- <li><a href="/blog">invite a friend or colleague</a></li> -->
 			<li><a href="/me">tell us a bit more about yourself</a></li>
 		</ul>
@@ -34,10 +34,10 @@
 		
 		<h2>Discussion</h2>
 		
-		<% if @posts and !@posts.empty? %>
-			<%= render :partial => 'posts/single', :collection => @posts %>
+		<% if @topics and !@topics.empty? %>
+			<%= render :partial => 'topic', :collection => @topics %>
 		<% else %>
-			<p>There isn't any discussion this week.</p>
+			<p>There hasn't been any discussion this week.</p>
 		<% end %>
 
 	<% else %>

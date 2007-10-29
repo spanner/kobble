@@ -1,0 +1,13 @@
+<div class="listrow">
+	<h2>
+		<%= link_to( "#{image_tag("clearbits/comment.gif", :class => 'icon blue')}#{topic.title}", {:controller => 'topics', :action => 'show', :id => topic, :forum_id => topic.forum_id}) %><br />
+		<span class="footnote">
+			Started by <%= topic.creator.name %>
+			<span class="when"><%= time_ago_in_words(topic.created_at) %> ago</span>.
+			<%= pluralize(topic.posts_count-1, 'responses') %><% if topic.posts_count > 1 %>, most recently:<% end %>
+		</span>
+	</h2>
+	<% if topic.posts_count > 1 %>
+		<%= truncate(topic.posts.last.body, 360).formatted %>
+	<% end %>
+</div>

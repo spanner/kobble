@@ -60,14 +60,4 @@
   <% if admin? %><%= link_to 'Create a new forum', new_forum_path, :class => 'additem' %><% end %>
 </p>
 
-<% online_users = User.currently_online -%>
-<% unless online_users.empty? %>
-<div class="stats">
-<div class="users">
-<% unless online_users.empty? %>
-Users online: <%= online_users.map { |u| link_to "<strong>#{h u.name}</strong>", user_path(u) } * ", " %><br />
-<% end %>
-</div>
-</div>
-<% end %>
 

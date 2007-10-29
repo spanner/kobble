@@ -4,7 +4,7 @@
     this.link = a;
     this.signal = $E('img', a);
     this.subject = $E('#' + a.id.replace('delete_',''));
-    this.fader = new Fx.Styles(this.subject, {duration:400});
+    this.fader = new Fx.Styles(this.subject, {'duration': 400});
     this.req = null;
     if (this.confirm()) this.delete();
   },

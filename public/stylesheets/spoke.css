@@ -1320,5 +1320,8 @@ div.nomugshot p {
   font-size: 10px;
 }
 
+a.pale, a.pale:visited {
+  color: #B2AAA4;
+}
 
 

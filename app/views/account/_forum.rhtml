@@ -10,7 +10,7 @@
 		<ul class="starry">
 			<% forum.recent_topics.each do |t| %>
 				<li>
-					<%= link_to t.title, :controller => 'topics', :action => 'show', :id => t %><br />
+					<%= link_to t.title, :controller => 'topics', :action => 'show', :id => t, :forum_id => t.forum_id  %><br />
 					<span class="footnote">Started by <%= link_to t.creator.name, :controller => 'users', :action => 'show', :id => t.creator %>. <%= pluralize(t.posts.count - 1, 'responses') %></span>
 				</li>
 			<% end %>

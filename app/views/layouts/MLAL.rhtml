@@ -7,12 +7,16 @@
   <link rel="stylesheet" href="/stylesheets/spoke.css" type="text/css" />
   <link rel="stylesheet" href="/stylesheets/mlal.css" type="text/css" />
   <link rel="stylesheet" href="/stylesheets/slimbox.css" type="text/css" />
-  <script type="text/javascript" src="/js/mootools.js"></script>
-  <script type="text/javascript" src="/js/extensions.js"></script>
-  <script type="text/javascript" src="/js/editinplace.js"></script>
-	<% if editor? %> <script type="text/javascript" src="/js/deleteinplace.js"></script><% end %>
-  <script type="text/javascript" src="/js/slimbox.js"></script>
-  <script type="text/javascript" src="/js/mlal.js"></script>
+	<% if activated? %>  
+		<script type="text/javascript" src="/js/mootools.js"></script>
+	  <script type="text/javascript" src="/js/extensions.js"></script>
+	  <script type="text/javascript" src="/js/editinplace.js"></script>
+	  <script type="text/javascript" src="/js/slimbox.js"></script>
+	  <script type="text/javascript" src="/js/mlal.js"></script>
+	<% end %>
+	<% if editor? %> 
+		<script type="text/javascript" src="/js/deleteinplace.js"></script>
+	<% end %>
 </head>
 
 <body>
@@ -31,7 +35,9 @@
 			<% inactive_class = activated? ? '' : 'dim' %>
 			<%= link_to 'blog', '/blog', {:class => @pagetitle == 'blog' ? 'fg' : inactive_class} %>
 			<%= link_to 'discussion', '/discussion', {:class => @pagetitle == 'discussion' ? 'fg' : inactive_class} %>
-			<%= link_to 'questions', '/questions', {:class => @pagetitle == 'questions' ? 'fg' : inactive_class} %>
+			<%#= link_to 'questions', '/questions', {:class => @pagetitle == 'questions' ? 'fg' : inactive_class} %>
+			<%= link_to 'questions', '#', {:class => 'dim'} %>
+
 			<%= link_to 'you', '/me', {:class => @pagetitle == 'you' ? 'fg' : inactive_class} %>
 			<%= link_to 'log out', '/account/logout', {:class => inactive_class} %>
 		<% else %>

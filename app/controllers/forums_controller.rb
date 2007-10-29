@@ -1,5 +1,6 @@
 class ForumsController < ApplicationController
-  before_filter :login_required
+  before_filter :activation_required
+  before_filter :editor_required, :except => [:index, :show]
   before_filter :find_or_initialize_forum, :except => :index
 
   def index
@@ -54,6 +55,10 @@ class ForumsController < ApplicationController
   protected
     def find_or_initialize_forum
       @forum = params[:id] ? Forum.find(params[:id]) : Forum.new
+      unless current_user.status >= @forum.visibility
+        redirect_to :action => 'index' and return false
+      end
+      @forum
     end
 
     # alias authorized? admin?

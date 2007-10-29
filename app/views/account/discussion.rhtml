@@ -17,6 +17,13 @@
 
 <% end %>
 
+<% online_users = User.currently_online -%>
+
+<% unless online_users.empty? %>
+	<div class="stats">
+		Users online: <%= online_users.map { |u| link_to "<strong>#{h u.name}</strong>", user_path(u) } * ", " %><br />
+	</div>
+<% end %>
 
 <% if editor? %>
 	<div class="editlinks">
