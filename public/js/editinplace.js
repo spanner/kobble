@@ -13,7 +13,7 @@
 		this.getForm();
   },
   
-  url: function () {
+  request_url: function () {
     return this.link.getProperty('href')
   },
   
@@ -33,7 +33,7 @@
     this.link.hide();
     ed = this;
     this.wrapper.setStyles({'width': this.dimensions.width, 'height': this.dimensions.height});
-		new Ajax(this.url(), {
+		new Ajax(this.request_url(), {
 			method: 'get',
 			update: ed.formholder,
 		  onRequest: function () {ed.waiting();},
@@ -152,7 +152,7 @@ var Deleter= new Class({
     if (this.confirm()) this.delete();
   },
 
-  url: function () {
+  request_url: function () {
     return this.link.getProperty('href');
   },
   
@@ -166,7 +166,7 @@ var Deleter= new Class({
   
   delete: function () {
     del = this;
-		this.req = new Ajax(this.url(), {
+		this.req = new Ajax(this.request_url(), {
 			method: 'get',
 		  onRequest: function () {del.waiting();},
 		  onComplete: function () {del.finished();},
