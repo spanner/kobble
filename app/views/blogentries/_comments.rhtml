@@ -13,40 +13,7 @@
 			<p class="pages">Pages: <strong><%= pagination_links @post_pages, :window_size => 10 %></strong></p>
 		<% end -%>
 	
-		<% for post in @posts do %>
-			<div class="comment" id="commentholder_<%= post.id %>">
-				<p class="commentheader<% if post.creator.editor? %> admin<% end %>">
-					<%  if editor? %>
-						<%= link_to image_tag('/images/furniture/buttons/edit.png'), edit_post_path(
-							:forum_id => @forum, 
-							:topic_id => @topic, 
-							:id => post
-						), {
-							:class => 'editinplace', 
-							:style=>'float: right;', 
-							:id => "edit_comment_#{post.id}"
-						} %>
-						<%= link_to image_tag('/images/furniture/buttons/delete.png'), delete_post_path(
-							:forum_id => @forum, 
-							:topic_id => @topic, 
-							:id => post
-						), {
-							:class => 'deleteinplace', 
-							:style=>'float: right;',
-							:title => "delete this post", 
-							:id => "delete_commentholder_#{post.id}"
-						} %>
-					<% end %>
-		     	<%= image_tag "clearbits/comment.gif", :class => 'icon', :title => post.creator.editor? ? 'admin' : 'visitor' %>
-					<%= h(post.creator.name) %>
-					<span class="when"><%= time_ago_in_words(post.created_at) %> ago</span>
-				</p>
-				<div class="commentbody" id="comment_<%= post.id %>">
-				<%= post.body.formatted %>
-				</div>
-			</div>
-
-			<% end %>
+		<%= render :partial => 'posts/single', :collection => @posts %>
 	
 	<% end %>
 	

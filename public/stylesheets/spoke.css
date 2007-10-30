@@ -894,6 +894,10 @@ div.taglist-holder ul li.taglist-highlight em
   margin: 6px 10px 6px 20px;
 }
 
+#monitorform {
+  padding: 3px;
+}
+
 div.bigspinner {
   width: 500px;
   height: 200px;
@@ -937,6 +941,7 @@ div.comment {
   border: 1px solid #B2AAA4;
   padding: 8px;
   font-size: 85%;
+  clear: both;
 }
 
 div.newcommentmarker {

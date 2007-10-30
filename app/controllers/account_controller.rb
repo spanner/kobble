@@ -74,8 +74,12 @@ class AccountController < ApplicationController
     @forum = current_collection.blog_forum
     @topic = @blogentry.topics.first
     @topic.hit! unless logged_in? and @topic.created_by == current_user
-    @post_pages, @posts = paginate(:posts, :per_page => 25, :order => 'posts.created_at', :include => :creator, :conditions => ['posts.topic_id = ?', @topic.id])
-    # @posts.shift  # remove the original post: it just duplicates the blog entry
+    @monitoring = !Monitorship.count(:all, :conditions => ['user_id = ? and topic_id = ? and active = ?', current_user.id, @topic.id, true]).zero?
+    perpage = params[:perpage] || 25
+    @posts = Post.find(:all, 
+      :include => :creator, 
+      :conditions => ['posts.topic_id = ?', @topic.id], 
+      :page => {:offset => 1, :size => perpage, :sort => 'posts.created_at', :current => params[:page]})
     @post = Post.new
   end
 

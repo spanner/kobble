@@ -21,6 +21,7 @@ class TopicsController < ApplicationController
   end
   
   def show
+    perpage = params[:perpage] || 25
     respond_to do |format|
       format.html do
         # see notes in application.rb on how this works
@@ -29,8 +30,14 @@ class TopicsController < ApplicationController
         (session[:topics] ||= {})[@topic.id] = Time.now.utc if logged_in?
         # authors of topics don't get counted towards total hits
         @topic.hit! unless logged_in? and @topic.created_by == current_user
-        @post_pages, @posts = paginate(:posts, :per_page => 25, :order => 'posts.created_at', :include => :creator, :conditions => ['posts.topic_id = ?', params[:id]])
-        @post   = Post.new
+        @topic.body = @topic.posts.first.body
+        @page_title = @topic.title
+        @monitoring = !Monitorship.count(:all, :conditions => ['user_id = ? and topic_id = ? and active = ?', current_user.id, @topic.id, true]).zero?
+        @posts = Post.find(:all, 
+          :include => :creator, 
+          :conditions => ['posts.topic_id = ?', params[:id]], 
+          :page => {:offset => 1, :size => perpage, :sort => 'posts.created_at', :current => params[:page]})
+        @post = Post.new
       end
       format.xml do
         render :xml => @topic.to_xml

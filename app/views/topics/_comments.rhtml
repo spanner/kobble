@@ -1,0 +1,34 @@
+<% form_tag monitorship_path(@forum, @topic), :style => 'margin-top:0; float:right;' do -%>
+
+<div id ="monitorform">
+  <input id="monitor_checkbox" type="checkbox" <%= "checked='checked'" if @monitoring %> 
+    onclick="if (this.checked) {<%= remote_function :url => monitorship_path(@forum, @topic) %>} else {<%= remote_function :url => monitorship_path(@forum, @topic), :method => :delete %>}" />
+  <label id="monitor_label" for="monitor_checkbox"><%= @monitoring ? 'subscribed' : 'subscribe' %></label>
+  <%= hidden_field_tag '_method', 'delete' if @monitoring %>
+</div>
+<% end -%>
+
+<h2>
+	<% if @topic.posts_count == 1 %>
+		No responses yet
+	<% else %>
+		Responses
+	<% end %>
+	<% if @posts.size > @posts.page_size %>
+		<span class="pagination"><%= paginating_links(list, {:window_size => 3, :params => {:display => @display}}, {}) %></span>
+	<% end %>
+</h2>
+
+<%= render :partial => 'posts/single', :collection => @posts.reject{|p| p == @topic.posts.first} %>
+
+<div class="comment hidden">
+	<div id="reply" class="newcommentmarker"></div>
+</div>
+
+<%= link_to 'Add comment', {:controller => 'posts', :action => 'new', :topic_id => @topic, :forum_id => @forum}, {:id => 'edit_reply', :class => "additem editinplace onlyonce", :style => 'margin: 6px 0;'} %>
+
+<% if @posts.size > @posts.page_size %>
+	<p>
+		Page <%= paginating_links(list, {:window_size => 3, :params => {:display => @display}}, {}) %>
+	</p>
+<% end %>

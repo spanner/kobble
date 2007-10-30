@@ -1,16 +1,3 @@
-<% @page_title = @topic.title %>
-<% @monitoring = logged_in? && !Monitorship.count(:all, :conditions => ['user_id = ? and topic_id = ? and active = ?', current_user.id, @topic.id, true]).zero? %>
-
-<% form_tag monitorship_path(@forum, @topic), :style => 'margin-top:0em; float:right;' do -%>
-<div>
-  <input id="monitor_checkbox" type="checkbox" <%= "checked='checked'" if @monitoring %> 
-    onclick="if (this.checked) {<%= remote_function :url => monitorship_path(@forum, @topic) %>} else {<%= remote_function :url => monitorship_path(@forum, @topic), :method => :delete %>}" />
-  <label id="monitor_label" for="monitor_checkbox"><%= @monitoring ? 'Monitoring topic' : 'Monitor topic' %></label>
-  <%= hidden_field_tag '_method', 'delete' if @monitoring %>
-  <%= submit_tag :Set, :id => 'monitor_submit' %>
-</div>
-<% end -%>
-
 <div class="crumbs">
   <%= link_to "Discussion", home_path %> <span class="arrow">&rarr;</span>
   <%= link_to h(@topic.forum.name), forum_path(@topic.forum) %> 
@@ -31,4 +18,17 @@
   <% end %>
 </h1>
 
-<%= render :partial => 'full' %>
+<p class="subtitle">
+	Started by <%= link_to @topic.creator.name, user_path(@topic.creator) %>
+	<span class="when"><%= time_ago_in_words(@topic.created_at) %> ago</span>.
+	<% if @topic.posts_count == 1 %>
+		No responses yet.
+	<% else %>
+		<%= pluralize(@topic.posts_count-1, 'responses') %>.
+	<% end %>
+	</a>
+</p>
+
+<%= @topic.body.formatted %>
+
+<%= render :partial => 'comments' %>
