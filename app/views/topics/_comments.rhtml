@@ -1,10 +1,14 @@
-<% form_tag monitorship_path(@forum, @topic), :style => 'margin-top:0; float:right;', :class => 'autoform', :id => "monitor_#{@topic.id}" do -%>
 <div id ="monitorform">
-  <input id="monitor_checkbox" type="checkbox" <%= "checked='checked'" if @monitoring %>/>
-  <label id="monitor_label" for="monitor_checkbox"><%= @monitoring ? 'subscribed' : 'subscribe' %></label>
-  <%= hidden_field_tag '_method', 'delete' if @monitoring %>
+	<%= link_to "email notification", {
+		:controller => 'monitorships', 
+		:action => @monitoring ? 'destroy' : 'create',
+		:topic_id => @topic, 
+		:forum_id => @forum
+	}, {
+		:class => @monitoring ? 'autolink ticked' : 'autolink crossed',
+		:title => @monitoring ? 'click to switch off email subscription' : 'click to receive email notification of new posts',
+	} %>
 </div>
-<% end -%>
 
 <h2>
 	<% if @topic.posts_count == 1 %>
@@ -17,11 +21,9 @@
 	<% end %>
 </h2>
 
-<%= render :partial => 'posts/single', :collection => @posts.reject{|p| p == @topic.posts.first} %>
+<%= render :partial => 'posts/single', :collection => @posts %>
 
-<div class="comment hidden">
-	<div id="reply" class="newcommentmarker"></div>
-</div>
+<div id="reply" class="newcommentmarker"></div>
 
 <%= link_to 'Add comment', {:controller => 'posts', :action => 'new', :topic_id => @topic, :forum_id => @forum}, {:id => 'edit_reply', :class => "additem editinplace onlyonce", :style => 'margin: 6px 0;'} %>
 

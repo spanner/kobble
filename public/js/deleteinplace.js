@@ -32,11 +32,11 @@
   }, 
   
   waiting: function () {
-    this.signal.setProperty('src', '/images/furniture/signals/wait_16_blue.gif');
+    this.link.addClass('waiting');
   },
   
   notWaiting: function () {
-    this.signal.setProperty('src', '/images/furniture/buttons/delete.png');
+    this.link.removeClass('waiting');
   },
   
   finished: function (argument) {

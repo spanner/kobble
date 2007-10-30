@@ -10,53 +10,33 @@
 	<%= pluralize(current_collection.posts.count, 'post') %>
 </p>
 
-<table border="0" cellspacing="0" cellpadding="0" class="wide forums">
-  <tr>
-    <th class="la" width="70%" colspan="3">Forum</th>
-    <!-- <th width="5%">Topics</th>
-    <th width="5%">Posts</th> -->
-    <th class="la" width="30%" colspan="1">Last Post</th>
-  </tr>
-<% for forum in @forums do %>  
-  <tr>
-    <td class="vat c1">
+<% for forum in @forums %>  
+	<div class="forum">
+		<h2>
       <% if recent_forum_activity(forum) %>
       	<%= image_tag "clearbits/comment.gif", :class => "icon blue", :title => 'Recent activity' %>
       <% else %>
       	<%= image_tag "clearbits/comment.gif", :class => "icon grey", :title => 'No recent activity' %>
       <% end %>
-    </td>
-    <td class="c2 vat">
-      <h2><%= link_to forum.name, forum_path(forum) %></h2>
-      <div class="posts">
+      <%= link_to forum.name, forum_path(forum) %>
+	  </h2>
+		<p class="description">
 				<%= pluralize(forum.topics_count, 'topic') %>, 
-				<%= pluralize(forum.posts_count, 'post') %>, 
-      </div>
-      <div class="desc"><%= forum.description.formatted %></div>
-    </td>
-    <td class="c3">
-      <%= link_to 'Edit', edit_forum_path(forum), :class => "tiny", :rel => "directory", :style => "float:right" if admin? %>
-    </td>
-    <!-- <td class="ca inv"><%= number_with_delimiter(forum.topics_count) %></td>
-    <td class="ca inv"><%= number_with_delimiter(forum.posts_count) %></td> -->
-    <td class="inv lp">
-      <% if forum.posts.last %>
-        
-        <span><%= link_to "#{time_ago_in_words( forum.posts.last.created_at )} ago by <strong>#{forum.posts.last.creator.name}</strong>", topic_path(
-											:forum_id => forum, 
-											:id => forum.posts.last.topic_id, 
-											:page => forum.posts.last.topic.last_page, 
-											:anchor => forum.posts.last.dom_id
-										) 
-				%></span>
-      <% end %>
-    </td>
-  </tr>
+				and 
+				<%= pluralize(forum.posts_count-forum.topics_count, 'post') %><% if forum.posts.last %>, most recently: <%= link_to "#{time_ago_in_words( forum.posts.last.created_at )} ago by <strong>#{forum.posts.last.creator.name}</strong>", topic_path(
+												:forum_id => forum, 
+												:id => forum.posts.last.topic_id, 
+												:page => forum.posts.last.topic.last_page, 
+												:anchor => forum.posts.last.dom_id
+											) 
+					%><% end %><br />
+		
+				<%= forum.description %>
+			</p>
+	</div>
 <% end %>
-</table>
 
 <p>
-  <%= link_to 'Recent posts', all_posts_path %>
   <% if admin? %><%= link_to 'Create a new forum', new_forum_path, :class => 'additem' %><% end %>
 </p>
 

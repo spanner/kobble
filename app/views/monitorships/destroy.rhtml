@@ -1,0 +1,9 @@
+<%= link_to "email notification", {
+	:controller => 'monitorships', 
+	:action => 'create', 
+	:topic_id => params[:topic_id], 
+	:forum_id => params[:forum_id]
+}, {
+	:class => 'autolink crossed',
+	:title => 'click to receive email notification of new posts'
+} %>

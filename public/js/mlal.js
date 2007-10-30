@@ -15,6 +15,9 @@
       del = new Deleter(a, e);
     });
   });
+  $ES('a.autolink').each( function (a) {
+    new AutoLink(a);
+  });
 });
 
 

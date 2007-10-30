@@ -6,7 +6,7 @@
     this.subject.getParent().show();
     this.dimensions = this.subject.getCoordinates();
     this.fonts = this.subject.getStyles('font-family', 'font-size', 'line-height', 'letter-spacing');
-		this.wrapper = new Element('div', {'styles': {'overflow': 'hidden'}, 'class': 'editwrapper'}).injectAfter(this.subject);
+		this.wrapper = new Element('div', {'styles': {'overflow': 'hidden'}, 'class': 'editwrapper'}).injectAfter(this.subject).hide();
     this.formholder = new Element('div', {'style': 'display: none;'}).injectTop(this.wrapper);
     this.previewholder = new Element('div', {'style': 'display: none;'}).injectTop(this.wrapper);
     this.resizer = new Fx.Style(this.wrapper, 'height', {duration:500});
@@ -30,7 +30,6 @@
   },
   
   getForm: function () {
-    this.link.hide();
     ed = this;
     this.wrapper.setStyles({'width': this.dimensions.width, 'height': this.dimensions.height});
 		new Ajax(this.request_url(), {
@@ -46,6 +45,10 @@
     this.form = $E('form', this.formholder);
     this.form.onsubmit = this.getPreview.bind(this);
     $E('a.cancel', this.formholder).onclick = this.cancel.bind(this);
+    this.previewholder.hide();
+    this.subject.hide();
+    this.wrapper.show();
+    this.formholder.show();
     this.notWaiting();
     this.formholder.show();
     this.resizetocontain(this.formholder);
@@ -74,9 +77,13 @@
       $E('a.revise', this.previewholder).onclick = this.revise.bind(this);
       $E('a.cancel', this.previewholder).onclick = this.cancel.bind(this);
   		this.notWaiting();
+      this.subject.hide();
+      this.formholder.hide();
       this.previewholder.show();
       this.resizetocontain(this.previewholder);
     } else {
+      this.formholder.hide();
+      this.subject.hide();
       this.previewholder.show();
       this.resizetocontain(this.previewholder);
       this.subject.replaceWith(this.previewholder.clone());
@@ -107,18 +114,17 @@
   },
     
   waiting: function () {
-    this.formholder.hide();
-    this.previewholder.hide();
-    this.subject.hide();
-    this.wrapper.addClass('waiting');
+    this.link.addClass('waiting');
   },
   
   notWaiting: function () {
-    this.wrapper.removeClass('waiting');
+    this.link.removeClass('waiting');
   },
   
   finished: function () {
     if (this.link && !this.link.hasClass('onlyonce')) this.link.show();
+    this.formholder.hide();
+    this.previewholder.hide();
     this.notWaiting();
     this.subject.show();
     this.closewrapper();
@@ -128,6 +134,8 @@
     if (this.link) this.link.show();
     e = new Event(e).stop();
     e.preventDefault();
+    this.formholder.hide();
+    this.previewholder.hide();
     this.notWaiting();
     this.subject.show();
     this.closewrapper();
@@ -135,95 +143,10 @@
   
   failed: function () {
     if (this.link) this.link.show();
+    this.formholder.hide();
+    this.previewholder.hide();
     this.notWaiting();
     this.subject.show();
     this.closewrapper();
   }
 });
-
-var autoforms = [];
-var AutoForm = new Class ({
-  initialize: function (el, e) {
-    this.form = el;
-    this.form.onsubmit = this.checkandsubmit.bind(this);
-    this.fields = [];
-    this.values = {};
-    this.changed = [];
-    this.waiter = new Element('div', {'class': 'waiter', 'style': 'display: none;'}).injectAfter(this.form);
-    this.waiter.setStyles(this.form.getCoordinates());
-    autoforms.push(this);
-    this.prepare();
-  },
-  
-  prepare: function () {
-    af = this;
-    $ES("input", this.form).each(function (el, i) {
-      af.fields.push(el);
-      af.values[el.id] = af.getValue(el);
-      switch (el.type) {
-        case "checkbox" : 
-          el.addEvent('click', function () { af.checkandsubmit(); })
-          break;
-        case "select" : 
-          el.addEvent('change', function () { af.checkandsubmit(); })
-          break;
-        default : 
-          el.addEvent('blur', function () { af.checkandsubmit(); })
-      }
-    })
-  },
-  
-  diff: function () {
-    af = this;
-    this.fields.each(function (el, i) {
-      if (af.getValue(el) != af.values[el.id]) af.changed.push(el)
-    });
-    return this.changed;
-  },
-  
-  getValue: function (el) {
-    switch (el.type) {
-      case "checkbox" : 
-        return el.checked;
-      case "select" : 
-        return el.selectedIndex;
-      default : 
-        return el.value;
-    }
-  },
-  
-  checkandsubmit: function () {
-    console.log('checkandsubmit');
-    this.diff();
-    if (this.changed.length) this.submit();
-  },
-  
-  submit: function (argument) {
-    var af = this;
-    this.form.send({
-      method: 'post',
-		  onRequest: function () {af.waiting();},
-		  onComplete: function () {af.finished();},
-		  onFailure: function () {af.failed();}
-    });
-  },
-  
-  waiting: function () {
-    this.form.hide();
-    this.waiter.show();
-  },
-  
-  notWaiting: function () {
-    this.waiter.hide();
-    this.form.show();
-  },
-  
-  finished: function () {
-    this.notWaiting();
-  },
-    
-  failed: function () {
-    this.notWaiting();
-    alert('form submission failed');
-  }
-})

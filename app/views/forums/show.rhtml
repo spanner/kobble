@@ -19,16 +19,9 @@
 	<p class="pages">Pages: <strong><%= pagination_links @topic_pages, :window_size => 10 %></strong></p>
 <% end -%>
 
-<table border="0" cellspacing="0" cellpadding="0" class="wide topics">
-<tr>
-  <th class="la" colspan="2">Topic</th>
-  <th width="1%">Posts</th>
-  <th width="1%">Views</th>
-  <th class="la">Last post</th>
-</tr>
 <% for topic in @topics %>
-<tr class="hentry">
-  <td style="padding:5px; width:16px;" class="c1">
+
+	<div class="topic">
     <% 
     icon = "comment"
     color = ""
@@ -38,33 +31,30 @@
       color = "darkgrey"
     end
     %>
-    <% if recent_topic_activity(topic) %>
-    	<%= image_tag "clearbits/#{icon}.gif", :class => "icon green", :title => "Recent activity #{post}" %>
-    <% else %>
-      <%= image_tag "clearbits/#{icon}.gif", :class => "icon grey #{color}", :title => "No recent activity #{post}" %>
-    <% end %>
-  </td>
-  <td class="c2">
-    <%= "Sticky: <strong>" if topic.sticky? %>
-    <%= topic_title_link (topic), :class => "entry-title", :rel => "bookmark" %>
-    <%#= link_to h(topic.title), topic_path(@forum, topic), :class => "entry-title", :rel => "bookmark" %>
-    <%= "</strong>" if topic.sticky? %>
-    <% if topic.paged? -%>
-    <small><%= link_to 'last'[], topic_path(:forum_id => @forum, :id => topic, :page => topic.last_page) %></small>
-    <% end -%>
-		<% unless topic.subject.nil? %><br />
-			<span class="small">concerns <%= link_to topic.subject.name, :controller => topic.subject.class.to_s.downcase.pluralize, :action => 'show' %></span>
-		<% end %>
-
-  </td>
-  <td class="ca inv stat"><%= topic.posts_count-1 %></td>
-  <td class="ca inv stat"><%= number_with_delimiter(topic.views) %></td>
-  <td class="lp">
-    <%= link_to ( "<strong class=\"fn\">#{time_ago_in_words(topic.replied_at)} ago</strong> by #{topic.replied_by_user.name}", topic_path(:forum_id => @forum, :id => topic, :page => topic.last_page, :anchor => "posts-#{topic.last_post_id}"), :class => 'updated', :title => topic.replied_at.xmlschema ) %>
-  </td>
-</tr>
+		<h2>
+  	  <% if recent_topic_activity(topic) %>
+	    	<%= image_tag "clearbits/#{icon}.gif", :class => "icon green", :title => "Recent activity #{post}" %>
+	    <% else %>
+	      <%= image_tag "clearbits/#{icon}.gif", :class => "icon grey #{color}", :title => "No recent activity #{post}" %>
+	    <% end %>
+	    <%= "^<strong>" if topic.sticky? %>
+	    <%= topic_title_link (topic), :class => "entry-title", :rel => "bookmark" %>
+	    <%= "</strong>" if topic.sticky? %>
+	    <%  if topic.paged? %><small><%= link_to 'last', topic_path(:forum_id => @forum, :id => topic, :page => topic.last_page) %></small><% end %>
+	  </h2>
+		<p class="description">
+			<% unless topic.subject.nil? %>
+				concerns <%= link_to topic.subject.name, :controller => topic.subject.class.to_s.downcase.pluralize, :action => 'show' %><br />
+			<% end %>
+			<%= pluralize(topic.posts_count-1, 'posts') %>
+			and 
+			<%= pluralize(topic.views, 'views') %><br />
+	    <% if topic.posts_count > 1%>
+				latest post: <%= link_to ( "<strong class=\"fn\">#{time_ago_in_words(topic.replied_at)} ago</strong> by #{topic.replied_by_user.name}", topic_path(:forum_id => @forum, :id => topic, :page => topic.last_page, :anchor => "posts-#{topic.last_post_id}"), :class => 'updated' ) %>
+			<% end %>
+		</p>
+	</div>
 <% end %>
-</table>
 
 <% if @topic_pages and @topic_pages.current.next %>
 <p style="float:right;"><%= link_to 'Next page', { :page => @topic_pages.current.next }.merge(params.reject{|k,v| k=="page"})  %></p>
@@ -75,5 +65,5 @@
 <% end -%>
 
 <% if logged_in? %>
-<p><%= link_to 'Start a new conversation here', new_topic_path(@forum), :class => "utility" %></p>
+<p><%= link_to 'Start a new conversation here', new_topic_path(@forum), :class => "additem" %></p>
 <% end%>

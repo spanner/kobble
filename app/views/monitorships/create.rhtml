@@ -1,0 +1,9 @@
+<%= link_to "email notification", {
+	:controller => 'monitorships', 
+	:action => 'destroy', 
+	:topic_id => params[:topic_id], 
+	:forum_id => params[:forum_id]
+}, {
+	:class => 'autolink ticked',
+	:title => 'click to switch off email subscription'
+} %>

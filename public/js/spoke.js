@@ -130,11 +130,11 @@ window.addEvent('domready', function(){
     });
   });
 
-  $ES('form.autoform').each( function (form) {
-    new AutoForm(form);
+  // $ES('form.autoform').each( function (form) {
+  //   new AutoForm(form);
+  // });
+
+  $ES('a.autolink').each( function (a) {
+    new AutoLink(a);
   });
-
 });
-
-
-

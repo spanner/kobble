@@ -1,7 +1,7 @@
 <a href="#" class="displaycontrol disappears" id="show_fieldnotes">+ <%= item.new_record? ? 'add' : 'edit' %> field notes</a>
 
 <div id="hide_fieldnotes" class="slideable">
-		<label for="source_synopsis">Circumstances<br />
+		<label for="source_circumstances">Circumstances<br />
 		<%= text_area item.class.to_s.downcase, 'circumstances', 'rows' => 4, 'class' => "standard" %></label><br />
 
 		<label for="source_observations">Observations<br/>

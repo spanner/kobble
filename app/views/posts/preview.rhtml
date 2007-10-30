@@ -1,14 +1,16 @@
-<p class="commentheader<% if @post.creator.editor? %> admin<% end %>">
-  <%= image_tag "clearbits/comment.gif", :class => 'icon', :title => @post.creator.editor? ? 'admin' : 'visitor' %>
-	<%= h(@post.creator.name) %>
-	<span class="when">preview</span>
-</p>
+<div class="comment">
+	<p class="commentheader<% if @post.creator.editor? %> admin<% end %>">
+	  <%= image_tag "clearbits/comment.gif", :class => 'icon', :title => @post.creator.editor? ? 'admin' : 'visitor' %>
+		<%= h(@post.creator.name) %>
+		<span class="when">preview</span>
+	</p>
 
-<%= @post.body.formatted %>
+	<%= @post.body.formatted %>
 
-<% form_for :post, @post, :url => {:action => 'create', :forum_id => @forum.id, :topic_id => @topic.id, :id => @post} do |f| -%>
+	<% form_for :post, @post, :url => {:action => 'create', :forum_id => @forum.id, :topic_id => @topic.id, :id => @post} do |f| -%>
 
-	<%= f.hidden_field :body %>
-  <%= submit_tag 'add comment' %> or <%= link_to "edit again", '#', :class => 'revise' %> or <%= link_to 'cancel', '#', :class => 'cancel' %>
+		<%= f.hidden_field :body %>
+	  <%= submit_tag 'add comment', :onclick => 'this.disabled = true;' %> or <%= link_to "edit again", '#', :class => 'revise' %> or <%= link_to 'cancel', '#', :class => 'cancel' %>
 
-<% end -%>
+	<% end -%>
+</div>
