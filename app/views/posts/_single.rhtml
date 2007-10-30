@@ -1,16 +1,18 @@
 <div class="comment" id="commentholder_<%= single.id %>">
 	<p class="commentheader<% if single.creator.editor? %> admin<% end %>">
 		<%  if editor? %>
-			<%= link_to image_tag('/images/furniture/buttons/edit.png'), edit_post_path(
+			<%= link_to image_tag('/images/furniture/buttons/circle.png'), edit_post_path(
 				:forum_id => @forum, 
 				:topic_id => @topic, 
 				:id => single
 			), {
 				:class => 'editinplace', 
 				:style=>'float: right;', 
-				:id => "edit_comment_#{single.id}"
+				:id => "edit_comment_#{single.id}",
+				:width => '16',
+				:height => '16'
 			} %>
-			<%= link_to image_tag('/images/furniture/buttons/delete.png'), delete_post_path(
+			<%= link_to image_tag('/images/furniture/buttons/cross.png'), delete_post_path(
 				:forum_id => @forum, 
 				:topic_id => @topic, 
 				:id => single
@@ -18,7 +20,9 @@
 				:class => 'deleteinplace', 
 				:style=>'float: right;',
 				:title => "delete this post", 
-				:id => "delete_commentholder_#{single.id}"
+				:id => "delete_commentholder_#{single.id}",
+				:width => '16',
+				:height => '16'
 			} %>
 		<% end %>
     	<%= image_tag "clearbits/comment.gif", :class => 'icon', :title => single.creator.editor? ? 'admin' : 'visitor' %>

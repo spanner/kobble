@@ -361,8 +361,8 @@ input.titular {
 
 a.additem, a.edititem, a.removeitem, a.previewitem {
 	display: block;
-	height: 20px;
-	font-size: 18px;
+	height: 16px;
+	font-size: 15px;
 	line-height: 20px;
   font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
   letter-spacing: -0.05em;
@@ -373,16 +373,16 @@ a.additem, a.edititem, a.removeitem, a.previewitem {
 }
 	
 a.additem { 
-	color: #a0a500;
-	background-image: url('/images/furniture/buttons/add.png');
+	color: #6cb262;
+	background-image: url('/images/furniture/buttons/plus.png');
 }
 a.edititem { 
 	color: #559dc4; 
-	background-image: url('/images/furniture/buttons/edit.png');
+	background-image: url('/images/furniture/buttons/circle.png');
 }
 a.removeitem { 
-	color: #823433; 
-	background-image: url('/images/furniture/buttons/delete.png');
+	color: #ef4447; 
+	background-image: url('/images/furniture/buttons/cross.png');
 }
 a.previewitem { 
 	color: #a0a500; 

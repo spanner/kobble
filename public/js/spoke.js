@@ -129,6 +129,11 @@ window.addEvent('domready', function(){
       del = new Deleter(a, e);
     });
   });
+
+  $ES('form.autoform').each( function (form) {
+    new AutoForm(form);
+  });
+
 });
 
 
