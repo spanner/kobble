@@ -15,6 +15,15 @@ ActionController::Routing::Routes.draw do |map|
   end
   map.resources :posts, :name_prefix => 'all_', :collection => { :search => :get }
 
+  # how i hate restful rails
+  # but it's easier to carry on using the beast routes and just add a few more 
+  # to get round the deep rubbishness of the :method hack
+
+  map.delete_post '/forum/:forum_id/topic/:topic_id/posts/:id;delete', :controller => 'posts', :action => 'destroy'
+  map.delete_topic '/forum/:forum_id/topic/:id;delete', :controller => 'topics', :action => 'destroy'
+  map.update_post '/forum/:forum_id/topic/:topic_id/posts/:id;update', :controller => 'posts', :action => 'update'
+  map.update_topic '/forum/:forum_id/topic/:id;update', :controller => 'posts', :action => 'update'
+
   map.discussion '/discussion', :controller => 'account', :action => 'discussion'
   map.conversation '/conversation', :controller => 'account', :action => 'conversation'
 

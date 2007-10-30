@@ -1,6 +1,8 @@
-<% form_for :post, @post, :url => {:action => 'update', :forum_id => @post.forum_id, :topic_id => @post.topic_id, :id => @post} do |f| -%>
+<% form_for :post, @post, :url => update_post_path(
+	:id => @post
+) do |f| -%>
 	<div class="commentbody">
-  <%= f.text_area :body, :rows => 8 %><br />
+  	<%= f.text_area :body, :rows => 8 %><br />
 	</div>
  	<%= submit_tag "save revised comment" %> <span class="button_or">or  <%= link_to 'cancel', '#', :class => 'cancel' %></span>
 

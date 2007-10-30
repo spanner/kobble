@@ -16,9 +16,27 @@
 		<% for post in @posts do %>
 			<div class="comment" id="commentholder_<%= post.id %>">
 				<p class="commentheader<% if post.creator.editor? %> admin<% end %>">
-					<%= link_to image_tag('/images/furniture/buttons/edit.png'), {:controller => 'posts', :action => 'edit', :id => post, :forum_id => post.forum_id, :topic_id => post.topic_id}, {:class => 'editinplace', :style=>'float: right;', :id => "edit_comment_#{post.id}"} if editor? %>
-					<%= link_to image_tag('/images/furniture/buttons/delete.png'), {:controller => 'posts', :action => 'destroy', :id => post, :forum_id => post.forum_id, :topic_id => post.topic_id}, {:class => 'deleteinplace', :style=>'float: right;', :title => "delete this post", :id => "delete_commentholder_#{post.id}"} if editor? %>
-
+					<%  if editor? %>
+						<%= link_to image_tag('/images/furniture/buttons/edit.png'), edit_post_path(
+							:forum_id => @forum, 
+							:topic_id => @topic, 
+							:id => post
+						), {
+							:class => 'editinplace', 
+							:style=>'float: right;', 
+							:id => "edit_comment_#{post.id}"
+						} %>
+						<%= link_to image_tag('/images/furniture/buttons/delete.png'), delete_post_path(
+							:forum_id => @forum, 
+							:topic_id => @topic, 
+							:id => post
+						), {
+							:class => 'deleteinplace', 
+							:style=>'float: right;',
+							:title => "delete this post", 
+							:id => "delete_commentholder_#{post.id}"
+						} %>
+					<% end %>
 		     	<%= image_tag "clearbits/comment.gif", :class => 'icon', :title => post.creator.editor? ? 'admin' : 'visitor' %>
 					<%= h(post.creator.name) %>
 					<span class="when"><%= time_ago_in_words(post.created_at) %> ago</span>

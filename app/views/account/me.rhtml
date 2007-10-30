@@ -19,7 +19,7 @@
 </div>
 
 <p>
-	last here: <%= @user.last_login.nil? ? 'never' : time_ago_in_words(@user.last_login) %> ago<br />
+	last login: <%= @user.last_login.nil? ? 'never' : time_ago_in_words(@user.last_login) %> ago<br />
 </p>
 
 <h3><%= 'Your ' if itsme %>description</h3>

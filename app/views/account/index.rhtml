@@ -7,6 +7,9 @@
 			<p>Thank you! Your account is now active and you can feel free to explore the (growing) range of options available.
 		<% else %>
 			<h1>Hello <%= current_user.name %></h1>
+			
+			<p class="footnote">(Not you? Please <%= link_to 'log out', :action => 'logout' %>)</p>
+			
 			<p>Welcome back to the knowledge transfer project. 
 		<% end %>
 		
@@ -24,12 +27,12 @@
 			
  		<p>This is what has happened recently:</p>
 
-		<h2>Blog entries</h2>
+		<h2>Blog entries this week</h2>
 		
 		<% if @blogentries and !@blogentries.empty? %>
 			<%= render :partial => 'blogentry', :collection => @blogentries %>
 		<% else %>
-			<p>There hasn't been any blogging this week.</p>
+			<p>There haven't been any!</p>
 		<% end %>
 		
 		<h2>Discussion</h2>
@@ -37,7 +40,7 @@
 		<% if @topics and !@topics.empty? %>
 			<%= render :partial => 'topic', :collection => @topics %>
 		<% else %>
-			<p>There hasn't been any discussion this week.</p>
+			<p>There hasn't been any discussion this week <% if @blogentries.empty? %>either!<% else %>.<% end %></p>
 		<% end %>
 
 	<% else %>
