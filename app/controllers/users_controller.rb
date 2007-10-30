@@ -60,7 +60,7 @@ class UsersController < ApplicationController
     if @user.save
       flash[:notice] = 'User created.'
       respond_to do |format|
-        format.html
+        format.html { render :action => 'show' }
         format.js { render :layout => false, :template => 'users/created_inline' }
       end
     else
