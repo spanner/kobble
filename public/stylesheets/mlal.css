@@ -51,7 +51,7 @@ div#mlalnavigation a, div#mlalnavigation a:link {
   line-height: 18px;
   overflow: hidden;
   color: #695D54;
-  font-family: helvetica, arial, sans;
+  font-family: helvetica, arial, sans-serif;
   margin-top: 2px;
   overflow: hidden;
 }
@@ -119,7 +119,6 @@ a.signup:hover {
 
 
 
-
 /* signup page */
 
 div#signupnote {
@@ -128,7 +127,12 @@ div#signupnote {
 div#mainform {
 }
 
-div#mainform input, div#mainform label  {
+div#mainform input {
+	width: 540px;
+	line-height: 16px;
+}
+
+div#mainform label  {
 	display: block;
 	width: 540px;
 	height: 16px;
