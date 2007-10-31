@@ -131,7 +131,7 @@ class AccountController < ApplicationController
     @user = User.find_by_email(params[:email])
     return @error = "Sorry: The email address <strong>#{params[:email]}</strong> is not known here." unless @user
     unless (@user.activated?)
-      UserNotifier.deliver_activation(@user, current_collection)
+      UserNotifier.deliver_signup_notification(@user, current_collection)
       return @error = "Sorry: You can't change the password for an account that hasn't been activated. We have resent the activation message instead. Clicking the activation link will log you in and allow you to change your password." 
     end
     newpass = @user.provisional_new_password
