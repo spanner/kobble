@@ -58,9 +58,8 @@ div#mlalnavigation a, div#mlalnavigation a:link {
 
 div#mlalnavigation a.fg {
 	background-image: none;
-/*  height: 22px;
-  padding-top:6px;
-  margin-top: 0;*/
+  height: 20px;
+  margin-top: 0;
   color: #000;
 }
 
