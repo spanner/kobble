@@ -1,5 +1,6 @@
 class UserNotifier < ActionMailer::Base
   def signup_notification(user, collection)
+    STDERR.puts("signup_notification")
     setup_email(user, collection)
     @subject    += 'Please activate your new account'
     @body[:url]  = "http://#{collection.url}/account/activate/#{user.activation_code}"
@@ -22,6 +23,7 @@ class UserNotifier < ActionMailer::Base
   
   protected
   def setup_email(user, collection)
+    STDERR.puts("setup_email #{user.email}")
     @recipients  = "#{user.email}"
     @from        = "william.ross@sparknow.net"
     @subject     = "#{collection.name}: "

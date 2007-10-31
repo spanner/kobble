@@ -10,6 +10,8 @@ class AccountController < ApplicationController
     return 'login'
   end
 
+  # low-ranking users get controlled access to content through this controller
+
   def index
     @pagetitle = 'welcome'
     if activated?
@@ -82,6 +84,11 @@ class AccountController < ApplicationController
       :page => {:offset => 1, :size => perpage, :sort => 'posts.created_at', :current => params[:page]})
     @post = Post.new
   end
+
+
+
+
+  # registration, login and account-control
 
   def signup
     @pagetitle = 'signup'

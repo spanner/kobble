@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 61) do
+ActiveRecord::Schema.define(:version => 64) do
 
   create_table "blogentries", :force => true do |t|
     t.column "created_by",    :integer
@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(:version => 61) do
     t.column "node_id",       :string
     t.column "image",         :string
     t.column "clip",          :string
-    t.column "caption",       :string
+    t.column "caption",       :text
   end
 
   create_table "bundles", :force => true do |t|
@@ -57,6 +57,7 @@ ActiveRecord::Schema.define(:version => 61) do
     t.column "faq",                :text
     t.column "blog_forum_id",      :integer
     t.column "editorial_forum_id", :integer
+    t.column "survey_discussion",  :integer
   end
 
   create_table "forums", :force => true do |t|
@@ -218,6 +219,7 @@ ActiveRecord::Schema.define(:version => 61) do
     t.column "image",         :string
     t.column "circumstances", :text
     t.column "occasion_id",   :integer
+    t.column "file",          :string
   end
 
   add_index "sources", ["collection_id"], :name => "index_sources_on_collection"
@@ -291,7 +293,7 @@ ActiveRecord::Schema.define(:version => 61) do
     t.column "deleted",                   :integer,                :default => 0
     t.column "delete_after",              :datetime
     t.column "collection_id",             :integer
-    t.column "status",                    :integer,                :default => 10
+    t.column "status",                    :integer,                :default => 0
     t.column "image",                     :string
     t.column "description",               :text
     t.column "created_by",                :integer
@@ -302,9 +304,10 @@ ActiveRecord::Schema.define(:version => 61) do
     t.column "phone",                     :string
     t.column "posts_count",               :integer,                :default => 0
     t.column "last_seen_at",              :datetime
-    t.column "postcode",                  :string,   :limit => 8
+    t.column "postcode",                  :string
     t.column "new_password",              :string
     t.column "last_login",                :datetime
+    t.column "password",                  :string
   end
 
   add_index "users", ["collection_id"], :name => "index_users_on_collection"
