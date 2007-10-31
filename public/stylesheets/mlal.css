@@ -53,6 +53,7 @@ div#mlalnavigation a, div#mlalnavigation a:link {
   color: #695D54;
   font-family: helvetica, arial, sans;
   margin-top: 2px;
+  overflow: hidden;
 }
 
 div#mlalnavigation a.fg {
