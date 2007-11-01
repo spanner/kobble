@@ -1,0 +1,16 @@
+<h1>Create a new forum</h1>
+<%= form_tag( {:action => 'create'}) %>
+
+<p><label>Title</label><br />
+<%= text_field 'forum', 'name', 'class' => "standard" %></p>
+</p>
+
+<p id="forum_descripion">
+<label>Description</label><br />
+<%= text_area 'forum', 'description', :rows => 7, :class => 'standard' %></p>
+
+<div class="formbuttons clear">
+  <%= submit_tag "create forum and return" %>
+</div>
+
+<%= end_form_tag %>

@@ -21,6 +21,11 @@
 </label><br />
 <%= link_to "create a new forum", {:controller => 'forums', :action => 'new'}, {:class=>'modalform', :target => "collection_editorial_forum_id"} %></p>
 
+<p><label for="collection_speaker_id">Discussion forum for survey questions<br />
+  <%= select('collection', "survey_forum_id", @collection.forums.collect{|f| [f.name, f.id] }, {:include_blank => true}, {:class => 'standard'}) %>
+</label><br />
+<%= link_to "create a new forum", {:controller => 'forums', :action => 'new'}, {:class=>'modalform', :target => "collection_survey_forum_id"} %></p>
+
 <p><label for="collection_invitation">Invitation (or other covering statement)</label><br/>
 <%= text_area 'collection', 'invitation', 'rows' => 12, 'class' => "standard" %></p>
 

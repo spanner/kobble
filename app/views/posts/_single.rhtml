@@ -1,35 +1,25 @@
-<div class="comment" id="commentholder_<%= single.id %>">
-	<p class="commentheader<% if single.creator.editor? %> admin<% end %>">
-		<%  if editor? %>
-			<%= link_to ' ', edit_post_path(
-				:forum_id => @forum, 
-				:topic_id => @topic, 
-				:id => single
-			), {
-				:class => 'edititem minimal editinplace', 
-				:style=>'float: right;', 
-				:id => "edit_comment_#{single.id}",
-				:width => '16',
-				:height => '16'
-			} %>
-			<%= link_to ' ', delete_post_path(
-				:forum_id => @forum, 
-				:topic_id => @topic, 
-				:id => single
-			), {
-				:class => 'removeitem minimal deleteinplace', 
-				:style=>'float: right;',
-				:title => "delete this post", 
-				:id => "delete_commentholder_#{single.id}",
-				:width => '16',
-				:height => '16'
-			} %>
-		<% end %>
-    	<%= image_tag "clearbits/comment.gif", :class => 'icon', :title => single.creator.editor? ? 'admin' : 'visitor' %>
-		<%= h(single.creator.name) %>
-		<span class="when"><%= time_ago_in_words(single.created_at) %> ago</span>
-	</p>
-	<div class="commentbody" id="comment_<%= single.id %>">
-	<%= single.body.formatted %>
+<% unless @omit_first && @omit_first.id == single.id %>
+	<div class="comment" id="commentholder_<%= single.id %>">
+		<p class="commentheader<% if single.creator.editor? %> admin<% end %>">
+			<%  if editor? %>
+				<%= render :partial => 'shared/editbutton', :locals => {
+					:url => edit_post_path( :forum_id => @forum,  :topic_id => @topic, :id => single ),
+					:id => "edit_comment_#{single.id}",
+					:title => "delete this post"
+				} %>
+				<%= render :partial => 'shared/deletebutton', :locals => {
+					:url => delete_post_path( :forum_id => @forum,  :topic_id => @topic, :id => single ),
+					:id => "edit_comment_#{single.id}",
+					:title => "edit this post"
+				} %>
+		
+			<% end %>
+	    	<%= image_tag "clearbits/comment.gif", :class => 'icon', :title => single.creator.editor? ? 'admin' : 'visitor' %>
+			<%= h(single.creator.name) %>
+			<span class="when"><%= time_ago_in_words(single.created_at) %> ago</span>
+		</p>
+		<div class="commentbody" id="comment_<%= single.id %>">
+		<%= single.body.formatted %>
+		</div>
 	</div>
-</div>
+<% end %>

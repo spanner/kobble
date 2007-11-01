@@ -8,7 +8,9 @@
 <p class="small">
 	tag: <%= @collection.abbreviation %><br />
 	status: <%= @collection.status %><br />
-	allows registration: <%= @collection.allow_registration ? 'yes' : 'no' %>
+	allows registration: <%= @collection.allow_registration ? 'yes' : 'no' %><br />
+	commentary forum: <%= link_to @collection.blog_forum.name, forum_path(@collection.blog_forum) %><br />
+	editorial forum: <%= link_to @collection.editorial_forum.name, forum_path(@collection.editorial_forum) %>
 </p>
 
 <%= @collection.description.formatted unless @collection.description.nil? %>
