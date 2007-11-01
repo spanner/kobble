@@ -57,7 +57,7 @@ class AccountController < ApplicationController
   def discussion
     @pagetitle = 'discussion'
     @discussions = Forum.find(:all, 
-      :conditions => limit_to_active_collection_and_visible, 
+      :conditions => ["forums.collection_id = ? and forums.visibility <= ? and forums.id != ?", current_collection, current_user.status, current_collection.blog_forum_id], 
       :page => {
         :size => 25, 
         :sort => 'date DESC', 
@@ -66,7 +66,9 @@ class AccountController < ApplicationController
     )
   end
 
-  def questions
+  def survey
+    @pagetitle = 'questions'
+    
   end
 
   def blogentry
@@ -81,8 +83,9 @@ class AccountController < ApplicationController
     @posts = Post.find(:all, 
       :include => :creator, 
       :conditions => ['posts.topic_id = ?', @topic.id], 
-      :page => {:offset => 1, :size => perpage, :sort => 'posts.created_at', :current => params[:page]})
+      :page => {:size => perpage, :sort => 'posts.created_at', :current => params[:page]})
     @post = Post.new
+    @omit_first = @topic.posts.first
   end
 
 

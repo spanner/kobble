@@ -25,7 +25,12 @@ class ForumsController < ApplicationController
     end
   end
 
-  # new renders new.rhtml
+  def new
+    respond_to do |format|
+      format.html
+      format.js { render :layout => false, :template => 'forums/new_inline' }
+    end
+  end
   
   def create
     @forum.attributes = params[:forum]
@@ -33,6 +38,7 @@ class ForumsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to forums_path }
       format.xml  { head :created, :location => formatted_forum_url(:id => @forum, :format => :xml) }
+      format.js { render :layout => false, :template => 'forums/created_inline' }
     end
   end
 

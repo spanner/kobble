@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 64) do
+ActiveRecord::Schema.define(:version => 65) do
 
   create_table "blogentries", :force => true do |t|
     t.column "created_by",    :integer
@@ -57,7 +57,7 @@ ActiveRecord::Schema.define(:version => 64) do
     t.column "faq",                :text
     t.column "blog_forum_id",      :integer
     t.column "editorial_forum_id", :integer
-    t.column "survey_discussion",  :integer
+    t.column "survey_forum_id",    :integer
   end
 
   create_table "forums", :force => true do |t|
@@ -274,6 +274,17 @@ ActiveRecord::Schema.define(:version => 64) do
   add_index "topics", ["forum_id", "sticky", "replied_at"], :name => "index_topics_on_sticky_and_replied_at"
   add_index "topics", ["forum_id", "replied_at"], :name => "index_topics_on_forum_id_and_replied_at"
 
+  create_table "user_groups", :force => true do |t|
+    t.column "name",          :string
+    t.column "description",   :string
+    t.column "collection_id", :integer
+    t.column "users_count",   :integer,  :default => 0
+    t.column "created_at",    :datetime
+    t.column "created_by",    :integer
+    t.column "updated_at",    :datetime
+    t.column "updated_by",    :integer
+  end
+
   create_table "users", :force => true do |t|
     t.column "login",                     :string,   :limit => 80, :default => "", :null => false
     t.column "crypted_password",          :string,   :limit => 40, :default => "", :null => false
@@ -308,11 +319,13 @@ ActiveRecord::Schema.define(:version => 64) do
     t.column "new_password",              :string
     t.column "last_login",                :datetime
     t.column "password",                  :string
+    t.column "user_group_id",             :integer
   end
 
   add_index "users", ["collection_id"], :name => "index_users_on_collection"
   add_index "users", ["login"], :name => "index_users_on_login"
   add_index "users", ["last_seen_at"], :name => "index_users_on_last_seen_at"
+  add_index "users", ["user_group_id"], :name => "index_users on group id"
 
   create_table "warnings", :force => true do |t|
     t.column "body",           :text

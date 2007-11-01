@@ -7,9 +7,14 @@ class Question < ActiveRecord::Base
   has_many :nodes
   acts_as_list :scope => :survey 
 
-
-  def tag_list
-    tags.map {|t| t.name }.uniq.join(', ')
+  def create_topic
+    if collection.blog_forum then
+      topic = collection.blog_forum.topics.build({ :title => prompt })
+      topic.subject = self
+      topic.save!
+      post = topic.posts.build({ :body => 'Discussion of survey question' })
+      post.save!
+    end
   end
 
 end

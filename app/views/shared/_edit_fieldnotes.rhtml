@@ -1,15 +1,17 @@
 <a href="#" class="displaycontrol disappears" id="show_fieldnotes">+ <%= item.new_record? ? 'add' : 'edit' %> field notes</a>
 
 <div id="hide_fieldnotes" class="slideable">
+	<% if item.respond_to?('circumstances') %>
 		<label for="source_circumstances">Circumstances<br />
 		<%= text_area item.class.to_s.downcase, 'circumstances', 'rows' => 4, 'class' => "standard" %></label><br />
+	<% end %>
+	
+	<label for="source_observations">Observations<br/>
+	<%= text_area item.class.to_s.downcase, 'observations', 'rows' => 6, 'class' => "standard" %></label><br />
 
-		<label for="source_observations">Observations<br/>
-		<%= text_area item.class.to_s.downcase, 'observations', 'rows' => 6, 'class' => "standard" %></label><br />
+	<label for="source_emotions">Emotions<br/>
+	<%= text_area item.class.to_s.downcase, 'emotions', 'rows' => 6, 'class' => "standard" %></label><br />
 
-		<label for="source_emotions">Emotions<br/>
-		<%= text_area item.class.to_s.downcase, 'emotions', 'rows' => 6, 'class' => "standard" %></label><br />
-
-		<label for="source_arising">Leads and follow-up<br/>
-		<%= text_area item.class.to_s.downcase, 'arising', 'rows' => 6, 'class' => "standard" %></label><br />
+	<label for="source_arising">Leads and follow-up<br/>
+	<%= text_area item.class.to_s.downcase, 'arising', 'rows' => 6, 'class' => "standard" %></label><br />
 </div>

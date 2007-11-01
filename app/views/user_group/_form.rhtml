@@ -1,0 +1,22 @@
+<%= error_messages_for 'user_group' %>
+
+<!--[form:user_group]-->
+<p><label for="user_group_name">Name</label><br/>
+<%= text_field 'user_group', 'name'  %></p>
+
+<p><label for="user_group_description">Description</label><br/>
+<%= text_field 'user_group', 'description'  %></p>
+
+<p><label for="user_group_created_at">Created at</label><br/>
+<%= datetime_select 'user_group', 'created_at'  %></p>
+
+<p><label for="user_group_created_by">Created by</label><br/>
+<%= text_field 'user_group', 'created_by'  %></p>
+
+<p><label for="user_group_updated_at">Updated at</label><br/>
+<%= datetime_select 'user_group', 'updated_at'  %></p>
+
+<p><label for="user_group_updated_by">Updated by</label><br/>
+<%= text_field 'user_group', 'updated_by'  %></p>
+<!--[eoform:user_group]-->
+

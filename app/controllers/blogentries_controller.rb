@@ -32,7 +32,7 @@ class BlogentriesController < ApplicationController
     @blogentry = Blogentry.new(params[:blogentry])
     if @blogentry.save
       flash[:notice] = 'Blogentry was successfully created.'
-      redirect_to :action => 'list'
+      redirect_to :controller => 'account', :action => 'blogentry', :id => @blogentry
     else
       render :action => 'new'
     end

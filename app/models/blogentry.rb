@@ -22,21 +22,13 @@ class Blogentry < ActiveRecord::Base
     topics.first.posts.count - 1
   end
 
-  # remember collection, created_by and created_at should be filled by the edit_observer
-
   def create_topic
-    topic = collection.blog_forum.topics.build({
-      :title => name,
-    })
-    topic.subject = self
-    logger.warn(topic.inspect)
-    logger.warn("(blogentry is #{self})")
-    topic.save!
-    post = topic.posts.build({
-      :body => "Please add your comments.",
-    })
-    logger.warn(post.inspect)
-    post.save!
+    if collection.blog_forum then
+      topic = collection.blog_forum.topics.build({ :title => name })
+      topic.subject = self
+      topic.save!
+      post = topic.posts.build({ :body => 'Discussion of blog entry' })
+      post.save!
+    end
   end
-
 end

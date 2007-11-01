@@ -36,7 +36,7 @@ class TopicsController < ApplicationController
         @posts = Post.find(:all, 
           :include => :creator, 
           :conditions => ['posts.topic_id = ?', params[:id]], 
-          :page => {:offset => 1, :size => perpage, :sort => 'posts.created_at', :current => params[:page]})
+          :page => {:size => perpage, :sort => 'posts.created_at', :current => params[:page]})
         @post = Post.new
       end
       format.xml do

@@ -46,6 +46,15 @@
 		<% if @user.errors.on(:password_confirmation) %><div class="formError">this <%= @user.errors.on(:password_confirmation).to_a.last %></div><% end %>
 		</p>
 
+		<p><label for="usertype"<%= ' class="formError"' if @user.errors.on(:password_confirmation) %>>Which of these descriptions suits best?</label>
+		<%= f.radio_button("type", "museum") %> I work in or with museums<br />
+		<%= f.radio_button("type", "library") %> I work in or with libraries<br />
+		<%= f.radio_button("type", "archive") %> I work in pr with archives<br />
+		<%= f.radio_button("type", "business") %> I work in business<br />
+		
+		<% if @user.errors.on(:password_confirmation) %><div class="formError">this <%= @user.errors.on(:password_confirmation).to_a.last %></div><% end %>
+		</p>
+
 		<p><%= submit_tag 'Join the Enquiry' %></p>
 
 	<% end %>
