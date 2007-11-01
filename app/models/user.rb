@@ -56,7 +56,7 @@ class User < ActiveRecord::Base
   end
 
   def can_login?
-    !status.nil? and status > 0 and !login.nil? and login != '' and !email.nil?
+    status >= 0 and !login.nil? and login != '' and !email.nil?
   end
 
   def editor?
