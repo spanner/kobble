@@ -1,4 +1,4 @@
-class UserGroupController < ApplicationController
+class UserGroupsController < ApplicationController
   def index
     list
     render :action => 'list'

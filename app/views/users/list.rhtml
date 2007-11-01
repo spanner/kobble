@@ -1,1 +1,10 @@
 <%= render :partial => 'shared/list', :locals => { :pagetitle => 'People', :list => @users } %>
+
+<% unless current_collection.user_groups.empty? %>
+	<p>You can also see lists of users by group:</p>
+	<ul>
+		<%= render :partial => 'user_groups/minilist', :collection => current_collection.user_groups %>
+	</ul>
+<% end %>
+
+<%= link_to 'Add a new user group', {:controller => 'user_groups', :action => 'new'}, {:class => 'additem'} %>

@@ -300,24 +300,8 @@ div.dragicon {
   z-index: 2000;
 }
 
-/* alternative icon used when  dragging a selection of several nodes */
-
-div.setdragicon {
-	position: absolute; 
-	background-image: url('/images/furniture/signals/stack.png');
-	display: none;
-	width: 75px;
-	height: 75px;
-}
-
-div.setdragicon p {
-  margin-top: 14px;
-  padding: 9;
-  font-size: 32px;
-	color: white;
-	text-shadow: 3px 3px 5px black;
-	font-weight: bold;
-	text-align: center;
+div.inactive, div.inactive a {
+  color: #B2AAA4;
 }
 
 .listfoot {
@@ -347,7 +331,7 @@ div.formbuttons {
 	margin: 40px 0 0 0;
 }
 
-form p, form h3, input.standard, textarea.standard, select.standard {
+form p, form h3, textarea.standard, select.standard {
 	width: 540px;
 }
 

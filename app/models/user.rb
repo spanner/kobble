@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
   belongs_to :creator, :class_name => 'User', :foreign_key => 'created_by'
   belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
   belongs_to :collection      # for editors and higher this is a changeable value that indicates foreground collection. for readers it is fixed at signup
+  belongs_to :user_group      
 
   has_many :sources, :class_name => 'Source', :foreign_key => 'speaker_id'
   has_many :nodes, :class_name => 'Node', :foreign_key => 'speaker_id'

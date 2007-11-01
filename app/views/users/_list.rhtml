@@ -1,11 +1,10 @@
 <% if list %>
  
-  <div class="listrow <%= cycle("odd", "even", :name => "itemlist") %>">
+  <div class="<% unless list.activated? %>inactive <% end %>listrow <%= cycle("odd", "even", :name => "itemlist") %>">
     <%= render :partial => 'shared/icon', :locals => { :this => list, :with_caption => false } %>
-    <h2><% if list.can_login? %><strong><% end %><%= link_to( "#{list.name}", {:action => 'show', :id => list}) %><% if list.can_login? %></strong><% end %></h2>
+    <h2><% if list.editor? %><strong><% end %><%= link_to( "#{list.name}", {:action => 'show', :id => list}) %><% if list.editor? %></strong><% end %></h2>
     <p>
       <% if list.description %><%= truncate( list.description, 240 ) %><br /><% end %>
-      <span class="footnote">
 				speaks or writes in <%= pluralize(list.nodes.count, 'fragment') %> 
 				and <%= pluralize(list.sources.count, 'document or recording', 'documents or recordings') %>.
 				<% if list.can_login? %>
@@ -14,7 +13,9 @@
 					<%= pluralize(list.created_sources.count, 'document or recording', 'documents or recordings') %>
 					and <%= pluralize(list.created_bundles.count, 'set') %> in this collection.
 				<% end %>
-			</span>
+				<% unless list.user_group.nil? %>
+					<br />Belongs to group: <%= link_to list.user_group.name, :controller => 'user_groups', :action => 'show', :id => list.user_group %>
+				<% end %>
     </p>
   </div>
 

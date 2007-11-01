@@ -1,0 +1,7 @@
+<a href="#" class="displaycontrol disappears" id="show_speaker">+ choose user group</a>
+
+<div id="hide_speaker" class="slideable">
+	<label for="<%= item.class.to_s.downcase %>_speaker_id">User group<br />
+	  <%= select(item.class.to_s.downcase, "speaker_id", current_collection.user_groups.collect{|u| [u.name, u.id] }, {:include_blank => true}, {:class => 'standard'}) %>
+	</label>
+</div>

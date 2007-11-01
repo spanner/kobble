@@ -6,6 +6,7 @@ class Collection < ActiveRecord::Base
   belongs_to :editorial_forum, :class_name => 'Forum', :foreign_key => 'editorial_forum_id'
 
   has_many :users, :order => 'lastname, firstname'
+  has_many :user_groups
   has_many :bundles
   has_many :sources
   has_many :nodes
