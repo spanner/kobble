@@ -1,5 +1,4 @@
 class UserObserver < ActiveRecord::Observer
-  observe Users
 
   cattr_accessor :current_user
   cattr_accessor :current_collection
