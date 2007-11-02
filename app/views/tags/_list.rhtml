@@ -1,0 +1,18 @@
+<% if list %>
+ 
+  <div class="listrow">
+    <%= render :partial => 'shared/icon', :locals => { :this => list, :with_caption => false } %>
+    <h2>
+			<% if !list.parent.nil? %>
+				<%= list.parentage.map {|m| m.name }.join(' &rarr; ') %><br />
+			<% end %>
+			<%= link_to( "#{list.name}", {:controller => 'tags', :action => 'show', :id => list}) %>
+		</h2>
+    <p>
+      <% if list.description %><%= truncate( list.description, 240 ) %><br /><% end %>
+      <span class="footnote">
+				Linked to <%= list.marks.count %> items. 
+			</span>
+    </p>
+  </div>
+<% end %>

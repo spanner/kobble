@@ -1,52 +1,60 @@
-<div id="preamble">
-	<p>here we might have some preamble and patter, and on the right a minimum of landmark navigation</p>
+<h1>
+	<% if admin? %>
+		<sup><%= link_to current_collection.abbreviation, :controller => 'collections', :action => 'show', :id => current_collection %></sup>
+	<% end %>
+	
+	 tags
+	
+	<% if @tags.size > @tags.page_size %>
+  	<span class="pagination"><%= paginating_links(@tags, {:window_size => 3}, {}) %></span>
+	<% end %>
+</h1>
+
+<div style="float: right; width: 540px; margin-left: 20px">
+	<ul class="cloud">
+	<% tag_cloud do |tag, cssclass| %>
+	  <li><%= link_to tag.name, {:controller => 'tags', :action => 'show', :id => tag.id}, :class => cssclass %></li>
+	<% end %>
+	</ul>
 </div>
 
-<h1>Keywords</h1>
 
-<div id="summary">
-	<p>Click on a keyword to see all the segments and other objects currently associated with it.</p>
+<% if @tags && @tags.size > 0 %>
+	<p class="pale">
+		<% if @tags.size > @tags.page_size %>
+	  	showing <%= @tags.first_item %> to <%= @tags.last_item %> of <%= @tags.size %> <%= pagetitle %>. 
+		<% end %>
+	</p>
+<% end %>
+
+<div id="listing">
+	<% if @tags && @tags.size > 0 %>
+	<table class="itemlist">
+	  <thead>
+	    <tr>
+	    <td>tag</td>
+	    <td>uses</td>
+	    </tr>
+	  </thead>
+	  <tbody>
+
+		  <% for tag in @tags %>
+	      <tr class="<%= cycle("odd", "even", :name => "itemtable") %>">
+	        <td><%= link_to( "#{tag.name}", :action => 'show', :id => tag) %></td>
+	        <td><%= tag.marks.count %></td>
+	      </tr>
+	  	<% end %>
+
+	    </tbody>
+	  </table>
+	<% else %>
+		<p>There are no tags to display in this collection</p>
+	<% end %>
 </div>
 
+<% if editor? %>
+	<p>
+		<%= link_to  "Add a new tag", {:action => 'new'}, {:class => 'additem'} %>
+	</p>
+<% end %>
 
-<%= link_to 'Previous page', { :page => @keyword_pages.current.previous } if @keyword_pages.current.previous %>
-<%= link_to 'Next page', { :page => @keyword_pages.current.next } if @keyword_pages.current.next %> 
-
-<table class="itemlist">
-  <thead>
-    <tr>
-    <th>Path</th>
-    <th>Segments</th>
-    <th>Sets</th>
-    <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-
-	  <% for keyword in @tags %>
-      <tr class="<%= cycle("odd", "even", :name => "itemtable") %>">
-        <td><%= link_to( "#{keyword.name}", :action => 'show', :id => keyword) %></td>
-        <td><%= keyword.nodes.count %></td>
-        <td><%= keyword.bundles.count %></td>
-        <td><%= link_to 'Show', :action => 'show', :id => keyword %> | <%= link_to 'Edit', :action => 'edit', :id => keyword %> | <%= link_to 'Destroy', { :action => 'destroy', :id => keyword }, :confirm => 'Are you sure?', :post => true %></td>
-      </tr>
-  	<% end %>
-
-    </tbody>
-  </table>
-
-    <div id="fixer">
-    	<%= link_to( "<strong>&gt; new keyword</strong>", 
-    	  {
-    		  :action => 'new',
-    		  :width => '800',
-    		  :height => '580',
-    		}, {
-    		  :class => 'inplace',
-    		}
-    	) %>
-    </div>
-  </div>
-
-<%= link_to 'Previous page', { :page => @keyword_pages.current.previous } if @keyword_pages.current.previous %>
-<%= link_to 'Next page', { :page => @keyword_pages.current.next } if @keyword_pages.current.next %> 

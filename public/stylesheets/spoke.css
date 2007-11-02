@@ -1207,3 +1207,13 @@ a.pale, a.pale:visited {
 }
 
 
+ul.cloud {list-style: none;}
+ul.cloud li {display: inline;}
+a.cloud1 {font-size: 1.0em;}
+a.cloud2 {font-size: 1.2em;}
+a.cloud3 {font-size: 1.4em;}
+a.cloud4 {font-size: 1.6em;}
+a.cloud5 {font-size: 1.8em;}
+a.cloud6 {font-size: 2.0em;}
+
+

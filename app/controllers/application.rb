@@ -43,11 +43,18 @@ class ApplicationController < ActionController::Base
   end
   
   def tags_from_list (taglist)
-    tags = taglist.split(/[,;]\s*/).uniq
-    tags.map! { |name| Tag.find_or_create_by_name( name ) }
-    tags
+    branches = taglist.split(/[,;]\s*/).uniq
+    branches.collect!{ |b| 
+      Tag.find_or_create_branch( b.split(/\:\s*/) )
+    }
+    # tags.map! { |name| Tag.find_or_create_by_name( name ) }
   end
   
+  def tagtree
+    tags = Tags.find(:all, :include => :parent)
+    tags.collect{ |tag| tag.parentage }.sort!
+  end
+
   protected
     def last_active
       session[:last_active] ||= Time.now.utc

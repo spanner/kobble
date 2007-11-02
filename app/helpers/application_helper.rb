@@ -46,5 +46,16 @@ module ApplicationHelper
     options[:q] ? all_search_posts_path(options) : send("#{prefix}all_posts_path", options)
   end
 
+  def tag_cloud(size=100, classes=['cloud1','cloud2','cloud3','cloud4','cloud5', 'cloud6'])
+    tags = Tag.tags_with_popularity
+    max, min = 0, 0
+    tags.each { |t|
+      max = t.marks_count.to_i if t.marks_count.to_i > max
+      min = t.marks_count.to_i if t.marks_count.to_i < min
+    }
+    divisor = ((max - min) / classes.size) + 1
+    tags.each { |t| yield t, classes[(t.marks_count.to_i - min) / divisor] }
+  end
+
   
 end

@@ -6,9 +6,7 @@ class TagsController < ApplicationController
   end
 
   def tree
-    @root = Tag.find(:first,:conditions => [ "parent_id is NULL" ], :order => "id asc" )
-    @shoots = Tag.find(:all,:conditions => [ "parent_id is NULL" ], :order => "name asc" )
-    @shoots -= [@root]
+    @roots = Tag.find(:all,:conditions => [ "parent_id is NULL" ], :order => "name asc" )
   end
   
   def treemap
@@ -74,30 +72,15 @@ class TagsController < ApplicationController
          :redirect_to => { :action => :list }
   
   def list
-
     sort = case params['sort']
      when "name"  then "name"
      when "date" then "date"
      when "name_reverse" then "name DESC"
      when "date_reverse" then "date DESC"
-     else "name"
+     else "name ASC"
     end
-
-    @display = case params['display']
-     when "list" then "list"
-     when "slide" then "slide"
-     else "thumb"
-    end
-
-    if (params[:perpage])
-     items_per_page = params[:perpage].to_i;  
-    else 
-     items_per_page = (@display == 'thumb') ? 100 : 20
-    end  
-
-    @total = Tag.count(:conditions => conditions)
-    @tag_pages, @tags = paginate :tags, :order => sort, :conditions => conditions, :per_page => items_per_page
-
+    perpage = params[:perpage] ? params[:perpage].to_i : 20
+    @tags = Tag.find(:all, :conditions => limit_to_active_collection, :page => {:size => perpage, :sort => sort, :current => params[:page]})
   end
   
   def show
@@ -113,16 +96,16 @@ class TagsController < ApplicationController
 
   def create
     @tag = Tag.new(params[:keyword])
-    parentage = params[:parentage].split('/')
+    parentage = params[:parentage].split(':')
     @tag.name = parentage.pop
     if (parentage.nitems > 1)
       @tag.parent = Tag.find(:first, 
-                                     :select => "kw.*",
-                                     :conditions => ["kw.name = :parent and kwp.name = :grandparent", {:parent => parentage.pop, :grandparent => parentage.pop}],
-                                     :joins => "as kw inner join tags as kwp on kw.parent_id = kwp.id")
+                             :select => "kw.*",
+                             :conditions => ["kw.name = :parent and kwp.name = :grandparent", {:parent => parentage.pop, :grandparent => parentage.pop}],
+                             :joins => "as kw inner join tags as kwp on kw.parent_id = kwp.id")
     elsif (parentage.nitems)
       @tag.parent = Tag.find(:first, 
-                                     :conditions => ["name = :parent and parent_id is NULL", {:parent => parentage.pop}])
+                             :conditions => ["name = :parent and parent_id is NULL", {:parent => parentage.pop}])
     end
     if @tag.save
       flash[:notice] = 'Keyword was successfully created.'

@@ -1,32 +1,20 @@
-<h1><%= @keyword.name %></h1>
-
-<% if @keyword.description %>
-  <%= @keyword.nice('description') %>
-<% else %>
-  <p>We don't have a summary for this keyword yet.</p>
-<% end %>
-
-<h2>segments</h2>
-<% if @keyword.nodes && @keyword.nodes.length > 0 %>
-  <%= render :partial => 'nodes/listheader' %>
-  <%= render :partial => 'nodes/list', :collection => @keyword.nodes.uniq! %>
-  <%= render :partial => 'nodes/listfooter' %>
-<% else %>
-  <p>There are no segments linked to this keyword.
-<% end %>
-
-<h2>sets</h2>
-<% if @keyword.bundles && @keyword.bundles.length > 0 %>
-  <%= render :partial => 'bundles/listheader' %>
-  <%= render :partial => 'bundles/list', :collection => @keyword.bundles.uniq! %>
-  <%= render :partial => 'bundles/listfooter' %>
-<% else %>
-  <p>There are no sets linked to this keyword.
-<% end %>
-
-<div id="fixer">
-
-<%= link_to 'Edit', :action => 'edit', :id => @keyword %> |
-<%= link_to 'Back', :action => 'list' %>
-
+<div class="header">
+	<%= render :partial => 'shared/icon', :locals => { :this => @tag, :with_caption => false } %>
+	<h1 class="pagetitle"><%= @tag.name %></h1>
 </div>
+
+<% if @tag.description %>
+  <%= @tag.nice('description') %>
+<% else %>
+  <p class="pale">We don't have a summary for this tag yet.</p>
+<% end %>
+
+<% if @tag.marks.count > 0 %>
+<p>This tag has been applied to:</p>
+	<ul class="starry">
+		<%= render :partial => 'mark', :collection => @tag.marks.uniq %>
+	</ul>
+<% else %>
+  <p class="pale">This tag hasn't been used yet.</p>
+<% end %>
+
