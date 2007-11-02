@@ -79,7 +79,7 @@ class TagsController < ApplicationController
      when "date_reverse" then "date DESC"
      else "name ASC"
     end
-    perpage = params[:perpage] ? params[:perpage].to_i : 20
+    perpage = params[:perpage] ? params[:perpage].to_i : 500
     @tags = Tag.find(:all, :conditions => limit_to_active_collection, :page => {:size => perpage, :sort => sort, :current => params[:page]})
   end
   
