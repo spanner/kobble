@@ -44,5 +44,18 @@ var AutoLink = new Class ({
     this.catcher.remove();
     this.link.show();
   }
+});
+
+var Toggle = AutoLink.extend ({
+  finished: function () {
+    this.notWaiting();
+    if (this.link.hasClass('ticked')) {
+      this.link.removeClass('ticked');
+      this.link.addClass('crossed');
+    } else {
+      this.link.removeClass('crossed');
+      this.link.addClass('ticked');
+    }
+  }
 })
 

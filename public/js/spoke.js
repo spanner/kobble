@@ -129,7 +129,12 @@ window.addEvent('domready', function(){
       del = new Deleter(a, e);
     });
   });
+  
   $ES('a.autolink').each( function (a) {
     new AutoLink(a);
+  });
+
+  $ES('a.toggle').each( function (a) {
+    new Toggle(a);
   });
 });

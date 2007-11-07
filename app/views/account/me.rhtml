@@ -48,3 +48,11 @@
 	<% if itsme %>We haven't asked you any questions yet!<% else %>None yet.<% end %>
 </p>
 
+<% if itsme || (admin? && @user.can_login?) %>
+	<h3><%= 'Your ' if itsme %>subscriptions<%= " belonging to #{@user.best_name}" unless itsme %></h3>
+	<% if @user.monitorships.empty? %>
+		<p>You haven't subscribed to any conversations. Click on the 'email notification' link on any discussion (or blog) page to receive email updates when new posts appear.</p>
+	<% else %>
+		<%= render :partial => 'monitorships/list', :collection => @user.monitorships %>
+	<% end %>
+<% end %>

@@ -7,6 +7,7 @@
       ed = new Editor(element, e);
     });
   });
+  
   $ES('a.deleteinplace').each( function (a) {
     a.addEvent('click', function (e) {
       e = new Event(e).stop();
@@ -15,8 +16,13 @@
       del = new Deleter(a, e);
     });
   });
+  
   $ES('a.autolink').each( function (a) {
     new AutoLink(a);
+  });
+  
+  $ES('a.toggle').each( function (a) {
+    new Toggle(a);
   });
 });
 
