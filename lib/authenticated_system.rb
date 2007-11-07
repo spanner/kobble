@@ -23,13 +23,9 @@ module AuthenticatedSystem
     
     def current_user
       @current_user ||= (session[:user] && User.find_by_id(session[:user])) || :false
-      logger.warn "!!! current user is #{@current_user.name}"
-      @current_user
     end
     
     def current_user=(new_user)
-      logger.warn "+++ setting current user to #{new_user}"
-
       session[:user] = (new_user.nil? || new_user.is_a?(Symbol)) ? nil : new_user.id
       @current_user = new_user
       # this is used while we're logged in to know which threads are new, etc
