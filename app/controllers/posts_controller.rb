@@ -47,7 +47,7 @@ class PostsController < ApplicationController
 
   def preview
     @post = @topic.posts.build(params[:post])
-    @post.created_by = current_user
+    @post.creator = current_user
     @post.created_at = Time.now()
     respond_to do |format|
       format.js { render :layout => false }

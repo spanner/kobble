@@ -163,6 +163,7 @@ class User < ActiveRecord::Base
   public
   
     def self.everything_monitors
+      []
     end
   
     def self.currently_online

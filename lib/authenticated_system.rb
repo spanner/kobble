@@ -23,6 +23,8 @@ module AuthenticatedSystem
     
     def current_user
       @current_user ||= (session[:user] && User.find_by_id(session[:user])) || :false
+      logger.warn "!!! current user is #{@current_user.name}"
+      @current_user
     end
     
     def current_user=(new_user)
