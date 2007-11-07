@@ -8,25 +8,29 @@
 <p class="small">
 	tag: <%= @collection.abbreviation %><br />
 	status: <%= @collection.status %><br />
-	allows registration: <%= @collection.allow_registration ? 'yes' : 'no' %><br />
-	commentary forum: <%= link_to @collection.blog_forum.name, forum_path(@collection.blog_forum) %><br />
-	editorial forum: <%= link_to @collection.editorial_forum.name, forum_path(@collection.editorial_forum) %>
+	invites registration: <%= @collection.allow_registration ? 'yes' : 'no' %><br />
+	<% if @collection.blog_forum %>commentary forum: <%= link_to @collection.blog_forum.name, forum_path(@collection.blog_forum) %><br /><% end %>
+	<% if @collection.editorial_forum %>editorial forum: <%= link_to @collection.editorial_forum.name, forum_path(@collection.editorial_forum) %><% end %>
 </p>
 
 <%= @collection.description.formatted unless @collection.description.nil? %>
 
-<h2>Invitation</h2>
+<% unless @collection.invitation.nil? %>
+	<h2>Invitation</h2>
+	<%= @collection.invitation.formatted %>
+<% end %>
 
-<%= @collection.invitation.formatted unless @collection.invitation.nil? %>
+<% unless @collection.privacy.nil? %>
+	<h2>Privacy Statement</h2>
+	<%= @collection.privacy.formatted unless @collection.privacy.nil? %>
+<% end %>
 
-<h2>Privacy Statement</h2>
+<% unless @collection.welcome.nil? %>
+	<h2>Welcome text</h2>
+	<%= @collection.welcome.formatted unless @collection.welcome.nil? %>
+<% end %>
 
-<%= @collection.privacy.formatted unless @collection.privacy.nil? %>
-
-<h2>Welcome text</h2>
-
-<%= @collection.welcome.formatted unless @collection.welcome.nil? %>
-
-<h2>Background text</h2>
-
-<%= @collection.background.formatted unless @collection.background.nil? %>
+<% unless @collection.background.nil? %>
+	<h2>Background text</h2>
+	<%= @collection.background.formatted unless @collection.background.nil? %>
+<% end %>

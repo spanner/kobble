@@ -127,7 +127,7 @@ div#signupnote {
 div#mainform {
 }
 
-div#mainform input[type="text"], div#mainform input[type="password"] {
+div#mainform input, div#mainform input {
 	width: 540px;
 	line-height: 16px;
 }

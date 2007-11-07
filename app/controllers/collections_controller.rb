@@ -52,7 +52,7 @@ class CollectionsController < ApplicationController
     @collection = Collection.find(params[:id])
     if @collection.update_attributes(params[:collection])
       flash[:notice] = 'Collection was successfully updated.'
-      redirect_to :action => 'show', :id => @collection
+      redirect_to :action => 'list'
     else
       render :action => 'edit'
     end
