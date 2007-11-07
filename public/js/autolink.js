@@ -2,7 +2,7 @@
 var AutoLink = new Class ({
   initialize: function (a, e) {
     this.link = a;
-    this.catcher = new Element('div', {'style': 'display: none;'}).injectAfter(a);
+    this.catcher = new Element('div', {'style': 'display: none;'}).injectAfter(a).hide();
     this.link.onclick = this.send.bind(this);
     autolinks.push(this);
   },
