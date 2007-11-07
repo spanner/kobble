@@ -5,6 +5,7 @@
 		:id => item
 	}, {
 		:class => 'edititem minimal',
+		:style => 'float: right',
 		:id => "edit_#{item.class.to_s.downcase}_#{item.id}",
 		:title => "edit this #{item.class.to_s.downcase}"
 	} %>
@@ -13,7 +14,8 @@
 		:action => 'destroy', 
 		:id => item
 	}, {
-		:class => 'removeitem minimal deleteinplace', 
+		:class => 'removeitem minimal', 
+		:style => 'float: right',
 		:id => "delete_#{item.class.to_s.downcase}_#{item.id}",
 		:title => "remove this #{item.class.to_s.downcase}"
 	} %>

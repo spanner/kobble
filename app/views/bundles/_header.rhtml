@@ -4,7 +4,9 @@
 		:linked => @bundle
 	} %>
 
-  <h1 class="pagetitle"><%= @bundle.name %></h1>
+  <h1 class="pagetitle">
+		<%= @bundle.name %>
+	</h1>
 
   <p class="small">This set created by <%= link_to @bundle.creator.name, :controller => 'user', :action => 'show', :id => @bundle.creator %>.
     View as: 
@@ -12,7 +14,7 @@
     <%= link_to_unless_current 'list', :controller => 'bundles', :action => 'show', :id => @bundle, :display => 'list' %> | 
     <%= link_to_unless_current 'printable', :controller => 'bundles', :action => 'show', :id => @bundle, :display => 'full' %>
     or 
-    <% if admin? || current_user == @bundle.creator %>
+    <% if editor? || current_user == @bundle.creator %>
       <%= link_to 'edit', :action => 'edit', :id => @bundle %> |
       <%= link_to 'delete', {:action => 'edit', :id => @bundle}, {:confirm => "Really delete the bundle #{@bundle.name}?"} %> |
     <% end %>
