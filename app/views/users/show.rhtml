@@ -73,3 +73,10 @@
 		<% if itsme %>We haven't asked you any questions yet!<% else %>None yet.<% end %>
 	</p>
 
+<% if itsme || (admin? && @user.can_login?) %>
+	<h3><%= 'Your ' if itsme %>subscriptions<%= " belonging to #{@user.best_name}" unless itsme %></h3>
+	<%= render :partial => 'monitorships/list', :collection => @user.monitorships %>
+<% end %>
+
+
+

@@ -6,9 +6,9 @@
     <% end %>
   
     <h2>tags</h2>
-    <ul id="keywordlist">
-      <% for kw in node.tags.uniq %>
-        <li><%= link_to kw.name, {:action => 'show', :controller => 'tags', :id => kw}, { :title => kw.parentage } %></li>
+    <ul id="taglist">
+      <% for tag in node.tags.uniq %>
+        <li><%= link_to tag.name, {:action => 'show', :controller => 'tags', :id => tag}, { :title => tag.parentage } %></li>
       <% end %>
     </ul>
   </div>

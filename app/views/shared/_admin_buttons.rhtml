@@ -1,0 +1,20 @@
+<% if editor? and item %>
+	<%= link_to " ", {
+		:controller => item.class.to_s.downcase.pluralize, 
+		:action => 'edit', 
+		:id => item
+	}, {
+		:class => 'edititem minimal',
+		:id => "edit_#{item.class.to_s.downcase}_#{item.id}",
+		:title => "edit this #{item.class.to_s.downcase}"
+	} %>
+	<%= link_to " ", {
+		:controller => item.class.to_s.downcase.pluralize, 
+		:action => 'destroy', 
+		:id => item
+	}, {
+		:class => 'removeitem minimal deleteinplace', 
+		:id => "delete_#{item.class.to_s.downcase}_#{item.id}",
+		:title => "remove this #{item.class.to_s.downcase}"
+	} %>
+<% end %>

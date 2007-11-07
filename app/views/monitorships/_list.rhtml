@@ -1,0 +1,10 @@
+<%= link_to h(list.topic.title), {
+	:controller => 'monitorships', 
+	:action => list.active ? 'destroy' : 'create',
+	:topic_id => list.topic, 
+	:forum_id => list.topic.forum
+}, {
+	:class => list.active ? 'autolink ticked' : 'autolink crossed',
+	:title => list.active ? 'click to switch off email subscription' : 'click to receive email notification of new posts',
+} %>
+

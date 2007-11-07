@@ -18,13 +18,14 @@
   },
 
   confirm: function () {
+    console.log('confirm');
     return confirm("are you sure you want to " + this.title() + '?');
   },
   
   delete: function () {
     del = this;
 		this.req = new Ajax(this.request_url(), {
-			method: 'get',
+			method: 'post',
 		  onRequest: function () {del.waiting();},
 		  onComplete: function () {del.finished();},
 		  onFailure: function () {del.failed();}

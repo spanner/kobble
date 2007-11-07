@@ -65,6 +65,12 @@ class SourcesController < ApplicationController
 
   def destroy
     Source.find(params[:id]).destroy
-    redirect_to :action => 'list'
+    respond_to do |format|
+      format.html do
+        redirect_to :action => 'list'
+      end
+      format.js { render :nothing => true }
+      format.xml { head 200 }
+    end
   end
 end

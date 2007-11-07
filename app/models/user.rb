@@ -24,6 +24,9 @@ class User < ActiveRecord::Base
   has_many :created_topics, :class_name => 'Topic', :foreign_key => 'created_by', :conditions => ['collection_id = ?', :current_collection]
   has_many :created_posts, :class_name => 'Post', :foreign_key => 'created_by', :conditions => ['collection_id = ?', :current_collection]
 
+  has_many :monitorships
+  has_many :monitored_topics, :through => :monitorships, :conditions => ['monitorships.active = ?', true], :order => 'topics.replied_at desc', :source => :topic
+
   validates_presence_of     :firstname, :lastname
   validates_presence_of     :login,                      :if => :login_required?
   validates_presence_of     :password,                   :if => :password_required?
@@ -158,6 +161,9 @@ class User < ActiveRecord::Base
   end
   
   public
+  
+    def self.everything_monitors
+    end
   
     def self.currently_online
       User.find(:all, :conditions => ["last_seen_at > ?", Time.now.utc-5.minutes])

@@ -70,7 +70,7 @@ class Node < ActiveRecord::Base
   end
     
   def has_notes?
-    true unless observations.nil? && emotions.nil? && arising.nil?
+    true unless (observations.nil? || observations == '') && (emotions.nil? || emotions == '') && (arising.nil? || arising == '')
   end
 
   def has_tags?

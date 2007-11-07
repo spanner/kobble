@@ -21,7 +21,7 @@
 	<% end %>
 </h2>
 
-<%= render :partial => 'posts/single', :collection => @posts %>
+<%= render :partial => 'posts/single', :collection => @posts.reject {|p| p.id == @topic.posts.first.id} %>
 
 <div id="reply" class="newcommentmarker"></div>
 

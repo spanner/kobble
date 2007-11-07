@@ -4,9 +4,6 @@
   warm grey 11: #695D54
   spark orange: #CC6E1F
   warm grey 5: #B2AAA4
-  
-  
-  
 */
 
 
@@ -121,6 +118,7 @@ label {
   font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
   letter-spacing: -0.05em;
   line-height: 20px;
+  color: #695D54;
   clear: both;
 }
 
@@ -331,23 +329,24 @@ div.formbuttons {
 	margin: 40px 0 0 0;
 }
 
-form p, form h3, textarea.standard, select.standard {
+form p, form h3, textarea.standard, select.standard, input.standard {
 	width: 540px;
 }
 
 input.titular {
 	width: 540px;
-  height: 22px;
-  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
-  font-size: 18px;
-  line-height: 22px;
+  height: 28px;
+  font-family: HelveticaNeue-Roman, helvetica, arial, sans-serif;
+  font-size: 22px;
+  font-weight: bold;
+  line-height: 28px;
 }
 
 a.additem, a.edititem, a.removeitem, a.previewitem, a.ticked, a.crossed {
 	display: block;
 	height: 16px;
 	font-size: 16px;
-	line-height: 18px;
+	line-height: 22px;
   font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
   letter-spacing: -0.05em;
 	padding-left: 18px;
@@ -387,9 +386,9 @@ a.waiting {
 a.minimal {
   padding-left: 0;
   width: 16px;
-  margin-right: 2px;
+  margin: 0 4px 0 0;
+  float: left;
 }
-
 
 #canvas {
 	padding: 0;
@@ -398,6 +397,7 @@ a.minimal {
 }
 
 #listing {
+  margin: 0 0 60px 0;
 }
 
 #actions {
@@ -1207,13 +1207,27 @@ a.pale, a.pale:visited {
 }
 
 
-ul.cloud {list-style: none;}
-ul.cloud li {display: inline;}
-a.cloud1 {font-size: 1.0em;}
-a.cloud2 {font-size: 1.2em;}
-a.cloud3 {font-size: 1.4em;}
-a.cloud4 {font-size: 1.6em;}
-a.cloud5 {font-size: 1.8em;}
-a.cloud6 {font-size: 2.0em;}
+ul.cloud {
+  list-style: none; 
+  margin: 0;
+  padding: 0;
+  line-height: 20px;
+}
+ul.cloud li {display: inline; margin: 0; padding: 0;}
+ul.cloud a {
+  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+}
+ul.cloud a:hover {
+  color: #CC6E1F;
+}
+
+a.cloud1 {font-size: 0.9em; color: #cfe4ee; font-family: HelveticaNeue-Roman, helvetica, arial, sans-serif;}
+a.cloud2 {font-size: 1.2em; color: #b1d2e3; font-family: HelveticaNeue-Roman, helvetica, arial, sans-serif;}
+a.cloud3 {font-size: 1.5em; color: #a0c8de;}
+a.cloud4 {font-size: 1.8em; color: #85b8d5;}
+a.cloud5 {font-size: 2.1em; color: #71adce;}
+a.cloud6 {font-size: 2.4em;}
 
 

@@ -26,20 +26,20 @@ class Tag < ActiveRecord::Base
   def self.find_or_create_branch(branch)
     name = branch.pop
     tag = (branch.nitems > 0) ?
-      Keyword.find(:first,
-        :conditions => ["kw.name= ? AND kwp.name = ?", name, branch[-1]], 
-        :select => "kw.*", 
-        :joins => "as kw inner join keywords as kwp on kw.parent_id = kwp.id",
-        :order => "kw.name") :
-      Keyword.find(:first,
+      Tag.find(:first,
+        :conditions => ["tags.name= ? AND tp.name = ?", name, branch[-1]], 
+        :select => "tags.*", 
+        :joins => "as tags inner join tags as tp on tags.parent_id = tp.id",
+        :order => "tags.name") :
+      Tag.find(:first,
         :conditions => ["name= ? AND parent_id IS NULL", name]);
 
     unless (tag)
       if (branch.nitems > 0)
-        parent = Keyword.find_or_create_branch(branch)
-        tag = Keyword.new(:name => name, :parent => parent)
+        parent = Tag.find_or_create_branch(branch)
+        tag = Tag.new(:name => name, :parent => parent)
       else
-        tag = Keyword.new(:name => name)
+        tag = Tag.new(:name => name)
       end
       tag.save
     end

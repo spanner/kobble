@@ -34,9 +34,11 @@ class BundlesController < ApplicationController
   def new
     @bundle = Bundle.new
     @members = []
-    params[:scrap].split('|').each do |s|
-      input = s.split('_')
-      @bundle.members << input[0].camelize.constantize.find(input[1])
+    if params[:scrap]
+      params[:scrap].split('|').each do |s|
+        input = s.split('_')
+        @bundle.members << input[0].camelize.constantize.find(input[1])
+      end
     end
     @members.uniq!
   end
@@ -45,12 +47,13 @@ class BundlesController < ApplicationController
     @bundle = Bundle.new(params[:bundle])
     if @bundle.save
       members = []
-      @bundle.tags << tags_from_list(params[:tag_list])
-      params[:scrap].each do |s|
-        input = s.split('_')
-        @bundle.members << input[0].camelize.constantize.find(input[1])
+      @bundle.tags << tags_from_list(params[:tag_list]) if params[:tag_list]
+      if params[:scrap]      
+        params[:scrap].each do |s|
+          input = s.split('_')
+          @bundle.members << input[0].camelize.constantize.find(input[1])
+        end
       end
-
       flash[:notice] = 'Bundle was successfully created.'
       redirect_to :controller => 'bundles', :action => 'list'
     else
@@ -109,6 +112,12 @@ class BundlesController < ApplicationController
 
   def destroy
     Bundle.find(params[:id]).destroy
-    redirect_to :action => 'list'
+    respond_to do |format|
+      format.html do
+        redirect_to :action => 'list'
+      end
+      format.js { render :nothing => true }
+      format.xml { head 200 }
+    end
   end
 end

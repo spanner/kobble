@@ -1,24 +1,14 @@
-<div id="tab_<%= @bundle.id || 'new' %>_editbundle" class="tab">
+<%= error_messages_for 'bundle' %>
 
-  <h2>Edit Set</h2>
+<!--[form:bundle]-->
 
-  <p>Here you can change the basic title and text of this set. Click on the tabs above to edit or add a description or set  members.</p>
+<p style="clear: both;"><label for="bundle_name">Give the set a name</label><br/>
+<%= text_field 'bundle', 'name', :class => "standard" %></p>
 
-  <%= error_messages_for 'bundle' %>
+<p><label for="bundle_body">Description or explanation</label><br />
+<%= text_area 'bundle', 'body', 'rows' => 12, :class => "standard" %>
+</p>
 
-  <!--[form:bundle]-->
+<%= render :partial => 'shared/edit_tags', :locals => {:item => @bundle} %>
 
-  <%= render :partial => 'paddyfield', :collection => @members %>
-
-  <div style="width: 360px;">
-    <p style="clear: both;"><label for="bundle_name">Give the set a name</label><br/>
-    <%= text_field 'bundle', 'name', 'style' => "width: 360px;", :onfocus => "ts('name')" %></p>
-
-    <p><label for="bundle_body">Set text</label><br />
-    <%= text_area 'bundle', 'body', 'rows' => 20, 'style' => "width: 360px;", :onfocus => "ts('body')" %>
-    </p>
-  
-    <%= submit_tag "Store Set" %>
-
-  </div>
-</div>
+<%= submit_tag "Store Set" %>

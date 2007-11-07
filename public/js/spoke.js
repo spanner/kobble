@@ -129,11 +129,6 @@ window.addEvent('domready', function(){
       del = new Deleter(a, e);
     });
   });
-
-  // $ES('form.autoform').each( function (form) {
-  //   new AutoForm(form);
-  // });
-
   $ES('a.autolink').each( function (a) {
     new AutoLink(a);
   });

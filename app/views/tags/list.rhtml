@@ -10,7 +10,8 @@
 	<% end %>
 </h1>
 
-<div style="float: right; width: 540px; margin-left: 20px">
+<div style="float: right; width: 540px; margin-left: 20px; padding: 3px;">
+	<h2>cloud</h2>
 	<ul class="cloud">
 	<% tag_cloud do |tag, cssclass| %>
 	  <li><%= link_to tag.name, {:controller => 'tags', :action => 'show', :id => tag.id}, :class => cssclass %></li>
@@ -31,8 +32,8 @@
 	<table class="itemlist">
 	  <thead>
 	    <tr>
-	    <td>tag</td>
-	    <td>uses</td>
+	    <td><h2>tag</h2></td>
+	    <td><h2>uses</h2></td>
 	    </tr>
 	  </thead>
 	  <tbody>
@@ -52,7 +53,7 @@
 </div>
 
 <% if editor? %>
-	<p>
+	<p style="clear: both">
 		<%= link_to  "Add a new tag", {:action => 'new'}, {:class => 'additem'} %>
 	</p>
 <% end %>

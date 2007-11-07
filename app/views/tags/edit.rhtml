@@ -1,9 +1,5 @@
-<h1>Editing keyword</h1>
+<h1>Editing tag</h1>
 
-<%= form_tag ({:action => 'update', :id => @keyword}, {:onsubmit => "return checkForm()"}) %>
+<%= form_tag ({:action => 'update', :id => @tag}) %>
   <%= render :partial => 'form' %>
-  <%= submit_tag 'Edit' %>
 <%= end_form_tag %>
-
-<%= link_to 'Show', :action => 'show', :id => @keyword %> |
-<%= link_to 'Back', :action => 'list' %>

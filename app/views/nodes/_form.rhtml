@@ -4,12 +4,12 @@
 	'Fragments' are individual pieces of evidence. 
 	Often they are excerpts from a <%= link_to 'source document', :controller => 'sources', :action => 'list' %>, 
 	or responses to a <%= link_to 'question', :controller => 'questions', :action => 'list' %>, 
-	but they don't have to: if you spot something small and useful, feed it in as a disconnected fragment.
+	but they don't have to be: if you spot something small and useful (that is unlikely to be further divided), you can feed it in as a disconnected fragment.
 </p>
 
 <div>
  <p><label for="node_name">Fragment name</label><br />
- <%= text_field 'node', 'name', :class => "standard" %>
+ <%= text_field 'node', 'name', :class => "titular" %>
 </p>
 
 <%= render :partial => 'shared/edit_tags', :locals => {:item => @node} %>

@@ -20,6 +20,13 @@ class UserNotifier < ActionMailer::Base
     @body[:code]  = user.activation_code
     @body[:password]  = user.new_password
   end
+
+  def post_notification(user, post)
+    setup_email(user, Collection.current_collection)
+    @subject    += "New comment under '#{post.topic.title}'"
+    @body[:post]  = post
+    @body[:url]  = "http://#{collection.url}/forums/#{post.forum_id}/topics/#{post.topic_id}##{post.id}"
+  end
   
   protected
   def setup_email(user, collection)

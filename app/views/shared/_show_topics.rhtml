@@ -7,6 +7,6 @@
 	<% if item.has_topics? %>
 		<%= render :partial => "topics/minilist", :collection => item.topics %>
 	<% end %>
-	<li class="additem"><%= link_to "start a conversation about this #{item.class.to_s.downcase}", {:controller => 'topics', :action => 'new', :subject_type => item.class, :subject_id => item.id} %>
+	<li class="additem"><%= link_to "start a conversation about this #{item.class.to_s.downcase}", {:controller => 'topics', :action => 'new', :forum_id => current_collection.editorial_forum, :subject_type => item.class, :subject_id => item.id} %>
 </ul>
 </div>

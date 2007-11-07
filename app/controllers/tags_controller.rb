@@ -80,7 +80,7 @@ class TagsController < ApplicationController
      else "name ASC"
     end
     perpage = params[:perpage] ? params[:perpage].to_i : 500
-    @tags = Tag.find(:all, :conditions => limit_to_active_collection, :page => {:size => perpage, :sort => sort, :current => params[:page]})
+    @tags = Tag.find(:all, :conditions => limit_to_active_collection, :order => sort, :page => {:size => perpage, :current => params[:page]})
   end
   
   def show
@@ -95,7 +95,7 @@ class TagsController < ApplicationController
   end
 
   def create
-    @tag = Tag.new(params[:keyword])
+    @tag = Tag.new(params[:tag])
     parentage = params[:parentage].split(':')
     @tag.name = parentage.pop
     if (parentage.nitems > 1)
@@ -108,7 +108,7 @@ class TagsController < ApplicationController
                              :conditions => ["name = :parent and parent_id is NULL", {:parent => parentage.pop}])
     end
     if @tag.save
-      flash[:notice] = 'Keyword was successfully created.'
+      flash[:notice] = 'Tag was successfully created.'
       redirect_to :action => 'list'
     else
       render :action => 'new'
