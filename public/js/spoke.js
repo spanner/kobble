@@ -74,9 +74,9 @@ window.addEvent('domready', function(){
     }
 	});
 
-	scratchpad = droppers[0] = new Scratchpad( $E('#scratchpad') );
-	$ES('div.dropzone').each(function (element) {
-		droppers[droppers.length] = new Dropon(element);
+	scratchpad = droppers[0] = new PadDropzone( $E('#scratchpad') );
+	$ES('div.setdrop').each(function (element) {
+		droppers.push(new SetDropzone(element));
 	});
 
   $ES('.draggable').each(function(item) {
@@ -136,5 +136,38 @@ window.addEvent('domready', function(){
 
   $ES('a.toggle').each( function (a) {
     new Toggle(a);
+  });
+  
+  $ES('a.rename_pad').each( function (a) {
+    a.addEvent('click', function (e) {
+      e = new Event(e).stop();
+      e.preventDefault();
+      var padid = a.id.replace('rename_', '');
+      scratchpad.showRename(padid, a.getProperty('href'));
+    });
+  });
+
+  $ES('a.setfrom_pad').each( function (a) {
+    a.addEvent('click', function (e) {
+      this.getParent().addClass('waiting');
+    });
+  });
+
+  $ES('a.clear_pad').each( function (a) {
+    a.addEvent('click', function (e) {
+      e = new Event(e).stop();
+      e.preventDefault();
+      var padid = a.id.replace('clear_', '');
+      scratchpad.clearPage(padid, a.getProperty('href'));
+    });
+  });
+
+  $ES('a.delete_pad').each( function (a) {
+    a.addEvent('click', function (e) {
+      e = new Event(e).stop();
+      e.preventDefault();
+      var padid = a.id.replace('delete_', '');
+      scratchpad.deletePage(padid, a.getProperty('href'));
+    });
   });
 });

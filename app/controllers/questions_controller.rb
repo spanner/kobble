@@ -12,6 +12,24 @@ class QuestionsController < ApplicationController
     @question_pages, @questions = paginate :questions, :per_page => 10
   end
 
+  def list
+    @display = 'list'
+    perpage = params[:perpage] || (@display == 'thumb') ? 100 : 40
+    sort = case params[:sort]
+      when "name"  then "name"
+      when "date" then "date DESC"
+      when "name_reverse" then "name DESC"
+      when "date_reverse" then "date ASC"
+      else "date DESC"
+    end
+
+    @questions = Question.find(:all, :conditions => limit_to_active_collection, :page => {
+      :size => perpage, 
+      :sort => sort, 
+      :current => params[:page]
+    })
+  end
+
   def show
     @question = Question.find(params[:id])
   end

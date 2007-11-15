@@ -4,7 +4,6 @@
     <%= render :partial => 'shared/icon', :locals => { :this => list, :with_caption => false } %>
     <h2>
 			<%= link_to( "#{list.name}", {:controller => 'nodes', :action => 'show', :id => list}) %>
-			<%= render :partial => 'shared/admin_buttons', :locals => {:item => list} %>
 		</h2>
     <p>
       <%= truncate( list.find_some_text, 240 ) %><br />

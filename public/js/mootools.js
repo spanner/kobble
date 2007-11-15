@@ -1,1 +1,1 @@
-mootools-release-1.11.js
+mootools-1.11-compressed.js

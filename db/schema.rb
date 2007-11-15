@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 65) do
+ActiveRecord::Schema.define(:version => 66) do
 
   create_table "blogentries", :force => true do |t|
     t.column "created_by",    :integer
@@ -57,7 +57,7 @@ ActiveRecord::Schema.define(:version => 65) do
     t.column "faq",                :text
     t.column "blog_forum_id",      :integer
     t.column "editorial_forum_id", :integer
-    t.column "survey_forum_id",    :integer
+    t.column "survey_forum_ud",    :integer
   end
 
   create_table "forums", :force => true do |t|
@@ -175,6 +175,8 @@ ActiveRecord::Schema.define(:version => 65) do
     t.column "arising",       :text
     t.column "survey_id",     :integer
     t.column "collection_id", :integer
+    t.column "user_group_id", :integer
+    t.column "position",      :integer
   end
 
   create_table "scraps_scratchpads", :force => true do |t|
@@ -206,7 +208,7 @@ ActiveRecord::Schema.define(:version => 65) do
     t.column "speaker_id",    :integer
     t.column "body",          :text
     t.column "clip",          :string
-    t.column "duration",      :integer,  :limit => 10, :precision => 10, :scale => 0
+    t.column "duration",      :integer,  :limit => 10,  :precision => 10, :scale => 0
     t.column "rating",        :integer
     t.column "collection_id", :integer
     t.column "created_by",    :integer
@@ -219,7 +221,7 @@ ActiveRecord::Schema.define(:version => 65) do
     t.column "image",         :string
     t.column "circumstances", :text
     t.column "occasion_id",   :integer
-    t.column "file",          :string
+    t.column "file",          :string,   :limit => 355
   end
 
   add_index "sources", ["collection_id"], :name => "index_sources_on_collection"
@@ -276,6 +278,7 @@ ActiveRecord::Schema.define(:version => 65) do
 
   create_table "user_groups", :force => true do |t|
     t.column "name",          :string
+    t.column "prompt",        :string
     t.column "description",   :string
     t.column "collection_id", :integer
     t.column "users_count",   :integer,  :default => 0
@@ -304,7 +307,7 @@ ActiveRecord::Schema.define(:version => 65) do
     t.column "deleted",                   :integer,                :default => 0
     t.column "delete_after",              :datetime
     t.column "collection_id",             :integer
-    t.column "status",                    :integer,                :default => 0
+    t.column "status",                    :integer,                :default => 10
     t.column "image",                     :string
     t.column "description",               :text
     t.column "created_by",                :integer
@@ -325,7 +328,6 @@ ActiveRecord::Schema.define(:version => 65) do
   add_index "users", ["collection_id"], :name => "index_users_on_collection"
   add_index "users", ["login"], :name => "index_users_on_login"
   add_index "users", ["last_seen_at"], :name => "index_users_on_last_seen_at"
-  add_index "users", ["user_group_id"], :name => "index_users on group id"
 
   create_table "warnings", :force => true do |t|
     t.column "body",           :text

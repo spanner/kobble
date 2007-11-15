@@ -1,15 +1,15 @@
 <%= render :partial => 'header' %>
 
-<div id="bundle_<%= @bundle.id %>" class="dropzone" style="clear:both;">
-	<div class="dropcontents">
-		<%= render :partial => 'contents' %>
-	</div>
-	<div class="waitforit"><h2><img src="/images/furniture/signals/wait_32.gif" width="32" height="32" alt="Wait for it" style="float: left; margin-right: 8px;"> working</h2></div>
-	<div class="dropzonebottom"><p>Drag items into or out of this space to edit the set.</p></div>
-</div>
-
 <% if !@bundle.body.nil? && @bundle.body != @bundle.synopsis %>
 	<div style="clear: both">
 		<%= @bundle.body.formatted %>
 	</div>
 <% end %>
+
+<div id="bundle_<%= @bundle.id %>" class="setdrop" style="clear:both;">
+	<div class="dropcontents">
+		<%= render :partial => 'contents' %>
+	</div>
+	<h2 class="clear pale">Drag items into or out of this space to edit the set.</h2>
+</div>
+

@@ -8,4 +8,12 @@
 
 <%= render :partial => 'shared/edit_group', :locals => {:item => @question} %>
 
+<%= render :partial => 'shared/edit_tags', :locals => {:item => @question} %>
+
 <%= render :partial => 'shared/edit_fieldnotes', :locals => {:item => @question} %>
+
+<div class="formbuttons">
+<%= submit_tag "Store Question" %> 	or
+  <%= link_to 'cancel', :action => 'list' %>
+</div>
+

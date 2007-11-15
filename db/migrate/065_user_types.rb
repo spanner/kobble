@@ -1,9 +1,9 @@
 class UserTypes < ActiveRecord::Migration
   def self.up
-    create_table "user_groups", do |t|
+    create_table "user_groups" do |t|
       t.column "name",             :string
       t.column "description",      :text
-      t.column "prompt",      :string
+      t.column "prompt",           :string
       t.column "collection_id",    :integer
       t.column "users_count",      :integer, :default => 0
       t.column "created_at",       :datetime

@@ -1,93 +1,84 @@
-var Dropon = new Class({
+var Dropzone = new Class({
 	initialize: function (element) {
+	  console.log('new dropzone: ' + element.id);
 	  this.tag = element.id;
 		this.container = element;
-		this.isreceptive = false;
-		this.isopen = false;
-		this.wasopen = false;
-		this.receiptAction = 'add';				// default works for sets and scratchpads and tags
-		this.removeAction = 'remove';			// default works for sets and scratchpads and tags
+		this.waiter = $E('div.waiting', element);
+		if (this.waiter) this.waiter.hide();
 		this.container.dropzone = this;   // used to work out whether we've dragged into a new place
-		this.waitsignal = null;
+		this.isreceptive = false;
+		this.receiptAction = 'add';
+		this.removeAction = 'remove';
   },
-	waiter: function () { return new Element('div', {'class': 'waiter'}) },
-	recipient: function () { return $E('div.dropcontents', this.container); },
+	recipient: function () { return $E(this.container); },
 	contents: function () { return $ES('.draggable', this.container).map(function(el){ return el.id; }); },
 	contains: function (draggee) { return this.contents().contains(draggee.tag); },
-	makeReceptive: function (draggee) {
-		if (!this.isreceptive) {
-			var dropon = this;
-			this.container.addEvents({
-				'drop': function() { 
-				  sleepDroppers(); 
-				  dropon.receiveDrop(draggee); 
-				},
-				'over': function() { 
-					if (!dropon.isopen) { 
-						dropon.wasopen = false; 
-						dropon.open(); 
-					};
-					draggee.appearance(draggee.origin == dropon ? 'normal' : 'droppable');
-				},
-				'leave': function() {
-				  if (draggee.origin != dropon && !dropon.wasopen) dropon.close(); 
-					draggee.appearance(draggee.origin ? 'deletable' : 'normal');
-				}
-			});
-			this.isreceptive = true;
-			return this.container;
-		}
+	makeReceptiveTo: function (draggee) {
+		var dropzone = this;
+		this.container.addEvents({
+			'drop': function() { sleepDroppers(); dropzone.receiveDrop(draggee); },
+			'over': function() { dropzone.showInterest(draggee); },
+			'leave': function() { dropzone.loseInterest(draggee); }
+		});
+		return this.container;
 	},
-	makeUnreceptive: function () {
-		if (this.isreceptive) {
-    	this.container.removeEvents('over');
-    	this.container.removeEvents('leave');
-    	this.container.removeEvents('drop');
-			this.isreceptive = false;
-		}
+	makeUnreceptive: function () { 
+	  this.container.removeEvents('over');
+	  this.container.removeEvents('leave');
+	  this.container.removeEvents('drop');
+	},
+	showInterest: function (draggee) { 
+	  this.container.addClass('drophere');
+	  draggee.appearance(draggee.origin == this ? 'normal' : 'droppable'); 
+	},
+	loseInterest: function (draggee) { 
+	   this.container.removeClass('drophere');
+     draggee.appearance(draggee.origin ? 'deletable' : 'normal'); 
 	},
 	receiveDrop: function (draggee) {
-		drop = this;
-		if (this == draggee.origin) {
+	  console.log('receiveDrop(' + draggee.tag + ')');
+		dropzone = this;
+		dropzone.loseInterest(draggee);
+	  console.log('letting go(' + draggee.tag + ')');
+		if (dropzone == draggee.origin) {
 			draggee.release();
 			
-		} else if (this.contains(draggee)) {
-			error('we already have that one');
+		} else if (dropzone.contains(draggee)) {
+			error('already there');
 			draggee.release();
 			
 		} else {
+  	  console.log('disappearing clone(' + draggee.tag + ')');
 			draggee.disappear();
+  	  console.log('ajax call(' + draggee.tag + ')');
 			new Ajax(this.addURL(), {
-				method : 'get',
-				data : {
-					'scrap': draggee.tag,
-					'display': display
-				},
-				evalResponse : false,
-				update: this.recipient(),
+				method: 'get',
+				data: { 'scrap': draggee.tag, 'display': display },
+        update: this.recipient(),
 			  onRequest: function () { 
-			    drop.waiting(); 
+			    dropzone.waiting(); 
 			  },
 			  onComplete: function () { 
-					drop.notWaiting();
-				  $ES('.draggable', drop.recipient()).each(function(item) { item.addEvent('mousedown', function(e) { new Draggee(this, new Event(e)); }); });
+			    dropzone.notWaiting(); 
+				  $ES('.draggable', dropzone.recipient()).each(function(item) { item.addEvent('mousedown', function(e) { new Draggee(this, new Event(e)); }); });
 				},
 			  onFailure: function () { 
-			    drop.notWaiting(); 
+			    dropzone.notWaiting(); 
 			    error('ajax call failed'); 
 			  }
 			}).request();
 		}
   },
 	removeDrop: function (draggee) {
-		drop = this;
-		draggee.disappear();
-		new Ajax(this.removeURL(), {
-			method : 'get',
-			data : 'scrap=' + draggee.tag,
-		  onRequest: function () { draggee.pendingdestruction(); },
-		  onSuccess: function () { announce(this.response.text); draggee.fadeAndRemove(); },
-		  onFailure: function () { draggee.reprieved(); }
+	  console.log('removedrop');
+		dropzone = this;
+    draggee.disappear();
+		new Ajax(dropzone.removeURL(), {
+			method : 'post',
+			data : { 'scrap': draggee.tag },
+		  onRequest: function () { dropzone.draggeeWaiting(draggee); },
+		  onSuccess: function () { announce(this.response.text); dropzone.draggeeRemove(draggee); },
+		  onFailure: function () { dropzone.draggeeNotWaiting(); }
 		}).request();
 	},
 	addURL: function (argument) { 
@@ -99,21 +90,39 @@ var Dropon = new Class({
 		return '/' + parts['type'] + 's/' + this.removeAction + '/' + parts['id']; 
 	},
 	waiting: function () { 
-	  this.waitsignal = this.waiter(); 
-	  this.waitsignal.injectInside(this.recipient());
+	  console.log('dropzone.waiting')
+    this.waiter = $E('div.waiting', this.container);
+	  if (this.waiter) this.waiter.show();
 	},
 	notWaiting: function () { 
-	  if (this.waitsignal) $A(this.waitsignal).remove();
+	  console.log('dropzone.notWaiting(' + this.tag + ')')
+	  this.waiter = $E('div.waiting', this.container);
+	  if (this.waiter) this.waiter.hide();
 	},
-	toggle: function (delay) { this.isopen ? this.close(delay) : this.open(delay); },
-	open: function (delay) { this.container.addClass('drophere')},
-	close: function (delay) { this.container.removeClass('drophere')}
+	// by default we use the signalwith image (first image in the draggee) to display a spinner
+	// scratchpages override this to use list styles instead
+	draggeeWaiting: function (draggee) {
+	  draggee.presignal = draggee.signalwith.getProperty('src');
+    draggee.signalwith.setProperty('src', '/images/furniture/signals/wait_32_grey.gif');
+	},
+	draggeeNotWaiting: function (draggee) {
+    draggee.signalwith.setProperty('src', draggee.presignal);
+	},
+	draggeeRemove: function (draggee) {
+    draggee.explode(draggee.container.getParent());
+	}	
 });
 
-var Scratchpad = Dropon.extend({
+var SetDropzone = Dropzone.extend({
+	recipient: function () { return $E('div.dropcontents', this.container); }
+});
+
+var PadDropzone = Dropzone.extend({
 	initialize: function(element){
 		this.parent(element);
 		this.foreground = null;
+		this.isopen = false;
+		this.wasopen = false;
 		this.pages = {};
 		this.addPages($ES('div.scratchpage'), this.container);
 		var fx = this.container.effects({duration: 1000, transition: Fx.Transitions.Cubic.easeOut});
@@ -122,7 +131,6 @@ var Scratchpad = Dropon.extend({
       'contract' : function() { fx.start({'height': 127, 'width': 200}); }
     });
 	},
-	waiter: function () { return new Element('li', {'class': 'waiter'}) },
 	recipient: function () { return this.foreground.list; },
 	addURL: function (argument) { return '/scratchpads/add/' + this.foreground.spokeID; },
 	removeURL: function (argument) { return '/scratchpads/remove/' + this.foreground.spokeID; },
@@ -145,6 +153,23 @@ var Scratchpad = Dropon.extend({
     this.foreground.makeBackground();
   	this.foreground = this.pages[pageid].makeForeground();
 	},
+	showInterest: function (draggee) { 
+	  if (this != draggee.origin) {
+  	  if (!this.isopen) {
+  	    this.wasopen = false;
+  	    this.open();
+  	  } else {
+  	    this.wasopen = true;
+  	  }
+  	  this.foreground.showInterest();
+  	  draggee.origin ? draggee.lookDroppable() : draggee.lookNormal();
+	  }
+	},
+	loseInterest: function (draggee) { 
+	  if (!this.wasopen) this.close();
+	  this.foreground.loseInterest();
+	  draggee.origin == this ? draggee.lookNormal : draggee.lookDroppable();
+	},
 	open: function (delay) {
     this.container.fireEvent('expand', null, delay);
     this.isopen = true;
@@ -152,32 +177,132 @@ var Scratchpad = Dropon.extend({
 	close: function (delay) {
     this.container.fireEvent('contract', null, delay); 
     this.isopen = false;
+	},
+	toggle: function (delay) {
+    this.isopen ? this.close(delay) : this.open(delay);
+	},
+	showRename: function (pageid, url) {
+    this.pages[pageid].showRename(url);
+	},
+	draggeeWaiting: function (draggee) {
+	  draggee.container.addClass('waiting');
+	},	
+	draggeeNotWaiting: function (draggee) {
+	  draggee.container.removeClass('waiting');
+	},
+	draggeeRemove: function (draggee) {
+    draggee.explode(draggee.container);
+	},
+	waiting: function () { 
+	  console.log('padDropzone.waiting')
+	  this.foreground.waiter.show();
+	},
+	notWaiting: function () { 
+	  this.foreground.waiter.hide();
+	},
+	clearPage: function (e, url) {
+	  this.foreground.clearPage(url);
+  },
+	deletePage: function (e, url) {
+	  this.foreground.deletePage(url);
 	}
 });
 
 var Scratchpage = new Class({
 	initialize: function(element){
+		scratchpage = this;
 		this.spokeID = idParts(element)['id'];
 		this.tag = element.id;
 		this.list = $E('ul', element);
+		this.waiter = $E('li.waiting', element).hide();
 		this.tab = $E('a#tab_' + this.tag);
 		this.tab.addEvent('click', function (e) { 
-			e.preventDefault(); 
+			e.preventDefault();
+			scratchpage.hideRename();
 			scratchpad.tabClick(element.id); 
 		});
 		this.body = $(element);
+		this.renameform = null;
+    this.formholder = new Element('div', {'class': 'renameform bigspinner', 'style': 'height: 0'}).injectBefore(scratchpage.body).hide();
+    this.renamefx = new Fx.Style(scratchpage.formholder, 'height', {duration:1000});
 	},
   makeForeground: function(){
     this.body.show();
+    this.hideRename();
     this.tab.addClass('fg');
     return this;
   },
 	makeBackground: function () {
     this.body.hide();
     this.tab.removeClass('fg');
+    this.hideRename();
 	},
 	contents: function () { 
 	  return this.list.getChildren().map(function(el){ return el.id; }); 
+	},
+	showRename: function (url) {
+	  var scratchpage = this;
+    this.tab.addClass('editing');
+    this.formholder.show();
+    if (! this.renameform) {
+  	  this.renamefx.start(64);
+  		new Ajax(url, {
+  			method: 'get',
+  			update: scratchpage.formholder,
+  		  onSuccess: function () { scratchpage.bindRenameForm() },
+  		  onFailure: function () { scratchpage.hideRenameNicely(); error('no way'); }
+  		}).request();
+    }
+	},
+	hideRenameNicely: function (e) {
+    if (e) e = new Event(e).stop();
+    var sp = this;
+	  this.renamefx.start(0).chain(function () { sp.hideRename(e) });
+	},
+	hideRename: function (e) {
+    if (e) e = new Event(e).stop();
+    this.formholder.hide();
+    this.tab.removeClass('editing');
+	},
+	bindRenameForm: function () {
+    this.formholder.removeClass('bigspinner');
+    this.formholder.show();
+    this.renameform = $E('form', this.formholder);
+		this.renameform.onsubmit = this.doRename.bind(this);
+		$E('a.cancel_rename', this.renameform).onclick = this.hideRename.bind(this);
+		$E('input', this.renameform).focus();
+	},
+	doRename: function (e) {
+	  e = new Event(e).stop();
+	  e.preventDefault();
+	  var scratchpage = this;
+    this.renameform.hide();
+    this.formholder.addClass('bigspinner');
+	  this.renameform.send({
+      method: 'post',
+      update: this.tab,
+      onComplete: function () { scratchpage.hideRenameNicely(); }
+	  });
+	},
+	clearPage: function (url) {
+    if (confirm('are you sure you want to remove everything from this scratchpad?')) {
+  	  var scratchpage = this;
+  		new Ajax(url, {
+  			method: 'get',
+  			update: scratchpage.list,
+  		}).request();
+    }
+	},
+	deletePage: function (e) {
+    // body...
+	},
+	showInterest: function () {
+    this.tab.addClass('receptive');
+    this.body.addClass('receptive');
+	},
+	loseInterest: function () {
+    this.tab.removeClass('receptive');
+    this.body.removeClass('receptive');
 	}
 });
 
@@ -214,37 +339,28 @@ var Draggee = new Class({
 		}).start(event);
 	},
 	removeIfDraggedOut: function () {
-		if (this.origin) {
-			this.origin.removeDrop(this);
-		} else {
-			this.release();
-		}
+		this.origin ? this.origin.removeDrop(this) : this.release();
 	},
 	disappear: function () {
 		if (this.clone) this.clone.remove();
 	},
-	fadeAndRemove: function () {
-		var container = this.container;
-	  new Fx.Styles(container, {
+	explode: function (removed) {
+	  console.log('explode')
+	  new Fx.Styles(removed, {
 			duration:600,
-			wait:false
 		}).start({ 
-			'opacity': 0
-		});
-	  new Fx.Styles(container, {
-			duration:600,
-			wait:true,
-			onComplete: function () {container.remove();}
-		}).start({ 
+			'opacity': 0,
 			'width': 0,
-			'height': 0,
-			'opacity': 0
+			'height': 0
+		}).chain(function () {
+      removed.remove();
 		});
 	},
 	remove: function () {
 	  this.original.remove();
 	},
 	release: function () {
+	  this.lookNormal();
 		this.moved() ? this.flyback() : this.doClick();
 	},
 	moved: function () {
@@ -274,26 +390,29 @@ var Draggee = new Class({
 				$E('img', this.clone).setProperty('src', this.imgsrc);
 		}
 	},
-	waiting: function () { 
-	  this.appearance('waiting') 
-	},
-	notWaiting: function () {
-	  this.appearance('normal') 
-	},
-	pendingdestruction: function () {
-	  this.presignal = this.signalwith.getProperty('src');
-    this.signalwith.setProperty('src', '/images/furniture/signals/wait_og.gif');
-	},
-	reprieved: function () {
-    this.signalwith.setProperty('src', this.presignal);
-	}
+	waiting: function () { this.appearance('waiting') },
+	notWaiting: function () { this.appearance('normal') },
+	lookNormal: function () { this.appearance('normal') },
+	lookDroppable: function () { this.appearance('droppable') },
+	lookDeletable: function () { this.appearance('deletable') },
 });
 
+
+
+
+
+
+
+
+
+
 function wakeDroppers (draggee) {
-	return droppers.map(function(d){ return d.makeReceptive(draggee); });
+  console.log('wakeDroppers(' + draggee.tag + ')');
+	return droppers.map(function(d){ return d.makeReceptiveTo(draggee); });
 }
 
 function sleepDroppers () {
+  console.log('sleepDroppers');
 	droppers.each(function (d) { d.makeUnreceptive() })
 }
 

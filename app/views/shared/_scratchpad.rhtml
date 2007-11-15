@@ -2,4 +2,11 @@
 	<ul>
 		<%= render :partial => 'scratchpads/contents', :locals => {:pad => scratchpad} %>
 	</ul>
+	<ul>
+		<li class="waiting">please wait</li>
+		<li class="action"><%= link_to "rename pad", {:controller => 'scratchpads', :action => 'edit', :id => scratchpad}, {:class => 'rename_pad', :id => "rename_scratchpad_#{scratchpad.id}"} %></li>
+		<li class="action"><%= link_to "make set", {:controller => 'scratchpads', :action => 'toset', :id => scratchpad}, {:class => 'setfrom_pad', :id => "setfrom_scratchpad_#{scratchpad.id}"} %></li>
+		<li class="action"><%= link_to "clear pad", {:controller => 'scratchpads', :action => 'clear', :id => scratchpad}, {:class => 'delete_pad', :id => "clear_scratchpad_#{scratchpad.id}"} %></li>
+		<li class="action"><%= link_to "delete pad", {:controller => 'scratchpads', :action => 'destroy', :id => scratchpad}, {:class => 'delete_pad', :id => "delete_scratchpad_#{scratchpad.id}"} %></li>
+	</ul>
 </div>
