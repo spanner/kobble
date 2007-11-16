@@ -1,6 +1,6 @@
 var Dropzone = new Class({
 	initialize: function (element) {
-	  console.log('new dropzone: ' + element.id);
+    // console.log('new dropzone: ' + element.id);
 	  this.tag = element.id;
 		this.container = element;
 		this.waiter = $E('div.waiting', element);
@@ -36,10 +36,10 @@ var Dropzone = new Class({
      draggee.appearance(draggee.origin ? 'deletable' : 'normal'); 
 	},
 	receiveDrop: function (draggee) {
-	  console.log('receiveDrop(' + draggee.tag + ')');
+    // console.log('receiveDrop(' + draggee.tag + ')');
 		dropzone = this;
 		dropzone.loseInterest(draggee);
-	  console.log('letting go(' + draggee.tag + ')');
+    // console.log('letting go(' + draggee.tag + ')');
 		if (dropzone == draggee.origin) {
 			draggee.release();
 			
@@ -48,9 +48,9 @@ var Dropzone = new Class({
 			draggee.release();
 			
 		} else {
-  	  console.log('disappearing clone(' + draggee.tag + ')');
+  	  // console.log('disappearing clone(' + draggee.tag + ')');
 			draggee.disappear();
-  	  console.log('ajax call(' + draggee.tag + ')');
+      // console.log('ajax call(' + draggee.tag + ')');
 			new Ajax(this.addURL(), {
 				method: 'get',
 				data: { 'scrap': draggee.tag, 'display': display },
@@ -70,7 +70,7 @@ var Dropzone = new Class({
 		}
   },
 	removeDrop: function (draggee) {
-	  console.log('removedrop');
+    // console.log('removedrop');
 		dropzone = this;
     draggee.disappear();
 		new Ajax(dropzone.removeURL(), {
@@ -90,12 +90,12 @@ var Dropzone = new Class({
 		return '/' + parts['type'] + 's/' + this.removeAction + '/' + parts['id']; 
 	},
 	waiting: function () { 
-	  console.log('dropzone.waiting')
+    // console.log('dropzone.waiting')
     this.waiter = $E('div.waiting', this.container);
 	  if (this.waiter) this.waiter.show();
 	},
 	notWaiting: function () { 
-	  console.log('dropzone.notWaiting(' + this.tag + ')')
+    // console.log('dropzone.notWaiting(' + this.tag + ')')
 	  this.waiter = $E('div.waiting', this.container);
 	  if (this.waiter) this.waiter.hide();
 	},
@@ -194,7 +194,7 @@ var PadDropzone = Dropzone.extend({
     draggee.explode(draggee.container);
 	},
 	waiting: function () { 
-	  console.log('padDropzone.waiting')
+    // console.log('padDropzone.waiting')
 	  this.foreground.waiter.show();
 	},
 	notWaiting: function () { 
@@ -345,7 +345,7 @@ var Draggee = new Class({
 		if (this.clone) this.clone.remove();
 	},
 	explode: function (removed) {
-	  console.log('explode')
+    // console.log('explode')
 	  new Fx.Styles(removed, {
 			duration:600,
 		}).start({ 
@@ -407,12 +407,12 @@ var Draggee = new Class({
 
 
 function wakeDroppers (draggee) {
-  console.log('wakeDroppers(' + draggee.tag + ')');
+  // console.log('wakeDroppers(' + draggee.tag + ')');
 	return droppers.map(function(d){ return d.makeReceptiveTo(draggee); });
 }
 
 function sleepDroppers () {
-  console.log('sleepDroppers');
+  // console.log('sleepDroppers');
 	droppers.each(function (d) { d.makeUnreceptive() })
 }
 

@@ -78,7 +78,7 @@ class ScratchpadsController < ApplicationController
     @scratchpad = Scratchpad.new
   end
 
-  def create # ahah only
+  def create
     @scratchpad = Scratchpad.new(params[:scratchpad])
     @scratchpad.name ||= 'pad'
     if @scratchpad.save!
@@ -89,12 +89,12 @@ class ScratchpadsController < ApplicationController
     end
   end
 
-  def edit # ajah only
+  def edit
     @scratchpad = Scratchpad.find(params[:id])
     render :action => 'edit', :layout => false
   end
 
-  def update # ajah only
+  def update
     @scratchpad = Scratchpad.find(params[:id])
     if @scratchpad.update_attributes(params[:scratchpad])
       render :action => 'updated', :layout => false
@@ -103,7 +103,7 @@ class ScratchpadsController < ApplicationController
     end
   end
   
-  def toset # ajah only
+  def toset
     @scratchpad = Scratchpad.find(params[:id])
     @bundle = Bundle.new
     @bundle.name = @scratchpad.name
@@ -127,6 +127,5 @@ class ScratchpadsController < ApplicationController
       format.html { render :action => 'list' }
       format.js { render :nothing => true }
     end
-
   end
 end

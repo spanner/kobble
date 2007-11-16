@@ -1,8 +1,10 @@
-<% for column in Question.content_columns %>
-<p>
-  <b><%= column.human_name %>:</b> <%=h @question.send(column.name) %>
-</p>
-<% end %>
+<h1 class="pagetitle">Question</h1>
 
-<%= link_to 'Edit', :action => 'edit', :id => @question %> |
-<%= link_to 'Back', :action => 'list' %>
+<form>
+  <p><label for="node_body"><%= @question.prompt %></label><br />
+    <%= text_area 'node', 'body', :rows => 12, :class => 'standard'  %>
+  </p>
+  
+  <%= @question.guidance.formatted %>
+  
+</form>

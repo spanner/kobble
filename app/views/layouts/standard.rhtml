@@ -63,7 +63,12 @@
     </div>
 
      <%= render :partial => 'shared/scratchpad', :collection => @scratchpads %>
-
+     <div id="scratchpad_new" class="scratchpage">
+      <ul>
+        <li class="action"><%= link_to "make a new pad", {:controller => 'scratchpads', :action => 'new'}, {:class => 'newpad'} %></li>
+        <li class="waiting">please wait</li>
+      </ul>
+     </div>
   </div>
 
 	<script type="text/javascript">
