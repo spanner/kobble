@@ -11,9 +11,38 @@ class UserGroupsController < ApplicationController
   def list
     @user_group_pages, @user_groups = paginate :user_groups, :per_page => 10
   end
+  
+  def limit_to_active_collection_and_group
+    
+  end
+
+  def limit_to_active_collection_and_group(ug)
+    ["users.collection_id = ? and users.user_group_id = ?", current_collection, ug.id]
+  end
 
   def show
     @user_group = UserGroup.find(params[:id])
+    @display = case params['display']
+      when "thumb" then "thumb"
+      when "slide" then "slide"
+      else "list"
+    end
+    perpage = params[:perpage] || (@display == 'thumb') ? 100 : 40
+    sort = case params['sort']
+           when "login" then "login"
+           when "status" then "status DESC"
+           when "email" then "email"
+           when "date" then "created_at DESC"
+           when "firstname" then "firstname, lastname"
+           else "lastname, firstname"
+           end
+    @users = User.find(:all, 
+      :conditions => limit_to_active_collection_and_group(@user_group), 
+      :order => sort, 
+      :page => {
+        :size => perpage, 
+        :current => params[:page]
+      })
   end
 
   def new

@@ -2,55 +2,48 @@
 
 <p>'users' here come in two kinds: there are people that we just refer to, and people who can log in and act within the system (as well as being referred to). They are stored together, so that anyone who features as a speaker can also be invited in to act as an editor.</p>
 
+<% if @user.login %>
+  <p><label for="user_login">Login name</label>: <%= @user.login %><br />
+  change login<br />
+  change password<br />
+  </p>
+<% else %>
+  <p>create login for this user</p>
+<% end %>
+
 <%= render :partial => 'basics' %>
-<%= render :partial => 'shared/edit_image', :locals => {:item => @user} %>
 
-<a href="#" class="displaycontrol" id="show_user_login">+ make login user</a>
+<p>
+<label for="user_status">User status:</label><br />
+<select name="user[status]">
+	<option value="-1">banned</option>
+	<option value="0">no login</option>
+	<option value="10" selected>reader</option>
+	<option value="100">editor</option>
+	<% if admin? %><option value="200">administrator</option><% end %>
+	<% if current_user.is_developer? %><option value="300">developer</option><% end %>
+</select>
+</p>
 
-<div class="slideable" id="hide_user_login">
-	
-	<p><label for="user_login">Login name</label><br/>
-	<%= text_field 'user', 'login', 'class' => "standard" %>  <br />
-	<span class="formnote"></span></p>
+<p><label for="user_login">Role</label><br/>
+<%= text_field 'user', 'role', 'class' => "standard" %>  <br />
+<span class="formnote"></span></p>
 
-	<p><label for="user_password">Password</label><br/>
-	<%= password_field 'user', 'password', 'class' => "standard" %>  <br />
-	<span class="formnote"></span></p>
+<p><label for="user_login">Workplace</label><br/>
+<%= text_field 'user', 'workplace', 'class' => "standard" %>  <br />
+<span class="formnote"></span></p>
 
-	<p><label for="user_password">Confirm password</label><br/>
-	<%= password_field 'user', 'password_confirmation', 'class' => "standard" %>  <br />
-	<span class="formnote"></span></p>
+<p><label for="user_login">Phone</label><br/>
+<%= text_field 'user', 'phone', 'class' => "standard" %>  <br />
+<span class="formnote"></span></p>
 
-  <p>
-	<label for="user_status">User status:</label><br />
-	<select name="user[status]">
-		<option value="-1">banned</option>
-		<option value="0">no login</option>
-		<option value="10" selected>reader</option>
-		<option value="100">editor</option>
-		<% if admin? %><option value="200">administrator</option><% end %>
-		<% if current_user.is_developer? %><option value="300">developer</option><% end %>
-	</select>
-	</p>
-</div>
 
-<a href="#" class="displaycontrol" id="show_user_detail">+ add contact information</a>
-
-<div class="slideable" id="hide_user_detail">
-	
-	<p><label for="user_login">Role</label><br/>
-	<%= text_field 'user', 'role', 'class' => "standard" %>  <br />
-	<span class="formnote"></span></p>
-
-	<p><label for="user_login">Workplace</label><br/>
-	<%= text_field 'user', 'workplace', 'class' => "standard" %>  <br />
-	<span class="formnote"></span></p>
-
-	<p><label for="user_login">Phone</label><br/>
-	<%= text_field 'user', 'phone', 'class' => "standard" %>  <br />
-	<span class="formnote"></span></p>
-
-</div>
+<p><label for="user_group">Which of these descriptions suits this person best?</label><br />
+<% current_collection.user_groups.each do |ug| %>
+	<%= radio_button('user', "user_group_id", ug.id) %> <%= ug.prompt %><br />
+<% end %>
+<%= radio_button('user', "user_group_id", '') %> None of these<br />
+</p>
 
 <div class="formbuttons">
   <%= submit_tag "Store User" %> or

@@ -6,7 +6,9 @@
     this.subject = $E('#' + a.id.replace('delete_',''));
     this.fader = new Fx.Styles(this.subject, {'duration': 400});
     this.req = null;
+    this.waiting();
     if (this.confirm()) this.delete();
+    else this.notWaiting();
   },
 
   request_url: function () {
@@ -18,7 +20,7 @@
   },
 
   confirm: function () {
-    console.log('confirm');
+    // console.log('confirm');
     return confirm("are you sure you want to " + this.title() + '?');
   },
   
@@ -33,15 +35,23 @@
   }, 
   
   waiting: function () {
-    this.link.addClass('waiting');
+    if (this.link.hasClass('removeitem')) {
+      this.link.addClass('waiting');
+    } else {
+      $E('img', this.link).setProperty('src', '/images/furniture/signals/wait_16_grey.gif');
+    }
   },
   
   notWaiting: function () {
-    this.link.removeClass('waiting');
+    if (this.link.hasClass('removeitem')) {
+      this.link.removeClass('waiting');
+    } else {
+      $E('img', this.link).setProperty('src', '/images/furniture/buttons/cross.png');
+    }
   },
   
   finished: function (argument) {
-    console.log('finished!');
+    // console.log('finished!');
     this.fader.start({
       'opacity': 0,
       'height': 0

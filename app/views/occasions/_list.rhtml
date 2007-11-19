@@ -1,15 +1,12 @@
 <% if list %>
-  <% defaulticon = list.clip.nil? ? 'generic' : 'audio' %>
-
-  <div class="listrow <%= cycle("odd", "even", :name => "itemlist") %>">
-
-    <%= render :partial => 'shared/icon', :locals => { :this => list, :linked => list } %>
-
-    <h2><%= link_to( "#{list.name}", {:controller => 'sources', :action => 'show', :id => list}, {:class => 'inplace'}) %></h2>
-    <p>
-      <%= truncate( list.synopsis, 240 ) %><br />
-      <span class="footnote">source of <%= list.nodes.count %> fragments.</span>
-    </p>
+ 
+  <div class="listrow">
+    <%= render :partial => 'shared/icon', :locals => { :this => list, :with_caption => false } %>
+    <h2>
+      <%= link_to( "#{list.name}", {:controller => 'occasions', :action => 'show', :id => list}) %>
+      <%= render :partial => 'shared/admin_buttons', :locals => {:item => list, :inplace => true} %>
+    </h2>
+		<p>generated <%= list.sources.count %> source documents.</p>
   </div>
-
+  
 <% end %>

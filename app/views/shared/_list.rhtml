@@ -16,10 +16,8 @@
 </h1>
 
 <% if list && list.size > 0 %>
-	<p class="pale">
-		<% if list.size > list.page_size %>
-	  	showing <%= list.first_item %> to <%= list.last_item %> of <%= list.size %> <%= pagetitle %>. 
-		<% end %>
+	<p class="footnote">
+  	showing <%= list.first_item %> to <%= list.last_item %> of <%= pluralize(list.size, listedtype) %>.<br />
 	  <%= link_to_unless_current 'thumbnails', :page => list.page, :display => 'thumb' %><span class="pale"> | </span>
 	  <%= link_to_unless_current 'previews', :page => list.page, :display => 'slide' %><span class="pale"> | </span>
 	  <%= link_to_unless_current 'list', :page => list.page, :display => 'list' %>

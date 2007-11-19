@@ -1,8 +1,11 @@
 <% if list %>
  
-  <div class="<% unless list.activated? %>inactive <% end %>listrow <%= cycle("odd", "even", :name => "itemlist") %>">
+  <div id="user_<%= list.id %>" class="<% unless list.activated? %>inactive <% end %>listrow <%= cycle("odd", "even", :name => "itemlist") %>">
     <%= render :partial => 'shared/icon', :locals => { :this => list, :with_caption => false } %>
-    <h2><% if list.editor? %><strong><% end %><%= link_to( "#{list.name}", {:action => 'show', :id => list}) %><% if list.editor? %></strong><% end %></h2>
+    <h2>
+      <% if list.editor? %><strong><% end %><%= link_to( "#{list.name}", {:action => 'show', :id => list}) %><% if list.editor? %></strong><% end %>
+      <%= render :partial => 'shared/admin_buttons', :locals => {:item => list, :inplace => true} %>
+    </h2>
     <p>
       <% if list.description %><%= truncate( list.description, 240 ) %><br /><% end %>
 				speaks or writes in <%= pluralize(list.nodes.count, 'fragment') %> 

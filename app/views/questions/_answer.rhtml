@@ -1,0 +1,9 @@
+<div class="listrow <%= cycle("odd", "even", :name => "itemlist") %>" id="node_<%= answer.id %>">
+  <h3>
+    <%= render :partial => 'shared/icon', :locals => { :this => answer, :with_caption => false } %>
+    from <%= link_to answer.creator.name, :controller => 'users', :action => 'show', :id => answer.creator %>
+    <%= render :partial => 'shared/admin_buttons', :locals => {:item => answer, :inplace => true} %>
+  </h3>
+
+  <%= answer.body.formatted %>
+</div>

@@ -1,8 +1,11 @@
-<% for column in UserGroup.content_columns %>
-<p>
-  <b><%= column.human_name %>:</b> <%=h @user_group.send(column.name) %>
-</p>
-<% end %>
+<h1>
+  <%= @user_group.name %>
+  <%= render :partial => 'shared/admin_buttons', :locals => {:item => @user_group} %>
+</h1>
 
-<%= link_to 'Edit', :action => 'edit', :id => @user_group %> |
-<%= link_to 'Back', :action => 'list' %>
+<% unless @user_group.description.nil? %><%= @user_group.description.formatted %><% end %>
+
+<h2><%= pluralize(@users.size, 'member') %></h2>
+
+<%= render :partial => 'users/list', :collection => @users %>
+

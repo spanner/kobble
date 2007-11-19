@@ -1,10 +1,34 @@
-<h1 class="pagetitle">Question</h1>
+<h1 class="pagetitle">
+  <%= @question.name %>
+  <%= render :partial => 'shared/admin_buttons', :locals => {:item => @question, :inplace => true} %>
+</h1>
 
-<form>
-  <p><label for="node_body"><%= @question.prompt %></label><br />
-    <%= text_area 'node', 'body', :rows => 12, :class => 'standard'  %>
-  </p>
+<div id="margin" class="floatcolumn" style="width: 175px;">
+
+  <h2>
+  	<a href="#" class="displaycontrol" id="show_details">+ details</a>
+  </h2>
+
+  <div class="marginal" id="hide_details">
+    <p><strong>Question type:</strong> <%= @question.summary %></p>
+    <p><strong>Prompt text:</strong> <%= @question.prompt %></p>
+    <p><strong>Guidance:</strong> <%= @question.guidance %></p>
+  </div>
   
-  <%= @question.guidance.formatted %>
+	<%= render :partial => 'shared/show_image', :locals => {:item => @question} %>
+	<%= render :partial => 'shared/show_tags', :locals => {:item => @question} %>
+	<%= render :partial => 'shared/show_topics', :locals => {:item => @question} %>
+	
+</div>
+
+<%= @question.introduction.formatted %>
+
+<h2>Answers</h2>
+
+<p>Multiple-choice, scale and binary questions will soon display a chart here, but for now, just the list:</p>
   
-</form>
+<% if @question.nodes.count > 0 %>
+  <%= render :partial => 'answer', :collection => @question.nodes %>
+<% else %>
+  <p>Nobody has answered this question yet.</p>
+<% end %>

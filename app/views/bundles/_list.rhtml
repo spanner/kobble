@@ -8,6 +8,7 @@
 
     <h2>
 			<%= link_to( "#{list.name}", {:action => 'show', :id => list}) %>
+      <%= render :partial => 'shared/admin_buttons', :locals => {:item => list, :inplace => true} %>
 		</h2>
 
     <p>

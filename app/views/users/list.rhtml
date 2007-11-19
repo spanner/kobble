@@ -1,10 +1,23 @@
+<div id="margin" class="floatcolumn" style="width: 175px;">
+  <% unless current_collection.user_groups.empty? %>
+  	<h3>people by group:</h3>
+  	<ul>
+  		<%= render :partial => 'user_groups/minilist', :collection => current_collection.user_groups %>
+  		<li class="additem"><%= link_to 'Add a new user group', {:controller => 'user_groups', :action => 'new'} %></li>
+  	</ul>
+  <% end %>
+  
+  <h3>people by status:</h3>
+	<ul>
+		<li><%= link_to 'admins and editors', {:controller => 'users', :action =>'list'} %></li>
+		<li><%= link_to 'activated public users', {:controller => 'users', :action =>'list'} %></li>
+		<li><%= link_to 'registered but not activated', {:controller => 'users', :action =>'list'} %></li>
+	</ul>
+	
+  <p>
+  <%=  %>
+  </p>
+</div>
+
 <%= render :partial => 'shared/list', :locals => { :pagetitle => 'People', :list => @users } %>
 
-<% unless current_collection.user_groups.empty? %>
-	<p>You can also see lists of users by group:</p>
-	<ul>
-		<%= render :partial => 'user_groups/minilist', :collection => current_collection.user_groups %>
-	</ul>
-<% end %>
-
-<%= link_to 'Add a new user group', {:controller => 'user_groups', :action => 'new'}, {:class => 'additem'} %>

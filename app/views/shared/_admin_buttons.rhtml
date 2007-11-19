@@ -1,22 +1,22 @@
+<% inplace ||= false %>
+<sup>
 <% if editor? and item %>
-	<%= link_to " ", {
-		:controller => item.class.to_s.downcase.pluralize, 
+	<%= link_to image_tag("/images/furniture/buttons/circle.png"), {
+		:controller => item.class.to_s.pluralize.underscore, 
 		:action => 'edit', 
 		:id => item
 	}, {
-		:class => 'edititem minimal',
-		:style => 'float: right',
+		:class => '',
 		:id => "edit_#{item.class.to_s.downcase}_#{item.id}",
 		:title => "edit this #{item.class.to_s.downcase}"
-	} %>
-	<%= link_to " ", {
-		:controller => item.class.to_s.downcase.pluralize, 
+	} %><%= link_to image_tag("/images/furniture/buttons/cross.png"), {
+		:controller => item.class.to_s.pluralize.underscore, 
 		:action => 'destroy', 
 		:id => item
 	}, {
-		:class => 'removeitem minimal', 
-		:style => 'float: right',
+		:class => inplace ? 'deleteinplace' : '', 
 		:id => "delete_#{item.class.to_s.downcase}_#{item.id}",
-		:title => "remove this #{item.class.to_s.downcase}"
+		:title => "remove this #{item.class.to_s.downcase}",
 	} %>
 <% end %>
+</sup>

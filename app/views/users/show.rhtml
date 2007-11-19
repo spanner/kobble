@@ -13,20 +13,7 @@
 	<% end %>
 
 	<% if editor? %>
-		<p>
-		<% if @user.can_login? %>
-			login: <%= @user.login %><br />
-			activated? <%= @user.activated? ? 'yes' : 'no' %><br />
-			last logged in: <%= @user.logged_in_at || 'never' %><br />
-		<% else %>
-			<em>non-login user</em><br />
-		<% end %>
-		email address: <%= @user.email %><br />
-		workplace: <%= @user.workplace %><br />
-		role: <%= @user.role %><br />
-		phone: <%= @user.role %>
-		</p>
-
+		<%= render :partial => 'activity', :locals => {:item => @user} %>
 		<%= render :partial => 'shared/show_tags', :locals => {:item => @user} %>
 		<%= render :partial => 'shared/show_admin', :locals => {:item => @user} %>
 	<% end %>
@@ -40,24 +27,28 @@
 
 <p>
 <% if @user.can_login? %>
-	last here: <%= @user.logged_in_at.nil? ? 'never' : time_ago_in_words(@user.logged_in_at) %> ago<br />
+	last here: <%= @user.logged_in_at.nil? ? 'never' : time_ago_in_words(@user.logged_in_at) %><br />
 <% else %>
 	<em>non-login user</em><br />
 <% end %>
+email address: <%= link_to @user.email, "mailto:#{@user.email}" %></a><br />
+workplace: <%= @user.workplace %><br />
+role: <%= @user.role  %><br />
+phone: <%= @user.phone %>
+
 </p>
 
 <h3><%= 'Your ' if itsme %>description</h3>
 
-<% if @user.description.nil? %>
+<% if @user.description.nil? || @user.description.size == 0 %>
 	<p>
 		<% if itsme %>You haven't <%= link_to "provided a biog", :action => 'edit' %> yet.<% else %>Not given yet.<% end %>
 	</p>
 <% else %>
-	<h2>description</h2>
 	<%= @user.description.formatted %>
 <% end %>
 
-<h3><%= 'Your ' if itsme %>messages<%= " from #{@user.best_name}" unless itsme %></h3>
+<h3><%= 'Your ' if itsme %>messages</h3>
 
 <% if @user.created_posts.empty? %>
 	<p>
@@ -67,14 +58,14 @@
   <%= render :partial => 'posts/single', :collection => @user.created_posts %>
 <% end %>
 
-<h3><%= 'Your ' if itsme %>answers<%= " from #{@user.best_name}" unless itsme %></h3>
+<h3><%= 'Your ' if itsme %>answers</h3>
 
 	<p>
 		<% if itsme %>We haven't asked you any questions yet!<% else %>None yet.<% end %>
 	</p>
 
 <% if itsme || (admin? && @user.can_login?) %>
-	<h3><%= 'Your ' if itsme %>subscriptions<%= " belonging to #{@user.best_name}" unless itsme %></h3>
+	<h3><%= 'Your ' if itsme %>subscriptions</h3>
 	<%= render :partial => 'monitorships/list', :collection => @user.monitorships %>
 <% end %>
 

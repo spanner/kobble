@@ -7,6 +7,7 @@
 
     <h2>
 			<%= link_to( "#{list.name}", {:controller => 'sources', :action => 'show', :id => list}) %>
+      <%= render :partial => 'shared/admin_buttons', :locals => {:item => list, :inplace => true} %>
 		</h2>
     <p>
       <%= truncate( list.synopsis, 240 ) %><br />

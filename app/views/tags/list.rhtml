@@ -19,14 +19,6 @@
 	</ul>
 </div>
 
-<% if @tags && @tags.size > 0 %>
-	<p class="pale">
-		<% if @tags.size > @tags.page_size %>
-	  	showing <%= @tags.first_item %> to <%= @tags.last_item %> of <%= @tags.size %> tags.
-		<% end %>
-	</p>
-<% end %>
-
 <div id="listing">
 	<% if @tags && @tags.size > 0 %>
 	<table class="itemlist">

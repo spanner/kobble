@@ -67,6 +67,27 @@ class QuestionsController < ApplicationController
 
   def destroy
     Question.find(params[:id]).destroy
-    redirect_to :action => 'list'
+    respond_to do |format|
+      format.html { redirect_to :action => 'list' }
+      format.js { render :nothing => true }
+      format.xml { head 200 }
+    end
+  end
+  
+  def ask
+    @question = Question.find(params[:id])
+    @node = Node.new
+    @node.question = @question
+  end
+
+  def answer
+    @question = Question.find(params[:id])
+    @node = Node.new(params[:node])
+    @node.name ||= "answer to #{@question.prompt}"
+    @node.question = @question
+    if @node.save
+      flash[:notice] = 'Answer stored.'
+      redirect_to :action => 'show', :id => @question
+    end
   end
 end

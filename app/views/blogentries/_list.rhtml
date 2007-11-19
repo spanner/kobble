@@ -2,7 +2,10 @@
  
   <div class="listrow">
     <%= render :partial => 'shared/icon', :locals => { :this => list, :with_caption => false } %>
-    <h2><%= link_to( "#{list.name}", {:controller => 'blogentries', :action => 'show', :id => list}) %></h2>
+    <h2>
+      <%= link_to( "#{list.name}", {:controller => 'blogentries', :action => 'show', :id => list}) %>
+      <%= render :partial => 'shared/admin_buttons', :locals => {:item => list, :inplace => true} %>
+    </h2>
 		<p>
 			<span class="footnote">Posted at <%= list.created_at.to_date.to_s :long %> by <%= list.creator.name %></span>
     </p>

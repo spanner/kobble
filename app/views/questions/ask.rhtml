@@ -1,0 +1,17 @@
+<h1 class="pagetitle">Question...</h1>
+
+  <%= form_tag( {:action => 'answer', :id => @question}, :id => 'answerform', :multipart => true) %>
+
+  <p><label for="node_body"><%= @question.prompt %></label><br />
+    <%= text_area 'node', 'body', :rows => 12, :class => 'standard'  %>
+  </p>
+  
+  <%= @question.guidance.formatted %>
+
+  <p><label for="node_image">add a picture to your answer</label><br>
+    <%= file_column_field 'node', 'image' %>
+  </p>
+  
+  <%= submit_tag "submit answer" %>
+  
+<%= end_form_tag %>

@@ -4,12 +4,17 @@
     <%= render :partial => 'shared/icon', :locals => { :this => list, :with_caption => false } %>
     <h2>
 			<%= link_to( "#{list.name}", {:controller => 'nodes', :action => 'show', :id => list}) %>
+      <%= render :partial => 'shared/admin_buttons', :locals => {:item => list, :inplace => true} %>
 		</h2>
     <p>
       <%= truncate( list.find_some_text, 240 ) %><br />
-      <span class="footnote">
-				Taken from <%= link_to (list.source.name, :controller => 'sources', :action => 'show', :id => list.source) if list.source %> 
-				by <%= link_to (list.creator.name, :controller => 'users', :action => 'show', :id => list.creator) if list.creator %>.</span>
-    </p>
+      <% if list.source %>
+			  Excerpted from <%= link_to (list.source.name, :controller => 'sources', :action => 'show', :id => list.source) %> 
+      <% elsif list.question %>
+			  In response to <%= link_to (list.question.prompt, :controller => 'questions', :action => 'show', :id => list.question) %> 
+			<% else %>
+			  Loose fragment created 
+			<% end %>
+			by <%= link_to (list.creator.name, :controller => 'users', :action => 'show', :id => list.creator) if list.creator %>.</span>
   </div>
 <% end %>

@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
 
   belongs_to :creator, :class_name => 'User', :foreign_key => 'created_by'
   belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
-  belongs_to :collection      # for editors and higher this is a changeable value that indicates foreground collection. for readers it is fixed at signup
+  belongs_to :collection      # for admin users this is a changeable value that indicates foreground collection. for readers it is fixed at signup
   belongs_to :user_group      
 
   has_many :sources, :class_name => 'Source', :foreign_key => 'speaker_id'
@@ -141,7 +141,7 @@ class User < ActiveRecord::Base
   end
   
   def best_name
-    diminutive.nil? ? name : diminutive
+    self.diminutive.nil? ? self.name : self.diminutive
   end
   
   def provisional_new_password

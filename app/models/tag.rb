@@ -46,12 +46,12 @@ class Tag < ActiveRecord::Base
     return tag
   end
 
-  def self.tags_with_popularity()
+  def self.tags_with_popularity
     query ="select t.id, t.name, count(tm.mark_id) as marks_count 
 from tags as t, marks_tags as tm 
 where tm.tag_id = t.id and t.collection_id = #{Collection.current_collection.id} 
 group by tm.tag_id order by name"
-    tags = Tag.find_by_sql(query);
+    Tag.find_by_sql(query);
   end
 
 end

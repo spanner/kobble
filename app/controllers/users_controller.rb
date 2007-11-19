@@ -90,4 +90,15 @@ class UsersController < ApplicationController
     end
   end
 
+  def destroy
+    User.find(params[:id]).destroy
+    respond_to do |format|
+      format.html do
+        redirect_to :action => 'list'
+      end
+      format.js { render :nothing => true }
+      format.xml { head 200 }
+    end
+  end
+
 end

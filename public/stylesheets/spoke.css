@@ -136,6 +136,9 @@ div.slideable {
   margin: 0 0 20px 0;
 }
 
+blockquote {
+  margin: 10px;
+}
 
 
 
@@ -209,7 +212,7 @@ div.listrow {
   font-size: 0.8em;
   line-height: 1.3;
   padding: 6px;
-  clear:both;
+  clear: left;
 }
 
 div.odd {
@@ -381,7 +384,6 @@ a.minimal {
   padding-left: 0;
   width: 16px;
   margin: 0 4px 0 0;
-  float: left;
 }
 
 #canvas {
@@ -684,6 +686,11 @@ div.floatcolumn ul {
   margin: 0;
   list-style-image: url(/images/furniture/icons/listicon_blue.png);
   padding: 0 0 0 24px;
+  line-height: 16px;
+}
+
+div.floatcolumn ul li.additem {
+  list-style-image: url(/images/furniture/buttons/plus.png);
 }
 
 li.additem a, li.additem a:visited {
