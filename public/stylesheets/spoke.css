@@ -270,6 +270,16 @@ ul.starry {
   padding: 0 0 0 24px;
 }
 
+ul.starry li.ticked {
+  list-style-image: url(/images/furniture/buttons/tick.png);
+  color: #6cb262;
+}
+
+ul.starry li.crossed {
+  list-style-image: url(/images/furniture/buttons/cross.png);
+  color: #ef4447;
+}
+
 input.editinplace, textarea.editinplace, select.editinplace {
   background-color: #559DC4;
   color: white;

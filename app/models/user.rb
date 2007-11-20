@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
 
   has_many :sources, :class_name => 'Source', :foreign_key => 'speaker_id'
   has_many :nodes, :class_name => 'Node', :foreign_key => 'speaker_id'
+  has_many :answers, :class_name => 'Answer', :foreign_key => 'speaker_id'
   has_many :scratchpads
   has_many :warnings
 

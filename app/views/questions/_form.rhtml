@@ -1,29 +1,33 @@
 <%= error_messages_for 'question' %>
 
-<p><label for="question_prompt">Name</label> (this doesn't appear when the question is asked)<br/>
+<p><label for="question_prompt">Name</label> (appears in lists)<br/>
 <%= text_field 'question', 'name', :class => 'titular' %></p>
 
-<p><label for="question_guidance">Question text</label><br/>
+<p><label for="question_guidance">Question text</label> (appears when the question is asked)<br/>
 <%= text_area 'question', 'introduction', :rows => 5, :class => 'standard'  %></p>
 
 <p><label for="question_prompt">Prompt(s)</label><br/>
 <%= text_area 'question', 'prompt', :rows => 10, :class => 'standard'  %></p>
 
+<p><label for="question_guidance">Guidance</label><br/>
+<%= text_area 'question', 'guidance', :rows => 5, :class => 'standard'  %></p>
+
 <p><label for="question_question_type">Question type</label><br/>
-  <%= radio_button 'question', 'question_type', 'text' %> Open text<br />
-  <%= radio_button 'question', 'question_type', 'multi' %> Multiple choice (separate options with a comma in the prompt)<br />
-  <%= radio_button 'question', 'question_type', 'numeric' %> Number<br />
-  <%= radio_button 'question', 'question_type', 'scale' %> Scale (prompt should be max,min)<br />
+  <%= radio_button 'question', 'question_type', 'text' %> Open text (prompt not shown)<br />
+  <%= radio_button 'question', 'question_type', 'multi' %> Multiple choice (separate prompt options with a | character)<br />
+  <%= radio_button 'question', 'question_type', 'numeric' %> Number (prompt not shown)<br />
+  <%= radio_button 'question', 'question_type', 'scale' %> Scale (prompt should be max | min)<br />
   <%= radio_button 'question', 'question_type', 'binary' %> Yes/no
+</p>
+
+<p>
+  <%= check_box 'question', 'dull' %> <label for="question_dull">Dull question?</label> (this has implications for question selection and layout)
 </p>
 
 <p><label for="question_question_type">Response options</label><br/>
   <%= check_box 'question', 'request_image' %> Ask for an image<br />
   <%= check_box 'question', 'request_clip' %> Ask for a clip
 </p>
-
-<p><label for="question_guidance">Guidance</label><br/>
-<%= text_area 'question', 'guidance', :rows => 5, :class => 'standard'  %></p>
 
 <%= render :partial => 'shared/edit_image', :locals => {:item => @question} %>
 

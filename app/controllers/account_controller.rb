@@ -46,9 +46,9 @@ class AccountController < ApplicationController
     @pagetitle = 'blog'
     @blogentries = Blogentry.find(:all, 
       :conditions => limit_to_active_collection, 
+      :order => 'created_at DESC', 
       :page => {
         :size => 25, 
-        :sort => 'date DESC', 
         :current => params[:page]
       }
     )
@@ -58,22 +58,24 @@ class AccountController < ApplicationController
     @pagetitle = 'discussion'
     @discussions = Forum.find(:all, 
       :conditions => ["forums.collection_id = ? and forums.visibility <= ? and forums.id != ?", current_collection, current_user.status, current_collection.blog_forum_id], 
+      :order => 'title ASC', 
       :page => {
         :size => 25, 
-        :sort => 'date DESC', 
         :current => params[:page]
       }
     )
   end
 
-  def survey
-    @pagetitle = 'questions'
-    
-  end
-
   def blogentry
     @pagetitle = 'blog'
-    @blogentries = Blogentry.find(:all, :conditions => limit_to_active_collection, :page => {:size => 6, :sort => 'date DESC'})
+    @blogentries = Blogentry.find(:all, 
+      :conditions => limit_to_active_collection, 
+      :order => 'created_at DESC', 
+      :page => {
+        :size => 6,
+        :current => params[:page]
+      }
+    )
     @blogentry = Blogentry.find(params[:id])
     @forum = current_collection.blog_forum
     @topic = @blogentry.topics.first
@@ -88,24 +90,39 @@ class AccountController < ApplicationController
     @omit_first = @topic.posts.first
   end
 
-  def question
-    @pagetitle = 'question'
-    @questions = current_user.user_group ? current_user.user_group.questions : Question.find(:all, :conditions => limit_to_active_collection)
-    @question = Question.find(params[:question]) if params[:question]
-    @question = @questions.reject{|q| q.answer_from(current_user) }.first unless @question && @question.collection == current_collection
+  def limit_to_active_collection_and_group(group)
+    ["users.collection_id = ? or users.status >= 200", current_collection]
+  end
+
+  def survey
+    @pagetitle = 'survey'
+
+    @question = Question.find(params[:id]) if params[:id]
+    @question.nil! if @question && @question.collection != current_collection
+    
+    @questions = current_user.user_group.nil? ? 
+      Question.find(:all, :conditions => limit_to_active_collection) : 
+      Question.find(:all, :conditions => ["questions.collection_id = ? and (questions.user_group = ? OR questions.user_group is NULL)", current_collection, current_user.user_group])
+
+    @question = @questions.select{|q| q.answer_from(current_user).nil? }.first if @question.nil?
+    @questions.delete(@question) unless @question.nil?
+
     @answer = Answer.new
     @answer.speaker = current_user
     @answer.question = @question
   end
 
   def answer
-    @question = Question.find(params[:question])
+    @pagetitle = 'survey'
+    @question = Question.find(params[:id])
     @answer = Answer.new(params[:answer])
     @answer.speaker = current_user
     @answer.question = @question
     if @answer.save
-      flash[:notice] = 'Answer stored.'
-      redirect_to :action => 'question'
+      flash[:notice] = "Thank you! Your answer has been recorded."
+      redirect_to :action => 'survey'
+    else 
+      render :action => 'survey'
     end
   end
 

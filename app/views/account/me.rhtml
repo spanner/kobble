@@ -2,6 +2,10 @@
 
 <h1 class="pagetitle"><%= @user.name %></h1>
 
+<% if itsme %>
+  <p><span class="warning">*</span> anything marked like this is only visible to you and the owners of the site.</p>
+<% end %>
+
 <div class="floatcolumn" style="width: 135px;">
  	<% if @user.image %>
 		<div class="mugshot">
@@ -32,6 +36,28 @@
 	<%= @user.description.formatted %>
 <% end %>
 
+<% if itsme || (editor? && @user.can_login?) %>
+  <h3><%= 'Your ' if itsme %>answers<%= " from #{@user.best_name}" unless itsme %> <span class="warning">*</span></h3>
+  <% if @user.answers.empty? %>
+  	<p>
+  		<% if itsme %>You haven't answered any questions yet.<% else %>None yet.<% end %>
+  	</p>
+  <% else %>
+    <ul class="starry">
+    <%= render :partial => 'answers/minilist', :collection => @user.answers %>
+    </ul>
+  <% end %>
+<% end %>
+
+<% if itsme || (admin? && @user.can_login?) %>
+	<h3><%= 'Your ' if itsme %>subscriptions<%= " belonging to #{@user.best_name}" unless itsme %> <span class="warning">*</span></h3>
+	<% if @user.monitorships.empty? %>
+		<p>You haven't subscribed to any conversations. Click on the 'email notification' link on any discussion (or blog) page to receive email updates when new posts appear.</p>
+	<% else %>
+		<%= render :partial => 'monitorships/list', :collection => @user.monitorships %>
+	<% end %>
+<% end %>
+
 <h3><%= 'Your ' if itsme %>messages<%= " from #{@user.best_name}" unless itsme %></h3>
 
 <% if @user.created_posts.empty? %>
@@ -40,19 +66,4 @@
 	</p>
 <% else %>
   <%= render :partial => 'posts/single', :collection => @user.created_posts %>
-<% end %>
-
-<h3><%= 'Your ' if itsme %>answers<%= " from #{@user.best_name}" unless itsme %></h3>
-
-<p>
-	<% if itsme %>We haven't asked you any questions yet!<% else %>None yet.<% end %>
-</p>
-
-<% if itsme || (admin? && @user.can_login?) %>
-	<h3><%= 'Your ' if itsme %>subscriptions<%= " belonging to #{@user.best_name}" unless itsme %></h3>
-	<% if @user.monitorships.empty? %>
-		<p>You haven't subscribed to any conversations. Click on the 'email notification' link on any discussion (or blog) page to receive email updates when new posts appear.</p>
-	<% else %>
-		<%= render :partial => 'monitorships/list', :collection => @user.monitorships %>
-	<% end %>
 <% end %>

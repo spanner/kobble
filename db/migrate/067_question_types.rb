@@ -7,6 +7,7 @@ class QuestionTypes < ActiveRecord::Migration
     add_column :questions, :request_clip, :integer
     add_column :questions, :image, :string
     add_column :questions, :clip, :string
+    add_column :questions, :dull, :string
   end
 
   def self.down
@@ -17,5 +18,6 @@ class QuestionTypes < ActiveRecord::Migration
     remove_column :questions, :request_clip
     remove_column :questions, :image
     remove_column :questions, :clip
+    remove_column :questions, :dull
   end
 end

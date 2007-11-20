@@ -36,8 +36,7 @@
 			<% inactive_class = activated? ? '' : 'dim' %>
 			<%= link_to 'blog', '/blog', {:class => @pagetitle == 'blog' ? 'fg' : inactive_class} %>
 			<%= link_to 'discussion', '/discussion', {:class => @pagetitle == 'discussion' ? 'fg' : inactive_class} %>
-			<%#= link_to 'questions', '/questions', {:class => @pagetitle == 'questions' ? 'fg' : inactive_class} %>
-			<%= link_to 'questions', '#', {:class => 'dim'} %>
+			<%= link_to 'questions', '/survey', {:class => @pagetitle == 'survey' ? 'fg' : inactive_class} %>
 
 			<%= link_to 'you', '/me', {:class => @pagetitle == 'you' ? 'fg' : inactive_class} %>
 			<%= link_to 'log out', '/account/logout', {:class => inactive_class} %>
@@ -49,7 +48,9 @@
 </div>
 
 <div id="mlalbody">
- 
+
+<% if flash[:notice] %><div id="notification"><%= flash[:notice] %></div> <% end %>
+
 <%= @content_for_layout %>
 
 </div>

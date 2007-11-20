@@ -117,7 +117,21 @@ a.signup:hover {
 	background-image: url(/images/furniture/layout/biglinkhover.png);
 }
 
+#notification {
+  clear: left;
+  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
+  color: #559DC4;
+  font-size: 18px;
+  line-height: 18px;
+}
 
+textarea.biganswer {
+  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
+  font-size: 14px;
+  line-height: 18px;
+  width: 540px;
+  height: 320px;
+}
 
 /* signup page */
 

@@ -1,24 +1,24 @@
-<%= form_tag( {:action => 'answer', :id => @question}, :id => 'answerform', :multipart => true) %>
+<%= form_tag( {:action => 'answer', :id => ask}, :id => 'answerform', :multipart => true) %>
 
   <p><label for="answer_body"><%= ask.introduction %></label></p>
   
   <p>
   <%=
     output = ''
-    case @question.question_type
+    case ask.question_type
     when "multi"
-      @question.options.each do |opt|
+      ask.options.each do |opt|
         output += radio_button 'answer', 'body', opt
         output += "#{opt}<br />"
       end
 
     when "scale"
-      output += %{#{@question.scalemin}}
+      output += %{#{ask.scalemin}}
       @answer.body = 4
       (1..7).each do |opt|
         output += radio_button 'answer', 'body', opt
       end
-      output += %{#{@question.scalemax}}
+      output += %{#{ask.scalemax}}
 
     when "binary"
       output += radio_button 'answer', 'body', 'yes'
@@ -40,13 +40,13 @@
     <%= ask.guidance %>
   </p>
 
-  <% if @question.request_image > 0 %>
+  <% if ask.request_image > 0 %>
     <p><label for="answer_image">add a picture to your answer</label><br>
       <%= file_column_field 'answer', 'image' %>
     </p>
   <% end %>
   
-  <% if @question.request_clip > 0 %>
+  <% if ask.request_clip > 0 %>
     <p><label for="answer_clip">add a bit of audio or video to your answer</label><br>
       <%= file_column_field 'answer', 'clip' %>
     </p>
