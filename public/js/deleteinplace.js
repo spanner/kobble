@@ -8,7 +8,7 @@
     this.req = null;
     this.waiting();
     if (this.confirm()) {
-      this.delete();
+      this.doDelete();
     } else {
       this.notWaiting();
     }
@@ -27,7 +27,7 @@
     return confirm("are you sure you want to " + this.title() + '?');
   },
   
-  delete: function () {
+  doDelete: function () {
     del = this;
 		this.req = new Ajax(this.request_url(), {
 			method: 'post',
