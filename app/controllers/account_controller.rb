@@ -139,7 +139,7 @@ class AccountController < ApplicationController
     session[:user] = @user.id
     self.current_user = @user
     session[:topics] = session[:forums] = {}
-    flash[:notice] = "Thanks for signing up!"
+    flash[:notice] = "Registration processed."
     redirect_to :controller => '/account', :action => 'index'
   rescue ActiveRecord::RecordInvalid
     render :action => 'signup'
