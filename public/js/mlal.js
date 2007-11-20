@@ -24,6 +24,7 @@
   $ES('a.toggle').each( function (a) {
     new Toggle(a);
   });
+  
 });
 
 
