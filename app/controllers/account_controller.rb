@@ -58,7 +58,7 @@ class AccountController < ApplicationController
     @pagetitle = 'discussion'
     @discussions = Forum.find(:all, 
       :conditions => ["forums.collection_id = ? and forums.visibility <= ? and forums.id != ?", current_collection, current_user.status, current_collection.blog_forum_id], 
-      :order => 'title ASC', 
+      :order => 'name ASC', 
       :page => {
         :size => 25, 
         :current => params[:page]

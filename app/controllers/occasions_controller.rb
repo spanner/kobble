@@ -16,12 +16,12 @@ class OccasionsController < ApplicationController
    perpage = params[:perpage] || (@display == 'thumb') ? 100 : 40
    sort = case params[:sort]
      when "name"  then "name"
-     when "date" then "date DESC"
+     when "date" then "created_at DESC"
      when "name_reverse" then "name DESC"
      when "date_reverse" then "date"
      else "name"
    end
-   @sources = Source.find(:all, :conditions => limit_to_active_collection, :page => {:size => perpage, :sort => sort, :current => params[:page]})
+   @sources = Source.find(:all, :conditions => limit_to_active_collection, :order => sort, :page => {:size => perpage, :current => params[:page]})
    @display = case params['display']
      when "thumb" then "thumb"
      when "slide" then "slide"

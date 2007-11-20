@@ -10,8 +10,8 @@ class BlogentriesController < ApplicationController
 
   def list
     perpage = params[:perpage] || (@display == 'thumb') ? 100 : 40
-    sort = "date DESC"
-    @blogentries = Blogentry.find(:all, :conditions => limit_to_active_collection, :page => {:size => perpage, :sort => sort, :current => params[:page]})
+    sort = "created_at DESC"
+    @blogentries = Blogentry.find(:all, :conditions => limit_to_active_collection, :order => sort, :page => {:size => perpage, :current => params[:page]})
   end
 
   def show

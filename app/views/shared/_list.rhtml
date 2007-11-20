@@ -11,16 +11,21 @@
 	 <%= pagetitle %>
 	
 	<% if list.size > list.page_size %>
-  	<span class="pagination"><%= paginating_links(list, {:window_size => 3, :params => {:display => @display}}, {}) %></span>
+  	<span class="pagination"><%= paginating_links(list, {:window_size => 3, :params => {:display => @display, :sort => params[:sort]}}, {}) %></span>
 	<% end %>
 </h1>
 
 <% if list && list.size > 0 %>
-	<p class="footnote">
+	<p class="pagination">
   	showing <%= list.first_item %> to <%= list.last_item %> of <%= pluralize(list.size, listedtype) %>.<br />
-	  <%= link_to_unless_current 'thumbnails', :page => list.page, :display => 'thumb' %><span class="pale"> | </span>
-	  <%= link_to_unless_current 'previews', :page => list.page, :display => 'slide' %><span class="pale"> | </span>
-	  <%= link_to_unless_current 'list', :page => list.page, :display => 'list' %>
+  	order by: 
+	  <%= link_to_unless_current 'name', :page => list.page, :display => @display, :sort => 'name' %><span class="pale"> | </span>
+	  <%= link_to_unless_current 'date', :page => list.page, :display => @display, :sort => 'date' %><br />
+
+    show:
+	  <%= link_to_unless_current 'thumbnails', :page => list.page, :display => 'thumb', :sort => params[:sort] %><span class="pale"> | </span>
+	  <%= link_to_unless_current 'previews', :page => list.page, :display => 'slide', :sort => params[:sort] %><span class="pale"> | </span>
+	  <%= link_to_unless_current 'list', :page => list.page, :display => 'list', :sort => params[:sort] %>
 	</p>
 <% end %>
 

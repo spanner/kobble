@@ -20,10 +20,10 @@ class CollectionsController < ApplicationController
       when "name"  then "name"
       when "date" then "date"
       when "name_reverse" then "name DESC"
-      when "date_reverse" then "date DESC"
+      when "date_reverse" then "created_at DESC"
       else "name"
     end
-    @collections = Collection.find(:all, :page => {:size => perpage, :sort => sort, :current => params[:page]})
+    @collections = Collection.find(:all, :order => sort, :page => {:size => perpage, :current => params[:page]})
   end
 
   def show

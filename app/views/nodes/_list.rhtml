@@ -15,6 +15,8 @@
 			<% else %>
 			  Loose fragment created 
 			<% end %>
-			by <%= link_to (list.creator.name, :controller => 'users', :action => 'show', :id => list.creator) if list.creator %>.</span>
+			by <%= link_to (list.creator.name, :controller => 'users', :action => 'show', :id => list.creator) if list.creator %>
+			<%= time_ago_in_words(list.created_at) %> ago.
+			
   </div>
 <% end %>

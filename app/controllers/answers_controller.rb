@@ -15,8 +15,7 @@ class AnswersController < ApplicationController
       else "list"
     end
     perpage = params[:perpage] || (@display == 'thumb') ? 100 : 40
-    sort = "date DESC"
-    @answers = Answer.find(:all, :conditions => limit_to_active_collection, :page => {:size => perpage, :sort => sort, :current => params[:page]})
+    @answers = Answer.find(:all, :conditions => limit_to_active_collection, :order => 'created_at DESC', :page => {:size => perpage, :current => params[:page]})
   end
 
   def show

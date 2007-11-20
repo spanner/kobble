@@ -15,11 +15,11 @@ class BundlesController < ApplicationController
       when "name"  then "name"
       when "date" then "date"
       when "name_reverse" then "name DESC"
-      when "date_reverse" then "date DESC"
+      when "date_reverse" then "created_at DESC"
       else "name"
     end
 
-    @bundles = Bundle.find(:all, :conditions => limit_to_active_collection, :page => {:size => perpage, :sort => sort, :current => params[:page]})
+    @bundles = Bundle.find(:all, :conditions => limit_to_active_collection, :order => sort, :page => {:size => perpage, :current => params[:page]})
   end
 
   def show

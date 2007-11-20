@@ -106,7 +106,7 @@ h4 {
   margin-bottom: 0;
 }
 
-.footnote, .formnote {
+.formnote {
   font-size: 0.7em;
   line-height: 1.1;
   color: #695D54;
@@ -144,7 +144,11 @@ blockquote {
   margin: 10px;
 }
 
-
+p.pagination {
+  font-size: 0.8em;
+  line-height: 1.1;
+  color: #695D54;
+}
 
 /* layout and special formatting */
 

@@ -76,7 +76,7 @@ class TagsController < ApplicationController
      when "name"  then "name"
      when "date" then "date"
      when "name_reverse" then "name DESC"
-     when "date_reverse" then "date DESC"
+     when "date_reverse" then "created_at DESC"
      else "name ASC"
     end
     perpage = params[:perpage] ? params[:perpage].to_i : 500
