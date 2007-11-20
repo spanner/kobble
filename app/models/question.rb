@@ -27,11 +27,11 @@ class Question < ActiveRecord::Base
     when "multi"
       description = "Multiple-choice question with #{pluralize(self.options.length, 'option')}."
     when "scale"
-      description = "Scale question running from #{self.scalemin} to #{self.scalemax}."
+      description = "Scale question running from '#{self.scalemin}' to '#{self.scalemax}'."
     when "binary"
       description = "Yes/no question."
     when "numeric"
-      description = "Numeric question (we'll check that the answer is a number)."
+      description = "Numeric question."
     when "text"
       description = "Free-text question."
     end

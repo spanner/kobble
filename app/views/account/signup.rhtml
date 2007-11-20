@@ -47,11 +47,8 @@
 		</p>
 
 		<p><label for="user_group"<%= ' class="formError"' if @user.errors.on(:user_group) %>>Which of these descriptions suits you best?</label>
-		<% current_collection.user_groups.each do |ug| %>
-			<%= f.radio_button("user_group_id", ug.id) %> <%= ug.prompt %><br />
-		<% end %>
-		<%= f.radio_button("user_group_id", '') %> None of these<br />
-		<% if @user.errors.on(:user_group) %><div class="formError">this <%= @user.errors.on(:user_group).to_a.last %></div><% end %>
+    <%= f.select(:user_group_id, current_collection.user_groups.collect{|u| [u.prompt, u.id] }, {:include_blank => true}) %>
+		<% if @user.errors.on(:user_group_id) %><div class="formError">this <%= @user.errors.on(:user_group_id).to_a.last %></div><% end %>
 		</p>
 
 		<p><%= submit_tag 'Join the Enquiry' %></p>
