@@ -27,6 +27,16 @@ class UserNotifier < ActionMailer::Base
     @subject    += "New comment under '#{post.topic.title}'"
     @body[:post]  = post
     @body[:url]  = "http://#{collection.url}/forums/#{post.forum_id}/topics/#{post.topic_id}##{post.id}"
+    @body[:prefsurl]  = "http://#{collection.url}/me"
+  end
+
+  def question_notification(user, question)
+    collection = Collection.current_collection
+    setup_email(user, collection)
+    @subject    += "A new question has been posted"
+    @body[:question]  = question
+    @body[:url]  = "http://#{collection.url}/survey/#{question.id}"
+    @body[:prefsurl]  = "http://#{collection.url}/users/edit"
   end
   
   protected

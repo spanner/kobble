@@ -35,6 +35,10 @@
 
 <%= render :partial => 'shared/edit_tags', :locals => {:item => @question} %>
 
+<p>
+  <%= check_box 'question', 'send_email' %> <label for="question_send_email" class="warning">Send this question out by email</label>
+</p>
+
 <div class="formbuttons">
 <%= submit_tag "Store Question" %> 	or
   <%= link_to 'cancel', :action => 'list' %>

@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 69) do
+ActiveRecord::Schema.define(:version => 70) do
 
   create_table "answers", :force => true do |t|
     t.column "question_id",   :integer
@@ -196,6 +196,8 @@ ActiveRecord::Schema.define(:version => 69) do
     t.column "introduction",  :text
     t.column "image",         :string
     t.column "clip",          :string
+    t.column "dull",          :integer
+    t.column "send_email",    :integer,  :default => 0
   end
 
   create_table "scraps_scratchpads", :force => true do |t|

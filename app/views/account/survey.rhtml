@@ -5,7 +5,7 @@
 <% else %>
   <% unless flash[:notice] %>
     <p>
-      Every two or three days we will post new questions here and you'll receive an automatic email message inviting you to answer one or more of (unless you <%= link_to "choose not to receive them", :controller => 'users', :action => 'edit' %>, of course). These are the most recent questions that you haven't answered:
+      Every two or three days we will post new questions here and you'll receive an automatic email message inviting you to answer a new question (unless you <%= link_to "choose not to receive them", :controller => 'users', :action => 'edit' %>, of course). This is the most recent question that you haven't answered:
     </p>
   <% end %>
 <% end %>
@@ -19,7 +19,7 @@
     <p>You have answered every question currently available! If you would like to talk further about the topics mentioned here, please use the <%= link_to "discussion forum", '/discussion' %>.</p>
 
   <% else %>
-    <h1> no questions yet</h1>
+    <h1>no questions yet</h1>
     <p>Please come back in half an hour: we're just feeding questions into the system.</p>
     
   <% end %>
@@ -30,4 +30,10 @@
   <ul class="starry">
     <%= render :partial => 'questions/minilist', :collection => @questions %>  
   </ul>
+<% end %>
+
+<% if editor? %>
+	<div class="editlinks">
+	<%= link_to 'edit or add questions', {:controller => 'questions', :action => 'index'}, {:class => 'edititem'} %>
+	</div>
 <% end %>

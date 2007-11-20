@@ -1,14 +1,15 @@
 Hello <%= @user.name %>.
 
-A new comment has been added to the post '<%= @post.topic.title %>' by <%= @post.creator.name %>:
-
-_______________________________________________________________________
-
-<%= @post.body %>
+A new question has been added to the Knowledge Transfer Programme website:
 
 _______________________________________________________________________
 
 
-To see the comment in context and to reply, please visit the topic page at <%= @url %>
+<%= @question.introduction %>
 
-On that page you will also find the link to switch off this email notification service.
+_______________________________________________________________________
+
+
+Please drop in when you can and tell us your view. The shortcut to this question is <%= @url %>
+
+If you don't want to receive these automatic messages, please visit your preferences page at <%= @prefsurl %> and uncheck the 'receive questions by email' option.
