@@ -3,5 +3,6 @@
 <div id="hide_user_group" class="slideable">
 	<label for="<%= item.class.to_s.downcase %>_user_group_id">User group<br />
 	  <%= select(item.class.to_s.downcase, "user_group_id", current_collection.user_groups.collect{|u| [u.name, u.id] }, {:include_blank => true}, {:class => 'standard'}) %>
-	</label>
+	</label><br />
+	leave blank to allow answers from all groups
 </div>

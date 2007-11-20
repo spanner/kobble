@@ -25,3 +25,5 @@ config.action_mailer.server_settings = {
     :user_name      => 'sender@sparknow.net',
     :password       => 'sender'
 }
+
+

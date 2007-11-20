@@ -4,11 +4,13 @@
 class ApplicationController < ActionController::Base
   include AuthenticatedSystem
   include StringExtensions
+  include ExceptionNotifiable 
 
   helper_method :current_user, :current_collection, :logged_in?, :activated?, :admin?, :editor?, :last_active
   before_filter :editor_required  
   before_filter :set_context
   layout :choose_layout
+  exception_data :exception_report_data
   
   def set_context
     @display = 'list'
@@ -67,5 +69,11 @@ class ApplicationController < ActionController::Base
     def render_invalid_record(record)
       render :action => (record.new_record? ? 'new' : 'edit')
     end
-  
+
+    def exception_report_data
+      {
+        :user => current_user,
+        :collection => current_collection
+      }
+    end
 end
