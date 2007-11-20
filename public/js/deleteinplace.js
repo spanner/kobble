@@ -1,4 +1,4 @@
-﻿var Deleter= new Class({
+﻿var Deleter = new Class({
   
   initialize: function (a, e) {
     this.link = a;
@@ -7,8 +7,11 @@
     this.fader = new Fx.Styles(this.subject, {'duration': 400});
     this.req = null;
     this.waiting();
-    if (this.confirm()) this.delete();
-    else this.notWaiting();
+    if (this.confirm()) {
+      this.delete();
+    } else {
+      this.notWaiting();
+    }
   },
 
   request_url: function () {
