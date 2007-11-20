@@ -3,7 +3,11 @@
 		<img src="/images/furniture/signals/warning.png" width="20" height="20" alt="Warning" style="float: left; margin-right: 3px;">
 		Please answer the question!</p>
 <% else %>
-  <% unless flash[:notice] %>
+  <% if flash[:notice] %>
+    <p>
+      Thank you! And... here's another question. Please feel free to come back and answer it when you can: unanswered questions are always reachable from the list at the bottom of this page.
+    </p>
+  <% else %>
     <p>
       Every two or three days we will post new questions here and you'll receive an automatic email message inviting you to answer a new question (unless you <%= link_to "choose not to receive them", :controller => 'users', :action => 'edit' %>, of course). This is the most recent question that you haven't answered:
     </p>

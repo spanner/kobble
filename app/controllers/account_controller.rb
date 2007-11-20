@@ -101,8 +101,8 @@ class AccountController < ApplicationController
     @question.nil! if @question && @question.collection != current_collection
     
     @questions = current_user.user_group.nil? ? 
-      Question.find(:all, :order => 'created_at DESC', :conditions => limit_to_active_collection) : 
-      Question.find(:all, :order => 'created_at DESC', :conditions => ["questions.collection_id = ? and (questions.user_group = ? OR questions.user_group is NULL)", current_collection, current_user.user_group])
+      Question.find(:all, :order => 'created_at DESC', :conditions => ["questions.collection_id = ? and questions.user_group_id is NULL", current_collection]) : 
+      Question.find(:all, :order => 'created_at DESC', :conditions => ["questions.collection_id = ? and (questions.user_group_id = ? OR questions.user_group_id is NULL)", current_collection, current_user.user_group_id])
 
     @question = @questions.select{|q| q.answer_from(current_user).nil? }.first if @question.nil?
     @questions.delete(@question) unless @question.nil?
@@ -119,7 +119,7 @@ class AccountController < ApplicationController
     @answer.speaker = current_user
     @answer.question = @question
     if @answer.save
-      flash[:notice] = "Thank you! Your answer has been recorded."
+      flash[:notice] = "Your answer has been recorded."
       redirect_to :action => 'survey'
     else 
       render :action => 'survey'
