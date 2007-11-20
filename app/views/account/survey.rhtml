@@ -14,7 +14,7 @@
   <%= render :partial => 'questions/ask', :locals => {:ask => @question} %>
 
 <% else %>
-  <% if @question %>
+  <% unless @questions.empty? %>
     <h1>thank you</h1>
     <p>You have answered every question currently available! If you would like to talk further about the topics mentioned here, please use the <%= link_to "discussion forum", '/discussion' %>.</p>
 
@@ -25,7 +25,7 @@
   <% end %>
 <% end %>
   
-<% if @questions %>
+<% unless @questions.empty? %>
   <h3>older questions</h3>
   <ul class="starry">
     <%= render :partial => 'questions/minilist', :collection => @questions %>  

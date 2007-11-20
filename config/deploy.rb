@@ -31,8 +31,6 @@ namespace :deploy do
     run "ln -s #{shared_path}/assets/occasion #{current_release}/public/occasion"
     run "ln -s #{shared_path}/assets/tag #{current_release}/public/tag"
     run "ln -s #{shared_path}/assets/user #{current_release}/public/user"
-
-    run "ln -s #{shared_path}/system #{current_release}/public/system"
     run "ln -s #{shared_path}/config/database.yml #{current_release}/config/database.yml" 
   end
 	
