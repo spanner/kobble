@@ -52,6 +52,8 @@
     </p>
   <% end %>
 
+  <%= render :partial => 'shared/edit_speaker', :locals => {:item => @answer} %>
+
   <%= submit_tag "submit answer" %>
   
 <%= end_form_tag %>

@@ -19,6 +19,8 @@ class Question < ActiveRecord::Base
     }
   }
   
+  attr_accessor :send_email
+  
   def summary
     description = ''
     case self.question_type

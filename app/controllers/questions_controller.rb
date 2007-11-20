@@ -43,7 +43,6 @@ class QuestionsController < ApplicationController
 
   def create
     @question = Question.new(params[:question])
-    @question.speaker = current_user
     if @question.save
       @question.tags << tags_from_list(params[:tag_list])
       flash[:notice] = 'Question was successfully created.'

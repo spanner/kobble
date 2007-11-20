@@ -35,7 +35,7 @@ class UserNotifier < ActionMailer::Base
     setup_email(user, collection)
     @subject    += "A new question has been posted"
     @body[:question]  = question
-    @body[:url]  = "http://#{collection.url}/survey/#{question.id}"
+    @body[:url]  = "http://#{collection.url}/survey/ask/#{question.id}"
     @body[:prefsurl]  = "http://#{collection.url}/users/edit"
   end
   

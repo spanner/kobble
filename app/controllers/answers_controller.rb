@@ -28,6 +28,7 @@ class AnswersController < ApplicationController
 
   def create
     @answer = Answer.new(params[:answer])
+    
     if @answer.save
       flash[:notice] = 'Answer was successfully created.'
       redirect_to :action => 'list'

@@ -37,7 +37,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.faq '/faq', :controller => 'account', :action => 'faq'
   map.background '/background', :controller => 'account', :action => 'background'
-  map.questions '/survey', :controller => 'account', :action => 'survey'
+  map.survey '/survey', :controller => 'account', :action => 'survey'
+  map.surveyquestion '/survey/ask/:id', :controller => 'account', :action => 'survey'
   map.me '/me', :controller => 'account', :action => 'me'
   map.user '/users/:action/:id', :controller => 'users'
 

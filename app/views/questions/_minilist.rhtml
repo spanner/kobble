@@ -1,5 +1,5 @@
 <% if minilist.answer_from(current_user) %>
   <li id="question_<%= minilist.id %>" class="ticked"><%= minilist.name %></li>
 <% else %>
-  <li id="question_<%= minilist.id %>"><%= link_to( minilist.name, {:controller => 'account', :action => 'survey', :id => minilist}) %></li>
+  <li id="question_<%= minilist.id %>"><%= link_to( minilist.name, surveyquestion_path(minilist)) %></li>
 <% end %>
