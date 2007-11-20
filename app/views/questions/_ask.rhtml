@@ -1,0 +1,49 @@
+<%= form_tag( {:action => 'answer', :id => @question}, :id => 'answerform', :multipart => true) %>
+
+  <p><label for="node_body"><%= ask.introduction %></label></p>
+  
+  <p>
+  <%=
+    output = ''
+    case @question.question_type
+    when "multi"
+      @question.options.each do |opt|
+        output += radio_button 'node', 'body', opt
+        output += "#{opt}<br />"
+      end
+
+    when "scale"
+      output += %{#{@question.scalemin}}
+      @node.body = 4
+      (1..7).each do |opt|
+        output += radio_button 'node', 'body', opt
+      end
+      output += %{#{@question.scalemax}}
+
+    when "binary"
+      output += radio_button 'node', 'body', 'yes'
+      output += radio_button 'node', 'body', 'no'
+
+    when "numeric"
+      output += text_field 'node', 'body', {:class => 'biganswer'}
+
+    when "text"
+      output += text_area 'node', 'body', {:class => 'biganswer'}
+    end
+
+    output
+  %> 
+
+  </p>
+  
+  <p class="formnote">
+    <%= ask.guidance %>
+  </p>
+    
+  <p><label for="node_image">add a picture to your answer</label><br>
+    <%= file_column_field 'node', 'image' %>
+  </p>
+  
+  <%= submit_tag "submit answer" %>
+  
+<%= end_form_tag %>

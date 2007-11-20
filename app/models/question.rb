@@ -17,8 +17,6 @@ class Question < ActiveRecord::Base
       "preview" => "750x540>" 
     }
   }
-
-  after_create :create_topic
   
   def summary
     description = ''
@@ -52,16 +50,6 @@ class Question < ActiveRecord::Base
   
   def answer_from(user)
     Node.find(:first, :conditions => ['created_by = ? and question_id = ?', user.id, self.id])
-  end
-
-  def create_topic
-    if collection.blog_forum then
-      topic = collection.blog_forum.topics.build({ :title => prompt })
-      topic.subject = self
-      topic.save!
-      post = topic.posts.build({ :body => 'Discussion of survey question' })
-      post.save!
-    end
   end
 
   def tag_list

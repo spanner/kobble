@@ -4,16 +4,6 @@
 </h1>
 
 <div id="margin" class="floatcolumn" style="width: 175px;">
-
-  <h2>
-  	<a href="#" class="displaycontrol" id="show_details">+ details</a>
-  </h2>
-
-  <div class="marginal" id="hide_details">
-    <p><strong>Question type:</strong> <%= @question.summary %></p>
-    <p><strong>Prompt text:</strong> <%= @question.prompt %></p>
-    <p><strong>Guidance:</strong> <%= @question.guidance %></p>
-  </div>
   
 	<%= render :partial => 'shared/show_image', :locals => {:item => @question} %>
 	<%= render :partial => 'shared/show_tags', :locals => {:item => @question} %>
@@ -23,12 +13,23 @@
 
 <%= @question.introduction.formatted %>
 
+<p><%
+  mya = @question.answer_from(current_user) 
+  if mya.nil?
+%>
+  <%= link_to "Answer the question", :action => 'ask', :id => @question %>
+<% else %>
+  You've already answered this one, but you can <%= link_to "answer it again", :action => 'ask', :id => @question %> if you like.
+<% end %>
+
 <h2>Answers</h2>
 
-<p>Multiple-choice, scale and binary questions will soon display a chart here, but for now, just the list:</p>
-  
+<div class="listing">  
 <% if @question.nodes.count > 0 %>
   <%= render :partial => 'answer', :collection => @question.nodes %>
 <% else %>
   <p>Nobody has answered this question yet.</p>
 <% end %>
+
+<p class="clear">Multiple-choice, scale and binary questions will soon display a chart here.</p>
+</div>

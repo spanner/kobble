@@ -2,6 +2,12 @@
 	Create a new question
 </h1>
 
-<%= form_tag( {:action => 'create'}, :id => 'questinoform', :multipart => true) %>
+<% if @question.errors && !@question.errors.empty? %>
+	<p class="haserror">
+		<img src="/images/furniture/signals/warning.png" width="20" height="20" alt="Warning" style="float: left; margin-right: 3px;">
+		Sorry: there were problems. Please check the highlighted fields and try again.</p>
+<% end %>
+
+<%= form_tag( {:action => 'create'}, :id => 'questionform', :multipart => true) %>
  <%= render :partial => 'form' %>
 <%= end_form_tag %>
