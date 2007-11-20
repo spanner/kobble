@@ -1,6 +1,6 @@
 <div id="inputform">
 
-	<% if editor? %>
+	<% if editor? && @user != current_user %>
 		<h1 class="pagetitle">Edit <%= link_to @user.name, :action => 'show', :id => @user %></h1>
 
 		<%= form_tag( {:controller => 'users', :action => 'update', :id => @user}, :multipart => true) %>

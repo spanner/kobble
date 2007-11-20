@@ -25,6 +25,8 @@
 <p><label for="question_guidance">Guidance</label><br/>
 <%= text_area 'question', 'guidance', :rows => 5, :class => 'standard'  %></p>
 
+<%= render :partial => 'shared/edit_image', :locals => {:item => @question} %>
+
 <%= render :partial => 'shared/edit_group', :locals => {:item => @question} %>
 
 <%= render :partial => 'shared/edit_tags', :locals => {:item => @question} %>

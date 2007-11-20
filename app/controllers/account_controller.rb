@@ -88,7 +88,26 @@ class AccountController < ApplicationController
     @omit_first = @topic.posts.first
   end
 
+  def question
+    @pagetitle = 'question'
+    @questions = current_user.user_group ? current_user.user_group.questions : Question.find(:all, :conditions => limit_to_active_collection)
+    @question = Question.find(params[:question]) if params[:question]
+    @question = @questions.reject{|q| q.answer_from(current_user) }.first unless @question && @question.collection == current_collection
+    @answer = Answer.new
+    @answer.speaker = current_user
+    @answer.question = @question
+  end
 
+  def answer
+    @question = Question.find(params[:question])
+    @answer = Answer.new(params[:answer])
+    @answer.speaker = current_user
+    @answer.question = @question
+    if @answer.save
+      flash[:notice] = 'Answer stored.'
+      redirect_to :action => 'question'
+    end
+  end
 
 
   # registration, login and account-control

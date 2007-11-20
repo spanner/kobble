@@ -3,7 +3,7 @@
   <div class="listrow <%= cycle("odd", "even", :name => "itemlist") %>" id="question_<%= list.id %>">
     <%= render :partial => 'shared/icon', :locals => { :this => list, :with_caption => false } %>
     <h2>
-			<%= link_to( "#{list.name}", {:controller => 'questions', :action => 'show', :id => list}) %>
+			<%= link_to( truncate(list.name, 60), {:controller => 'questions', :action => 'show', :id => list}) %>
       <%= render :partial => 'shared/admin_buttons', :locals => {:item => list, :inplace => true} %>
 		</h2>
     <p>

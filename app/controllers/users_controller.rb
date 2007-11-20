@@ -70,7 +70,7 @@ class UsersController < ApplicationController
 
   def edit
     userid = (current_user.editor? ? params[:id] : nil) || current_user.id
-    @pagetitle = 'you' unless current_user.editor?
+    @pagetitle = 'you' unless current_user.editor? || userid == current_user.id
     @user = User.find(userid)
   end
 

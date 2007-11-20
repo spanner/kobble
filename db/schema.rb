@@ -2,7 +2,20 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 67) do
+ActiveRecord::Schema.define(:version => 69) do
+
+  create_table "answers", :force => true do |t|
+    t.column "question_id",   :integer
+    t.column "body",          :text
+    t.column "image",         :string
+    t.column "clip",          :string
+    t.column "collection_id", :integer
+    t.column "created_at",    :datetime
+    t.column "created_by",    :integer
+    t.column "updated_at",    :datetime
+    t.column "updated_by",    :integer
+    t.column "speaker_id",    :integer
+  end
 
   create_table "blogentries", :force => true do |t|
     t.column "created_by",    :integer
@@ -176,10 +189,13 @@ ActiveRecord::Schema.define(:version => 67) do
     t.column "survey_id",     :integer
     t.column "collection_id", :integer
     t.column "user_group_id", :integer
-    t.column "position",      :integer
     t.column "question_type", :string
     t.column "request_image", :integer
     t.column "request_clip",  :integer
+    t.column "name",          :string
+    t.column "introduction",  :text
+    t.column "image",         :string
+    t.column "clip",          :string
   end
 
   create_table "scraps_scratchpads", :force => true do |t|
@@ -326,6 +342,8 @@ ActiveRecord::Schema.define(:version => 67) do
     t.column "last_login",                :datetime
     t.column "password",                  :string
     t.column "user_group_id",             :integer
+    t.column "receive_questions_email",   :integer
+    t.column "receive_news_email",        :integer
   end
 
   add_index "users", ["collection_id"], :name => "index_users_on_collection"

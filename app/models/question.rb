@@ -7,6 +7,7 @@ class Question < ActiveRecord::Base
   belongs_to :user_group      
 
   has_many :nodes, :dependent => :nullify
+  has_many :answers, :dependent => :destroy
   has_many :topics, :as => :subject
 
   file_column :clip
@@ -32,8 +33,6 @@ class Question < ActiveRecord::Base
     when "text"
       description = "Free-text question."
     end
-    description += " Image allowed." if self.request_image
-    description += " Clip allowed." if self.request_clip
   end
   
   def options
@@ -49,7 +48,7 @@ class Question < ActiveRecord::Base
   end
   
   def answer_from(user)
-    Node.find(:first, :conditions => ['created_by = ? and question_id = ?', user.id, self.id])
+    Answer.find(:first, :conditions => ['created_by = ? and question_id = ?', user.id, self.id])
   end
 
   def tag_list

@@ -11,7 +11,7 @@
       <% if list.source %>
 			  Excerpted from <%= link_to (list.source.name, :controller => 'sources', :action => 'show', :id => list.source) %> 
       <% elsif list.question %>
-			  In response to <%= link_to (list.question.prompt, :controller => 'questions', :action => 'show', :id => list.question) %> 
+			  In response to <%= link_to (list.question.name, :controller => 'questions', :action => 'show', :id => list.question) %> 
 			<% else %>
 			  Loose fragment created 
 			<% end %>

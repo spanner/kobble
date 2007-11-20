@@ -40,6 +40,7 @@ class QuestionsController < ApplicationController
 
   def create
     @question = Question.new(params[:question])
+    @question.speaker = current_user
     if @question.save
       @question.tags << tags_from_list(params[:tag_list])
       flash[:notice] = 'Question was successfully created.'
@@ -76,16 +77,17 @@ class QuestionsController < ApplicationController
   
   def ask
     @question = Question.find(params[:id])
-    @node = Node.new
-    @node.question = @question
+    @answer = Answer.new
+    @answer.speaker = current_user
+    @answer.question = @question
   end
 
   def answer
     @question = Question.find(params[:id])
-    @node = Node.new(params[:node])
-    @node.name ||= "answer to #{@question.prompt}"
-    @node.question = @question
-    if @node.save
+    @answer = Answer.new(params[:answer])
+    @answer.speaker = current_user
+    @answer.question = @question
+    if @answer.save
       flash[:notice] = 'Answer stored.'
       redirect_to :action => 'show', :id => @question
     end

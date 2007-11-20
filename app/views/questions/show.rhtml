@@ -13,23 +13,35 @@
 
 <%= @question.introduction.formatted %>
 
-<p><%
+<%
   mya = @question.answer_from(current_user) 
   if mya.nil?
 %>
-  <%= link_to "Answer the question", :action => 'ask', :id => @question %>
+  <p><%= link_to "Answer the question", :action => 'ask', :id => @question %></p>
 <% else %>
-  You've already answered this one, but you can <%= link_to "answer it again", :action => 'ask', :id => @question %> if you like.
+  <% if @question.question_type == 'text' %>
+    <p>You've already answered this one. You can <%= link_to "answer it again", :action => 'ask', :id => @question %> if you like.</p>
+  <% else %> 
+    <p class="warning">You've already answered this one and it's a (loosely!) statistical question, so you can only answer it once.</p>
+  <% end %>
 <% end %>
-
-<h2>Answers</h2>
 
 <div class="listing">  
-<% if @question.nodes.count > 0 %>
-  <%= render :partial => 'answer', :collection => @question.nodes %>
+<h2>Answers to this question</h2>
+<% if @question.answers.count > 0 %>
+  <% if @question.question_type == 'text' %>
+      <%= render :partial => 'answers/list', :collection => @question.answers %>
+  <% else %>
+    <p>A proper chart will appear here any minute now.</p>
+  <% end %>
 <% else %>
-  <p>Nobody has answered this question yet.</p>
+  <p class="warning">Nobody has answered this question yet.</p>
 <% end %>
-
-<p class="clear">Multiple-choice, scale and binary questions will soon display a chart here.</p>
 </div>
+
+<% if @question.nodes.count > 0 %>
+  <div class="listing">  
+  <h2 class="clear">Fragments linked to this question</h2>
+    <%= render :partial => 'nodes/list', :collection => @question.nodes %>
+  </div>
+<% end %>

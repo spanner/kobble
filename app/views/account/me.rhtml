@@ -24,9 +24,9 @@
 
 <h3><%= 'Your ' if itsme %>description</h3>
 
-<% if @user.description.nil? %>
+<% if @user.description.nil? || @user.description.size == 0   %>
 	<p>
-		<% if itsme %>You haven't <%= link_to "provided a biog", :controller => 'users',  :action => 'edit' %> yet.<% else %>Not given yet.<% end %>
+		<% if itsme %>You haven't <%= link_to "provided any biog", :controller => 'users',  :action => 'edit' %> yet.<% else %>Not given yet.<% end %>
 	</p>
 <% else %>
 	<%= @user.description.formatted %>

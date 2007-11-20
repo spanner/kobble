@@ -10,7 +10,7 @@
 		  <% if item.creator %>by <%= link_to item.creator.name, :action => 'show', :controller => 'user', :id => item.creator %><% end %>
 		<% end %>
 		<% if item.question %>
-			Considered a response to the question <%= link_to item.question.prompt, :controller => 'questions', :action => 'show', :id => item.question %>.
+			Considered a response to the question <%= link_to item.question.name, :controller => 'questions', :action => 'show', :id => item.question %>.
 		<% end %>
 		</p>
 	<% else %>
