@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 
-  before_filter :editor_required, :except => [:edit, :update, :show]
+  before_filter :editor_required, :except => [:edit, :update]
   before_filter :activation_required, :only => [:edit, :update, :show]
   
   # this is user review and management for admins

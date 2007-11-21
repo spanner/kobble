@@ -21,6 +21,7 @@ class TopicsController < ApplicationController
   end
   
   def show
+    @pagetitle = 'discussion'
     perpage = params[:perpage] || 25
     respond_to do |format|
       format.html do

@@ -14,6 +14,7 @@ class ForumsController < ApplicationController
   end
 
   def show
+    @pagetitle = 'discussion'
     respond_to do |format|
       format.html do
         # keep track of when we last viewed this forum for activity indicators
