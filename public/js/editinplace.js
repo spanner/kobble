@@ -55,13 +55,11 @@
     this.formholder.show();
     this.resizetocontain(this.formholder);
     this.waitholder = $ES('div.waitme', this.wrapper);
-    console.log(this.waitholder);
   },
   
   getPreview: function (e) {
     e = new Event(e).stop();
     e.preventDefault();
-    console.log(e);
     var ed = this;
     this.form.send({
       method: 'post',

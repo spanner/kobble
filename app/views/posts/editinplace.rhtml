@@ -4,5 +4,7 @@
 	<div class="commentbody">
   	<%= f.text_area :body, :rows => 14 %><br />
 	</div>
- 	<%= submit_tag "save revised comment" %> <span class="button_or">or  <%= link_to 'cancel', '#', :class => 'cancel' %></span>
+	<div class="waitme">
+ 	  <%= submit_tag "save changes" %> or  <%= link_to 'cancel', '#', :class => 'cancel' %>
+ 	</div>
 <% end -%>

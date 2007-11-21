@@ -12,14 +12,13 @@
 					:id => "edit_comment_#{single.id}",
 					:title => "edit this post"
 				} %>
-		
 			<% end %>
 	    	<a name="<%= single.dom_id %>"><%= image_tag "clearbits/comment.gif", :class => 'icon', :title => single.creator.editor? ? 'admin' : 'visitor' %></a>
 			<%= h(single.creator.name) %>
 			<span class="when"><%= time_ago_in_words(single.created_at) %> ago</span>
 		</p>
 		<div class="commentbody" id="comment_<%= single.id %>">
-		<%= single.body.formatted %>
+		  <%= single.body.formatted %>
 		</div>
 	</div>
 <% end %>

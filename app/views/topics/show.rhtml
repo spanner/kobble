@@ -17,6 +17,17 @@
   <% if @topic.locked? %>
   	<span>(locked)</span>
   <% end %>
+  <% if editor? %>
+    <sup><%= link_to image_tag("/images/furniture/buttons/circle.png"), edit_topic_path( :forum_id => @forum,  :id => @topic ), {
+  		  :id => "edit_post_#{@topic.posts.first.id}",
+  		  :title => "edit this topic"
+  	  } 
+  	%><%= link_to image_tag("/images/furniture/buttons/cross.png"), delete_topic_path( :forum_id => @forum,  :id => @topic), {
+    		  :id => "delete_post_#{@topic.posts.first.id}",
+    		  :title => "delete_post_ this topic"
+    	  } 
+    	%></sup>
+	<% end %>
 </h1>
 
 <p class="subtitle">
@@ -30,6 +41,15 @@
 	</a>
 </p>
 
-<%= @topic.body.formatted %>
+<div class="commentbody" id="post_<%= @topic.posts.first.id %>">
+  <%= link_to image_tag("/images/furniture/buttons/circle.png"), edit_post_path( :forum_id => @forum,  :topic_id => @topic, :id => @topic.posts.first ), {
+		  :id => "edit_post_#{@topic.posts.first.id}",
+		  :title => "edit this text",
+		  :class => "editinplace",
+		  :style => "float: right"
+	  } 
+	%>
+  <%= @topic.body.formatted %>
+</div>
 
 <%= render :partial => 'comments' %>
