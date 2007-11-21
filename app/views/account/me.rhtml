@@ -50,9 +50,9 @@
   <h3><%= 'Your ' if itsme %>preferences</h3>
   
   <ul class="starry">
-    <li class="<%= @user.receive_questions_email > 0 ? 'ticked' : 'crossed' %>">questions by email</li>
-    <li class="<%= @user.receive_news_email > 0 ? 'ticked' : 'crossed' %>">news and updates by email</li>
-    <li class="<%= @user.receive_html_email > 0 ? 'ticked' : 'crossed' %>">email as html</li>
+    <li class="<%= @user.receive_questions_email != 0 ? 'ticked' : 'crossed' %>">questions by email</li>
+    <li class="<%= @user.receive_news_email != 0 ? 'ticked' : 'crossed' %>">news and updates by email</li>
+    <li class="<%= @user.receive_html_email != 0 ? 'ticked' : 'crossed' %>">email as html</li>
     <li class="circled"><%= link_to 'Edit your preferences', {:controller => 'users', :action => 'edit', :anchor => 'preferences'} %></li>
     
   </ul>
