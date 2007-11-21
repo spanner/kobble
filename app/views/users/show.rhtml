@@ -55,7 +55,9 @@ phone: <%= @user.phone %>
 		<% if itsme %>You haven't posted any messages yet.<% else %>None yet.<% end %>
 	</p>
 <% else %>
-  <%= render :partial => 'posts/single', :collection => @user.created_posts %>
+  <ul class="starry">
+    <%= render :partial => 'posts/minilist', :collection => @user.created_posts %>
+  </ul>
 <% end %>
 
 <h3><%= 'Your ' if itsme %>answers</h3>

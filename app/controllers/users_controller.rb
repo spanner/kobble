@@ -45,6 +45,9 @@ class UsersController < ApplicationController
     userid = params[:id] || current_user.id
     @user = User.find(userid)
     @users = User.find(:all)
+    unless editor?
+      render :template => 'account/me' and return
+    end
   end
 
   def new

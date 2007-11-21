@@ -24,14 +24,14 @@
   	  } 
   	%><%= link_to image_tag("/images/furniture/buttons/cross.png"), delete_topic_path( :forum_id => @forum,  :id => @topic), {
     		  :id => "delete_post_#{@topic.posts.first.id}",
-    		  :title => "delete_post_ this topic"
+    		  :title => "delete this topic"
     	  } 
     	%></sup>
 	<% end %>
 </h1>
 
 <p class="subtitle">
-	Started by <%= link_to @topic.creator.name, user_path(@topic.creator) %>
+	Started by <%= link_to @topic.creator.name, :controller => 'users', :action => 'show', :id => @topic.creator %>
 	<span class="when"><%= time_ago_in_words(@topic.created_at) %> ago</span>.
 	<% if @topic.posts_count == 1 %>
 		No responses yet.
