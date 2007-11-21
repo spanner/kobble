@@ -38,13 +38,15 @@
 	<% else %>
 		<%= pluralize(@topic.posts_count-1, 'responses') %>.
 	<% end %>
-  <%= link_to image_tag("/images/furniture/buttons/circle.png"), edit_post_path( :forum_id => @forum,  :topic_id => @topic, :id => @topic.posts.first ), {
-		  :id => "edit_post_#{@topic.posts.first.id}",
-		  :title => "edit this text",
-		  :class => "editinplace",
-		  :style => "float: right"
-	  } 
-	%>
+	<% if editor? %>
+    <%= link_to image_tag("/images/furniture/buttons/circle.png"), edit_post_path( :forum_id => @forum,  :topic_id => @topic, :id => @topic.posts.first ), {
+  		  :id => "edit_post_#{@topic.posts.first.id}",
+  		  :title => "edit this text",
+  		  :class => "editinplace",
+  		  :style => "float: right"
+  	  } 
+  	%>
+  <% end %>
 </p>
 
 <div class="commentbody" id="post_<%= @topic.posts.first.id %>">
