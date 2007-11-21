@@ -38,10 +38,6 @@
 	<% else %>
 		<%= pluralize(@topic.posts_count-1, 'responses') %>.
 	<% end %>
-	</a>
-</p>
-
-<div class="commentbody" id="post_<%= @topic.posts.first.id %>">
   <%= link_to image_tag("/images/furniture/buttons/circle.png"), edit_post_path( :forum_id => @forum,  :topic_id => @topic, :id => @topic.posts.first ), {
 		  :id => "edit_post_#{@topic.posts.first.id}",
 		  :title => "edit this text",
@@ -49,6 +45,9 @@
 		  :style => "float: right"
 	  } 
 	%>
+</p>
+
+<div class="commentbody" id="post_<%= @topic.posts.first.id %>">
   <%= @topic.body.formatted %>
 </div>
 
