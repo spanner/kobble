@@ -126,6 +126,11 @@ label {
   clear: both;
 }
 
+label a {
+  color: #695D54;
+  text-decoration: none;
+}
+
 a.displaycontrol {
   display: block;
   margin: 5px 0 0 0;
@@ -284,23 +289,26 @@ ul.starry li.crossed {
   color: #ef4447;
 }
 
+ul.starry li.circled {
+  list-style-image: url(/images/furniture/buttons/circle.png);
+  color: #559DC4;
+}
+
 input.editinplace, textarea.editinplace, select.editinplace {
   background-color: #559DC4;
   color: white;
 }
 
-div#hide_synopsis {
-	color: #559DC4;
+input.bigredbutton {
+  background-color: red;
+  color: white;
+  font-size: 20px;
+  font-weight: lighter;
+  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
 }
 
-#dragsprite  { 
-	left: 10px;
-	top: 10px;
-	z-index: 10000;
-	width: 75px;
-	height: 75px;
-	background-position: center center;
-	background-repeat: no-repeat;
+div#hide_synopsis {
+	color: #559DC4;
 }
 
 div.dragicon { 
@@ -309,13 +317,6 @@ div.dragicon {
   width: 56px;
   height: 56px;
   border: 1px solid #559DC4;
-}
-
-#dragHelper {
-  position: absolute;
-  width: 75px;
-  height: 75px;
-  z-index: 2000;
 }
 
 div.inactive, div.inactive a {
@@ -1210,5 +1211,21 @@ a.cloud3 {font-size: 1.5em; color: #a0c8de;}
 a.cloud4 {font-size: 1.8em; color: #85b8d5;}
 a.cloud5 {font-size: 2.1em; color: #71adce;}
 a.cloud6 {font-size: 2.4em;}
+
+
+div.previewing {
+  background-color: #ebc5a5;
+}
+
+div.waiting {
+ 	background-image: url('/images/furniture/signals/wait_16_grey.gif');
+ 	background-position: 5px 5px;
+ 	background-repeat: no-repeat;
+ 	padding-left: 24px;
+}
+
+div.waiting input {
+  visibility: hidden;
+}
 
 

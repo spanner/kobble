@@ -22,9 +22,9 @@
   },
 
   // the id of the element inside which we should inject the eventual results of submitting the form
-  // by default we get this from the 'target' property of the source link
+  // we now get this by munging the id of the source link, since target property is disallowed under xhtml
   target: function () {
-    var targetid = this.source.getProperty('target');
+    var targetid = this.source.id.replace('extend_','');
     return $E('#' + targetid);
   },
   

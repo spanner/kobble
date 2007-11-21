@@ -41,9 +41,9 @@ class UserNotifier < ActionMailer::Base
   
   protected
   def setup_email(user, collection)
-    STDERR.puts("setup_email #{user.email}")
+    @content_type = user.receive_html_email ? 'text/html' : 'text/plain'
     @recipients  = "#{user.email}"
-    @from        = "william.ross@sparknow.net"
+    @from        = "#{collection.email_from}"
     @subject     = "#{collection.name}: "
     @sent_on     = Time.now
     @body[:user] = user

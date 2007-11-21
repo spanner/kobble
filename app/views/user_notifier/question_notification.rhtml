@@ -1,4 +1,8 @@
-Hello <%= @user.name %>.
+<% if @user.receive_html_email %>
+
+
+
+<% else %>Hello <%= @user.name %>.
 
 A new question has been added to the Knowledge Transfer Programme website:
 

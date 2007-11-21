@@ -10,6 +10,8 @@
     this.formholder = new Element('div', {'style': 'display: none;'}).injectTop(this.wrapper);
     this.previewholder = new Element('div', {'style': 'display: none;'}).injectTop(this.wrapper);
     this.resizer = new Fx.Style(this.wrapper, 'height', {duration:500});
+    this.waitholder = this.link;
+    this.waiting();
 		this.getForm();
   },
   
@@ -35,13 +37,13 @@
 		new Ajax(this.request_url(), {
 			method: 'get',
 			update: ed.formholder,
-		  onRequest: function () {ed.waiting();},
 		  onComplete: function () {ed.gotForm();},
 		  onFailure: function () {ed.failed();}
 		}).request();
   },
   
   gotForm: function () {
+    this.link.hide();
     this.form = $E('form', this.formholder);
     this.form.onsubmit = this.getPreview.bind(this);
     $E('a.cancel', this.formholder).onclick = this.cancel.bind(this);
@@ -52,11 +54,14 @@
     this.notWaiting();
     this.formholder.show();
     this.resizetocontain(this.formholder);
+    this.waitholder = $ES('div.waitme', this.wrapper);
+    console.log(this.waitholder);
   },
   
   getPreview: function (e) {
     e = new Event(e).stop();
     e.preventDefault();
+    console.log(e);
     var ed = this;
     this.form.send({
       method: 'post',
@@ -81,6 +86,8 @@
       this.formholder.hide();
       this.previewholder.show();
       this.resizetocontain(this.previewholder);
+      this.wrapper.addClass('previewing');
+      this.waitholder = $ES('div.waitme', this.wrapper);
     } else {
       this.formholder.hide();
       this.subject.hide();
@@ -95,11 +102,11 @@
     e = new Event(e).stop();
     e.preventDefault();
     var p = this;
+    this.wrapper.removeClass('previewing');
     this.waiting();
     this.previewform.send({
       method: 'post',
 			update: p.subject,
-		  onRequest: function () {p.waiting();},
 		  onComplete: function () {p.finished();},
 		  onFailure: function () {p.failed();}
     });
@@ -108,17 +115,20 @@
   revise :function (e) {
     e = new Event(e).stop();
     e.preventDefault();
+    this.wrapper.removeClass('previewing');
+    this.previewform.remove();
     this.previewholder.hide();
     this.formholder.show();
     this.resizetocontain(this.formholder);
+    this.waitholder = $ES('div.waitme', this.wrapper);
   },
     
   waiting: function () {
-    this.link.addClass('waiting');
+    this.waitholder.addClass('waiting');
   },
   
   notWaiting: function () {
-    this.link.removeClass('waiting');
+    this.waitholder.removeClass('waiting');
   },
   
   finished: function () {
@@ -134,6 +144,7 @@
     if (this.link) this.link.show();
     e = new Event(e).stop();
     e.preventDefault();
+    this.wrapper.removeClass('previewing');
     this.formholder.hide();
     this.previewholder.hide();
     this.notWaiting();

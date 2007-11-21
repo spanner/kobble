@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
   def set_context
     @display = 'list'
     EditObserver.current_user = current_user
-    Collection.current_collection = current_collection
+    Collection.current_collection = User.current_collection = current_collection
     redirect_to :controller => 'collections', :action => 'index' if logged_in? && current_collection == :false
   end
   

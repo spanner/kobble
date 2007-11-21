@@ -2,10 +2,6 @@
 
 <h1 class="pagetitle"><%= @user.name %></h1>
 
-<% if itsme %>
-  <p><span class="warning">*</span> anything marked like this is only visible to you and the owners of the site.</p>
-<% end %>
-
 <div class="floatcolumn" style="width: 135px;">
  	<% if @user.image %>
 		<div class="mugshot">
@@ -13,12 +9,12 @@
 		</div>
 	<% else %>
 		<div class="nomugshot">
-			<p><% if itsme %>You haven't <%= link_to "provided a picture", :controller => 'users', :action => 'edit' %> yet.<% else %>No pictures!<% end %></p>
+			<p><% if itsme %>You haven't <%= link_to "provided a picture", :controller => 'users', :action => 'edit', :anchor => 'image' %> yet.<% else %>No pictures!<% end %></p>
 		</div>
 	<% end %>
 	
 	<% if itsme %>
-		<%= link_to 'Edit your description and preferences', {:controller => 'users', :action => 'edit'}, {:class => "edititem"} %>
+		<%= link_to 'Edit your description and preferences', {:controller => 'users', :action => 'edit'}, {:class => "edititem", :anchor => 'description'} %>
 	<% end %>
 </div>
 
@@ -30,32 +26,10 @@
 
 <% if @user.description.nil? || @user.description.size == 0   %>
 	<p>
-		<% if itsme %>You haven't <%= link_to "provided any biog", :controller => 'users',  :action => 'edit' %> yet.<% else %>Not given yet.<% end %>
+		<% if itsme %>You haven't <%= link_to "provided any biog", :controller => 'users', :action => 'edit', :anchor => 'description' %> yet.<% else %>Not given yet.<% end %>
 	</p>
 <% else %>
 	<%= @user.description.formatted %>
-<% end %>
-
-<% if itsme || (editor? && @user.can_login?) %>
-  <h3><%= 'Your ' if itsme %>answers<%= " from #{@user.best_name}" unless itsme %> <span class="warning">*</span></h3>
-  <% if @user.answers.empty? %>
-  	<p>
-  		<% if itsme %>You haven't answered any questions yet.<% else %>None yet.<% end %>
-  	</p>
-  <% else %>
-    <ul class="starry">
-    <%= render :partial => 'answers/minilist', :collection => @user.answers %>
-    </ul>
-  <% end %>
-<% end %>
-
-<% if itsme || (admin? && @user.can_login?) %>
-	<h3><%= 'Your ' if itsme %>subscriptions<%= " belonging to #{@user.best_name}" unless itsme %> <span class="warning">*</span></h3>
-	<% if @user.monitorships.empty? %>
-		<p>You haven't subscribed to any conversations. Click on the 'email notification' link on any discussion (or blog) page to receive email updates when new posts appear.</p>
-	<% else %>
-		<%= render :partial => 'monitorships/list', :collection => @user.monitorships %>
-	<% end %>
 <% end %>
 
 <h3><%= 'Your ' if itsme %>messages<%= " from #{@user.best_name}" unless itsme %></h3>
@@ -65,5 +39,39 @@
 		<% if itsme %>You haven't posted any messages yet.<% else %>None yet.<% end %>
 	</p>
 <% else %>
-  <%= render :partial => 'posts/single', :collection => @user.created_posts %>
+  <ul class="starry">
+    <%= render :partial => 'posts/minilist', :collection => @user.created_posts %>
+  </ul>
+<% end %>
+
+<p class="warning">Other people (apart from the administrators of this site) don't see the rest of this page:</p>
+
+<% if itsme || (editor? && @user.can_login?) %>
+  <h3><%= 'Your ' if itsme %>preferences</h3>
+  
+  <ul class="starry">
+    <li class="<%= @user.receive_questions_email > 0 ? 'ticked' : 'crossed' %>">questions by email</li>
+    <li class="<%= @user.receive_news_email > 0 ? 'ticked' : 'crossed' %>">news and updates by email</li>
+    <li class="<%= @user.receive_html_email > 0 ? 'ticked' : 'crossed' %>">email as html</li>
+    <li class="circled"><%= link_to 'Edit your preferences', {:controller => 'users', :action => 'edit', :anchor => 'preferences'} %></li>
+    
+  </ul>
+
+  <h3><%= 'Your ' if itsme %>answers<%= " from #{@user.best_name}" unless itsme %></h3>
+  <% if @user.answers.empty? %>
+  	<p>
+  		<% if itsme %>You haven't answered any questions yet.<% else %>None yet.<% end %>
+  	</p>
+  <% else %>
+    <ul class="starry">
+    <%= render :partial => 'answers/minilist', :collection => @user.answers %>
+    </ul>
+  <% end %>
+
+	<h3><%= 'Your ' if itsme %>subscriptions<%= " belonging to #{@user.best_name}" unless itsme %> (click to toggle on and off)</h3>
+	<% if @user.monitorships.empty? %>
+		<p>You haven't subscribed to any conversations. Click on the 'email notification' link on any discussion (or blog) page to receive email updates when new posts appear.</p>
+	<% else %>
+		<%= render :partial => 'monitorships/list', :collection => @user.monitorships %>
+	<% end %>
 <% end %>

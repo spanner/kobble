@@ -7,7 +7,7 @@
 
     <h2>
 			<%= link_to( "#{list.name}", {:controller => 'account', :action => 'choosecollection', :id => list}) %>
-      <%= render :partial => 'shared/admin_buttons', :locals => {:item => list} %>
+      <%= render :partial => 'shared/admin_buttons', :locals => {:item => list, :inplace => false} %>
 		</h2>
     <p>
       <% if list.description %><%= truncate( list.description, 240 ) %><br /><% end %>

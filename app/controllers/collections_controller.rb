@@ -7,7 +7,7 @@ class CollectionsController < ApplicationController
   end
 
   # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
-  verify :method => :post, :only => [ :destroy, :create, :update ],
+  verify :method => :post, :only => [ :reallydestroy, :create, :update ],
          :redirect_to => { :action => :list }
 
   def set_context
@@ -59,7 +59,15 @@ class CollectionsController < ApplicationController
   end
 
   def destroy
-    Collection.find(params[:id]).destroy
+    @collection = Collection.find(params[:id])
+    # shows confirmation page
+  end
+
+  def reallydestroy
+    @collection = Collection.find(params[:id])
+    name = @collection.name
+    @collection.destroy
+    flash[:notice] = "#{name} collection removed"
     redirect_to :action => 'list'
   end
 end

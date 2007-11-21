@@ -1,3 +1,3 @@
 <li id="answer_<%= minilist.id %>">
-  <strong>in response to <%= minilist.question.name %>: </strong><%= truncate(minilist.body, 120) %>
+  <%= truncate(minilist.body, 120) %><br /><span class="footnote">in response to <%= minilist.question.name %></span>
 </li>

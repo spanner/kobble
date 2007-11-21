@@ -4,5 +4,5 @@
 	<label for="<%= item.class.to_s.downcase %>_speaker_id">On what occasion was this recorded?<br />
 	  <%= select(item.class.to_s.downcase, "occasion_id", current_collection.occasions.collect{|u| [u.name, u.id] }, {:include_blank => true}, {:class => 'standard'}) %>
 	</label><br />
-	<%= link_to "store a new occasion", {:controller => 'occasions', :action => 'new'}, {:class=>'modalform', :target => "#{item.class.to_s.downcase}_occasion_id"} %>
+	<%= link_to "add a new occasion", {:controller => 'occasions', :action => 'new'}, {:class=>'modalform', :id => "extend_#{item.class.to_s.downcase}_occasion_id"} %>
 </div>

@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 70) do
+ActiveRecord::Schema.define(:version => 72) do
 
   create_table "answers", :force => true do |t|
     t.column "question_id",   :integer
@@ -71,6 +71,7 @@ ActiveRecord::Schema.define(:version => 70) do
     t.column "blog_forum_id",      :integer
     t.column "editorial_forum_id", :integer
     t.column "survey_forum_ud",    :integer
+    t.column "email_from",         :string
   end
 
   create_table "forums", :force => true do |t|
@@ -197,7 +198,6 @@ ActiveRecord::Schema.define(:version => 70) do
     t.column "image",         :string
     t.column "clip",          :string
     t.column "dull",          :integer
-    t.column "send_email",    :integer,  :default => 0
   end
 
   create_table "scraps_scratchpads", :force => true do |t|
@@ -346,6 +346,7 @@ ActiveRecord::Schema.define(:version => 70) do
     t.column "user_group_id",             :integer
     t.column "receive_questions_email",   :integer
     t.column "receive_news_email",        :integer
+    t.column "receive_html_email",        :integer
   end
 
   add_index "users", ["collection_id"], :name => "index_users_on_collection"

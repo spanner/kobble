@@ -17,13 +17,13 @@ class User < ActiveRecord::Base
   has_many :scratchpads
   has_many :warnings
 
-  has_many :created_nodes, :class_name => 'Node', :foreign_key => 'created_by', :conditions => ['collection_id = ?', :current_collection]
-  has_many :created_sources, :class_name => 'Source', :foreign_key => 'created_by', :conditions => ['collection_id = ?', :current_collection]
-  has_many :created_bundles, :class_name => 'Bundle', :foreign_key => 'created_by', :conditions => ['collection_id = ?', :current_collection]
-  has_many :created_blogentries, :class_name => 'Blogentry', :foreign_key => 'created_by', :conditions => ['collection_id = ?', :current_collection]
-  has_many :created_forums, :class_name => 'Forum', :foreign_key => 'created_by', :conditions => ['collection_id = ?', :current_collection]
-  has_many :created_topics, :class_name => 'Topic', :foreign_key => 'created_by', :conditions => ['collection_id = ?', :current_collection]
-  has_many :created_posts, :class_name => 'Post', :foreign_key => 'created_by', :conditions => ['collection_id = ?', :current_collection]
+  has_many :created_nodes, :class_name => 'Node', :foreign_key => 'created_by'
+  has_many :created_sources, :class_name => 'Source', :foreign_key => 'created_by'
+  has_many :created_bundles, :class_name => 'Bundle', :foreign_key => 'created_by'
+  has_many :created_blogentries, :class_name => 'Blogentry', :foreign_key => 'created_by'
+  has_many :created_forums, :class_name => 'Forum', :foreign_key => 'created_by'
+  has_many :created_topics, :class_name => 'Topic', :foreign_key => 'created_by'
+  has_many :created_posts, :class_name => 'Post', :foreign_key => 'created_by'
 
   has_many :monitorships
   has_many :monitored_topics, :through => :monitorships, :conditions => ['monitorships.active = ?', true], :order => 'topics.replied_at desc', :source => :topic
@@ -48,6 +48,8 @@ class User < ActiveRecord::Base
   before_create :make_activation_code
   before_save :encrypt_password
 
+  cattr_accessor :current_collection
+  
   # spoke custom methods
   
   def find_or_create_scratchpads
