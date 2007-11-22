@@ -1,0 +1,36 @@
+<table cellspacing="0" cellpadding="0" summary="Responses to <%= chart.name %>." class="chart">
+  <caption align="top"><%= chart.introduction %></caption>
+  <thead>
+    <tr>
+      <th scope="col"><span class="auraltext">Choice</span> </th>
+      <th scope="col"><span class="auraltext">Millions of US dollars per million people</span> </th>
+    </tr>
+  </thead>
+  <tbody>
+  <%
+    responses = chart.collected_responses
+    max = responses[:max]
+    chart.options.each do |option|
+      o = option.to_s
+      responses[o] = 0 unless responses[o]
+      width = (400 * (responses[o] / responses[:max])) + 5
+  %>
+    <tr>
+      <td>
+      <%= 
+        if (chart.question_type == 'scale' && o == '1') 
+          chart.scalemin
+        elsif  (chart.question_type == 'scale' && o == '8') 
+          chart.scalemax
+        elsif  (chart.question_type == 'scale')
+          ''
+        else
+          o
+        end
+      %>
+      </td>
+      <td class="value"><img src="/images/furniture/charts/bar.png" alt="" width="<%= width.to_i %>" height="16" /><%= responses[o] %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

@@ -39,17 +39,34 @@ class Question < ActiveRecord::Base
   end
   
   def options
-    self.prompt.split('|')
+    if (self.question_type == 'text' || self.question_type == 'number')
+      return ()
+    elsif (self.question_type == 'scale')
+      return (1..8)
+    else
+      self.prompt.split('|')
+    end
   end
   
   def scalemin
-    self.options[0]
+    self.prompt.split('|')[0]
   end
 
   def scalemax
-    self.options[1]
+    self.prompt.split('|')[1]
   end
   
+  def collected_responses
+    responses = {}
+    responses[:max] = 0
+    self.options.each { |o| responses[o.to_s] = 0 }
+    self.answers.each do |a| 
+      responses[a.body].nil? ? responses[a.body] = 1 : responses[a.body] += 1 
+      responses[:max] = responses[a.body] if responses[a.body] > responses[:max]
+    end
+    responses
+  end
+    
   def answer_from(user)
     Answer.find(:first, :conditions => ['created_by = ? and question_id = ?', user.id, self.id])
   end

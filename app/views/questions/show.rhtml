@@ -30,12 +30,12 @@
 <% end %>
 
 <div class="listing">  
-<h2>Answers to this question</h2>
+<h2><%= pluralize(@question.answers.count, "Answer") %> to this question</h2>
 <% if @question.answers.count > 0 %>
   <% if @question.question_type == 'text' %>
-      <%= render :partial => 'answers/list', :collection => @question.answers %>
+    <%= render :partial => 'answers/list', :collection => @question.answers %>
   <% else %>
-    <p>A proper chart will appear here any minute now.</p>
+    <%= render :partial => 'chart', :locals => {:chart => @question} %>
   <% end %>
 <% else %>
   <p class="warning">Nobody has answered this question yet.</p>

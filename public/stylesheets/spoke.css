@@ -1188,6 +1188,7 @@ a.pale, a.pale:visited {
   color: #B2AAA4;
 }
 
+/* tag cloud */
 
 ul.cloud {
   list-style: none; 
@@ -1212,6 +1213,7 @@ a.cloud4 {font-size: 1.8em; color: #85b8d5;}
 a.cloud5 {font-size: 2.1em; color: #71adce;}
 a.cloud6 {font-size: 2.4em;}
 
+/* signals */
 
 div.previewing {
   background-color: #ebc5a5;
@@ -1228,4 +1230,60 @@ div.waiting input {
   visibility: hidden;
 }
 
+/* bar charts thanks to http://www.standards-schmandards.com/exhibits/barchart/ */
 
+table.chart {
+  border-collapse: collapse;
+	background-image:url(/images/furniture/charts/bg_fade.png);
+	background-repeat:repeat-x;
+	background-position:left top;
+	width: 580px;
+}
+
+table.chart td.value {
+	background-image: url(/images/furniture/charts/gridline58.gif);
+	background-repeat: repeat-x;
+	background-position: left top;
+	border-left: 1px solid #e5e5e5;
+	border-right: 1px solid #e5e5e5;
+	padding:0;
+	border-bottom: none;
+	background-color:transparent;
+	width: 500px;
+	color: #695D54;
+}
+
+table.chart td {
+	padding: 4px 6px;
+	border-bottom:1px solid #e5e5e5;
+	border-left:1px solid #e5e5e5;
+	background-color:#fff;
+	width: 80px;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+table.chart td img {
+	vertical-align: middle;
+	margin: 5px 5px 5px 0;
+}
+
+td.last {
+	border-bottom:1px solid #e5e5e5;
+}
+
+td.first {
+	border-top:1px solid #e5e5e5;
+}
+
+.auraltext {
+	position: absolute;
+	font-size: 0;
+	left: -1000px;
+}
+
+caption {
+	font-size:90%;
+	font-style:italic;
+	text-align:left;
+}
