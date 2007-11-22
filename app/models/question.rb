@@ -4,7 +4,8 @@ class Question < ActiveRecord::Base
   belongs_to :creator, :class_name => 'User', :foreign_key => 'created_by'
   belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
   belongs_to :survey
-  belongs_to :user_group      
+
+  has_and_belongs_to_many :user_groups     
 
   has_many :nodes, :dependent => :nullify
   has_many :answers, :dependent => :destroy

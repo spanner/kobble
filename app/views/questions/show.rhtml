@@ -11,6 +11,9 @@
 	
 </div>
 
+<p class="footnote">Addressed to: <% if @question.user_groups.count > 0 %><%= @question.user_groups.collect { |g| link_to (g.name, :controller => 'user_groups', :action => 'show', :id => g) }.join(', ') %><% else %>Everyone<% end %>
+
+
 <%= @question.introduction.formatted %>
 
 <%

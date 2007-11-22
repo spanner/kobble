@@ -45,6 +45,7 @@ class QuestionsController < ApplicationController
     @question = Question.new(params[:question])
     if @question.save
       @question.tags << tags_from_list(params[:tag_list])
+      @question.user_groups = UserGroup.find( params[:user_groups] ) if params[:user_groups]
       flash[:notice] = 'Question was successfully created.'
       redirect_to :action => 'list'
     else
@@ -61,6 +62,7 @@ class QuestionsController < ApplicationController
     if @question.update_attributes(params[:question])
       @question.tags.clear
       @question.tags << tags_from_list(params[:tag_list])
+      @question.user_groups = UserGroup.find( params[:user_groups] )
       flash[:notice] = 'Question was successfully updated.'
       redirect_to :action => 'show', :id => @question
     else

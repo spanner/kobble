@@ -29,9 +29,12 @@
   <%= check_box 'question', 'request_clip' %> Ask for a clip
 </p>
 
-<%= render :partial => 'shared/edit_image', :locals => {:item => @question} %>
+<p><label for="question_user_groups">Who are we asking?</label><br />
+<%= render :partial => 'choose_group', :collection => current_collection.user_groups %>
+<span class="formnote">If no group is specified then we ask everyone.</span>
 
-<%= render :partial => 'shared/edit_group', :locals => {:item => @question} %>
+
+<%= render :partial => 'shared/edit_image', :locals => {:item => @question} %>
 
 <%= render :partial => 'shared/edit_tags', :locals => {:item => @question} %>
 

@@ -3,4 +3,5 @@ class UserGroup < ActiveRecord::Base
   belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
   belongs_to :collection
   has_many :users, :dependent => :nullify
+  has_and_belongs_to_many :questions     
 end
