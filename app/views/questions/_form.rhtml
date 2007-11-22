@@ -21,12 +21,13 @@
 </p>
 
 <p>
-  <%= check_box 'question', 'dull' %> <label for="question_dull">Dull question?</label> (this has implications for question selection and layout)
+  <%= check_box 'question', 'quick' %> <label for="question_quick">Quick question?</label> (this has implications for question selection and layout)
 </p>
 
 <p><label for="question_question_type">Response options</label><br/>
   <%= check_box 'question', 'request_image' %> Ask for an image<br />
-  <%= check_box 'question', 'request_clip' %> Ask for a clip
+  <%= check_box 'question', 'request_clip' %> Ask for a clip<br />
+  <%= check_box 'question', 'allow_other' %> Allow 'other' (if multi-choice or yesno)
 </p>
 
 <p><label for="question_user_groups">Who are we asking?</label><br />

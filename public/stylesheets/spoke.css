@@ -307,6 +307,21 @@ input.bigredbutton {
   font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
 }
 
+textarea.biganswer {
+  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
+  font-size: 14px;
+  line-height: 18px;
+  width: 540px;
+  height: 320px;
+}
+
+input.biganswer {
+  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
+  font-size: 14px;
+  line-height: 18px;
+  width: 540px;
+}
+
 div#hide_synopsis {
 	color: #559DC4;
 }

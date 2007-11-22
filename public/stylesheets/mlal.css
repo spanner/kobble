@@ -130,14 +130,6 @@ a.signup:hover {
   line-height: 18px;
 }
 
-textarea.biganswer {
-  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
-  font-size: 14px;
-  line-height: 18px;
-  width: 540px;
-  height: 320px;
-}
-
 /* signup page */
 
 div#signupnote {

@@ -89,6 +89,7 @@ class QuestionsController < ApplicationController
   def answer
     @question = Question.find(params[:id])
     @answer = Answer.new(params[:answer])
+    @answer.body = params[:other] if @answer.body == 'other' || (@answer.body.size == 0 && params[:other])
     @answer.speaker = current_user
     @answer.question = @question
     if @answer.save

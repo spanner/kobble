@@ -9,7 +9,7 @@
     when "multi"
       ask.options.each do |opt|
         output += radio_button 'answer', 'body', opt
-        output += "#{opt}<br />"
+        output += " #{opt}<br />"
       end
 
     when "scale"
@@ -33,6 +33,12 @@
 
     output
   %> 
+
+  <% if (ask.allow_other && ask.question_type == 'multi') %>
+    <%= radio_button 'answer', 'body', 'other' %> other:<br />
+    <%= text_field_tag 'other', '', {:class => 'biganswer'} %>
+  <% end %>
+
 
   </p>
   
