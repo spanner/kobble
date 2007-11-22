@@ -100,10 +100,12 @@ class AccountController < ApplicationController
     @question = Question.find(params[:id]) if params[:id]
     @question.nil! if @question && @question.collection != current_collection
     
-    @questions = current_user.user_group.nil? ? 
-      Question.find(:all, :order => 'created_at DESC', :conditions => ["questions.collection_id = ? and questions.user_group_id is NULL", current_collection]) : 
-      Question.find(:all, :order => 'created_at DESC', :conditions => ["questions.collection_id = ? and (questions.user_group_id = ? OR questions.user_group_id is NULL)", current_collection, current_user.user_group_id])
-
+    @questions = Question.find(:all, :order => 'created_at DESC', :conditions => ["questions.collection_id = ?", current_collection]);
+    if (current_user.user_group)
+      @questions.reject!{ |q| q.user_groups.count > 0 && !q.has_group?(current_user.user_group) }
+    else 
+      @questions.reject!{ |q| q.user_groups.count > 0 }
+    end
     @question = @questions.select{|q| q.answer_from(current_user).nil? }.first if @question.nil?
     @questions.delete(@question) unless @question.nil?
 
