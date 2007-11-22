@@ -67,6 +67,10 @@ class Question < ActiveRecord::Base
     responses
   end
     
+  def has_group?(group)
+    user_groups.include?(group)
+  end
+  
   def answer_from(user)
     Answer.find(:first, :conditions => ['created_by = ? and question_id = ?', user.id, self.id])
   end

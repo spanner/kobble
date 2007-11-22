@@ -1,11 +1,5 @@
 <table cellspacing="0" cellpadding="0" summary="Responses to <%= chart.name %>." class="chart">
-  <caption align="top"><%= chart.introduction %></caption>
-  <thead>
-    <tr>
-      <th scope="col"><span class="auraltext">Choice</span> </th>
-      <th scope="col"><span class="auraltext">Millions of US dollars per million people</span> </th>
-    </tr>
-  </thead>
+  <caption align="top"><%= truncate(chart.introduction, 120) %></caption>
   <tbody>
   <%
     responses = chart.collected_responses
