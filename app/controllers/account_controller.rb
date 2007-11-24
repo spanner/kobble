@@ -158,6 +158,7 @@ class AccountController < ApplicationController
       flash[:notice] = "Your account has been activated." 
     else
       flash[:error] = "Unable to activate your account. Please check activation code." 
+      redirect_to :controller => '/account', :action => 'index'
     end
   end 
   
