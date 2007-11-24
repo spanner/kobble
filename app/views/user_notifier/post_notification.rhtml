@@ -1,9 +1,4 @@
-<% if @user.receive_html_email %>
-
-
-
-
-<% else %>Hello <%= @user.name %>.
+Hello <%= @user.name %>.
 
 A new comment has been added to the post '<%= @post.topic.title %>' by <%= @post.creator.name %>:
 
@@ -17,5 +12,3 @@ _______________________________________________________________________
 To see the comment in context and to reply, please visit the topic page at <%= @url %>
 
 On that page you will also find the link to switch off this email notification service.
-
-<% end %>
