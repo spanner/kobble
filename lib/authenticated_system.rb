@@ -27,11 +27,10 @@ module AuthenticatedSystem
     
     def current_user=(new_user)
       session[:user] = (new_user.nil? || new_user.is_a?(Symbol)) ? nil : new_user.id
-      @current_user = new_user
-      # this is used while we're logged in to know which threads are new, etc
-      # session[:last_active] = @current_user.last_seen_at
+      @current_user = EditObserver.current_user = new_user
+      Collection.current_collection = User.current_collection = current_collection
       session[:topics] = session[:forums] = {}
-      # update_last_seen_at
+      update_last_seen_at
     end
 
     # handy access to the foreground collection

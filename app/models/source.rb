@@ -9,6 +9,7 @@ class Source < ActiveRecord::Base
   has_many :nodes                     # excerpted to
   has_many :topics, :as => :subject
   
+  file_column :file
   file_column :clip
   file_column :image, :magick => { 
     :versions => { 
@@ -17,12 +18,17 @@ class Source < ActiveRecord::Base
       "preview" => "750x540>" 
     }
   }
-
+  
+  before_save FileCallbacks.new
 
   public 
   
+  def filetype
+    self.file ? self.file_relative_path.split('.').last : nil
+  end
+  
   def has_notes?
-    true unless observations.nil? && emotions.nil? && arising.nil?
+    (observations.nil? || observations.size == 0) && (emotions.nil? || emotions.size == 0) && (arising.nil? || arising.size == 0) ? false : true
   end
 
   def has_tags?
@@ -32,5 +38,5 @@ class Source < ActiveRecord::Base
   def tag_list
     tags.map {|t| t.name }.uniq.join(', ')
   end
-
+  
 end

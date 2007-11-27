@@ -23,7 +23,6 @@ namespace :deploy do
   task :after_update do
     run "ln -s #{shared_path}/assets/node #{current_release}/public/node" 
     run "ln -s #{shared_path}/assets/source #{current_release}/public/source" 
-    run "ln -s #{shared_path}/assets/person #{current_release}/public/person"
     run "ln -s #{shared_path}/assets/blogentry #{current_release}/public/blogentry"
     run "ln -s #{shared_path}/assets/question #{current_release}/public/question"
     run "ln -s #{shared_path}/assets/answer #{current_release}/public/answer"

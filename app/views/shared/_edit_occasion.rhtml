@@ -1,4 +1,4 @@
-<a href="#" class="displaycontrol disappears" id="show_occasion">+ <%= item.new_record? ? 'choose or create' : 'change' %> occasion</a>
+<a href="#" class="displaycontrol" id="show_occasion">+ <%= item.new_record? ? 'choose or create' : 'change' %> occasion</a>
 
 <div id="hide_occasion" class="slideable">
 	<label for="<%= item.class.to_s.downcase %>_speaker_id">On what occasion was this recorded?<br />

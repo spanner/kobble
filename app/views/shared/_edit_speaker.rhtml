@@ -1,4 +1,4 @@
-<a href="#" class="displaycontrol disappears" id="show_speaker">+ <%= item.new_record? ? 'choose or create' : 'amend' %> speaker</a>
+<a href="#" class="displaycontrol" id="show_speaker">+ <%= item.new_record? ? 'choose or create' : 'amend' %> speaker</a>
 
 <div id="hide_speaker" class="slideable">
 	<label for="<%= item.class.to_s.downcase %>_speaker_id">Primary speaker<br />

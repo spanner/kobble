@@ -153,7 +153,7 @@ class AccountController < ApplicationController
     activator = params[:id] || params[:activation_code]
     @user = User.find_by_activation_code(activator) 
     if @user and @user.activate
-      self.current_user = @user
+      current_user = @user
       redirect_to :controller => '/account', :action => 'index'
       flash[:notice] = "Your account has been activated." 
     else

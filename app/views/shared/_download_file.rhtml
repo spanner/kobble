@@ -1,0 +1,4 @@
+<p class="downloadlink">
+  <%= link_to image_tag("/images/furniture/icons/#{item.filetype}.gif"), url_for_file_column(item.class.to_s.downcase, "file") %> 
+  <%= link_to File.basename(item.file_relative_path), url_for_file_column(item.class.to_s.downcase, "file") %>
+</p>

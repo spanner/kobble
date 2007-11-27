@@ -3,61 +3,57 @@
 	<h1 class="pagetitle"><%= @source.name %></h1>
 </div>
 
-<div id="margin" class="floatcolumn" style="width: 175px;">
-
-	<%= render :partial => 'shared/show_circumstances', :locals => {:item => @source} %>
-
-	<%= render :partial => 'shared/show_image', :locals => {:item => @source} %>
-
-	<%= render :partial => 'shared/show_nodes', :locals => {:item => @source} %>
-	
-	<%= render :partial => 'shared/show_field_notes', :locals => {:item => @source} %>
-
-	<%= render :partial => 'shared/show_tags', :locals => {:item => @source} %>
-
-	<%= render :partial => 'shared/show_topics', :locals => {:item => @source} %>
-	
-	<% if editor? %>
-		<h2>
-			<a href="#" class="displaycontrol editor" id="show_admin">+ admin controls</a>
-		</h2>
-    <div class="marginal" id="hide_admin">
-			<%= link_to 'extract fragment', {:controller => 'nodes', :action => 'new'}, {:class => 'additem snipper'} %>
-			<%= link_to 'edit source', {:action => 'edit', :id => @source}, {:class => 'edititem'} %>
-			<%= link_to 'remove source', {:action => 'destroy', :id => @source}, {:class => 'removeitem', :confirm => "do you really want to completely get rid of #{@source.name}?"} %>
-			<%= link_to 'upload another source', {:action => 'new'}, {:class => 'additem'} %>
-		</div>
-	<% end %>
-</div>
-
-<% unless @source.body.nil? or @source.body.length == 0 %>
-	<h2>
-		<% if ! @source.synopsis.nil? and @source.synopsis.length != 0 %>
-			<a href="#" class="displaycontrol disappears" id="show_synopsis">+ synopsis</a>
-		<% else %>
-			<span class="pale">- synopsis</span>
-		<% end %>
-	</h2>
-	<div class="synopsis" id="hide_synopsis">
-	 	<%= "*synopsis*: 	#{@source.synopsis}".formatted %>
-	</div>
-<% end %>
-
-
-<% if @source.clip %>
-  <%= render :partial => 'shared/player', :locals => {
-    :mp3url => url_for_file_column("source", "clip"),
-  } %>
-
-	<p class="bigp"><%= link_to 'create audio fragment', {:controller => 'nodes', :action => 'new'}, {:class => 'additem snipper'} %></p>
-<% end %>
-
-<% if @source.body.nil? or @source.body.length == 0 %>
-	<div class="synopsis">
-		<%= @source.synopsis.formatted %>
-	</div>
+<% if ! @source.synopsis.nil? and @source.synopsis.length != 0 %>
+	  <%= @source.synopsis.formatted %>
 <% else %>
-	<div class="transcript">
-		<%= @source.body.formatted %>
+  <p>No summary given</p>
+<% end %>
+
+<% if @source.file %>
+  <div class="boxtabs">
+    <a href="#" class="fg">download file</a>
+    <a href="#" class="inactive">audio file</a>
+    <a href="#">circumstances</a>
+    <a href="#">field notes</a>
+    <a href="#">tags</a>
+    <a href="#">admin</a>
+  </div>
+  <div class="boxed">
+
+    <p style="clear:left">This is an uploaded file. You can download the original file here, and for convenience we have extracted whatever (unformatted) text can be found within it.</p>
+    <%= render :partial => 'shared/download_file', :locals => {:item => @source}%>
+  </div>
+
+<% elsif @source.clip %>
+
+  <h2 class="boxlabel">audio file</h2>
+  <div class="boxed">
+    <%= render :partial => 'shared/player', :locals => {
+      :mp3url => url_for_file_column("source", "clip"),
+    } %>
+
+	  <p class="bigp"><%= link_to 'create audio fragment', {:controller => 'nodes', :action => 'new'}, {:class => 'additem snipper'} %></p>
 	</div>
+<% end %>
+
+
+<% if ! @source.body.nil? and @source.body.length != 0 %>
+  <div class="boxtabs">
+    <a href="#" class="fg">text (or transcript)</a>
+    <a href="#">extracted text</a>
+    <a href="#">image</a>
+    <a href="#">fragments</a>
+    <a href="#">discussions</a>
+  </div>
+  <div class="boxed">
+  	<%= @source.body.formatted %>
+  </div>
+  
+<% elsif @source.file && !@source.extracted_text.nil? and @source.extracted_text.length != 0%>
+
+  <h2>extracted text</h2>
+  <div class="boxed">
+  	<%= @source.extracted_text.formatted %>
+  </div>
+
 <% end %>

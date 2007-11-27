@@ -44,12 +44,12 @@
 	  </h2>
 		<p class="description">
 			<% unless topic.subject.nil? %>
-				concerns <%= link_to topic.subject.name, :controller => topic.subject.class.to_s.downcase.pluralize, :action => 'show' %><br />
+				concerns <%= link_to topic.subject.name, :controller => topic.subject.class.to_s.downcase.pluralize, :action => 'show', :id => topic.subject.id %><br />
 			<% end %>
 			<%= pluralize(topic.posts_count-1, 'posts') %>
 			and 
 			<%= pluralize(topic.views, 'views') %><br />
-	    <% if topic.posts_count > 1%>
+	    <% if topic.posts_count > 1 && !topic.replied_by_user.nil? %>
 				latest post: <%= link_to ( "<strong class=\"fn\">#{time_ago_in_words(topic.replied_at)} ago</strong> by #{topic.replied_by_user.name}", topic_path(:forum_id => @forum, :id => topic, :page => topic.last_page, :anchor => "posts-#{topic.last_post_id}"), :class => 'updated' ) %>
 			<% end %>
 		</p>

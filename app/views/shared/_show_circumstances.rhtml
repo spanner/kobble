@@ -3,7 +3,7 @@
 </h2>
 
  <div class="marginal" id="hide_circumstances">
-	<% if item.circumstances.nil? or item.circumstances.length %>
+	<% if item.circumstances.nil? or item.circumstances.length == 0 %>
 		<p>None given</p>
 	<% else %>
 		<%= item.circumstances.formatted %>

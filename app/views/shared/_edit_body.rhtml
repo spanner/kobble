@@ -1,4 +1,4 @@
-<a href="#" class="displaycontrol disappears" id="show_body">+ <%= item.body.nil? ? 'add' : 'edit' %> text or transcript</a>
+<a href="#" class="displaycontrol" id="show_body">+ <%= item.body.nil? ? 'add' : 'edit' %> text or transcript</a>
 
 <div id="hide_body" class="slideable">
 	<label for="<%= item.class.to_s.downcase %>_body">Text (or transcript)</label><br />

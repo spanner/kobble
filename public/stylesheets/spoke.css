@@ -515,9 +515,15 @@ a.minimal {
 
 #navigation a:hover {
   border: 0;
-  background-image:none;
-  color: #559DC4;
+	background-image: url(/images/furniture/layout/orangetabbg.png);
+  color: white;
 }
+
+#navigation a.fg:hover {
+	background-image: none;
+  color: #000;
+}
+
 
 #notification {
   clear: left;
@@ -607,9 +613,14 @@ div.dropcontents {
 }
 
 #scratchtabs a:hover {
-  border:  0;
-  background-image:none;
-  color: #559DC4;
+  border: 0;
+	background-image: url(/images/furniture/layout/uporangetabbg.png);
+  color: white;
+}
+
+#scratchtabs a.fg:hover {
+	background-image: none;
+  color: #fff;
 }
 
 .receptive {
@@ -669,6 +680,68 @@ div.scratchpage li a {
 div.scratchpage li a:hover {
   color: #CC6E1F;
 }
+
+
+div.boxed {
+  border: 1px solid #B2AAA4;
+  padding: 0 15px 5px 15px;
+  margin: -1px 0 32px 0;
+}
+
+div.boxtabs {
+  margin: 0 0 0 7px;
+  padding: 0;
+  height:26px;
+  overflow:hidden;
+}
+
+div.boxtabs a {
+  display: block;
+	float: left;
+  margin: 2px 1px 0 0;
+  padding: 4px 6px 4px 6px;
+  background-color: white;
+  color: #B2AAA4;
+	background-repeat: repeat-x;
+	background-position: bottom left;
+	background-image: url(/images/furniture/layout/upwhitetabbg.png);
+  text-decoration: none;
+  font-size: 12px;
+  height: 16px;
+  line-height: 16px;
+  overflow: hidden;
+  font-family: helvetica, arial, sans;
+  border: 1px solid #B2AAA4;
+}
+
+div.boxtabs a.fg {
+	background-image: none;
+  height: 19px;
+  color: #695D54;
+  margin-top: 0;
+  border-bottom: white;
+}
+
+div.boxtabs a.inactive {
+  color: #B2AAA4;
+}
+
+div.boxtabs a:hover {
+	background-image: url(/images/furniture/layout/uporangetabbg.png);
+  color: white;
+}
+
+div.boxtabs a.fg:hover {
+	background-image: none;
+  color: #695D54;
+}
+
+
+
+
+
+
+
 
 img.logo {
   padding:0;
@@ -1302,3 +1375,16 @@ caption {
 	font-style:italic;
 	text-align:left;
 }
+
+p.downloadlink {
+  font-size: 24px;
+  font-weight: lighter;
+  font-family: HelveticaNeue-Bold, helvetica, arial, sans-serif;
+  font-weight: bold;
+}
+
+p.downloadlink img {
+  float: left;
+  margin: 0 10px 0 0;
+}
+

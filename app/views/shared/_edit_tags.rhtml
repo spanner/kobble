@@ -1,9 +1,7 @@
-<a href="#" class="displaycontrol disappears" id="show_tags">+ <%= item.new_record? ? 'add' : 'edit' %> tags</a>
-
-<div id="hide_tags" class="slideable">
-	<label for="tag_list">Choose or create tags</label><br />
+<p>
+  <label for="tag_list">Choose or create tags</label><br />
 	<input id="tag_list" name="tag_list" class="standard tagbox" value="<%= item.tag_list %>" /><br />
 	<span class="formnote">
 		start typing here and a drop-down list of matching tags will appear. Click the one you want to use, or carry on typing to create a new one.
 	</span>
-</div>
+</p>

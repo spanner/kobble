@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 75) do
+ActiveRecord::Schema.define(:version => 76) do
 
   create_table "answers", :force => true do |t|
     t.column "question_id",   :integer
@@ -138,6 +138,7 @@ ActiveRecord::Schema.define(:version => 75) do
     t.column "question_id",    :integer
     t.column "circumstances",  :text
     t.column "original_text",  :text
+    t.column "file",           :string
   end
 
   add_index "nodes", ["collection_id"], :name => "index_nodes_on_collection"
@@ -234,7 +235,7 @@ ActiveRecord::Schema.define(:version => 75) do
     t.column "speaker_id",    :integer
     t.column "body",          :text
     t.column "clip",          :string
-    t.column "duration",      :integer,  :limit => 10,  :precision => 10, :scale => 0
+    t.column "duration",      :integer,  :limit => 10, :precision => 10, :scale => 0
     t.column "rating",        :integer
     t.column "collection_id", :integer
     t.column "created_by",    :integer
@@ -247,7 +248,7 @@ ActiveRecord::Schema.define(:version => 75) do
     t.column "image",         :string
     t.column "circumstances", :text
     t.column "occasion_id",   :integer
-    t.column "file",          :string,   :limit => 355
+    t.column "file",          :string
   end
 
   add_index "sources", ["collection_id"], :name => "index_sources_on_collection"

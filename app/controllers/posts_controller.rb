@@ -82,7 +82,7 @@ class PostsController < ApplicationController
       format.xml { head :created, :location => formatted_post_url(:forum_id => params[:forum_id], :topic_id => params[:topic_id], :id => @post, :format => :xml) }
     end
   rescue ActiveRecord::RecordInvalid
-    flash[:bad_reply] = 'Please post something at least...'[:post_something_message]
+    flash[:bad_reply] = 'Please post something!'[:post_something_message]
     respond_to do |format|
       format.html do
         redirect_to topic_path(:forum_id => params[:forum_id], :id => params[:topic_id], :anchor => 'reply-form', :page => params[:page] || '1')
