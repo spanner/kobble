@@ -91,8 +91,16 @@ class Question < ActiveRecord::Base
     !self.clip.nil?# and File.file? self.clip
   end
 
-  def has_node?
-    !self.node.nil?
+  def has_nodes?
+    self.nodes.count > 0
+  end
+
+  def has_topics?
+    self.topics.count > 0
+  end
+
+  def has_answers?
+    self.answers.count > 0
   end
 
 end

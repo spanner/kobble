@@ -72,7 +72,7 @@ class AccountController < ApplicationController
       :conditions => limit_to_active_collection, 
       :order => 'created_at DESC', 
       :page => {
-        :size => 6,
+        :size => 5,
         :current => params[:page]
       }
     )

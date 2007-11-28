@@ -35,6 +35,9 @@ class QuestionsController < ApplicationController
 
   def show
     @question = Question.find(params[:id])
+    @answer = Answer.new
+    @answer.speaker = current_user
+    @answer.question = @question
   end
 
   def new

@@ -16,6 +16,14 @@ class BlogentriesController < ApplicationController
 
   def show
     @blogentry = Blogentry.find(params[:id])
+    @blogentries = Blogentry.find(:all, 
+      :conditions => limit_to_active_collection, 
+      :order => 'created_at DESC', 
+      :page => {
+        :size => 5,
+        :current => params[:page]
+      }
+    )
     @forum = current_collection.blog_forum
     @topic = @blogentry.topics.first
     @topic.hit! unless logged_in? and @topic.created_by == current_user

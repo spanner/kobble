@@ -467,6 +467,13 @@ a.minimal {
   color: #559DC4;
 }
 
+div#rightcolumn {
+  width: 135px;
+  float: right;
+  margin: 0 0 20px 30px;
+  font-size: 11px;
+}
+
 #mastfoot {
   position: fixed;
   left: 0;

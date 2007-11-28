@@ -5,50 +5,48 @@
 
 <%= @question.introduction.formatted %>
 
-
-
-
-<div id="margin" class="floatcolumn" style="width: 175px;">
-  
-	<%= render :partial => 'shared/show_image', :locals => {:item => @question} %>
-	<%= render :partial => 'shared/show_tags', :locals => {:item => @question} %>
-	<%= render :partial => 'shared/show_topics', :locals => {:item => @question} %>
-	
+<div class="boxtabs">
+  <a href="#" id="tab_content_details" class="tab">details</a>
+  <a href="#" id="tab_content_preview" class="tab">preview</a>
+  <% if @question.has_image? %><a href="#" id="tab_content_image" class="tab">image</a><% end %>
+  <a href="#" id="tab_content_answers" class="tab">answers</a>
+  <% if @question.has_nodes? %><a href="#" id="tab_content_nodes" class="tab">fragments</a><% end %>
+  <a href="#" id="tab_content_topics" class="tab">discussion</a>
+  <a href="#" id="tab_content_tags" class="tab">tags</a>
+  <a href="#" id="tab_content_tags" class="tab">admin</a>
 </div>
 
-<p class="footnote">Addressed to: <% if @question.user_groups.count > 0 %><%= @question.user_groups.collect { |g| link_to (g.name, :controller => 'user_groups', :action => 'show', :id => g) }.join(', ') %><% else %>Everyone<% end %>
-
-
-
-<%
-  mya = @question.answer_from(current_user) 
-  if mya.nil?
-%>
-  <p><%= link_to "Answer the question", :action => 'ask', :id => @question %></p>
-<% else %>
-  <% if @question.question_type == 'text' %>
-    <p>You've already answered this one. You can <%= link_to "answer it again", :action => 'ask', :id => @question %> if you like.</p>
-  <% else %> 
-    <p class="warning">You've already answered this one and it's a (loosely!) statistical question, so you can only answer it once.</p>
-  <% end %>
-<% end %>
-
-<div class="listing">  
-<h2><%= pluralize(@question.answers.count, "Answer") %> to this question</h2>
-<% if @question.answers.count > 0 %>
-  <% if @question.question_type == 'text' %>
-    <%= render :partial => 'answers/list', :collection => @question.answers %>
-  <% else %>
-    <%= render :partial => 'chart', :locals => {:chart => @question} %>
-  <% end %>
-<% else %>
-  <p class="warning">Nobody has answered this question yet.</p>
-<% end %>
-</div>
-
-<% if @question.nodes.count > 0 %>
-  <div class="listing">  
-  <h2 class="clear">Fragments linked to this question</h2>
-    <%= render :partial => 'nodes/list', :collection => @question.nodes %>
+<div class="boxed" id="box_content">
+  <div id="content_preview">
+	  <%= render :partial => 'ask', :locals => {:ask => @question} %>
   </div>
-<% end %>
+  <div id="content_details">
+    <p>
+      <%= @question.summary %><br />
+      <% if @question.user_groups.count > 0 %>Addressed to: <%= @question.user_groups.collect { |g| link_to (g.name, :controller => 'user_groups', :action => 'show', :id => g) }.join(', ') %><br /><% end %>
+  		by <%= link_to (@question.creator.name, :controller => 'users', :action => 'show', :id => @question.creator) if @question.creator %>.
+		</p>
+  </div>
+	<%= render :partial => 'shared/show_image', :locals => {:item => @question, :tabset=>'content'} %>
+	<%= render :partial => 'shared/show_tags', :locals => {:item => @question, :tabset=>'content'} %>
+	<%= render :partial => 'shared/show_topics', :locals => {:item => @question, :tabset=>'content'} %>
+  <% if @question.has_nodes? %>
+    <div id="content_nodes">
+      <h2 class="boxhead"><%= pluralize(@question.nodes.count, "Fragment") %> associated with this question</h2>
+      <% if @question.nodes.count > 0 %>
+        <%= render :partial => 'nodes/list', :collection => @question.answers %>
+      <% end %>
+    </div>
+  <% end %>
+  <div id="content_answers">
+    <h2 class="boxhead"><%= pluralize(@question.answers.count, "Answer") %> to this question</h2>
+    <% if @question.answers.count > 0 %>
+      <% if @question.question_type == 'text' %>
+        <%= render :partial => 'answers/list', :collection => @question.answers %>
+      <% else %>
+        <%= render :partial => 'chart', :locals => {:chart => @question} %>
+      <% end %>
+    <% end %>
+  </div>
+	<%= render :partial => 'shared/show_admin', :locals => {:item => @question, :tabset=>'content'} %>
+</div>
