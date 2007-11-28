@@ -173,6 +173,18 @@ class User < ActiveRecord::Base
       User.find(:all, :conditions => ["last_seen_at > ?", Time.now.utc-5.minutes])
     end
   
+    def has_description?
+      !self.description.nil? and self.description.length != 0
+    end
+
+    def has_image?
+      !self.image.nil?# and File.file? self.image
+    end
+
+    def has_marks?
+      self.marks.count > 0
+    end
+
   protected
   
     # before filter 
