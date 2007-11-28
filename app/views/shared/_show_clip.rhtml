@@ -1,0 +1,9 @@
+<% if item.has_clip? %>
+  <div id="<%= tabset %>_clip">
+	  <h2 class="boxhead">audio clip</h2>
+    <%= render :partial => 'shared/player', :locals => { :mp3url => url_for_file_column(item.class.to_s.downcase, "clip") } %>
+    <ul class="starry">
+	    <li class="add"><%= link_to 'create audio fragment', {:controller => 'nodes', :action => 'new'}, {:class => 'snipper'} %> (choose start and end times first)</li>
+	  </ul>
+	</div>
+<% end %>

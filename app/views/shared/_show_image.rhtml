@@ -1,11 +1,6 @@
-<h2>
-	<a href="#" class="displaycontrol<% if item.image.nil? %> emptylist<% end %>" id="show_image">+ image</a>
-</h2>
-
-<div class="marginal" id="hide_image">
- 	<% if item.image %>
-		<a href="<%= url_for_file_column(item.class.to_s.downcase, "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column(item.class.to_s.downcase, "image", "slide"), :size => "135x135", :alt => '') %></a>
-	<% else %>
-		<p>No image.</p>
-	<% end %>
-</div>
+<% if item.has_image? %>
+	<div id="<%= tabset %>_image">
+	  <h2 class="boxhead">image</h2>
+  	<%= image_tag(url_for_file_column(item.class.to_s.downcase, "image", "preview"), :alt => '') %>
+	</div>
+<% end %>

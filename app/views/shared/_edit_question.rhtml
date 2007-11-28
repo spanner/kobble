@@ -1,4 +1,4 @@
-<a href="#" class="displaycontrol disappears" id="show_question">+ <%= item.new_record? ? 'choose or create' : 'change' %> question</a>
+<a href="#" class="displaycontrol" id="show_question">+ <%= item.new_record? ? 'choose or create' : 'change' %> question</a>
 
 <div id="hide_question" class="slideable">
 	<label for="<%= item.class.to_s.downcase %>_source_id">In response to:<br />

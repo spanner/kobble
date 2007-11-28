@@ -1,11 +1,13 @@
-<% if this.warnings.length > 0 %>
-  <p class="small warning">
-    <%= render :partial => 'warnings/oneliner', :collection => this.warnings %>
-  </p>
-<% end %>
-
-<% if this.source && this.source.warnings.length > 0 %>
-  <p class="small">
-  <%= render :partial => 'warnings/oneliner', :collection => this.source.warnings %>
-  </p>
+<% if editor? || item.has_warnings? %>
+  <div id="<%= tabset %>_warnings">
+	  <h2 class="boxhead">warnings and other markers</h2>
+    	<ul class="starry">
+    	<% if item.has_warnings? %>
+    		<%= render :partial => "warnings/minilist", :collection => item.warnings %>
+    	<% end %>
+    	<% if editor? %>
+    	  <li class="add"><%= link_to "add a warning to this #{iten.class.to_s.downcase}", '#' %>
+      <% end %>
+    </ul>
+	</div>
 <% end %>

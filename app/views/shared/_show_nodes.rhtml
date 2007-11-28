@@ -1,15 +1,13 @@
-<% if editor? %>
-	<h2>
-		<a href="#" class="displaycontrol<% if item.nodes.empty? %> emptylist<% end %>" id="show_fragments">+ fragments</a>
-	</h2>
-	
-	<div class="marginal" id="hide_fragments">
-		<ul id="nodelist">
-			<% if !item.nodes.empty? %>
-	      <%= render :partial => 'nodes/minilist', :collection => item.nodes %>
-			<% else %>
-				<li class="removewhenfilled">No fragments.</li>
-			<% end %>
-			</ul>
-	</div>
-<% end %>
+<div id="<%= tabset %>_nodes">
+  <h2 class="boxhead">fragments</h2>
+	<ul class="starry">
+	  <li class="add"><%= link_to 'extract a fragment from this', {:controller => 'nodes', :action => 'new'}, {:class => 'snipper'} %> (highlight some text first)</li>
+  </ul>
+  <ul class="starry" id="nodelist">
+    <% if item.nodes.count %>
+      <%= render :partial => 'nodes/minilist', :collection => item.nodes %>
+    <% else %>
+      <li class="removewhenfilled">no fragments yet</li>
+    <% end %>
+  </ul>
+</div>

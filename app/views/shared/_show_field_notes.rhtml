@@ -1,21 +1,14 @@
-<% if current_user.editor? %>
- 	<h2>
-		<a href="#" class="displaycontrol<% unless item.has_notes? %> emptylist<% end %>" id="show_fieldnotes">+ field notes</a>
-	</h2>
-
-  <div class="marginal" id="hide_fieldnotes">
-		<% if item.has_notes? %>
-			<% unless item.observations.nil? %>
-				<%= "*Observations*: #{item.observations}".formatted %>
-			<% end %>
-			<% unless item.emotions.nil? %>
-				<%= "*Emotions*: #{item.emotions}".formatted %>
-			<% end %>
-			<% unless item.arising.nil? %>
-				<%= "*Connections*: #{item.arising}".formatted %>
-			<% end %>
-		<% else %>
-			<p>No field notes.</p>
+<% if item.has_notes? %>
+  <div id="<%= tabset %>_notes">
+	  <h2 class="boxhead">field notes</h2>
+		<% unless item.observations.nil? || item.observations.size == 0 %>
+			<%= "*Observations*: #{item.observations}".formatted %>
+		<% end %>
+		<% unless item.emotions.nil? || item.emotions.size == 0 %>
+			<%= "*Emotions*: #{item.emotions}".formatted %>
+		<% end %>
+		<% unless item.arising.nil? || item.arising.size == 0 %>
+			<%= "*Connections*: #{item.arising}".formatted %>
 		<% end %>
 	</div>
 <% end %>

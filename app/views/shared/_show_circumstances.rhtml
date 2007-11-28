@@ -1,11 +1,6 @@
-<h2>
-	<a href="#" class="displaycontrol<% if item.circumstances.nil? or item.circumstances.length == 0 %> emptylist<% end %>" id="show_circumstances">+ circumstances</a>
-</h2>
-
- <div class="marginal" id="hide_circumstances">
-	<% if item.circumstances.nil? or item.circumstances.length == 0 %>
-		<p>None given</p>
-	<% else %>
-		<%= item.circumstances.formatted %>
-	<% end %>
-</div>
+<% if item.has_circumstances? %>
+  <div id="<%= tabset %>_circumstances">
+	  <h2 class="boxhead">circumstances</h2>
+	  <%= item.circumstances.formatted %>
+	</div>
+<% end %>
