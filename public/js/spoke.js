@@ -130,6 +130,10 @@ window.addEvent('domready', function(){
     });
   });
   
+  $ES('a.tab').each( function (a) {
+    new Tab(a);
+  });
+
   $ES('a.autolink').each( function (a) {
     new AutoLink(a);
   });

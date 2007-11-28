@@ -5,7 +5,7 @@ class Topic < ActiveRecord::Base
   belongs_to :speaker, :class_name => 'User', :foreign_key => 'speaker_id'
   belongs_to :forum, :counter_cache => true
   
-  has_many :monitorships
+  has_many :monitorships, :dependent => :destroy
   has_many :monitors, :through => :monitorships, :conditions => ['monitorships.active = ?', true], :source => :user, :order => 'users.login'
   
   has_many :posts, :order => 'posts.created_at', :dependent => :destroy do

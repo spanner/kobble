@@ -6,14 +6,9 @@ module ActiveRecordExtensions
   # Inspired by http://weblog.jamisbuck.org/2007/1/11/moving-associated-creations-to-the-model
 
   ActiveRecord::Base::ClassMethods.class_eval do
-    def allow_secondary_creation(association)
-      define_method "#new_{association}=" do |data|
-        self.send("create_#{association}", data)
-      end
-      # before_update do |obj|
-      #   obj.send(association).save if obj.instance_variable_get("@update_#{association}_on_save")
-      # end
-    end
+    
+
+
   end
 end
 

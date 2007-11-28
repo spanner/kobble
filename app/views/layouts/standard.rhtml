@@ -17,6 +17,7 @@
   <script type="text/javascript" src="/js/deleteinplace.js"></script>
   <script type="text/javascript" src="/js/autolink.js"></script>
 	<script type="text/javascript" src="/js/tagsuggestion.js"></script>
+	<script type="text/javascript" src="/js/tabs.js"></script>
   <script type="text/javascript" src="/js/spoke.js"></script>
   <link rel="stylesheet" href="/stylesheets/spoke.css" type="text/css" />
   <link rel="stylesheet" href="/stylesheets/slimbox.css" type="text/css" />
@@ -34,8 +35,8 @@
       <a href="/"><img src="/images/furniture/layout/sparklogo.png" width="49" height="39" alt="sparknow" /></a>
     </div>  
           
- 		<% if editor? %>
-	   <div id="navigation">
+	  <div id="navigation">
+    	<% if editor? %>
 	      <% if admin? %><%= link_to 'collections', {:controller => 'collections'}, {:class => (request.parameters[:controller] == 'collections' ? 'fg' : '')} %><% end %>
 	      <%= link_to 'sources', {:controller => 'sources'}, {:class => (request.parameters[:controller] == 'sources' ? 'fg' : '')} %>
 	      <%= link_to 'fragments', {:controller => 'nodes'}, {:class => (request.parameters[:controller] == 'nodes' ? 'fg' : '')} %>
@@ -45,9 +46,9 @@
 	      <%= link_to 'blogs', {:controller => 'blogentries'}, {:class => (request.parameters[:controller] == 'blogentries' ? 'fg' : '')} %>
 	      <%= link_to 'discussion', {:controller => 'forums'}, {:class => (request.parameters[:controller] == 'forums' ? 'fg' : '')} %>
 	      <%= link_to 'questions', {:controller => 'questions'}, {:class => (request.parameters[:controller] == 'questions' ? 'fg' : '')} %>
-	      <%= link_to 'log out', {:controller => 'account', :action => 'logout'} %>
+	      <%= link_to 'log out', {:controller => 'account', :action => 'logout'}, {:class => 'action'} %>
     	<% else %>
-      	<%= link_to 'log out', {:controller => 'account', :action => 'logout'} %>
+      	<%= link_to 'log out', {:controller => 'account', :action => 'logout'}, {:class => 'action'} %>
     	<% end %>
       <div id="notification">
         <%= flash[:notice] %>

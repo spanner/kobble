@@ -1,1 +1,43 @@
-<%= render :partial => @display %>
+<div class="header">
+	<%= render :partial => 'shared/icon', :locals => { :this => @node, :with_caption => false } %>
+	<h1 class="pagetitle"><%= @node.name %></h1>
+</div>
+
+<% if @node.has_synopsis? %>
+	  <%= @node.synopsis.formatted %>
+<% else %>
+  <p>No summary given</p>
+<% end %>
+
+<div class="boxtabs">
+  <% if @node.has_file? %><a href="#" id="tab_descriptive_file" class="tab">download file</a><% end %>
+  <% if @node.has_clip? %><a href="#" id="tab_descriptive_clip" class="tab">audio file</a><% end %>
+  <% if @node.has_origins? %><a href="#" id="tab_descriptive_origins" class="tab">origins</a><% end %>
+  <% if @node.has_notes? %><a href="#" id="tab_descriptive_notes" class="tab">field notes</a><% end %>
+  <% if @node.has_tags? %><a href="#" id="tab_descriptive_tags" class="tab">tags</a><% end %>
+  <a href="#" id="tab_descriptive_topics" class="tab">discussions</a>
+  <% if editor? %><a href="#" id="tab_descriptive_admin" class="tab">admin</a><% end %>
+</div>
+
+<div class="boxed" id="box_descriptive">
+  <%= render :partial => 'shared/show_file', :locals => {:item => @node, :tabset => 'descriptive'} %>
+  <%= render :partial => 'shared/show_clip', :locals => {:item => @node, :tabset => 'descriptive'} %>
+  <%= render :partial => 'shared/show_origins', :locals => {:item => @node, :tabset => 'descriptive'} %>
+  <%= render :partial => 'shared/show_field_notes', :locals => {:item => @node, :tabset => 'descriptive'} %>
+  <%= render :partial => 'shared/show_tags', :locals => {:item => @node, :tabset => 'descriptive'} %>
+  <%= render :partial => 'shared/show_admin', :locals => {:item => @node, :with_snip => false, :tabset => 'descriptive'} %>
+  <%= render :partial => 'shared/show_topics', :locals => {:item => @node, :tabset => 'descriptive'} %>
+</div>
+
+<div class="boxtabs">
+  <% if @node.has_body? %><a href="#" id="tab_content_body" class="tab">formatted text</a><% end %>
+  <% if @node.has_body? %><a href="#" id="tab_content_raw" class="tab">textile</a><% end %>
+  <% if @node.has_extracted_text? %><a href="#" id="tab_content_extracted" class="tab">extracted text</a><% end %>
+  <% if @node.has_image? %><a href="#" id="tab_content_image" class="tab">image</a><% end %>
+</div>
+
+<div class="boxed" id="box_content">
+  <%= render :partial => 'shared/show_body', :locals => {:item => @node, :tabset => 'content'} %>
+  <%= render :partial => 'shared/show_extracted', :locals => {:item => @node, :tabset => 'content'} %>
+  <%= render :partial => 'shared/show_image', :locals => {:item => @node, :tabset => 'content'} %>
+</div>

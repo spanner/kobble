@@ -25,9 +25,11 @@
 <%= %>
 
 <div id="mlalheader">
+  <div id="masthead">
 	<h1>
 		<%= current_collection.name %> <span class="bright"><%= @pagetitle %></span>
 	</h1>
+  </div>
 	<div id="mlalnavigation">
 		<%= link_to 'welcome', '/', {:class => @pagetitle == 'welcome' ? 'fg' : ''} %>
 		<%= link_to 'background', '/background', {:class => @pagetitle == 'background' ? 'fg' : ''} %>

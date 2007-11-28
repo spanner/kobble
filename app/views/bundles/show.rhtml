@@ -1,15 +1,38 @@
 <%= render :partial => 'header' %>
 
-<% if !@bundle.body.nil? && @bundle.body != @bundle.synopsis %>
-	<div style="clear: both">
-		<%= @bundle.body.formatted %>
-	</div>
+<% if @bundle.has_synopsis? %>
+	  <%= @bundle.synopsis.formatted %>
+<% else %>
+  <p>No summary given</p>
 <% end %>
 
-<div id="bundle_<%= @bundle.id %>" class="setdrop" style="clear:both;">
-	<div class="dropcontents">
-		<%= render :partial => 'contents' %>
-	</div>
-	<h2 class="clear pale">Drag items into or out of this space to edit the set.</h2>
+<div class="boxtabs">
+  <a href="#" id="tab_content_members" class="tab">set members</a>
+  <% if @bundle.has_body? %><a href="#" id="tab_content_body" class="tab">formatted text</a><% end %>
+  <% if @bundle.has_body? %><a href="#" id="tab_content_raw" class="tab">textile</a><% end %>
+  <% if @bundle.has_image? %><a href="#" id="tab_content_image" class="tab">image</a><% end %>
+  <a href="#" id="tab_content_topics" class="tab">discussions</a>
+  <% if editor? %><a href="#" id="tab_content_admin" class="tab">admin</a><% end %>
 </div>
 
+
+<div class="boxed" id="box_content">
+
+  <div id="content_members">
+    
+    <h2 class="boxhead">set members</h2>
+	  
+    <div id="bundle_<%= @bundle.id %>" class="setdrop">
+    	<div class="dropcontents">
+    		<%= render :partial => 'contents' %>
+    	</div>
+    	<h2 class="clear pale">Drag items into or out of this space to edit the set.</h2>
+    </div>
+  </div>
+    
+  <%= render :partial => 'shared/show_body', :locals => {:item => @bundle, :tabset => 'content'} %>
+  <%= render :partial => 'shared/show_image', :locals => {:item => @bundle, :tabset => 'content'} %>
+  <%= render :partial => 'shared/show_topics', :locals => {:item => @bundle, :tabset => 'content'} %>
+  <%= render :partial => 'shared/show_admin', :locals => {:item => @bundle, :with_snip => false, :tabset => 'content'} %>
+
+</div>

@@ -36,7 +36,10 @@
   // we disappear the form and stick a waiter in the node list
   page_waiting: function (argument) {
     this.waiting(); 
-    slides['hide_fragments'].slideIn();
+//    slides['hide_fragments'].slideIn();
+
+    if (tabsets['content']) tabsets['content'].select('nodes');
+    
     var nodelist = $E('ul#nodelist');
     this.waiter = new Element('li', {'class': 'waiter'}).injectTop(nodelist);
     this.hide();

@@ -50,7 +50,7 @@ a, a:link, a:visited {
 }
 
 a:hover {
-  color:#559DC4;
+  color:#CC6E1F;
 }
 
 .hide, .hidden {
@@ -277,22 +277,24 @@ ul.starry {
   font-size: 16px;
   list-style-image: url(/images/furniture/icons/listicon_blue.png);
   padding: 0 0 0 24px;
+  color: #695D54;
 }
 
-ul.starry li.ticked {
-  list-style-image: url(/images/furniture/buttons/tick.png);
-  color: #6cb262;
+ul.starry li.waiting {
+  list-style-image: url(/images/furniture/signals/wait_16_grey.gif);
+  color: #695D54;
 }
 
-ul.starry li.crossed {
-  list-style-image: url(/images/furniture/buttons/cross.png);
-  color: #ef4447;
-}
-
-ul.starry li.circled {
-  list-style-image: url(/images/furniture/buttons/circle.png);
-  color: #559DC4;
-}
+ul.starry li.add { list-style-image: url(/images/furniture/buttons/plus.png); }
+ul.starry li.add a { color: #6cb262; }
+ul.starry li.delete { list-style-image: url(/images/furniture/buttons/cross.png);}
+ul.starry li.delete a { color: #ef4447; }
+ul.starry li.edit { list-style-image: url(/images/furniture/buttons/circle.png); }
+ul.starry li.edit a { color: #559DC4; }
+ul.starry li.ticked { list-style-image: url(/images/furniture/buttons/tick.png); }
+ul.starry li.ticked a { color: #6cb262; }
+ul.starry li.crossed { list-style-image: url(/images/furniture/buttons/cross.png); }
+ul.starry li.crossed a { color: #ef4447; }
 
 input.editinplace, textarea.editinplace, select.editinplace {
   background-color: #559DC4;
@@ -524,6 +526,10 @@ a.minimal {
   color: #000;
 }
 
+#navigation a.action:hover {
+	background-image: url(/images/furniture/layout/redtabbg.png);
+}
+
 
 #notification {
   clear: left;
@@ -539,19 +545,7 @@ div.player {
 	margin: 20px 0 20px 0;
 }
 
-div.setdrop {
-	width: 700px;
-	border: 1px solid #B2AAA4;
-	padding: 0;
-	margin: 0;
-}
-
-div.setdrop h2 {
-  margin: 10px;
-}
-
 div.dropcontents {
-	padding: 8px 20px;
 	min-height: 200px;
 }
 
@@ -681,18 +675,22 @@ div.scratchpage li a:hover {
   color: #CC6E1F;
 }
 
-
 div.boxed {
   border: 1px solid #B2AAA4;
   padding: 0 15px 5px 15px;
   margin: -1px 0 32px 0;
+/*  overflow: hidden;*/
+}
+
+.boxhead {
+  color: #B2AAA4;
 }
 
 div.boxtabs {
   margin: 0 0 0 7px;
   padding: 0;
   height:26px;
-  overflow:hidden;
+  overflow: hidden;
 }
 
 div.boxtabs a {

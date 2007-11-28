@@ -3,57 +3,44 @@
 	<h1 class="pagetitle"><%= @source.name %></h1>
 </div>
 
-<% if ! @source.synopsis.nil? and @source.synopsis.length != 0 %>
+<% if @source.has_synopsis? %>
 	  <%= @source.synopsis.formatted %>
 <% else %>
   <p>No summary given</p>
 <% end %>
 
-<% if @source.file %>
-  <div class="boxtabs">
-    <a href="#" class="fg">download file</a>
-    <a href="#" class="inactive">audio file</a>
-    <a href="#">circumstances</a>
-    <a href="#">field notes</a>
-    <a href="#">tags</a>
-    <a href="#">admin</a>
-  </div>
-  <div class="boxed">
+<div class="boxtabs">
+  <% if @source.has_file? %><a href="#" id="tab_descriptive_file" class="tab">download file</a><% end %>
+  <% if @source.has_clip? %><a href="#" id="tab_descriptive_clip" class="tab">audio file</a><% end %>
+  <% if @source.has_circumstances? %><a href="#" id="tab_descriptive_circumstances" class="tab">circumstances</a><% end %>
+  <% if @source.has_notes? %><a href="#" id="tab_descriptive_notes" class="tab">field notes</a><% end %>
+  <% if editor? || @source.has_tags? %><a href="#" id="tab_descriptive_tags" class="tab">tags</a><% end %>
+  <a href="#" id="tab_descriptive_topics" class="tab">discussions</a>
+  <% if editor? %><a href="#" id="tab_descriptive_admin" class="tab">admin</a><% end %>
+</div>
 
-    <p style="clear:left">This is an uploaded file. You can download the original file here, and for convenience we have extracted whatever (unformatted) text can be found within it.</p>
-    <%= render :partial => 'shared/download_file', :locals => {:item => @source}%>
-  </div>
+<div class="boxed" id="box_descriptive">
+  <%= render :partial => 'shared/show_file', :locals => {:item => @source, :tabset => 'descriptive'} %>
+  <%= render :partial => 'shared/show_clip', :locals => {:item => @source, :tabset => 'descriptive'} %>
+  <%= render :partial => 'shared/show_circumstances', :locals => {:item => @source, :tabset => 'descriptive'} %>
+  <%= render :partial => 'shared/show_field_notes', :locals => {:item => @source, :tabset => 'descriptive'} %>
+  <%= render :partial => 'shared/show_tags', :locals => {:item => @source, :tabset => 'descriptive'} %>
+  <%= render :partial => 'shared/show_admin', :locals => {:item => @source, :with_snip => true, :tabset => 'descriptive'} %>
+  <%= render :partial => 'shared/show_topics', :locals => {:item => @source, :tabset => 'descriptive'} %>
+</div>
 
-<% elsif @source.clip %>
+<div class="boxtabs">
+  <% if @source.has_body? %><a href="#" id="tab_content_body" class="tab">formatted text</a><% end %>
+  <% if @source.has_body? %><a href="#" id="tab_content_raw" class="tab">textile</a><% end %>
+  <% if @source.has_extracted_text? %><a href="#" id="tab_content_extracted" class="tab">extracted text</a><% end %>
+  <% if @source.has_image? %><a href="#" id="tab_content_image" class="tab">image</a><% end %>
+  <a href="#" id="tab_content_nodes" class="tab">fragments</a>
+</div>
 
-  <h2 class="boxlabel">audio file</h2>
-  <div class="boxed">
-    <%= render :partial => 'shared/player', :locals => {
-      :mp3url => url_for_file_column("source", "clip"),
-    } %>
-
-	  <p class="bigp"><%= link_to 'create audio fragment', {:controller => 'nodes', :action => 'new'}, {:class => 'additem snipper'} %></p>
-	</div>
-<% end %>
-
-
-<% if ! @source.body.nil? and @source.body.length != 0 %>
-  <div class="boxtabs">
-    <a href="#" class="fg">text (or transcript)</a>
-    <a href="#">extracted text</a>
-    <a href="#">image</a>
-    <a href="#">fragments</a>
-    <a href="#">discussions</a>
-  </div>
-  <div class="boxed">
-  	<%= @source.body.formatted %>
-  </div>
+<div class="boxed" id="box_content">
+  <%= render :partial => 'shared/show_body', :locals => {:item => @source, :tabset => 'content'} %>
+  <%= render :partial => 'shared/show_extracted', :locals => {:item => @source, :tabset => 'content'} %>
+  <%= render :partial => 'shared/show_image', :locals => {:item => @source, :tabset => 'content'} %>
+  <%= render :partial => 'shared/show_nodes', :locals => {:item => @source, :tabset => 'content'} %>
+</div>
   
-<% elsif @source.file && !@source.extracted_text.nil? and @source.extracted_text.length != 0%>
-
-  <h2>extracted text</h2>
-  <div class="boxed">
-  	<%= @source.extracted_text.formatted %>
-  </div>
-
-<% end %>

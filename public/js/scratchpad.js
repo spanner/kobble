@@ -127,7 +127,7 @@ var PadDropzone = Dropzone.extend({
 		this.addPages($ES('div.scratchpage'), this.container);
 		var fx = this.container.effects({duration: 1000, transition: Fx.Transitions.Cubic.easeOut});
 		this.container.addEvents({
-      'expand' : function() { fx.start({'height': window.innerHeight-10, 'width': 400}); },
+      'expand' : function() { fx.start({'height': window.getHeight()-10, 'width': 400}); },
       'contract' : function() { fx.start({'height': 127, 'width': 200}); }
     });
 	},
@@ -217,6 +217,7 @@ var Scratchpage = new Class({
 		this.waiter = $E('li.waiting', element).hide();
 		this.tab = $E('a#tab_' + this.tag);
 		this.tab.addEvent('click', function (e) { 
+		  e = new Event(e).stop();
 			e.preventDefault();
 			scratchpage.hideRename();
 			scratchpad.tabClick(element.id); 
@@ -289,7 +290,7 @@ var Scratchpage = new Class({
   	  var scratchpage = this;
   		new Ajax(url, {
   			method: 'get',
-  			update: scratchpage.list,
+  			update: scratchpage.list
   		}).request();
     }
 	},
@@ -347,7 +348,7 @@ var Draggee = new Class({
 	explode: function (removed) {
     // console.log('explode')
 	  new Fx.Styles(removed, {
-			duration:600,
+			duration:600
 		}).start({ 
 			'opacity': 0,
 			'width': 0,
@@ -394,7 +395,7 @@ var Draggee = new Class({
 	notWaiting: function () { this.appearance('normal') },
 	lookNormal: function () { this.appearance('normal') },
 	lookDroppable: function () { this.appearance('droppable') },
-	lookDeletable: function () { this.appearance('deletable') },
+	lookDeletable: function () { this.appearance('deletable') }
 });
 
 

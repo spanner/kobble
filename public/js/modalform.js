@@ -210,16 +210,15 @@ var Snipper = ModalForm.extend ({
   // we disappear the form and stick a waiter in the node list
   page_waiting: function (argument) {
     this.waiting(); 
-    slides['hide_fragments'].slideIn();
     var nodelist = $E('ul#nodelist');
-    this.waiter = new Element('li', {'class': 'waiter'}).injectTop(nodelist);
+    this.waiter = new Element('li', {'class': 'waiting'}).setText('please wait').injectTop(nodelist);
+    if (tabsets['content']) tabsets['content'].select('nodes');
     this.hide();
   },
   
   // this is called upon final response to the form
   // we remove the waiter, insert into the node list and make the new insertion draggable
   page_update: function () {
-    $E('a#show_fragments').removeClass('emptylist');
     var nodelist = this.target();
     var newnode = this.responseholder.getFirst();
     this.waiter.remove();

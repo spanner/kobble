@@ -20,14 +20,21 @@ div#mlalheader {
   padding: 0;
 }
 
-div#mlalheader h1 {
-  width: 540px;
-  margin: 18px auto;
-  line-height: 1.1;
-  font-size: 20px;
+div#masthead {
+  left: 0;
+  right: 0;
+  height: 60px;
+  overflow: hidden;
 }
 
-div#mlalheader h1 span.bright {
+div#masthead h1 {
+  line-height: 1.1;
+  font-size: 20px;
+  width: 540px;
+  margin: 18px auto;
+}
+
+div#masthead h1 span.bright {
   color: white;
 }
 
