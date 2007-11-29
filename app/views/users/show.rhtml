@@ -43,7 +43,7 @@
 
   <% if @user.has_posts? %>
     <div id="content_posts">
-      <h2 class="boxhead"><%= pluralize(@user.posts.count, "Comment") %></h2>
+      <h2 class="boxhead">has made <%= pluralize(@user.posts.count, "Comment") %></h2>
     	<ul class="starry">
     		<%= render :partial => "posts/minilist", :collection => @user.posts %>
       </ul>
@@ -52,7 +52,7 @@
 
   <% if @user.has_answers? %>
     <div id="content_answers">
-      <h2 class="boxhead"><%= pluralize(@user.answers.count, "Answer") %></h2>
+      <h2 class="boxhead">has provided <%= pluralize(@user.answers.count, "Answer") %></h2>
     	<ul class="starry">
     		<%= render :partial => "answers/minilist", :collection => @user.answers %>
       </ul>
@@ -61,16 +61,16 @@
 
   <% if @user.has_sources? %>
     <div id="content_sources">
-      <h2 class="boxhead"><%= pluralize(@user.sources.count, "Source document") %></h2>
+      <h2 class="boxhead">speaks in <%= pluralize(@user.sources.count, "Source document") %></h2>
     	<ul class="starry">
-    		<%= render :partial => "answers/minilist", :collection => @user.sources %>
+    		<%= render :partial => "sources/minilist", :collection => @user.sources %>
       </ul>
     </div>
   <% end %>
 
   <% if @user.has_nodes? %>
     <div id="content_nodes">
-      <h2 class="boxhead"><%= pluralize(@user.nodes.count, "Fragment") %></h2>
+      <h2 class="boxhead">speaks in <%= pluralize(@user.nodes.count, "Fragment") %></h2>
     	<ul class="starry">
     		<%= render :partial => "nodes/minilist", :collection => @user.nodes %>
       </ul>

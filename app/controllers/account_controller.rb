@@ -135,15 +135,29 @@ class AccountController < ApplicationController
     @pagetitle = 'signup'
     @user = User.new(params[:user])
     return unless request.post?
-    @user.save!
+    @user.status = 0
     @user.collection = current_collection
-    @user.save
+    @user.save!
     session[:user] = @user.id
     self.current_user = @user
     session[:topics] = session[:forums] = {}
     flash[:notice] = "Registration processed."
     redirect_to :controller => '/account', :action => 'index'
   rescue ActiveRecord::RecordInvalid
+    @known_user = User.find_by_email(@user.email)
+    render :action => 'signup'
+  end
+  
+  def promote
+    @user = User.find(params[:id]) if (params[:id])                 # email holder can promote non-login account
+    if @user.nil? || @user.can_login?                               # can't promote an account that can already log in (or that doesn't exist)
+      redirect_to :action => 'signup' and return
+    end
+    @user.update_attributes(params[:user])
+    @user.just_promoted = true
+    redirect_to :controller => '/account', :action => 'index'
+  rescue ActiveRecord::RecordInvalid
+    @known_user = @user
     render :action => 'signup'
   end
   

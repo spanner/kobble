@@ -2,9 +2,10 @@ require 'digest/sha1'
 
 class User < ActiveRecord::Base
   attr_protected :activated_at
-  attr_accessor :password
+  # attr_accessor :password
   attr_accessor :password_confirmation
   attr_accessor :old_password
+  attr_accessor :just_promoted
 
   belongs_to :creator, :class_name => 'User', :foreign_key => 'created_by'
   belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
@@ -62,7 +63,7 @@ class User < ActiveRecord::Base
   end
 
   def can_login?
-    status >= 0 and !login.nil? and login != '' and !email.nil?
+    status > 0 and !login.nil? and login != '' and !email.nil?
   end
 
   def editor?
@@ -88,6 +89,7 @@ class User < ActiveRecord::Base
 
   def activate
     @activated = true
+    self.status = 10
     self.last_login = self.activated_at = Time.now.utc
     self.activation_code = nil
     self.save!

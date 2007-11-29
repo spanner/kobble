@@ -10,6 +10,7 @@ class UserObserver < ActiveRecord::Observer
 
   def after_save(user)
     if (!user.email.nil? && user.can_login?) then
+      UserNotifier.deliver_signup_notification(user, Collection.current_collection) if user.just_promoted
       UserNotifier.deliver_activation(user, Collection.current_collection) if user.recently_activated?
     end
   end

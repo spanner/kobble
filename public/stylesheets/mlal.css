@@ -143,22 +143,35 @@ a.signup:hover {
 div#signupnote {
 }
 
-div#mainform {
+div.mainform {
+  border: 1px solid #695D54;
+  padding: 0 16px 16px 16px;
+	background-image: url(/images/furniture/layout/greyfade.jpg);
+	background-position: top left;
+	background-repeat: repeat-x;
 }
 
-div#mainform input, div#mainform select {
-	width: 540px;
-	line-height: 16px;
+input.friendly, select.friendly, textarea.friendly {
+	width: 500px;
+  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
+/*  color: #695D54;*/
+  font-size: 18px;
+  line-height: 22px;
 }
 
-div#mainform label  {
+input.friendly, select.friendly {
+/*  height: 22px;*/
+}
+
+div.mainform label  {
 	display: block;
-	width: 540px;
-	height: 16px;
+	width: 500px;
+	font-size: 12px;
 	line-height: 16px;
+	font-weight: bold;
 }
 
-div#mainform p {
+div.mainform p {
 	margin-bottom: 0;
 }
 
@@ -192,7 +205,6 @@ div.fieldWithErrors input {
 
 p.haserror {
 	color: #ff3e15;
-	font-weight: bold;
 }
 
 div.editlinks {
