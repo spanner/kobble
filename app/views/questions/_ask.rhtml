@@ -58,10 +58,6 @@
     </p>
   <% end %>
 
-  <% if editor? %>
-    <%= render :partial => 'shared/edit_speaker', :locals => {:item => @answer} %>
-  <% end %>
-    
   <%= submit_tag "submit answer" %>
   
 <%= end_form_tag %>

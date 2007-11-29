@@ -23,4 +23,10 @@
 	
 </div>
 
-<%= render :partial => 'topics/comments', :locals => {:omit_first => true} %>
+<% if activated? %>
+  <%= render :partial => 'topics/comments', :locals => {:omit_first => true} %>
+<% elsif @topic.posts.count > 1 %>
+  <p class="bigp">This blog entry has <%= pluralize(@topic.posts.count-1, 'comment') %>. Please <%= link_to 'sign up', '/signup' %> or <%= link_to 'log in', '/login' %> to join the discussion.</p>
+<% else %>
+  <p class="bigp">Please <%= link_to 'sign up', '/signup' %> or <%= link_to 'log in', '/login' %> to add a comment.</p>
+<% end %>

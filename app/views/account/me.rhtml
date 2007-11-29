@@ -34,13 +34,13 @@
 
 <h3><%= 'Your ' if itsme %>messages<%= " from #{@user.best_name}" unless itsme %></h3>
 
-<% if @user.created_posts.empty? %>
+<% if @user.posts.empty? %>
 	<p>
 		<% if itsme %>You haven't posted any messages yet.<% else %>None yet.<% end %>
 	</p>
 <% else %>
   <ul class="starry">
-    <%= render :partial => 'posts/minilist', :collection => @user.created_posts %>
+    <%= render :partial => 'posts/minilist', :collection => @user.posts %>
   </ul>
 <% end %>
 

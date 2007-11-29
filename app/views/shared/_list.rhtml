@@ -16,7 +16,7 @@
 </h1>
 
 <% if editor? %>
-	<p class="clear"><%= link_to  "Add a new #{listedtype.singularize}", {:action => 'new'}, {:class => 'additem'} %></p>
+	<p class="clearleft"><%= link_to  "Add a new #{listedtype.singularize}", {:action => 'new'}, {:class => 'additem'} %></p>
 <% end %>
 
 <% if list && list.size > 0 %>

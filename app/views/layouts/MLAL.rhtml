@@ -34,9 +34,9 @@
 		<%= link_to 'welcome', '/', {:class => @pagetitle == 'welcome' ? 'fg' : ''} %>
 		<%= link_to 'background', '/background', {:class => @pagetitle == 'background' ? 'fg' : ''} %>
 		<%= link_to 'faq', '/faq', {:class => @pagetitle == 'faq' ? 'fg' : ''} %>
+		<%= link_to 'blog', '/blog', {:class => @pagetitle == 'blog' ? 'fg' : ''} %>
 		<% if logged_in? %>
 			<% inactive_class = activated? ? '' : 'dim' %>
-			<%= link_to 'blog', '/blog', {:class => @pagetitle == 'blog' ? 'fg' : inactive_class} %>
 			<%= link_to 'discussion', '/discussion', {:class => @pagetitle == 'discussion' ? 'fg' : inactive_class} %>
 			<%= link_to 'questions', '/survey', {:class => @pagetitle == 'survey' ? 'fg' : inactive_class} %>
 

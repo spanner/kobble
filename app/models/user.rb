@@ -16,6 +16,7 @@ class User < ActiveRecord::Base
   has_many :answers, :class_name => 'Answer', :foreign_key => 'speaker_id'
   has_many :scratchpads
   has_many :warnings
+  has_many :posts, :class_name => 'Post', :foreign_key => 'created_by'
 
   has_many :created_nodes, :class_name => 'Node', :foreign_key => 'created_by'
   has_many :created_sources, :class_name => 'Source', :foreign_key => 'created_by'
@@ -23,7 +24,6 @@ class User < ActiveRecord::Base
   has_many :created_blogentries, :class_name => 'Blogentry', :foreign_key => 'created_by'
   has_many :created_forums, :class_name => 'Forum', :foreign_key => 'created_by'
   has_many :created_topics, :class_name => 'Topic', :foreign_key => 'created_by'
-  has_many :created_posts, :class_name => 'Post', :foreign_key => 'created_by'
 
   has_many :monitorships
   has_many :monitored_topics, :through => :monitorships, :conditions => ['monitorships.active = ?', true], :order => 'topics.replied_at desc', :source => :topic
@@ -183,6 +183,22 @@ class User < ActiveRecord::Base
 
     def has_marks?
       self.marks.count > 0
+    end
+
+    def has_nodes?
+      self.nodes.count > 0
+    end
+
+    def has_sources?
+      self.sources.count > 0
+    end
+
+    def has_answers?
+      self.answers.count > 0
+    end
+    
+    def has_posts?
+      self.posts.count > 0
     end
 
   protected

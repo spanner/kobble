@@ -1,75 +1,83 @@
 <% itsme = (current_user.id == @user.id) -%>
 
-
-<div class="floatcolumn" style="width: 135px;">
- 	<% if @user.image %>
-		<div class="mugshot">
-			<a href="<%= url_for_file_column('user', "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column('user', "image", "slide"), :size => "135x135", :alt => '') %></a>
-		</div>
-	<% else %>
-		<div class="nomugshot">
-			<p><% if itsme %>You haven't <%= link_to "provided a picture", :action => 'edit' %> yet.<% else %>No pictures!<% end %></p>
-		</div>
-	<% end %>
-
-	<% if editor? %>
-		<%= render :partial => 'activity', :locals => {:item => @user} %>
-		<%= render :partial => 'shared/show_tags', :locals => {:item => @user} %>
-		<%= render :partial => 'shared/show_admin', :locals => {:item => @user} %>
-	<% end %>
-	
-	<% if itsme %>
-		<%= link_to 'Edit your description and preferences', {:action => 'edit'}, {:class => "edititem"} %>
-	<% end %>
+<div class="header" id="header_source_<%= @user.id %>">
+	<%= render :partial => 'shared/icon', :locals => { :this => @user, :with_caption => false } %>
+	<h1 class="pagetitle"><%= @user.name %></h1>
 </div>
 
-<h1 class="pagetitle"><%= @user.name %></h1>
-
-<p>
-<% if @user.can_login? %>
-	last here: <%= @user.logged_in_at.nil? ? 'never' : time_ago_in_words(@user.logged_in_at) %><br />
+<% if @user.has_description? %>
+	  <%= @user.description.formatted %>
 <% else %>
-	<em>non-login user</em><br />
-<% end %>
-email address: <%= link_to @user.email, "mailto:#{@user.email}" %></a><br />
-workplace: <%= @user.workplace %><br />
-role: <%= @user.role  %><br />
-phone: <%= @user.phone %>
-
-</p>
-
-<h3><%= 'Your ' if itsme %>description</h3>
-
-<% if @user.description.nil? || @user.description.size == 0 %>
-	<p>
-		<% if itsme %>You haven't <%= link_to "provided a biog", :action => 'edit' %> yet.<% else %>Not given yet.<% end %>
-	</p>
-<% else %>
-	<%= @user.description.formatted %>
+  <p>No biography given</p>
 <% end %>
 
-<h3><%= 'Your ' if itsme %>messages</h3>
+<div class="boxtabs">
+  <a href="#" id="tab_content_details" class="tab">details</a>
+  <% if @user.has_image? %><a href="#" id="tab_content_image" class="tab">image</a><% end %>
+  <% if @user.has_posts? %><a href="#" id="tab_content_posts" class="tab">comments</a><% end %>
+  <% if @user.has_answers? %><a href="#" id="tab_content_answers" class="tab">answers</a><% end %>
+  <% if @user.has_sources? %><a href="#" id="tab_content_sources" class="tab">sources</a><% end %>
+  <% if @user.has_nodes? %><a href="#" id="tab_content_nodes" class="tab">fragments</a><% end %>
+  <% if admin? %><a href="#" id="tab_content_admin" class="tab">admin</a><% end %>
+</div>
 
-<% if @user.created_posts.empty? %>
-	<p>
-		<% if itsme %>You haven't posted any messages yet.<% else %>None yet.<% end %>
-	</p>
-<% else %>
-  <ul class="starry">
-    <%= render :partial => 'posts/minilist', :collection => @user.created_posts %>
-  </ul>
-<% end %>
+<div class="boxed" id="box_content">
+  <div id="content_details">
+    <p>
+    <% if @user.can_login? %>
+    	last here: <%= @user.logged_in_at.nil? ? 'never' : time_ago_in_words(@user.logged_in_at) %><br />
+    <% else %>
+    	<em>non-login user</em><br />
+    <% end %>
+    email address: <%= link_to @user.email, "mailto:#{@user.email}" %></a><br />
+    workplace: <%= @user.workplace %><br />
+    role: <%= @user.role  %><br />
+    phone: <%= @user.phone %>
+    </p>
+    
+  	<h3>subscriptions</h3>
+  	<%= render :partial => 'monitorships/list', :collection => @user.monitorships %>
+  </div>
+  
+  <%= render :partial => 'shared/show_image', :locals => {:item => @user, :tabset => 'content'} %>
 
-<h3><%= 'Your ' if itsme %>answers</h3>
+  <% if @user.has_posts? %>
+    <div id="content_posts">
+      <h2 class="boxhead"><%= pluralize(@user.posts.count, "Comment") %></h2>
+    	<ul class="starry">
+    		<%= render :partial => "posts/minilist", :collection => @user.posts %>
+      </ul>
+    </div>
+  <% end %>
 
-	<p>
-		<% if itsme %>We haven't asked you any questions yet!<% else %>None yet.<% end %>
-	</p>
+  <% if @user.has_answers? %>
+    <div id="content_answers">
+      <h2 class="boxhead"><%= pluralize(@user.answers.count, "Answer") %></h2>
+    	<ul class="starry">
+    		<%= render :partial => "answers/minilist", :collection => @user.answers %>
+      </ul>
+    </div>
+  <% end %>
 
-<% if itsme || (admin? && @user.can_login?) %>
-	<h3><%= 'Your ' if itsme %>subscriptions</h3>
-	<%= render :partial => 'monitorships/list', :collection => @user.monitorships %>
-<% end %>
+  <% if @user.has_sources? %>
+    <div id="content_sources">
+      <h2 class="boxhead"><%= pluralize(@user.sources.count, "Source document") %></h2>
+    	<ul class="starry">
+    		<%= render :partial => "answers/minilist", :collection => @user.sources %>
+      </ul>
+    </div>
+  <% end %>
 
+  <% if @user.has_nodes? %>
+    <div id="content_nodes">
+      <h2 class="boxhead"><%= pluralize(@user.nodes.count, "Fragment") %></h2>
+    	<ul class="starry">
+    		<%= render :partial => "nodes/minilist", :collection => @user.nodes %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= render :partial => 'shared/show_admin', :locals => {:item => @user, :with_snip => false, :tabset => 'content'} %>
+</div>
 
 
