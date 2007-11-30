@@ -16,7 +16,7 @@ module StringExtensions
       @indent = indent
       @first_indent = first_indent
     }
-    self.split( /[\r\n]+/ ).collect{ |p| formatter.format(p) }.join("\r\n")
+    self.split( /[\r\n][\r\n\s]+/ ).collect{ |p| formatter.format(p) }.join("\r\n")
   end
 end
 
