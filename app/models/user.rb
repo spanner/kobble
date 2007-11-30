@@ -95,6 +95,12 @@ class User < ActiveRecord::Base
     self.save!
   end
 
+  def deactivate
+    @activated = false
+    self.status = 0
+    self.save!
+  end
+
   # did they activate in this request?
   def justnow_activated?
     @activated

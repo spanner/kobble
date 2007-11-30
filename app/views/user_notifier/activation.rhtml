@@ -1,6 +1,6 @@
 Hello again <%= @user.name %>,
 
-Thank you! Your account has now been activated and you can now:
+Your account has now been activated and you can now:
 
 * read the blog
 
@@ -19,6 +19,8 @@ Thank you! Your account has now been activated and you can now:
 	http://<%= @collection.url %>/me
 
 Thank you very much for taking the trouble to jump through our hoops. We hope you enjoy taking part in the project and we look forward to meeting you in its discussions.
+
+Just a reminder: your login name is '<%= @user.login %>' and your password '<%= @user.password %>'. After you've logged in a couple of times we'll forget the plaintext version of your password, but to start with we keep it around in case a reminder is required.
 
 best wishes,
 

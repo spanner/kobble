@@ -1,20 +1,39 @@
-<div id="margin" class="floatcolumn" style="width: 175px;">
-  <% unless current_collection.user_groups.empty? %>
-  	<h3>people by group:</h3>
-  	<ul>
-  		<%= render :partial => 'user_groups/minilist', :collection => current_collection.user_groups %>
-  		<li class="additem"><%= link_to 'Add a new user group', {:controller => 'user_groups', :action => 'new'} %></li>
-  	</ul>
+<h1>People</h1>
+
+<div class="boxtabs">
+  <a href="#" id="tab_content_everyone" class="tab">everyone</a>
+  <% current_collection.user_groups.each do |ug| %>
+    <a href="#" id="tab_content_group<%= ug.id %>" class="tab"><%= ug.name %></a>
   <% end %>
-  
-  <h3>people by status:</h3>
-	<ul>
-		<li><%= link_to 'admins and editors', {:controller => 'users', :action =>'list'} %></li>
-		<li><%= link_to 'activated public users', {:controller => 'users', :action =>'list'} %></li>
-		<li><%= link_to 'registered but not activated', {:controller => 'users', :action =>'list'} %></li>
-	</ul>
-	
 </div>
 
-<%= render :partial => 'shared/list', :locals => { :pagetitle => 'People', :list => @users } %>
+<div class="boxed" id="box_content">
 
+  <div id="content_everyone">
+    <% if @users && @users.size > 0 %>
+    	<p class="pagination">
+      	showing <%= @users.first_item %> to <%= @users.last_item %> of <%= pluralize(@users.size, 'person') %>.<br />
+    	</p>
+    <% end %>
+
+    <div id="listing">
+    	<% if @users && @users.size > 0 %>
+      	<%= render :partial => 'list', :collection => @users %>
+    		<%= render :partial => 'shared/pagination', :locals => { :@users => @users } %>
+    	<% else %>
+    		<p>There are no people to display in this collection</p>
+    	<% end %>
+    </div>
+  </div>
+
+  <% current_collection.user_groups.each do |ug| %>
+    <div id="content_group<%= ug.id %>">
+    	<% if ug.users.count > 0 %>
+    	  <%= render :partial => 'list', :collection => ug.users %>
+    	<% else %>
+    	  <p>There's nobody in this group</p>
+  	  <% end %>
+    </div>
+  <% end %>
+  
+</div>

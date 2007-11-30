@@ -103,5 +103,25 @@ class UsersController < ApplicationController
       format.xml { head 200 }
     end
   end
+  
+  def activate
+    @user = User.find(params[:id])
+    @user.activate
+    respond_to do |format|
+      format.html { redirect_to :action => 'show', :id => @user }
+      format.js { render :layout => false }
+      format.xml { head 200 }
+    end
+  end
+
+  def deactivate
+    @user = User.find(params[:id])
+    @user.deactivate
+    respond_to do |format|
+      format.html { redirect_to :action => 'show', :id => @user }
+      format.js { render :layout => false }
+      format.xml { head 200 }
+    end
+  end
 
 end

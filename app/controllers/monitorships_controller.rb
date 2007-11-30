@@ -7,7 +7,7 @@ class MonitorshipsController < ApplicationController
     @monitorship.update_attribute :active, true
     respond_to do |format| 
       format.html { redirect_to topic_path(params[:forum_id], params[:topic_id]) }
-      format.js { render :layout => false}
+      format.js { render :layout => false }
     end
   end
   

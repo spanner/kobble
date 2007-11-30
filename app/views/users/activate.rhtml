@@ -1,0 +1,8 @@
+<%= link_to "activated", {
+	:controller => 'users', 
+	:action => 'deactivate',
+	:id => @user,
+}, {
+	:class => 'autolink ticked',
+	:title =>'click to ban user',
+} %>

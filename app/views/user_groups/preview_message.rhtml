@@ -22,7 +22,7 @@ Subject: [<%= current_collection.abbreviation %>] <%= params[:title] %>
 Date: <%= Time.now %>
 To: <%= r.email %>
 
-Hello <%= r.best_name %>,
+Hello <%= r.first_name %>,
 
 <%= h(params[:message]).wrapped_to(68) %>
 

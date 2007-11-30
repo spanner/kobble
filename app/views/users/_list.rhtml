@@ -1,25 +1,39 @@
 <% if list %>
  
-  <div id="user_<%= list.id %>" class="<% unless list.activated? %>inactive <% end %>listrow <%= cycle("odd", "even", :name => "itemlist") %>">
+  <div id="user_<%= list.id %>" class="listrow <%= cycle("odd", "even", :name => "itemlist") %>">
     <%= render :partial => 'shared/icon', :locals => { :this => list, :with_caption => false } %>
+
+    <% if admin? %><div style="float: right">
+    	<%= link_to list.activated? ? 'activated' : 'deactivated', {
+    		:controller => 'users', 
+    		:action => list.activated? ? 'deactivate' : 'activate',
+    		:id => list,
+    	}, {
+    		:class => list.activated? ? 'autolink ticked' : 'autolink crossed',
+    		:title => list.activated? ? 'click to ban user' : 'click to activate user',
+    	} %></div>    
+		<% end %>
+
     <h2>
       <% if list.editor? %><strong><% end %><%= link_to( "#{list.name}", {:action => 'show', :id => list}) %><% if list.editor? %></strong><% end %>
       <%= render :partial => 'shared/admin_buttons', :locals => {:item => list, :inplace => true} %>
     </h2>
+
     <p>
       <% if list.description %><%= truncate( list.description, 240 ) %><br /><% end %>
-				speaks or writes in <%= pluralize(list.nodes.count, 'fragment') %> 
-				and <%= pluralize(list.sources.count, 'document or recording', 'documents or recordings') %>.
-				<% if list.can_login? %>
-					<br />
-					creator of <%= pluralize(list.created_nodes.count, 'fragment') %>,
-					<%= pluralize(list.created_sources.count, 'document or recording', 'documents or recordings') %>
-					and <%= pluralize(list.created_bundles.count, 'set') %> in this collection.
-				<% end %>
-				<% unless list.user_group.nil? %>
-					<br />Belongs to group: <%= link_to list.user_group.name, :controller => 'user_groups', :action => 'show', :id => list.user_group %>
-				<% end %>
+			speaks or writes in <%= pluralize(list.nodes.count, 'fragment') %> 
+			and <%= pluralize(list.sources.count, 'document or recording', 'documents or recordings') %>.
+			<% if list.can_login? %>
+				<br />
+				creator of <%= pluralize(list.created_nodes.count, 'fragment') %>,
+				<%= pluralize(list.created_sources.count, 'document or recording', 'documents or recordings') %>
+				and <%= pluralize(list.created_bundles.count, 'set') %> in this collection.
+			<% end %>
+			<% unless list.user_group.nil? %>
+				<br />Belongs to group: <%= link_to list.user_group.name, :controller => 'user_groups', :action => 'show', :id => list.user_group %>
+			<% end %>
     </p>
+
   </div>
 
 <% end %>
