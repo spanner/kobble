@@ -12,6 +12,7 @@
   <div id="content_everyone">
     <div id="listing">
     	<% if @users && @users.size > 0 %>
+        <h2 class="boxhead"><%= pluralize(@users.size, 'Person') %> in total</h2>
       	<%= render :partial => 'list', :collection => @users %>
     	<% else %>
     		<p>There are no people to display in this collection</p>
@@ -21,6 +22,7 @@
 
   <% current_collection.user_groups.each do |ug| %>
     <div id="content_group<%= ug.id %>">
+      <h2 class="boxhead"><%= ug.name %>: <%= pluralize(ug.users.count, 'Member') %></h2>
     	<% if ug.users.count > 0 %>
     	  <%= render :partial => 'list', :collection => ug.users %>
     	<% else %>
