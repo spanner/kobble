@@ -19,8 +19,8 @@
       <%= render :partial => 'shared/admin_buttons', :locals => {:item => list, :inplace => true} %>
     </h2>
 
-    <p>
-      <% if list.description %><%= truncate( list.description, 240 ) %><br /><% end %>
+    <p><%= link_to list.email, "mailto:#{list.email}" %><br />
+      <% if list.has_description? %><strong><%= truncate( list.description, 120 ) %></strong><br /><% end %>
 			speaks or writes in <%= pluralize(list.nodes.count, 'fragment') %> 
 			and <%= pluralize(list.sources.count, 'document or recording', 'documents or recordings') %>.
 			<% if list.can_login? %>
