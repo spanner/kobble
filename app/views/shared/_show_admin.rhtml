@@ -6,9 +6,9 @@
 	  <h2 class="boxhead">admin</h2>
 	  <ul class="starry">
 			<% if with_snip %><li class="add"><%= link_to 'extract a fragment from this', {:controller => 'nodes', :action => 'new'}, {:class => 'snipper'} %> (highlight some text first)</li><% end %>
-			<li class="edit"><%= link_to "edit this #{item.class.to_s.downcase}" , {:action => 'edit', :id => item} %></li>
-			<li class="delete"><%= link_to "remove this #{item.class.to_s.downcase}", {:action => 'destroy', :id => item}, {:confirm => "do you really want to completely get rid of #{item.name}?"} %></li>
-			<li class="add"><%= link_to "create another #{item.class.to_s.downcase}", {:action => 'new'} %></li>
+			<li class="edit"><%= link_to "edit this #{item.class.to_s.downcase}" , {:controller => item.class.to_s.pluralize.underscore, :action => 'edit', :id => item} %></li>
+			<li class="delete"><%= link_to "remove this #{item.class.to_s.downcase}", {:controller => item.class.to_s.pluralize.underscore, :action => 'destroy', :id => item}, {:confirm => "do you really want to completely get rid of #{item.name}?"} %></li>
+			<li class="add"><%= link_to "create another #{item.class.to_s.downcase}", {:controller => item.class.to_s.pluralize.underscore, :action => 'new'} %></li>
 		<ul>
 	</div>
 <% end %>

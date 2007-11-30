@@ -5,7 +5,7 @@ class UserGroupsController < ApplicationController
   end
 
   # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
-  verify :method => :post, :only => [ :destroy, :create, :update, :preview_message, :message ],
+  verify :method => :post, :only => [ :create, :update, :preview_message, :message ],
          :redirect_to => { :action => :list }
 
   def list
@@ -71,7 +71,7 @@ class UserGroupsController < ApplicationController
 
   def destroy
     UserGroup.find(params[:id]).destroy
-    redirect_to :action => 'list'
+    redirect_to :controller => 'users', :action => 'list'
   end
 
   def preview_message
