@@ -209,6 +209,7 @@ div.errorExplanation li {
 
 div.formError {
 	color: #ff3e15; 
+	display: inline;
 }
 
 div.fieldWithErrors input {
