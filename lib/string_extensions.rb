@@ -1,5 +1,6 @@
 module StringExtensions
   require 'redcloth'
+  require 'text/format'
 
   def titlecase
     self.gsub(/((?:^|\s)[a-z])/) { $1.upcase }
@@ -7,6 +8,15 @@ module StringExtensions
   
   def formatted
     RedCloth.new(self).to_html
+  end
+  
+  def wrapped_to(width=80, indent=0, first_indent=0)
+    formatter = Text::Format.new {
+      @columns = 68
+      @indent = indent
+      @first_indent = first_indent
+    }
+    self.split( /[\r\n]+/ ).collect{ |p| formatter.format(p) }.join("\r\n")
   end
 end
 

@@ -14,9 +14,6 @@
 		<li><%= link_to 'registered but not activated', {:controller => 'users', :action =>'list'} %></li>
 	</ul>
 	
-  <p>
-  <%=  %>
-  </p>
 </div>
 
 <%= render :partial => 'shared/list', :locals => { :pagetitle => 'People', :list => @users } %>

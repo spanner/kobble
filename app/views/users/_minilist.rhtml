@@ -1,0 +1,10 @@
+<li id="user_<%= minilist.id %>">
+  <%= link_to( minilist.name, {:controller => 'users', :action => 'show', :id => minilist}) %>
+	
+	<div class="thumb" style="display:none;">
+	<%= render :partial => 'shared/icon', :locals => { 
+		:this => minilist, 
+		:with_caption => false,
+	} %>
+	</div>
+</li>
