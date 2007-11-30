@@ -155,6 +155,10 @@ class AccountController < ApplicationController
     end
     @user.update_attributes(params[:user])
     @user.just_promoted = true
+    session[:user] = @user.id
+    self.current_user = @user
+    session[:topics] = session[:forums] = {}
+    flash[:notice] = "Account promoted to login."
     redirect_to :controller => '/account', :action => 'index'
   rescue ActiveRecord::RecordInvalid
     @known_user = @user
