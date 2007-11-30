@@ -34,9 +34,11 @@
   
   <div id="content_list">
     <h2 class="boxhead">tag list</h2>
+    <p style="color: #695D54;">
 	  <% for tag in @tags %>
       <%= link_to( "#{tag.name}", :action => 'show', :id => tag) %> (<%= tag.marks.count %>)
   	<% end %>
+  	</p>
   </div>
 
 </div>
