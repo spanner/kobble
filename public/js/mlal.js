@@ -28,18 +28,15 @@
   var slides = {};
 
 	$ES('a.showsignup').each(function (a) {
-    signupform = $E('#signupform');
-    otherforms = $E('#promoteform');
-    slidein = new Fx.Slide( signupform, { duration: 1000, transition: Fx.Transitions.Bounce.easeOut });
-    slideout = new Fx.Slide( otherforms, { duration: 1000, transition: Fx.Transitions.Bounce.easeOut });
-    slidein.hide();
+    slides['signup'] = new Fx.Slide( $E('#signupform'), { duration: 1000, transition: Fx.Transitions.Bounce.easeOut });
+    slides['promote'] = new Fx.Slide( $E('#promoteform'), { duration: 1000, transition: Fx.Transitions.Bounce.easeOut });
+    slides['signup'].hide();
 		a.addEvent('click', function (e) {
 		  this.blur();
     	e = new Event(e).stop();
+      slides['promote'].slideOut();
+			slides['signup'].slideIn();
 			e.preventDefault();
-      slideout.slideOut();
-			slidein.slideIn();
-      
 		});
 	});
   
