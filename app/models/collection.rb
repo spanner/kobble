@@ -18,6 +18,7 @@ class Collection < ActiveRecord::Base
   has_many :forums, :order => 'name', :dependent => :destroy
   has_many :topics, :order => 'name', :dependent => :destroy
   has_many :posts, :order => 'date DESC', :dependent => :destroy
+  has_many :tags, :order => 'name ASC', :dependent => :destroy
   
   cattr_accessor :current_collection
   

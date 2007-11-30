@@ -52,11 +52,6 @@ class ApplicationController < ActionController::Base
     # tags.map! { |name| Tag.find_or_create_by_name( name ) }
   end
   
-  def tagtree
-    tags = Tags.find(:all, :include => :parent)
-    tags.collect{ |tag| tag.parentage }.sort!
-  end
-
   protected
     def last_active
       session[:last_active] ||= Time.now.utc
