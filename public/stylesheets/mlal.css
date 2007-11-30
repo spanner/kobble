@@ -68,12 +68,12 @@ div#mlalnavigation a.fg {
 	background-image: none;
   height: 20px;
   margin-top: 0;
-  color: #000;
+	color: black;
 }
 
 div#mlalnavigation a.emphatic {
 	background-image: url(/images/furniture/layout/uporangetabbg.png);
-  color: #000;
+	color: black;
 }
 
 div#mlalnavigation a.dim {
@@ -85,9 +85,23 @@ div#mlalnavigation a.louder {
 }
 
 div#mlalnavigation a:hover {
-  border: 0;
-  background-image:none;
-  color: #559DC4;
+	background-image: url(/images/furniture/layout/uporangetabbg.png);
+  color: white;
+}
+
+div#mlalnavigation a.action:hover {
+	background-image: url(/images/furniture/layout/upredtabbg.png);
+  color: white;
+}
+
+div#mlalnavigation a.dim:hover {
+	background-image: url(/images/furniture/layout/upredtabbg.png);
+  color: white;
+}
+
+div#mlalnavigation a.fg:hover {
+	background-image: none;
+	color: black;
 }
 
 div#mlalbody {
