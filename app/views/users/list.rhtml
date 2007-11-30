@@ -10,12 +10,6 @@
 <div class="boxed" id="box_content">
 
   <div id="content_everyone">
-    <% if @users && @users.size > 0 %>
-    	<p class="pagination">
-      	showing <%= @users.first_item %> to <%= @users.last_item %> of <%= pluralize(@users.size, 'person') %>.<br />
-    	</p>
-    <% end %>
-
     <div id="listing">
     	<% if @users && @users.size > 0 %>
       	<%= render :partial => 'list', :collection => @users %>
