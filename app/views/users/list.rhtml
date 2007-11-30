@@ -19,7 +19,6 @@
     <div id="listing">
     	<% if @users && @users.size > 0 %>
       	<%= render :partial => 'list', :collection => @users %>
-    		<%= render :partial => 'shared/pagination', :locals => { :@users => @users } %>
     	<% else %>
     		<p>There are no people to display in this collection</p>
     	<% end %>

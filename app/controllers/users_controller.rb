@@ -16,12 +16,6 @@ class UsersController < ApplicationController
   end
   
   def list
-    @display = case params['display']
-      when "thumb" then "thumb"
-      when "slide" then "slide"
-      else "list"
-    end
-    perpage = params[:perpage] || (@display == 'thumb') ? 100 : 40
     sort = case params['sort']
            when "login" then "login"
            when "status" then "status DESC"
@@ -30,14 +24,9 @@ class UsersController < ApplicationController
            when "firstname" then "firstname, lastname"
            else "lastname, firstname"
            end
-
     @users = User.find(:all, 
       :conditions => limit_to_active_collection, 
-      :order => sort, 
-      :page => {
-        :size => perpage, 
-        :current => params[:page]
-      }
+      :order => sort
     )
   end
   
