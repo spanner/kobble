@@ -39,9 +39,8 @@
 			<% inactive_class = activated? ? '' : 'dim' %>
 			<%= link_to 'discussion', '/discussion', {:class => @pagetitle == 'discussion' ? 'fg' : inactive_class} %>
 			<%= link_to 'questions', '/survey', {:class => @pagetitle == 'survey' ? 'fg' : inactive_class} %>
-
 			<%= link_to 'you', '/me', {:class => @pagetitle == 'you' ? 'fg' : inactive_class} %>
-			<%= link_to 'log out', '/account/logout', {:class => inactive_class} %>
+			<%= link_to 'log out', '/account/logout', {:class => 'action'} %>
 		<% else %>
 			<%= link_to 'sign up', '/account/signup', {:class => @pagetitle == 'signup' ? 'fg' : ''} %>
 			<%= link_to 'log in', '/account/login', {:class => @pagetitle == 'login' ? 'fg' : ''} %>
