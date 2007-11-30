@@ -155,6 +155,8 @@ class AccountController < ApplicationController
     end
     @user.update_attributes(params[:user])
     @user.just_promoted = true
+    @user.status = 0
+    @user.save!
     session[:user] = @user.id
     self.current_user = @user
     session[:topics] = session[:forums] = {}
