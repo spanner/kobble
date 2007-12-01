@@ -22,21 +22,35 @@
   	<ul class="cloud">
   	<% tag_cloud do |tag, cssclass| %>
   	  <li><%= link_to tag.name, {:controller => 'tags', :action => 'show', :id => tag.id}, :class => cssclass %> <span class="hide">|</span> </li>
-
   	<% end %>
   	</ul>
   </div>
 
   <div id="content_tree">
-    <h2 class="boxhead">tag tree</h2>
-    <p>will be here shortly</p>
+    <% if @roots.empty? %>
+    <h2 class="boxhead">tags in this collection are not taxonomic</h2>
+    <%= render :partial => 'shared/branch', :collection => @shoots %>
+
+    <% else %>
+    <div style="marginal" class="floatcolumn">
+      <h2 class="boxhead">loose tags</h2>
+  	  <% for tag in @shoots %>
+        <%= link_to( "#{tag.name}", :action => 'show', :id => tag) %> <span class="countlabel"><%= tag.marks.count %></span><br />
+    	<% end %>
+    </div>
+    <h2 class="boxhead">tag trees</h2>
+    <%= render :partial => 'shared/branch', :collection => @roots %>
+
+    <% end %>
+
+    <p class="clear">phew</p>
   </div>
   
   <div id="content_list">
     <h2 class="boxhead">tag list</h2>
     <p style="color: #695D54;">
 	  <% for tag in @tags %>
-      <%= link_to( "#{tag.name}", :action => 'show', :id => tag) %> (<%= tag.marks.count %>)
+      <%= link_to( "#{tag.name}", :action => 'show', :id => tag) %> <span class="countlabel"><%= tag.marks.count %></span>
   	<% end %>
   	</p>
   </div>

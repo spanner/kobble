@@ -57,9 +57,5 @@ module ApplicationHelper
     tags.each { |t| yield t, classes[(t.marks_count.to_i - min) / divisor] }
   end
 
-  def tagtree
-    tags = current_collection.tags
-    tags.collect{ |tag| tag.parentage }.sort!
-  end
   
 end

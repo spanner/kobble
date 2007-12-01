@@ -81,6 +81,8 @@ class TagsController < ApplicationController
     end
     perpage = params[:perpage] ? params[:perpage].to_i : 500
     @tags = Tag.find(:all, :conditions => limit_to_active_collection, :order => sort, :page => {:size => perpage, :current => params[:page]})
+    @shoots = Tag.find(:all,:conditions => [ "collection_id = ? and parent_id is NULL", Collection.current_collection ], :order => "name asc" )
+    @roots = @shoots.select{|tag| tag.children.count > 0}
   end
   
   def show

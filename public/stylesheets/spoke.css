@@ -1388,7 +1388,6 @@ caption {
 
 p.downloadlink {
   font-size: 24px;
-  font-weight: lighter;
   font-family: HelveticaNeue-Bold, helvetica, arial, sans-serif;
   font-weight: bold;
 }
@@ -1398,3 +1397,63 @@ p.downloadlink img {
   margin: 0 10px 0 0;
 }
 
+
+/* general-purpose tree display */
+
+div.tree {
+	margin: 6px 0 3px 0;
+	padding-left: 24px;
+	background-image: url('/images/tree/_.gif');
+	background-repeat: no-repeat;
+	background-position: top left;
+	min-height: 20px;
+	clear: left;
+}
+
+div.branch {
+	clear: left;
+	margin: 0;
+}
+
+div.twig {
+	width: 20px;
+	padding: 0;
+	margin: 0;
+	float: left;
+	height: 24px;
+}
+
+div.leaf {
+	margin: 0;
+	padding: 0;
+  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
+	font-size: 16px;
+	line-height: 24px;
+	float: left;
+	height: 24px;
+	overflow: hidden;
+	color: #666;
+}
+
+div.straight {
+	background-image: url('/images/tree/I.gif');
+	background-repeat: repeat-y;
+	background-position: top left;
+}
+
+div.junction {
+	background-image: url('/images/tree/I.gif');
+	background-repeat: repeat-y;
+	background-position: top left;
+}
+
+div.terminal {
+	background-image: url('/images/tree/I.gif');
+	background-repeat: no-repeat;
+	background-position: top left;
+}
+
+span.countlabel {
+  font-size: 9px;
+  color: #695D54;
+}

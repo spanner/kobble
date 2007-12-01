@@ -1,0 +1,49 @@
+<%
+  root ||= branch 
+  columns ||= []
+  max_depth ||= 6
+%>
+
+<% if branch == root %>
+  <div class="tree">
+<% end %>
+
+<div class="branch">
+  <% columns.each do |c| %>
+    <% if c == columns.last %>
+		  <% if c == branch %>
+	  	  <div class="twig terminal"><img src="/images/tree/L.gif" width="14" height="14" alt="L"></div>
+	  	  <% columns.collect! {|kw| kw == c ? nil : kw } %>
+      <% else %>
+  		  <div class="twig junction"><img src="/images/tree/t.gif" width="14" height="14" alt="t"></div>
+      <% end %>
+    <% else %>
+	    <% if c != nil %>
+   		  <div class="twig straight"></div>
+      <% else %>
+  		  <div class="twig">&nbsp;</div>
+      <% end %>
+    <% end %>
+  <% end %>
+  <div class="leaf"><%= link_to branch.name, {:action => 'show', :id => branch}, {:class => 'ddkeyword'} %>  <span class="countlabel"><%= branch.marks.count %></span></div>
+</div>  
+
+<% if max_depth > columns.length %>
+  <% children = branch.children %>
+  <% columns << children.last %>
+
+  <%=  render :partial => 'shared/branch', :collection => children, :locals => {
+      :root => root,
+      :columns => columns,
+      :max_depth => max_depth,
+    }
+  %>
+
+  <% columns.pop %>
+<% end %>
+
+<% if branch == root %>
+	</div>
+<% end %>
+
+
