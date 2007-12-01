@@ -34,9 +34,11 @@
     <% else %>
     <div style="marginal" class="floatcolumn">
       <h2 class="boxhead">loose tags</h2>
+      <p style="font-size: 11px;">
   	  <% for tag in @shoots %>
         <%= link_to( "#{tag.name}", :action => 'show', :id => tag) %> <span class="countlabel"><%= tag.marks.count %></span><br />
     	<% end %>
+    	</p>
     </div>
     <h2 class="boxhead">tag trees</h2>
     <%= render :partial => 'shared/branch', :collection => @roots %>

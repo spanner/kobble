@@ -37,7 +37,7 @@
 </div>
 
 <div class="boxed" id="box_content">
-  <%= render :partial => 'shared/show_body', :locals => {:item => @node, :tabset => 'content'} %>
+  <%= render :partial => 'shared/show_body', :locals => {:item => @node, :tabset => 'content', :with_raw => true} %>
   <%= render :partial => 'shared/show_extracted', :locals => {:item => @node, :tabset => 'content'} %>
   <%= render :partial => 'shared/show_image', :locals => {:item => @node, :tabset => 'content'} %>
 </div>

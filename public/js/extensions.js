@@ -30,6 +30,11 @@
 		list.pop();
 		list.push(listitem);
 		return this.setValueAsList(list);
+	},
+	stayBottom: function () {
+		this.setStyles({
+		  'top': window.getScrollTop() + window.getHeight() - parseInt(this.getStyle('height'))
+		});
 	}
 });
 

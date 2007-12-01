@@ -5,6 +5,7 @@ var droppers = [];
 var clickthreshold = 20;
 var tagspinners = [];
 var waiticon = '/images/furniture/signals/wait_32.gif';
+var fixedbottom = [];
 
 // element ids in spoke have a standard format: tag_type_id, where tag is an arbitrary identifier used to identify eg tab family, and type and id denote an object
 // there must be a way to do this with a split
@@ -39,15 +40,21 @@ function clearnotification (delay) {
   $E('#notification').setText('');
 }
 
-function flash (element) {
+function flash (element, bgbackto) {
   var flashfx = new Fx.Styles(element, {duration:1000, wait:false});
-  var bgbackto = element.getStyle('background-color');
+  if (!bgbackto) bgbackto = element.getStyle('background-color');
   if (bgbackto == 'transparent') bgbackto = '#ffffff';
   var fgbackto = element.getStyle('color');
   flashfx.start({
 		'background-color': ['#CC6E1F',bgbackto],
 		'color': ['#CC6E1F',fgbackto]
   });
+}
+
+function moveFixed (e) {
+  fixedbottom.each(function (element) {
+    element.stayBottom();
+  })
 }
 
 window.addEvent('domready', function(){
@@ -174,4 +181,17 @@ window.addEvent('domready', function(){
       scratchpad.deletePage(padid, a.getProperty('href'));
     });
   });
+
+  $ES('div.fixedbottom').each( function (element) {
+    fixedbottom.push(element);
+  });
+
+  $ES('a.closepad').addEvent('click', function (e) {
+    e = new Event(e).stop();
+    e.preventDefault();
+    scratchpad.close();
+  })
+
+	window.addEvent('scroll', moveFixed);
+	window.addEvent('resize', moveFixed);
 });

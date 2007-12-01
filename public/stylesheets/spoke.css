@@ -480,7 +480,7 @@ div#rightcolumn {
 }
 
 #mastfoot {
-  position: fixed;
+  position: absolute;
   left: 0;
 	bottom: 0;
   width: 100%;
@@ -566,20 +566,20 @@ div.dropcontents {
 }
 
 #scratchpad {
-  position: fixed;
+  position: absolute;
   bottom: 0;
   right: 0;
-  height: 127px;
-  width: 200px;
+  height: 26px;
+  width: 500px;
   overflow: hidden;
-	border: 1px solid white;
+/*  border: 1px solid white;*/
 }
 
 #scratchtabs {
-  margin-left:7px;
-  width: 800px;
+  width: 500px;
   height:26px;
   overflow:hidden;
+  text-align: right;
 }
 
 #scratchtabs a, #scratchtabs a:link {
@@ -635,7 +635,7 @@ div.dropcontents {
 
 div.scratchpage {
   position:relative;
-	width: 400px;
+	width: 500px;
 	height:1000px;
 	margin: 0;
   overflow: hidden;
@@ -653,7 +653,7 @@ div.scratchpage li {
   height: 32px;
   font-size: 16px;
   line-height: 32px;
-  width: 410px;
+  width: 500px;
 	white-space: nowrap;
 	overflow: hidden;
   list-style: square inside url(/images/furniture/icons/listicon.png);
@@ -671,11 +671,16 @@ div.scratchpage li.action {
   list-style-image: url(/images/furniture/icons/dosomething.png);
 }
 
-div.scratchpage li.waiting {
-  list-style-image: url(/images/furniture/signals/wait_og.gif);
+div.scratchpage li.down {
+  list-style-image: url(/images/furniture/icons/godown.png);
 }
 
-div.scratchpage li.waiting a, div.scratchpage li.action a {
+div.scratchpage li.waiting {
+  list-style-image: url(/images/furniture/signals/wait_og.gif);
+  color: #B2AAA4;
+}
+
+div.scratchpage li.waiting a, div.scratchpage li.action a, div.scratchpage li.down a {
   color: #B2AAA4;
 }
 

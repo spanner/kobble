@@ -9,6 +9,6 @@
 			<li class="edit"><%= link_to "edit this #{item.class.to_s.downcase}" , {:controller => item.class.to_s.pluralize.underscore, :action => 'edit', :id => item} %></li>
 			<li class="delete"><%= link_to "remove this #{item.class.to_s.downcase}", {:controller => item.class.to_s.pluralize.underscore, :action => 'destroy', :id => item}, {:confirm => "do you really want to completely get rid of #{item.name}?"} %></li>
 			<li class="add"><%= link_to "create another #{item.class.to_s.downcase}", {:controller => item.class.to_s.pluralize.underscore, :action => 'new'} %></li>
-		<ul>
+		</ul>
 	</div>
 <% end %>
