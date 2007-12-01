@@ -140,8 +140,8 @@ var PadDropzone = Dropzone.extend({
       },
       'contract' : function() { 
         closeFX.start({
-          'top': window.getScrollTop() + window.getHeight() - 26, 
-          'height': 26
+          'top': window.getScrollTop() + window.getHeight() - 34, 
+          'height': 34
         }); 
       }
     });

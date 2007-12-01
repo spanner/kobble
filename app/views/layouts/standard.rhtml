@@ -43,7 +43,7 @@
 	      <%= link_to 'sets', {:controller => 'bundles'}, {:class => (request.parameters[:controller] == 'bundles' ? 'fg' : '')} %>
 	      <%= link_to 'people', {:controller => 'users'}, {:class => (request.parameters[:controller] == 'users' ? 'fg' : '')} %>
 	      <%= link_to 'tags', {:controller => 'tags'}, {:class => (request.parameters[:controller] == 'tags' ? 'fg' : '')} %>
-	      <%= link_to 'blogs', {:controller => 'blogentries'}, {:class => (request.parameters[:controller] == 'blogentries' ? 'fg' : '')} %>
+	      <%= link_to 'blog', {:controller => 'blogentries'}, {:class => (request.parameters[:controller] == 'blogentries' ? 'fg' : '')} %>
 	      <%= link_to 'discussion', {:controller => 'forums'}, {:class => (request.parameters[:controller] == 'forums' ? 'fg' : '')} %>
 	      <%= link_to 'questions', {:controller => 'questions'}, {:class => (request.parameters[:controller] == 'questions' ? 'fg' : '')} %>
 	      <%= link_to 'log out', {:controller => 'account', :action => 'logout'}, {:class => 'action'} %>
