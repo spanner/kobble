@@ -128,8 +128,9 @@ var PadDropzone = Dropzone.extend({
 		this.isopen = false;
 		this.wasopen = false;
 		this.pages = {};
+		this.allpages = [];
 		this.addPages($ES('div.scratchpage'), this.container);
-		var openFX = this.container.effects({duration: 1000, transition: Fx.Transitions.Cubic.easeOut});
+		var openFX = this.container.effects({duration: 600, transition: Fx.Transitions.Cubic.easeOut});
 		var closeFX = this.container.effects({duration: 1000, transition: Fx.Transitions.Bounce.easeOut});
 		this.container.addEvents({
       'expand' : function() { 
@@ -155,10 +156,13 @@ var PadDropzone = Dropzone.extend({
 		var pad = this;
 	  elements.each(function(element){
 			pad.pages[element.id] = new Scratchpage($(element));
+			pad.allpages.push(pad.pages[element.id])
 	    if (!pad.foreground) pad.foreground = pad.pages[element.id].makeForeground();
 		});
   },
 	tabClick: function (tag) {
+    // console.log('tabclick: ' + tag);
+    // console.log('foreground is: ' + this.foreground.tag);
 		if (tag == this.foreground.tag) {
 			this.toggle();
 		} else {
@@ -166,9 +170,10 @@ var PadDropzone = Dropzone.extend({
 			this.choosePage(tag);
 		}
 	},
-  choosePage: function (pageid) {
-    this.foreground.makeBackground();
-  	this.foreground = this.pages[pageid].makeForeground();
+  choosePage: function (tag) {
+    // console.log('choosePage: ' + tag);
+    this.allpages.each(function (p) { p.makeBackground(); })
+  	this.foreground = this.pages[tag].makeForeground();
 	},
 	showInterest: function (draggee) { 
 	  if (this != draggee.origin) {
@@ -221,35 +226,38 @@ var PadDropzone = Dropzone.extend({
 
 var Scratchpage = new Class({
 	initialize: function(element){
-		scratchpage = this;
+    // console.log('initialize: ' + element.id);
 		this.container = element;
 		this.spokeID = idParts(element)['id'];
 		this.tag = element.id;
 		this.list = $E('ul', element);
 		this.waiter = null;
 		this.tab = $E('a#tab_' + this.tag);
-		this.tab.addEvent('click', function (e) { 
-		  e = new Event(e).stop();
-			e.preventDefault();
-			scratchpage.hideRename();
-			scratchpad.tabClick(element.id); 
-		});
-		this.body = $(element);
+		this.tab.onclick = this.tabclick.bind(this);
 		this.renameform = null;
-    this.formholder = new Element('div', {'class': 'renameform bigspinner', 'style': 'height: 0'}).injectBefore(scratchpage.body).hide();
-    this.renamefx = new Fx.Style(scratchpage.formholder, 'height', {duration:1000});
+    this.formholder = new Element('div', {'class': 'renameform bigspinner', 'style': 'height: 0'}).injectBefore(this.container).hide();
+    this.renamefx = new Fx.Style(this.formholder, 'height', {duration:1000});
 	},
 	flasher: function(){ return this.container; },
   makeForeground: function(){
-    this.body.show();
+    // console.log('makeForeground: ' + this.tag);
+    this.container.show();
     this.hideRename();
     this.tab.addClass('fg');
     return this;
   },
 	makeBackground: function () {
-    this.body.hide();
+    // console.log('makeBackground: ' + this.tag);
+    this.hideRename();
+    this.container.hide();
     this.tab.removeClass('fg');
     this.hideRename();
+    return this;
+	},
+	tabclick: function (e) {
+	  e = new Event(e).stop();
+		e.preventDefault();
+		scratchpad.tabClick(this.tag); 
 	},
 	contents: function () { 
 	  return this.list.getChildren().map(function(el){ return el.id.replace('padded_',''); }); 
@@ -315,11 +323,11 @@ var Scratchpage = new Class({
 	},
 	showInterest: function () {
     this.tab.addClass('receptive');
-    this.body.addClass('receptive');
+    this.container.addClass('receptive');
 	},
 	loseInterest: function () {
     this.tab.removeClass('receptive');
-    this.body.removeClass('receptive');
+    this.container.removeClass('receptive');
 	},
 	waiting: function () {
 		this.waiter = new Element('li', {'class': 'waiting'}).setText('please wait').injectTop(this.list);
