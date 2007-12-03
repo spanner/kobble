@@ -11,12 +11,33 @@
 </h1>
 
 <div class="boxtabs">
+  <a href="#" id="tab_content_list" class="tab">list</a>
   <a href="#" id="tab_content_cloud" class="tab">cloud</a>
   <a href="#" id="tab_content_tree" class="tab">tree</a>
-  <a href="#" id="tab_content_list" class="tab">list</a>
 </div>
 
 <div class="boxed" id="box_content">
+  <div id="content_list">
+    <h2 class="boxhead">
+      tag list<br />
+      <%= link_to_unless_current "by name", {:action => 'list', :sort => 'name'}, {:class => 'small'}%> |
+      <%= link_to_unless_current "by popularity", {:action => 'list', :sort => 'popularity'}, {:class => 'small'}%> |
+      <%= link_to_unless_current "by date", {:action => 'list', :sort => 'date'}, {:class => 'small'}%>
+    </h2>
+    <p style="color: #695D54;">
+	  <% for tag in @tags %>
+      <%= link_to( "#{tag.name}", :action => 'show', :id => tag) %> <span class="countlabel"><%= tag.marks.count %></span>
+  	<% end %>
+  	</p>
+  	
+  	<% if @tags.size > @tags.page_size %>
+    	<p>
+    	  pages: <%= paginating_links(@tags, {:window_size => 3}, {}) %>
+    	  sort by: name popularity date
+    	</p>
+  	<% end %>
+  </div>
+
   <div id="content_cloud">
     <h2 class="boxhead">tag cloud</h2>
   	<ul class="cloud">
@@ -48,14 +69,5 @@
     <p class="clear">phew</p>
   </div>
   
-  <div id="content_list">
-    <h2 class="boxhead">tag list</h2>
-    <p style="color: #695D54;">
-	  <% for tag in @tags %>
-      <%= link_to( "#{tag.name}", :action => 'show', :id => tag) %> <span class="countlabel"><%= tag.marks.count %></span>
-  	<% end %>
-  	</p>
-  </div>
-
 </div>
 

@@ -74,13 +74,19 @@ class TagsController < ApplicationController
   def list
     sort = case params['sort']
      when "name"  then "name"
-     when "date" then "date"
+     when "date" then "tags.created_at DESC"
+     when "popularity" then "popularity"
      when "name_reverse" then "name DESC"
-     when "date_reverse" then "created_at DESC"
+     when "date_reverse" then "created_at ASC"
      else "name ASC"
     end
     perpage = params[:perpage] ? params[:perpage].to_i : 500
-    @tags = Tag.find(:all, :conditions => limit_to_active_collection, :order => sort, :page => {:size => perpage, :current => params[:page]})
+    if (sort == 'popularity') then
+
+
+    else
+      @tags = Tag.find(:all, :conditions => limit_to_active_collection, :order => sort, :page => {:size => perpage, :current => params[:page]})
+    end
     @shoots = Tag.find(:all,:conditions => [ "collection_id = ? and parent_id is NULL", Collection.current_collection ], :order => "name asc" )
     @roots = @shoots.select{|tag| tag.children.count > 0}
   end
