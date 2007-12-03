@@ -1,5 +1,5 @@
-<li id="tag_<%= mark.id %>" class="draggable">
-  <%= link_to( mark.name, {:controller => mark.class.to_s.downcase.pluralize, :action => 'show', :id => mark}) %>
+<li id="<%= mark.class.to_s.underscore %>_<%= mark.id %>" class="draggable">
+  <%= link_to( mark.name, {:controller => mark.class.to_s.pluralize.underscore, :action => 'show', :id => mark}) %>
 	
 	<div class="thumb" style="display:none;">
 	<%= render :partial => 'shared/icon', :locals => { 
