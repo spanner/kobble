@@ -102,6 +102,12 @@ span.separator {
   color: white;
 }
 
+span.headernote {
+  font-size: 16px;
+  line-height: 16px;
+  color: #B2AAA4;
+}
+
 h4 {
   font-size: 14px;
   font-weight: lighter;

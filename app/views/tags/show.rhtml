@@ -1,6 +1,17 @@
 <div class="header">
 	<%= render :partial => 'shared/icon', :locals => { :this => @tag, :with_caption => false } %>
-	<h1 class="pagetitle"><%= @tag.name %></h1>
+  <h1 class="pagetitle">
+	  <%= @tag.name %>
+    <% if @tag.ancestry %>
+      <span class="headernote">
+        <% @tag.ancestry.reverse.each do |t| %>
+           &lt; <%= link_to t.name, :action => 'show', :id => t %>
+        <% end %>
+      </p>
+    <% end %>
+	</h1>
+	
+
 </div>
 
 <% if @tag.description %>

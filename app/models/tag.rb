@@ -15,8 +15,8 @@ class Tag < ActiveRecord::Base
   }
   
   def parentage
-    return self.name unless self.parent
-    return self.parent.parentage + ': ' + self.name
+    return self unless self.parent
+    return [self.parent.parentage, self]
   end
   
   def ancestry
