@@ -5,9 +5,6 @@
 	
 	 tags
 	
-	<% if @tags.size > @tags.page_size %>
-  	<span class="pagination"><%= paginating_links(@tags, {:window_size => 3}, {}) %></span>
-	<% end %>
 </h1>
 
 <div class="boxtabs">
@@ -19,29 +16,23 @@
 <div class="boxed" id="box_content">
   <div id="content_list">
     <h2 class="boxhead">
-      tag list<br />
-      <%= link_to_unless_current "by name", {:action => 'list', :sort => 'name'}, {:class => 'small'}%> |
-      <%= link_to_unless_current "by popularity", {:action => 'list', :sort => 'popularity'}, {:class => 'small'}%> |
-      <%= link_to_unless_current "by date", {:action => 'list', :sort => 'date'}, {:class => 'small'}%>
+      tag list
+      <%= link_to_unless_current "by name", {:action => 'list', :sort => 'name'}, {:class => 'small'}%>
+      <%= link_to_unless_current "by popularity", {:action => 'list', :sort => 'popularity'}, {:class => 'small'}%>
+      <%= link_to_unless_current "by creation date", {:action => 'list', :sort => 'date'}, {:class => 'small'}%>
     </h2>
     <p style="color: #695D54;">
 	  <% for tag in @tags %>
-      <%= link_to( "#{tag.name}", :action => 'show', :id => tag) %> <span class="countlabel"><%= tag.marks.count %></span>
+      <%= link_to( "#{tag.name}", :action => 'show', :id => tag) %> <span class="countlabel"><%= tag.use_count %></span>
   	<% end %>
   	</p>
   	
-  	<% if @tags.size > @tags.page_size %>
-    	<p>
-    	  pages: <%= paginating_links(@tags, {:window_size => 3}, {}) %>
-    	  sort by: name popularity date
-    	</p>
-  	<% end %>
   </div>
 
   <div id="content_cloud">
     <h2 class="boxhead">tag cloud</h2>
   	<ul class="cloud">
-  	<% tag_cloud do |tag, cssclass| %>
+  	<% tag_cloud(@tags.size, @tags) do |tag, cssclass| %>
   	  <li><%= link_to tag.name, {:controller => 'tags', :action => 'show', :id => tag.id}, :class => cssclass %> <span class="hide">|</span> </li>
   	<% end %>
   	</ul>
@@ -49,20 +40,20 @@
 
   <div id="content_tree">
     <% if @roots.empty? %>
-    <h2 class="boxhead">tags in this collection are not taxonomic</h2>
-    <%= render :partial => 'shared/branch', :collection => @shoots %>
+      <h2 class="boxhead">tags in this collection are not taxonomic</h2>
+      <%= render :partial => 'shared/branch', :collection => @shoots %>
 
     <% else %>
-    <div style="marginal" class="floatcolumn">
-      <h2 class="boxhead">loose tags</h2>
-      <p style="font-size: 11px;">
-  	  <% for tag in @shoots %>
-        <%= link_to( "#{tag.name}", :action => 'show', :id => tag) %> <span class="countlabel"><%= tag.marks.count %></span><br />
-    	<% end %>
-    	</p>
-    </div>
-    <h2 class="boxhead">tag trees</h2>
-    <%= render :partial => 'shared/branch', :collection => @roots %>
+      <div style="marginal" class="floatcolumn">
+        <h2 class="boxhead">loose tags</h2>
+        <p style="font-size: 11px;">
+    	  <% for tag in @shoots %>
+          <%= link_to( "#{tag.name}", :action => 'show', :id => tag) %> <span class="countlabel"><%= tag.use_count %></span><br />
+      	<% end %>
+      	</p>
+      </div>
+      <h2 class="boxhead">tag trees</h2>
+      <%= render :partial => 'shared/branch', :collection => @roots %>
 
     <% end %>
 

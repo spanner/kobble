@@ -72,7 +72,7 @@ class TagsController < ApplicationController
          :redirect_to => { :action => :list }
   
   def list
-    sort = case params['sort']
+    @sort = case params['sort']
      when "name"  then "name"
      when "date" then "tags.created_at DESC"
      when "popularity" then "popularity"
@@ -81,13 +81,26 @@ class TagsController < ApplicationController
      else "name ASC"
     end
     perpage = params[:perpage] ? params[:perpage].to_i : 500
-    if (sort == 'popularity') then
-
-
+    page = params[:page] || 0
+    if (@sort == 'popularity') then
+      offset = page * perpage
+      @tags = Tag.find(:all, 
+        :select => "tags.*, count(marks_tags.id) as use_count",
+        :joins => "LEFT JOIN marks_tags on marks_tags.tag_id = tags.id",
+        :conditions => ["tags.collection_id = ?", current_collection],
+        :group => "marks_tags.tag_id",
+        :order => "use_count DESC"
+      )
     else
-      @tags = Tag.find(:all, :conditions => limit_to_active_collection, :order => sort, :page => {:size => perpage, :current => params[:page]})
+      @tags = Tag.find(:all, 
+        :select => "tags.*, count(marks_tags.id) as use_count",
+        :joins => "LEFT JOIN marks_tags on marks_tags.tag_id = tags.id",
+        :conditions => ["tags.collection_id = ?", current_collection],
+        :group => "marks_tags.tag_id",
+        :order => @sort
+      )
     end
-    @shoots = Tag.find(:all,:conditions => [ "collection_id = ? and parent_id is NULL", Collection.current_collection ], :order => "name asc" )
+    @shoots = @tags.select{|tag| tag.parent.nil?}
     @roots = @shoots.select{|tag| tag.children.count > 0}
   end
   

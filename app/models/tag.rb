@@ -3,6 +3,7 @@ class Tag < ActiveRecord::Base
   belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
   belongs_to :collection
   acts_as_tree :order => 'name'
+  # attr_accessor :use_count
 
   has_many_polymorphs :marks, :skip_duplicates => true, :from => [:nodes, :sources, :bundles, :users, :questions, :blogentries, :topics]
   file_column :image, :magick => { 
@@ -47,11 +48,23 @@ class Tag < ActiveRecord::Base
   end
 
   def self.tags_with_popularity
-    query ="select t.id, t.name, count(tm.mark_id) as marks_count 
-from tags as t, marks_tags as tm 
-where tm.tag_id = t.id and t.collection_id = #{Collection.current_collection.id} 
-group by tm.tag_id order by name"
-    Tag.find_by_sql(query);
+    Tag.find(:all, 
+      :select => "tags.*, count(marks_tags.id) as use_count",
+      :joins => "LEFT JOIN marks_tags on marks_tags.tag_id = tags.id",
+      :conditions => ["tags.parent_id = ?", self.id],
+      :group => "marks_tags.tag_id",
+      :order => 'use_count DESC'
+    )
+  end
+
+  def children_with_count
+    Tag.find(:all, 
+      :select => "tags.*, count(marks_tags.id) as use_count",
+      :joins => "LEFT JOIN marks_tags on marks_tags.tag_id = tags.id",
+      :conditions => ["tags.parent_id = ?", self.id],
+      :group => "marks_tags.tag_id",
+      :order => 'name ASC'
+    )
   end
 
   def has_description?
