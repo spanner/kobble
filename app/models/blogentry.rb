@@ -8,7 +8,7 @@ class Blogentry < ActiveRecord::Base
   has_many :topics, :as => :subject
 
   after_create :create_topic
-
+  
   file_column :clip
   file_column :image, :magick => { 
     :versions => { 

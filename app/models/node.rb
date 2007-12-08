@@ -9,6 +9,8 @@ class Node < ActiveRecord::Base
   belongs_to :collection
   has_many :topics, :as => :subject
 
+  acts_as_catcher
+
   file_column :file
   file_column :clip
   file_column :image, :magick => { 
@@ -62,11 +64,11 @@ class Node < ActiveRecord::Base
     read_attribute(:playto)
   end
   
-  def has_warnings?
+  def has_flags?
     
   end
   
-  def has_fatal_warnings?
+  def has_fatal_flags?
   
   end
   

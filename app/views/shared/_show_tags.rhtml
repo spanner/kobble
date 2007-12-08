@@ -4,7 +4,7 @@
 	  <h2 class="boxhead">tags</h2>
     	<ul class="starry">
     	<% if item.has_tags? %>
-    		<%= render :partial => "tags/minilist", :collection => item.tags %>
+    		<%= render :partial => "tags/minilist", :collection => item.tags.uniq %>
     	<% end %>
     	<% if editor? %>
     	  <li class="add"><strike><%= link_to "add a tag", '#' %></strike></li>

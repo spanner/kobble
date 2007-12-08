@@ -17,6 +17,8 @@ class Topic < ActiveRecord::Base
   belongs_to :replied_by_user, :foreign_key => "replied_by", :class_name => "User"
   belongs_to :subject, :polymorphic => true
   
+  acts_as_catcher
+  
   validates_presence_of :forum, :title
   
   before_create :set_default_replied_at_and_sticky

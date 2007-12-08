@@ -4,6 +4,8 @@ class Forum < ActiveRecord::Base
   belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
   acts_as_list
 
+  acts_as_catcher
+
   validates_presence_of :name
 
   has_many :topics, :order => 'sticky desc, replied_at desc', :dependent => :destroy do

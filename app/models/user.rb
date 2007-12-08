@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
   has_many :nodes, :class_name => 'Node', :foreign_key => 'speaker_id'
   has_many :answers, :class_name => 'Answer', :foreign_key => 'speaker_id'
   has_many :scratchpads
-  has_many :warnings
+  has_many :flags
   has_many :posts, :class_name => 'Post', :foreign_key => 'created_by'
 
   has_many :created_nodes, :class_name => 'Node', :foreign_key => 'created_by'
@@ -38,6 +38,8 @@ class User < ActiveRecord::Base
   validates_length_of       :email,    :within => 3..100
   validates_uniqueness_of   :login, :email, :case_sensitive => false
 
+  acts_as_catcher
+  
   file_column :image, :magick => { 
     :versions => { 
       "thumb" => "56x56!", 

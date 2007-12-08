@@ -9,6 +9,8 @@ class Source < ActiveRecord::Base
   has_many :nodes, :dependent => :nullify
   has_many :topics, :as => :subject
   
+  acts_as_catcher
+
   file_column :file
   file_column :clip
   file_column :image, :magick => { 

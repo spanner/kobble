@@ -23,21 +23,21 @@
   <strong>synopsis:</strong> <%= node.synopsis %>
 </p>
 
-<% if node.warnings.length > 0 %>
+<% if node.flags.length > 0 %>
   <p class="small warning">
-    <%= render :partial => 'warnings/oneliner', :collection => node.warnings %>
+    <%= render :partial => 'flags/oneliner', :collection => node.flags %>
   </p>
 <% end %>
 
-<% if node.source && node.source.warnings.length > 0 %>
+<% if node.source && node.source.flags.length > 0 %>
   <p class="small">
-  <%= render :partial => 'warnings/oneliner', :collection => node.source.warnings %>
+  <%= render :partial => 'flags/oneliner', :collection => node.source.flags %>
   </p>
 <% end %>
 
-<% if node.source && node.source.person && node.source.person.warnings.length > 0 %>
+<% if node.source && node.source.person && node.source.person.flags.length > 0 %>
   <p class="small">
-  <%= render :partial => 'warnings/oneliner', :collection => node.source.person.warnings %>
+  <%= render :partial => 'flags/oneliner', :collection => node.source.person.flags %>
   </p>
 <% end %>
 

@@ -5,7 +5,12 @@ class Bundle < ActiveRecord::Base
   belongs_to :collection
   has_many_polymorphs :members, :as => 'superbundle', :from => [:nodes, :sources, :tags, :bundles, :questions]
   has_many :topics, :as => :subject
-
+  
+  # all dropped items are eaten unless already contained
+  # set merging must be explicitly commanded
+  
+  acts_as_catcher
+ 
   file_column :image, :magick => { 
     :versions => { 
       "thumb" => "56x56!", 
@@ -14,14 +19,14 @@ class Bundle < ActiveRecord::Base
     }
   }
 
-  def tag_list
-    tags.map {|t| t.name }.uniq.join(', ')
-  end
-
   public 
     
   # these will all move into a general purpose AR extension based on column type unless I find there is already a proper way to do it
   
+  def tag_list
+    tags.map {|t| t.name }.uniq.join(', ')
+  end
+
   def has_members?
     self.members.count > 0
   end

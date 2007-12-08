@@ -61,6 +61,7 @@
       <% for pad in @scratchpads %>
         <a href="#" class="padtab" id="tab_scratchpad_<%= pad.id %>"><%= pad.name %></a>
       <% end %>
+      <a href="#" class="padtab red" id="tab_scratchpad_inbox">inbox</a>
     </div>
 
      <%= render :partial => 'shared/scratchpad', :collection => @scratchpads %>

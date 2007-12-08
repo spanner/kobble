@@ -1,10 +1,10 @@
 <% tabset ||= '' %>
-<% if editor? || item.has_warnings? %>
-  <div id="<%= tabset %>_warnings">
-	  <h2 class="boxhead">warnings and other markers</h2>
+<% if editor? || item.has_flags? %>
+  <div id="<%= tabset %>_flags">
+	  <h2 class="boxhead">flags and other markers</h2>
     	<ul class="starry">
-    	<% if item.has_warnings? %>
-    		<%= render :partial => "warnings/minilist", :collection => item.warnings %>
+    	<% if item.has_flags? %>
+    		<%= render :partial => "flags/minilist", :collection => item.flags %>
     	<% end %>
     	<% if editor? %>
     	  <li class="add"><%= link_to "add a warning to this #{iten.class.to_s.downcase}", '#' %>

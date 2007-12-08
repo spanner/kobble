@@ -611,6 +611,11 @@ div.dropcontents {
   font-family: helvetica, arial, sans;
 }
 
+#scratchtabs a.red {
+	background-image: url(/images/furniture/layout/upredtabbg.png);
+  background-color: #9e0b0f;
+}
+
 #scratchtabs a.fg {
 	background-image: none;
   height: 19px;

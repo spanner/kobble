@@ -5,7 +5,10 @@ class Tag < ActiveRecord::Base
   acts_as_tree :order => 'name'
   # attr_accessor :use_count
 
-  has_many_polymorphs :marks, :skip_duplicates => true, :from => [:nodes, :sources, :bundles, :users, :questions, :blogentries, :topics]
+  has_many_polymorphs :marks, :skip_duplicates => true, :from => [:nodes, :sources, :bundles, :users, :questions, :blogentries, :forums, :topics]
+
+  acts_as_catcher
+
   file_column :image, :magick => { 
     :versions => { 
       "thumb" => "56x56!", 
