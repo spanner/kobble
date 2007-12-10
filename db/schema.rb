@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 76) do
+ActiveRecord::Schema.define(:version => 77) do
 
   create_table "answers", :force => true do |t|
     t.column "question_id",   :integer
@@ -74,6 +74,25 @@ ActiveRecord::Schema.define(:version => 76) do
     t.column "email_from",         :string
   end
 
+  create_table "flaggings_flags", :force => true do |t|
+    t.column "flag_id",       :integer
+    t.column "flagging_type", :string,  :limit => 20
+    t.column "flagging_id",   :integer
+  end
+
+  create_table "flags", :force => true do |t|
+    t.column "body",           :text
+    t.column "offender_type",  :string,   :limit => 20
+    t.column "offender_id",    :integer
+    t.column "user_id",        :integer
+    t.column "warningtype_id", :string
+    t.column "created_by",     :integer
+    t.column "updated_by",     :integer
+    t.column "created_at",     :datetime
+    t.column "updated_at",     :datetime
+    t.column "severity",       :integer
+  end
+
   create_table "forums", :force => true do |t|
     t.column "name",             :string
     t.column "description",      :string
@@ -139,6 +158,7 @@ ActiveRecord::Schema.define(:version => 76) do
     t.column "circumstances",  :text
     t.column "original_text",  :text
     t.column "file",           :string
+    t.column "extracted_text", :text
   end
 
   add_index "nodes", ["collection_id"], :name => "index_nodes_on_collection"
@@ -155,12 +175,6 @@ ActiveRecord::Schema.define(:version => 76) do
     t.column "image",         :string
     t.column "clip",          :string
     t.column "collection_id", :integer
-  end
-
-  create_table "offenders_warnings", :force => true do |t|
-    t.column "warning_id",    :integer
-    t.column "offender_type", :string,  :limit => 20
-    t.column "offender_id",   :integer
   end
 
   create_table "posts", :force => true do |t|
@@ -190,14 +204,14 @@ ActiveRecord::Schema.define(:version => 76) do
     t.column "arising",       :text
     t.column "survey_id",     :integer
     t.column "collection_id", :integer
+    t.column "name",          :string
+    t.column "introduction",  :text
     t.column "question_type", :string
     t.column "request_image", :integer
     t.column "request_clip",  :integer
-    t.column "name",          :string
-    t.column "introduction",  :text
     t.column "image",         :string
     t.column "clip",          :string
-    t.column "quick",         :integer
+    t.column "quick",         :string
     t.column "allow_other",   :integer,  :default => 0
   end
 
@@ -205,6 +219,9 @@ ActiveRecord::Schema.define(:version => 76) do
     t.column "user_group_id", :integer
     t.column "question_id",   :integer
   end
+
+  add_index "questions_user_groups", ["user_group_id"], :name => "index_questions_user_groups_on_user_group_id"
+  add_index "questions_user_groups", ["question_id"], :name => "index_questions_user_groups_on_question_id"
 
   create_table "scraps_scratchpads", :force => true do |t|
     t.column "scratchpad_id", :integer
@@ -229,26 +246,27 @@ ActiveRecord::Schema.define(:version => 76) do
   add_index "sessions", ["session_id"], :name => "sessions_session_id_index"
 
   create_table "sources", :force => true do |t|
-    t.column "name",          :string
-    t.column "notes",         :text
-    t.column "synopsis",      :text
-    t.column "speaker_id",    :integer
-    t.column "body",          :text
-    t.column "clip",          :string
-    t.column "duration",      :integer,  :limit => 10, :precision => 10, :scale => 0
-    t.column "rating",        :integer
-    t.column "collection_id", :integer
-    t.column "created_by",    :integer
-    t.column "updated_by",    :integer
-    t.column "created_at",    :datetime
-    t.column "updated_at",    :datetime
-    t.column "observations",  :text
-    t.column "emotions",      :text
-    t.column "arising",       :text
-    t.column "image",         :string
-    t.column "circumstances", :text
-    t.column "occasion_id",   :integer
-    t.column "file",          :string
+    t.column "name",           :string
+    t.column "notes",          :text
+    t.column "synopsis",       :text
+    t.column "speaker_id",     :integer
+    t.column "body",           :text
+    t.column "clip",           :string
+    t.column "duration",       :integer,  :limit => 10, :precision => 10, :scale => 0
+    t.column "rating",         :integer
+    t.column "collection_id",  :integer
+    t.column "created_by",     :integer
+    t.column "updated_by",     :integer
+    t.column "created_at",     :datetime
+    t.column "updated_at",     :datetime
+    t.column "observations",   :text
+    t.column "emotions",       :text
+    t.column "arising",        :text
+    t.column "image",          :string
+    t.column "circumstances",  :text
+    t.column "occasion_id",    :integer
+    t.column "extracted_text", :text
+    t.column "file",           :string
   end
 
   add_index "sources", ["collection_id"], :name => "index_sources_on_collection"
@@ -305,6 +323,7 @@ ActiveRecord::Schema.define(:version => 76) do
 
   create_table "user_groups", :force => true do |t|
     t.column "name",          :string
+    t.column "prompt",        :string
     t.column "description",   :string
     t.column "collection_id", :integer
     t.column "users_count",   :integer,  :default => 0
@@ -312,7 +331,6 @@ ActiveRecord::Schema.define(:version => 76) do
     t.column "created_by",    :integer
     t.column "updated_at",    :datetime
     t.column "updated_by",    :integer
-    t.column "prompt",        :string
   end
 
   create_table "users", :force => true do |t|
@@ -350,8 +368,8 @@ ActiveRecord::Schema.define(:version => 76) do
     t.column "last_login",                :datetime
     t.column "password",                  :string
     t.column "user_group_id",             :integer
-    t.column "receive_questions_email",   :integer
-    t.column "receive_news_email",        :integer
+    t.column "receive_questions_email",   :integer,                :default => 1
+    t.column "receive_news_email",        :integer,                :default => 1
     t.column "receive_html_email",        :integer
     t.column "subscribe_everything",      :integer
   end
@@ -359,17 +377,5 @@ ActiveRecord::Schema.define(:version => 76) do
   add_index "users", ["collection_id"], :name => "index_users_on_collection"
   add_index "users", ["login"], :name => "index_users_on_login"
   add_index "users", ["last_seen_at"], :name => "index_users_on_last_seen_at"
-
-  create_table "warnings", :force => true do |t|
-    t.column "body",           :text
-    t.column "offender_type",  :string,   :limit => 20
-    t.column "offender_id",    :integer
-    t.column "user_id",        :integer
-    t.column "warningtype_id", :string
-    t.column "created_by",     :integer
-    t.column "updated_by",     :integer
-    t.column "created_at",     :datetime
-    t.column "updated_at",     :datetime
-  end
 
 end

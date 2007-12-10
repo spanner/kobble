@@ -4,7 +4,7 @@ class Forum < ActiveRecord::Base
   belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
   acts_as_list
 
-  acts_as_catcher
+  acts_as_catcher :posts
 
   validates_presence_of :name
 

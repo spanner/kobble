@@ -9,7 +9,7 @@ class Bundle < ActiveRecord::Base
   # all dropped items are eaten unless already contained
   # set merging must be explicitly commanded
   
-  acts_as_catcher
+  acts_as_catcher :members
  
   file_column :image, :magick => { 
     :versions => { 

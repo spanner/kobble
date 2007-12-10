@@ -20,19 +20,13 @@ class FlagsController < ApplicationController
 
   def new
     @flag = Flag.new
-    {'node' => Node, 'bundle' => Bundle, 'source' => Source, 'person' => Person}.each do |off, klass|
-      if (params[off.to_sym])
-        @flag.flagged = klass.find(params[off.to_sym])
-        break
-      end
-    end
   end
 
   def create
     @flag = Flag.new(params[:flag])
     if @flag.save
       flash[:notice] = 'Flag was successfully created.'
-      redirect_to :controller => @flag.flagged.class.to_s.downcase.pluralize, :action => 'show', :id => @flag.flagged
+      render :action => 'list'
     else
       render :action => 'new'
     end

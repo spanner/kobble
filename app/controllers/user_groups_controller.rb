@@ -76,7 +76,7 @@ class UserGroupsController < ApplicationController
 
   def preview_message
     @user_group = UserGroup.find(params[:id])
-    @recipients = @user_group.notifiable
+    @recipients = @user_group.users_notifiable
     respond_to do |format|
       format.html { }
       format.js { render :layout => false }
@@ -86,7 +86,7 @@ class UserGroupsController < ApplicationController
   def send_message
     @user_group = UserGroup.find(params[:id])
     @recipients = []
-    @user_group.notifiable.each do |u|
+    @user_group.users_notifiable.each do |u|
       UserGroupNotifier.deliver_message(u, @user_group, Collection.current_collection, params[:title], CGI::unescape(params[:message]))
       @recipients << u
     end

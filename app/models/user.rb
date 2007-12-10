@@ -38,7 +38,7 @@ class User < ActiveRecord::Base
   validates_length_of       :email,    :within => 3..100
   validates_uniqueness_of   :login, :email, :case_sensitive => false
 
-  acts_as_catcher
+  # acts_as_catcher :nodes, :sources          # drop edit makes this the speaker
   
   file_column :image, :magick => { 
     :versions => { 

@@ -9,7 +9,7 @@ class Source < ActiveRecord::Base
   has_many :nodes, :dependent => :nullify
   has_many :topics, :as => :subject
   
-  acts_as_catcher
+  acts_as_catcher :tags, :flags
 
   file_column :file
   file_column :clip

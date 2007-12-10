@@ -7,7 +7,7 @@ class Tag < ActiveRecord::Base
 
   has_many_polymorphs :marks, :skip_duplicates => true, :from => [:nodes, :sources, :bundles, :users, :questions, :blogentries, :forums, :topics]
 
-  acts_as_catcher
+  acts_as_catcher :marks
 
   file_column :image, :magick => { 
     :versions => { 
