@@ -1,2 +1,2 @@
-require 'acts_as_catcher'
-ActiveRecord::Base.send(:include, ActiveRecord::Acts::Catcher)
+require 'acts_as_catchable'
+ActiveRecord::Base.send(:include, ActiveRecord::Acts::Catchable)
