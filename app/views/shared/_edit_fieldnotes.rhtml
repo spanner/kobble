@@ -1,4 +1,4 @@
-<a href="#" class="displaycontrol disappears" id="show_fieldnotes">+ <%= item.new_record? ? 'add' : 'edit' %> field notes</a>
+<a href="#" class="displaycontrol" id="show_fieldnotes">+ <%= item.new_record? ? 'add' : 'edit' %> field notes</a>
 
 <div id="hide_fieldnotes" class="slideable">
 	<% if item.respond_to?('circumstances') %>

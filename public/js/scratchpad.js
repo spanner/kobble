@@ -97,7 +97,6 @@ var Dropzone = new Class({
 	waiting: function () { 
     // console.log('dropzone.waiting')
     this.waiter = $E('div.waiting', this.container);
-    console.log(this.waiter)
 	  if (this.waiter) this.waiter.show();
 	},
 	notWaiting: function () { 
