@@ -4,7 +4,6 @@ class Forum < ActiveRecord::Base
   belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
   acts_as_list
 
-  acts_as_catcher :posts
 
   validates_presence_of :name
 
@@ -27,6 +26,8 @@ class Forum < ActiveRecord::Base
       @last_post ||= find(:first, :include => :creator)
     end
   end
+
+  acts_as_catcher :topics
   
   def visible_to?(user)
     return true unless visibility.nil? or visibility == 0

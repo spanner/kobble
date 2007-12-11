@@ -3,11 +3,9 @@ class Tag < ActiveRecord::Base
   belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
   belongs_to :collection
   acts_as_tree :order => 'name'
-  # attr_accessor :use_count
 
   has_many_polymorphs :marks, :skip_duplicates => true, :from => [:nodes, :sources, :bundles, :users, :questions, :blogentries, :forums, :topics]
-
-  acts_as_catcher :marks
+  acts_as_catchable :marks
 
   file_column :image, :magick => { 
     :versions => { 
