@@ -1345,6 +1345,13 @@ div.waiting {
  	padding-left: 24px;
 }
 
+div.setdrop div.waiting {
+ 	background-image: url('/images/furniture/signals/wait_32_grey.gif');
+ 	background-position: 10px 10px;
+ 	width: 52px;
+ 	height: 52px;
+}
+
 div.waiting input {
   visibility: hidden;
 }

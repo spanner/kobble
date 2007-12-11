@@ -25,7 +25,7 @@
     <div id="bundle_<%= @bundle.id %>" class="setdrop">
     	<div class="dropcontents">
         <%= render :partial => 'member', :collection => @bundle.members %>
-        <div class="waiting waiting<%= @display %>"><%= image_tag "/images/furniture/signals/wait_32_grey.gif", :style => 'margin: 12px;' %></div>
+        <div class="waiting waiting<%= @display %>"></div>
     	</div>
     	<h2 class="clear pale">Drag items into or out of this space to edit the set.</h2>
     </div>

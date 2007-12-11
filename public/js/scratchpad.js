@@ -97,12 +97,13 @@ var Dropzone = new Class({
 	waiting: function () { 
     // console.log('dropzone.waiting')
     this.waiter = $E('div.waiting', this.container);
+    console.log(this.waiter)
 	  if (this.waiter) this.waiter.show();
 	},
 	notWaiting: function () { 
     // console.log('dropzone.notWaiting(' + this.tag + ')')
-	  this.waiter = $E('div.waiting', this.container);
-	  if (this.waiter) this.waiter.hide();
+    this.waiter = $E('div.waiting', this.container);
+    if (this.waiter) this.waiter.hide();
 	},
 	// by default we use the signalwith image (first image in the draggee) to display a spinner
 	// scratchpages override this to use list styles instead
@@ -125,9 +126,11 @@ var Dropzone = new Class({
 });
 
 var SetDropzone = Dropzone.extend({
-	recipient: function () { return $E('div.dropcontents', this.container); },
+	recipient: function () { 
+	  return $E('div.dropcontents', this.container); 
+	},
 	tabset: function () {
-	  return tabsets['content'];    // generalise this when you redo droppers
+	  return tabsets['content'];    // need to generalise this when redo droppers
 	},
 	showSuccess: function () {
 	  flash(this.flasher());
