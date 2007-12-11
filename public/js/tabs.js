@@ -20,7 +20,8 @@ var Tab = new Class({
   showBody: function(){
     this.tabbody.show();
     this.tabhead.addClass('fg');
-    this.tabset.resizetocontain(this.tabbody);
+    this.tabset.foreground = this;
+    this.tabset.resize();
   },
   hideBody: function(){
     this.tabbody.hide();
@@ -34,6 +35,7 @@ var TabSet = new Class({
     this.tag = tag;
 	  this.container = $E('#box_' + this.tag);
     this.resizer = new Fx.Style(this.container, 'height', {duration:500});
+    this.foreground = null;
 	  tabsets[this.tag] = this;
 	},
 	addTab: function (tab) {
@@ -46,7 +48,8 @@ var TabSet = new Class({
 	    tag == t.tag ? t.showBody() : t.hideBody();
 	  });
 	},
-  resizetocontain: function (element) {
+  resize: function () {
+    var element = this.foreground.tabbody;
     var height = element.getCoordinates()['height'];
     if (height) this.resizer.start(height + 28)
   }

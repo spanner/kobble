@@ -64,11 +64,12 @@ var Dropzone = new Class({
 			  onComplete: function () { 
 			    dropzone.notWaiting();
 				  $ES('.draggable', dropzone.recipient()).each(function(item) { item.addEvent('mousedown', function(e) { new Draggee(this, new Event(e)); }); });
-				  flash(dropzone.flasher(), '695D54');
+          dropzone.showSuccess();
 				},
 			  onFailure: function () { 
 			    dropzone.notWaiting(); 
-			    error('ajax call failed'); 
+			    error('ajax call failed');
+			    dropzone.showFailure();
 			  }
 			}).request();
 		}
@@ -81,7 +82,7 @@ var Dropzone = new Class({
 			method : 'post',
 			data : { 'scrap': draggee.tag },
 		  onRequest: function () { dropzone.draggeeWaiting(draggee); },
-		  onSuccess: function () { announce(this.response.text); dropzone.draggeeRemove(draggee); },
+		  onSuccess: function () { announce(this.response.text); dropzone.draggeeRemove(draggee); dropzone.showSuccess(); },
 		  onFailure: function () { dropzone.draggeeNotWaiting(); }
 		}).request();
 	},
@@ -114,11 +115,25 @@ var Dropzone = new Class({
 	},
 	draggeeRemove: function (draggee) {
     draggee.explode(draggee.container.getParent());
-	}	
+	},
+	showSuccess: function () {
+	  flash(this.flasher());
+	},
+	showFailure: function () {
+
+	}
 });
 
 var SetDropzone = Dropzone.extend({
-	recipient: function () { return $E('div.dropcontents', this.container); }
+	recipient: function () { return $E('div.dropcontents', this.container); },
+	tabset: function () {
+	  return tabsets['content'];    // generalise this when you redo droppers
+	},
+	showSuccess: function () {
+	  flash(this.flasher());
+	  console.log(this.tabset);
+	  if (this.tabset()) this.tabset().resize();
+	}
 });
 
 var PadDropzone = Dropzone.extend({
@@ -221,6 +236,9 @@ var PadDropzone = Dropzone.extend({
   },
 	deletePage: function (e, url) {
 	  this.foreground.deletePage(url);
+	},
+	showSuccess: function () {
+	  flash(this.flasher(), '695D54');
 	}
 });
 

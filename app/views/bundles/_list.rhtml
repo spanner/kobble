@@ -12,7 +12,7 @@
 		</h2>
 
     <p>
-      <% if list.synopsis %><%= truncate( list.synopis, 240 ) %><br /><% end %>
+      <% if list.synopsis %><%= truncate( list.synopsis, 240 ) %><br /><% end %>
       <span class="pale">
         Created by <%= link_to (list.creator.name, :controller => 'users', :action => 'show', :id => list.creator) if list.creator %>.
         Contains <%= pluralize(list.members.size, 'item') %>

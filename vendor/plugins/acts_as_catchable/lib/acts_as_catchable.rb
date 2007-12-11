@@ -10,7 +10,7 @@ module ActiveRecord::Acts::Catchable
       end
 
       def self.set_catch_dispatch(klass, kall)
-        STDERR.puts("    #{self.to_s}.set_catch_dispatch(#{klass}, #{kall})")
+        # STDERR.puts("    #{self.to_s}.set_catch_dispatch(#{klass}, #{kall})")
         cd = self.catch_dispatch || {}
         cd[klass.to_s] ||= kall
         self.catch_dispatch = cd
@@ -33,11 +33,13 @@ module ActiveRecord::Acts::Catchable
 
       def self.acts_as_catcher(*associations)
         associations.each do |assoc|
-          STDERR.puts(">>> make catcher: #{self}.#{assoc.to_s}")
+          # STDERR.puts(">>> make catcher: #{self}.#{assoc.to_s}")
           reflection = self.reflect_on_association(assoc)
           if reflection
-            STDERR.puts("    #{self} catches #{reflection.name.to_s} (#{reflection.macro})")
+            # STDERR.puts("    #{self} catches #{reflection.name.to_s} (#{reflection.macro})")
             case reflection.macro
+            when :has_many_polymorphs
+              reflection.options[:from].each { |k| self.set_catch_dispatch( k.to_s, reflection.name.to_s + '.push' ) } 
             when :has_many
               self.set_catch_dispatch(reflection.class_name, reflection.name.to_s + '.push')
             when :belongs_to, :has_one
@@ -49,21 +51,17 @@ module ActiveRecord::Acts::Catchable
 
       def self.acts_as_catchable(*associations)
         associations.each do |assoc|
-          STDERR.puts("<<< make catchable: #{self}.#{assoc.to_s}")
+          # STDERR.puts("<<< make catchable: #{self}.#{assoc.to_s}")
           reflection = self.reflect_on_association(assoc)
           if reflection
-            STDERR.puts("    #{self} catches #{reflection.name.to_s} (#{reflection.macro})")
+            # STDERR.puts("    #{self} catchable by #{reflection.name.to_s} (#{reflection.macro})")
             case reflection.macro
             when :has_many_polymorphs
-              reflection.options[:from].each do |k| 
-                k.to_s.classify.set_catch_dispatch( self.to_s, reflection.name.to_s + '.push' ) 
-              end
+              reflection.options[:from].each { |k| k._as_class.set_catch_dispatch( self.to_s, reflection.name.to_s + '.push' ) } 
             when :has_many
               reflection.class_name.classify.set_drop_dispatch(self.to_s, reflection.name.to_s + '.push')
             when :belongs_to, :has_one
               reflection.class_name.classify.set_drop_dispatch(self.to_s, reflection.name.to_s + '=')
-            else
-
             end
           end
         end
