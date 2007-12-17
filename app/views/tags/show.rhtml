@@ -1,18 +1,14 @@
-<div class="header">
-	<%= render :partial => 'shared/icon', :locals => { :this => @tag, :with_caption => false } %>
-  <h1 class="pagetitle">
-	  <%= @tag.name %>
-    <% if @tag.ancestry %>
-      <span class="headernote">
-        <% @tag.ancestry.reverse.each do |t| %>
-           &lt; <%= link_to t.name, :action => 'show', :id => t %>
-        <% end %>
-      </p>
-    <% end %>
-	</h1>
-	
-
-</div>
+<%= render :partial => 'shared/icon', :locals => { :this => @tag, :with_caption => false } %>
+<h1 class="pagetitle">
+  <%= @tag.name %>
+  <% if @tag.ancestry %>
+    <span class="headernote">
+      <% @tag.ancestry.reverse.each do |t| %>
+         &lt; <%= link_to t.name, :action => 'show', :id => t %>
+      <% end %>
+    </p>
+  <% end %>
+</h1>
 
 <% if @tag.description %>
   <%= @tag.nice('description') %>
@@ -20,12 +16,37 @@
   <p class="pale">We don't have a summary for this tag yet.</p>
 <% end %>
 
-<% if @tag.marks.count > 0 %>
-<p>This tag has been applied to:</p>
-	<ul class="starry">
-		<%= render :partial => 'mark', :collection => @tag.marks.uniq %>
-	</ul>
-<% else %>
-  <p class="pale">This tag hasn't been used yet.</p>
-<% end %>
+<div class="boxtabs">
+  <a href="#" id="tab_content_list" class="tab">tagged</a>
+  <a href="#" id="tab_content_tree" class="tab">in tree</a>
+  <a href="#" id="tab_content_debug" class="tab">debug</a>
+</div>
 
+<div class="boxed" id="box_content">
+  <div id="content_list">
+    <h2 class="boxhead">tagged items</h2>
+
+    <% if @tag.marks.count > 0 %>
+    <p>This tag has been applied to:</p>
+    	<ul class="starry">
+    		<%= render :partial => 'mark', :collection => @tag.marks.uniq %>
+    	</ul>
+    <% else %>
+      <p class="pale">This tag hasn't been used yet.</p>
+    <% end %>
+  </div>
+
+  <div id="content_tree">
+    <h2 class="boxhead">tagged items</h2>
+
+    <p>need a widget here to locate this tag in the tree.</p>
+
+  </div>
+
+  <div id="content_debug">
+    <h2 class="boxhead">request</h2>
+
+    <%= debug(request) %>
+
+  </div>
+</div>

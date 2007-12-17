@@ -9,7 +9,7 @@ class Node < ActiveRecord::Base
   belongs_to :collection
   has_many :topics, :as => :subject
 
-  acts_as_catcher :speaker
+  acts_as_catcher :tags, :flags, :speaker, :source
 
   file_column :file
   file_column :clip

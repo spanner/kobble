@@ -20,6 +20,7 @@ class Source < ActiveRecord::Base
   }
   
   before_save FileCallbacks.new
+  acts_as_catcher :tags, :flags, :nodes
 
   public 
   

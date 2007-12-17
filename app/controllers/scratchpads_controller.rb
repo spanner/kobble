@@ -16,7 +16,7 @@ class ScratchpadsController < ApplicationController
       @scraps = []
       params[:scrap].split('|').each do |s|
         input = s.split('_')
-        scrap = input[0].camelize.constantize.find(input[1])
+        scrap = input[0].classify.find(input[1])
         @scraps.push(scrap) if scrap
       end    
       @scratchpad.scraps << @scraps
@@ -30,7 +30,7 @@ class ScratchpadsController < ApplicationController
       @deleted = []
       params[:scrap].split('|').each do |s|
         input = s.split('_')
-        scrap = input[0].camelize.constantize.find(input[1])
+        scrap = input[0].classify.find(input[1])
         @deleted.push(scrap) if scrap
       end    
       @scratchpad.scraps.delete(@deleted)

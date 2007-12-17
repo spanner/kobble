@@ -158,11 +158,13 @@ div#signupnote {
 }
 
 div.mainform {
+/*  
   border: 1px solid #695D54;
-  padding: 0 16px 16px 16px;
+  padding: 16px;
 	background-image: url(/images/furniture/layout/greyfade.jpg);
 	background-position: top left;
 	background-repeat: repeat-x;
+*/
 }
 
 input.friendly, select.friendly, textarea.friendly {

@@ -3,13 +3,13 @@ class Bundle < ActiveRecord::Base
   belongs_to :creator, :class_name => 'User', :foreign_key => 'created_by'
   belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
   belongs_to :collection
-  has_many_polymorphs :members, :as => 'superbundle', :from => [:nodes, :sources, :tags, :bundles, :questions]
+  has_many_polymorphs :members, :as => 'superbundle', :from => [:nodes, :sources, :bundles, :questions]
   has_many :topics, :as => :subject
   
   # all dropped items are eaten unless already contained
   # set merging must be explicitly commanded
   
-  acts_as_catcher :members
+  acts_as_catcher :members, :tags, :flags
  
   file_column :image, :magick => { 
     :versions => { 

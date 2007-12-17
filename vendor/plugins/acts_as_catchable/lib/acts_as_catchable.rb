@@ -6,65 +6,68 @@ module ActiveRecord::Acts::Catchable
     base.class_eval {
                         
       class << self; 
-        attr_accessor :catch_dispatch; 
+        attr_accessor :catch_list, :catch_dispatch
       end
 
       def self.set_catch_dispatch(klass, kall)
         # STDERR.puts("    #{self.to_s}.set_catch_dispatch(#{klass}, #{kall})")
-        cd = self.catch_dispatch || {}
-        cd[klass.to_s] ||= kall
-        self.catch_dispatch = cd
+        self.catch_dispatch ||= {}
+        self.catch_dispatch[klass.to_s] ||= kall
       end
       
       def self.get_catch_dispatch(klass)
-        cd = self.catch_dispatch || {}
-        cd[klass.to_s]
+        self.initialize_catchers
+        self.catch_dispatch[klass.to_s]
       end
       
+      # here we examine the dispatch table and deduce the proper method
+      # deferred so that has_many_polymorphs can create its relationships
+      
+      # nbeg Scratchpad.acts_as_catcher(:scraps)
+
+      def self.initialize_catchers
+        return self.catch_dispatch if self.catch_dispatch && self.catch_dispatch.size
+        self.catch_list.each do |assoc| 
+          reflection = self.reflect_on_association(assoc)
+          if reflection
+            if reflection.macro == :has_many_polymorphs
+              reflection.options[:from].each { |k| self.set_catch_dispatch( k.to_s.classify, k.to_s.underscore.pluralize.intern) } 
+            else
+              self.set_catch_dispatch(reflection.class_name.to_s, reflection.name)
+            end
+          end
+        end
+        return self.catch_dispatch 
+      end
+
       public 
       
       def catch(thrown)
-        self.send(self.class.get_catch_dispatch(thrown.class), thrown)
+        association = self.class.get_catch_dispatch(thrown.class)
+        # STDERR.puts "#{self}.catch(#{thrown}) -> #{association}"
+        reflection = self.class.reflect_on_association(association)
+        if (reflection)
+          case reflection.macro
+          when :has_many
+            self.send(association) << thrown
+          when :belongs_to, :has_one
+            self.send("#{association}=", thrown)
+          end
+        end
       end
 
       def throw(catcher)
         catcher.catch(self)
       end
-
+      
       def self.acts_as_catcher(*associations)
-        associations.each do |assoc|
-          # STDERR.puts(">>> make catcher: #{self}.#{assoc.to_s}")
-          reflection = self.reflect_on_association(assoc)
-          if reflection
-            # STDERR.puts("    #{self} catches #{reflection.name.to_s} (#{reflection.macro})")
-            case reflection.macro
-            when :has_many_polymorphs
-              reflection.options[:from].each { |k| self.set_catch_dispatch( k.to_s, reflection.name.to_s + '.push' ) } 
-            when :has_many
-              self.set_catch_dispatch(reflection.class_name, reflection.name.to_s + '.push')
-            when :belongs_to, :has_one
-              self.set_catch_dispatch(reflection.class_name, reflection.name.to_s + '=')
-            end
-          end
-        end
+        # STDERR.puts "#{self}.acts_as_catcher(#{associations})"
+        self.catch_list ||= []
+        self.catch_list += associations
       end
-
+      
       def self.acts_as_catchable(*associations)
-        associations.each do |assoc|
-          # STDERR.puts("<<< make catchable: #{self}.#{assoc.to_s}")
-          reflection = self.reflect_on_association(assoc)
-          if reflection
-            # STDERR.puts("    #{self} catchable by #{reflection.name.to_s} (#{reflection.macro})")
-            case reflection.macro
-            when :has_many_polymorphs
-              reflection.options[:from].each { |k| k._as_class.set_catch_dispatch( self.to_s, reflection.name.to_s + '.push' ) } 
-            when :has_many
-              reflection.class_name.classify.set_drop_dispatch(self.to_s, reflection.name.to_s + '.push')
-            when :belongs_to, :has_one
-              reflection.class_name.classify.set_drop_dispatch(self.to_s, reflection.name.to_s + '=')
-            end
-          end
-        end
+        
       end
       
     }

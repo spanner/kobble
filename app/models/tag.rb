@@ -5,7 +5,6 @@ class Tag < ActiveRecord::Base
   acts_as_tree :order => 'name'
 
   has_many_polymorphs :marks, :skip_duplicates => true, :from => [:nodes, :sources, :bundles, :users, :questions, :blogentries, :forums, :topics]
-  acts_as_catchable :marks
 
   file_column :image, :magick => { 
     :versions => { 

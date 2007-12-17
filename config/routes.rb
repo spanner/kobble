@@ -41,6 +41,8 @@ ActionController::Routing::Routes.draw do |map|
   map.surveyquestion '/survey/ask/:id', :controller => 'account', :action => 'survey'
   map.me '/me', :controller => 'account', :action => 'me'
   map.user '/users/:action/:id', :controller => 'users'
+  
+  map.catch '/:controller/catch/:id/:klass/:caught', :action => 'catch'
 
   map.connect ':controller/:action/:id'
   

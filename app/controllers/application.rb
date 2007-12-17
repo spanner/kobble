@@ -52,6 +52,28 @@ class ApplicationController < ActionController::Base
     # tags.map! { |name| Tag.find_or_create_by_name( name ) }
   end
   
+  # here a general purpose dispatcher
+
+  def catch
+    logger.warn "!!! catch. 
+      controller = #{request.parameters[:controller]}
+      class = #{request.parameters[:controller].to_s.classify}
+      id = #{params[:id]}
+      klass = #{params[:klass]}
+      caught = #{params[:caught]}"
+
+    @catcher = request.parameters[:controller].to_s._as_class.find( params[:id] )
+    @caught = params[:klass]._as_class.find(params[:caught])
+    @catcher.catch(@caught) if @catcher and @caught
+
+    respond_to do |format|
+      format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @catcher }
+      format.js { render :nothing => true }
+      format.xml { head 200 }
+    end
+    
+  end
+  
   protected
     def last_active
       session[:last_active] ||= Time.now.utc

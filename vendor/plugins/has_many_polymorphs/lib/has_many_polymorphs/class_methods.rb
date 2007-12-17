@@ -291,7 +291,8 @@ Be aware, however, that <tt>NULL != 'Spot'</tt> returns <tt>false</tt> due to SQ
   #        :after_add,
   #        :before_remove,
   #        :after_remove
-           :dummy)
+           :dummy,
+           :catchable)
   
         # validate against the most frequent configuration mistakes
         verify_pluralization_of(association_id)            
