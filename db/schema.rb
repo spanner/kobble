@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 77) do
+ActiveRecord::Schema.define(:version => 78) do
 
   create_table "answers", :force => true do |t|
     t.column "question_id",   :integer
@@ -233,8 +233,11 @@ ActiveRecord::Schema.define(:version => 77) do
   add_index "scraps_scratchpads", ["scrap_type", "scrap_id"], :name => "index_scratchpad_scraps"
 
   create_table "scratchpads", :force => true do |t|
-    t.column "name",    :string
-    t.column "user_id", :integer
+    t.column "name",       :string
+    t.column "created_by", :integer
+    t.column "created_at", :datetime
+    t.column "updated_by", :integer
+    t.column "updated_at", :datetime
   end
 
   create_table "sessions", :force => true do |t|

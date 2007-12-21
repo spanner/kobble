@@ -7,51 +7,6 @@ class ScratchpadsController < ApplicationController
 
   verify :redirect_to => { :action => :list }
 
-  # ajax add/remove/sort scratchpad items (scraps)
-  # all scraps are identified by the string 'class_id'
-  
-  def add
-    @scratchpad = Scratchpad.find(params[:id])
-    if (@scratchpad && params[:scrap]) then
-      @scraps = []
-      params[:scrap].split('|').each do |s|
-        input = s.split('_')
-        scrap = input[0].classify.find(input[1])
-        @scraps.push(scrap) if scrap
-      end    
-      @scratchpad.scraps << @scraps
-    end
-    render :layout => false
-  end
-
-  def remove
-    @scratchpad = Scratchpad.find(params[:id])
-    if (@scratchpad && params[:scrap]) then
-      @deleted = []
-      params[:scrap].split('|').each do |s|
-        input = s.split('_')
-        scrap = input[0].classify.find(input[1])
-        @deleted.push(scrap) if scrap
-      end    
-      @scratchpad.scraps.delete(@deleted)
-    end
-    render :layout => false
-  end
-
-  def reorder 
-     @scratchpad = Scratchpad.find(params[:id]) 
-     if (@scratchpad && params[:scraps]) then
-       @scraps = []
-       params[:scrap].split('|').each do |s|
-         input = s.split('_')
-         @scraps.push(input[0].camelize.constantize.find(input[1]))
-       end    
-     end
-     @scratchpad.scraps.clear
-     @scratchpad.scraps << @scraps
-     render :nothing => true 
-   end 
-
   def emptyscratch
     @pad = Scratchpad.find(params[:id])
     @deleted = @pad.scraps.collect{ |p| "pad_#{p.class.to_s.downcase}_#{p.id}" }
@@ -62,7 +17,20 @@ class ScratchpadsController < ApplicationController
   # rest is normal scaffolding
 
   def list
-    @scratchpad_pages, @scratchpads = paginate :scratchpads, :per_page => 100
+    perpage = params[:perpage] || 40
+    sort = case params[:sort]
+      when "name"  then "name"
+      when "date" then "created_at DESC"
+      when "name_reverse" then "name DESC"
+      when "date_reverse" then "created_at ASC"
+      else "name"
+    end
+
+    @scratchpads = Scratchpad.find(:all, 
+      :conditions => limit_to_active_collection, 
+      :order => sort, 
+      :page => {:size => perpage, :current => params[:page]}
+    )
   end
 
   def show

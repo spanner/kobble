@@ -1,15 +1,17 @@
 var Dropzone = new Class({
 	initialize: function (element) {
     // console.log('new dropzone: ' + element.id);
-	  this.tag = element.id;
 		this.container = element;
+	  this.tag = element.id;
 		this.waiter = $E('div.waiting', element);
 		if (this.waiter) this.waiter.hide();
 		this.container.dropzone = this;   // used to work out whether we've dragged into a new place
 		this.isreceptive = false;
-		this.receiptAction = 'add';
-		this.removeAction = 'remove';
+		this.receiptAction = 'catch';
+		this.removeAction = 'drop';
   },
+  spokeID: function () { return idParts(this.container)['id']; },
+  spokeType: function () { return idParts(this.container)['type']; },
 	recipient: function () { return this.container; },
 	flasher: function () { return this.container; },
 	contents: function () { return $ES('.draggable', this.container).map(function(el){ return el.id; }); },
@@ -19,9 +21,9 @@ var Dropzone = new Class({
 	makeReceptiveTo: function (draggee) {
 		var dropzone = this;
 		this.container.addEvents({
-			'drop': function() { sleepDroppers(); dropzone.receiveDrop(draggee); },
-			'over': function() { dropzone.showInterest(draggee); },
-			'leave': function() { dropzone.loseInterest(draggee); }
+			drop: function() { sleepDroppers(); dropzone.receiveDrop(draggee); },
+			over: function() { dropzone.showInterest(draggee); },
+			leave: function() { dropzone.loseInterest(draggee); }
 		});
 		return this.container;
 	},
@@ -54,13 +56,10 @@ var Dropzone = new Class({
   	  // console.log('disappearing clone(' + draggee.tag + ')');
 			draggee.disappear();
       // console.log('ajax call(' + draggee.tag + ')');
-			new Ajax(this.addURL(), {
+			new Ajax(this.addURL(draggee), {
 				method: 'get',
-				data: { 'scrap': draggee.tag, 'display': display },
         update: this.recipient(),
-			  onRequest: function () { 
-			    dropzone.waiting(); 
-			  },
+			  onRequest: function () { dropzone.waiting(); },
 			  onComplete: function () { 
 			    dropzone.notWaiting();
 				  $ES('.draggable', dropzone.recipient()).each(function(item) { item.addEvent('mousedown', function(e) { new Draggee(this, new Event(e)); }); });
@@ -78,21 +77,18 @@ var Dropzone = new Class({
     // console.log('removedrop');
 		dropzone = this;
     draggee.disappear();
-		new Ajax(dropzone.removeURL(), {
+		new Ajax(dropzone.removeURL(draggee), {
 			method : 'post',
-			data : { 'scrap': draggee.tag },
 		  onRequest: function () { dropzone.draggeeWaiting(draggee); },
 		  onSuccess: function () { announce(this.response.text); dropzone.draggeeRemove(draggee); dropzone.showSuccess(); },
 		  onFailure: function () { dropzone.draggeeNotWaiting(); }
 		}).request();
 	},
-	addURL: function (argument) { 
-		var parts = idParts(this.container);
-		return '/' + parts['type'] + 's/' + this.receiptAction + '/' + parts['id']; 
+	addURL: function (draggee) { 
+		return '/' + this.spokeType() + 's/' + this.receiptAction + '/' + this.spokeID() + '/' + draggee.spokeType() + '/' + draggee.spokeID(); 
 	},
-	removeURL: function (argument) { 
-		var parts = idParts(this.container);
-		return '/' + parts['type'] + 's/' + this.removeAction + '/' + parts['id']; 
+	removeURL: function (draggee) { 
+		return '/' + this.spokeType() + 's/' + this.removeAction + '/' + this.spokeID() + '/' + draggee.spokeType() + '/' + draggee.spokeID(); 
 	},
 	waiting: function () { 
     // console.log('dropzone.waiting')
@@ -104,8 +100,6 @@ var Dropzone = new Class({
     this.waiter = $E('div.waiting', this.container);
     if (this.waiter) this.waiter.hide();
 	},
-	// by default we use the signalwith image (first image in the draggee) to display a spinner
-	// scratchpages override this to use list styles instead
 	draggeeWaiting: function (draggee) {
 	  draggee.presignal = draggee.signalwith.getProperty('src');
     draggee.signalwith.setProperty('src', '/images/furniture/signals/wait_32_grey.gif');
@@ -133,7 +127,7 @@ var SetDropzone = Dropzone.extend({
 	},
 	showSuccess: function () {
 	  flash(this.flasher());
-	  console.log(this.tabset);
+    // console.log(this.tabset);
 	  if (this.tabset()) this.tabset().resize();
 	}
 });
@@ -164,10 +158,10 @@ var PadDropzone = Dropzone.extend({
       }
     });
 	},
+  spokeID: function () { return this.foreground.spokeID(); },
+  spokeType: function () { return this.foreground.spokeType(); },
 	recipient: function () { return this.foreground.list; },
 	flasher: function () { return this.foreground.flasher(); },
-	addURL: function (argument) { return '/scratchpads/add/' + this.foreground.spokeID; },
-	removeURL: function (argument) { return '/scratchpads/remove/' + this.foreground.spokeID; },
 	contents: function () { return this.foreground.contents(); },
   addPages: function(elements){
 		var pad = this;
@@ -248,7 +242,6 @@ var Scratchpage = new Class({
 	initialize: function(element){
     // console.log('initialize: ' + element.id);
 		this.container = element;
-		this.spokeID = idParts(element)['id'];
 		this.tag = element.id;
 		this.list = $E('ul', element);
 		this.waiter = null;
@@ -258,6 +251,8 @@ var Scratchpage = new Class({
     this.formholder = new Element('div', {'class': 'renameform bigspinner', 'style': 'height: 0'}).injectBefore(this.container).hide();
     this.renamefx = new Fx.Style(this.formholder, 'height', {duration:1000});
 	},
+  spokeID: function () { return idParts(this.container)['id']; },
+  spokeType: function () { return idParts(this.container)['type']; },
 	flasher: function(){ return this.container; },
   makeForeground: function(){
     // console.log('makeForeground: ' + this.tag);
@@ -389,6 +384,8 @@ var Draggee = new Class({
 			droppables: wakeDroppers(draggee) // returns list of activated droppers. activating them sets up drop triggers
 		}).start(event);
 	},
+  spokeID: function () { return idParts(this.container)['id']; },
+  spokeType: function () { return idParts(this.container)['type']; },
 	removeIfDraggedOut: function () {
 		this.origin ? this.origin.removeDrop(this) : this.release();
 	},

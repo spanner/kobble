@@ -14,6 +14,7 @@ class ApplicationController < ActionController::Base
   
   def set_context
     @display = 'list'
+    @scratch = current_user.find_or_create_scratchpads if logged_in?
     EditObserver.current_user = current_user
     Collection.current_collection = User.current_collection = current_collection
     redirect_to :controller => 'collections', :action => 'index' if logged_in? && current_collection == :false
@@ -52,10 +53,8 @@ class ApplicationController < ActionController::Base
     # tags.map! { |name| Tag.find_or_create_by_name( name ) }
   end
   
-  # here a general purpose dispatcher
-
   def catch
-    logger.warn "!!! catch. 
+    logger.warn "^^^ catch. 
       controller = #{request.parameters[:controller]}
       class = #{request.parameters[:controller].to_s.classify}
       id = #{params[:id]}
@@ -68,10 +67,36 @@ class ApplicationController < ActionController::Base
 
     respond_to do |format|
       format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @catcher }
-      format.js { render :nothing => true }
+      format.js { render :action => 'caught', :layout => false }
       format.xml { head 200 }
     end
-    
+  end
+
+  def caught
+    render :layout => false
+  end
+  
+  def drop
+    logger.warn "vvv drop. 
+      controller = #{request.parameters[:controller]}
+      class = #{request.parameters[:controller].to_s.classify}
+      id = #{params[:id]}
+      klass = #{params[:klass]}
+      caught = #{params[:caught]}"
+
+    @dropper = request.parameters[:controller].to_s._as_class.find( params[:id] )
+    @dropped = params[:klass]._as_class.find(params[:dropped])
+    @dropper.drop(@dropped) if @dropper and @dropped
+
+    respond_to do |format|
+      format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @dropper }
+      format.js { render :action => 'dropped', :layout => false }
+      format.xml { head 200 }
+    end
+  end
+  
+  def dropped
+    render :layout => false
   end
   
   protected

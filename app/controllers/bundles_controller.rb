@@ -77,39 +77,6 @@ class BundlesController < ApplicationController
     end
   end
 
-  def add
-    @display = case params['display']
-      when "full" then "full"
-      when "list" then "list"
-      else "thumb"
-    end
-    @bundle = Bundle.find(params[:id])
-    @added = []
-    if (@bundle && params[:scrap]) then
-      params[:scrap].split('|').each do |s|
-        input = s.split('_')
-        @added.push(input[0].camelize.constantize.find(input[1]))
-      end
-      @added.uniq!  
-      @bundle.members << @added.reject { |s| s == @bundle or @bundle.members.detect {|m| s == m } } 
-    end
-    render :layout => false
-  end
-
-  def remove
-    @bundle = Bundle.find(params[:id])
-    @deleted = []
-    if (@bundle && params[:scrap]) then
-      params[:scrap].split('|').each do |s|
-        input = s.split('_')
-        scrap = input[0].camelize.constantize.find(input[1])
-        @bundle.members.delete(scrap) if scrap
-        @deleted << scrap
-      end
-    end
-    render :layout => false
-  end
-
   def destroy
     Bundle.find(params[:id]).destroy
     respond_to do |format|

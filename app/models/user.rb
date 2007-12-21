@@ -2,7 +2,6 @@ require 'digest/sha1'
 
 class User < ActiveRecord::Base
   attr_protected :activated_at
-  # attr_accessor :password
   attr_accessor :password_confirmation
   attr_accessor :old_password
   attr_accessor :just_promoted
@@ -15,9 +14,9 @@ class User < ActiveRecord::Base
   has_many :sources, :class_name => 'Source', :foreign_key => 'speaker_id'
   has_many :nodes, :class_name => 'Node', :foreign_key => 'speaker_id'
   has_many :answers, :class_name => 'Answer', :foreign_key => 'speaker_id'
-  has_many :scratchpads
   has_many :flags
-  has_many :posts, :class_name => 'Post', :foreign_key => 'created_by'
+  has_many :posts, :class_name => 'Post', :foreign_key => 'created_by', :dependent => :nullify
+  has_many :scratchpads, :class_name => 'Scratchpad', :foreign_key => 'created_by', :dependent => :destroy
 
   has_many :created_nodes, :class_name => 'Node', :foreign_key => 'created_by'
   has_many :created_sources, :class_name => 'Source', :foreign_key => 'created_by'
@@ -26,7 +25,7 @@ class User < ActiveRecord::Base
   has_many :created_forums, :class_name => 'Forum', :foreign_key => 'created_by'
   has_many :created_topics, :class_name => 'Topic', :foreign_key => 'created_by'
 
-  has_many :monitorships
+  has_many :monitorships, :dependent => :destroy
   has_many :monitored_topics, :through => :monitorships, :conditions => ['monitorships.active = ?', true], :order => 'topics.replied_at desc', :source => :topic
 
   validates_presence_of     :firstname, :lastname
@@ -54,9 +53,9 @@ class User < ActiveRecord::Base
   # spoke custom methods
   
   def find_or_create_scratchpads
-    if (self.scratchpads.size == 0)
+    if (self.scratchpads.empty?)
       (1..4).each do |i|
-        self.scratchpads << Scratchpad.new( :user => @thisuser, :name => "pad#{i}" )
+        self.scratchpads.create({:name => "pad#{i}"})
       end
     end
     self.scratchpads

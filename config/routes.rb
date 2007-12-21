@@ -43,6 +43,7 @@ ActionController::Routing::Routes.draw do |map|
   map.user '/users/:action/:id', :controller => 'users'
   
   map.catch '/:controller/catch/:id/:klass/:caught', :action => 'catch'
+  map.drop '/:controller/drop/:id/:klass/:dropped', :action => 'drop'
 
   map.connect ':controller/:action/:id'
   

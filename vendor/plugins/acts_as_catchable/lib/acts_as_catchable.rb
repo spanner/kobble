@@ -60,14 +60,21 @@ module ActiveRecord::Acts::Catchable
         catcher.catch(self)
       end
       
+      def drop(dropped)
+        association = self.class.get_catch_dispatch(dropped.class)
+        reflection = self.class.reflect_on_association(association)
+        if (reflection)
+          case reflection.macro
+          when :has_many
+            collection = self.send(association).send('delete', dropped)
+          end
+        end
+      end
+      
       def self.acts_as_catcher(*associations)
         # STDERR.puts "#{self}.acts_as_catcher(#{associations})"
         self.catch_list ||= []
         self.catch_list += associations
-      end
-      
-      def self.acts_as_catchable(*associations)
-        
       end
       
     }

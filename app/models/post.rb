@@ -21,4 +21,8 @@ class Post < ActiveRecord::Base
     options[:except] << :topic_title << :forum_name
     super
   end
+  
+  def name
+    "response to #{self.topic.title}"
+  end
 end
