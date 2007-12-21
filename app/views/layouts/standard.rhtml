@@ -1,10 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
         "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 
-<% 
-  @scratchpads ||= current_user.find_or_create_scratchpads
-%>
-
 <html>
 <head>
   <title>Device: <%= controller.action_name %></title>
@@ -58,12 +54,12 @@
 
   <div id="scratchpad" class="fixedbottom">
     <div id="scratchtabs">
-      <% for pad in @scratchpads %>
+      <% for pad in @scratch %>
         <a href="#" class="padtab" id="tab_scratchpad_<%= pad.id %>"><%= pad.name %></a>
       <% end %>
     </div>
 
-     <%= render :partial => 'shared/scratchpad', :collection => @scratchpads %>
+     <%= render :partial => 'shared/scratchpad', :collection => @scratch %>
   </div>
 
 	<script type="text/javascript">

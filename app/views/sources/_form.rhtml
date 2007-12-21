@@ -3,7 +3,7 @@
 <p>'Source documents' are whole texts or recordings, uploaded intact and suitable for segmenting. At the moment we can accept text, mp3 audio and mpeg video. Pdfs will be edible soon, and other media formats will follow as they are needed.</p>
 
 <p><label for="source_name">Document name</label><br />
-<%= text_field 'source', 'name', 'class' => "standard" %>
+<%= text_field 'source', 'name', 'class' => "titular" %>
 </p>
 
 <%= render :partial => 'shared/edit_tags', :locals => {:item => @source} %>

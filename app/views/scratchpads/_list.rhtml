@@ -1,16 +1,16 @@
+<% if list %>
+ 
+  <div class="listrow <%= cycle("odd", "even", :name => "itemlist") %>" id="scratchpad_<%= list.id %>">
+    <%= render :partial => 'shared/icon', :locals => { :this => list, :with_caption => false } %>
+    <h2>
+			<%= link_to( "#{list.name}", {:controller => 'scratchpads', :action => 'show', :id => list}) %>
+      <%= render :partial => 'shared/admin_buttons', :locals => {:item => list, :inplace => true} %>
+		</h2>
+    <p>
+      <%= list.scraps.length %> objects belonging to <%= link_to( list.user.name, {:controller => 'people', :action => 'show', :id => list}) %>.
+    </p>
+  </div>
+<% end %>
 
-<tr class="<%= cycle("odd", "even", :name => "itemtable") %>">
-  <td><%= link_to( list.name, {:controller => 'scratchpads', :action => 'show', :id => list}, {:class => 'inplace'}) %></td>
-  <td><%= link_to( list.user.name, {:controller => 'people', :action => 'show', :id => list}, {:class => 'inplace'}) %></td>
-  <td><%= list.scraps.length %> objects</td>
-  <td>
-    <%= link_to 'thumbs', :controller => 'scratchpads', :action => 'show', :id => list, :display => 'thumbs' %> | 
-    <%= link_to 'list', :controller => 'scratchpads', :action => 'show', :id => list, :display => 'list' %> | 
-    <%= link_to 'printable', :controller => 'scratchpads', :action => 'show', :id => list, :display => 'full' %> 
 
-    <% if nil && admin? %>
-      <%= link_to 'Edit', :controller => 'scratchpads', :action => 'edit', :id => list %> | 
-      <%= link_to 'Destroy', { :controller => 'scratchpads', :action => 'destroy', :id => list }, :confirm => 'Are you sure?', :post => true %>
-    <% end %>
-  </td>
-</tr>
+

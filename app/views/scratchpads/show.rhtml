@@ -1,4 +1,7 @@
-<%= render :partial => @display %>
+<h1>scratchpad: <%= @scratchpad.name %></h1>
 
+<p class="small">This pad belongs to <%= @scratchpad.user.name %></p>
 
-
+<% @scratchpad.scraps.each do |scrap| %>
+  <%= render :partial => "#{scrap.class.to_s.underscore.pluralize}/list", :locals => {:list => scrap} %>
+<% end %>

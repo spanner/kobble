@@ -1,8 +1,1 @@
-<h1>scratchpads</h1>
-
-<p>Scratchpads can be viewed as thumbnails (the way they normally display to their owner), as lists or in printable form showing the full text of each item on the pad.</p>
-
-<%= render :partial => 'listheader' %>
-<%= render :partial => 'list', :collection => @scratchpads %>
-<%= render :partial => 'listfooter' %>
-
+<%= render :partial => 'shared/list', :locals => { :pagetitle => 'Scratchpads', :list => @scratchpads } %>
