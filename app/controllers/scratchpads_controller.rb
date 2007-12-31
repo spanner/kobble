@@ -14,8 +14,6 @@ class ScratchpadsController < ApplicationController
     render :layout => false
   end
 
-  # rest is normal scaffolding
-
   def list
     perpage = params[:perpage] || 40
     sort = case params[:sort]

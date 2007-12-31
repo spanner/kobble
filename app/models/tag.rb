@@ -5,6 +5,7 @@ class Tag < ActiveRecord::Base
   acts_as_tree :order => 'name'
 
   has_many_polymorphs :marks, :skip_duplicates => true, :from => [:nodes, :sources, :bundles, :users, :questions, :blogentries, :forums, :topics]
+  acts_as_catcher :marks, {Tag => :subsume}
 
   file_column :image, :magick => { 
     :versions => { 
@@ -13,6 +14,15 @@ class Tag < ActiveRecord::Base
       "preview" => "750x540>" 
     }
   }
+  
+  def subsume(subsumed)
+    self.marks << subsumed.marks
+    self.flags << subsumed.flags
+    self.children << subsumed.children
+    self.description = subsumed.description if self.description.nil? or self.description.size == 0
+    self.image = subsumed.image if self.image.nil? or self.image.size == 0
+    subsumed.destroy
+  end
   
   def parentage
     return self unless self.parent

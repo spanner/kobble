@@ -118,6 +118,10 @@ var Dropzone = new Class({
 	}
 });
 
+var ObjectDropzone = Dropzone.extend({
+  
+});
+
 var SetDropzone = Dropzone.extend({
 	recipient: function () { 
 	  return $E('div.dropcontents', this.container); 

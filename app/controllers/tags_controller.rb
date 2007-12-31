@@ -157,6 +157,17 @@ class TagsController < ApplicationController
       render :action => 'edit'
     end
   end
+  
+  def subsume
+    @tag = Tag.find(params[:id])
+    @subsumed = Tag.find(params[:subsume])
+    @tag.subsume(@subsumed)
+    respond_to do |format|
+      format.html { redirect_to :action => 'show', :id => @tag }
+      format.js { render :nothing => true }
+      format.xml { head 200 }
+    end
+  end
 
   def destroy
     Tag.find(params[:id]).destroy

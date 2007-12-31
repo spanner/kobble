@@ -23,21 +23,25 @@ module ActiveRecord::Acts::Catchable
       # here we examine the dispatch table and deduce the proper method
       # deferred so that has_many_polymorphs can create its relationships
       
-      # nbeg Scratchpad.acts_as_catcher(:scraps)
+      # nbeg Scratchpad.acts_as_catcher :scraps, :merge
 
       def self.initialize_catchers
         return self.catch_dispatch if self.catch_dispatch && self.catch_dispatch.size
-        self.catch_list.each do |assoc| 
-          reflection = self.reflect_on_association(assoc)
-          if reflection
-            if reflection.macro == :has_many_polymorphs
-              reflection.options[:from].each { |k| self.set_catch_dispatch( k.to_s.classify, k.to_s.underscore.pluralize.intern) } 
-            else
-              self.set_catch_dispatch(reflection.class_name.to_s, reflection.name)
+        self.catch_list.each do |assoc|
+          if assoc.class == Hash
+            assoc.each_pair { |kl, meth| self.set_catch_dispatch(kl, meth) }
+          else
+            reflection = self.reflect_on_association(assoc)
+            if reflection
+              if reflection.macro == :has_many_polymorphs
+                reflection.options[:from].each { |k| self.set_catch_dispatch( k.to_s.classify, k.to_s.underscore.pluralize.intern) } 
+              else
+                self.set_catch_dispatch(reflection.class_name.to_s, reflection.name)
+              end
             end
           end
         end
-        return self.catch_dispatch 
+        return self.catch_dispatch
       end
 
       public 
@@ -53,6 +57,8 @@ module ActiveRecord::Acts::Catchable
           when :belongs_to, :has_one
             self.send("#{association}=", thrown)
           end
+        elsif self.respond_to?(association)
+          self.send(association, thrown)
         end
       end
 
