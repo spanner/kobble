@@ -8,27 +8,11 @@
 </h1>
 
 <div class="boxtabs">
-  <a href="#" id="tab_content_list" class="tab">list</a>
   <a href="#" id="tab_content_cloud" class="tab">cloud</a>
-  <a href="#" id="tab_content_tree" class="tab">tree</a>
+  <a href="#" id="tab_content_list" class="tab">list</a>
 </div>
 
 <div class="boxed" id="box_content">
-  <div id="content_list">
-    <h2 class="boxhead">
-      tag list
-      <%= link_to_unless_current "by name", {:action => 'list', :sort => 'name'}, {:class => 'small'}%>
-      <%= link_to_unless_current "by popularity", {:action => 'list', :sort => 'popularity'}, {:class => 'small'}%>
-      <%= link_to_unless_current "by creation date", {:action => 'list', :sort => 'date'}, {:class => 'small'}%>
-    </h2>
-    <p style="color: #695D54;">
-	  <% for tag in @tags %>
-      <%= link_to( "#{tag.name}", :action => 'show', :id => tag) %> <span class="countlabel"><%= tag.use_count %></span>
-  	<% end %>
-  	</p>
-  	
-  </div>
-
   <div id="content_cloud">
     <h2 class="boxhead">tag cloud</h2>
   	<ul class="cloud">
@@ -37,28 +21,19 @@
   	<% end %>
   	</ul>
   </div>
+  
+  <div id="content_list">
+    <h2 class="boxhead">
+      tag list
+      <%= link_to_unless_current "by name", {:action => 'list', :sort => 'name'}, {:class => 'small'}%>
+      <%= link_to_unless_current "by popularity", {:action => 'list', :sort => 'popularity'}, {:class => 'small'}%>
+      <%= link_to_unless_current "by creation date", {:action => 'list', :sort => 'date'}, {:class => 'small'}%>
+    </h2>
 
-  <div id="content_tree">
-    <% if @roots.empty? %>
-      <h2 class="boxhead">tags in this collection are not taxonomic</h2>
-      <%= render :partial => 'shared/branch', :collection => @shoots %>
-
-    <% else %>
-      <div style="marginal" class="floatcolumn">
-        <h2 class="boxhead">loose tags</h2>
-        <p style="font-size: 11px;">
-    	  <% for tag in @shoots %>
-          <%= link_to( "#{tag.name}", :action => 'show', :id => tag) %> <span class="countlabel"><%= tag.use_count %></span><br />
-      	<% end %>
-      	</p>
-      </div>
-      <h2 class="boxhead">tag trees</h2>
-      <%= render :partial => 'shared/branch', :collection => @roots %>
-
-    <% end %>
+    <%= render :partial => 'thumb', :collection => @tags %>
 
     <p class="clear">phew</p>
+  	
   </div>
-  
 </div>
 

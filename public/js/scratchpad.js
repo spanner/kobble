@@ -118,10 +118,6 @@ var Dropzone = new Class({
 	}
 });
 
-var ObjectDropzone = Dropzone.extend({
-  
-});
-
 var SetDropzone = Dropzone.extend({
 	recipient: function () { 
 	  return $E('div.dropcontents', this.container); 
@@ -135,6 +131,9 @@ var SetDropzone = Dropzone.extend({
 	  if (this.tabset()) this.tabset().resize();
 	}
 });
+
+
+// scratchpad extends the normal dropzone by delegating to whichever part is in the foreground
 
 var PadDropzone = Dropzone.extend({
 	initialize: function(element){
@@ -215,15 +214,6 @@ var PadDropzone = Dropzone.extend({
 	showRename: function (pageid, url) {
     this.pages[pageid].showRename(url);
 	},
-	draggeeWaiting: function (draggee) {
-	  draggee.container.addClass('waiting');
-	},	
-	draggeeNotWaiting: function (draggee) {
-	  draggee.container.removeClass('waiting');
-	},
-	draggeeRemove: function (draggee) {
-    draggee.explode(draggee.container);
-	},
 	waiting: function () { 
     // console.log('padDropzone.waiting')
 	  this.foreground.waiting();
@@ -239,6 +229,15 @@ var PadDropzone = Dropzone.extend({
 	},
 	showSuccess: function () {
 	  flash(this.flasher(), '695D54');
+	},
+	draggeeWaiting: function (draggee) {
+	  draggee.container.addClass('waiting');
+	},	
+	draggeeNotWaiting: function (draggee) {
+	  draggee.container.removeClass('waiting');
+	},
+	draggeeRemove: function (draggee) {
+    draggee.explode(draggee.container);
 	}
 });
 
@@ -367,7 +366,7 @@ var Draggee = new Class({
 		this.tag = ip['type'] + '_' + ip['id'];   //omitting other id parts that only serve to avoid duplicate ids
 		this.link = $E('a', element);
 		this.backto = element.getCoordinates();
-		this.origin = lookForDropper(element);
+		this.origin = lookForDropper(element.getParent());
 		this.imgsrc = $E('img.icon', element).getProperty('src');
 		this.signalwith = $E('img', element);
 		var draggee = this;
@@ -472,14 +471,16 @@ function sleepDroppers () {
 }
 
 function lookForDropper (element) {
-	if (element.dropzone) {
-		return element.dropzone;
-	} else {
-  	var p = element.getParent();
-	  if (p && p.getParent) {
-		  return lookForDropper( p );
-	  } else {
-		  return null;
-	  }
+  if (element) {
+  	if (element.dropzone) {
+  		return element.dropzone;
+  	} else {
+    	var p = element.getParent();
+  	  if (p && p.getParent) {
+  		  return lookForDropper( p );
+  	  } else {
+  		  return null;
+  	  }
+    }
   }
 }

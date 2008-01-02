@@ -174,7 +174,7 @@ div.thumb, div.padthumb, div.headingthumb, div.setthumb, div.deleted, div.pendin
   margin: 16px 16px 0 0;
 	padding: 0;
 	height: 108px;
-	width: 60px;
+	width: 68px;
 }
 
 div.label {
@@ -440,7 +440,7 @@ a.minimal {
 
 #canvas {
 	padding: 0;
-	margin: 35px 100px 110px 83px;
+	margin: 35px 60px 110px 83px;
 	max-width: 820px;
 }
 
@@ -551,7 +551,6 @@ div#rightcolumn {
 	background-image: url(/images/furniture/layout/redtabbg.png);
 }
 
-
 #notification {
   clear: left;
   font-family: helvetica, arial, sans;
@@ -570,9 +569,16 @@ div.dropcontents {
 	min-height: 200px;
 }
 
+div.catcher {
+  padding: 3px;
+}
+
 .drophere {
 	background-color: #daf2ff;
-}
+/*  background-image: url(/images/furniture/icons/rounded.png);
+  background-repeat: no-repeat;
+  background-position: top left;
+*/}
 
 #scratchpad {
   position: absolute;

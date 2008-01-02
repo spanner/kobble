@@ -25,8 +25,8 @@ class BundlesController < ApplicationController
   def show
     @display = case params['display']
       when "full" then "full"
-      when "thumbs" then "thumb"
-      else "list"
+      when "list" then "list"
+      else "thumb"
     end
     @bundle = Bundle.find(params[:id])
   end

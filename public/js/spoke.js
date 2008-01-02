@@ -81,9 +81,15 @@ window.addEvent('domready', function(){
     }
 	});
 
-	scratchpad = droppers[0] = new PadDropzone( $E('#scratchpad') );
+	scratchpad = new PadDropzone( $E('#scratchpad') );
+	droppers.push(scratchpad)
+	
 	$ES('div.setdrop').each(function (element) {
 		droppers.push(new SetDropzone(element));
+	});
+
+	$ES('.catcher').each(function (element) {
+		droppers.push(new Dropzone(element));
 	});
 
   $ES('.draggable').each(function(item) {

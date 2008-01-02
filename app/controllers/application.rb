@@ -67,13 +67,9 @@ class ApplicationController < ActionController::Base
 
     respond_to do |format|
       format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @catcher }
-      format.js { render :action => 'caught', :layout => false }
+      format.js { render :template => 'shared/caught', :layout => false }
       format.xml { head 200 }
     end
-  end
-
-  def caught
-    render :layout => false
   end
   
   def drop
