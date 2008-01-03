@@ -38,6 +38,7 @@
 	}
 });
 
+
 var Model = new Class({
 	initialize: function(object){
     var properties = {};
