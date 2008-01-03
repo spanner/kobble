@@ -42,8 +42,8 @@ ActionController::Routing::Routes.draw do |map|
   map.me '/me', :controller => 'account', :action => 'me'
   map.user '/users/:action/:id', :controller => 'users'
   
-  map.catch '/:controller/catch/:id/:klass/:caught', :action => 'catch'
-  map.drop '/:controller/drop/:id/:klass/:dropped', :action => 'drop'
+  map.catch '/:controller/catch/:id/:caughtClass/:caughtID', :action => 'catch'
+  map.drop '/:controller/drop/:id/:droppedClass/:droppedID', :action => 'drop'
 
   map.connect ':controller/:action/:id'
   

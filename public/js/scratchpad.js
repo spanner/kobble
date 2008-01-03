@@ -56,17 +56,25 @@ var Dropzone = new Class({
   	  // console.log('disappearing clone(' + draggee.tag + ')');
 			draggee.disappear();
       // console.log('ajax call(' + draggee.tag + ')');
-			new Ajax(this.addURL(draggee), {
+			var req = new Ajax(this.addURL(draggee), {
 				method: 'get',
-        update: this.recipient(),
-			  onRequest: function () { dropzone.waiting(); },
-			  onComplete: function () { 
-			    dropzone.notWaiting();
-				  $ES('.draggable', dropzone.recipient()).each(function(item) { item.addEvent('mousedown', function(e) { new Draggee(this, new Event(e)); }); });
-          dropzone.showSuccess();
-				},
-			  onFailure: function () { 
+			  onRequest: function () { 
+			    dropzone.waiting(); 
+			  },
+        onSuccess: function(response){
+          dropzone.notWaiting();
+          console.log(response);
+          if (response.successful) {
+            dropzone.showSuccess();
+            confirm(response.message);
+          } else {
+    		    dropzone.showFailure();
+            error(response.message);
+          }
+        },
+			  onFailure: function (response) { 
 			    dropzone.notWaiting(); 
+          console.log(response)
 			    error('ajax call failed');
 			    dropzone.showFailure();
 			  }
@@ -85,7 +93,7 @@ var Dropzone = new Class({
 		}).request();
 	},
 	addURL: function (draggee) { 
-		return '/' + this.spokeType() + 's/' + this.receiptAction + '/' + this.spokeID() + '/' + draggee.spokeType() + '/' + draggee.spokeID(); 
+		return '/' + this.spokeType() + 's/' + this.receiptAction + '/' + this.spokeID() + '/' + draggee.spokeType() + '/' + draggee.spokeID();  
 	},
 	removeURL: function (draggee) { 
 		return '/' + this.spokeType() + 's/' + this.removeAction + '/' + this.spokeID() + '/' + draggee.spokeType() + '/' + draggee.spokeID(); 
@@ -118,242 +126,15 @@ var Dropzone = new Class({
 	}
 });
 
-var SetDropzone = Dropzone.extend({
-	recipient: function () { 
-	  return $E('div.dropcontents', this.container); 
-	},
-	tabset: function () {
-	  return tabsets['content'];    // need to generalise this when redo droppers
-	},
-	showSuccess: function () {
-	  flash(this.flasher());
-    // console.log(this.tabset);
-	  if (this.tabset()) this.tabset().resize();
-	}
-});
 
 
-// scratchpad extends the normal dropzone by delegating to whichever part is in the foreground
 
-var PadDropzone = Dropzone.extend({
-	initialize: function(element){
-		this.parent(element);
-		this.foreground = null;
-		this.isopen = false;
-		this.wasopen = false;
-		this.pages = {};
-		this.allpages = [];
-		this.addPages($ES('div.scratchpage'), this.container);
-		var openFX = this.container.effects({duration: 600, transition: Fx.Transitions.Cubic.easeOut});
-		var closeFX = this.container.effects({duration: 1000, transition: Fx.Transitions.Bounce.easeOut});
-		this.container.addEvents({
-      'expand' : function() { 
-        openFX.start({
-          'top': window.getScrollTop() + 10,
-          'height': window.getHeight() - 10
-        });
-      },
-      'contract' : function() { 
-        closeFX.start({
-          'top': window.getScrollTop() + window.getHeight() - 34, 
-          'height': 34
-        }); 
-      }
-    });
-	},
-  spokeID: function () { return this.foreground.spokeID(); },
-  spokeType: function () { return this.foreground.spokeType(); },
-	recipient: function () { return this.foreground.list; },
-	flasher: function () { return this.foreground.flasher(); },
-	contents: function () { return this.foreground.contents(); },
-  addPages: function(elements){
-		var pad = this;
-	  elements.each(function(element){
-			pad.pages[element.id] = new Scratchpage($(element));
-			pad.allpages.push(pad.pages[element.id])
-	    if (!pad.foreground) pad.foreground = pad.pages[element.id].makeForeground();
-		});
-  },
-	tabClick: function (tag) {
-    // console.log('tabclick: ' + tag);
-    // console.log('foreground is: ' + this.foreground.tag);
-		if (tag == this.foreground.tag) {
-			this.toggle();
-		} else {
-		  if(!this.isopen) this.open();
-			this.choosePage(tag);
-		}
-	},
-  choosePage: function (tag) {
-    // console.log('choosePage: ' + tag);
-    this.allpages.each(function (p) { p.makeBackground(); })
-  	this.foreground = this.pages[tag].makeForeground();
-	},
-	showInterest: function (draggee) { 
-	  if (this != draggee.origin) {
-  	  if (!this.isopen) this.open();
-  	  this.foreground.showInterest();
-  	  draggee.origin ? draggee.lookDroppable() : draggee.lookNormal();
-	  }
-	},
-	loseInterest: function (draggee) { 
-	  this.foreground.loseInterest();
-	  draggee.origin == this ? draggee.lookNormal : draggee.lookDroppable();
-	},
-	open: function (delay) {
-    this.container.fireEvent('expand', null, delay);
-    this.isopen = true;
-	},
-	close: function (delay) {
-    this.container.fireEvent('contract', null, delay); 
-    this.isopen = false;
-	},
-	toggle: function (delay) {
-    this.isopen ? this.close(delay) : this.open(delay);
-	},
-	showRename: function (pageid, url) {
-    this.pages[pageid].showRename(url);
-	},
-	waiting: function () { 
-    // console.log('padDropzone.waiting')
-	  this.foreground.waiting();
-	},
-	notWaiting: function () { 
-	  this.foreground.notWaiting();
-	},
-	clearPage: function (e, url) {
-	  this.foreground.clearPage(url);
-  },
-	deletePage: function (e, url) {
-	  this.foreground.deletePage(url);
-	},
-	showSuccess: function () {
-	  flash(this.flasher(), '695D54');
-	},
-	draggeeWaiting: function (draggee) {
-	  draggee.container.addClass('waiting');
-	},	
-	draggeeNotWaiting: function (draggee) {
-	  draggee.container.removeClass('waiting');
-	},
-	draggeeRemove: function (draggee) {
-    draggee.explode(draggee.container);
-	}
-});
 
-var Scratchpage = new Class({
-	initialize: function(element){
-    // console.log('initialize: ' + element.id);
-		this.container = element;
-		this.tag = element.id;
-		this.list = $E('ul', element);
-		this.waiter = null;
-		this.tab = $E('a#tab_' + this.tag);
-		this.tab.onclick = this.tabclick.bind(this);
-		this.renameform = null;
-    this.formholder = new Element('div', {'class': 'renameform bigspinner', 'style': 'height: 0'}).injectBefore(this.container).hide();
-    this.renamefx = new Fx.Style(this.formholder, 'height', {duration:1000});
-	},
-  spokeID: function () { return idParts(this.container)['id']; },
-  spokeType: function () { return idParts(this.container)['type']; },
-	flasher: function(){ return this.container; },
-  makeForeground: function(){
-    // console.log('makeForeground: ' + this.tag);
-    this.container.show();
-    this.hideRename();
-    this.tab.addClass('fg');
-    return this;
-  },
-	makeBackground: function () {
-    // console.log('makeBackground: ' + this.tag);
-    this.hideRename();
-    this.container.hide();
-    this.tab.removeClass('fg');
-    this.hideRename();
-    return this;
-	},
-	tabclick: function (e) {
-	  e = new Event(e).stop();
-		e.preventDefault();
-		scratchpad.tabClick(this.tag); 
-	},
-	contents: function () { 
-	  return this.list.getChildren().map(function(el){ return el.id.replace('padded_',''); }); 
-	},
-	showRename: function (url) {
-	  var scratchpage = this;
-    this.tab.addClass('editing');
-    this.formholder.show();
-    if (! this.renameform) {
-  	  this.renamefx.start(64);
-  		new Ajax(url, {
-  			method: 'get',
-  			update: scratchpage.formholder,
-  		  onSuccess: function () { scratchpage.bindRenameForm() },
-  		  onFailure: function () { scratchpage.hideRenameNicely(); error('no way'); }
-  		}).request();
-    }
-	},
-	hideRenameNicely: function (e) {
-    if (e) e = new Event(e).stop();
-    var sp = this;
-	  this.renamefx.start(0).chain(function () { sp.hideRename(e) });
-	},
-	hideRename: function (e) {
-    if (e) e = new Event(e).stop();
-    this.formholder.hide();
-    this.tab.removeClass('editing');
-	},
-	bindRenameForm: function () {
-    this.formholder.removeClass('bigspinner');
-    this.formholder.show();
-    this.renameform = $E('form', this.formholder);
-		this.renameform.onsubmit = this.doRename.bind(this);
-		$E('a.cancel_rename', this.renameform).onclick = this.hideRename.bind(this);
-		$E('input', this.renameform).focus();
-	},
-	doRename: function (e) {
-	  e = new Event(e).stop();
-	  e.preventDefault();
-	  var scratchpage = this;
-    this.renameform.hide();
-    this.formholder.addClass('bigspinner');
-	  this.renameform.send({
-      method: 'post',
-      update: this.tab,
-      onComplete: function () { scratchpage.hideRenameNicely(); }
-	  });
-	},
-	clearPage: function (url) {
-    if (confirm('are you sure you want to remove everything from this scratchpad?')) {
-  	  var scratchpage = this;
-  		new Ajax(url, {
-  			method: 'get',
-  			update: scratchpage.list,
-  			onRequest: function () { $ES('li', scratchpage.list).each(function (el) { el.addClass('waiting')}) },
-  			onSuccess: function () { flash(scratchpage.flasher(), '695D54') },
-  			onFailure: function () { $ES('li', scratchpage.list).each(function (el) { el.removeClass('waiting')}) }
-  		}).request();
-    }
-	},
-	deletePage: function (e) {
-    // body...
-	},
-	showInterest: function () {
-    this.tab.addClass('receptive');
-    this.container.addClass('receptive');
-	},
-	loseInterest: function () {
-    this.tab.removeClass('receptive');
-    this.container.removeClass('receptive');
-	},
-	waiting: function () {
-		this.waiter = new Element('li', {'class': 'waiting'}).setText('please wait').injectTop(this.list);
-	},
-	notWaiting: function () {
-    if (this.waiter && this.waiter.type) this.waiter.remove();
-	}
-});
+
+
+
+
+
 
 var Draggee = new Class({
 	initialize: function(element, event){

@@ -4,7 +4,7 @@
 class ApplicationController < ActionController::Base
   include AuthenticatedSystem
   include StringExtensions
-  include ExceptionNotifiable 
+  include ExceptionNotifiable
 
   helper_method :current_user, :current_collection, :logged_in?, :activated?, :admin?, :editor?, :last_active
   before_filter :editor_required  
@@ -56,13 +56,14 @@ class ApplicationController < ActionController::Base
   def catch
     logger.warn "^^^ catch. 
       controller = #{request.parameters[:controller]}
-      class = #{request.parameters[:controller].to_s.classify}
+      class = #{request.parameters[:controller].to_s._as_class}
       id = #{params[:id]}
-      klass = #{params[:klass]}
-      caught = #{params[:caught]}"
+      json = #{params[:json]}
+      klass = #{params[:caughtClass]}
+      caught = #{params[:caughtID]}"
 
     @catcher = request.parameters[:controller].to_s._as_class.find( params[:id] )
-    @caught = params[:klass]._as_class.find(params[:caught])
+    @caught = params[:caughtClass]._as_class.find(params[:caughtID])
     @catcher.catch(@caught) if @catcher and @caught
 
     respond_to do |format|

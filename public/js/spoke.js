@@ -1,5 +1,4 @@
 ﻿var slides = {};
-var scratchpad = null;
 var display = null;
 var droppers = [];
 var clickthreshold = 20;
@@ -80,17 +79,14 @@ window.addEvent('domready', function(){
   		});
     }
 	});
-
-	scratchpad = new PadDropzone( $E('#scratchpad') );
-	droppers.push(scratchpad)
 	
-	$ES('div.setdrop').each(function (element) {
-		droppers.push(new SetDropzone(element));
-	});
+  $ES('.dropzone').each(function (element) {
+    droppers.push(new Dropzone(element));
+  });
 
-	$ES('.catcher').each(function (element) {
-		droppers.push(new Dropzone(element));
-	});
+  // $ES('div.catcher').each(function (element) {
+  //  droppers.push(new Dropzone(element));
+  // });
 
   $ES('.draggable').each(function(item) {
   	item.addEvent('mousedown', function(e) {
@@ -147,6 +143,10 @@ window.addEvent('domready', function(){
     new Tab(a);
   });
 
+  $ES('a.padtab').each( function (a) {
+    new ScratchTab(a);
+  });
+
   $ES('a.autolink').each( function (a) {
     new AutoLink(a);
   });
@@ -155,48 +155,9 @@ window.addEvent('domready', function(){
     new Toggle(a);
   });
   
-  $ES('a.rename_pad').each( function (a) {
-    a.addEvent('click', function (e) {
-      e = new Event(e).stop();
-      e.preventDefault();
-      var padid = a.id.replace('rename_', '');
-      scratchpad.showRename(padid, a.getProperty('href'));
-    });
-  });
-
-  $ES('a.setfrom_pad').each( function (a) {
-    a.addEvent('click', function (e) {
-      this.getParent().addClass('waiting');
-    });
-  });
-
-  $ES('a.clear_pad').each( function (a) {
-    a.addEvent('click', function (e) {
-      e = new Event(e).stop();
-      e.preventDefault();
-      var padid = a.id.replace('clear_', '');
-      scratchpad.clearPage(padid, a.getProperty('href'));
-    });
-  });
-
-  $ES('a.delete_pad').each( function (a) {
-    a.addEvent('click', function (e) {
-      e = new Event(e).stop();
-      e.preventDefault();
-      var padid = a.id.replace('delete_', '');
-      scratchpad.deletePage(padid, a.getProperty('href'));
-    });
-  });
-
   $ES('div.fixedbottom').each( function (element) {
     fixedbottom.push(element);
   });
-
-  $ES('a.closepad').addEvent('click', function (e) {
-    e = new Event(e).stop();
-    e.preventDefault();
-    scratchpad.close();
-  })
 
 	window.addEvent('scroll', moveFixed);
 	window.addEvent('resize', moveFixed);
