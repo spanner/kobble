@@ -7,6 +7,10 @@ class Topic < ActiveRecord::Base
   
   has_many :monitorships, :dependent => :destroy
   has_many :monitors, :through => :monitorships, :conditions => ['monitorships.active = ?', true], :source => :user, :order => 'users.login'
+  has_many :memberships, :as => :member, :dependent => :destroy
+  has_many :bundles, :through => :memberships
+  has_many :scratches, :as => :scrap, :dependent => :destroy
+  has_many :scratchpads, :through => :scratches
   
   has_many :posts, :order => 'posts.created_at', :dependent => :destroy do
     def last

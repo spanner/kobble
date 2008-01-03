@@ -8,6 +8,10 @@ class Source < ActiveRecord::Base
 
   has_many :nodes, :dependent => :nullify
   has_many :topics, :as => :subject
+  has_many :memberships, :as => :member, :dependent => :destroy
+  has_many :bundles, :through => :memberships
+  has_many :scratches, :as => :scrap, :dependent => :destroy
+  has_many :scratchpads, :through => :scratches
   
   file_column :file
   file_column :clip
@@ -20,7 +24,7 @@ class Source < ActiveRecord::Base
   }
   
   before_save FileCallbacks.new
-  acts_as_catcher :tags, :flags, :nodes
+  # acts_as_catcher :tags, :flags, :nodes
 
   public 
   

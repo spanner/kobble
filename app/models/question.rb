@@ -6,6 +6,10 @@ class Question < ActiveRecord::Base
   belongs_to :survey
 
   has_and_belongs_to_many :user_groups     
+  has_many :memberships, :as => :member, :dependent => :destroy
+  has_many :bundles, :through => :memberships
+  has_many :scratches, :as => :scrap, :dependent => :destroy
+  has_many :scratchpads, :through => :scratches
 
   has_many :nodes, :dependent => :nullify
   has_many :answers, :dependent => :destroy

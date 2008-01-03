@@ -5,13 +5,14 @@ class Bundle < ActiveRecord::Base
   belongs_to :collection
 
   has_many :topics, :as => :subject
-  has_many :bundle_members
-  has_many :members, :through => :bundle_members
+  has_many :memberships, :dependent => :destroy
+  has_many :members, :through => :memberships
+  # at some point we need to allow bundle members
+
+  has_many :scratches, :as => :scrap, :dependent => :destroy
+  has_many :scratchpads, :through => :scratches
   
-  # all dropped items are eaten unless already contained
-  # set merging must be explicitly commanded
-  
-  acts_as_catcher :members, :tags, :flags
+  # acts_as_catcher :members
  
   file_column :image, :magick => { 
     :versions => { 

@@ -25,10 +25,12 @@ class User < ActiveRecord::Base
   has_many :created_forums, :class_name => 'Forum', :foreign_key => 'created_by'
   has_many :created_topics, :class_name => 'Topic', :foreign_key => 'created_by'
 
-  has_many :memberships, :as => :member
-
   has_many :monitorships, :dependent => :destroy
   has_many :monitored_topics, :through => :monitorships, :conditions => ['monitorships.active = ?', true], :order => 'topics.replied_at desc', :source => :topic
+  has_many :memberships, :as => :member, :dependent => :destroy
+  has_many :bundles, :through => :memberships
+  has_many :scratches, :as => :scrap, :dependent => :destroy
+  has_many :scratchpads, :through => :scratches
 
   validates_presence_of     :firstname, :lastname
   validates_presence_of     :login,                      :if => :login_required?

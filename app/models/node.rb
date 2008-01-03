@@ -7,9 +7,15 @@ class Node < ActiveRecord::Base
   belongs_to :question
   belongs_to :source
   belongs_to :collection
-  has_many :topics, :as => :subject
 
-  acts_as_catcher :tags, :flags, :speaker, :source
+  has_many :topics, :as => :subject, :dependent => :nullify
+  
+  has_many :memberships, :as => :member, :dependent => :destroy
+  has_many :bundles, :through => :memberships
+  has_many :scratches, :as => :scrap, :dependent => :destroy
+  has_many :scratchpads, :through => :scratches
+
+  # acts_as_catcher :tags, :flags, :speaker, :source
 
   file_column :file
   file_column :clip
