@@ -5,7 +5,8 @@ class Bundle < ActiveRecord::Base
   belongs_to :collection
 
   has_many :topics, :as => :subject
-  has_many :members, :as => :superbundle, :from => [:nodes, :sources, :bundles, :questions, :users, :blogentries, :posts, :topics]
+  has_many :bundle_members
+  has_many :members, :through => :bundle_members
   
   # all dropped items are eaten unless already contained
   # set merging must be explicitly commanded
