@@ -6,9 +6,10 @@ class User < ActiveRecord::Base
   attr_accessor :old_password
   attr_accessor :just_promoted
 
-  belongs_to :creator, :class_name => 'User', :foreign_key => 'created_by'
-  belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
-  belongs_to :collection      # for admin users this is a changeable value that indicates foreground collection. for readers it is fixed at signup
+  acts_as_spoke
+  acts_as_organised
+  acts_as_illustrated
+
   belongs_to :user_group      
 
   has_many :sources, :class_name => 'Source', :foreign_key => 'speaker_id'
@@ -27,10 +28,6 @@ class User < ActiveRecord::Base
 
   has_many :monitorships, :dependent => :destroy
   has_many :monitored_topics, :through => :monitorships, :conditions => ['monitorships.active = ?', true], :order => 'topics.replied_at desc', :source => :topic
-  has_many :memberships, :as => :member, :dependent => :destroy
-  has_many :bundles, :through => :memberships
-  has_many :scratches, :as => :scrap, :dependent => :destroy
-  has_many :scratchpads, :through => :scratches
 
   validates_presence_of     :firstname, :lastname
   validates_presence_of     :login,                      :if => :login_required?
@@ -41,14 +38,6 @@ class User < ActiveRecord::Base
   validates_length_of       :email,    :within => 3..100
   validates_uniqueness_of   :login, :email, :case_sensitive => false
   
-  file_column :image, :magick => { 
-    :versions => { 
-      "thumb" => "56x56!", 
-      "slide" => "135x135!", 
-      "preview" => "750x540>" 
-    }
-  }
-
   before_create :make_activation_code
   before_save :encrypt_password
 

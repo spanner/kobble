@@ -69,12 +69,12 @@ module UserHelper
     opts = DEFAULT_HEAD_OPTIONS.dup
     opts.update(options.symbolize_keys)
     s = "<h3>#{label}</h3>"
-    if @flash['notice'] and not opts[:notice].nil? and opts[:notice]
-      notice = "<div><p>#{@flash['notice']}</p></div>"
+    if flash['notice'] and not opts[:notice].nil? and opts[:notice]
+      notice = "<div><p>#{flash['notice']}</p></div>"
       s = s + notice
     end
-    if @flash['message'] and not opts[:message].nil? and opts[:message]
-      message = "<div id=\"ErrorExplanation\"><p>#{@flash['message']}</p></div>"
+    if flash['message'] and not opts[:message].nil? and opts[:message]
+      message = "<div id=\"ErrorExplanation\"><p>#{flash['message']}</p></div>"
       s = s + message
     end
     if not opts[:error].nil? and opts[:error]

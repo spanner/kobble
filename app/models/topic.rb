@@ -1,7 +1,8 @@
 class Topic < ActiveRecord::Base
-  belongs_to :collection
-  belongs_to :creator, :class_name => 'User', :foreign_key => 'created_by'
-  belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
+
+  acts_as_spoke
+  acts_as_organised
+
   belongs_to :speaker, :class_name => 'User', :foreign_key => 'speaker_id'
   belongs_to :forum, :counter_cache => true
   

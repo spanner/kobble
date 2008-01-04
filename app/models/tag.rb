@@ -1,28 +1,13 @@
 class Tag < ActiveRecord::Base
-  belongs_to :creator, :class_name => 'User', :foreign_key => 'created_by'
-  belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
-  belongs_to :collection
-  # acts_as_tree :order => 'name'
-
-  # has_many_polymorphs :marks, :skip_duplicates => true, :from => [:nodes, :sources, :bundles, :users, :questions, :blogentries, :forums, :topics]
-  acts_as_catcher :marks, {Tag => :subsume}
-  has_many :memberships, :as => :member, :dependent => :destroy
-  has_many :bundles, :through => :memberships
-  has_many :scratches, :as => :scrap, :dependent => :destroy
-  has_many :scratchpads, :through => :scratches
+  acts_as_spoke
+  acts_as_organised :except => :tags
+  acts_as_illustrated
+  acts_as_tree :order => 'name'
 
   # associated polymorphs
   has_many :taggings
   has_many :tagged, :through => :taggings
 
-  file_column :image, :magick => { 
-    :versions => { 
-      "thumb" => "56x56!", 
-      "slide" => "135x135!", 
-      "preview" => "750x540>" 
-    }
-  }
-  
   def subsume(subsumed)
     self.marks << subsumed.marks
     self.flags << subsumed.flags

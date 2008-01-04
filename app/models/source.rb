@@ -1,28 +1,13 @@
 class Source < ActiveRecord::Base
 
-  belongs_to :creator, :class_name => 'User', :foreign_key => 'created_by'
-  belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
+  acts_as_spoke
+  acts_as_organised
+  acts_as_illustrated
+
   belongs_to :speaker, :class_name => 'User', :foreign_key => 'speaker_id'
-  belongs_to :collection
   belongs_to :occasion
 
-  has_many :nodes, :dependent => :nullify
-  has_many :topics, :as => :subject
-  has_many :memberships, :as => :member, :dependent => :destroy
-  has_many :bundles, :through => :memberships
-  has_many :scratches, :as => :scrap, :dependent => :destroy
-  has_many :scratchpads, :through => :scratches
-  
   file_column :file
-  file_column :clip
-  file_column :image, :magick => { 
-    :versions => { 
-      "thumb" => "56x56!", 
-      "slide" => "135x135!", 
-      "preview" => "750x540>"
-    }
-  }
-  
   before_save FileCallbacks.new
   # acts_as_catcher :tags, :flags, :nodes
 

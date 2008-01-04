@@ -1,10 +1,8 @@
 class Scratchpad < ActiveRecord::Base
-  belongs_to :collection
-  belongs_to :user, :class_name => 'User', :foreign_key => 'created_by'
-  belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
+  acts_as_spoke
 
-  has_many :scratches
-  has_many :scraps, :through => :scratches
+  has_many :paddings
+  has_many :scraps, :through => :paddings
 
   # acts_as_catcher :scraps
 end

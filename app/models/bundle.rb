@@ -1,27 +1,14 @@
 class Bundle < ActiveRecord::Base
 
-  belongs_to :creator, :class_name => 'User', :foreign_key => 'created_by'
-  belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
-  belongs_to :collection
+  acts_as_spoke
+  acts_as_organised :except => :bundles
+  acts_as_illustrated
 
-  has_many :topics, :as => :subject
-  has_many :memberships, :dependent => :destroy
-  has_many :members, :through => :memberships
-  # at some point we need to allow bundle members
-
-  has_many :scratches, :as => :scrap, :dependent => :destroy
-  has_many :scratchpads, :through => :scratches
+  has_many :bundlings, :dependent => :destroy
+  has_many :bundled, :through => :bundlings
   
   # acts_as_catcher :members
  
-  file_column :image, :magick => { 
-    :versions => { 
-      "thumb" => "56x56!", 
-      "slide" => "135x135!", 
-      "preview" => "750x540>" 
-    }
-  }
-
   public 
     
   # these will all move into a general purpose AR extension based on column type unless I find there is already a proper way to do it

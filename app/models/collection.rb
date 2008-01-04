@@ -1,12 +1,11 @@
 class Collection < ActiveRecord::Base
 
-  belongs_to :creator, :class_name => 'User', :foreign_key => 'created_by'
-  belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
+  acts_as_spoke :except => :collection
+
   belongs_to :blog_forum, :class_name => 'Forum', :foreign_key => 'blog_forum_id'
   belongs_to :editorial_forum, :class_name => 'Forum', :foreign_key => 'editorial_forum_id'
 
   has_many :users, :order => 'lastname, firstname', :dependent => :nullify
-  
   has_many :user_groups, :order => 'name', :dependent => :destroy
   has_many :bundles, :order => 'name', :dependent => :destroy
   has_many :sources, :order => 'name', :dependent => :destroy

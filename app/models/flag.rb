@@ -1,7 +1,7 @@
 class Flag < ActiveRecord::Base
-  belongs_to :collection
-  belongs_to :creator, :class_name => 'User', :foreign_key => 'created_by'
-  belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
+
+  acts_as_spoke
+  acts_as_organised :except => 'flags'
 
   # associated polymorphs
   has_many :flaggings

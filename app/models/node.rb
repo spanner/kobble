@@ -1,32 +1,16 @@
 class Node < ActiveRecord::Base
 
-  belongs_to :creator, :class_name => 'User', :foreign_key => 'created_by'
-  belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
-  belongs_to :speaker, :class_name => 'User', :foreign_key => 'speaker_id'
+  acts_as_spoke
+  acts_as_organised
+  acts_as_illustrated
 
   belongs_to :question
   belongs_to :source
   belongs_to :collection
 
-  has_many :topics, :as => :subject, :dependent => :nullify
-  
-  has_many :memberships, :as => :member, :dependent => :destroy
-  has_many :bundles, :through => :memberships
-  has_many :scratches, :as => :scrap, :dependent => :destroy
-  has_many :scratchpads, :through => :scratches
-
   # acts_as_catcher :tags, :flags, :speaker, :source
 
   file_column :file
-  file_column :clip
-  file_column :image, :magick => { 
-    :versions => { 
-      "thumb" => "56x56!", 
-      "slide" => "135x135!", 
-      "preview" => "750x540>" 
-    }
-  }
-  
   before_save FileCallbacks.new
 
   def clipped

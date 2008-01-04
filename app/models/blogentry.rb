@@ -1,23 +1,14 @@
 class Blogentry < ActiveRecord::Base
 
-  belongs_to :collection
-  belongs_to :creator, :class_name => 'User', :foreign_key => 'created_by'
-  belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
+  acts_as_spoke
+  acts_as_organised
+  acts_as_illustrated
 
   has_one :node
   has_many :topics, :as => :subject
 
   after_create :create_topic
   
-  file_column :clip
-  file_column :image, :magick => { 
-    :versions => { 
-      "thumb" => "56x56!", 
-      "slide" => "175x175!", 
-      "preview" => "750x540>" 
-    }
-  }
-
   def posts_count
     topics.first.posts.count - 1
   end

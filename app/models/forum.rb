@@ -1,9 +1,8 @@
 class Forum < ActiveRecord::Base
-  belongs_to :collection
-  belongs_to :creator, :class_name => 'User', :foreign_key => 'created_by'
-  belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
-  acts_as_list
 
+  acts_as_spoke
+  acts_as_organised
+  acts_as_list
 
   validates_presence_of :name
 

@@ -1,29 +1,14 @@
 class Question < ActiveRecord::Base
 
-  belongs_to :collection
-  belongs_to :creator, :class_name => 'User', :foreign_key => 'created_by'
-  belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
+  acts_as_spoke
+  acts_as_organised
+  acts_as_illustrated
+
   belongs_to :survey
-
   has_and_belongs_to_many :user_groups     
-  has_many :memberships, :as => :member, :dependent => :destroy
-  has_many :bundles, :through => :memberships
-  has_many :scratches, :as => :scrap, :dependent => :destroy
-  has_many :scratchpads, :through => :scratches
-
   has_many :nodes, :dependent => :nullify
   has_many :answers, :dependent => :destroy
-  has_many :topics, :as => :subject
 
-  file_column :clip
-  file_column :image, :magick => { 
-    :versions => { 
-      "thumb" => "56x56!", 
-      "slide" => "135x135!", 
-      "preview" => "750x540>" 
-    }
-  }
-  
   attr_accessor :send_email
   
   def summary
