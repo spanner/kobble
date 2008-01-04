@@ -1,6 +1,6 @@
-module ActiveRecord; module Acts; end; end 
-
-module ActiveRecord::Acts::Spokecontent
+module ActiveRecord
+  module Acts #:nodoc:
+    module SpokeContent #:nodoc:
   
   def self.included(base)
     
