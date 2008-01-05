@@ -11,6 +11,10 @@ class ApplicationController < ActionController::Base
   before_filter :set_context
   layout :choose_layout
   exception_data :exception_report_data
+
+  def index
+    list
+  end
   
   def set_context
     @display = 'list'
@@ -44,15 +48,18 @@ class ApplicationController < ActionController::Base
   def local_request?
     admin?
   end
-  
-  def tags_from_list (taglist)
-    branches = taglist.split(/[,;]\s*/).uniq
-    branches.collect!{ |b| 
-      Tag.find_or_create_branch( b.split(/\:\s*/) )
-    }
-    # tags.map! { |name| Tag.find_or_create_by_name( name ) }
+    
+  def list
+    perpage = params[:perpage] || 50
+    sort_options = request.parameters[:controller].to_s._as_class.sort_options
+    sort = sort_options[params[:sort]] || sort_options[request.parameters[:controller].to_s._as_class.default_sort]
+    @list = request.parameters[:controller].to_s._as_class.find(:all, :conditions => limit_to_active_collection, :order => sort, :page => {:size => perpage, :current => params[:page]})
+    respond_to do |format|
+      format.html { render :template => 'shared/mainlist' }
+      format.js { render :template => 'shared/mainlist', :layout => false }
+    end
   end
-  
+
   def catch
     logger.warn "^^^ catch. 
       controller = #{request.parameters[:controller]}
@@ -94,6 +101,14 @@ class ApplicationController < ActionController::Base
   
   def dropped
     render :layout => false
+  end
+
+  def tags_from_list (taglist)
+    branches = taglist.split(/[,;]\s*/).uniq
+    branches.collect!{ |b| 
+      Tag.find_or_create_branch( b.split(/\:\s*/) )
+    }
+    # tags.map! { |name| Tag.find_or_create_by_name( name ) }
   end
   
   protected

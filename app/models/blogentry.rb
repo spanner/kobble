@@ -7,6 +7,10 @@ class Blogentry < ActiveRecord::Base
 
   after_create :create_topic
   
+  def self.nice_title
+    "blog entry"
+  end
+
   def posts_count
     topics.first.posts.count - 1
   end

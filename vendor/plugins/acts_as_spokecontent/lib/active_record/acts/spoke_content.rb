@@ -75,7 +75,24 @@ module ActiveRecord
             oc &= Array(options[:only]) 
           end
           oc
-        end        
+        end       
+        
+        def sort_options
+          {
+            "name" => "name",
+            "date created" => "created_at",
+            "date modified" => "updated_at",
+          }
+        end
+
+        def default_sort
+          "name"
+        end
+        
+        def nice_title
+          self.to_s.downcase
+        end
+         
       end #classmethods
       
       module InstanceMethods

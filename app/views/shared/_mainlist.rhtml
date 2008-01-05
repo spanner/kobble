@@ -1,22 +1,9 @@
-<% 
-	listedtype = controller.controller_name.sub('_controller', '')
-	pagetitle = listedtype unless pagetitle 
-	columns = 3
-%>
-
-<h1>
-  <%= pagetitle %>
-	
-	<% if @list.size > @list.page_size %>
-  	<span class="pagination"><%= paginating_links(@list, {:window_size => 3, :params => {:sort => params[:sort]}}, {}) %></span>
-	<% end %>
-</h1>
-
 <% if @list && @list.size > 0 %>
 	<p class="pagination">
-  	showing <%= @list.first_item %> to <%= @list.last_item %> of <%= pluralize(@list.size, listedtype) %>. Order by: 
-	  <%= link_to_unless_current 'name', :page => @list.page, :sort => 'name' %><span class="pale"> | </span>
-	  <%= link_to_unless_current 'date', :page => @list.page, :sort => 'date' %><br />
+  	showing <%= @list.first_item %> to <%= @list.last_item %> of <%= pluralize(@list.size, listedclass.nice_title) %>. Order by: 
+  	<% listedclass.sort_options.keys.sort.each do |order| %>
+	    <%= link_to_unless_current order, :page => @list.page, :sort => order %><span class="pale"> | </span>
+    <% end %>
 	</p>
 
   <div class="mainlist">
@@ -28,8 +15,9 @@
   <div>
 	<%= render :partial => 'shared/pagination' %>
   <% if editor? %>
-  	<p class="clear"><%= link_to  "Add a new #{listedtype.singularize}", {:action => 'new'}, {:class => 'additem'} %></p>
+  	<p class="clear"><%= link_to  "Add a new #{listedclass.nice_title}", {:action => 'new'}, {:class => 'additem'} %></p>
   <% end %>
 <% else %>
-	<p>There are no <%= pagetitle %> to display in this collection</p>
+	<p>There are no <%= listedclass.nice_title.pluralize %> to display in this collection</p>
 <% end %>
+

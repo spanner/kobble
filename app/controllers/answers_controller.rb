@@ -1,22 +1,8 @@
 class AnswersController < ApplicationController
-  def index
-    list
-    render :action => 'list'
-  end
 
   # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
   verify :method => :post, :only => [ :destroy, :create, :update ],
          :redirect_to => { :action => :list }
-
-  def list
-    @display = case params['display']
-      when "thumb" then "thumb"
-      when "slide" then "slide"
-      else "list"
-    end
-    perpage = params[:perpage] || (@display == 'thumb') ? 100 : 40
-    @answers = Answer.find(:all, :conditions => limit_to_active_collection, :order => 'created_at DESC', :page => {:size => perpage, :current => params[:page]})
-  end
 
   def show
     @answer = Answer.find(params[:id])

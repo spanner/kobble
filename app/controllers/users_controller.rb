@@ -9,27 +9,7 @@ class UsersController < ApplicationController
   def limit_to_active_collection
     ["users.collection_id = ? or users.status >= 200", current_collection]
   end
-
-  def index
-    list
-    render :action => 'list'
-  end
-  
-  def list
-    sort = case params['sort']
-           when "login" then "login"
-           when "status" then "status DESC"
-           when "email" then "email"
-           when "date" then "created_at DESC"
-           when "firstname" then "firstname, lastname"
-           else "lastname, firstname"
-           end
-    @users = User.find(:all, 
-      :conditions => limit_to_active_collection, 
-      :order => sort
-    )
-  end
-  
+    
   def show
     userid = params[:id] || current_user.id
     @user = User.find(userid)

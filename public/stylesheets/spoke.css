@@ -441,7 +441,6 @@ a.minimal {
 #canvas {
 	padding: 0;
 	margin: 35px 60px 110px 83px;
-	max-width: 820px;
 }
 
 #listing {
@@ -702,6 +701,64 @@ div.scratchpage li a:hover {
   background-color: #CC6E1F;
   color: white;
 }
+
+
+div.mainlist {
+}
+
+div.mainlist ul {
+  margin: 0;
+  color: white;
+	padding: 0;
+  list-style: none;
+}
+
+div.mainlist li {
+  list-style: none;
+  margin: 0;
+  padding: 6px 6px 6px 24px;
+  background-image: url(/images/furniture/spoke/grey/node.png);
+  background-position: 0 8px;
+  background-repeat: no-repeat;
+}
+
+div.mainlist li a {
+  font-size: 16px;
+  line-height: 20px;
+  padding: 8px 0 8px 3px;
+  color: #695D54;
+}
+
+div.mainlist li a img {
+  margin: 0 8px 0 0;
+  float: left;
+}
+
+div.mainlist li.collection { background-image: url(/images/furniture/spoke/grey/collection.png); }
+div.mainlist li.node { background-image: url(/images/furniture/spoke/grey/node.png); }
+div.mainlist li.source { background-image: url(/images/furniture/spoke/grey/source.png); }
+div.mainlist li.bundle { background-image: url(/images/furniture/spoke/grey/bundle.png); }
+div.mainlist li.user { background-image: url(/images/furniture/spoke/grey/user.png); }
+div.mainlist li.usergroup { background-image: url(/images/furniture/spoke/grey/usergroup.png); }
+div.mainlist li.tag { background-image: url(/images/furniture/spoke/grey/tag.png); }
+div.mainlist li.flag { background-image: url(/images/furniture/spoke/grey/flag.png); }
+div.mainlist li.forum { background-image: url(/images/furniture/spoke/grey/forum.png); }
+div.mainlist li.topic { background-image: url(/images/furniture/spoke/grey/post.png); }
+div.mainlist li.post { background-image: url(/images/furniture/spoke/grey/post.png); }
+div.mainlist li.blogentry { background-image: url(/images/furniture/spoke/grey/blogentry.png); }
+div.mainlist li.question { background-image: url(/images/furniture/spoke/grey/question.png); }
+div.mainlist li.answer { background-image: url(/images/furniture/spoke/grey/answer.png); }
+
+ul.squashed li {
+  display: inline;
+}
+
+
+
+
+
+
+
 
 div.boxed {
   border: 1px solid #B2AAA4;

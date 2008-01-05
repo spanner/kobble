@@ -3,6 +3,14 @@ class Tag < ActiveRecord::Base
   has_many_polymorphs :taggables, :from => self.organised_classes(:except => :tags), :through => :taggings
   acts_as_tree :order => 'name'
 
+  def self.sort_options 
+    {
+      'name' => 'name',
+      'date' => 'created_at',
+      'popularity' => 'popularity',     # special case
+    }
+  end
+
   def subsume(subsumed)
     self.marks << subsumed.marks
     self.flags << subsumed.flags
@@ -47,20 +55,20 @@ class Tag < ActiveRecord::Base
 
   def self.tags_with_popularity
     Tag.find(:all, 
-      :select => "tags.*, count(marks_tags.id) as use_count",
-      :joins => "LEFT JOIN marks_tags on marks_tags.tag_id = tags.id",
+      :select => "tags.*, count(taggings.id) as use_count",
+      :joins => "LEFT JOIN taggings on taggings.tag_id = tags.id",
       :conditions => ["tags.parent_id = ?", self.id],
-      :group => "marks_tags.tag_id",
+      :group => "taggings.tag_id",
       :order => 'use_count DESC'
     )
   end
 
   def children_with_count
     Tag.find(:all, 
-      :select => "tags.*, count(marks_tags.id) as use_count",
-      :joins => "LEFT JOIN marks_tags on marks_tags.tag_id = tags.id",
+      :select => "tags.*, count(taggings.id) as use_count",
+      :joins => "LEFT JOIN taggings on taggings.tag_id = tags.id",
       :conditions => ["tags.parent_id = ?", self.id],
-      :group => "marks_tags.tag_id",
+      :group => "taggings.tag_id",
       :order => 'name ASC'
     )
   end

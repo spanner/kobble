@@ -1,17 +1,9 @@
 class UserGroupsController < ApplicationController
-  def index
-    list
-    render :action => 'list'
-  end
 
   # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
   verify :method => :post, :only => [ :create, :update, :preview_message, :message ],
          :redirect_to => { :action => :list }
 
-  def list
-    @user_group_pages, @user_groups = paginate :user_groups, :per_page => 10
-  end
-  
   def limit_to_active_collection_and_group(ug)
     ["users.collection_id = ? and users.user_group_id = ?", current_collection, ug.id]
   end

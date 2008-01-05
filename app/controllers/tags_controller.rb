@@ -1,9 +1,5 @@
 class TagsController < ApplicationController
 
-  def index
-    list
-    render :action => 'list'
-  end
 
   def tree
     @roots = Tag.find(:all,:conditions => [ "parent_id is NULL" ], :order => "name asc" )
@@ -74,34 +70,34 @@ class TagsController < ApplicationController
   def list
     @sort = case params['sort']
      when "name"  then "name"
-     when "date" then "tags.created_at DESC"
+     when "date" then "tags.created_at"
      when "popularity" then "popularity"
-     when "name_reverse" then "name DESC"
-     when "date_reverse" then "created_at ASC"
-     else "name ASC"
+     else "name"
     end
     perpage = params[:perpage] ? params[:perpage].to_i : 500
     page = params[:page] || 0
     if (@sort == 'popularity') then
       offset = page * perpage
-      @tags = Tag.find(:all, 
-        :select => "tags.*, count(marks_tags.id) as use_count",
-        :joins => "LEFT JOIN marks_tags on marks_tags.tag_id = tags.id",
+      @list = Tag.find(:all, 
+        :select => "tags.*, count(taggings.id) as use_count",
+        :joins => "LEFT JOIN taggings on taggings.tag_id = tags.id",
         :conditions => ["tags.collection_id = ?", current_collection],
-        :group => "marks_tags.tag_id",
+        :group => "taggings.tag_id",
         :order => "use_count DESC"
       )
     else
-      @tags = Tag.find(:all, 
-        :select => "tags.*, count(marks_tags.id) as use_count",
-        :joins => "LEFT JOIN marks_tags on marks_tags.tag_id = tags.id",
+      @list = Tag.find(:all, 
+        :select => "tags.*, count(taggings.id) as use_count",
+        :joins => "LEFT JOIN taggings on taggings.tag_id = tags.id",
         :conditions => ["tags.collection_id = ?", current_collection],
-        :group => "marks_tags.tag_id",
+        :group => "taggings.tag_id",
         :order => @sort
       )
     end
-    @shoots = @tags.select{|tag| tag.parent.nil?}
+    @shoots = @list.select{|tag| tag.parent.nil?}
     @roots = @shoots.select{|tag| tag.children.count > 0}
+
+    render :action => 'list'
   end
   
   def show

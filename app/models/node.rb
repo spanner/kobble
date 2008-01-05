@@ -11,6 +11,10 @@ class Node < ActiveRecord::Base
   file_column :file
   before_save FileCallbacks.new
 
+  def self.nice_title
+    "fragment"
+  end
+
   def clipped
     clipfile = read_attribute(:clip)
     unless (clipfile)

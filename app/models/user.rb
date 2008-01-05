@@ -41,8 +41,22 @@ class User < ActiveRecord::Base
 
   cattr_accessor :current_collection
   
-  # spoke custom methods
+  def self.sort_options
+    {
+      "last name" => "lastname, firstname",
+      "first name" => "firstname, lastname",
+      "registration date" => "created_at",
+    }
+  end
   
+  def self.default_sort
+    "last name"
+  end
+  
+  def self.nice_title
+    "person"
+  end
+
   def find_or_create_scratchpads
     if (self.created_scratchpads.empty?)
       (1..4).each do |i|
@@ -178,7 +192,7 @@ class User < ActiveRecord::Base
     def has_sources?
       self.respond_to?('sources') && self.sources.count > 0
     end
-  
+    
   protected
   
     # before filter 

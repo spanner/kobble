@@ -1,8 +1,4 @@
 class QuestionsController < ApplicationController
-  def index
-    list
-    render :action => 'list'
-  end
 
   # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
   verify :method => :post, :only => [ :destroy, :create, :update ],
@@ -10,27 +6,6 @@ class QuestionsController < ApplicationController
 
   def list
     @question_pages, @questions = paginate :questions, :per_page => 10
-  end
-
-  def list
-    @display = 'list'
-    perpage = params[:perpage] || (@display == 'thumb') ? 100 : 40
-    sort = case params[:sort]
-      when "name"  then "name"
-      when "date" then "created_at DESC"
-      when "name_reverse" then "name DESC"
-      when "date_reverse" then "created_at ASC"
-      else "created_at DESC"
-    end
-
-    @questions = Question.find(:all, 
-      :conditions => limit_to_active_collection, 
-      :order => sort, 
-      :page => {
-        :size => perpage, 
-        :current => params[:page]
-      }
-    )
   end
 
   def show

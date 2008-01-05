@@ -1,29 +1,12 @@
 class CollectionsController < ApplicationController
   layout :choose_layout
 
-  def index
-    list
-    render :action => 'list'
-  end
-
   # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
   verify :method => :post, :only => [ :reallydestroy, :create, :update ],
          :redirect_to => { :action => :list }
 
   def set_context
     @display = 'list'
-  end
-
-  def list
-    perpage = params[:perpage] || (@display == 'thumb') ? 100 : 40
-    sort = case params[:sort]
-      when "name"  then "name"
-      when "date" then "date"
-      when "name_reverse" then "name DESC"
-      when "date_reverse" then "created_at DESC"
-      else "name"
-    end
-    @collections = Collection.find(:all, :order => sort, :page => {:size => perpage, :current => params[:page]})
   end
 
   def show

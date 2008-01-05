@@ -1,10 +1,5 @@
 class ScratchpadsController < ApplicationController
 
-  def index
-    list
-    render :action => 'list'
-  end
-
   verify :redirect_to => { :action => :list }
 
   def emptyscratch
@@ -12,23 +7,6 @@ class ScratchpadsController < ApplicationController
     @deleted = @pad.scraps.collect{ |p| "pad_#{p.class.to_s.downcase}_#{p.id}" }
     @pad.scraps.clear
     render :layout => false
-  end
-
-  def list
-    perpage = params[:perpage] || 40
-    sort = case params[:sort]
-      when "name"  then "name"
-      when "date" then "created_at DESC"
-      when "name_reverse" then "name DESC"
-      when "date_reverse" then "created_at ASC"
-      else "name"
-    end
-
-    @scratchpads = Scratchpad.find(:all, 
-      :conditions => limit_to_active_collection, 
-      :order => sort, 
-      :page => {:size => perpage, :current => params[:page]}
-    )
   end
 
   def show

@@ -6,6 +6,13 @@ class Answer < ActiveRecord::Base
   belongs_to :question
   validates_presence_of :body
 
+  def self.sort_options
+    {
+      "date" => "created_at",
+      "question" => "question_id",
+    }
+  end
+
   def name
     "response to #{self.question.name} from #{self.speaker.name}"
   end
