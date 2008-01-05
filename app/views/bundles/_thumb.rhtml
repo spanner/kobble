@@ -1,7 +1,0 @@
-<div class="thumb">
-	<%= render :partial => 'shared/icon', :locals => { 
-		:this => thumb.image.nil? ? thumb.members.detect { |m| ! m.image.nil? } || list : list, 
-		:linked => thumb,
-		:with_caption => true,
-	} %>
-</div>
