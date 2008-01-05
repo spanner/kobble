@@ -63,6 +63,8 @@ module ActiveRecord
           if definitions.include?(:discussion)
             has_many :topics, :as => :subject
           end
+
+          self.class_eval("include InstanceMethods")
         end
 
         def organised_classes(options={})
@@ -73,9 +75,98 @@ module ActiveRecord
             oc &= Array(options[:only]) 
           end
           oc
-        end
-        
+        end        
       end #classmethods
+      
+      module InstanceMethods
+        
+        public
+        
+        def has_tags?
+          self.respond_to?('tags') && self.tags.count > 0
+        end
+
+        def tag_list
+          self.respond_to?('tags') && tags.map {|t| t.name }.uniq.join(', ')
+        end
+
+        def has_members?
+          self.respond_to?('members') && self.members.count > 0
+        end
+
+        def has_circumstances?
+          elf.respond_to?('circumstances') && !self.circumstances.nil? and self.circumstances.length != 0
+        end
+
+        def has_notes?
+          (self.respond_to?('observations') && (observations.nil? || observations.size == 0)) && 
+          (self.respond_to?('emotions') && (emotions.nil? || emotions.size == 0)) && 
+          (self.respond_to?('arising') && (arising.nil? || arising.size == 0)) ? false : true
+        end
+
+        def has_origins?
+          (self.respond_to?('source') && source.nil?) && 
+          (self.respond_to?('creator') && creator.nil?) ? false : true
+        end
+
+        def has_synopsis?
+          self.respond_to?('synopsis') && !self.synopsis.nil? and self.synopsis.length != 0
+        end
+
+        def has_body?
+          self.respond_to?('body') && !self.body.nil? and self.body.length != 0
+        end
+
+        def has_description?
+          self.respond_to?('description') && !self.description.nil? and self.description.length != 0
+        end
+
+        def has_synopsis?
+          self.respond_to?('synopsis') && !self.synopsis.nil? and self.synopsis.length != 0
+        end
+
+        def has_extracted_text?
+          self.respond_to?('extracted_text') && !self.extracted_text.nil? and self.extracted_text.length != 0
+        end
+
+        def has_image?
+          self.respond_to?('image') && !self.image.nil?# and File.file? self.image
+        end
+
+        def has_clip?
+          self.respond_to?('clip') && !self.clip.nil?# and File.file? self.clip
+        end
+
+        def has_file?
+          self.respond_to?('file') && !self.file.nil?# and File.file? self.file
+        end
+
+        def filetype
+          self.has_file? ? self.file_relative_path.split('.').last : nil
+        end
+
+        def has_topics?
+          self.respond_to?('topics') && self.topics.count > 0
+        end
+
+        def has_posts?
+          self.respond_to?('posts') && self.posts.count > 0
+        end
+
+        def has_marks?
+          self.respond_to?('marks') && self.marks.count > 0
+        end
+
+        def has_answers?
+          self.respond_to?('answers') && self.answers.count > 0
+        end
+
+        def editable_by?(user)
+          user && (user.id == created_by || user.admin?)
+        end
+
+      end #instancemethods
+      
     end #spokecontent
   end #acts
 end #ar

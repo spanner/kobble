@@ -66,10 +66,6 @@ class Topic < ActiveRecord::Base
   def last_page
     (posts_count.to_f / 25.0).ceil.to_i
   end
-
-  def editable_by?(user)
-    user && (user.id == created_by || user.admin?)
-  end
   
   protected
     def set_default_replied_at_and_sticky

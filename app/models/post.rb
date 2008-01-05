@@ -11,11 +11,7 @@ class Post < ActiveRecord::Base
 
   validates_presence_of :body, :topic
   attr_accessible :body
-  
-  def editable_by?(user)
-    user && (user.id == created_by || user.admin?)
-  end
-  
+    
   def to_xml(options = {})
     options[:except] ||= []
     options[:except] << :topic_title << :forum_name

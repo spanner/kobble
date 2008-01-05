@@ -170,35 +170,15 @@ class User < ActiveRecord::Base
     def self.currently_online
       User.find(:all, :conditions => ["last_seen_at > ?", Time.now.utc-5.minutes])
     end
-  
-    def has_description?
-      !self.description.nil? and self.description.length != 0
-    end
-
-    def has_image?
-      !self.image.nil?# and File.file? self.image
-    end
-
-    def has_marks?
-      self.marks.count > 0
-    end
-
+    
     def has_nodes?
-      self.nodes.count > 0
-    end
-
-    def has_sources?
-      self.sources.count > 0
-    end
-
-    def has_answers?
-      self.answers.count > 0
+      self.respond_to?('nodes') && self.nodes.count > 0
     end
     
-    def has_posts?
-      self.posts.count > 0
+    def has_sources?
+      self.respond_to?('sources') && self.sources.count > 0
     end
-
+  
   protected
   
     # before filter 

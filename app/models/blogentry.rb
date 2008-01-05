@@ -20,21 +20,5 @@ class Blogentry < ActiveRecord::Base
       post.save!
     end
   end
-
-  def has_body?
-    !self.body.nil? and self.body.length != 0
-  end
-
-  def has_image?
-    !self.image.nil?# and File.file? self.image
-  end
-
-  def has_clip?
-    !self.clip.nil?# and File.file? self.clip
-  end
-
-  def has_node?
-    !self.node.nil?
-  end
   
 end

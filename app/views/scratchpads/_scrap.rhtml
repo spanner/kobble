@@ -1,10 +1,3 @@
 <li id="padded_<%= scrap.class.to_s.downcase %>_<%= scrap.id %>" class="draggable">
-  <%= link_to( "#{scrap.name} <small>[#{scrap.class.to_s.downcase}]</small>", {:controller => scrap.class.to_s.downcase.pluralize, :action => 'show', :id => scrap}) %>
-	
-	<div class="thumb" style="display:none;">
-	<%= render :partial => 'shared/icon', :locals => { 
-		:this => scrap, 
-		:with_caption => false,
-	} %>
-	</div>
+  <%= link_to( "<img src='/images/furniture/spoke/white/#{scrap.class.to_s.downcase}.png' width='16' height='16'> #{scrap.name}", {:controller => scrap.class.to_s.downcase.pluralize, :action => 'show', :id => scrap}) %>
 </li>

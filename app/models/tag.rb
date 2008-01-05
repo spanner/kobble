@@ -65,21 +65,5 @@ class Tag < ActiveRecord::Base
     )
   end
 
-  def has_description?
-    !self.description.nil? and self.description.length != 0
-  end
-
-  def has_image?
-    !self.image.nil?# and File.file? self.image
-  end
-
-  def has_clip?
-    !self.clip.nil?# and File.file? self.clip
-  end
-
-  def has_marks?
-    self.marks.count > 0
-  end
-
 end
 

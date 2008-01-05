@@ -228,7 +228,7 @@ div.slide span.nodename {
 
 .draggable {
   cursor: move;
-  border: 2px solid transparent;
+/*  border: 2px solid transparent;*/
 }
 
 div.listrow {
@@ -668,50 +668,39 @@ div.scratchpage {
 div.scratchpage ul {
   margin: 0;
   color: white;
-	padding-left: 14px;
+	padding: 0;
 }
 
 div.scratchpage li {
-  height: 32px;
+  height: 36px;
+	overflow: hidden;
+  list-style: none;
+  margin: 0;
+}
+
+div.scratchpage li a {
+  display: block;
+  height: 36px;
   font-size: 16px;
-  line-height: 32px;
-  width: 500px;
+  line-height: 20px;
 	white-space: nowrap;
 	overflow: hidden;
-  list-style: square inside url(/images/furniture/icons/listicon.png);
+  padding: 8px 0 8px 3px;
+  color: #fff;
 }
 
-div.scratchpage li.draggable {
-  list-style-image: url(/images/furniture/icons/listicon.png);
-}
-
-div.scratchpage li.sortable {
-  list-style-image: url(/images/furniture/icons/sortable.png);
-}
-
-div.scratchpage li.action {
-  list-style-image: url(/images/furniture/icons/dosomething.png);
-}
-
-div.scratchpage li.down {
-  list-style-image: url(/images/furniture/icons/godown.png);
-}
-
-div.scratchpage li.waiting {
-  list-style-image: url(/images/furniture/signals/wait_og.gif);
-  color: #B2AAA4;
+div.scratchpage li a img {
+  margin: 0 8px 0 0;
+  float: left;
 }
 
 div.scratchpage li.waiting a, div.scratchpage li.action a, div.scratchpage li.down a {
   color: #B2AAA4;
 }
 
-div.scratchpage li a {
-  color: white;
-}
-
 div.scratchpage li a:hover {
-  color: #CC6E1F;
+  background-color: #CC6E1F;
+  color: white;
 }
 
 div.boxed {

@@ -62,32 +62,4 @@ class Question < ActiveRecord::Base
     Answer.find(:first, :conditions => ['created_by = ? and question_id = ?', user.id, self.id])
   end
 
-  def tag_list
-    tags.map {|t| t.name }.uniq.join(', ')
-  end
-
-  def has_body?
-    !self.body.nil? and self.body.length != 0
-  end
-
-  def has_image?
-    !self.image.nil?# and File.file? self.image
-  end
-
-  def has_clip?
-    !self.clip.nil?# and File.file? self.clip
-  end
-
-  def has_nodes?
-    self.nodes.count > 0
-  end
-
-  def has_topics?
-    self.topics.count > 0
-  end
-
-  def has_answers?
-    self.answers.count > 0
-  end
-
 end
