@@ -11,7 +11,7 @@
 	 <%= pagetitle %>
 	
 	<% if list.size > list.page_size %>
-  	<span class="pagination"><%= paginating_links(list, {:window_size => 3, :params => {:display => @display, :sort => params[:sort]}}, {}) %></span>
+  	<span class="pagination"><%= paginating_links(list, {:window_size => 3, :params => {:sort => params[:sort]}}, {}) %></span>
 	<% end %>
 </h1>
 
@@ -21,21 +21,18 @@
 
 <% if list && list.size > 0 %>
 	<p class="pagination">
-  	showing <%= list.first_item %> to <%= list.last_item %> of <%= pluralize(list.size, listedtype) %>.<br />
-  	order by: 
-	  <%= link_to_unless_current 'name', :page => list.page, :display => @display, :sort => 'name' %><span class="pale"> | </span>
-	  <%= link_to_unless_current 'date', :page => list.page, :display => @display, :sort => 'date' %><br />
-
-    show:
-	  <%= link_to_unless_current 'thumbnails', :page => list.page, :display => 'thumb', :sort => params[:sort] %><span class="pale"> | </span>
-	  <%= link_to_unless_current 'previews', :page => list.page, :display => 'slide', :sort => params[:sort] %><span class="pale"> | </span>
-	  <%= link_to_unless_current 'list', :page => list.page, :display => 'list', :sort => params[:sort] %>
+  	showing <%= list.first_item %> to <%= list.last_item %> of <%= pluralize(list.size, listedtype) %>. Order by: 
+	  <%= link_to_unless_current 'name', :page => list.page, :sort => 'name' %><span class="pale"> | </span>
+	  <%= link_to_unless_current 'date', :page => list.page, :sort => 'date' %><br />
 	</p>
 <% end %>
 
-<div id="listing">
+<div class="mainlist">
 	<% if list && list.size > 0 %>
-  	<%= render :partial => @display, :collection => list %>
+	  <ul>
+  	  <%= render :partial => 'list', :collection => list %>
+  	</ul>
+
 		<%= render :partial => 'shared/pagination', :locals => { :list => list } %>
     <% if editor? %>
     	<p class="clear"><%= link_to  "Add a new #{listedtype.singularize}", {:action => 'new'}, {:class => 'additem'} %></p>
