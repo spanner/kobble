@@ -1,45 +1,35 @@
 <% 
 	listedtype = controller.controller_name.sub('_controller', '')
 	pagetitle = listedtype unless pagetitle 
+	columns = 3
 %>
 
 <h1>
-	<% if admin? %>
-		<sup><%= link_to current_collection.abbreviation, :controller => 'collections', :action => 'show', :id => current_collection %></sup>
-	<% end %>
+  <%= pagetitle %>
 	
-	 <%= pagetitle %>
-	
-	<% if list.size > list.page_size %>
-  	<span class="pagination"><%= paginating_links(list, {:window_size => 3, :params => {:sort => params[:sort]}}, {}) %></span>
+	<% if @list.size > @list.page_size %>
+  	<span class="pagination"><%= paginating_links(@list, {:window_size => 3, :params => {:sort => params[:sort]}}, {}) %></span>
 	<% end %>
 </h1>
 
-<% if editor? %>
-	<p class="clearleft"><%= link_to  "Add a new #{listedtype.singularize}", {:action => 'new'}, {:class => 'additem'} %></p>
-<% end %>
-
-<% if list && list.size > 0 %>
+<% if @list && @list.size > 0 %>
 	<p class="pagination">
-  	showing <%= list.first_item %> to <%= list.last_item %> of <%= pluralize(list.size, listedtype) %>. Order by: 
-	  <%= link_to_unless_current 'name', :page => list.page, :sort => 'name' %><span class="pale"> | </span>
-	  <%= link_to_unless_current 'date', :page => list.page, :sort => 'date' %><br />
+  	showing <%= @list.first_item %> to <%= @list.last_item %> of <%= pluralize(@list.size, listedtype) %>. Order by: 
+	  <%= link_to_unless_current 'name', :page => @list.page, :sort => 'name' %><span class="pale"> | </span>
+	  <%= link_to_unless_current 'date', :page => @list.page, :sort => 'date' %><br />
 	</p>
-<% end %>
 
-<div class="mainlist">
-	<% if list && list.size > 0 %>
+  <div class="mainlist">
 	  <ul>
-  	  <%= render :partial => 'list', :collection => list %>
+  	  <%= render :partial => 'shared/list', :collection => @list %>
   	</ul>
+  </div>
 
-		<%= render :partial => 'shared/pagination', :locals => { :list => list } %>
-    <% if editor? %>
-    	<p class="clear"><%= link_to  "Add a new #{listedtype.singularize}", {:action => 'new'}, {:class => 'additem'} %></p>
-    <% end %>
-	<% else %>
-		<p>There are no <%= pagetitle %> to display in this collection</p>
-	<% end %>
-</div>
-
-
+  <div>
+	<%= render :partial => 'shared/pagination' %>
+  <% if editor? %>
+  	<p class="clear"><%= link_to  "Add a new #{listedtype.singularize}", {:action => 'new'}, {:class => 'additem'} %></p>
+  <% end %>
+<% else %>
+	<p>There are no <%= pagetitle %> to display in this collection</p>
+<% end %>

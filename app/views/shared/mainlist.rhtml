@@ -1,0 +1,34 @@
+<% 
+	listedclass = request.parameters[:controller].to_s._as_class
+%>
+
+<h1>
+  <%= listedclass.nice_title.pluralize %>
+	
+	<% if @list.size > @list.page_size %>
+  	<span class="pagination"><%= paginating_links(@list, {:window_size => 3, :params => {:sort => params[:sort]}}, {}) %></span>
+	<% end %>
+</h1>
+
+<% if @list && @list.size > 0 %>
+	<p class="pagination">
+  	showing <%= @list.first_item %> to <%= @list.last_item %> of <%= pluralize(@list.size, listedclass.nice_title) %>. Order by: 
+  	<% listedclass.sort_options.keys.sort.each do |order| %>
+	    <%= link_to_unless_current order, :page => @list.page, :sort => order %><span class="pale"> | </span>
+    <% end %>
+	</p>
+
+  <div class="mainlist">
+	  <ul>
+  	  <%= render :partial => 'shared/list', :collection => @list %>
+  	</ul>
+  </div>
+
+  <div>
+	<%= render :partial => 'shared/pagination' %>
+  <% if editor? %>
+  	<p class="clear"><%= link_to  "Add a new #{listedclass.nice_title}", {:action => 'new'}, {:class => 'additem'} %></p>
+  <% end %>
+<% else %>
+	<p>There are no <%= listedclass.nice_title.pluralize %> to display in this collection</p>
+<% end %>
