@@ -6,7 +6,7 @@ class Tag < ActiveRecord::Base
 
   # associated polymorphs
   has_many :taggings
-  has_many :tagged, :through => :taggings
+  has_many :taggeds, :through => :taggings
 
   def subsume(subsumed)
     self.marks << subsumed.marks

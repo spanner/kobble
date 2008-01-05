@@ -5,7 +5,7 @@ class Flag < ActiveRecord::Base
 
   # associated polymorphs
   has_many :flaggings
-  has_many :flagged, :through => :flaggings
+  has_many :flaggeds, :through => :flaggings
 
   # associated as polymorph
   has_many :memberships, :as => :member, :dependent => :destroy

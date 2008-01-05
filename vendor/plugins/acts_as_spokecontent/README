@@ -1,4 +1,26 @@
-ActsAsCatcher
-=============
+ActsAsSpokeContent
+==================
 
-Description goes here
+This +acts_as+ extension consolidates common spoke functionality in one place for dryness. It defines three class methods:
+
+acts_as_spoke
+  creates the standard ownership and collection relations
+
+acts_as_organised
+  creates the scratchpad, tagging, flagging and discussion links that most objects enjoy
+
+acts_as_illustrated
+  creates the file_column columns for image and clip files
+
+:only and :except parameters can be supplied, so eg:
+
+  acts_as_organised :only => :tags
+  acts_as_illustrated :except => :clip
+
+the options are:
+
+  acts_as_spoke: :collection, :creator, :updater
+  acts_as_organised: :bundles, :scratchpads, :tags, :flags, :topics
+  acts_as_illustrated: :clip, :image
+
+by default all relations are created
