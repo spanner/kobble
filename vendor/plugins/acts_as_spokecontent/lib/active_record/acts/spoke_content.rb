@@ -3,6 +3,7 @@ module ActiveRecord
     module SpokeContent #:nodoc:
       
       def self.included(base)
+        base.class_eval "cattr_accessor :bundleable, :taggable, :flaggable, :discussable, :paddable"   # for once we want shared variables among subclasses
         base.extend(ClassMethods)
       end
 
@@ -27,6 +28,8 @@ module ActiveRecord
       # acts_as_illustrated: :clip, :image
       #
       # by default all relations are created
+      #
+      # (which means that they're pushed onto class variable arrays that are used to define has_many_polymorphs relations after initialization)
       
       module ClassMethods
 
@@ -58,23 +61,24 @@ module ActiveRecord
           end
         
           if definitions.include?(:bundles)
-            has_many :bundlings, :as => :bundled, :dependent => :destroy
-            has_many :bundles, :through => :bundlings
+            self.bundleable ||= []
+            self.bundleable.push(self.to_s.underscore.pluralize.intern) 
           end
           if definitions.include?(:scratchpads)
-            has_many :paddings, :as => :padded, :dependent => :destroy
-            has_many :scratchpads, :through => :paddings
+            self.paddable ||= []
+            self.paddable.push(self.to_s.underscore.pluralize.intern) 
           end
           if definitions.include?(:tags)
-            has_many :taggings, :as => :tagged, :dependent => :nullify
-            has_many :tags, :through => :taggings
+            self.taggable ||= []
+            self.taggable.push(self.to_s.underscore.pluralize.intern) 
           end
           if definitions.include?(:flags)
-            has_many :flaggings, :as => :flagged, :dependent => :nullify
-            has_many :flags, :through => :flaggings
+            self.flaggable ||= []
+            self.flaggable.push(self.to_s.underscore.pluralize.intern) 
           end
           if definitions.include?(:topics)
-            has_many :topics, :as => :subject, :dependent => :nullify
+            self.discussable ||= []
+            self.discussable.push(self.to_s.underscore.pluralize.intern) 
           end
         end
     
