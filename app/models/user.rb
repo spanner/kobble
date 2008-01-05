@@ -15,7 +15,6 @@ class User < ActiveRecord::Base
   has_many :answers, :class_name => 'Answer', :foreign_key => 'speaker_id'
   has_many :flags
   has_many :posts, :class_name => 'Post', :foreign_key => 'created_by', :dependent => :nullify
-  has_many :scratchpads, :class_name => 'Scratchpad', :foreign_key => 'created_by', :dependent => :destroy
 
   has_many :created_nodes, :class_name => 'Node', :foreign_key => 'created_by'
   has_many :created_sources, :class_name => 'Source', :foreign_key => 'created_by'
@@ -23,6 +22,7 @@ class User < ActiveRecord::Base
   has_many :created_blogentries, :class_name => 'Blogentry', :foreign_key => 'created_by'
   has_many :created_forums, :class_name => 'Forum', :foreign_key => 'created_by'
   has_many :created_topics, :class_name => 'Topic', :foreign_key => 'created_by'
+  has_many :created_scratchpads, :class_name => 'Scratchpad', :foreign_key => 'created_by', :dependent => :destroy
 
   has_many :monitorships, :dependent => :destroy
   has_many :monitored_topics, :through => :monitorships, :conditions => ['monitorships.active = ?', true], :order => 'topics.replied_at desc', :source => :topic
@@ -44,12 +44,12 @@ class User < ActiveRecord::Base
   # spoke custom methods
   
   def find_or_create_scratchpads
-    if (self.scratchpads.empty?)
+    if (self.created_scratchpads.empty?)
       (1..4).each do |i|
-        self.scratchpads.create({:name => "pad#{i}"})
+        self.created_scratchpads.create({:name => "pad#{i}"})
       end
     end
-    self.scratchpads
+    self.created_scratchpads
   end
 
   def can_login?
