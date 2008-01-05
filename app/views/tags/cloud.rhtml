@@ -1,5 +1,10 @@
 <h1>
 	 tags
+	 <span class="pagination">
+	   <%= link_to_unless_current "cloud", :action => 'cloud' %> |
+	   <%= link_to_unless_current "list", :action => 'list' %> |
+	   <%= link_to_unless_current "tree", :action => 'tree' %>
+   </span>
 </h1>
 
 <div class="cloud">

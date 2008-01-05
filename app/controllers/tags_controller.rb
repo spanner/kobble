@@ -1,8 +1,20 @@
 class TagsController < ApplicationController
 
+  def index
+    cloud
+    render :action => 'cloud'
+  end
 
   def tree
-    @roots = Tag.find(:all,:conditions => [ "parent_id is NULL" ], :order => "name asc" )
+    @list = Tag.find(:all, 
+      :select => "tags.*, count(taggings.id) as use_count",
+      :joins => "LEFT JOIN taggings on taggings.tag_id = tags.id",
+      :conditions => ["tags.collection_id = ?", current_collection],
+      :group => "taggings.tag_id",
+      :order => @sort
+    )
+    @shoots = @list.select{|tag| tag.parent.nil?}
+    @roots = @shoots.select{|tag| tag.children.count > 0}
   end
   
   def treemap
@@ -20,37 +32,6 @@ class TagsController < ApplicationController
     end
   end
   
-  def search
-    # this needs rewriting to return polymorphic list based on tag overlap
-
-    # if (params[:query])
-    #   @tags = []
-    #   @query = params[:query]
-    #   likestring = "%#{params[:query]}%"
-    #   @nodes = Node.find(:all, 
-    #     :select => "n.*, count(kwn.keyword_id) as strength",
-    #     :joins => "as n 
-    #       inner join tags_nodes as kwn on kwn.node_id = n.id
-    #       inner join tags as k on kwn.keyword_id = k.id",
-    #     :group => "n.id",
-    #     :conditions => ["k.name like ?", likestring],
-    #     :order => 'strength desc'
-    #   )
-    # elsif (params[:tags])
-    #   @tags = params[:tags].collect { |tid| Tag.find(tid) }
-    #   @nodes = Node.find(:all, 
-    #     :select => "n.*, count(kwn.keyword_id) as strength",
-    #     :joins => "as n inner join tags_nodes as kwn on kwn.node_id = n.id",
-    #     :group => "n.id",
-    #     :conditions => ["kwn.keyword_id in (?)", params[:tags].join(',')],
-    #     :order => 'strength desc'
-    #   )
-    # else 
-    #   @tags = []
-    #   @nodes = nil
-    # end
-  end
-
   def taglist
     @tags = Tag.find(:all, :include => :parent)
     @kwtree = @tags.collect{ |kw| kw.parentage }
@@ -67,37 +48,14 @@ class TagsController < ApplicationController
   verify :method => :post, :only => [ :destroy, :create, :update ],
          :redirect_to => { :action => :list }
   
-  def list
-    @sort = case params['sort']
-     when "name"  then "name"
-     when "date" then "tags.created_at"
-     when "popularity" then "popularity"
-     else "name"
-    end
-    perpage = params[:perpage] ? params[:perpage].to_i : 500
-    page = params[:page] || 0
-    if (@sort == 'popularity') then
-      offset = page * perpage
-      @list = Tag.find(:all, 
-        :select => "tags.*, count(taggings.id) as use_count",
-        :joins => "LEFT JOIN taggings on taggings.tag_id = tags.id",
-        :conditions => ["tags.collection_id = ?", current_collection],
-        :group => "taggings.tag_id",
-        :order => "use_count DESC"
-      )
-    else
-      @list = Tag.find(:all, 
-        :select => "tags.*, count(taggings.id) as use_count",
-        :joins => "LEFT JOIN taggings on taggings.tag_id = tags.id",
-        :conditions => ["tags.collection_id = ?", current_collection],
-        :group => "taggings.tag_id",
-        :order => @sort
-      )
-    end
-    @shoots = @list.select{|tag| tag.parent.nil?}
-    @roots = @shoots.select{|tag| tag.children.count > 0}
-
-    render :action => 'list'
+  def cloud
+    @list = Tag.find(:all, 
+      :select => "tags.*, count(taggings.id) as use_count",
+      :joins => "LEFT JOIN taggings on taggings.tag_id = tags.id",
+      :conditions => ["tags.collection_id = ?", current_collection],
+      :group => "taggings.tag_id",
+      :order => 'name'
+    )
   end
   
   def show

@@ -1,44 +1,14 @@
 <h1>
-	<% if admin? %>
-		<sup><%= link_to current_collection.abbreviation, :controller => 'collections', :action => 'show', :id => current_collection %></sup>
-	<% end %>
-	
 	 tags
-	
+	 <span class="pagination">
+	   <%= link_to_unless_current "cloud", :action => 'cloud' %> |
+	   <%= link_to_unless_current "list", :action => 'list' %> |
+	   <%= link_to_unless_current "tree", :action => 'tree' %>
+   </span>
 </h1>
 
-<div class="boxtabs">
-  <a href="#" id="tab_content_list" class="tab">list</a>
-  <a href="#" id="tab_content_cloud" class="tab">cloud</a>
-  <a href="#" id="tab_content_tree" class="tab">tree</a>
-</div>
-
-<div class="boxed" id="box_content">
-  <div id="content_list">
-    <h2 class="boxhead">
-      tag list
-      <%= link_to_unless_current "by name", {:action => 'list', :sort => 'name'}, {:class => 'small'}%>
-      <%= link_to_unless_current "by popularity", {:action => 'list', :sort => 'popularity'}, {:class => 'small'}%>
-      <%= link_to_unless_current "by creation date", {:action => 'list', :sort => 'date'}, {:class => 'small'}%>
-    </h2>
-    <p style="color: #695D54;">
-	  <% for tag in @tags %>
-      <%= link_to( "#{tag.name}", :action => 'show', :id => tag) %> <span class="countlabel"><%= tag.use_count %></span>
-  	<% end %>
-  	</p>
-  	
-  </div>
-
-  <div id="content_cloud">
-    <h2 class="boxhead">tag cloud</h2>
-  	<ul class="cloud">
-  	<% tag_cloud(@tags.size, @tags) do |tag, cssclass| %>
-  	  <li><%= link_to tag.name, {:controller => 'tags', :action => 'show', :id => tag.id}, :class => cssclass %> <span class="hide">|</span> </li>
-  	<% end %>
-  	</ul>
-  </div>
-
-  <div id="content_tree">
+<div class="tree">
+  <% if @list && @list.size > 0 %>
     <% if @roots.empty? %>
       <h2 class="boxhead">tags in this collection are not taxonomic</h2>
       <%= render :partial => 'shared/branch', :collection => @shoots %>
@@ -58,7 +28,8 @@
     <% end %>
 
     <p class="clear">phew</p>
-  </div>
-  
+  <% else %>
+  	<p>There are no tags to display in this collection</p>
+  <% end %>
 </div>
 
