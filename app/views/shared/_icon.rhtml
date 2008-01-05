@@ -10,7 +10,7 @@
 <div class="icon draggable catcher" id="<%= draggedid %>">
   <div class="dragicon">
 		<%= 
-			imagetag = image_tag(@this.respond_to?('image') && @this.image ? url_for_file_column("this", "image", "thumb") : "/images/furniture/icons/#{default}.png", :class => 'icon', :size => "56x56", :alt => '')
+			imagetag = image_tag(@this.respond_to?('image') && !@this.image.nil? ? url_for_file_column("this", "image", "thumb") : "/images/furniture/icons/#{default}.png", :class => 'icon', :size => "56x56", :alt => '')
 			link_to(imagetag, :controller => linked.class.to_s.downcase.pluralize, :action => 'show', :id => linked)
 		%>
 

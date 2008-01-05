@@ -42,6 +42,10 @@ Rails::Initializer.run do |config|
   # config.active_record.default_timezone = :utc
   
   # See Rails::Configuration for more options
+  
+  config.after_initialize do
+    config.has_many_polymorphs_options['methods'] << 'acts_as_organised'
+  end
 
 end
 

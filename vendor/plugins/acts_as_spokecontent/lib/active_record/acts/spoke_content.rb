@@ -3,7 +3,7 @@ module ActiveRecord
     module SpokeContent #:nodoc:
       
       def self.included(base)
-        base.class_eval "cattr_accessor :bundleable, :taggable, :flaggable, :discussable, :paddable"   # for once we want shared variables among subclasses
+        # base.class_eval "cattr_accessor :bundleable_classes, :taggable_classes, :flaggable_classes, :discussable_classes, :paddable_classes"   # for once we want shared variables among subclasses
         base.extend(ClassMethods)
       end
 
@@ -34,7 +34,7 @@ module ActiveRecord
       module ClassMethods
 
         def acts_as_spoke(options={})
-          definitions = [:collection, :creator, :updater]
+          definitions = [:collection, :creator, :updater, :illustration, :discussion]
           if options[:except]
             definitions = definitions - Array(options[:except]) 
           elsif options[:only]
@@ -50,50 +50,8 @@ module ActiveRecord
           if definitions.include?(:updater)
             belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
           end
-        end
-
-        def acts_as_organised(options={})
-          definitions = [:bundles, :scratchpads, :tags, :flags, :topics]
-          if options[:except]
-            definitions = definitions - Array(options[:except]) 
-          elsif options[:only]
-            definitions = definitions & Array(options[:only]) 
-          end
-        
-          if definitions.include?(:bundles)
-            self.bundleable ||= []
-            self.bundleable.push(self.to_s.underscore.pluralize.intern) 
-          end
-          if definitions.include?(:scratchpads)
-            self.paddable ||= []
-            self.paddable.push(self.to_s.underscore.pluralize.intern) 
-          end
-          if definitions.include?(:tags)
-            self.taggable ||= []
-            self.taggable.push(self.to_s.underscore.pluralize.intern) 
-          end
-          if definitions.include?(:flags)
-            self.flaggable ||= []
-            self.flaggable.push(self.to_s.underscore.pluralize.intern) 
-          end
-          if definitions.include?(:topics)
-            self.discussable ||= []
-            self.discussable.push(self.to_s.underscore.pluralize.intern) 
-          end
-        end
-    
-        def acts_as_illustrated(options={})
-          definitions = [:image, :clip]
-          if options[:except]
-            definitions = definitions - Array(options[:except]) 
-          elsif options[:only]
-            definitions = definitions & Array(options[:only]) 
-          end
-        
-          if definitions.include?(:clip)
+          if definitions.include?(:illustration)
             file_column :clip
-          end
-          if definitions.include?(:image)
             file_column :image, :magick => { 
               :versions => { 
                 "thumb" => "56x56!", 
@@ -102,6 +60,19 @@ module ActiveRecord
               }
             }
           end
+          if definitions.include?(:discussion)
+            has_many :topics, :as => :subject
+          end
+        end
+
+        def organised_classes(options={})
+          oc = [:sources, :nodes, :bundles, :tags, :flags, :occasions, :forums, :topics, :posts, :questions, :answers, :blogentries, :users, :user_groups]
+          if options[:except]
+            oc -= Array(options[:except]) 
+          elsif options[:only]
+            oc &= Array(options[:only]) 
+          end
+          oc
         end
         
       end #classmethods

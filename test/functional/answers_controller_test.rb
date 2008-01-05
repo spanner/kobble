@@ -9,7 +9,7 @@ class AnswersControllerTest < Test::Unit::TestCase
 
   def setup
     @controller = AnswersController.new
-    @request    = ActionController::TestRequest.new
+    request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
 
     @first_id = answers(:first).id

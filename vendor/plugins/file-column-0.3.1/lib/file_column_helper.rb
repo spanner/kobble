@@ -62,7 +62,7 @@ module FileColumnHelper
     logger.warn "file_column: relative_path is '#{relative_path}'"
     return nil unless relative_path
     url = ""
-    url << @request.relative_url_root.to_s << "/"
+    url << request.relative_url_root.to_s << "/"
     url << object.send("#{method}_options")[:base_url] << "/"
     url << relative_path
   end

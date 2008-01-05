@@ -49,12 +49,12 @@
 
   <div id="scratchpad" class="fixedbottom">
     <div id="scratchtabs">
-      <% for pad in @scratch %>
+      <% for pad in current_user.scratchpads %>
         <a href="#" class="padtab" id="tab_scratchpad_<%= pad.id %>"><%= pad.name %></a>
       <% end %>
     </div>
     <div id="box_scratchpad">
-      <%= render :partial => 'shared/scratchpad', :collection => @scratch %>
+      <%= render :partial => 'shared/scratchpad', :collection => current_user.scratchpads %>
     </div>
   </div>
 

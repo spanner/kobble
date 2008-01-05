@@ -9,7 +9,7 @@ class WarningtypesControllerTest < Test::Unit::TestCase
 
   def setup
     @controller = WarningtypesController.new
-    @request    = ActionController::TestRequest.new
+    request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
   end
 

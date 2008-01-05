@@ -9,7 +9,7 @@ class HelptextsControllerTest < Test::Unit::TestCase
 
   def setup
     @controller = HelptextsController.new
-    @request    = ActionController::TestRequest.new
+    request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
   end
 

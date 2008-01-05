@@ -1,12 +1,7 @@
 class Bundle < ActiveRecord::Base
 
   acts_as_spoke
-  acts_as_illustrated
-
-  acts_as_organised :except => :bundles
-
-  has_many :bundlings, :dependent => :destroy
-  has_many :bundleds, :through => :bundlings
+  has_many_polymorphs :members, :from => self.organised_classes(:except => :bundles), :through => :bundlings
   
   # acts_as_catcher :members
  

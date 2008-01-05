@@ -1,6 +1,6 @@
 class Collection < ActiveRecord::Base
 
-  acts_as_spoke :except => :collection
+  acts_as_spoke :except => [:collection, :illustration]
 
   belongs_to :blog_forum, :class_name => 'Forum', :foreign_key => 'blog_forum_id'
   belongs_to :editorial_forum, :class_name => 'Forum', :foreign_key => 'editorial_forum_id'

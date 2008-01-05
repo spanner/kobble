@@ -9,7 +9,7 @@ class SurveysControllerTest < Test::Unit::TestCase
 
   def setup
     @controller = SurveysController.new
-    @request    = ActionController::TestRequest.new
+    request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
 
     @first_id = surveys(:first).id

@@ -10,25 +10,25 @@ class UserControllerTest < Test::Unit::TestCase
   
   def setup
     @controller = UserController.new
-    @request, @response = ActionController::TestRequest.new, ActionController::TestResponse.new
-    @request.host = "localhost"
+    request, @response = ActionController::TestRequest.new, ActionController::TestResponse.new
+    request.host = "localhost"
   end
   
   def test_auth_bob
-    @request.session['return-to'] = "/bogus/location"
+    request.session['return-to'] = "/bogus/location"
 
     post :login, "user" => { "login" => "bob", "password" => "atest" }
     assert_session_has "user"
 
     assert_equal @bob, @response.session["user"]
     
-    assert_redirect_url "http://#{@request.host}/bogus/location"
+    assert_redirect_url "http://#{request.host}/bogus/location"
   end
   
   def do_test_signup(bad_password, bad_email)
     ActionMailer::Base.deliveries = []
 
-    @request.session['return-to'] = "/bogus/location"
+    request.session['return-to'] = "/bogus/location"
 
     if not bad_password and not bad_email
       post :signup, "user" => { "login" => "newbob", "password" => "newpassword", "password_confirmation" => "newpassword", "email" => "newbob@test.com" }
@@ -202,7 +202,7 @@ class UserControllerTest < Test::Unit::TestCase
       assert_session_has "user"
     end
 
-    @request.session['return-to'] = "/bogus/location"
+    request.session['return-to'] = "/bogus/location"
     if not bad_address and not bad_email
       post :forgot_password, "user" => { "email" => "bob@test.com" }
       password = "anewpassword"
@@ -266,7 +266,7 @@ class UserControllerTest < Test::Unit::TestCase
   end
 
   def test_bad_signup
-    @request.session['return-to'] = "/bogus/location"
+    request.session['return-to'] = "/bogus/location"
 
     post :signup, "user" => { "login" => "newbob", "password" => "newpassword", "password_confirmation" => "wrong" }
     assert_invalid_column_on_record "user", "password"

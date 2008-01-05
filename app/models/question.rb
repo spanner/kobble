@@ -1,8 +1,6 @@
 class Question < ActiveRecord::Base
 
   acts_as_spoke
-  acts_as_organised
-  acts_as_illustrated
 
   belongs_to :survey
   has_and_belongs_to_many :user_groups     

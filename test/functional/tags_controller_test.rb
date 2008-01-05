@@ -9,7 +9,7 @@ class TagsControllerTest < Test::Unit::TestCase
 
   def setup
     @controller = TagsController.new
-    @request    = ActionController::TestRequest.new
+    request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
   end
 

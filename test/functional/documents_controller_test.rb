@@ -9,7 +9,7 @@ class DocumentsControllerTest < Test::Unit::TestCase
 
   def setup
     @controller = DocumentsController.new
-    @request    = ActionController::TestRequest.new
+    request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
   end
 

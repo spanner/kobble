@@ -1,7 +1,6 @@
 class Post < ActiveRecord::Base
 
-  acts_as_spoke
-  acts_as_organised
+  acts_as_spoke :except => [:illustration, :discussion]
 
   belongs_to :forum, :counter_cache => true
   belongs_to :topic, :counter_cache => true

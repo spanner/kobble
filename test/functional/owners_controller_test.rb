@@ -9,7 +9,7 @@ class OwnersControllerTest < Test::Unit::TestCase
 
   def setup
     @controller = OwnersController.new
-    @request    = ActionController::TestRequest.new
+    request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
   end
 

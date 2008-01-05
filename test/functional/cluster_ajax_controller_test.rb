@@ -9,7 +9,7 @@ class ClusterAjaxControllerTest < Test::Unit::TestCase
 
   def setup
     @controller = ClusterAjaxController.new
-    @request    = ActionController::TestRequest.new
+    request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
   end
 

@@ -7,8 +7,6 @@ class User < ActiveRecord::Base
   attr_accessor :just_promoted
 
   acts_as_spoke
-  acts_as_organised
-  acts_as_illustrated
 
   belongs_to :user_group      
 

@@ -1,8 +1,6 @@
 class Blogentry < ActiveRecord::Base
 
   acts_as_spoke
-  acts_as_organised
-  acts_as_illustrated
 
   has_one :node
   has_many :topics, :as => :subject

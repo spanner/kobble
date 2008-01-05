@@ -1,7 +1,6 @@
 class Topic < ActiveRecord::Base
 
-  acts_as_spoke
-  acts_as_organised
+  acts_as_spoke :except => [:illustration, :discussion]
 
   belongs_to :speaker, :class_name => 'User', :foreign_key => 'speaker_id'
   belongs_to :forum, :counter_cache => true

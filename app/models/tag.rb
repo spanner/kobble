@@ -1,12 +1,7 @@
 class Tag < ActiveRecord::Base
   acts_as_spoke
-  acts_as_organised :except => :tags
-  acts_as_illustrated
+  has_many_polymorphs :taggables, :from => self.organised_classes(:except => :tags), :through => :taggings
   acts_as_tree :order => 'name'
-
-  # associated polymorphs
-  has_many :taggings
-  has_many :taggeds, :through => :taggings
 
   def subsume(subsumed)
     self.marks << subsumed.marks

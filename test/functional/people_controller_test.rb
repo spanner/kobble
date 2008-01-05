@@ -9,7 +9,7 @@ class PeopleControllerTest < Test::Unit::TestCase
 
   def setup
     @controller = PeopleController.new
-    @request    = ActionController::TestRequest.new
+    request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
   end
 

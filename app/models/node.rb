@@ -1,8 +1,6 @@
 class Node < ActiveRecord::Base
 
   acts_as_spoke
-  acts_as_organised
-  acts_as_illustrated
 
   belongs_to :question
   belongs_to :source

@@ -9,7 +9,7 @@ class UserGroupControllerTest < Test::Unit::TestCase
 
   def setup
     @controller = UserGroupController.new
-    @request    = ActionController::TestRequest.new
+    request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
 
     @first_id = user_groups(:first).id

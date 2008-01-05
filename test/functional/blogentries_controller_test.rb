@@ -9,7 +9,7 @@ class BlogentriesControllerTest < Test::Unit::TestCase
 
   def setup
     @controller = BlogentriesController.new
-    @request    = ActionController::TestRequest.new
+    request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
 
     @first_id = blogentries(:first).id

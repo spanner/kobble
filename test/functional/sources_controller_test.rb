@@ -9,7 +9,7 @@ class SourcesControllerTest < Test::Unit::TestCase
 
   def setup
     @controller = SourcesController.new
-    @request    = ActionController::TestRequest.new
+    request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
   end
 

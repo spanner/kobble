@@ -1,24 +1,24 @@
 module AuthenticatedTestHelper
   # Sets the current <%= file_name %> in the session from the <%= file_name %> fixtures.
   def login_as(<%= file_name %>)
-    @request.session[:<%= file_name %>] = <%= file_name %> ? <%= table_name %>(<%= file_name %>).id : nil
+    request.session[:<%= file_name %>] = <%= file_name %> ? <%= table_name %>(<%= file_name %>).id : nil
   end
 
   def content_type(type)
-    @request.env['Content-Type'] = type
+    request.env['Content-Type'] = type
   end
 
   def accept(accept)
-    @request.env["HTTP_ACCEPT"] = accept
+    request.env["HTTP_ACCEPT"] = accept
   end
 
   def authorize_as(user)
     if user
-      @request.env["HTTP_AUTHORIZATION"] = "Basic #{Base64.encode64("#{users(user).login}:test")}"
+      request.env["HTTP_AUTHORIZATION"] = "Basic #{Base64.encode64("#{users(user).login}:test")}"
       accept       'application/xml'
       content_type 'application/xml'
     else
-      @request.env["HTTP_AUTHORIZATION"] = nil
+      request.env["HTTP_AUTHORIZATION"] = nil
       accept       nil
       content_type nil
     end

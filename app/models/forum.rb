@@ -1,9 +1,6 @@
 class Forum < ActiveRecord::Base
 
   acts_as_spoke
-  acts_as_organised
-  acts_as_list
-
   validates_presence_of :name
 
   has_many :topics, :order => 'sticky desc, replied_at desc', :dependent => :destroy do

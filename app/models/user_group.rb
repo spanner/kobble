@@ -1,6 +1,5 @@
 class UserGroup < ActiveRecord::Base
-  acts_as_spoke
-  acts_as_organised
+  acts_as_spoke :except => :illustration
   has_and_belongs_to_many :questions
 
   has_many :users, :dependent => :nullify
