@@ -1,4 +1,5 @@
 <li id="<%= listed.class.to_s.downcase %>_<%= listed.id %>" class="<%= listed.class.to_s.downcase %> draggable expandable">
   <% name = listed.name.nil? || listed.name.size == 0 ? "nameless #{listed.class.nice_title}" : listed.name %>
-  <%= link_to( name, {:controller => listed.class.to_s.downcase.pluralize, :action => 'show', :id => listed}) %> <span class="hide">|</span> 
+  <%= link_to( name, {:controller => listed.class.to_s.downcase.pluralize, :action => 'show', :id => listed}, {:class => 'listed'}) %> 
+  <% if listed.created_at %><span class="when"><%= time_ago_in_words(listed.created_at) %> old</span><% end %>
 </li>

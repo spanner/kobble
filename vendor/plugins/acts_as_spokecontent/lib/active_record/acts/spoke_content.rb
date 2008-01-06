@@ -182,6 +182,14 @@ module ActiveRecord
           user && (user.id == created_by || user.admin?)
         end
 
+        def find_some_text
+          return synopsis if has_synopsis?
+          return description if has_description?
+          return body if has_body?
+          return extracted_text if has_extracted_text?
+          "No text available"
+        end
+
       end #instancemethods
       
     end #spokecontent

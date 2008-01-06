@@ -34,18 +34,18 @@ var Dropzone = new Class({
 	},
 	showInterest: function (draggee) { 
 	  this.container.addClass('drophere');
-	  draggee.appearance(draggee.origin == this ? 'normal' : 'droppable'); 
+	  draggee.appearance(draggee.draggedfrom == this ? 'normal' : 'droppable'); 
 	},
 	loseInterest: function (draggee) { 
 	   this.container.removeClass('drophere');
-     draggee.appearance(draggee.origin ? 'deletable' : 'normal'); 
+     draggee.appearance(draggee.draggedfrom ? 'deletable' : 'normal'); 
 	},
 	receiveDrop: function (draggee) {
     // console.log('receiveDrop(' + draggee.tag + ')');
 		dropzone = this;
 		dropzone.loseInterest(draggee);
     // console.log('letting go(' + draggee.tag + ')');
-		if (dropzone == draggee.origin) {
+		if (dropzone == draggee.draggedfrom) {
 			draggee.release();
 			
 		} else if (dropzone.contains(draggee)) {
@@ -134,44 +134,38 @@ var Dropzone = new Class({
 
 
 
-
+// now we always drag whole <li> elements. no more thumbnail representation
 
 var Draggee = new Class({
 	initialize: function(element, event){
     event.stop();
 	  event.preventDefault();
-		this.original = $E('div.thumb', element);
-		if (!this.original) this.original = element;
-		this.container = element;
+		this.original = element;
 		var ip = idParts(element);
-		this.tag = ip['type'] + '_' + ip['id'];   //omitting other id parts that only serve to avoid duplicate ids
+		this.tag = ip['type'] + '_' + ip['id'];   //omitting other id parts that only serve to avoid duplicate element ids
 		this.link = $E('a', element);
-		this.backto = element.getCoordinates();
-		this.origin = lookForDropper(element.getParent());
-		this.imgsrc = $E('img.icon', element).getProperty('src');
-		this.signalwith = $E('img', element);
-		var draggee = this;
+		this.flybackto = element.getCoordinates();
+		this.clickpoint = {'top': event.page.y-25, 'left': event.page.x-75}
+		this.draggedfrom = lookForDropper(element.getParent());
+		draggee = this;
 		
 		this.clone = this.original.clone()
-		  .setStyles(this.backto)
-			.setStyles({'opacity': 0.8, 'position': 'absolute', 'display': 'block'})
+		  .addClass('dragging')
+		  .setStyles(this.clickpoint)
 			.addEvent('emptydrop', function() { 
 				sleepDroppers();
 				draggee.removeIfDraggedOut();
 			})
 			.inject(document.body);
 		
-  	var label = $E('div.label', this.clone);
-    if (label) label.show();
-
 		this.clone.makeDraggable({ 
 			droppables: wakeDroppers(draggee) // returns list of activated droppers. activating them sets up drop triggers
 		}).start(event);
 	},
-  spokeID: function () { return idParts(this.container)['id']; },
-  spokeType: function () { return idParts(this.container)['type']; },
+  spokeID: function () { return idParts(this.original)['id']; },
+  spokeType: function () { return idParts(this.original)['type']; },
 	removeIfDraggedOut: function () {
-		this.origin ? this.origin.removeDrop(this) : this.release();
+		this.draggedfrom ? this.draggedfrom.removeDrop(this) : this.release();
 	},
 	disappear: function () {
 		if (this.clone) this.clone.remove();
@@ -197,14 +191,14 @@ var Draggee = new Class({
 	},
 	moved: function () {
 		var now = this.clone.getCoordinates();
-		return Math.abs(this.backto['left'] - now['left']) + Math.abs(this.backto['top'] - now['top']) >= clickthreshold;
+		return Math.abs(this.clickpoint['left'] - now['left']) + Math.abs(this.clickpoint['top'] - now['top']) >= clickthreshold;
 	},
 	flyback: function () {
 		draggee = this;
 		if (this.clone) this.clone.effects({
-		  duration: 400, 
+		  duration: 600, 
 		  transition:Fx.Transitions.Back.easeOut
-		}).start(draggee.backto).chain(function(){ draggee.disappear() });
+		}).start(draggee.flybackto).chain(function(){ draggee.disappear() });
 	},
 	doClick: function (e) {
 		this.disappear();
@@ -213,16 +207,18 @@ var Draggee = new Class({
 	appearance: function (signal) {
 		switch (signal){
 			case 'waiting': 
-				$E('img', this.clone).setProperty('src', '/images/furniture/signals/wait_32.gif');
+				this.clone.addClass('waiting');
 				break;
 			case 'droppable': 
-				$E('img', this.clone).setProperty('src', '/images/furniture/signals/droppable.png');
-				break;
+			  this.clone.addClass('droppable');
+			  break
 			case 'deletable': 
-				$E('img', this.clone).setProperty('src', '/images/furniture/signals/deletable.png');
+			  this.clone.addClass('deletable');
 				break;
 			default: 
-				$E('img', this.clone).setProperty('src', this.imgsrc);
+	      this.clone.removeClass('waiting');
+	      this.clone.removeClass('droppable');
+		    this.clone.removeClass('deletable');
 		}
 	},
 	waiting: function () { this.appearance('waiting') },

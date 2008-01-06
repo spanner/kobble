@@ -5,12 +5,12 @@ class CollectionsController < ApplicationController
   verify :method => :post, :only => [ :reallydestroy, :create, :update ],
          :redirect_to => { :action => :list }
 
-  def set_context
-    @display = 'list'
-  end
-
   def show
     @collection = Collection.find(params[:id])
+  end
+
+  def limit_to_active_collection(klass=nil)
+    []
   end
 
   def new

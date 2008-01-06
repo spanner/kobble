@@ -1,3 +1,0 @@
-<li id="<%= list.class.to_s.downcase %>_<%= list.id %>" class="draggable">
-  <%= link_to( "<img src='/images/furniture/spoke/grey/#{list.class.to_s.downcase}.png' width='16' height='16'> #{list.name}", {:controller => list.class.to_s.downcase.pluralize, :action => 'show', :id => list}) %>
-</li>

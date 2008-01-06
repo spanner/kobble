@@ -55,57 +55,41 @@ class Node < ActiveRecord::Base
   def playto
     read_attribute(:playto)
   end
-    
-  def find_some_text
-    !synopsis.nil? && synopsis.length > 0 ? synopsis : body
-  end
 
   private
   
   def to_seconds (timecode)
     return 0 unless timecode
     return timecode if timecode !~ /[^\d\.]/
-    logger.info("to_seconds(#{timecode})")
     fragments = timecode.split(/:/)
 
     case fragments.length
-    when 1 # mm:ss 
+    when 1 # seconds
       s = fragments[0]
-
     when 2 # mm:ss 
       m = fragments[0]
       s = fragments[1]
-
     when 3 # hh:mm:ss
       h = fragments[0]
       m = fragments[1]
       s = fragments[2]
-
     when 4  # hh:mm:ss:ff, where ff is frames at 30fps
       h = fragments[0]
       m = fragments[1]
       s = fragments[2]
       s += fragments[3]/30 if fragments[3]
     end
-    logger.info("h = #{h}, m = #{m}, s= #{s}")
     ss = s.to_f
     ss += (m.to_i * 60) if m;
     ss += (h.to_i * 3600) if h;
-
-    logger.info("final ss = #{ss}")
-
     ss
   end
   
   def to_timecode (s)
     return '00:00:00:00' unless s
-    logger.info("to_timecode(#{s})")
     h = (s/3600).floor;
-    logger.info("h = #{h}")
     m = ((s % 3600)/60).floor;
-    logger.info("m = #{m}")
     s = s % 60;
-    logger.info("s = #{s}")
     sprintf("%02d:%02d:%02d:00", h, m, s)
   end
     

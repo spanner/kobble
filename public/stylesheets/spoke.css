@@ -357,7 +357,7 @@ div.inactive, div.inactive a {
 }
 
 .pagination {
-  font-size: 60%;
+  font-size: 16px;
   color:#B2AAA4;
 }
 
@@ -704,11 +704,11 @@ div.scratchpage li a:hover {
 
 
 div.mainlist {
+  width: 640px;
 }
 
 div.mainlist ul {
   margin: 0;
-  color: white;
 	padding: 0;
   list-style: none;
 }
@@ -716,17 +716,17 @@ div.mainlist ul {
 div.mainlist li {
   list-style: none;
   margin: 0;
-  padding: 6px 6px 6px 24px;
-  background-image: url(/images/furniture/spoke/grey/node.png);
-  background-position: 0 8px;
-  background-repeat: no-repeat;
+  padding: 6px;
+  clear: left;
 }
 
-div.mainlist li a {
+li a.listed {
+  padding: 10px 6px 6px 30px;
   font-size: 16px;
   line-height: 20px;
-  padding: 8px 0 8px 3px;
-  color: #695D54;
+  background-image: url(/images/furniture/spoke/grey/node.png);
+  background-position: 4px 8px;
+  background-repeat: no-repeat;
 }
 
 div.mainlist li a img {
@@ -734,28 +734,58 @@ div.mainlist li a img {
   float: left;
 }
 
-div.mainlist li.collection { background-image: url(/images/furniture/spoke/grey/collection.png); }
-div.mainlist li.node { background-image: url(/images/furniture/spoke/grey/node.png); }
-div.mainlist li.source { background-image: url(/images/furniture/spoke/grey/source.png); }
-div.mainlist li.bundle { background-image: url(/images/furniture/spoke/grey/bundle.png); }
-div.mainlist li.user { background-image: url(/images/furniture/spoke/grey/user.png); }
-div.mainlist li.usergroup { background-image: url(/images/furniture/spoke/grey/usergroup.png); }
-div.mainlist li.tag { background-image: url(/images/furniture/spoke/grey/tag.png); }
-div.mainlist li.flag { background-image: url(/images/furniture/spoke/grey/flag.png); }
-div.mainlist li.forum { background-image: url(/images/furniture/spoke/grey/forum.png); }
-div.mainlist li.topic { background-image: url(/images/furniture/spoke/grey/post.png); }
-div.mainlist li.post { background-image: url(/images/furniture/spoke/grey/post.png); }
-div.mainlist li.blogentry { background-image: url(/images/furniture/spoke/grey/blogentry.png); }
-div.mainlist li.question { background-image: url(/images/furniture/spoke/grey/question.png); }
-div.mainlist li.answer { background-image: url(/images/furniture/spoke/grey/answer.png); }
+li.collection a.listed { background-image: url(/images/furniture/spoke/grey/collection.png); }
+li.node a.listed { background-image: url(/images/furniture/spoke/blue/node.png); }
+li.source a.listed { background-image: url(/images/furniture/spoke/blue/source.png); }
+li.bundle a.listed { background-image: url(/images/furniture/spoke/blue/bundle.png); }
+li.user a.listed { background-image: url(/images/furniture/spoke/blue/user.png); }
+li.usergroup a.listed { background-image: url(/images/furniture/spoke/blue/usergroup.png); }
+li.tag a.listed { background-image: url(/images/furniture/spoke/blue/tag.png); }
+li.flag a.listed { background-image: url(/images/furniture/spoke/blue/flag.png); }
+li.forum a.listed { background-image: url(/images/furniture/spoke/blue/forum.png); }
+li.topic a.listed { background-image: url(/images/furniture/spoke/blue/post.png); }
+li.post a.listed { background-image: url(/images/furniture/spoke/blue/post.png); }
+li.blogentry a.listed { background-image: url(/images/furniture/spoke/blue/blogentry.png); }
+li.question a.listed { background-image: url(/images/furniture/spoke/blue/question.png); }
+li.answer a.listed { background-image: url(/images/furniture/spoke/blue/answer.png); }
+
+li.collection a.listed:hover { background-image: url(/images/furniture/spoke/grey/collection.png); }
+li.node a.listed:hover { background-image: url(/images/furniture/spoke/orange/node.png); }
+li.source a.listed:hover { background-image: url(/images/furniture/spoke/orange/source.png); }
+li.bundle a.listed:hover { background-image: url(/images/furniture/spoke/orange/bundle.png); }
+li.user a.listed:hover { background-image: url(/images/furniture/spoke/orange/user.png); }
+li.usergroup a.listed:hover { background-image: url(/images/furniture/spoke/orange/usergroup.png); }
+li.tag a.listed:hover { background-image: url(/images/furniture/spoke/orange/tag.png); }
+li.flag a.listed:hover { background-image: url(/images/furniture/spoke/orange/flag.png); }
+li.forum a.listed:hover { background-image: url(/images/furniture/spoke/orange/forum.png); }
+li.topic a.listed:hover { background-image: url(/images/furniture/spoke/orange/post.png); }
+li.post a.listed:hover { background-image: url(/images/furniture/spoke/orange/post.png); }
+li.blogentry a.listed:hover { background-image: url(/images/furniture/spoke/orange/blogentry.png); }
+li.question a.listed:hover { background-image: url(/images/furniture/spoke/orange/question.png); }
+li.answer a.listed:hover { background-image: url(/images/furniture/spoke/orange/answer.png); }
+
+li span.when { 
+  color: #B2AAA4;
+  font-size: 75%;
+}
 
 ul.squashed li {
   display: inline;
 }
 
+li.dragging {
+  opacity: 0.75;
+  position: absolute;
+  display: block;
+  width: 180px;
+  padding: 6px;
+  border: 1px dotted #CC6E1F;
+  background-color: white;
+}
 
-
-
+li.dragging span {
+  display: none;
+}
 
 
 

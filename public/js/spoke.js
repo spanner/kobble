@@ -1,7 +1,7 @@
 ﻿var slides = {};
 var display = null;
 var droppers = [];
-var clickthreshold = 20;
+var clickthreshold = 6;
 var tagspinners = [];
 var waiticon = '/images/furniture/signals/wait_32.gif';
 var fixedbottom = [];
@@ -158,6 +158,9 @@ window.addEvent('domready', function(){
   $ES('div.fixedbottom').each( function (element) {
     fixedbottom.push(element);
   });
+  
+  $ES('.expandable').each( function (element) {
+  })
 
 	window.addEvent('scroll', moveFixed);
 	window.addEvent('resize', moveFixed);

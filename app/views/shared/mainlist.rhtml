@@ -2,7 +2,7 @@
 	listedclass = request.parameters[:controller].to_s._as_class
 %>
 
-<h1>
+<h1 class="pagetitle">
   <%= listedclass.nice_title.pluralize %>
 	
 	<% if @list.size > @list.page_size %>
@@ -24,7 +24,6 @@
   	</ul>
   </div>
 
-  <div>
 	<%= render :partial => 'shared/pagination' %>
   <% if editor? %>
   	<p class="clear"><%= link_to  "Add a new #{listedclass.nice_title}", {:action => 'new'}, {:class => 'additem'} %></p>
