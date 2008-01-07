@@ -844,15 +844,19 @@ div.draggingbody {
 }
 
 div.draggingbody li {
-  width: 140px;
-  margin: 6px 6px 0 6px;
+  width: 132px;
+  margin: 6px 6px 0 8px;
   list-style: none;
+  list-style-image: none;
+  background-image: none;
   font-size: 12px;
 }
 
 div.draggingbody li a {
   font-size: 12px;
-  color: ;
+  color: #695D54;
+  background-image: none;
+  padding: 0;
 }
 
 div.draggingbody li span {

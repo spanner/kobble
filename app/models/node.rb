@@ -6,7 +6,7 @@ class Node < ActiveRecord::Base
   belongs_to :source
   belongs_to :collection
 
-  # acts_as_catcher :tags, :flags, :speaker, :source
+  acts_as_catcher :tags, :flags
 
   file_column :file
   before_save FileCallbacks.new

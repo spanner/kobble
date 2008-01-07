@@ -7,7 +7,7 @@ class Source < ActiveRecord::Base
 
   file_column :file
   before_save FileCallbacks.new
-  # acts_as_catcher :tags, :flags, :nodes
+  acts_as_catcher :tags, :flags
 
   def self.nice_title
     "source document"
