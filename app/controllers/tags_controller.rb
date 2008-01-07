@@ -122,7 +122,23 @@ class TagsController < ApplicationController
       format.xml { head 200 }
     end
   end
-
+  
+  def consolidate
+    tags = Tag.find(:all)
+    seen = {}
+    @removed = {}
+    tags.each do |tag|
+      if seen[tag.stem] 
+        seen[tag.stem].subsume(tag)
+        @removed[tag.name] = seen[tag.stem]
+      else 
+        seen[tag.stem] = tag
+      end
+    end
+    cloud
+    render :action => 'cloud'
+  end
+  
   def destroy
     Tag.find(params[:id]).destroy
     redirect_to :action => 'list'

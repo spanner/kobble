@@ -7,6 +7,14 @@
    </span>
 </h1>
 
+<% if @removed && !@removed.empty? %>
+  <p>These tags have been simplified away:<br />
+    <% @removed.each do |was, now| %>
+      <strong><%= was %></strong> made part of <strong><%= link_to now.name, :action => 'show', :id => now %></strong><br />
+    <% end %>
+  </p>
+<% end %>
+
 <div class="cloud">
   <% if @list && @list.size > 0 %>
   	<ul class="cloud">
@@ -20,4 +28,6 @@
   <% end %>
 </div>
 
-
+<% if admin? %>
+  <p style="margin-top: 44px;">You can <%= link_to 'consolidate tags automatically', {:action => 'consolidate'}, {:confirm => "Are you sure you want to consolidate the tag set? This will cause any tags with the same stem to be combined into one, and cannot be undone."} %> by stemming and combining (so 'personal' and 'person' become one tag. So do 'business' and 'businesses', which is good, and also 'busy', which might not be.).</p>
+<% end %>

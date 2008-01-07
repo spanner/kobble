@@ -11,7 +11,6 @@ class ApplicationController < ActionController::Base
   before_filter :set_context
   layout :choose_layout
   exception_data :exception_report_data
-  json_request :json
   
   def index
     list

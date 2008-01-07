@@ -11,7 +11,11 @@ class Tag < ActiveRecord::Base
       'popularity' => 'popularity',     # special case
     }
   end
-
+  
+  def stem
+    name.split.map{|w| w.stem}.join('_')
+  end
+  
   def subsume(subsumed)
     self.taggables << subsumed.taggables
     self.flags << subsumed.flags
