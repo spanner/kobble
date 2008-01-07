@@ -787,7 +787,7 @@ div.commentator {
   position: absolute;
   width: 374px;
   padding: 0;
-/*  display: none;*/
+  display: none;
 }
 
 div.commentatorbody {
