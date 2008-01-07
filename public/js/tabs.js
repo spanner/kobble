@@ -1,4 +1,5 @@
 var tabsets = {};
+var scratchtabs = [];
 
 var Tab = new Class({
 	initialize: function(element){
@@ -10,19 +11,21 @@ var Tab = new Class({
 		this.tabset = null;
     this.addToSet();
  		this.tabhead.onclick = this.select.bind(this);
+ 		this.holdopen = false;
 	},
 	addToSet: function () {
     this.tabset = tabsets[this.settag] || new TabSet(this.settag);
     this.tabset.addTab(this);
 	},
 	select: function (e) {
+	  console.log('select!')
 	  e = new Event(e).stop();
 	  e.preventDefault();
 	  this.tabhead.blur();
     this.tabset.select(this.tag);
 	},
-	deselect: function (e) {
-	},
+	reselect: function (e) {},
+	deselect: function (e) {},
   showBody: function(){
     this.tabbody.show();
     this.tabhead.addClass('fg');
@@ -52,8 +55,9 @@ var TabSet = new Class({
     }
 	},
 	select: function (tag) {
+	  console.log('tabset.select!')
 	  if (tag == this.foreground.tag) {
-  	  this.foreground.reselect();
+  	  this.reselect();
 	  } else {
 	    this.foreground.deselect();
   	  tabset = this;
@@ -69,7 +73,7 @@ var TabSet = new Class({
 	  }
 	},
 	reselect: function (tag) {
-	  this.resize();
+	  this.foreground.reselect();
 	},
 	resizer: function (argument) {
     if (!this.resizer) this.resizer = new Fx.Style(this.container, 'height', {duration:500});
@@ -117,7 +121,7 @@ var ScratchSet = TabSet.extend({
     this.isopen = false;
 	},
 	toggle: function (delay) {
-    this.isopen ? this.close(delay) : this.open(delay);
+    this.isopen && !this.holdopen ? this.close(delay) : this.open(delay);
 	},
 	showRename: function (url) {
     this.foreground.showRename(url);
@@ -132,6 +136,7 @@ var ScratchTab = Tab.extend({
     this.renamefx = new Fx.Style(this.formholder, 'height', {duration:1000});
     $E('a.rename_pad', this.tabbody).onclick = this.rename.bind(this);
     $E('a.closepad', this.tabbody).onclick = this.close.bind(this);
+    scratchtabs.push(this)
   },
   open: function () { this.tabset.open(0); },
 	close: function () { 
@@ -194,5 +199,16 @@ var ScratchTab = Tab.extend({
       update: scratchtab.tabhead,
       onComplete: function () { scratchtab.hideRenameNicely(); }
 	  });
-	}
+	},
+	makeReceptiveTo: function (draggee) {
+	  var tab = this;
+    // console.log('adding mouseenter event to ')
+    // console.log(this.tabhead)
+	  this.tabset.holdopen = true;
+ 		this.tabhead.addEvent('mouseenter', function (e) { tab.select(e); });
+	},
+	makeUnreceptive: function () {
+	  this.tabset.holdopen = false;
+    this.tabhead.removeEvents('mouseenter');
+	},
 });

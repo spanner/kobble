@@ -5,17 +5,22 @@
 <h1 class="pagetitle">
   <%= listedclass.nice_title.pluralize %>
 	
-	<% if @list.size > @list.page_size %>
-  	<span class="pagination"><%= paginating_links(@list, {:window_size => 3, :params => {:sort => params[:sort]}}, {}) %></span>
-	<% end %>
+	<span class="pagination">
+  	<% if @list.size > @list.page_size %>
+    	<%= paginating_links(@list, {:window_size => 3, :params => {:sort => params[:sort]}}, {}) %>
+  	<% end %>
+	</span>
 </h1>
+
 
 <% if @list && @list.size > 0 %>
 	<p class="pagination">
-  	showing <%= @list.first_item %> to <%= @list.last_item %> of <%= pluralize(@list.size, listedclass.nice_title) %>. Order by: 
+  	showing <%= @list.first_item %> to <%= @list.last_item %> of <%= pluralize(@list.size, listedclass.nice_title) %>.<br />
+  	Order by: 
   	<% listedclass.sort_options.keys.sort.each do |order| %>
 	    <%= link_to_unless_current order, :page => @list.page, :sort => order %><span class="pale"> | </span>
-    <% end %>
+    <% end %><br />
+  	Show: list view | <%= link_to 'gallery view', :action => 'gallery' %>
 	</p>
 
   <div class="mainlist">

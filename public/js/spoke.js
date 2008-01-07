@@ -5,6 +5,8 @@ var clickthreshold = 6;
 var tagspinners = [];
 var waiticon = '/images/furniture/signals/wait_32.gif';
 var fixedbottom = [];
+var commentator = null;
+var dragging = false;
 
 // element ids in spoke have a standard format: tag_type_id, where tag is an arbitrary identifier used to identify eg tab family, and type and id denote an object
 // there must be a way to do this with a split
@@ -57,28 +59,6 @@ function moveFixed (e) {
 }
 
 window.addEvent('domready', function(){
-
-	$ES('a.displaycontrol').each(function (a) {
-	  var tag = a.id.replace('show','hide');
-	  var slid = $E( '#' + tag );
-    if (slid) {
-      slides[tag] = new Fx.Slide( slid, {
-        transition: Fx.Transitions.Bounce.easeOut,
-        onStart: function () { 
-          if (a.hasClass('disappears')) a.hide(); 
-          else a.setText(slides[tag].open ? a.getText().replace('-','+') : a.getText().replace('+','-'));
-        }
-      });
-      if (!a.hasClass('defaultopen')) slides[tag].hide(); 
-  		a.addEvent('click', function (e) {
-  		  this.blur();
-      	e = new Event(e);
-      	slides[tag].toggle();
-      	e.stop();
-  			e.preventDefault();
-  		});
-    }
-	});
 	
   $ES('.dropzone').each(function (element) {
     droppers.push(new Dropzone(element));
@@ -159,9 +139,13 @@ window.addEvent('domready', function(){
     fixedbottom.push(element);
   });
   
+  commentator = new Commentator;
+  
   $ES('.expandable').each( function (element) {
-  })
-
+    element.addEvent('mouseenter', function (event) { if (!dragging) commentator.explain(element, event); })
+    element.addEvent('mouseleave', function (e) { commentator.hide(); })
+  });
+  
 	window.addEvent('scroll', moveFixed);
 	window.addEvent('resize', moveFixed);
 });

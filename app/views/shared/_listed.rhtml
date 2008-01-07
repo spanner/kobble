@@ -2,4 +2,13 @@
   <% name = listed.name.nil? || listed.name.size == 0 ? "nameless #{listed.class.nice_title}" : listed.name %>
   <%= link_to( name, {:controller => listed.class.to_s.downcase.pluralize, :action => 'show', :id => listed}, {:class => 'listed'}) %> 
   <% if listed.created_at %><span class="when"><%= time_ago_in_words(listed.created_at) %> old</span><% end %>
+  <div class="expansion">
+    <% if listed.has_image? %>
+      <% @listed = listed %>
+      <%= image_tag(url_for_file_column("listed", "image", "thumb"), :size => "56x56", :alt => '') %>
+      <% @listed = nil %>
+    <% end %>
+    <strong><%= name %></strong>
+    <%= truncate( listed.find_some_text, 300 ) %><br />
+  </div>
 </li>

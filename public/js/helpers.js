@@ -524,3 +524,36 @@ var TagSuggestion = Autocompleter.Ajax.Json.extend({
 	}
 });
 
+var Commentator = new Class({
+	initialize: function(){
+		this.container = new Element('div', { 'class': 'commentator' }).injectInside(document.body);
+		this.textholder = new Element('div', { 'class': 'commentatorbody' }).injectInside(this.container);
+		this.footer = new Element('div', { 'class': 'commentatorfoot' }).injectInside(this.container);
+	},
+	explain: function (element, event) {
+    position = element.getCoordinates();
+    explanation = $E('div.expansion', element);
+    if (explanation) {
+      this.moveto(position.top + 8, position.left + 350);
+      this.display(explanation.clone());
+      this.show();
+    }
+	},
+	display: function (elements) {
+    this.textholder.empty();
+    if (elements) elements.injectInside(this.textholder);
+	},
+	clear: function () {
+    this.display();
+	},
+  moveto: function (top, left) {
+    this.container.setStyles({'top': top-23, 'left': left});
+  },
+  show: function () {
+    this.container.show();
+  },
+  hide: function () {
+    this.container.hide();
+  }
+});
+

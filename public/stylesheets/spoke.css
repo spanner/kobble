@@ -668,6 +668,7 @@ div.scratchpage ul {
   margin: 0;
   color: white;
 	padding: 0;
+	min-height: 300px;
 }
 
 div.scratchpage li {
@@ -773,19 +774,111 @@ ul.squashed li {
   display: inline;
 }
 
-li.dragging {
-  opacity: 0.75;
-  position: absolute;
-  display: block;
-  width: 180px;
-  padding: 6px;
-  border: 1px dotted #CC6E1F;
-  background-color: white;
+
+
+
+li div.expansion {
+  display: none;
+  font-size: 12px;
+  margin: 0 12px 0 9px;
 }
 
-li.dragging span {
+div.commentator {
+  position: absolute;
+  width: 374px;
+  padding: 0;
+/*  display: none;*/
+}
+
+div.commentatorbody {
+  background-image: url(/images/furniture/spoke/commentary/commentbg.png);
+  background-position: top left;
+  background-repeat: no-repeat;
+  width: 374px;
+  min-height: 58px;
+  padding: 12px 0 0 0;
+  margin: 0;
+  font-size: 12px;
+}
+
+div.commentatorbody div {
+  width: 290px;
+  margin: 0 20px 0 32px;
+}
+
+div.commentatorfoot {
+  background-image: url(/images/furniture/spoke/commentary/commentbottom.png);
+  background-position: top left;
+  background-repeat: no-repeat;
+  width: 374px;
+  height: 22px;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  clear:both;
+}
+
+div.commentatorbody img {
+  float: left;
+  margin: 0 8px 0 0;
+}
+
+
+
+div.dragging {
+  position: absolute;
+  opacity: 0.75;
+  width: 153px;
+  padding: 0;
+/*  display: none;*/
+}
+
+div.draggingbody {
+  background-image: url(/images/furniture/spoke/commentary/draggingbg.png);
+  background-position: top left;
+  background-repeat: no-repeat;
+  width: 153px;
+  min-height: 24px;
+  padding: 3px 0 0 0;
+  margin: 0;
+}
+
+div.draggingbody li {
+  width: 140px;
+  margin: 6px 6px 0 6px;
+  list-style: none;
+  font-size: 12px;
+}
+
+div.draggingbody li a {
+  font-size: 12px;
+  color: ;
+}
+
+div.draggingbody li span {
   display: none;
 }
+
+div.draggingfoot {
+  background-image: url(/images/furniture/spoke/commentary/draggingbottom.png);
+  background-position: top left;
+  background-repeat: no-repeat;
+  width: 153px;
+  height: 29px;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  clear:both;
+}
+
+div.commentatorbody img {
+  float: left;
+  margin: 0 8px 0 0;
+}
+
+
+
+
 
 
 
