@@ -38,6 +38,7 @@ var Dropzone = new Class({
 	},
 	receiveDrop: function (helper) {
 		dropzone = this;
+		console.log('dropped on ' + this.spokeType() + '/' + this.spokeID());
 		dropzone.loseInterest(helper);
 		draggee = helper.draggee;
 		if (dropzone == draggee.draggedfrom) {
@@ -57,15 +58,18 @@ var Dropzone = new Class({
 			  },
         onSuccess: function(response){
           dropzone.notWaiting();
-          
-          // all this needs working through as consistent json interface
-          
-          if (response.successful) {
+          eval(response)
+          if (outcome.successful) {
             dropzone.showSuccess();
-            confirm(response.message);
+            announce(outcome.message);
+            if (outcome.action == 'insert') {
+              dropzone.accept(draggee);
+            } else if (outcome.action == 'delete') {
+              draggee.explode();
+            }
           } else {
     		    dropzone.showFailure();
-            error(response.message);
+            error(outcome.message);
           }
         },
 			  onFailure: function (response) { 
@@ -105,6 +109,9 @@ var Dropzone = new Class({
 	},
 	showFailure: function () {
 
+	},
+	accept: function (draggee) {
+    //???
 	}
 });
 

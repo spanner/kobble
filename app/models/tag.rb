@@ -2,7 +2,7 @@ class Tag < ActiveRecord::Base
   acts_as_spoke
   has_many_polymorphs :taggables, :from => self.organised_classes(:except => :tags), :through => :taggings
   acts_as_tree :order => 'name'
-  acts_as_catcher :taggables, {:tags => :subsume}
+  acts_as_catcher :taggables, {:tag => :subsume}
 
   def self.sort_options 
     {
@@ -13,12 +13,17 @@ class Tag < ActiveRecord::Base
   end
 
   def subsume(subsumed)
-    self.marks << subsumed.marks
+    self.taggables << subsumed.taggables
     self.flags << subsumed.flags
     self.children << subsumed.children
     self.description = subsumed.description if self.description.nil? or self.description.size == 0
     self.image = subsumed.image if self.image.nil? or self.image.size == 0
     subsumed.destroy
+    {
+      :success => 'true',
+      :message => "#{subsumed.name} folded into #{self.name}",
+      :action => 'delete'
+    }
   end
   
   def parentage

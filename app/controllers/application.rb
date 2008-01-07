@@ -11,7 +11,8 @@ class ApplicationController < ActionController::Base
   before_filter :set_context
   layout :choose_layout
   exception_data :exception_report_data
-
+  json_request :json
+  
   def index
     list
   end
@@ -61,18 +62,10 @@ class ApplicationController < ActionController::Base
   end
 
   def catch
-    logger.warn "^^^ catch. 
-      controller = #{request.parameters[:controller]}
-      class = #{request.parameters[:controller].to_s._as_class}
-      id = #{params[:id]}
-      json = #{params[:json]}
-      klass = #{params[:caughtClass]}
-      caught = #{params[:caughtID]}"
-
     @catcher = request.parameters[:controller].to_s._as_class.find( params[:id] )
-    @caught = params[:caughtClass]._as_class.find(params[:caughtID])
-    @catcher.catch(@caught) if @catcher and @caught
-
+    @caught = params[:caughtClass].to_s._as_class.find( params[:caughtID] )
+    @outcome = @catcher.catch(@caught) if @catcher and @caught
+    
     respond_to do |format|
       format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @catcher }
       format.js { render :template => 'shared/caught', :layout => false }
@@ -80,18 +73,14 @@ class ApplicationController < ActionController::Base
     end
   end
   
+  def amend
+    # single field update
+  end
+  
   def drop
-    logger.warn "vvv drop. 
-      controller = #{request.parameters[:controller]}
-      class = #{request.parameters[:controller].to_s.classify}
-      id = #{params[:id]}
-      klass = #{params[:klass]}
-      caught = #{params[:caught]}"
-
     @dropper = request.parameters[:controller].to_s._as_class.find( params[:id] )
-    @dropped = params[:klass]._as_class.find(params[:dropped])
+    @dropped = params[:droppedClass]._as_class.find(params[:droppedID])
     @dropper.drop(@dropped) if @dropper and @dropped
-
     respond_to do |format|
       format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @dropper }
       format.js { render :action => 'dropped', :layout => false }

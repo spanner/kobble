@@ -64,15 +64,14 @@ window.addEvent('domready', function(){
     droppers.push(new Dropzone(element));
   });
 
-  // $ES('div.catcher').each(function (element) {
-  //  droppers.push(new Dropzone(element));
-  // });
+  $ES('.catcher').each(function (element) {
+   droppers.push(new Dropzone(element));
+  });
 
   $ES('.draggable').each(function(item) {
-  	item.addEvent('mousedown', function(e) {
-  		e = new Event(e);
-			new Draggee(this, e);
-  	});
+   item.addEvent('mousedown', function(e) {
+       new Draggee(this, new Event(e));
+   });
   });
 
 	$ES('input.tagbox').each(function (element, i) {

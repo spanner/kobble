@@ -12,7 +12,7 @@
   	<ul class="cloud">
   	<% tag_cloud(@list.size, @list) do |tag, cssclass| %>
   	  <% msg = tag.use_count.to_i == 1 ? "used once" : "used #{tag.use_count} times" %>
-  	  <li class="draggable" id="tag_<%= tag.id %>"><%= link_to tag.name, {:controller => 'tags', :action => 'show', :id => tag.id}, :class => cssclass, :title => msg %> <span class="hide">|</span> </li>
+  	  <li class="draggable catcher" id="tag_<%= tag.id %>"><%= link_to tag.name, {:controller => 'tags', :action => 'show', :id => tag.id}, :class => cssclass, :title => msg %> <span class="hide">|</span> </li>
   	<% end %>
   	</ul>
   <% else %>

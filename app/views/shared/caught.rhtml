@@ -1,11 +1,5 @@
-<script type="text/javascript">
-//<![CDATA[
-
-  var outcome = {
-    successful: true,
-    message: "this is a test message",
-    action: null
-  };
-
-//]]>
-</script>
+outcome = {
+  successful: "<%= @outcome[:success] %>",
+  message: "<%= @outcome[:message] %>",
+  action: "<%= @outcome[:action] %>"
+};

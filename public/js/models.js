@@ -1,13 +1,9 @@
 var Model = new Class({
-	initialize: function(object){
-    var properties = {};
+	initialize: function(element){
+    this.id = idParts(object).id;
 	},
-  to_json: function(){
-    this.tabbody.hide();
-    this.tabhead.removeClass('fg');
-  },
   as_li: function () {
-
+    
   },
   as_thumb: function () {
 

@@ -38,21 +38,16 @@
 	}
 });
 
+String.extend({
+  capitalise: function () {
+    return this.charAt(0).toUpperCase() + this.substr(1).toLowerCase();
+  }
+});
 
 var Model = new Class({
-	initialize: function(object){
-    var properties = {};
-	},
-  to_json: function(){
-    this.tabbody.hide();
-    this.tabhead.removeClass('fg');
-  },
-  as_li: function () {
-
-  },
-  as_thumb: function () {
-
-  }
+	initialize: function(id){
+    this.id = id;
+	}
 });
 
 var Node = Model.extend({ });
@@ -62,6 +57,3 @@ var Tag = Model.extend({ });
 var Flag = Model.extend({ });
 var User = Model.extend({ });
 var Post = Model.extend({ });
-
-
-

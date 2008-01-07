@@ -568,16 +568,7 @@ div.dropcontents {
 	min-height: 200px;
 }
 
-div.catcher {
-  padding: 3px;
-}
 
-.drophere {
-	background-color: #daf2ff;
-/*  background-image: url(/images/furniture/icons/rounded.png);
-  background-repeat: no-repeat;
-  background-position: top left;
-*/}
 
 #scratchpad {
   position: absolute;
@@ -774,9 +765,6 @@ ul.squashed li {
   display: inline;
 }
 
-
-
-
 li div.expansion {
   display: none;
   font-size: 12px;
@@ -875,9 +863,21 @@ div.draggingfoot {
   clear:both;
 }
 
-div.commentatorbody img {
-  float: left;
-  margin: 0 8px 0 0;
+
+
+
+
+div.drophere {
+	background-color: #daf2ff;
+}
+
+li.drophere {
+  color: white;
+  border-bottom: 1px dotted #CC6E1F;
+}
+
+#scratchpad .drophere {
+	background-color: #CC6E1F;
 }
 
 

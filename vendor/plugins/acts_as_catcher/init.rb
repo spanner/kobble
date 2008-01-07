@@ -1,2 +1,3 @@
-require 'acts_as_catchable'
-ActiveRecord::Base.send(:include, ActiveRecord::Acts::Catchable)
+$:.unshift "#{File.dirname(__FILE__)}/lib"
+require 'active_record/acts/catcher'
+ActiveRecord::Base.class_eval { include ActiveRecord::Acts::Catcher }
