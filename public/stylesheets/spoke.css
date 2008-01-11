@@ -491,10 +491,20 @@ div#rightcolumn {
 	bottom: 0;
 	height: 65px;
   background-color: #559DC4;
-	background-image: url(/images/furniture/layout/sandpool.jpg);
+	background-image: url(/images/furniture/layout/shadow.png);
 	background-repeat: repeat-x;
 	background-position: center top;
 } 
+
+#mastfoot.showerror {
+  background-image: none;
+  background-color: red;
+}
+
+#mastfoot.shownotice {
+  background-image: none;
+  background-color: #CC6E1F;
+}
 
 #logo {
   float: left;
@@ -712,7 +722,7 @@ div.mainlist li {
   clear: left;
 }
 
-li a.listed {
+div.mainlist li a.listed {
   padding: 10px 6px 6px 30px;
   font-size: 16px;
   line-height: 20px;
@@ -726,35 +736,101 @@ div.mainlist li a img {
   float: left;
 }
 
-li.collection a.listed { background-image: url(/images/furniture/spoke/grey/collection.png); }
-li.node a.listed { background-image: url(/images/furniture/spoke/blue/node.png); }
-li.source a.listed { background-image: url(/images/furniture/spoke/blue/source.png); }
-li.bundle a.listed { background-image: url(/images/furniture/spoke/blue/bundle.png); }
-li.user a.listed { background-image: url(/images/furniture/spoke/blue/user.png); }
-li.usergroup a.listed { background-image: url(/images/furniture/spoke/blue/usergroup.png); }
-li.tag a.listed { background-image: url(/images/furniture/spoke/blue/tag.png); }
-li.flag a.listed { background-image: url(/images/furniture/spoke/blue/flag.png); }
-li.forum a.listed { background-image: url(/images/furniture/spoke/blue/forum.png); }
-li.topic a.listed { background-image: url(/images/furniture/spoke/blue/post.png); }
-li.post a.listed { background-image: url(/images/furniture/spoke/blue/post.png); }
-li.blogentry a.listed { background-image: url(/images/furniture/spoke/blue/blogentry.png); }
-li.question a.listed { background-image: url(/images/furniture/spoke/blue/question.png); }
-li.answer a.listed { background-image: url(/images/furniture/spoke/blue/answer.png); }
+div.mainlist li.collection a.listed { background-image: url(/images/furniture/spoke/grey/collection.png); }
+div.mainlist li.node a.listed { background-image: url(/images/furniture/spoke/blue/node.png); }
+div.mainlist li.source a.listed { background-image: url(/images/furniture/spoke/blue/source.png); }
+div.mainlist li.bundle a.listed { background-image: url(/images/furniture/spoke/blue/bundle.png); }
+div.mainlist li.user a.listed { background-image: url(/images/furniture/spoke/blue/user.png); }
+div.mainlist li.usergroup a.listed { background-image: url(/images/furniture/spoke/blue/usergroup.png); }
+div.mainlist li.tag a.listed { background-image: url(/images/furniture/spoke/blue/tag.png); }
+div.mainlist li.flag a.listed { background-image: url(/images/furniture/spoke/blue/flag.png); }
+div.mainlist li.forum a.listed { background-image: url(/images/furniture/spoke/blue/forum.png); }
+div.mainlist li.topic a.listed { background-image: url(/images/furniture/spoke/blue/post.png); }
+div.mainlist li.post a.listed { background-image: url(/images/furniture/spoke/blue/post.png); }
+div.mainlist li.blogentry a.listed { background-image: url(/images/furniture/spoke/blue/blogentry.png); }
+div.mainlist li.question a.listed { background-image: url(/images/furniture/spoke/blue/question.png); }
+div.mainlist li.answer a.listed { background-image: url(/images/furniture/spoke/blue/answer.png); }
+div.mainlist li.waiting a.listed { background-image: url(/images/furniture/signals/wait_16_grey.gif); }
 
-li.collection a.listed:hover { background-image: url(/images/furniture/spoke/grey/collection.png); }
-li.node a.listed:hover { background-image: url(/images/furniture/spoke/orange/node.png); }
-li.source a.listed:hover { background-image: url(/images/furniture/spoke/orange/source.png); }
-li.bundle a.listed:hover { background-image: url(/images/furniture/spoke/orange/bundle.png); }
-li.user a.listed:hover { background-image: url(/images/furniture/spoke/orange/user.png); }
-li.usergroup a.listed:hover { background-image: url(/images/furniture/spoke/orange/usergroup.png); }
-li.tag a.listed:hover { background-image: url(/images/furniture/spoke/orange/tag.png); }
-li.flag a.listed:hover { background-image: url(/images/furniture/spoke/orange/flag.png); }
-li.forum a.listed:hover { background-image: url(/images/furniture/spoke/orange/forum.png); }
-li.topic a.listed:hover { background-image: url(/images/furniture/spoke/orange/post.png); }
-li.post a.listed:hover { background-image: url(/images/furniture/spoke/orange/post.png); }
-li.blogentry a.listed:hover { background-image: url(/images/furniture/spoke/orange/blogentry.png); }
-li.question a.listed:hover { background-image: url(/images/furniture/spoke/orange/question.png); }
-li.answer a.listed:hover { background-image: url(/images/furniture/spoke/orange/answer.png); }
+div.mainlist li.collection a.listed:hover { background-image: url(/images/furniture/spoke/grey/collection.png); }
+div.mainlist li.node a.listed:hover { background-image: url(/images/furniture/spoke/orange/node.png); }
+div.mainlist li.source a.listed:hover { background-image: url(/images/furniture/spoke/orange/source.png); }
+div.mainlist li.bundle a.listed:hover { background-image: url(/images/furniture/spoke/orange/bundle.png); }
+div.mainlist li.user a.listed:hover { background-image: url(/images/furniture/spoke/orange/user.png); }
+div.mainlist li.usergroup a.listed:hover { background-image: url(/images/furniture/spoke/orange/usergroup.png); }
+div.mainlist li.tag a.listed:hover { background-image: url(/images/furniture/spoke/orange/tag.png); }
+div.mainlist li.flag a.listed:hover { background-image: url(/images/furniture/spoke/orange/flag.png); }
+div.mainlist li.forum a.listed:hover { background-image: url(/images/furniture/spoke/orange/forum.png); }
+div.mainlist li.topic a.listed:hover { background-image: url(/images/furniture/spoke/orange/post.png); }
+div.mainlist li.post a.listed:hover { background-image: url(/images/furniture/spoke/orange/post.png); }
+div.mainlist li.blogentry a.listed:hover { background-image: url(/images/furniture/spoke/orange/blogentry.png); }
+div.mainlist li.question a.listed:hover { background-image: url(/images/furniture/spoke/orange/question.png); }
+div.mainlist li.answer a.listed:hover { background-image: url(/images/furniture/spoke/orange/answer.png); }
+div.mainlist li.waiting a.listed { background-image: url(/images/furniture/signals/wait_16_grey.gif); }
+
+ div.scratchpage li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  clear: left;
+}
+
+div.scratchpage li a.listed {
+  color: #B2AAA4;
+  padding: 10px 6px 6px 30px;
+  font-size: 16px;
+  line-height: 20px;
+  background-image: url(/images/furniture/spoke/mid/node.png);
+  background-position: 4px 8px;
+  background-repeat: no-repeat;
+}
+
+div.scratchpage li a.listed:hover {
+  color: #fff;
+}
+
+div.mainlist li a img {
+  margin: 0 8px 0 0;
+  float: left;
+}
+
+div.scratchpage li.collection a.listed { background-image: url(/images/furniture/spoke/mid/collection.png); }
+div.scratchpage li.node a.listed { background-image: url(/images/furniture/spoke/mid/node.png); }
+div.scratchpage li.source a.listed { background-image: url(/images/furniture/spoke/mid/source.png); }
+div.scratchpage li.bundle a.listed { background-image: url(/images/furniture/spoke/mid/bundle.png); }
+div.scratchpage li.user a.listed { background-image: url(/images/furniture/spoke/mid/user.png); }
+div.scratchpage li.usergroup a.listed { background-image: url(/images/furniture/spoke/mid/usergroup.png); }
+div.scratchpage li.tag a.listed { background-image: url(/images/furniture/spoke/mid/tag.png); }
+div.scratchpage li.flag a.listed { background-image: url(/images/furniture/spoke/mid/flag.png); }
+div.scratchpage li.forum a.listed { background-image: url(/images/furniture/spoke/mid/forum.png); }
+div.scratchpage li.topic a.listed { background-image: url(/images/furniture/spoke/mid/post.png); }
+div.scratchpage li.post a.listed { background-image: url(/images/furniture/spoke/mid/post.png); }
+div.scratchpage li.blogentry a.listed { background-image: url(/images/furniture/spoke/mid/blogentry.png); }
+div.scratchpage li.question a.listed { background-image: url(/images/furniture/spoke/mid/question.png); }
+div.scratchpage li.answer a.listed { background-image: url(/images/furniture/spoke/mid/answer.png); }
+div.scratchpage li.waiting a.listed { background-image: url(/images/furniture/signals/wait_16_white.gif); }
+
+div.scratchpage li.collection a.listed:hover { background-image: url(/images/furniture/spoke/grey/collection.png); }
+div.scratchpage li.node a.listed:hover { background-image: url(/images/furniture/spoke/white/node.png); }
+div.scratchpage li.source a.listed:hover { background-image: url(/images/furniture/spoke/white/source.png); }
+div.scratchpage li.bundle a.listed:hover { background-image: url(/images/furniture/spoke/white/bundle.png); }
+div.scratchpage li.user a.listed:hover { background-image: url(/images/furniture/spoke/white/user.png); }
+div.scratchpage li.usergroup a.listed:hover { background-image: url(/images/furniture/spoke/white/usergroup.png); }
+div.scratchpage li.tag a.listed:hover { background-image: url(/images/furniture/spoke/white/tag.png); }
+div.scratchpage li.flag a.listed:hover { background-image: url(/images/furniture/spoke/white/flag.png); }
+div.scratchpage li.forum a.listed:hover { background-image: url(/images/furniture/spoke/white/forum.png); }
+div.scratchpage li.topic a.listed:hover { background-image: url(/images/furniture/spoke/white/post.png); }
+div.scratchpage li.post a.listed:hover { background-image: url(/images/furniture/spoke/white/post.png); }
+div.scratchpage li.blogentry a.listed:hover { background-image: url(/images/furniture/spoke/white/blogentry.png); }
+div.scratchpage li.question a.listed:hover { background-image: url(/images/furniture/spoke/white/question.png); }
+div.scratchpage li.answer a.listed:hover { background-image: url(/images/furniture/spoke/white/answer.png); }
+div.scratchpage li.waiting a.listed:hover { background-image: url(/images/furniture/signals/wait_16_white.gif); }
+
+
+
+
+
+
 
 li span.when { 
   color: #B2AAA4;
@@ -861,23 +937,6 @@ div.draggingfoot {
   margin: 0;
   overflow: hidden;
   clear:both;
-}
-
-
-
-
-
-div.drophere {
-	background-color: #daf2ff;
-}
-
-li.drophere {
-  color: white;
-  border-bottom: 1px dotted #CC6E1F;
-}
-
-#scratchpad .drophere {
-	background-color: #CC6E1F;
 }
 
 
@@ -1492,13 +1551,18 @@ ul.cloud {
   list-style: none; 
   margin: 0;
   padding: 0;
-  line-height: 20px;
+  line-height: 26px;
 }
-ul.cloud li {display: inline; margin: 0; padding: 0;}
+ul.cloud li {
+  display: inline; 
+  margin: 0; 
+  padding: 0;
+}
 ul.cloud a {
   font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
   letter-spacing: -0.04em;
   white-space: nowrap;
+  line-height: 26px;
 }
 ul.cloud a:hover {
   color: #CC6E1F;
@@ -1664,3 +1728,22 @@ span.countlabel {
   font-size: 9px;
   color: #695D54;
 }
+
+
+div.drophere {
+	background-color: #daf2ff;
+}
+
+li.drophere {
+  color: white;
+  background-color: #CC6E1F;
+}
+
+#scratchpad .drophere {
+	background-color: #CC6E1F;
+}
+
+
+
+
+

@@ -18,7 +18,6 @@ var Tab = new Class({
     this.tabset.addTab(this);
 	},
 	select: function (e) {
-	  console.log('select!')
 	  e = new Event(e).stop();
 	  e.preventDefault();
 	  this.tabhead.blur();
@@ -55,7 +54,6 @@ var TabSet = new Class({
     }
 	},
 	select: function (tag) {
-	  console.log('tabset.select!')
 	  if (tag == this.foreground.tag) {
   	  this.reselect();
 	  } else {

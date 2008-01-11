@@ -23,11 +23,7 @@ class Tag < ActiveRecord::Base
     self.description = subsumed.description if self.description.nil? or self.description.size == 0
     self.image = subsumed.image if self.image.nil? or self.image.size == 0
     subsumed.destroy
-    {
-      :success => 'true',
-      :message => "#{subsumed.name} folded into #{self.name}",
-      :action => 'delete'
-    }
+    "#{subsumed.name} merged into #{self.name}|move"
   end
   
   def parentage

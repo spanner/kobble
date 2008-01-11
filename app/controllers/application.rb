@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   include ExceptionNotifiable
 
   helper_method :current_user, :current_collection, :logged_in?, :activated?, :admin?, :editor?, :last_active
-  before_filter :editor_required  
+  before_filter :editor_required
   before_filter :set_context
   layout :choose_layout
   exception_data :exception_report_data
@@ -63,8 +63,18 @@ class ApplicationController < ActionController::Base
   def catch
     @catcher = request.parameters[:controller].to_s._as_class.find( params[:id] )
     @caught = params[:caughtClass].to_s._as_class.find( params[:caughtID] )
-    @outcome = @catcher.catch(@caught) if @catcher and @caught
-    
+    @message = @catcher.catch(@caught) if @catcher and @caught                      # .catch method is inserted by acts_as_catcher and dispatches to specified instance method
+    @outcome = 'success';
+    @consequence ||= 'insert';
+    respond_to do |format|
+      format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @catcher }
+      format.js { render :template => 'shared/caught', :layout => false }
+      format.xml { head 200 }
+    end
+  rescue => e
+    @outcome = 'failure';
+    @message = e.message
+    flash[:error] = e.message
     respond_to do |format|
       format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @catcher }
       format.js { render :template => 'shared/caught', :layout => false }
@@ -79,10 +89,21 @@ class ApplicationController < ActionController::Base
   def drop
     @dropper = request.parameters[:controller].to_s._as_class.find( params[:id] )
     @dropped = params[:droppedClass]._as_class.find(params[:droppedID])
-    @dropper.drop(@dropped) if @dropper and @dropped
+    @message = @dropper.drop(@dropped) if @dropper and @dropped
+    @outcome = 'success';
+    @consequence ||= 'delete';
     respond_to do |format|
       format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @dropper }
-      format.js { render :action => 'dropped', :layout => false }
+      format.js { render :template => 'shared/dropped', :layout => false }
+      format.xml { head 200 }
+    end
+  rescue => e
+    @outcome = 'failure';
+    @message = e.message
+    flash[:error] = e.message
+    respond_to do |format|
+      format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @catcher }
+      format.js { render :template => 'shared/caught', :layout => false }
       format.xml { head 200 }
     end
   end

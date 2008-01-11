@@ -22,33 +22,40 @@ function idParts (el) {
 }
 
 function announce (message) {
-  $E('#notification').setText(message);
-  var notifyfx = new Fx.Styles($E('#mastfoot'), {duration:1000, wait:false});
-  notifyfx.start({
-		'background-color': ['#CC6E1F','#559DC4']
-	}).chain(clearnotification);
+  console.log("message: " + message)
+  if (message) $E('#notification').setText(message);
+  flashfooter('#695D54');
 }
 
 function error (message) {
-  $E('#notification').setText(message);
-  var notifyfx = new Fx.Styles($E('#mastfoot'), {duration:2000, wait:false});
+  console.log("message: " + message)
+  if (message) $E('#notification').setText(message);
+  flashfooter('#ff0000');
+}
+
+function flashfooter (colour) {
+  var footer = $E('#mastfoot');
+  var backto = footer.getStyle('background-color');
+  var notifyfx = new Fx.Styles(footer, {duration:2000, wait:false});
+  console.log('flashing footer from ' + colour + ' to ' + backto);
   notifyfx.start({
-		'background-color': ['#ff0000','#559DC4']
-	}).chain(clearnotification());
+		'background-color': [colour,backto]
+	});
 }
 
 function clearnotification (delay) {
   $E('#notification').setText('');
 }
 
-function flash (element, bgbackto) {
-  var flashfx = new Fx.Styles(element, {duration:1000, wait:false});
-  if (!bgbackto) bgbackto = element.getStyle('background-color');
-  if (bgbackto == 'transparent') bgbackto = '#ffffff';
+function flash (element) {
+  var bgbackto = element.getStyle('background-color');
   var fgbackto = element.getStyle('color');
+  var flashfx = new Fx.Styles(element, {duration:300, wait:false});
   flashfx.start({
-		'background-color': ['#CC6E1F',bgbackto],
-		'color': ['#CC6E1F',fgbackto]
+		'background-color': ['#CC6E1F', '#ffffff'],
+		'color': ['#ffffff',fgbackto]
+  }).chain(function () {
+    element.setStyle('background-color', bgbackto)
   });
 }
 
@@ -65,13 +72,13 @@ window.addEvent('domready', function(){
   });
 
   $ES('.catcher').each(function (element) {
-   droppers.push(new Dropzone(element));
+    droppers.push(new Dropzone(element));
   });
 
   $ES('.draggable').each(function(item) {
-   item.addEvent('mousedown', function(e) {
+    item.addEvent('mousedown', function(e) {
        new Draggee(this, new Event(e));
-   });
+    });
   });
 
 	$ES('input.tagbox').each(function (element, i) {

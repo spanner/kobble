@@ -1,3 +1,3 @@
-<li id="pad_<%= pad.id %>_<%= scrap.class.to_s.downcase %>_<%= scrap.id %>" class="draggable">
-  <%= link_to( "<img src=\"/images/furniture/spoke/white/#{scrap.class.to_s.downcase}.png\" width=\"16\" height=\"16\" alt=\"#{scrap.class.to_s.downcase}: \" /> #{scrap.name}", {:controller => scrap.class.to_s.downcase.pluralize, :action => 'show', :id => scrap}) %>
+<li id="pad_<%= pad.id %>_<%= scrap.class.to_s.downcase %>_<%= scrap.id %>" class="<%= scrap.class.to_s.downcase %> draggable">
+  <%= link_to( scrap.name, {:controller => scrap.class.to_s.downcase.pluralize, :action => 'show', :id => scrap}, {:class => 'listed'}) %>
 </li>

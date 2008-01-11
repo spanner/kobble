@@ -1,3 +1,6 @@
+class CatchError < ActionController::MethodNotAllowed 
+end
+
 module ActiveRecord
   module Acts #:nodoc:
     module Catcher #:nodoc:
@@ -27,6 +30,7 @@ module ActiveRecord
 
           def self.initialize_catchers
             return self.catch_dispatch if self.catch_dispatch && self.catch_dispatch.size
+            return {} unless self.catch_list
             self.catch_list.each do |assoc|
               if assoc.class == Hash
                 assoc.each_pair { |kl, meth| self.set_catch_dispatch(kl.to_s.classify, meth) }
@@ -54,16 +58,17 @@ module ActiveRecord
               case reflection.macro
               when :has_many
                 self.send(association) << thrown
+                @message = "#{thrown.name} added to #{self.name}|insert"
               when :belongs_to, :has_one
                 self.send("#{association}=", thrown)
+                @message = "#{self.name} has #{association} #{thrown.name}"
               end
             elsif self.respond_to?(association)
-              self.send(association, thrown)
+              @message = self.send(association, thrown)
+              @message ||= "#{thrown.name} caught by #{self.name}"
+            else
+              raise CatchError "no such catch relation: #{self.class}->#{dropped.class}"
             end
-          end
-
-          def throw(catcher)
-            catcher.catch(self)
           end
       
           def drop(dropped)
@@ -72,14 +77,22 @@ module ActiveRecord
             if (reflection)
               case reflection.macro
               when :has_many
-                collection = self.send(association).send('delete', dropped)
+                self.send(association).send('delete', dropped)
               end
+              @message = "#{dropped.name} removed from #{self.name}"
+            else
+              raise CatchError "no such drop relation: #{self.class}->#{dropped.class}"
             end
+            
           end
           
           def self.can_catch
             cd = self.initialize_catchers
-            cd.keys
+            cd.keys if cd
+          end
+
+          def can_catch
+            self.class.can_catch
           end
       
           def self.acts_as_catcher(*associations)

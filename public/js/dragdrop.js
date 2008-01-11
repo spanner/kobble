@@ -10,6 +10,14 @@ var Dropzone = new Class({
 		this.receiptAction = 'catch';
 		this.removeAction = 'drop';
   },
+  zoneType: function () {
+    switch (this.container.tagName ) {
+      case 'UL':
+        return 'list';
+      default:
+        return 'single';
+    }
+  },
   spokeID: function () { return idParts(this.container)['id']; },
   spokeType: function () { return idParts(this.container)['type']; },
 	recipient: function () { return this.container; },
@@ -57,27 +65,29 @@ var Dropzone = new Class({
 			    dropzone.waiting(); 
 			  },
         onSuccess: function(response){
-          dropzone.notWaiting();
-          eval(response)
-          if (outcome.successful) {
+          
+          // fix this
+          
+          status, message, consequence = response.split('|');
+          console.log('status = ' + status + ', message = ' + message + ', consequence = ' + consequence);
+          if (status == 'success') {
+            dropzone.notWaiting();
             dropzone.showSuccess();
-            announce(outcome.message);
-            if (outcome.action == 'insert') {
-              dropzone.accept(draggee);
-            } else if (outcome.action == 'delete') {
-              draggee.explode();
-            }
+            if (consequence == 'move' || consequence == 'insert') dropzone.accept(draggee);
+            if (consequence == 'move' || consequence == 'delete') draggee.disappear();
+            announce(message);
           } else {
     		    dropzone.showFailure();
-            error(outcome.message);
+            error(message);
           }
         },
 			  onFailure: function (response) { 
 			    dropzone.notWaiting(); 
-			    error('ajax call failed');
 			    dropzone.showFailure();
+			    error('remote call failed');
 			  }
 			}).request();
+			console.log('drop received');
 		}
   },
 	removeDrop: function (draggee) {
@@ -85,9 +95,23 @@ var Dropzone = new Class({
 		dropzone = this;
 		new Ajax(dropzone.removeURL(draggee), {
 			method : 'post',
-		  onRequest: function () { draggee.waiting(); },
-		  onSuccess: function (response) { announce(response.text); draggee.disappear(); dropzone.showSuccess(); },
-		  onFailure: function (response) { draggee.notWaiting(); }
+		  onRequest: function () { 
+		    draggee.waiting(); 
+		  },
+		  onSuccess: function (response) { 
+        [status, message] = response.split('|');
+        if (status == 'success') {
+		      announce(message); 
+          draggee.disappear(); 
+		    } else {
+			    dropzone.showFailure();
+          error(message);
+		    }
+		  },
+		  onFailure: function (response) {
+		    dropzone.showFailure();
+		    error('remote call failed');
+		  }
 		}).request();
 	},
 	addURL: function (draggee) { 
@@ -96,13 +120,21 @@ var Dropzone = new Class({
 	removeURL: function (draggee) { 
 		return '/' + this.spokeType() + 's/' + this.removeAction + '/' + this.spokeID() + '/' + draggee.spokeType() + '/' + draggee.spokeID(); 
 	},
-	waiting: function () { 
-    this.waiter = $E('div.waiting', this.container);
-	  if (this.waiter) this.waiter.show();
+	waiting: function () {
+	  if (this.zoneType() == 'list') {
+      this.waiter = $E('li.waiting', this.container);
+  	  if (this.waiter) this.waiter.show();
+	  } else {
+	    this.container.addClass('waiting');
+	  }
 	},
 	notWaiting: function () { 
-    this.waiter = $E('div.waiting', this.container);
-    if (this.waiter) this.waiter.hide();
+	  if (this.zoneType() == 'list') {
+      this.waiter = $E('li.waiting', this.container);
+      if (this.waiter) this.waiter.hide();
+	  } else {
+	    this.container.removeClass('waiting');
+	  }
 	},
 	showSuccess: function () {
 	  flash(this.flasher());
@@ -111,9 +143,20 @@ var Dropzone = new Class({
 
 	},
 	accept: function (draggee) {
-    //???
+    if (this.zoneType() == 'list') draggee.clone().injectTop(this.container);
 	}
 });
+
+
+var TrashDropZone = Dropzone.extend({
+	initialize: function () { 
+    this.parent();
+    this.receiptAction = 'trash';
+	},
+})
+
+
+
 
 // now we always drag whole <li> elements. no more thumbnails.
 
@@ -125,6 +168,7 @@ var Draggee = new Class({
 		var ip = idParts(element);
 		this.tag = ip['type'] + '_' + ip['id'];   //omitting other id parts that only serve to avoid duplicate element ids
 		this.link = $E('a', element);
+		this.name = this.link.getText();
 		this.draggedfrom = lookForDropper(element.getParent());
 		this.helper = new DragHelper(this);
 		this.helper.start(event);
@@ -137,7 +181,8 @@ var Draggee = new Class({
 	notWaiting: function () { this.original.removeClass('waiting'); },
 	remove: function () { this.original.remove(); },
 	explode: function () { this.remove(); },
-	disappear: function () { dwindle(this.original); }
+	disappear: function () { console.log('disappearing' + this.name); dwindle(this.original); },
+	clone: function () { return this.original.clone();	}
 });
 
 // the dragged representation is a new DragHelper object with useful abilities
