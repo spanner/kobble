@@ -2,6 +2,7 @@ class Node < ActiveRecord::Base
 
   acts_as_spoke
 
+  belongs_to :speaker, :class_name => 'User', :foreign_key => 'speaker_id'
   belongs_to :question
   belongs_to :source
   belongs_to :collection

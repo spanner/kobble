@@ -88,11 +88,12 @@ module ActiveRecord
           
           def self.can_catch
             cd = self.initialize_catchers
-            cd.keys if cd
+            cd.keys
           end
 
           def can_catch
-            self.class.can_catch
+            cd = self.class.can_catch
+            cd.map {|classname| classname.downcase} if cd
           end
       
           def self.acts_as_catcher(*associations)

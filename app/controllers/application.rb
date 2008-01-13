@@ -44,13 +44,13 @@ class ApplicationController < ActionController::Base
     return current_collection.abbreviation.to_s if current_collection
     return 'login'
   end
-    
+
   def local_request?
     admin?
   end
     
   def list
-    perpage = params[:perpage] || 50
+    perpage = params[:perpage] || self.list_length
     sort_options = request.parameters[:controller].to_s._as_class.sort_options
     sort = sort_options[params[:sort]] || sort_options[request.parameters[:controller].to_s._as_class.default_sort]
     @list = request.parameters[:controller].to_s._as_class.find(:all, :conditions => limit_to_active_collection, :order => sort, :page => {:size => perpage, :current => params[:page]})
@@ -58,6 +58,18 @@ class ApplicationController < ActionController::Base
       format.html { render :template => 'shared/mainlist' }
       format.js { render :template => 'shared/mainlist', :layout => false }
     end
+  end
+  
+  def views
+    ['gallery']
+  end
+  
+  def list_columns
+    2
+  end
+
+  def list_length
+    40
   end
 
   def catch

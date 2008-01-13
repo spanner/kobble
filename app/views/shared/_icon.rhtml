@@ -1,5 +1,4 @@
 <% 
-	@this = this
 	linked = this unless linked
 	default = 'generic' unless default
 	draggedid = "icon_#{linked.class.to_s.downcase}_#{linked.id}" unless draggedid 
@@ -7,18 +6,4 @@
 	with_caption = false unless with_caption
 %>
 
-<div class="icon draggable catcher" id="<%= draggedid %>">
-  <div class="dragicon">
-		<%= 
-			imagetag = image_tag(@this.respond_to?('image') && !@this.image.nil? ? url_for_file_column("this", "image", "thumb") : "/images/furniture/icons/#{default}.png", :class => 'icon', :size => "56x56", :alt => '')
-			link_to(imagetag, :controller => linked.class.to_s.downcase.pluralize, :action => 'show', :id => linked)
-		%>
-
-  </div>
-
-  <div class="label<% unless with_caption %> hide<% end %>">
-    <span class='name'><%= caption %></span>
-  </div>
-</div>
-<% @this = nil %>
-
+<%= image_tag "/images/furniture/spoke/grey/#{this.class.to_s.downcase}.png", {:width => 16, :height => 16} %>

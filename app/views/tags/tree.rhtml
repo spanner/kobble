@@ -1,10 +1,6 @@
-<h1>
+<h1 class="pagetitle">
 	 tags
-	 <span class="pagination">
-	   <%= link_to_unless_current "cloud", :action => 'cloud' %> |
-	   <%= link_to_unless_current "list", :action => 'list' %> |
-	   <%= link_to_unless_current "tree", :action => 'tree' %>
-   </span>
+   <%= render :partial => 'shared/viewcontrol' %>
 </h1>
 
 <div class="tree">

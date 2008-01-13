@@ -7,6 +7,8 @@ var waiticon = '/images/furniture/signals/wait_32.gif';
 var fixedbottom = [];
 var commentator = null;
 var dragging = false;
+var cloud_divisor = null;
+var cloud_bands = null;
 
 // element ids in spoke have a standard format: tag_type_id, where tag is an arbitrary identifier used to identify eg tab family, and type and id denote an object
 // there must be a way to do this with a split
@@ -67,17 +69,15 @@ function moveFixed (e) {
 
 window.addEvent('domready', function(){
 	
-  $ES('.dropzone').each(function (element) {
-    droppers.push(new Dropzone(element));
-  });
-
   $ES('.catcher').each(function (element) {
     droppers.push(new Dropzone(element));
   });
 
   $ES('.draggable').each(function(item) {
     item.addEvent('mousedown', function(e) {
-       new Draggee(this, new Event(e));
+      e = new Event(e).stop();
+      e.preventDefault();
+      new Draggee(this, e);
     });
   });
 
@@ -150,6 +150,13 @@ window.addEvent('domready', function(){
   $ES('.expandable').each( function (element) {
     element.addEvent('mouseenter', function (event) { if (!dragging) commentator.explain(element, event); })
     element.addEvent('mouseleave', function (e) { commentator.hide(); })
+  });
+  
+  $ES('input.cloudcontrol').each( function (element) {
+    element.addEvent('click', function (e) {
+      band = idParts(element)['id'];
+      element.checked ? $ES('a.cloud' + band).setStyle('display', 'inline') : $ES('a.cloud' + band).hide();
+    })
   });
   
 	window.addEvent('scroll', moveFixed);

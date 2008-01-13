@@ -85,12 +85,12 @@ h2, h3, p.bigp {
 }
 
 h1.pagetitle {
+  color: #695D54;
   font-size: 36px;
   margin: 6px 0 10px 0;
 }
 
 h1 a {
-  color: #B2AAA4;
   text-decoration: none;
 }
 
@@ -160,10 +160,17 @@ blockquote {
   margin: 10px;
 }
 
-p.pagination {
+p.listsummary {
   font-size: 0.8em;
   line-height: 1.1;
   color: #695D54;
+}
+
+p.pagecontrol {
+  clear: left;
+  font-size: 1.3em;
+  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
+  letter-spacing: -0.04em;
 }
 
 /* layout and special formatting */
@@ -291,21 +298,21 @@ ul.starry {
   color: #695D54;
 }
 
-ul.starry li.waiting {
+li.waiting {
   list-style-image: url(/images/furniture/signals/wait_16_grey.gif);
   color: #695D54;
 }
 
-ul.starry li.add { list-style-image: url(/images/furniture/buttons/plus.png); }
-ul.starry li.add a { color: #6cb262; }
-ul.starry li.delete { list-style-image: url(/images/furniture/buttons/cross.png);}
-ul.starry li.delete a { color: #ef4447; }
-ul.starry li.edit { list-style-image: url(/images/furniture/buttons/circle.png); }
-ul.starry li.edit a { color: #559DC4; }
-ul.starry li.ticked { list-style-image: url(/images/furniture/buttons/tick.png); }
-ul.starry li.ticked a { color: #6cb262; }
-ul.starry li.crossed { list-style-image: url(/images/furniture/buttons/cross.png); }
-ul.starry li.crossed a { color: #ef4447; }
+li.add { list-style-image: url(/images/furniture/buttons/plus.png); }
+li.add a { color: #6cb262; }
+li.delete { list-style-image: url(/images/furniture/buttons/cross.png);}
+li.delete a { color: #ef4447; }
+li.edit { list-style-image: url(/images/furniture/buttons/circle.png); }
+li.edit a { color: #559DC4; }
+li.ticked { list-style-image: url(/images/furniture/buttons/tick.png); }
+li.ticked a { color: #6cb262; }
+li.crossed { list-style-image: url(/images/furniture/buttons/cross.png); }
+li.crossed a { color: #ef4447; }
 
 input.editinplace, textarea.editinplace, select.editinplace {
   background-color: #559DC4;
@@ -356,7 +363,7 @@ div.inactive, div.inactive a {
   margin: 40px 0;
 }
 
-.pagination {
+span.viewcontrol {
   font-size: 16px;
   color:#B2AAA4;
 }
@@ -700,13 +707,18 @@ div.scratchpage li.waiting a, div.scratchpage li.action a, div.scratchpage li.do
 }
 
 div.scratchpage li a:hover {
-  background-color: #CC6E1F;
   color: white;
 }
 
 
 div.mainlist {
-  width: 640px;
+}
+
+ul.listcolumn {
+  display: block;
+  float: left;
+  width: 220px;
+  margin-right: 20px;
 }
 
 div.mainlist ul {
@@ -1551,7 +1563,7 @@ ul.cloud {
   list-style: none; 
   margin: 0;
   padding: 0;
-  line-height: 26px;
+  line-height: 20px;
 }
 ul.cloud li {
   display: inline; 
@@ -1562,18 +1574,30 @@ ul.cloud a {
   font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
   letter-spacing: -0.04em;
   white-space: nowrap;
-  line-height: 26px;
+  line-height: 20px;
 }
 ul.cloud a:hover {
   color: #CC6E1F;
 }
 
-a.cloud1 {font-size: 0.9em; color: #cfe4ee; font-family: HelveticaNeue-Roman, helvetica, arial, sans-serif;}
-a.cloud2 {font-size: 1.2em; color: #b1d2e3; font-family: HelveticaNeue-Roman, helvetica, arial, sans-serif;}
-a.cloud3 {font-size: 1.5em; color: #a0c8de;}
-a.cloud4 {font-size: 1.8em; color: #85b8d5;}
-a.cloud5 {font-size: 2.1em; color: #71adce;}
-a.cloud6 {font-size: 2.4em;}
+a.cloud0, label.cloud0 {font-size: 0.9em; color: #cfe4ee; font-family: HelveticaNeue-Roman, helvetica, arial, sans-serif;}
+a.cloud1, label.cloud1 {font-size: 1.2em; color: #b1d2e3; font-family: HelveticaNeue-Roman, helvetica, arial, sans-serif;}
+a.cloud2, label.cloud2 {font-size: 1.5em; color: #a0c8de;}
+a.cloud3, label.cloud3 {font-size: 1.8em; color: #85b8d5;}
+a.cloud4, label.cloud4 {font-size: 2.1em; color: #71adce;}
+a.cloud5, label.cloud5 {font-size: 2.4em; color: #559DC4;}
+
+div.cloudsummary {
+  float: right;
+  width: 120px;
+  margin: 20px;
+}
+
+div.cloudsummary label {
+  font-size: 10px;
+  line-height: 1.2;
+  color: #695D54;
+}
 
 /* signals */
 
@@ -1606,7 +1630,7 @@ table.chart {
 	background-image:url(/images/furniture/charts/bg_fade.png);
 	background-repeat:repeat-x;
 	background-position:left top;
-	width: 580px;
+	width: 500px;
 }
 
 table.chart td.value {
@@ -1730,7 +1754,7 @@ span.countlabel {
 }
 
 
-div.drophere {
+div.drophere, ul.drophere {
 	background-color: #daf2ff;
 }
 

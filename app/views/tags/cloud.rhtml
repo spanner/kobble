@@ -1,33 +1,64 @@
-<h1>
+<% 
+  cssbands = 6
+  max = @list.map{|t| t.use_count.to_i }.max
+  min = @list.map{|t| t.use_count.to_i }.min
+  divisor = ((max - min) / cssbands) + 1
+  bandlabels = (0...cssbands).map { |i| "#{((i) * divisor) + min} - #{((i+1) * divisor) + min - 1}"}
+  bandlabels.push "#{((cssbands * divisor) + min)}+"
+  bands = {}
+  cssclass = {}
+  incidence = (0...cssbands).map{0}
+  @list.each do |tag|
+    band = (tag.use_count.to_i - min) / divisor
+    bands[tag.object_id] = band
+    cssclass[tag.object_id] = "cloud#{band}"
+    incidence[band] += 1
+  end
+%>
+
+<script type="text/javascript">
+  cloud_min = <%= min %>;
+  cloud_max = <%= max %>;
+  cloud_divisor = <%= divisor %>;
+  cloud_bands = <%= cssbands %>;
+</script>
+
+<h1 class="pagetitle">
 	 tags
-	 <span class="pagination">
-	   <%= link_to_unless_current "cloud", :action => 'cloud' %> |
-	   <%= link_to_unless_current "list", :action => 'list' %> |
-	   <%= link_to_unless_current "tree", :action => 'tree' %>
-   </span>
+   <%= render :partial => 'shared/viewcontrol' %>
 </h1>
 
-<% if @removed && !@removed.empty? %>
-  <p>These tags have been simplified away:<br />
-    <% @removed.each do |was, now| %>
-      <strong><%= was %></strong> made part of <strong><%= link_to now.name, :action => 'show', :id => now %></strong><br />
-    <% end %>
-  </p>
-<% end %>
-
 <div class="cloud">
+	<ul class="cloud">
+
   <% if @list && @list.size > 0 %>
-  	<ul class="cloud">
-  	<% tag_cloud(@list.size, @list) do |tag, cssclass| %>
-  	  <% msg = tag.use_count.to_i == 1 ? "used once" : "used #{tag.use_count} times" %>
-  	  <li class="draggable catcher" id="tag_<%= tag.id %>"><%= link_to tag.name, {:controller => 'tags', :action => 'show', :id => tag.id}, :class => cssclass, :title => msg %> <span class="hide">|</span> </li>
+
+    <%
+      @list.each do |tag| 
+    %>
+
+      <li 
+        id="tag_<%= tag.id %>" 
+        class="<%= tag.class.to_s.downcase %> draggable<%= ' catcher' if tag.can_catch %>"
+        catches="<%= tag.can_catch.join(',') %>"
+      >
+        <% name = tag.name.nil? || tag.name.size == 0 ? "nameless #{tag.class.nice_title}" : tag.name %>
+        <%= link_to( name, {:controller => tag.class.to_s.downcase.pluralize, :action => 'show', :id => tag}, {:class => "#{cssclass[tag.object_id]} listed", :title => tag.use_count}) %> 
+      </li>
+ 
   	<% end %>
   	</ul>
+
+    <form class="cloudsummary">
+    <h3>displaying</h3>
+    <% cssbands.times do |band| %>
+      <input type="checkbox" id="band_<%= band %>" name="band_<%= band %>" class="cloudcontrol" checked="checked">
+      <label for="band_<%= band %>" class="cloud<%= band %>"><%= bandlabels[band] %> uses: <%= pluralize(incidence[band], 'tag') %></label><br />
+    <% end %>
+    </form>
+
   <% else %>
   	<p>There are no tags to display in this collection</p>
   <% end %>
 </div>
 
-<% if admin? %>
-  <p style="margin-top: 44px;">You can <%= link_to 'consolidate tags automatically', {:action => 'consolidate'}, {:confirm => "Are you sure you want to consolidate the tag set? This will cause any tags with the same stem to be combined into one, and cannot be undone."} %> by stemming and combining (so 'personal' and 'person' become one tag. So do 'business' and 'businesses', which is good, and also 'busy', which might not be.).</p>
-<% end %>

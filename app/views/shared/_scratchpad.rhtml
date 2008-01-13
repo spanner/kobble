@@ -1,7 +1,10 @@
 <div id="scratchpad_<%= scratchpad.id %>" class="scratchpage">
-	<ul id="dropzone_scratchpad_<%= scratchpad.id %>" class="dropzone">
+	<ul 
+	  id="dropzone_scratchpad_<%= scratchpad.id %>" 
+	  class="catcher"
+	  catches="<%= scratchpad.can_catch.join(',') %>"
+	>
 		<%= render :partial => 'scratchpads/contents', :locals => {:pad => scratchpad} %>
-		<li class="waiting hide"><a href="#" class="listed">hold on</a></li>
 	</ul>
 	<ul>
 		<li class="action"><%= link_to "rename pad", {:controller => 'scratchpads', :action => 'edit', :id => scratchpad}, {:class => 'rename_pad', :id => "rename_scratchpad_#{scratchpad.id}"} %></li>

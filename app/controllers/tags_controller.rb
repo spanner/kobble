@@ -1,8 +1,15 @@
 class TagsController < ApplicationController
 
-  def index
-    cloud
-    render :action => 'cloud'
+  def views
+    ['cloud', 'tree', 'gallery']
+  end
+
+  def list_columns
+    3
+  end
+
+  def list_length
+    60
   end
 
   def tree

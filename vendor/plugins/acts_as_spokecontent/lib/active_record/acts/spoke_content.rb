@@ -110,9 +110,9 @@ module ActiveRecord
         def has_members?
           self.respond_to?('members') && self.members.count > 0
         end
-
+        
         def has_circumstances?
-          elf.respond_to?('circumstances') && !self.circumstances.nil? and self.circumstances.length != 0
+          self.respond_to?('circumstances') && !self.circumstances.nil? and self.circumstances.length != 0
         end
 
         def has_notes?
@@ -189,7 +189,20 @@ module ActiveRecord
           return extracted_text if has_extracted_text?
           "No text available"
         end
-
+        
+        def has_creator?
+          self.respond_to?('creator') && !self.creator.nil?
+        end
+        
+        def has_speaker?
+          self.respond_to?('speaker') && !self.speaker.nil?
+        end
+ 
+        def main_person
+          return speaker if has_speaker?
+          return creator
+        end
+        
       end #instancemethods
       
     end #spokecontent

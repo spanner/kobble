@@ -3,6 +3,14 @@ class UsersController < ApplicationController
   before_filter :editor_required, :except => [:edit, :update]
   before_filter :activation_required, :only => [:edit, :update, :show]
   
+  def list_columns
+    3
+  end
+
+  def list_length
+    60
+  end
+
   # this is user review and management for admins
   # logging in and registration is in account_controller
 

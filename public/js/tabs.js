@@ -41,7 +41,7 @@ var TabSet = new Class({
     this.tag = tag;
 	  this.container = $E('#box_' + this.tag);
     this.foreground = null;
-    this.resizer = null;
+    this.resizeFX = null;
 	  tabsets[this.tag] = this;
 	},
 	addTab: function (tab) {
@@ -74,14 +74,14 @@ var TabSet = new Class({
 	  this.foreground.reselect();
 	},
 	resizer: function (argument) {
-    if (!this.resizer) this.resizer = new Fx.Style(this.container, 'height', {duration:500});
-    return this.resizer;
+    if (!this.resizeFX) this.resizeFX = new Fx.Style(this.container, 'height', {duration:500});
+    return this.resizeFX;
 	},
   resize: function () {
     console.log('TabSet.resize');
     var element = this.foreground.tabbody;
     var height = element.getCoordinates()['height'];
-    if (height) this.resizer.start(height + 28)
+    if (height) this.resizer().start(height + 28)
   }
 });
 
@@ -129,6 +129,7 @@ var ScratchSet = TabSet.extend({
 var ScratchTab = Tab.extend({
 	initialize: function(element){
 		this.parent(element);
+		this.dropzone = $E('.catcher', this.container);
   	this.renameform = null;
     this.formholder = new Element('div', {'class': 'renameform bigspinner', 'style': 'height: 0'}).injectTop(this.tabbody).hide();
     this.renamefx = new Fx.Style(this.formholder, 'height', {duration:1000});

@@ -1,6 +1,8 @@
 <div class="header">
-	<%= render :partial => 'shared/icon', :locals => { :this => @node, :with_caption => false } %>
-	<h1 class="pagetitle"><%= @node.name %></h1>
+	<h1 class="pagetitle">
+	  <%= render :partial => 'shared/icon', :locals => { :this => @node } %>
+	  <%= @node.name %>
+	</h1>
 </div>
 
 <% if @node.has_synopsis? %>

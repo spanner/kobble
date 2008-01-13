@@ -4,32 +4,48 @@
 
 <h1 class="pagetitle">
   <%= listedclass.nice_title.pluralize %>
-	
-	<span class="pagination">
-  	<% if @list.size > @list.page_size %>
-    	<%= paginating_links(@list, {:window_size => 3, :params => {:sort => params[:sort]}}, {}) %>
-  	<% end %>
-	</span>
+  <%= render :partial => 'shared/viewcontrol' %>
 </h1>
 
-
 <% if @list && @list.size > 0 %>
-	<p class="pagination">
+	<p class="listsummary">
   	showing <%= @list.first_item %> to <%= @list.last_item %> of <%= pluralize(@list.size, listedclass.nice_title) %>.<br />
+  	pages: <%= paginating_links(@list, {:window_size => 3, :params => {:sort => params[:sort]}}, {}) %><br />
   	Order by: 
   	<% listedclass.sort_options.keys.sort.each do |order| %>
 	    <%= link_to_unless_current order, :page => @list.page, :sort => order %><span class="pale"> | </span>
-    <% end %><br />
-  	Show: list view | <%= link_to 'gallery view', :action => 'gallery' %>
+    <% end %>
 	</p>
 
+  <p class="pagecontrol">
+    <% if @list.previous_page? %><%= link_to "&larr; previous page", :page => @list.previous_page %><% end %>
+    <% if @list.previous_page? && @list.next_page? %>&nbsp;<% end %>
+    <% if @list.next_page? %><%= link_to "next page &rarr;", :page => @list.next_page %><% end %>
+  </p>
+
   <div class="mainlist">
-	  <ul>
-  	  <%= render :partial => 'shared/listed', :collection => @list %>
+    <% counter = 0 %>
+    <% column_length = @list.page_size / controller.list_columns %>
+    <% column_width = 800 / controller.list_columns %>
+    
+    <ul class="listcolumn" style="width: <%= column_width.to_i %>px;">
+      <% @list.each do |l| %>
+	      <%= render :partial => 'shared/listed', :locals => {:listed => l, :catch => true} %>
+	      <% counter += 1 %>
+	      <% if counter.remainder(column_length.to_i) == 0 %>
+	        </ul>
+	        <ul class="listcolumn" style="width: <%= column_width.to_i %>px;">
+	      <% end %>
+      <% end %>
   	</ul>
   </div>
 
-	<%= render :partial => 'shared/pagination' %>
+  <p class="pagecontrol">
+    <% if @list.previous_page? %><%= link_to "&larr; previous page", :page => @list.previous_page %><% end %>
+    <% if @list.previous_page? && @list.next_page? %>&nbsp;<% end %>
+    <% if @list.next_page? %><%= link_to "next page &rarr;", :page => @list.next_page %><% end %>
+  </p>
+
   <% if editor? %>
   	<p class="clear"><%= link_to  "Add a new #{listedclass.nice_title}", {:action => 'new'}, {:class => 'additem'} %></p>
   <% end %>

@@ -3,12 +3,12 @@ var Dropzone = new Class({
     // console.log('new dropzone: ' + element.id);
 		this.container = element;
 	  this.tag = element.id;
-		this.waiter = $E('div.waiting', element);
-		if (this.waiter) this.waiter.hide();
 		this.container.dropzone = this;   // when a draggee is picked up we climb the tree to see if it is being dragged from somewhere
-		this.isreceptive = false;
+		this.isReceptive = false;
 		this.receiptAction = 'catch';
 		this.removeAction = 'drop';
+		this.waitSignal = null;
+		this.catches = this.container.getProperty('catches');
   },
   zoneType: function () {
     switch (this.container.tagName ) {
@@ -24,21 +24,31 @@ var Dropzone = new Class({
 	flasher: function () { return this.container; },
 	contents: function () { return $ES('.draggable', this.container).map(function(el){ return el.id; }); },
 	contains: function (draggee) { return this.contents().contains(draggee.tag); },
+	can_catch: function (type) { if (this.catches) { return this.catches.split(',').contains(type); }; },
 	makeReceptiveTo: function (helper) {
-		var dropzone = this;
-		this.container.addEvents({
-			drop: function() { stopDragging(); dropzone.receiveDrop(helper); },
-			over: function() { dropzone.showInterest(helper); },
-			leave: function() { dropzone.loseInterest(helper); }
-		});
-		return this.container;
+	  type = helper.draggee.spokeType();
+	  if (this.can_catch(type)) {
+  		var dropzone = this;
+  		dropzone.container.addEvents({
+  			drop: function() { stopDragging(); dropzone.receiveDrop(helper); },
+  			over: function() { dropzone.showInterest(helper); },
+  			leave: function() { dropzone.loseInterest(helper); }
+  		});
+  		return this.isReceptive = true;
+    } else {
+  		return this.isReceptive = false;
+    }
 	},
 	makeUnreceptive: function () { 
-	  this.container.removeEvents('over');
-	  this.container.removeEvents('leave');
-	  this.container.removeEvents('drop');
+	  if (this.isReceptive) {
+  	  this.container.removeEvents('over');
+  	  this.container.removeEvents('leave');
+  	  this.container.removeEvents('drop');
+  		this.isReceptive = false;
+	  }
 	},
 	showInterest: function (helper) { 
+	  console.log('showinterest');
 	  this.container.addClass('drophere');
 	},
 	loseInterest: function (helper) { 
@@ -68,7 +78,10 @@ var Dropzone = new Class({
           
           // fix this
           
-          status, message, consequence = response.split('|');
+          var parts = response.split('|');
+          var status = parts[0];
+          var message = parts[1];
+          var consequence = parts[2];
           console.log('status = ' + status + ', message = ' + message + ', consequence = ' + consequence);
           if (status == 'success') {
             dropzone.notWaiting();
@@ -99,7 +112,10 @@ var Dropzone = new Class({
 		    draggee.waiting(); 
 		  },
 		  onSuccess: function (response) { 
-        [status, message] = response.split('|');
+        var parts = response.split('|');
+        var status = parts[0];
+        var message = parts[1];
+        var consequence = parts[2];
         if (status == 'success') {
 		      announce(message); 
           draggee.disappear(); 
@@ -120,18 +136,22 @@ var Dropzone = new Class({
 	removeURL: function (draggee) { 
 		return '/' + this.spokeType() + 's/' + this.removeAction + '/' + this.spokeID() + '/' + draggee.spokeType() + '/' + draggee.spokeID(); 
 	},
+	waiter: function () {
+    if (this.waitSignal) return this.waitSignal;
+    if (this.zoneType() != 'list') return null;
+    this.waitSignal = new Element('li', { 'class': 'waiting hide' }).setText('hold on...').injectInside(this.container);
+    return this.waitSignal;
+	},
 	waiting: function () {
 	  if (this.zoneType() == 'list') {
-      this.waiter = $E('li.waiting', this.container);
-  	  if (this.waiter) this.waiter.show();
+  	  if (this.waiter()) this.waiter().show();
 	  } else {
 	    this.container.addClass('waiting');
 	  }
 	},
 	notWaiting: function () { 
 	  if (this.zoneType() == 'list') {
-      this.waiter = $E('li.waiting', this.container);
-      if (this.waiter) this.waiter.hide();
+      if (this.waiter()) this.waiter().hide();
 	  } else {
 	    this.container.removeClass('waiting');
 	  }
@@ -143,7 +163,7 @@ var Dropzone = new Class({
 
 	},
 	accept: function (draggee) {
-    if (this.zoneType() == 'list') draggee.clone().injectTop(this.container);
+    if (this.zoneType() == 'list') draggee.clone().injectInside(this.container);
 	}
 });
 
@@ -197,6 +217,8 @@ var DragHelper = new Class({
 		this.startingfrom = {};
 	},
 	start: function (event) {
+	  event.stop();
+	  event.preventDefault();
 		var helper = this;
 	  var offsetY = this.container.getCoordinates().height;
 	  var offsetX = 124;
@@ -209,7 +231,7 @@ var DragHelper = new Class({
 			droppables: startDragging(this) // returns list of activated dropzones.
 		}).start(event);
 	},
-	emptydrop: function (e) {
+	emptydrop: function () {
 		stopDragging();
 		if (!this.hasMoved) {
 		  this.draggee.doClick();
@@ -256,9 +278,11 @@ var DragHelper = new Class({
 
 function startDragging (element) {
   dragging = true;
+  var catchers = [];
   commentator.hide();
   scratchtabs.each(function (t) { t.makeReceptiveTo(element); })
-	return droppers.map(function(d){ return d.makeReceptiveTo(element); });
+	droppers.each(function(d){ if (d.makeReceptiveTo(element)) catchers.push(d.container); });
+	return catchers;
 }
 
 function stopDragging () {

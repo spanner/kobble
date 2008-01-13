@@ -534,7 +534,7 @@ var Commentator = new Class({
     position = element.getCoordinates();
     explanation = $E('div.expansion', element);
     if (explanation) {
-      this.moveto(position.top + 8, position.left + 350);
+      this.moveto(position.top + 8, position.left + 160);
       this.display(explanation.clone());
       this.show();
     }

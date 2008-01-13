@@ -1,5 +1,5 @@
-<%= render :partial => 'shared/icon', :locals => { :this => @tag, :with_caption => false } %>
 <h1 class="pagetitle">
+  <%= render :partial => 'shared/icon', :locals => { :this => @tag } %>
   <%= @tag.name %>
   <% if @tag.ancestry %>
     <span class="headernote">
@@ -26,14 +26,20 @@
   <div id="content_list">
     <h2 class="boxhead">tagged items</h2>
 
-    <% if @tag.marks.count > 0 %>
-    <p>This tag has been applied to:</p>
-    	<ul class="starry">
-    		<%= render :partial => 'mark', :collection => @tag.marks.uniq %>
-    	</ul>
-    <% else %>
-      <p class="pale">This tag hasn't been used yet.</p>
-    <% end %>
+    <div class="mainlist">
+      <% if @tag.taggables.count > 0 %>
+      <p>This tag has been applied to:</p>
+      	<ul 
+      	  id="tagged_tag_<%= @tag.id %>"
+      	  class="catcher"
+      	  catches="<%= @tag.can_catch.join(',') %>"
+      	>
+      		<%= render :partial => 'shared/listed', :collection => @tag.taggables.uniq, :locals => {:catch => false} %>
+      	</ul>
+      <% else %>
+        <p class="pale">This tag hasn't been used yet.</p>
+      <% end %>
+    </div>
   </div>
 
   <div id="content_tree">
