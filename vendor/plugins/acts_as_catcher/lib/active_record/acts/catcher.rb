@@ -58,7 +58,7 @@ module ActiveRecord
               case reflection.macro
               when :has_many
                 self.send(association) << thrown
-                @message = "#{thrown.name} added to #{self.name}|insert"
+                @message = "#{thrown.name} added to #{self.name}"
               when :belongs_to, :has_one
                 self.send("#{association}=", thrown)
                 @message = "#{self.name} has #{association} #{thrown.name}"

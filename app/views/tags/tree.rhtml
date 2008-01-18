@@ -6,7 +6,8 @@
 <div class="tree">
   <% if @list && @list.size > 0 %>
     <% if @roots.empty? %>
-      <h2 class="boxhead">tags in this collection are not taxonomic</h2>
+      <h2 class="boxhead">The tags in your collections have not been organised into a tree.</h2>
+      
       <%= render :partial => 'shared/branch', :collection => @shoots %>
 
     <% else %>

@@ -59,7 +59,18 @@ class ApplicationController < ActionController::Base
       format.js { render :template => 'shared/mainlist', :layout => false }
     end
   end
-  
+
+  def gallery
+    perpage = params[:perpage] || 100
+    sort_options = request.parameters[:controller].to_s._as_class.sort_options
+    sort = sort_options[params[:sort]] || sort_options[request.parameters[:controller].to_s._as_class.default_sort]
+    @list = request.parameters[:controller].to_s._as_class.find(:all, :conditions => limit_to_active_collection, :order => sort, :page => {:size => perpage, :current => params[:page]})
+    respond_to do |format|
+      format.html { render :template => 'shared/gallery' }
+      format.js { render :template => 'shared/gallery', :layout => false }
+    end
+  end
+    
   def views
     ['gallery']
   end
@@ -96,6 +107,28 @@ class ApplicationController < ActionController::Base
   
   def amend
     # single field update
+  end
+
+  def trash
+    @trashed = request.parameters[:controller].to_s._as_class.find( params[:id] )
+    @trashed.destroy
+    @message = "#{@trashed.name} deleted from collection"
+    @outcome = 'success';
+    @consequence ||= 'delete';
+    respond_to do |format|
+      format.html { redirect_to :controller => params[:controller], :action => 'list' }
+      format.js { render :template => 'shared/trashed', :layout => false }
+      format.xml { head 200 }
+    end
+  rescue => e
+    @outcome = 'failure';
+    @message = e.message
+    flash[:error] = e.message
+    respond_to do |format|
+      format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @trashed }
+      format.js { render :template => 'shared/trashed', :layout => false }
+      format.xml { head 200 }
+    end
   end
   
   def drop

@@ -2,18 +2,18 @@
 <% if editor? || item.has_tags? %>
   <div id="<%= tabset %>_tags">
 	  <h2 class="boxhead">tags</h2>
-	    <div class="mainlist">
-      	<ul 
-      	  id="tagsfor_<%= item.class.to_s.downcase %>_<%= item.id %>"
-      	  class="catcher" 
-      	  catches="tag"    	  
-      	>
-      	<% if editor? %>
-      	  <li class="add">drop a tag here to add it to the list</li>
-        <% end %>
-      	<% if item.has_tags? %>
-      		<%= render :partial => "shared/listed", :collection => item.tags.uniq, :locals => {:catch => false} %>
-      	<% end %>
+    <div class="mainlist">
+    	<ul 
+    	  id="tagsfor_<%= item.class.to_s.downcase %>_<%= item.id %>"
+    	  class="catcher" 
+    	  catches="tag"    	  
+    	>
+    	<% if editor? %>
+    	  <li class="add">drop a tag here to add it to the list</li>
+      <% end %>
+    	<% if item.has_tags? %>
+    		<%= render :partial => "shared/listed", :collection => item.tags.uniq, :locals => {:catch => false} %>
+    	<% end %>
       </ul>
     </div>
 	</div>

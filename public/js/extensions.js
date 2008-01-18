@@ -31,29 +31,52 @@
 		list.push(listitem);
 		return this.setValueAsList(list);
 	},
-	stayBottom: function () {
+	toBottom: function () {
 		this.setStyles({
 		  'top': window.getScrollTop() + window.getHeight() - parseInt(this.getStyle('height'))
 		});
-	}
-});
-
-String.extend({
-  capitalise: function () {
-    return this.charAt(0).toUpperCase() + this.substr(1).toLowerCase();
+	},
+	idparts: function () {
+    var parts = this.id.split('_');
+    return {
+      'id' : parts[parts.length-1],
+      'type' : parts[parts.length-2],
+      'context' : parts[parts.length-3]
+    }
+  },
+  spokeID: function () {
+    return this.idparts().id;
+  },
+  spokeType: function () {
+    return this.idparts().type;
+  },
+  dwindle: function () {
+    var element = this;
+    new Fx.Styles(element, {
+  		duration:600
+  	}).start({ 
+  	  'opacity': 0, 
+  	  'width': 0, 
+  	  'height': 0 
+  	}).chain(function () {
+      element.remove();
+  	});
+  },
+  explode: function () {
+    this.dwindle();   //temporarily
   }
 });
 
-var Model = new Class({
+var spokeObject = new Class({
 	initialize: function(id){
     this.id = id;
 	}
 });
 
-var Node = Model.extend({ });
-var Source = Model.extend({ });
-var Bundle = Model.extend({ });
-var Tag = Model.extend({ });
-var Flag = Model.extend({ });
-var User = Model.extend({ });
-var Post = Model.extend({ });
+var Node = spokeObject.extend({ });
+var Source = spokeObject.extend({ });
+var Bundle = spokeObject.extend({ });
+var Tag = spokeObject.extend({ });
+var Flag = spokeObject.extend({ });
+var User = spokeObject.extend({ });
+var Post = spokeObject.extend({ });

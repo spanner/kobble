@@ -147,15 +147,15 @@ module ActiveRecord
         end
 
         def has_image?
-          self.respond_to?('image') && !self.image.nil?# and File.file? self.image
+          self.respond_to?('image') && !self.image.nil? and File.file? self.image
         end
 
         def has_clip?
-          self.respond_to?('clip') && !self.clip.nil?# and File.file? self.clip
+          self.respond_to?('clip') && !self.clip.nil? and File.file? self.clip
         end
 
         def has_file?
-          self.respond_to?('file') && !self.file.nil?# and File.file? self.file
+          self.respond_to?('file') && !self.file.nil? and File.file? self.file
         end
 
         def filetype

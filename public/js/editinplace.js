@@ -1,6 +1,9 @@
 ﻿var Editor = new Class ({
   initialize: function (a, e) {
+    event = new Event(e).stop();
+    event.preventDefault();
     this.link = a;
+    this.link.blur();
 	  var tag = a.id.replace('edit_','');
     this.subject = $E('#' + tag);
     this.subject.getParent().show();

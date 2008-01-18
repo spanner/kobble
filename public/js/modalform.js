@@ -1,6 +1,8 @@
 ﻿var ModalForm = new Class ({
   initialize: function (element, e) {
-    e.preventDefault();
+    event = new Event(e);
+    event.preventDefault();
+    element.blur();
 		this.eventPosition = this.position.bind(this);
 		this.source = element;
 		this.overlay = new Element('div', {'id': 'overlay'}).injectInside(document.body);

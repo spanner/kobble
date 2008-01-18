@@ -175,67 +175,9 @@ p.pagecontrol {
 
 /* layout and special formatting */
 
-div.thumb, div.padthumb, div.headingthumb, div.setthumb, div.deleted, div.pending, div.waitingthumb {
-	display: block;
-	float: left;
-  margin: 16px 16px 0 0;
-	padding: 0;
-	height: 108px;
-	width: 68px;
-}
-
-div.label {
-  font-size: 0.7em;
-  line-height: 1.4;
-  color: #695D54;
-  text-decoration:none;
-	margin: 0;
-	text-overflow: ellipsis;
-	overflow: hidden;
-  text-align: center;
-  padding: 4px;
-}
-
-div.icon div.label {
-  width: 56px;
-}
-
-div.slide, div.waitingslide {
-	display: block;
-	float: left;
-  margin: 16px 16px 0 0;
-	padding: 0;
-}
-
-div.slidefront {
-	margin: 0;
-  font-family: Helvetica, arial, sans-serif;
-  font-size: 0.8em;
-  line-height: 1.3;
-  color: #695D54;
-	border: 1px solid #559DC4;
-	padding: 8px;
-	overflow: hidden;
-	height: 135px;
-	width: 135px;
-	background-color: white;
-}
-
-div.slidefront p {
-  margin: 10px;
-	height: 115px;
-	width: 115px;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-
-div.slide span.nodename {
-  font-weight: bold;
-}
 
 .draggable {
   cursor: move;
-/*  border: 2px solid transparent;*/
 }
 
 div.listrow {
@@ -298,10 +240,9 @@ ul.starry {
   color: #695D54;
 }
 
-li.waiting {
-  list-style-image: url(/images/furniture/signals/wait_16_grey.gif);
-  color: #695D54;
-}
+
+
+
 
 li.add { list-style-image: url(/images/furniture/buttons/plus.png); }
 li.add a { color: #6cb262; }
@@ -314,6 +255,28 @@ li.ticked a { color: #6cb262; }
 li.crossed { list-style-image: url(/images/furniture/buttons/cross.png); }
 li.crossed a { color: #ef4447; }
 
+li.gallery {
+  display: block;
+  width: 143px;
+  float: left;
+}
+
+li.gallery img {
+  margin: 4px;
+}
+
+div.gallerycaption {
+  height: 70px;
+  margin: 4px;
+  overflow: hidden;
+  font-size: 12px;
+  font-family: HelveticaNeue-Roman, helvetica, arial, sans-serif;
+}
+
+div.gallerycaption a {
+  color: #695D54;
+}
+
 input.editinplace, textarea.editinplace, select.editinplace {
   background-color: #559DC4;
   color: white;
@@ -323,7 +286,6 @@ input.bigredbutton {
   background-color: red;
   color: white;
   font-size: 20px;
-  font-weight: lighter;
   font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
 }
 
@@ -575,6 +537,20 @@ div#rightcolumn {
   line-height: 18px;
 }
 
+#trash {
+  display: none;
+}
+
+#trash a {
+  color: white;
+  font-size: 24px;
+  height: 65px;
+  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
+  line-height: 65px;
+  padding: 0 0 0 100px;
+  border: 1px solid white;
+}
+
 div.player {
   width: 300px;
   height: 32px;
@@ -778,9 +754,13 @@ div.mainlist li.post a.listed:hover { background-image: url(/images/furniture/sp
 div.mainlist li.blogentry a.listed:hover { background-image: url(/images/furniture/spoke/orange/blogentry.png); }
 div.mainlist li.question a.listed:hover { background-image: url(/images/furniture/spoke/orange/question.png); }
 div.mainlist li.answer a.listed:hover { background-image: url(/images/furniture/spoke/orange/answer.png); }
-div.mainlist li.waiting a.listed { background-image: url(/images/furniture/signals/wait_16_grey.gif); }
 
- div.scratchpage li {
+div.mainlist li.waiting a.listed {
+  list-style-image: url(/images/furniture/signals/wait_16_grey.gif);
+  color: #695D54;
+}
+
+div.scratchpage li {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -837,8 +817,6 @@ div.scratchpage li.blogentry a.listed:hover { background-image: url(/images/furn
 div.scratchpage li.question a.listed:hover { background-image: url(/images/furniture/spoke/white/question.png); }
 div.scratchpage li.answer a.listed:hover { background-image: url(/images/furniture/spoke/white/answer.png); }
 div.scratchpage li.waiting a.listed:hover { background-image: url(/images/furniture/signals/wait_16_white.gif); }
-
-
 
 
 
@@ -951,9 +929,29 @@ div.draggingfoot {
   clear:both;
 }
 
+div.deleteable div.draggingbody {
+  background-image: url(/images/furniture/spoke/commentary/draggingbgred.png);
+}
 
+div.deleteable div.draggingfoot {
+  background-image: url(/images/furniture/spoke/commentary/draggingbottomred.png);
+}
 
+div.deleteable li a {
+  color: red;
+}
 
+div.insertable div.draggingbody {
+  background-image: url(/images/furniture/spoke/commentary/draggingbggreen.png);
+}
+
+div.insertable div.draggingfoot {
+  background-image: url(/images/furniture/spoke/commentary/draggingbottomgreen.png);
+}
+
+div.insertable li a {
+  color: green;
+}
 
 
 
