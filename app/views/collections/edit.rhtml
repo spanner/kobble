@@ -1,5 +1,5 @@
 <h1 class="pagetitle">Edit collection <%= link_to @collection.name, :action => 'show', :id => @collection %></h1>
 
-<%= form_tag ({:action => 'update', :id => @collection}, :multipart => true) %>
+<% form_tag ({:action => 'update', :id => @collection}, :multipart => true) do %>
   <%= render :partial => 'form' %>
-<%= end_form_tag %>
+<% end %>

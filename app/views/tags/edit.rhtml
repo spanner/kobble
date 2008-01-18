@@ -1,5 +1,5 @@
 <h1>Editing tag</h1>
 
-<%= form_tag ({:action => 'update', :id => @tag}) %>
+<% form_tag ({:action => 'update', :id => @tag}) do %>
   <%= render :partial => 'form' %>
-<%= end_form_tag %>
+<% end %>

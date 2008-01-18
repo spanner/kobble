@@ -1,16 +1,17 @@
 <h1>Store a new occasion</h1>
-<%= form_tag( {:action => 'create'}) %>
 
-<p><label for="occasion_name">Name</label><br />
-<%= text_field 'occasion', 'name', 'class' => "standard" %>
-</p>
+<% form_tag({:action => 'create'}) do %>
 
-<p><label for="occasion_description">Description</label><br />
-<%= text_area 'occasion', 'description', 'rows' => 4, 'class' => "standard" %>
-</p>
+  <p><label for="occasion_name">Name</label><br />
+  <%= text_field 'occasion', 'name', 'class' => "standard" %>
+  </p>
 
-<div class="formbuttons clear">
-  <%= submit_tag "store occasion and return" %>
-</div>
+  <p><label for="occasion_description">Description</label><br />
+  <%= text_area 'occasion', 'description', 'rows' => 4, 'class' => "standard" %>
+  </p>
 
-<%= end_form_tag %>
+  <div class="formbuttons clear">
+    <%= submit_tag "store occasion and return" %>
+  </div>
+
+<% end %>

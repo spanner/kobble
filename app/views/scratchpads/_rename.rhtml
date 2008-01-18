@@ -1,5 +1,5 @@
-<%= form_tag ({:action => 'update', :id => @scratchpad}) %>
+<% form_tag ({:action => 'update', :id => @scratchpad}) do %>
   <p class="small"><label for="scratchpad_name">scratchpad name:</label><br/>
   <%= text_field 'scratchpad', 'name', :style => "width: 180px;" %> <input type="submit" value="change"> or <a href="#" class="cancel_rename">cancel</a>
   </p>
-<%= end_form_tag %>
+<%= end %>

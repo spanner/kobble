@@ -2,6 +2,6 @@
 
 <p>This will also remove the <%= pluralize (@topic.posts.count-1, 'comment') %> attached to it. If that's what you want, please press the 'remove it all' button.</p>
 
-<%= form_tag( {:action => 'reallydestroy', :id => @topic, :forum_id => @forum}) %>
+<% form_tag( {:action => 'reallydestroy', :id => @topic, :forum_id => @forum}) do %>
   <input type="submit" class="bigredbutton" value="remove it all" /> or <%= link_to "cancel", :action => 'list' %>
-<%= end_form_tag %>
+<% end %>

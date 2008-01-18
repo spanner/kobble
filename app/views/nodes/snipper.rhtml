@@ -6,7 +6,7 @@
 	<% end %>
 </h1>
 
-<%= form_tag( {:action => 'snip'}, :id => 'nodeform', :multipart => true) %>
+<% form_tag( {:action => 'snip'}, :id => 'nodeform', :multipart => true) do %>
 	<%= hidden_field_tag 'node[source_id]', @node.source.id %>
 	<% unless @node.source.speaker.nil? %><%= hidden_field_tag 'node[speaker_id]', @node.source.speaker.id %><% end %>
 
@@ -41,4 +41,4 @@
 		<%= submit_tag "create fragment and return" %>
 	</div>
 
-<%= end_form_tag %>
+<% end %>

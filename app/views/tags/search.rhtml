@@ -45,19 +45,19 @@
 
   <p>Enter a fragment of tag here, and we'll go and find every snippet linked to a tag that contains your fragment. This is a useful bodge while the tags are a bit messy: type in  <tt>interdisc</tt>  and you'll get the snippets associated with either 'interdisciplinary' or 'interdisciplinarity', as well as any misspellings. </p>
   
-  <%= form_tag ({:action => 'search'}, {:method => 'get'}) %>
+  <% form_tag ({:action => 'search'}, {:method => 'get'}) do %>
     <input type="text" name="query" size="32" style="width: 320px;" value="<%= @query %>">
     <input type="submit" value="start search">
-  <%= end_form_tag %>
+  <% end %>
 
   <p>Or choose one or more tags from this list to get a list of all the snippets that match all the tags:</p>
   
-  <%= form_tag ({:action => 'search'}, {:method => 'get'}) %>
+  <% form_tag ({:action => 'search'}, {:method => 'get'}) do %>
     <select name="tags[]" multiple="multiple" size="12" style="width: 540px;">
     <%= options_for_select(@tagoptions, @tags.collect{ |tag| tag.id }) %>
     </select><br />
     <input type="submit" value="start search">
-  <%= end_form_tag %>
+  <% end %>
   
 
 

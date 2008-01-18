@@ -1,6 +1,3 @@
-<a href="#" class="displaycontrol" id="show_body">+ <%= item.body.nil? ? 'add' : 'edit' %> text or transcript</a>
+<p><label for="<%= item.class.to_s.downcase %>_body">Text (or transcript)</label><br />
+<%= text_area item.class.to_s.downcase, 'body', 'rows' => 12, 'class' => "standard" %></p>
 
-<div id="hide_body" class="slideable">
-	<label for="<%= item.class.to_s.downcase %>_body">Text (or transcript)</label><br />
-	<%= text_area item.class.to_s.downcase, 'body', 'rows' => 12, 'class' => "standard" %>
-</div>

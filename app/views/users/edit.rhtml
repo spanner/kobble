@@ -3,16 +3,16 @@
 	<% if editor? && @user != current_user %>
 		<h1 class="pagetitle">Edit <%= link_to @user.name, :action => 'show', :id => @user %></h1>
 
-		<%= form_tag( {:controller => 'users', :action => 'update', :id => @user}, :multipart => true) %>
+		<% form_tag({:controller => 'users', :action => 'update', :id => @user}, :multipart => true) do %>
 		  <%= render :partial => 'form' %>
-		<%= end_form_tag %>
+		<% end %>
 		
 	<% else %>
 
 		<h1 class="pagetitle">About yourself</h1>
-		<%= form_tag( {:controller => 'users', :action => 'update', :id => @user}, :multipart => true) %>
+		<% form_tag({:controller => 'users', :action => 'update', :id => @user}, :multipart => true) do %>
 		  <%= render :partial => 'self_form' %>
-		<%= end_form_tag %>
+		<% end %>
 
 	<% end %>
 </div>

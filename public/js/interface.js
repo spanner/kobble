@@ -133,13 +133,13 @@ var Interface = new Class({
         element.checked ? $ES('a.cloud' + band).setStyle('display', 'inline') : $ES('a.cloud' + band).hide();
       })
     });
-  	$ES('input.tagbox', scope).each(function (element, i) {
-  		new TagSuggestion(element, '/tags/matching', {
-  			postVar: 'stem',
-  			onRequest: function(el) { element.addClass('waiting'); },
-  			onComplete: function(el) { element.removeClass('waiting'); }
-  		});
-  	});
+    // $ES('input.tagbox', scope).each(function (element, i) {
+    //  new TagSuggestion(element, '/tags/matching', {
+    //    postVar: 'stem',
+    //    onRequest: function(el) { element.addClass('waiting'); },
+    //    onComplete: function(el) { element.removeClass('waiting'); }
+    //  });
+    // });
     $ES('a.snipper', scope).each( function (element) {
       element.addEvent('click', function (e) {
         new Snipper(element, e);

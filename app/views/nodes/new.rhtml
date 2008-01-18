@@ -6,6 +6,6 @@
 	<% end %>
 </h1>
 
-<%= form_tag( {:action => 'create'}, :id => 'nodeform', :multipart => true) %>
+<% form_tag({:action => 'create'}, :id => 'nodeform', :multipart => true) do %>
  <%= render :partial => 'form' %>
-<%= end_form_tag %>
+<% end %>

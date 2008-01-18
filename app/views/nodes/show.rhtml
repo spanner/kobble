@@ -1,7 +1,8 @@
 <div class="header">
 	<h1 class="pagetitle">
+    <% name = @node.name.nil? || @node.name.size == 0 ? "nameless fragment" : @node.name %>
 	  <%= render :partial => 'shared/icon', :locals => { :this => @node } %>
-	  <%= @node.name %>
+	  <%= name %>
 	</h1>
 </div>
 

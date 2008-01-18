@@ -1,5 +1,5 @@
 <h1 class="pagetitle">Edit source document <%= link_to @source.name, :action => 'show', :id => @source %></h1>
 
-<%= form_tag ({:action => 'update', :id => @source}, :multipart => true) %>
+<% form_tag ({:action => 'update', :id => @source}, :multipart => true) do %>
   <%= render :partial => 'form' %>
-<%= end_form_tag %>
+<% end %>

@@ -1,12 +1,11 @@
 <h1>Create a new person</h1>
-<%= form_tag( {:action => 'create'}) %>
-<%= render :partial => 'basics' %>
+<% form_tag( {:action => 'create'}) do %>
+  <%= render :partial => 'basics' %>
 
-<label for="user_image">Upload a new image:<br />
-<%= file_column_field "user", "image" %></label>
+  <label for="user_image">Upload a new image:<br />
+  <%= file_column_field "user", "image" %></label>
 
-<div class="formbuttons clear">
-  <%= submit_tag "create speaker and return" %>
-</div>
-
-<%= end_form_tag %>
+  <div class="formbuttons clear">
+    <%= submit_tag "create speaker and return" %>
+  </div>
+<% end %>

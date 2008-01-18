@@ -1,31 +1,43 @@
 <%= error_messages_for 'source' %>
 
-<p>'Source documents' are whole texts or recordings, uploaded intact and suitable for segmenting. At the moment we can accept text, mp3 audio and mpeg video. Pdfs will be edible soon, and other media formats will follow as they are needed.</p>
-
-<p><label for="source_name">Document name</label><br />
-<%= text_field 'source', 'name', 'class' => "titular" %>
+<p>
+  'Source documents' are whole texts or recordings, uploaded intact and suitable for segmenting. 
+  At the moment we can accept text, mp3 audio, pdf and .doc files. 
 </p>
 
-<%= render :partial => 'shared/edit_tags', :locals => {:item => @source} %>
+<div class="boxtabs">
+  <a href="#" id="tab_editing_summary" class="tab">summary</a>
+  <a href="#" id="tab_editing_body" class="tab">text or file</a>
+  <a href="#" id="tab_editing_notes" class="tab">field notes</a>
+</div>
 
-<p><label for="source_synopsis">Synopsis or description</label><br />
-<%= text_area 'source', 'synopsis', 'rows' => 6, 'class' => "standard" %>
-</p>
+<div class="boxed" id="box_editing">
+	<div id="editing_summary">
 
-<%= render :partial => 'shared/edit_body', :locals => {:item => @source} %>
+    <p><label for="source_name">Document name</label><br />
+    <%= text_field 'source', 'name', 'class' => "titular" %>
+    </p>
 
-<%= render :partial => 'shared/edit_file', :locals => {:item => @source} %>
+    <%= render :partial => 'shared/edit_tags', :locals => {:item => @source} %>
 
-<%= render :partial => 'shared/edit_image', :locals => {:item => @source} %>
+    <p><label for="source_synopsis">Synopsis or description</label><br />
+    <%= text_area 'source', 'synopsis', 'rows' => 6, 'class' => "standard" %>
+    </p>
 
-<%= render :partial => 'shared/edit_clip', :locals => {:item => @source} %>
+    <%= render :partial => 'shared/edit_speaker', :locals => {:item => @source} %>
+    <%= render :partial => 'shared/edit_image', :locals => {:item => @source} %>
+  </div>
+  <div id="editing_body">
+    <%= render :partial => 'shared/edit_body', :locals => {:item => @source} %>
+    <%= render :partial => 'shared/edit_clip', :locals => {:item => @source} %>
+    <%= render :partial => 'shared/edit_file', :locals => {:item => @source} %>
+  </div>
+  <div id="editing_notes">
+    <%= render :partial => 'shared/edit_occasion', :locals => {:item => @source} %>
+    <%= render :partial => 'shared/edit_fieldnotes', :locals => {:item => @source} %>
+  </div>
+</div>
 
-<%= render :partial => 'shared/edit_speaker', :locals => {:item => @source} %>
-
-<%= render :partial => 'shared/edit_fieldnotes', :locals => {:item => @source} %>
-
-<%= render :partial => 'shared/edit_occasion', :locals => {:item => @source} %>
-	
 <div class="formbuttons">
   <%= submit_tag "Store Document" %> or
   <%= link_to 'cancel', :action => 'list' %>

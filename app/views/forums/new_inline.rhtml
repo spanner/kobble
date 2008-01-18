@@ -1,5 +1,5 @@
 <h1>Create a new forum</h1>
-<%= form_tag( {:action => 'create'}) %>
+<% form_tag({:action => 'create'}) do %>
 
 <p><label>Title</label><br />
 <%= text_field 'forum', 'name', 'class' => "standard" %></p>
@@ -13,4 +13,4 @@
   <%= submit_tag "create forum and return" %>
 </div>
 
-<%= end_form_tag %>
+<% end %>

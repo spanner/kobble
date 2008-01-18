@@ -1,13 +1,8 @@
-<a href="#" class="displaycontrol" id="show_image">+ <%= item.new_record? ? 'add' : 'edit' %> image</a>
-
-<div id="hide_image" class="slideable">
-
-  <% if item.image %>
-	<div style="float: left; margin-right: 10px;">
-		<a href="<%= url_for_file_column(item.class.to_s.downcase, "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column(item.class.to_s.downcase, "image", "thumb"), :size => "56x56", :alt => '') %></a>
-	</div>
-	<% end %>
-
-  <label for="<%= item.class.to_s.downcase %>_image">Upload a new image: <%= file_column_field item.class.to_s.downcase, "image" %></label>
-
+<% if item.image %>
+<div style="float: left; margin-right: 10px;">
+	<a href="<%= url_for_file_column(item.class.to_s.downcase, "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column(item.class.to_s.downcase, "image", "thumb"), :size => "56x56", :alt => '') %></a>
 </div>
+<% end %>
+
+<p><label for="<%= item.class.to_s.downcase %>_image">Upload a new image: <%= file_column_field item.class.to_s.downcase, "image" %></label></p>
+

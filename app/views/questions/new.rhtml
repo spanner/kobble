@@ -8,6 +8,6 @@
 		Sorry: there were problems. Please check the highlighted fields and try again.</p>
 <% end %>
 
-<%= form_tag( {:action => 'create'}, :id => 'questionform', :multipart => true) %>
+<%= form_tag({:action => 'create'}, :id => 'questionform', :multipart => true) do %>
  <%= render :partial => 'form' %>
-<%= end_form_tag %>
+<% end %>
