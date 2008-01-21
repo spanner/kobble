@@ -770,6 +770,7 @@ var ScratchSet = TabSet.extend({
     		newhead.injectInside(tabs.headcontainer);
         newbody.injectInside(tabs.container);
         var newtab = new ScratchTab(newhead);
+        interface.activate(newbody);
         tabs.select(newtab.tag);
         newtab.showForm('/scratchpads/edit/' + tabid);
         bodyholder.remove();
