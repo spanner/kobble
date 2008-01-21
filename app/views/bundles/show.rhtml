@@ -1,4 +1,7 @@
-<%= render :partial => 'header' %>
+<h1 class="pagetitle">
+	<%= render :partial => 'shared/icon', :locals => { :this => @bundle } %>
+	<%= @bundle.name %>
+</h1>
 
 <% if @bundle.has_synopsis? %>
 	  <%= @bundle.synopsis.formatted %>
@@ -23,11 +26,10 @@
     
     <h2 class="boxhead">set members</h2>
 	  
-    <div id="bundle_<%= @bundle.id %>" class="setdrop">
-    	<div class="dropcontents">
-        <%= render :partial => 'member', :collection => @bundle.members %>
-        <div class="waiting waiting<%= @display %>"></div>
-    	</div>
+    <div id="bundle_<%= @bundle.id %>" class="catcher" catches="<%= @bundle.can_catch.join(',') %>">
+      <div class="mainlist">
+        <%= render :partial => 'shared/listed', :collection => @bundle.members %>
+      </div>
     	<h2 class="clear pale">Drag items into or out of this space to edit the set.</h2>
     </div>
   </div>

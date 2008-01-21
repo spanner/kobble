@@ -2,29 +2,21 @@ class ScratchpadsController < ApplicationController
 
   verify :redirect_to => { :action => :list }
 
-  def emptyscratch
-    @pad = Scratchpad.find(params[:id])
-    @deleted = @pad.scraps.collect{ |p| "pad_#{p.class.to_s.downcase}_#{p.id}" }
-    @pad.scraps.clear
-    render :layout => false
-  end
-
   def show
-    @display = case params['display']
-      when "list" then "list"
-      when "full" then "full"
-      else "thumbs"
-    end
     @scratchpad = Scratchpad.find(params[:id])
   end
 
   def new
     @scratchpad = Scratchpad.new
+    respond_to do |format|
+      format.html {  }
+      format.js { render :layout => false }
+    end
   end
 
   def create
     @scratchpad = Scratchpad.new(params[:scratchpad])
-    @scratchpad.name ||= 'pad'
+    @scratchpad.name ||= 'new pad'
     if @scratchpad.save!
       flash[:notice] = 'Scratchpad was successfully created.'
       render :action => 'created', :layout => false
@@ -35,7 +27,10 @@ class ScratchpadsController < ApplicationController
 
   def edit
     @scratchpad = Scratchpad.find(params[:id])
-    render :action => 'edit', :layout => false
+    respond_to do |format|
+      format.html {  }
+      format.js { render :layout => false }
+    end
   end
 
   def update
@@ -62,6 +57,10 @@ class ScratchpadsController < ApplicationController
   def clear
     @scratchpad = Scratchpad.find(params[:id])
     @scratchpad.scraps.clear
+    respond_to do |format|
+      format.html { render :action => 'show', :id => @scratchpad }
+      format.js { render :nothing => true }
+    end
   end
 
   def destroy

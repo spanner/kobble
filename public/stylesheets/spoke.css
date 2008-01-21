@@ -58,7 +58,7 @@ a:hover {
   color:#CC6E1F;
 }
 
-.hide, .hidden {
+.hide, .hidden, .temporary {
   display: none;
 }
 
@@ -576,13 +576,13 @@ div.dropcontents {
 	background-position: 0 20px;
 }
 
-#scratchtabs {
+#headbox_scratchpad {
   width: 490px;
   height:26px;
   overflow:hidden;
 }
 
-#scratchtabs a, #scratchtabs a:link {
+#headbox_scratchpad a, #headbox_scratchpad a:link {
   display: block;
 	float: right;
   margin: 2px 1px 0 0;
@@ -600,36 +600,36 @@ div.dropcontents {
   font-family: helvetica, arial, sans;
 }
 
-#scratchtabs a.red {
+#headbox_scratchpad a.red {
 	background-image: url(/images/furniture/layout/upredtabbg.png);
   background-color: #9e0b0f;
 }
 
-#scratchtabs a.fg {
+#headbox_scratchpad a.fg {
 	background-image: none;
   height: 19px;
   color: #fff;
   margin-top: 0;
 }
 
-#scratchtabs a.editing {
+#headbox_scratchpad a.editing {
 	background-image: none;
   background-color:#559DC4;
   color: #fff;
   margin-top: 0;
 }
 
-#scratchtabs a.louder {
+#headbox_scratchpad a.louder {
   color: #CC6E1F;
 }
 
-#scratchtabs a:hover {
+#headbox_scratchpad a:hover {
   border: 0;
 	background-image: url(/images/furniture/layout/uporangetabbg.png);
   color: white;
 }
 
-#scratchtabs a.fg:hover {
+#headbox_scratchpad a.fg:hover {
 	background-image: none;
   color: #fff;
 }
@@ -652,7 +652,7 @@ div.scratchpage ul {
   margin: 0;
   color: white;
 	padding: 0;
-	min-height: 300px;
+	min-height: 900px;
 }
 
 div.scratchpage li {
@@ -701,6 +701,11 @@ div.padcontrol a:hover {
 
 div.padcontrol a.closepad {
   float: right;
+}
+
+div.padcontrol a.clearpad:hover, div.padcontrol a.deletepad:hover {
+  color: white;
+  background-color: red;
 }
 
 div.mainlist {
@@ -1262,17 +1267,17 @@ div.taglist-holder ul li.taglist-highlight em
   float: right;
 }
 
-div.renameform {
+div.padform {
   background-color: #559DC4;
   border: 1px solid #559DC4;
   color: white;
 }
 
-div.renameform p {
+div.padform p {
   margin: 10px;
 }
 
-div.renameform label, div.renameform a {
+div.padform label, div.padform a {
   color: white;
 }
 

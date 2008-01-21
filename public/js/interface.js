@@ -33,6 +33,7 @@ var Interface = new Class({
     $E('#notification').setText('');
   },
   flash: function (element, color) {
+    return;
     var bgbackto = element.getStyle('background-color');
     var fgbackto = element.getStyle('color');
     new Fx.Styles(element, {duration:300, wait:false}).start({
@@ -532,6 +533,7 @@ var TabSet = new Class({
 	initialize: function(tag){
 	  this.tabs = [];
     this.tag = tag;
+    this.headcontainer = $E('#headbox_' + this.tag);
 	  this.container = $E('#box_' + this.tag);
     this.foreground = null;
 	  interface.tabsets[this.tag] = this;
@@ -545,6 +547,10 @@ var TabSet = new Class({
       tab.hideBody();
     }
 	},
+	removeTab: function (tab) {
+    this.tabs.remove(tab);
+    if (this.foreground == tab) this.select();
+	},
 	select: function (tag) {
 	  if (tag == this.foreground.tag) {
   	  this.reselect();
@@ -552,6 +558,7 @@ var TabSet = new Class({
 	    this.foreground.deselect();
   	  tabset = this;
   	  this.tabs.each(function (tab) { 
+  	    if (!tag) tag = tab.tag;
   	    if (tag == tab.tag) {
   	      tab.showBody();
   	      tabset.foreground = tab;
@@ -575,18 +582,26 @@ var ScratchTab = Tab.extend({
 		this.parent(element);
  		this.holdopen = false;
 		this.dropzone = $E('.catcher', this.container);
-  	this.renameform = null;
-    this.formholder = new Element('div', {'class': 'renameform bigspinner', 'style': 'height: 0'}).injectTop(this.tabbody).hide();
-    this.renamefx = new Fx.Style(this.formholder, 'height', {duration:1000});
-    $E('a.rename_pad', this.tabbody).onclick = this.rename.bind(this);
+  	this.padform = null;
+    this.formholder = new Element('div', {'class': 'padform bigspinner', 'style': 'height: 0'}).injectTop(this.tabbody).hide();
+    this.formfx = new Fx.Style(this.formholder, 'height', {duration:1000});
+    this.renamer = $E('a.renamepad', this.tabbody);
+    this.clearer = $E('a.clearpad', this.tabbody);
+    this.deleter = $E('a.deletepad', this.tabbody);
+    this.setter = $E('a.setfrompad', this.tabbody);
+    this.renamer.onclick = this.getForm.bind(this);
+    this.clearer.onclick = this.clear.bind(this);
+    this.deleter.onclick = this.remove.bind(this);
+    this.setter.onclick = this.toSet.bind(this);
     $E('a.closepad', this.tabbody).onclick = this.close.bind(this);
+    $E('a.createpad', this.tabbody).onclick = this.createTab.bind(this);
   },
   open: function () { 
-    this.tabset.open(0); 
+    this.tabset.open(); 
   },
 	close: function () { 
-    this.hideRename();
-	  this.tabset.close(0); 
+    this.hideForm();
+	  this.tabset.close(); 
 	},
 	addToSet: function () {
     this.tabset = interface.tabsets[this.settag] || new ScratchSet(this.settag);
@@ -596,58 +611,101 @@ var ScratchTab = Tab.extend({
     this.tabset.toggle();
 	},
 	deselect: function () {
-    this.hideRename();
+    this.hideForm();
 	},
-	rename: function (e) {
+	clear: function (e) {
 	  e = new Event(e).stop();
     e.preventDefault();
 	  var stab = this;
-    var url = e.target.getProperty('href');
+		new Ajax(e.target.getProperty('href'), {
+			method: 'get',
+			onRequest: function () {
+    	  $ES('li', stab.tabbody).addClass('waiting');
+			},
+		  onSuccess: function (response) { 
+    	  $ES('li', stab.tabbody).dwindle();
+    	  interface.announce("scratchpad cleared");
+		  },
+		  onFailure: function (response) { 
+        interface.complain("scratchpad clear failed!");
+		  }
+		}).request();
+	},
+	remove: function (e) {
+	  e = new Event(e).stop();
+    e.preventDefault();
+    this.tabhead.addClass('red');
+    if (confirm("are you sure you want to completely remove the scratchpad '" + this.tabhead.getText() + "'?")) {
+      var stab = this;
+  		new Ajax(e.target.getProperty('href'), {
+  			method: 'get',
+  		  onSuccess: function (response) { 
+  		    stab.tabhead.dwindle(); 
+  		    stab.tabbody.dwindle(); 
+  		    stab.tabset.removeTab(stab);
+  		  },
+  		  onFailure: function () { 
+  		    interface.complain('no way'); 
+  		  }
+  		}).request();
+    } else {
+      this.tabhead.removeClass('red');
+    }
+	},
+	toSet: function (e) {
+	  $ES('li', this.tabbody).addClass('waiting');
+	  // and we let nature take its course
+	},
+	getForm: function (e) {
+	  e = new Event(e).stop();
+    e.preventDefault();
+    this.showForm(e.target.getProperty('href'));
+  },
+  showForm: function (url) {
     this.tabhead.addClass('editing');
     this.formholder.show();
-    if (! this.renameform) {
-  	  this.renamefx.start(64);
+    if (! this.padform) {
+  	  this.formfx.start(64);
+  	  var stab = this;
   		new Ajax(url, {
   			method: 'get',
   			update: stab.formholder,
-  		  onSuccess: function () { 
-  		    stab.bindRenameForm() 
-  		  },
+  		  onSuccess: function () { stab.bindForm() },
   		  onFailure: function () { 
-  		    stab.hideRenameNicely(); 
+  		    stab.hideFormNicely(); 
   		    interface.complain('no way'); 
   		  }
   		}).request();
     }
 	},
-	hideRenameNicely: function (e) {
+	hideFormNicely: function (e) {
     if (e) e = new Event(e).stop();
     var stab = this;
-	  this.renamefx.start(0).chain(function () { stab.hideRename(e) });
+	  this.formfx.start(0).chain(function () { stab.hideForm(e) });
 	},
-	hideRename: function (e) {
+	hideForm: function (e) {
     if (e) e = new Event(e).stop();
     this.formholder.hide();
     this.tabhead.removeClass('editing');
 	},
-	bindRenameForm: function () {
+	bindForm: function () {
     this.formholder.removeClass('bigspinner');
     this.formholder.show();
-    this.renameform = $E('form', this.formholder);
-		this.renameform.onsubmit = this.doRename.bind(this);
-		$E('a.cancel_rename', this.renameform).onclick = this.hideRename.bind(this);
-		$E('input', this.renameform).focus();
+    this.padform = $E('form', this.formholder);
+		this.padform.onsubmit = this.doForm.bind(this);
+		$E('a.cancel_form', this.padform).onclick = this.hideForm.bind(this);
+		$E('input', this.padform).focus();
 	},
-	doRename: function (e) {
+	doForm: function (e) {
 	  e = new Event(e).stop();
 	  e.preventDefault();
 	  var stab = this;
-    this.renameform.hide();
+    this.padform.hide();
     this.formholder.addClass('bigspinner');
-	  this.renameform.send({
+	  this.padform.send({
       method: 'post',
       update: stab.tabhead,
-      onComplete: function () { stab.hideRenameNicely(); }
+      onComplete: function () { stab.hideFormNicely(); }
 	  });
 	},
 	makeReceptiveTo: function (draggee) {
@@ -659,6 +717,9 @@ var ScratchTab = Tab.extend({
 	  this.tabset.holdopen = false;
     this.tabhead.removeEvents('mouseenter');
 	},
+	createTab: function (e) {
+    this.tabset.createTab(e);
+	}
 });
 
 var ScratchSet = TabSet.extend({
@@ -689,8 +750,38 @@ var ScratchSet = TabSet.extend({
 	toggle: function (delay) {
     this.isopen && !this.holdopen ? this.close(delay) : this.open(delay);
 	},
-	showRename: function (url) {
-    this.foreground.showRename(url);
+	getForm: function (url) {
+    this.foreground.getForm(url);
+	},
+	createTab: function (e) {
+	  e = new Event(e).stop();
+	  e.preventDefault();
+    var bodyholder = new Element('div', {class: "temporary"}).injectInside($E('body'));
+    var tabs = this;
+    var workingtab = new Element('a', {class: 'padtab red', href: "#"}).setText('working').injectInside(this.headcontainer);
+		var req = new Ajax(e.target.getProperty('href'), {
+			method: 'get',
+			update: bodyholder,
+		  onSuccess: function (response) { 
+    		var newbody = $E('div.scratchpage', bodyholder);
+    		var tabid = newbody.spokeID();
+        var newhead = new Element('a', {class: 'padtab', href: "#", id: "tab_scratchpad_" + tabid}).setText('new pad');
+        workingtab.hide();
+    		newhead.injectInside(tabs.headcontainer);
+        newbody.injectInside(tabs.container);
+        var newtab = new ScratchTab(newhead);
+        tabs.select(newtab.tag);
+        newtab.showForm('/scratchpads/edit/' + tabid);
+        bodyholder.remove();
+		  },
+		  onFailure: function (response) { 
+		    
+        bodyholder.remove();
+		  }
+		}).request();
+		
+    
+    
 	}
 });
 

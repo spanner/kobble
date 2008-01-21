@@ -1,18 +1,7 @@
-<div class="header">
+<h1 class="pagetitle">
 	<%= render :partial => 'shared/icon', :locals => { 
-		:this => @bundle.image.nil? ? @bundle.members.detect { |m| ! m.image.nil? } : @bundle, 
-		:linked => @bundle
+		:this => @bundle
 	} %>
-
-  <h1 class="pagetitle">
-		<%= @bundle.name %>
-	</h1>
-
-  <p class="small">This set created by <%= link_to @bundle.creator.name, :controller => 'user', :action => 'show', :id => @bundle.creator %>.
-    View as: 
-    <%= link_to_unless_current 'thumbs', :controller => 'bundles', :action => 'show', :id => @bundle, :display => 'thumbs' %> | 
-    <%= link_to_unless_current 'list', :controller => 'bundles', :action => 'show', :id => @bundle, :display => 'list' %> | 
-    <%= link_to_unless_current 'printable', :controller => 'bundles', :action => 'show', :id => @bundle, :display => 'full' %>
-  </p>
-</div>
+	<%= @bundle.name %>
+</h1>
 
