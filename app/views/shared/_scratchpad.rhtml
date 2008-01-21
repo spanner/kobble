@@ -1,4 +1,13 @@
 <div id="scratchpad_<%= scratchpad.id %>" class="scratchpage">
+  <div class="padcontrol">
+  	<%= link_to "rename pad", {:controller => 'scratchpads', :action => 'edit', :id => scratchpad}, {:class => 'rename_pad', :id => "rename_scratchpad_#{scratchpad.id}"} %> <span class="hide">|</span>
+  	<%= link_to "create set", {:controller => 'scratchpads', :action => 'toset', :id => scratchpad}, {:class => 'setfrom_pad', :id => "setfrom_scratchpad_#{scratchpad.id}"} %> <span class="hide">|</span>
+  	<%= link_to "clear pad", {:controller => 'scratchpads', :action => 'clear', :id => scratchpad}, {:class => 'clear_pad', :id => "clear_scratchpad_#{scratchpad.id}"} %> <span class="hide">|</span>
+  	<%= link_to "delete pad", {:controller => 'scratchpads', :action => 'destroy', :id => scratchpad}, {:class => 'delete_pad', :id => "delete_scratchpad_#{scratchpad.id}", :confirm => "are you sure you want to completely remove the scratchpad '#{scratchpad.name}'?"} %> <span class="hide">|</span>
+  	<%= link_to "new pad", {:controller => 'scratchpads', :action => 'new', :id => scratchpad}, {:class => 'create_pad', :id => "create_scratchpad_#{scratchpad.id}"} %> <span class="hide">|</span>
+    <%= link_to "X close", '#', {:class => 'closepad'} %>
+  </div>
+  
 	<ul 
 	  id="dropzone_scratchpad_<%= scratchpad.id %>" 
 	  class="catcher"
@@ -7,9 +16,5 @@
 		<%= render :partial => 'scratchpads/contents', :locals => {:pad => scratchpad} %>
 	</ul>
 	<ul>
-		<li class="action"><%= link_to "rename pad", {:controller => 'scratchpads', :action => 'edit', :id => scratchpad}, {:class => 'rename_pad', :id => "rename_scratchpad_#{scratchpad.id}"} %></li>
-		<li class="action"><%= link_to "make set", {:controller => 'scratchpads', :action => 'toset', :id => scratchpad}, {:class => 'setfrom_pad', :id => "setfrom_scratchpad_#{scratchpad.id}"} %></li>
-		<li class="action"><%= link_to "clear pad", {:controller => 'scratchpads', :action => 'clear', :id => scratchpad}, {:class => 'clear_pad', :id => "clear_scratchpad_#{scratchpad.id}"} %></li>
-		<li class="down"><%= link_to "close pad", '#', {:class => 'closepad'} %></li>
 	</ul>
 </div>

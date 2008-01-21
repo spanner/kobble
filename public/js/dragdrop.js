@@ -160,7 +160,10 @@ var Dropzone = new Class({
 
 	},
 	accept: function (draggee) {
-    if (this.zoneType() == 'list') draggee.clone().injectInside(this.container);
+    if (this.zoneType() == 'list') {
+      draggee.clone().injectInside(this.container);
+      
+    }
 	}
 });
 

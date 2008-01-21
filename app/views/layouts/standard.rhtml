@@ -3,15 +3,11 @@
 
 <html>
 <head>
-  <title>Device: <%= controller.action_name %></title>
+  <title>Spoke</title>
   <script type="text/javascript" src="/js/mootools.js"></script>
   <script type="text/javascript" src="/js/extensions.js"></script>
-	<script type="text/javascript" src="/js/tabs.js"></script>
-	<script type="text/javascript" src="/js/dragdrop.js"></script>
   <script type="text/javascript" src="/js/interface.js"></script>
-  <script type="text/javascript" src="/js/slimbox.js"></script>
   <link rel="stylesheet" href="/stylesheets/spoke.css" type="text/css" />
-  <link rel="stylesheet" href="/stylesheets/slimbox.css" type="text/css" />
 </head>
 <body>
 
@@ -22,11 +18,11 @@
   </div>
 
   <div id="mastfoot" class="fixedbottom">
-    <div id="logo">
+    <div id="logo" class="hideondrag">
       <a href="/"><img src="/images/furniture/layout/sparklogo.png" width="49" height="39" alt="sparknow" /></a>
     </div>  
           
-	  <div id="navigation">
+	  <div id="navigation" class="hideondrag">
     	<% if editor? %>
 	      <% if admin? %><%= link_to 'collections', {:controller => 'collections'}, {:class => (request.parameters[:controller] == 'collections' ? 'fg' : '')} %><% end %>
 	      <%= link_to 'sources', {:controller => 'sources'}, {:class => (request.parameters[:controller] == 'sources' ? 'fg' : '')} %>
@@ -45,7 +41,7 @@
         <%= flash[:notice] %>
       </div>  
     </div>
-    <div id="trash">
+    <div id="trash" class="showondrag">
       <a href="#" class="trashdrop" id="trashcan" catches="all">drop here to delete</a>
     </div>  
   </div> 

@@ -686,6 +686,22 @@ div.scratchpage li a:hover {
   color: white;
 }
 
+div.padcontrol a, div.padcontrol a:visited {
+  display: block;
+  float: left;
+  padding: 4px;
+  font-size: 11px;
+  color: #B2AAA4;
+}
+
+div.padcontrol a:hover {
+  color: white;
+  background-color: #CC6E1F;
+}
+
+div.padcontrol a.closepad {
+  float: right;
+}
 
 div.mainlist {
 }
