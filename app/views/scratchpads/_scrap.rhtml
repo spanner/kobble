@@ -1,21 +1,10 @@
 <% name = scrap.name.nil? || scrap.name.size == 0 ? "nameless #{scrap.class.nice_title}" : scrap.name %>
 
-<li id="pad_<%= pad.id %>_<%= scrap.class.to_s.downcase %>_<%= scrap.id %>" class="<%= scrap.class.to_s.downcase %> draggable">
+<li 
+  id="pad_<%= pad.id %>_<%= scrap.class.to_s.downcase %>_<%= scrap.id %>" 
+  class="<%= scrap.class.to_s.downcase %> draggable expandable"
+  title="<%= scrap.name %>"
+>
   <%= link_to( scrap.name, {:controller => scrap.class.to_s.downcase.pluralize, :action => 'show', :id => scrap}, {:class => 'listed'}) %>
-  <div class="expansion">
-    <% if scrap.has_image? %>
-      <% @scrap = scrap %>
-      <%= image_tag(url_for_file_column("scrap", "image", "thumb"), :size => "56x56", :alt => '') %>
-      <% @scrap = nil %>
-    <% end %>
-    <strong><%= name %></strong>
-    <%= truncate( scrap.find_some_text, 300 ) %><br />
-    <% if scrap.created_at %><span class="when"><%= time_ago_in_words(scrap.created_at) %> old</span><% end %>
-    <span class="pale"><%= scrap.class.nice_title %> 
-    <% if scrap.has_speaker? %>
-      from <%= scrap.speaker.name %>
-    <% elsif scrap.has_creator? %>
-      by <%= scrap.creator.name %>
-    <% end %></span>
-  </div>
+  <div class="tiptext"><%= truncate( scrap.find_some_text, 300 ) %></div>
 </li>

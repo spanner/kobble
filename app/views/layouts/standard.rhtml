@@ -37,6 +37,9 @@
     	<% else %>
       	<%= link_to 'log out', {:controller => 'account', :action => 'logout'}, {:class => 'action'} %>
     	<% end %>
+    	<div id="preferences">
+    	  <input type="checkbox" id="show_tips" name="show_tips" value="1" class="tipshow"> <label for="show_tips">show details</label>
+    	</div>
       <div id="notification">
         <%= flash[:notice] %>
       </div>  

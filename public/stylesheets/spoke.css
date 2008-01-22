@@ -529,6 +529,16 @@ div#rightcolumn {
 	background-image: url(/images/furniture/layout/redtabbg.png);
 }
 
+#preferences {
+  float: left;
+  padding: 5px;
+}
+
+#preferences label {
+  font-size: 11px;
+  color: white;
+}
+
 #notification {
   clear: left;
   font-family: helvetica, arial, sans;
@@ -858,7 +868,7 @@ li div.expansion {
   margin: 0 12px 0 9px;
 }
 
-div.commentator {
+div.pointsleft, div.pointsright {
   position: absolute;
   width: 374px;
   padding: 0;
@@ -866,7 +876,7 @@ div.commentator {
 }
 
 div.commentatorbody {
-  background-image: url(/images/furniture/spoke/commentary/commentbg.png);
+  background-image: url(/images/furniture/spoke/commentary/commentbgleft.png);
   background-position: top left;
   background-repeat: no-repeat;
   width: 374px;
@@ -876,9 +886,13 @@ div.commentatorbody {
   font-size: 12px;
 }
 
+div.pointsright div.commentatorbody {
+  background-image: url(/images/furniture/spoke/commentary/commentbgright.png);
+}
+
 div.commentatorbody div {
   width: 290px;
-  margin: 0 20px 0 32px;
+  margin: 0 20px 0 38px;
 }
 
 div.commentatorfoot {
@@ -1790,3 +1804,62 @@ li.drophere {
 
 
 
+
+
+
+
+.tool-tip {
+	color: #fff;
+	width: 320px;
+	z-index: 13000;
+}
+ 
+.tool-title {
+	font-weight: bold;
+	font-size: 11px;
+	margin: 0;
+	color: white;
+	padding: 8px 8px 4px;
+	background: url(/images/furniture/spoke/tooltips/bigblack.png) top left;
+}
+ 
+.tool-text {
+	font-size: 11px;
+	padding: 4px 8px 8px;
+	background: url(/images/furniture/spoke/tooltips/bigblack.png) bottom right;
+}
+
+
+
+.drag-tip {
+	color: #fff;
+	width: 130px;
+	z-index: 13000;
+}
+ 
+.drag-title {
+	font-size: 11px;
+	margin: 0;
+	color: white;
+	padding: 8px 8px 4px;
+	background: url(/images/furniture/spoke/tooltips/grey.png) top left;
+	background-repeat: no-repeat;
+}
+ 
+.drag-text {
+	font-size: 11px;
+	padding: 4px 8px 8px;
+	background: url(/images/furniture/spoke/tooltips/grey.png) bottom left;
+	background-repeat: no-repeat;
+}
+
+.insertable .drag-title { background: url(/images/furniture/spoke/tooltips/blue.png) top left; }
+.insertable .drag-text { background: url(/images/furniture/spoke/tooltips/blue.png) bottom left; }
+.deleteable .drag-title { background: url(/images/furniture/spoke/tooltips/red.png) top left; }
+.deleteable .drag-text { background: url(/images/furniture/spoke/tooltips/red.png) bottom left; }
+.droppable .drag-title { background: url(/images/furniture/spoke/tooltips/orange.png) top left; }
+.droppable .drag-text { background: url(/images/furniture/spoke/tooltips/orange.png) bottom left; }
+
+.tiptext, .tiptitle {
+  display: none;
+}

@@ -11,6 +11,7 @@
 	<ul 
 	  id="dropzone_scratchpad_<%= scratchpad.id %>" 
 	  class="catcher"
+	  title="<%= scratchpad.name %>"
 	  catches="<%= scratchpad.can_catch.join(',') %>"
 	>
 		<%= render :partial => 'scratchpads/contents', :locals => {:pad => scratchpad} %>
