@@ -22,7 +22,7 @@
       <a href="/"><img src="/images/furniture/layout/sparklogo.png" width="49" height="39" alt="sparknow" /></a>
     </div>  
           
-	  <div id="navigation" class="hideondrag">
+	  <div id="navigation">
     	<% if editor? %>
 	      <% if admin? %><%= link_to 'collections', {:controller => 'collections'}, {:class => (request.parameters[:controller] == 'collections' ? 'fg' : '')} %><% end %>
 	      <%= link_to 'sources', {:controller => 'sources'}, {:class => (request.parameters[:controller] == 'sources' ? 'fg' : '')} %>
@@ -44,9 +44,6 @@
         <%= flash[:notice] %>
       </div>  
     </div>
-    <div id="trash" class="showondrag">
-      <a href="#" class="trashdrop" id="trashcan" catches="all">drop here to delete</a>
-    </div>  
   </div> 
 
   <div id="scratchpad" class="fixedbottom">
@@ -59,6 +56,12 @@
       <%= render :partial => 'shared/scratchpad', :collection => @scratch %>
     </div>
   </div>
+ 
+  <% if editor? %>
+    <div id="trash" class="trashdrop showondrag fixedbottom" id="trashcan" catches="all">
+      &nbsp;
+    </div>  
+  <% end %>
   
 </body>
 </html>

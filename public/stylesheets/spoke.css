@@ -4,6 +4,7 @@
   warm grey 11: #695D54
   spark orange: #CC6E1F
   warm grey 5: #B2AAA4
+  darker grey: #5c5449
 */
 
 
@@ -548,17 +549,21 @@ div#rightcolumn {
 }
 
 #trash {
-  display: none;
+  position: absolute;
+  left: 0;
+	bottom: 0;
+	height: 80px;
+	width: 90px;
+	z-index: 12000;
+  visibility: hidden;
+  background-image: url(/images/furniture/layout/trashcan.png);
+  background-repeat: no-repeat;
+  background-position: 20px 0;
 }
 
-#trash a {
-  color: white;
-  font-size: 24px;
-  height: 65px;
-  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
-  line-height: 65px;
-  padding: 0 0 0 100px;
-  border: 1px solid white;
+#trash.drophere {
+  background-image: url(/images/furniture/layout/trashcan_open.png);
+  background-color: transparent;
 }
 
 div.player {
@@ -639,9 +644,10 @@ div.dropcontents {
   color: white;
 }
 
-#headbox_scratchpad a.fg:hover {
+#headbox_scratchpad a.fg:hover, #headbox_scratchpad a.over {
 	background-image: none;
-  color: #fff;
+  background-color: #5c5449;
+  color: white;
 }
 
 .receptive {
@@ -860,132 +866,6 @@ li span.when {
 
 ul.squashed li {
   display: inline;
-}
-
-li div.expansion {
-  display: none;
-  font-size: 12px;
-  margin: 0 12px 0 9px;
-}
-
-div.pointsleft, div.pointsright {
-  position: absolute;
-  width: 374px;
-  padding: 0;
-  display: none;
-}
-
-div.commentatorbody {
-  background-image: url(/images/furniture/spoke/commentary/commentbgleft.png);
-  background-position: top left;
-  background-repeat: no-repeat;
-  width: 374px;
-  min-height: 58px;
-  padding: 12px 0 0 0;
-  margin: 0;
-  font-size: 12px;
-}
-
-div.pointsright div.commentatorbody {
-  background-image: url(/images/furniture/spoke/commentary/commentbgright.png);
-}
-
-div.commentatorbody div {
-  width: 290px;
-  margin: 0 20px 0 38px;
-}
-
-div.commentatorfoot {
-  background-image: url(/images/furniture/spoke/commentary/commentbottom.png);
-  background-position: top left;
-  background-repeat: no-repeat;
-  width: 374px;
-  height: 22px;
-  padding: 0;
-  margin: 0;
-  overflow: hidden;
-  clear:both;
-}
-
-div.commentatorbody img {
-  float: left;
-  margin: 0 8px 0 0;
-}
-
-
-
-div.dragging {
-  position: absolute;
-  opacity: 0.75;
-  width: 153px;
-  padding: 0;
-/*  display: none;*/
-}
-
-div.draggingbody {
-  background-image: url(/images/furniture/spoke/commentary/draggingbg.png);
-  background-position: top left;
-  background-repeat: no-repeat;
-  width: 153px;
-  min-height: 24px;
-  padding: 3px 0 0 0;
-  margin: 0;
-}
-
-div.draggingbody li {
-  width: 132px;
-  margin: 6px 6px 0 8px;
-  list-style: none;
-  list-style-image: none;
-  background-image: none;
-  font-size: 12px;
-}
-
-div.draggingbody li a {
-  font-size: 12px;
-  color: #695D54;
-  background-image: none;
-  padding: 0;
-}
-
-div.draggingbody li span {
-  display: none;
-}
-
-div.draggingfoot {
-  background-image: url(/images/furniture/spoke/commentary/draggingbottom.png);
-  background-position: top left;
-  background-repeat: no-repeat;
-  width: 153px;
-  height: 29px;
-  padding: 0;
-  margin: 0;
-  overflow: hidden;
-  clear:both;
-}
-
-div.deleteable div.draggingbody {
-  background-image: url(/images/furniture/spoke/commentary/draggingbgred.png);
-}
-
-div.deleteable div.draggingfoot {
-  background-image: url(/images/furniture/spoke/commentary/draggingbottomred.png);
-}
-
-div.deleteable li a {
-  color: red;
-}
-
-div.insertable div.draggingbody {
-  background-image: url(/images/furniture/spoke/commentary/draggingbggreen.png);
-}
-
-div.insertable div.draggingfoot {
-  background-image: url(/images/furniture/spoke/commentary/draggingbottomgreen.png);
-}
-
-div.insertable li a {
-  color: green;
 }
 
 
@@ -1612,6 +1492,9 @@ ul.cloud a {
 ul.cloud a:hover {
   color: #CC6E1F;
 }
+ul.cloud li.waiting a {
+  color: #B2AAA4;
+}
 
 a.cloud0, label.cloud0 {font-size: 0.9em; color: #cfe4ee; font-family: HelveticaNeue-Roman, helvetica, arial, sans-serif;}
 a.cloud1, label.cloud1 {font-size: 1.2em; color: #b1d2e3; font-family: HelveticaNeue-Roman, helvetica, arial, sans-serif;}
@@ -1793,11 +1676,16 @@ div.drophere, ul.drophere {
 
 li.drophere {
   color: white;
-  background-color: #CC6E1F;
+  background-color: #B2AAA4;
 }
 
+li.drophere a {
+  color: #695D54;
+}
+
+
 #scratchpad .drophere {
-	background-color: #CC6E1F;
+	background-color: #5c5449;
 }
 
 
@@ -1857,8 +1745,10 @@ li.drophere {
 .insertable .drag-text { background: url(/images/furniture/spoke/tooltips/blue.png) bottom left; }
 .deleteable .drag-title { background: url(/images/furniture/spoke/tooltips/red.png) top left; }
 .deleteable .drag-text { background: url(/images/furniture/spoke/tooltips/red.png) bottom left; }
-.droppable .drag-title { background: url(/images/furniture/spoke/tooltips/orange.png) top left; }
-.droppable .drag-text { background: url(/images/furniture/spoke/tooltips/orange.png) bottom left; }
+.droppable .drag-title { background: url(/images/furniture/spoke/tooltips/black.png) top left; }
+.droppable .drag-text { background: url(/images/furniture/spoke/tooltips/black.png) bottom left; }
+.mergeable .drag-title { background: url(/images/furniture/spoke/tooltips/orange.png) top left; }
+.mergeable .drag-text { background: url(/images/furniture/spoke/tooltips/orange.png) bottom left; }
 
 .tiptext, .tiptitle {
   display: none;

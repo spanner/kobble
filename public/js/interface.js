@@ -59,8 +59,8 @@ var Interface = new Class({
     if (this.tips) this.tips.hide();
   },
   startDragging: function (element) {
-    $ES('.hideondrag').each(function (element) { element.hide(); })
-    $ES('.showondrag').each(function (element) { element.show(); })
+    $ES('.hideondrag').each(function (element) { element.setStyle('visibility', 'hidden'); })
+    $ES('.showondrag').each(function (element) { element.setStyle('visibility', 'visible'); })
     this.tabs.each(function (t) { t.makeReceptiveTo(element); })
     this.hideTips();
     var catchers = [];
@@ -71,8 +71,8 @@ var Interface = new Class({
     this.dragging = false;
     this.tabs.each(function (t) { t.makeUnreceptive(); })
   	this.droppers.each(function (d) { d.makeUnreceptive() })
-    $ES('.showondrag').each(function (element) { element.hide(); })
-    $ES('.hideondrag').each(function (element) { element.show(); })
+    $ES('.hideondrag').each(function (element) { element.setStyle('visibility', 'visible'); })
+    $ES('.showondrag').each(function (element) { element.setStyle('visibility', 'hidden'); })
   },
   lookForDropper: function (element) {
     if (element) {
@@ -192,7 +192,7 @@ var Dropzone = new Class({
     // console.log('new dropzone: ' + element.id);
 		this.container = element;
 	  this.tag = element.id;
-	  this.name = element.getProperty('title') || element.spokeType();
+	  this.name = element.getProperty('title') || element.getText();
 		this.container.dropzone = this;   // when a draggee is picked up we climb the tree to see if it is being dragged from somewhere
 		this.isReceptive = false;
 		this.receiptAction = 'catch';
@@ -215,7 +215,6 @@ var Dropzone = new Class({
 	contents: function () { return $ES('.draggable', this.container).map(function(el){ return el.id; }); },
 	contains: function (draggee) { return this.contents().contains(draggee.tag); },
 	can_catch: function (type) { if (this.catches) return this.catches == 'all' || this.catches.split(',').contains(type); },
-
 	makeReceptiveTo: function (helper) {
     // this gets called when a drag from elsewhere enters this space
 	  type = helper.draggee.spokeType();
@@ -249,6 +248,11 @@ var Dropzone = new Class({
     console.log('makeRegretful');
 		var dropzone = this;
 		dropzone.container.addEvents({
+	    'mouseenter': function() { 
+			  console.log('back again');
+        helper.clearState();
+    	  dropzone.container.removeClass('bereft');
+			},
 			'mouseleave': function() { 
 			  console.log('leaving the area');
         helper.droppable(dropzone);
@@ -262,8 +266,10 @@ var Dropzone = new Class({
 		  var state = helper.getState();
 		  var text = helper.getText();
   	  dropzone.container.addClass('drophere');
+  	  if(dropzone.tab) dropzone.tab.tabhead.addClass('over');
   	  dropzone.container.addEvents({
   	    'leave': function() { 
+      	  if(dropzone.tab) dropzone.tab.tabhead.removeClass('over');
   			  dropzone.loseInterest();
   			  helper.setState(state, text);
   			}
@@ -291,12 +297,16 @@ var Dropzone = new Class({
 			
 			var req = new Ajax(this.addURL(draggee), {
 				method: 'get',
-			  onRequest: function () { dropzone.waiting(); },
+			  onRequest: function () { 
+			    dropzone.waiting(); 
+			    draggee.waiting(); 
+			  },
         onSuccess: function(response){
           var outcome = new Outcome(response);
           console.log('status = ' + outcome.status + ', message = ' + outcome.message + ', consequence = ' + outcome.consequence);
           if (outcome.status == 'success') {
             dropzone.notWaiting();
+  			    draggee.notWaiting(); 
             dropzone.showSuccess();
             if (outcome.consequence == 'move' || outcome.consequence == 'insert') dropzone.accept(draggee);
             if (outcome.consequence == 'move' || outcome.consequence == 'delete') draggee.disappear();
@@ -308,6 +318,7 @@ var Dropzone = new Class({
         },
 			  onFailure: function (response) { 
 			    dropzone.notWaiting(); 
+			    draggee.notWaiting(); 
 			    dropzone.showFailure();
 			    interface.complain('remote call failed');
 			  }
@@ -436,6 +447,7 @@ var DragHelper = new Class({
 		this.container = new Element('div', { 'class': 'drag-tip' }).injectInside(document.body);
 		this.textholder = new Element('div', { 'class': 'drag-title' }).injectInside(this.container);
 		this.footer = new Element('div', { 'class': 'drag-text' }).injectInside(this.container);
+    this.fx = new Fx.Style(this.container, 'opacity', {duration: 250, wait: false}).set(0);
 		this.name = this.draggee.name;
 		this.startingfrom = draggee.original.getCoordinates();
 		this.startingfrom.opacity = 0;
@@ -485,8 +497,8 @@ var DragHelper = new Class({
 		console.log('hasmoved? ' + hm);
 		return hm;
 	},
-  show: function () { this.container.show(); },
-  hide: function () { this.container.hide(); },
+  show: function () { this.fx.start(0.8); },
+  hide: function () { this.fx.start(0); },
 	remove: function () { this.container.remove(); },
 	explode: function () { this.remove(); },  // something more vivid should happen here
 	disappear: function () { this.original.dwindle(); },
@@ -497,10 +509,11 @@ var DragHelper = new Class({
     this.setState('droppable', "Remove '" + this.name + "' from " + dropzone.name);
 	},
 	insertable: function (dropzone) {
-	  var text = (this.draggee.spokeType() == dropzone.spokeType()) ? 
-	    "Merge " + this.name + "' into '" + dropzone.name + "'" : 
-	    "Apply '" + this.name + "' to '" + dropzone.name + "'";
-    this.setState('insertable', text);
+	  if (this.draggee.spokeType() == dropzone.spokeType()) {
+      this.setState('mergeable', "Merge '" + this.name + "' into '" + dropzone.name + "'");
+	  } else {
+      this.setState('insertable', "Apply '" + this.name + "' to '" + dropzone.name + "'");
+	  }
 	},
 	setState: function (state, text) {
     this.clearState();
@@ -518,6 +531,7 @@ var DragHelper = new Class({
     this.container.removeClass('droppable');
     this.container.removeClass('insertable');
     this.container.removeClass('deleteable');
+    this.container.removeClass('mergeable');
     this.currentState = null;
     this.setText(this.name);
 	},
@@ -566,7 +580,7 @@ var Tab = new Class({
 	},
 	makeUnreceptive: function () {
     this.tabhead.removeEvents('mouseenter');
-	},
+	}
 });
 
 var TabSet = new Class({
@@ -622,6 +636,7 @@ var ScratchTab = Tab.extend({
 		this.parent(element);
  		this.holdopen = false;
 		this.dropzone = $E('.catcher', this.container);
+		this.dropzone.tab = this;
   	this.padform = null;
     this.formholder = new Element('div', {'class': 'padform bigspinner', 'style': 'height: 0'}).injectTop(this.tabbody).hide();
     this.formfx = new Fx.Style(this.formholder, 'height', {duration:1000});
