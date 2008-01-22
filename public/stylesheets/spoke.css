@@ -1699,6 +1699,8 @@ li.drophere a {
 .tool-tip {
 	color: #fff;
 	width: 320px;
+	max-height: 400px;
+	overflow: hidden;
 	z-index: 13000;
 }
  
@@ -1722,7 +1724,9 @@ li.drophere a {
 .drag-tip {
 	color: #fff;
 	width: 130px;
-	z-index: 13000;
+	max-height: 400px;
+	overflow: hidden;
+	z-index: 13001;
 }
  
 .drag-title {
