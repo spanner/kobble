@@ -421,7 +421,7 @@ var Draggee = new Class({
 		this.original = element;
 		this.tag = element.spokeType() + '_' + element.spokeID();   //omitting other id parts that only serve to avoid duplicate element ids
 		this.link = $E('a', element);
-		this.name = this.link.getText();
+		this.name = this.original.title || this.link.getText();
 		this.draggedfrom = interface.lookForDropper(element.getParent());
 		this.helper = new DragHelper(this);
 		this.helper.start(event);

@@ -1,34 +1,23 @@
 <%
   catch ||= false 
+  name = galleried.name.nil? || galleried.name.size == 0 ? "nameless #{galleried.class.nice_title}" : galleried.name
   @galleried = galleried
 %>
 
 <li 
   id="<%= galleried.class.to_s.downcase %>_<%= galleried.id %>" 
-  class="gallery expandable<%= ' catcher' if catch && galleried.can_catch %>"
+  class="gallery expandable draggable<%= ' catcher' if catch && galleried.can_catch %>"
+  title="<%= name %>"
   <% if catch && galleried.can_catch %>catches="<%= galleried.can_catch.join(',') %>"<% end %>
 >
 
   <% name = galleried.name.nil? || galleried.name.size == 0 ? "nameless #{galleried.class.nice_title}" : galleried.name %>
   <% if galleried.has_image? %>
-    <%= link_to(image_tag(url_for_file_column("galleried", "image", "slide"), :size => "135x135", :alt => name), url_for_file_column("galleried", "image", "preview"), {:rel => "lightbox[gallery]", :title => name}) %>
+    <%= link_to(image_tag(url_for_file_column("galleried", "image", "slide"), :size => "135x135", :alt => name), {:action => 'show', :id => galleried}) %>
   <% else %>
-    <%= image_tag("/images/furniture/layout/defaultimage.jpg", :size => "135x135", :alt => name) %>
+    <%= link_to(image_tag("/images/furniture/layout/defaultimage.png", :size => "135x135", :alt => name), {:action => 'show', :id => galleried}) %>
   <% end %>
-  <div class="gallerycaption">
-    <%= link_to( name, {:controller => galleried.class.to_s.downcase.pluralize, :action => 'show', :id => galleried}) %> 
-  </div>
-  <div class="expansion">
-    <strong><%= name %></strong>
-    <%= truncate( galleried.find_some_text, 300 ) %><br />
-    <% if galleried.created_at %><span class="when"><%= time_ago_in_words(galleried.created_at) %> old</span><% end %>
-    <span class="pale"><%= galleried.class.nice_title %> 
-    <% if galleried.has_speaker? %>
-      from <%= galleried.speaker.name %>
-    <% elsif galleried.has_creator? %>
-      by <%= galleried.creator.name %>
-    <% end %></span>
-  </div>
+  <div class="tiptext"><%= truncate( galleried.find_some_text, 300 ) %></div>
 </li>
 
 <%
