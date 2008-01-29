@@ -19,7 +19,27 @@ var Interface = new Class({
     this.clickthreshold = 6;
     this.cloud = null;
     this.notifyfx = null;
-    this.preferences = {};
+    // defaults
+    this.storedPreferences = new Hash.Cookie('SpokePrefs');
+    this.preferences = {
+      confirmDrops: this.storedPreferences.get('set') ? this.storedPreferences.get('confirmDrops') : false,
+      showDetails: this.storedPreferences.get('set') ? this.storedPreferences.get('showDetails') : true
+    };
+	},
+	setPrefFromCheckbox: function (element, event) {
+    this.setPref(element.id, element.getProperty('checked') ? true : false);
+    // console.log(this.preferences);
+	},
+	setPref: function (key, value) {
+    this.preferences[key] = value;
+    this.savePrefs();
+	},
+	getPref: function (key) {
+	  return this.preferences[key];
+	},
+	savePrefs: function () {
+	  this.preferences['set'] = true;
+    this.storedPreferences.extend(this.preferences);
 	},
   announce: function (message) {
     if (message) $E('#notification').setText(message);
@@ -154,13 +174,18 @@ var Interface = new Class({
         new Snipper(element, e);
       });
     });
+    
+    $ES('input.spokepref').each( function (element) {
+      element.addEvent('click', function (e) { interface.setPrefFromCheckbox(element, e) });
+      if (interface.getPref(element.id)) element.setProperty('checked', true);
+    })
   }
 });
 
 var SpokeTips = Tips.extend({
   options: {
   	initialize:function(){ this.fx = new Fx.Style(this.toolTip, 'opacity', {duration: 250, wait: false}).set(0); },
-  	onShow: function(toolTip) { if (!interface.dragging) this.fx.start(0.8); },
+  	onShow: function(toolTip) { if (interface.getPref('showDetails') && !interface.dragging) this.fx.start(0.8); },
   	onHide: function(toolTip) { this.fx.start(0); }
   },
 	build: function(el){
@@ -283,6 +308,7 @@ var Dropzone = new Class({
 	},
 	receiveDrop: function (helper) {
 		var dropzone = this;
+	  var message = helper.getText() + '?';
 		dropzone.loseInterest(helper);
 		draggee = helper.draggee;
 		if (dropzone == draggee.draggedfrom) {
@@ -294,58 +320,62 @@ var Dropzone = new Class({
 			
 		} else {
 			helper.remove();
-			
-			var req = new Ajax(this.addURL(draggee), {
-				method: 'get',
-			  onRequest: function () { 
-			    dropzone.waiting(); 
-			    draggee.waiting(); 
-			  },
-        onSuccess: function(response){
-          var outcome = new Outcome(response);
-          console.log('status = ' + outcome.status + ', message = ' + outcome.message + ', consequence = ' + outcome.consequence);
-          if (outcome.status == 'success') {
-            dropzone.notWaiting();
+			if (!interface.getPref('confirmDrops') || confirm(message)) {
+  			var req = new Ajax(this.addURL(draggee), {
+  				method: 'get',
+  			  onRequest: function () { 
+  			    dropzone.waiting(); 
+  			    draggee.waiting(); 
+  			  },
+          onSuccess: function(response){
+            var outcome = new Outcome(response);
+            console.log('status = ' + outcome.status + ', message = ' + outcome.message + ', consequence = ' + outcome.consequence);
+            if (outcome.status == 'success') {
+              dropzone.notWaiting();
+    			    draggee.notWaiting(); 
+              dropzone.showSuccess();
+              if (outcome.consequence == 'move' || outcome.consequence == 'insert') dropzone.accept(draggee);
+              if (outcome.consequence == 'move' || outcome.consequence == 'delete') draggee.disappear();
+              interface.announce(outcome.message);
+            } else {
+      		    dropzone.showFailure();
+              interface.complain(outcome.message);
+            }
+          },
+  			  onFailure: function (response) { 
+  			    dropzone.notWaiting(); 
   			    draggee.notWaiting(); 
-            dropzone.showSuccess();
-            if (outcome.consequence == 'move' || outcome.consequence == 'insert') dropzone.accept(draggee);
-            if (outcome.consequence == 'move' || outcome.consequence == 'delete') draggee.disappear();
-            interface.announce(outcome.message);
-          } else {
-    		    dropzone.showFailure();
-            interface.complain(outcome.message);
-          }
-        },
-			  onFailure: function (response) { 
-			    dropzone.notWaiting(); 
-			    draggee.notWaiting(); 
-			    dropzone.showFailure();
-			    interface.complain('remote call failed');
-			  }
-			}).request();
-			console.log('drop received');
+  			    dropzone.showFailure();
+  			    interface.complain('remote call failed');
+  			  }
+  			}).request();
+  			console.log('drop received');
+			}
 		}
   },
 	removeDrop: function (draggee) {
-		dropzone = this;
-		new Ajax(dropzone.removeURL(draggee), {
-			method : 'post',
-		  onRequest: function () { draggee.waiting(); },
-		  onSuccess: function (response) { 
-        var outcome = new Outcome(response);
-        if (outcome.status == 'success') {
-		      interface.announce(outcome.message); 
-          draggee.disappear(); 
-		    } else {
-			    dropzone.showFailure();
-          interface.complain(outcome.message);
-		    }
-		  },
-		  onFailure: function (response) {
-		    dropzone.showFailure();
-		    interface.complain('remote call failed');
-		  }
-		}).request();
+		var dropzone = this;
+	  var message = helper.getText() + '?';
+		if (!interface.getPref('confirmDrops') || confirm(message)) {
+  		new Ajax(dropzone.removeURL(draggee), {
+  			method : 'post',
+  		  onRequest: function () { draggee.waiting(); },
+  		  onSuccess: function (response) { 
+          var outcome = new Outcome(response);
+          if (outcome.status == 'success') {
+  		      interface.announce(outcome.message); 
+            draggee.disappear(); 
+  		    } else {
+  			    dropzone.showFailure();
+            interface.complain(outcome.message);
+  		    }
+  		  },
+  		  onFailure: function (response) {
+  		    dropzone.showFailure();
+  		    interface.complain('remote call failed');
+  		  }
+  		}).request();
+    }
 	},
 	addURL: function (draggee) { 
 		return '/' + this.spokeType() + 's/' + this.receiptAction + '/' + this.spokeID() + '/' + draggee.spokeType() + '/' + draggee.spokeID();  
@@ -503,7 +533,7 @@ var DragHelper = new Class({
 	explode: function () { this.remove(); },  // something more vivid should happen here
 	disappear: function () { this.original.dwindle(); },
 	deleteable: function () { 
-    this.setState('deleteable', "Delete '" + this.name + "' from the collection.");
+    this.setState('deleteable', "Delete '" + this.name + "' from the collection");
 	},
 	droppable: function (dropzone) { 
     this.setState('droppable', "Remove '" + this.name + "' from " + dropzone.name);

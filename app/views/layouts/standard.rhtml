@@ -38,8 +38,8 @@
       	<%= link_to 'log out', {:controller => 'account', :action => 'logout'}, {:class => 'action'} %>
     	<% end %>
     	<div id="preferences">
-    	  <input type="checkbox" id="show_tips" name="show_tips" value="1" class="tipshow"> <label for="show_tips">float details</label>
-    	  <input type="checkbox" id="seek_confirmation" name="seek_confirmation" value="1" class="confirmdrops"> <label for="seek_confirmation">confirm drops</label>
+    	  <input type="checkbox" id="showDetails" name="showDetails" value="1" class="spokepref"> <label for="showDetails">float details</label>
+    	  <input type="checkbox" id="confirmDrops" name="confirmDrops" value="1" class="spokepref"> <label for="confirmDrops">confirm drops</label>
     	</div>
       <div id="notification">
         <%= flash[:notice] %>
