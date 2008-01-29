@@ -90,7 +90,10 @@ var Interface = new Class({
   stopDragging: function () {
     this.dragging = false;
     this.tabs.each(function (t) { t.makeUnreceptive(); })
-  	this.droppers.each(function (d) { d.makeUnreceptive() })
+  	this.droppers.each(function (d) { 
+  	  d.makeUnreceptive();
+  	  d.makeUnregretful();
+  	})
     $ES('.hideondrag').each(function (element) { element.setStyle('visibility', 'visible'); })
     $ES('.showondrag').each(function (element) { element.setStyle('visibility', 'hidden'); })
   },
@@ -220,6 +223,7 @@ var Dropzone = new Class({
 	  this.name = element.getProperty('title') || element.getText();
 		this.container.dropzone = this;   // when a draggee is picked up we climb the tree to see if it is being dragged from somewhere
 		this.isReceptive = false;
+		this.isRegretful = false;
 		this.receiptAction = 'catch';
 		this.removeAction = 'drop';
 		this.waitSignal = null;
@@ -284,6 +288,15 @@ var Dropzone = new Class({
     	  dropzone.container.addClass('bereft');
 			}
     });
+		this.isRegretful = true;
+	},
+	makeUnregretful: function () {
+    console.log('makeUnregretful');
+	  if (this.isRegretful) {
+  	  this.container.removeEvents('mouseenter');
+  	  this.container.removeEvents('mouseleave');
+  		this.isRegretful = false;
+    }
 	},
 	showInterest: function (helper) {
 	  if (this.container != helper.draggee.original && this != helper.draggee.draggedfrom && !this.contains(helper.draggee)) {
