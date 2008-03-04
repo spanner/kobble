@@ -68,7 +68,7 @@ module ActiveRecord
         end
 
         def organised_classes(options={})
-          oc = [:sources, :nodes, :bundles, :tags, :flags, :occasions, :forums, :topics, :posts, :questions, :answers, :blogentries, :users, :user_groups]
+          oc = [:users, :sources, :nodes, :bundles, :tags, :flags, :occasions, :topics, :posts]
           if options[:except]
             oc -= Array(options[:except]) 
           elsif options[:only]

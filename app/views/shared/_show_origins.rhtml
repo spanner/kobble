@@ -7,9 +7,6 @@
   		  <% if item.source %>taken from <%= link_to item.source.name, :action => 'show', :controller => 'sources', :id => item.source %><br /><% end %>
   		  <% if item.creator %>by <%= link_to item.creator.name, :action => 'show', :controller => 'user', :id => item.creator %><% end %>
   		<% end %>
-  		<% if item.question %>
-  			Considered a response to the question <%= link_to item.question.name, :controller => 'questions', :action => 'show', :id => item.question %>.
-  		<% end %>
   		</p>
 	</div>
 <% end %>

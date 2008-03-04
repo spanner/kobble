@@ -3,12 +3,12 @@
 		<p class="commentheader<% if single.creator.editor? %> admin<% end %>">
 			<%  if editor? %>
 				<%= render :partial => 'shared/editbutton', :locals => {
-					:url => edit_post_path( :forum_id => @forum,  :topic_id => @topic, :id => single ),
+					:url => edit_post_path( :topic_id => @topic, :id => single ),
 					:id => "edit_comment_#{single.id}",
 					:title => "delete this post"
 				} %>
 				<%= render :partial => 'shared/deletebutton', :locals => {
-					:url => delete_post_path( :forum_id => @forum,  :topic_id => @topic, :id => single ),
+					:url => delete_post_path( :topic_id => @topic, :id => single ),
 					:id => "edit_comment_#{single.id}",
 					:title => "edit this post"
 				} %>

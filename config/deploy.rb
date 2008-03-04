@@ -21,16 +21,10 @@ set :deploy_via, :remote_cache
 
 namespace :deploy do
   task :after_update do
-    run "ln -s #{shared_path}/assets/node #{current_release}/public/node" 
-    run "ln -s #{shared_path}/assets/source #{current_release}/public/source" 
-    run "ln -s #{shared_path}/assets/blogentry #{current_release}/public/blogentry"
-    run "ln -s #{shared_path}/assets/question #{current_release}/public/question"
-    run "ln -s #{shared_path}/assets/answer #{current_release}/public/answer"
-    run "ln -s #{shared_path}/assets/bundle #{current_release}/public/bundle"
-    run "ln -s #{shared_path}/assets/occasion #{current_release}/public/occasion"
-    run "ln -s #{shared_path}/assets/tag #{current_release}/public/tag"
-    run "ln -s #{shared_path}/assets/user #{current_release}/public/user"
     run "ln -s #{shared_path}/config/database.yml #{current_release}/config/database.yml" 
+    ['collection', 'user', 'source', 'node', 'bundle', 'occasion', 'tag'].each do |directory|
+      run "ln -s #{shared_path}/assets/#{directory} #{current_release}/public/#{directory}" 
+    end
   end
 	
   task :start, :roles => :app do

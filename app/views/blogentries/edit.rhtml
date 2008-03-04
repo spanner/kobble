@@ -1,9 +1,0 @@
-<div id="inputform">
-
-<h1 class="pagetitle">Edit blog entry <%= link_to @blogentry.name, :action => 'show', :id => @blogentry %></h1>
-
-<% form_tag ({:action => 'update', :id => @blogentry}, :multipart => true) do %>
-  <%= render :partial => 'form' %>
-<% end %>
-
-</div>

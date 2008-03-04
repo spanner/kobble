@@ -11,7 +11,7 @@ class Source < ActiveRecord::Base
   acts_as_catcher :tags, :flags
 
   def self.nice_title
-    "source document"
+    "source"
   end
 
 end

@@ -34,8 +34,8 @@ module AuthenticatedSystem
     end
 
     # handy access to the foreground collection
-    def current_collection
-      @current_collection ||= (current_user != :false && current_user.collection) || Collection.find(2) || :false
+    def current_collections
+      @current_collections ||= current_user.collections
     end
     
     def update_last_seen_at

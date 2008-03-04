@@ -4,25 +4,23 @@ class User < ActiveRecord::Base
   attr_protected :activated_at
   attr_accessor :password_confirmation
   attr_accessor :old_password
-  attr_accessor :just_promoted
 
   acts_as_spoke
 
-  belongs_to :user_group      
-
+  has_many :active_collections, :dependent => :destroy
+  has_many :collections, :through => :active_collections, :conditions => ['active_collections.active = ?', true], :source => :collection
+  
   has_many :sources, :class_name => 'Source', :foreign_key => 'speaker_id'
   has_many :nodes, :class_name => 'Node', :foreign_key => 'speaker_id'
-  has_many :answers, :class_name => 'Answer', :foreign_key => 'speaker_id'
-  has_many :flags
   has_many :posts, :class_name => 'Post', :foreign_key => 'created_by', :dependent => :nullify
-
+  
+  has_many :created_collections, :class_name => 'Collection', :foreign_key => 'created_by'
   has_many :created_nodes, :class_name => 'Node', :foreign_key => 'created_by'
   has_many :created_sources, :class_name => 'Source', :foreign_key => 'created_by'
-  has_many :created_bundles, :class_name => 'Bundle', :foreign_key => 'created_by'
-  has_many :created_blogentries, :class_name => 'Blogentry', :foreign_key => 'created_by'
-  has_many :created_forums, :class_name => 'Forum', :foreign_key => 'created_by'
-  has_many :created_topics, :class_name => 'Topic', :foreign_key => 'created_by'
+  has_many :created_bundles, :class_name => 'Bundle', :foreign_key => 'created_by', :dependent => :destroy
+  has_many :created_topics, :class_name => 'Topic', :foreign_key => 'created_by', :dependent => :destroy
   has_many :created_scratchpads, :class_name => 'Scratchpad', :foreign_key => 'created_by', :dependent => :destroy
+  has_many :created_tags, :class_name => 'Tag', :foreign_key => 'created_by', :dependent => :destroy
 
   has_many :monitorships, :dependent => :destroy
   has_many :monitored_topics, :through => :monitorships, :conditions => ['monitorships.active = ?', true], :order => 'topics.replied_at desc', :source => :topic
@@ -39,7 +37,7 @@ class User < ActiveRecord::Base
   before_create :make_activation_code
   before_save :encrypt_password
 
-  cattr_accessor :current_collection
+  cattr_accessor :current_collections
   
   def self.sort_options
     {

@@ -3,8 +3,6 @@ class Topic < ActiveRecord::Base
   acts_as_spoke :except => [:illustration, :discussion]
 
   belongs_to :speaker, :class_name => 'User', :foreign_key => 'speaker_id'
-  belongs_to :forum, :counter_cache => true
-  
   has_many :monitorships, :dependent => :destroy
   has_many :monitors, :through => :monitorships, :conditions => ['monitorships.active = ?', true], :source => :user, :order => 'users.login'
   has_many :memberships, :as => :member, :dependent => :destroy
@@ -21,29 +19,17 @@ class Topic < ActiveRecord::Base
   belongs_to :replied_by_user, :foreign_key => "replied_by", :class_name => "User"
   belongs_to :subject, :polymorphic => true
   
-  validates_presence_of :forum, :title
+  validates_presence_of :title, :subject
   
   before_create :set_default_replied_at_and_sticky
-  before_save   :check_for_changing_forums
 
   attr_accessible :title
-  # to help with the create form
   attr_accessor :body
 
   def name
     title
   end
   
-  def check_for_changing_forums
-    return if new_record?
-    old=Topic.find(id)
-    if old.forum_id!=forum_id
-      set_post_forum_id
-      Forum.update_all ["posts_count = posts_count - ?", posts_count], ["id = ?", old.forum_id]
-      Forum.update_all ["posts_count = posts_count + ?", posts_count], ["id = ?", forum_id]
-    end
-  end
-
   def voice_count
     posts.count(:select => "DISTINCT created_by")
   end
@@ -67,13 +53,17 @@ class Topic < ActiveRecord::Base
     (posts_count.to_f / 25.0).ceil.to_i
   end
   
+  def subject_path  
+    { 
+      :controller => subject.class.to_s.underscore.pluralize, 
+      :action => 'show', 
+      :id => subject
+    }
+  end
+  
   protected
     def set_default_replied_at_and_sticky
       self.replied_at = Time.now.utc
       self.sticky   ||= 0
-    end
-
-    def set_post_forum_id
-      Post.update_all ['forum_id = ?', forum_id], ['topic_id = ?', id]
     end
 end

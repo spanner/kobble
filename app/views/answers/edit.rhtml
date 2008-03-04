@@ -1,9 +1,0 @@
-<h1>Editing answer</h1>
-
-<% form_tag :action => 'update', :id => @answer do %>
-  <%= render :partial => 'form' %>
-  <%= submit_tag 'Edit' %>
-<% end %>
-
-<%= link_to 'Show', :action => 'show', :id => @answer %> |
-<%= link_to 'Back', :action => 'list' %>

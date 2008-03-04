@@ -4,53 +4,24 @@
 
 		<% if current_user.recently_activated? %>
 			<h1>Hello <%= current_user.firstname %>, and welcome!</h1>
-			<p>Thank you! Your account is now active and you can feel free to explore the (growing) range of options available.
+			<p>Thank you! Your account is now active and you can feel free to explore spoke</p>
+		  <p>...</p>
+
 		<% else %>
 			<h1>Hello <%= current_user.name %></h1>
-			
 			<p class="footnote">(Not you? Please <%= link_to 'log out', :action => 'logout' %>)</p>
-			
-			<p>Welcome back to the knowledge transfer project. 
+			<p>Welcome back to spoke. This page will say something useful about what has happened since you were last here.
+
 		<% end %>
 		
-		We are adding new material all the time, and new ways to interact with the project. To start with:</p>
-
-		<h2>What you can do</h2>
-		
-		<ul class="starry">
-			<li><a href="/survey">help us out by answering the occasional question</a></li>
-			<li><a href="/blog">read the blog and add comments</a></li>
-			<li><a href="/discussion">join the discussion</a></li>
-			<!-- <li><a href="/invite">invite a friend or colleague</a></li> -->
-			<li><a href="/me">tell us a bit more about yourself</a></li>
-		</ul>
-			
- 		<p>This is what has happened recently:</p>
-
-		<h2>Blog entries this week</h2>
-		
-		<% if @blogentries and !@blogentries.empty? %>
-			<%= render :partial => 'blogentry', :collection => @blogentries %>
-		<% else %>
-			<p>There haven't been any!</p>
-		<% end %>
-		
-		<h2>Discussion</h2>
-		
-		<% if @topics and !@topics.empty? %>
-			<%= render :partial => 'topic', :collection => @topics %>
-		<% else %>
-			<p>There hasn't been any discussion this week <% if @blogentries.empty? %>either!<% else %>.<% end %></p>
-		<% end %>
-
 	<% else %>
 
-		<h1 class="pagetitle">thank you for registering</h1>
+		<h1 class="pagetitle">welcome to spoke</h1>
 	
 		<p>
-			Please check your email: you should have received a confirmation message almost immediately. 
+			Please check your email: you should have received an invitation message. 
 			In it you will find a long code that you can paste into the box below (and a link that you can click to achieve the same thing). 
-			This will activate your account and log you into the system.
+			This will activate your account and log you into the system. If not, please enter email address etc etc.
 		</p>
 		
 		<%= render :partial => 'activate' %>
@@ -60,6 +31,7 @@
 <% else %>
 
 	<% @show_field ||= 'welcome' %>
+	
 	<%= current_collection.send(@show_field).formatted %>
 
 <% end %>

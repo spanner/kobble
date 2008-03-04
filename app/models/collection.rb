@@ -1,25 +1,18 @@
 class Collection < ActiveRecord::Base
 
-  acts_as_spoke :except => [:collection, :illustration]
+  acts_as_spoke :except => [:collection]
 
-  belongs_to :blog_forum, :class_name => 'Forum', :foreign_key => 'blog_forum_id'
-  belongs_to :editorial_forum, :class_name => 'Forum', :foreign_key => 'editorial_forum_id'
-
+  has_many :active_collections, :dependent => :destroy
   has_many :users, :order => 'lastname, firstname', :dependent => :nullify
-  has_many :user_groups, :order => 'name', :dependent => :destroy
-  has_many :bundles, :order => 'name', :dependent => :destroy
   has_many :sources, :order => 'name', :dependent => :destroy
   has_many :nodes, :order => 'name', :dependent => :destroy
-  has_many :surveys, :dependent => :destroy
-  has_many :questions, :order => 'name', :dependent => :destroy
-  has_many :blogentries, :order => 'date DESC', :dependent => :destroy
+  has_many :bundles, :order => 'name', :dependent => :destroy
   has_many :occasions, :order => 'name', :dependent => :destroy
-  has_many :forums, :order => 'name', :dependent => :destroy
   has_many :topics, :order => 'name', :dependent => :destroy
   has_many :posts, :order => 'date DESC', :dependent => :destroy
   has_many :tags, :order => 'name ASC', :dependent => :destroy
   
-  cattr_accessor :current_collection
+  cattr_accessor :current_collections
   
   def allows_registration?
     allow_registration > 0

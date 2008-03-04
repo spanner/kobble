@@ -1,5 +1,5 @@
 class EditObserver < ActiveRecord::Observer
-  observe Source, Node, Bundle, Tag, Scratchpad, Occasion, Flag, Question, Survey, Blogentry, Forum, Topic, Post, UserGroup, Answer
+  observe Source, Node, Bundle, Tag, Scratchpad, Occasion, Flag, Topic, Post
   
   cattr_accessor :current_user
   

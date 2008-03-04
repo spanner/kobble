@@ -1,6 +1,5 @@
 <li id="post_<%= minilist.id %>">
   <%= link_to( truncate(minilist.body, 120), topic_path(
-									:forum_id => minilist.forum_id, 
 									:id => minilist.topic_id, 
 									:anchor => minilist.dom_id
 								)) %>

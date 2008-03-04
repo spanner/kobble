@@ -1,9 +1,0 @@
-<div class="listrow <%= cycle("odd", "even", :name => "itemlist") %>" id="answer_<%= list.id %>">
-  <h3>
-    <%= render :partial => 'shared/icon', :locals => { :this => list, :caption => list.name, :with_caption => false } %>
-    from <%= link_to list.creator.name, :controller => 'users', :action => 'show', :id => list.creator %>
-    <%= render :partial => 'shared/admin_buttons', :locals => {:item => list, :inplace => true} %>
-  </h3>
-
-  <%= truncate(list.body.formatted, 240) %>
-</div>

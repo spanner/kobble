@@ -1,8 +1,6 @@
 <%= truncate( item.find_some_text, 240 ) %><br />
 <% if item.source %>
   Excerpted from <%= link_to (item.source.name, :controller => 'sources', :action => 'show', :id => item.source) %> 
-<% elsif item.question %>
-  In response to <%= link_to (item.question.name, :controller => 'questions', :action => 'show', :id => item.question) %> 
 <% else %>
   Loose fragment created 
 <% end %>

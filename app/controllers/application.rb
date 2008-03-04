@@ -6,8 +6,8 @@ class ApplicationController < ActionController::Base
   include StringExtensions
   include ExceptionNotifiable
 
-  helper_method :current_user, :current_collection, :logged_in?, :activated?, :admin?, :editor?, :last_active
-  before_filter :editor_required
+  helper_method :current_user, :current_collections, :logged_in?, :activated?, :admin?, :editor?, :last_active
+  before_filter :login_required
   before_filter :set_context
   layout :choose_layout
   exception_data :exception_report_data
@@ -17,31 +17,33 @@ class ApplicationController < ActionController::Base
   end
   
   def set_context
-    @display = 'list'
     @scratch = current_user.find_or_create_scratchpads if logged_in?
     EditObserver.current_user = current_user
-    Collection.current_collection = User.current_collection = current_collection
-    redirect_to :controller => 'collections', :action => 'index' if logged_in? && current_collection == :false
+    Collection.current_collections = User.current_collections = current_collections
+    redirect_to :controller => 'collections', :action => 'index' if logged_in? && current_collections.empty?
   end
   
-  def limit_to_active_collection(klass=nil)
-    t = klass ? "#{klass.table_name}." : ''
-    ["#{t}collection_id = ?", current_collection]
+  def limit_to_active_collections(klass=nil)
+    [active_collections_clause(klass), current_collections]
   end
   
-  def limit_to_active_collection_and_visible(klass=nil)
+  def limit_to_active_collections_and_visible(klass=nil)
     t = klass ? "#{klass.table_name}." : ''
-    ["#{t}collection_id = ? and #{t}visibility <= ?", current_collection, current_user.status]
+    [active_collections_clause(klass) + " and #{t}visibility <= ?", current_collections, current_user.status]
   end
 
-  def limit_to_active_collection_and_this_week(klass=nil)
+  def limit_to_active_collections_and_this_week(klass=nil)
     t = klass ? "#{klass.table_name}." : ''
-    ["#{t}collection_id = ? and #{t}created_at >= ?", current_collection, (Time.now - (86400 * 7)).utc]
+    [active_collections_clause(klass) + " and #{t}created_at >= ?", current_collection, (Time.now - (86400 * 7)).utc]
+  end
+
+  def active_collections_clause(klass=nil)
+    t = klass ? "#{klass.table_name}." : ''
+    "#{t}collection_id in (" + current_collections.map{'?'}.join(',') + ")"
   end
 
   def choose_layout
     return 'standard' if logged_in? && editor?
-    return current_collection.abbreviation.to_s if current_collection
     return 'login'
   end
 
@@ -181,7 +183,7 @@ class ApplicationController < ActionController::Base
     def exception_report_data
       {
         :user => current_user,
-        :collection => current_collection
+        :collections => current_collections
       }
     end
 end

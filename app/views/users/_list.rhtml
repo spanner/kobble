@@ -29,9 +29,6 @@
 				<%= pluralize(list.created_sources.count, 'document or recording', 'documents or recordings') %>
 				and <%= pluralize(list.created_bundles.count, 'set') %> in this collection.
 			<% end %>
-			<% unless list.user_group.nil? %>
-				<br />Belongs to group: <%= link_to list.user_group.name, :controller => 'user_groups', :action => 'show', :id => list.user_group %>
-			<% end %>
     </p>
 
   </div>

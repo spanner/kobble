@@ -25,25 +25,6 @@
 </select>
 </p>
 
-<p><label for="user_login">Role</label><br/>
-<%= text_field 'user', 'role', 'class' => "standard" %>  <br />
-<span class="formnote"></span></p>
-
-<p><label for="user_login">Workplace</label><br/>
-<%= text_field 'user', 'workplace', 'class' => "standard" %>  <br />
-<span class="formnote"></span></p>
-
-<p><label for="user_login">Phone</label><br/>
-<%= text_field 'user', 'phone', 'class' => "standard" %>  <br />
-<span class="formnote"></span></p>
-
-
-<p><label for="user_group">Which of these descriptions suits this person best?</label><br />
-<% current_collection.user_groups.each do |ug| %>
-	<%= radio_button('user', "user_group_id", ug.id) %> <%= ug.prompt %><br />
-<% end %>
-<%= radio_button('user', "user_group_id", '') %> None of these<br />
-</p>
 
 <div class="formbuttons">
   <%= submit_tag "Store User" %> or

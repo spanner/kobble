@@ -5,32 +5,4 @@
 	<% end %>
 </h1>
 
-<p class="small">
-	tag: <%= @collection.abbreviation %><br />
-	status: <%= @collection.status %><br />
-	invites registration: <%= @collection.allow_registration ? 'yes' : 'no' %><br />
-	<% if @collection.blog_forum %>commentary forum: <%= link_to @collection.blog_forum.name, forum_path(@collection.blog_forum) %><br /><% end %>
-	<% if @collection.editorial_forum %>editorial forum: <%= link_to @collection.editorial_forum.name, forum_path(@collection.editorial_forum) %><% end %>
-</p>
-
 <%= @collection.description.formatted unless @collection.description.nil? %>
-
-<% unless @collection.invitation.nil? %>
-	<h2>Invitation</h2>
-	<%= @collection.invitation.formatted %>
-<% end %>
-
-<% unless @collection.privacy.nil? %>
-	<h2>Privacy Statement</h2>
-	<%= @collection.privacy.formatted unless @collection.privacy.nil? %>
-<% end %>
-
-<% unless @collection.welcome.nil? %>
-	<h2>Welcome text</h2>
-	<%= @collection.welcome.formatted unless @collection.welcome.nil? %>
-<% end %>
-
-<% unless @collection.background.nil? %>
-	<h2>Background text</h2>
-	<%= @collection.background.formatted unless @collection.background.nil? %>
-<% end %>

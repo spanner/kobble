@@ -8,43 +8,8 @@
 <p><label for="collection_abbreviation">Abbreviation (eg in headers)</label><br />
 <%= text_field 'collection', 'abbreviation', 'class' => "standard" %></p>
 
-<p><label for="collection_url">Collection url</label><br />
-<%= text_field 'collection', 'url', 'class' => "standard" %></p>
-
-<p><label for="collection_email_from">Email comes from</label><br />
-<%= text_field 'collection', 'email_from', 'class' => "standard" %></p>
-
 <p><label for="collection_synopsis">Description</label><br />
 <%= text_area 'collection', 'description', 'rows' => 4, 'class' => "standard" %></p>
-
-<p><label for="collection_speaker_id">Discussion forum for blog comments<br />
-  <%= select('collection', "blog_forum_id", @collection.forums.collect{|f| [f.name, f.id] }, {:include_blank => true}, {:class => 'standard'}) %>
-</label><br />
-<%= link_to "create a new forum", {:controller => 'forums', :action => 'new'}, {:class=>'modalform', :id => "extend_collection_blog_forum_id"} %></p>
-
-<p><label for="collection_speaker_id">Discussion forum for editorial comments<br />
-  <%= select('collection', "editorial_forum_id", @collection.forums.collect{|f| [f.name, f.id] }, {:include_blank => true}, {:class => 'standard'}) %>
-</label><br />
-<%= link_to "create a new forum", {:controller => 'forums', :action => 'new'}, {:class=>'modalform', :id => "extend_collection_editorial_forum_id"} %></p>
-
-<p><a href="#" class="displaycontrol disappears" id="show_welcome">+ add welcomes and explanations</a></p>
-
-<div id="hide_welcome" class="slideable">
-	<p><label for="collection_invitation">Invitation (or other covering statement)</label><br />
-	<%= text_area 'collection', 'invitation', 'rows' => 12, 'class' => "standard" %></p>
-
-	<p><label for="collection_privacy">Privacy statement</label><br />
-	<%= text_area 'collection', 'privacy', 'rows' => 12, 'class' => "standard" %></p>
-
-	<p><label for="collection_welcome">Front page welcome</label><br />
-	<%= text_area 'collection', 'welcome', 'rows' => 12, 'class' => "standard" %></p>
-
-	<p><label for="collection_welcome">Background page</label><br />
-	<%= text_area 'collection', 'background', 'rows' => 12, 'class' => "standard" %></p>
-
-	<p><label for="collection_welcome">FAQ text</label><br />
-	<%= text_area 'collection', 'faq', 'rows' => 12, 'class' => "standard" %></p>
-</div>
 	
 <div class="formbuttons">
   <%= submit_tag "Store Document" %> or

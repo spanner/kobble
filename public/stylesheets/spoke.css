@@ -761,7 +761,7 @@ div.mainlist li a img {
   float: left;
 }
 
-div.mainlist li.collection a.listed { background-image: url(/images/furniture/spoke/grey/collection.png); }
+div.mainlist li.collection a.listed { background-image: url(/images/furniture/spoke/blue/collection.png); }
 div.mainlist li.node a.listed { background-image: url(/images/furniture/spoke/blue/node.png); }
 div.mainlist li.source a.listed { background-image: url(/images/furniture/spoke/blue/source.png); }
 div.mainlist li.bundle a.listed { background-image: url(/images/furniture/spoke/blue/bundle.png); }

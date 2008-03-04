@@ -6,7 +6,7 @@
   <title>Spoke</title>
   <script type="text/javascript" src="/js/mootools.js"></script>
   <script type="text/javascript" src="/js/extensions.js"></script>
-  <script type="text/javascript" src="/js/interface.js"></script>
+  <script type="text/javascript" src="/js/spoke.js"></script>
   <link rel="stylesheet" href="/stylesheets/spoke.css" type="text/css" />
 </head>
 <body>
@@ -23,20 +23,10 @@
     </div>  
           
 	  <div id="navigation">
-    	<% if editor? %>
-	      <% if admin? %><%= link_to 'collections', {:controller => 'collections'}, {:class => (request.parameters[:controller] == 'collections' ? 'fg' : '')} %><% end %>
-	      <%= link_to 'sources', {:controller => 'sources'}, {:class => (request.parameters[:controller] == 'sources' ? 'fg' : '')} %>
-	      <%= link_to 'fragments', {:controller => 'nodes'}, {:class => (request.parameters[:controller] == 'nodes' ? 'fg' : '')} %>
-	      <%= link_to 'sets', {:controller => 'bundles'}, {:class => (request.parameters[:controller] == 'bundles' ? 'fg' : '')} %>
-	      <%= link_to 'people', {:controller => 'users'}, {:class => (request.parameters[:controller] == 'users' ? 'fg' : '')} %>
-	      <%= link_to 'tags', {:controller => 'tags'}, {:class => (request.parameters[:controller] == 'tags' ? 'fg' : '')} %>
-	      <%= link_to 'blog', {:controller => 'blogentries'}, {:class => (request.parameters[:controller] == 'blogentries' ? 'fg' : '')} %>
-	      <%= link_to 'discussion', {:controller => 'forums'}, {:class => (request.parameters[:controller] == 'forums' ? 'fg' : '')} %>
-	      <%= link_to 'questions', {:controller => 'questions'}, {:class => (request.parameters[:controller] == 'questions' ? 'fg' : '')} %>
-	      <%= link_to 'log out', {:controller => 'account', :action => 'logout'}, {:class => 'action'} %>
-    	<% else %>
-      	<%= link_to 'log out', {:controller => 'account', :action => 'logout'}, {:class => 'action'} %>
-    	<% end %>
+      <% [Collection, Source, Node, Bundle, User, Tag].each do |klass| %>
+        <%= link_to klass.nice_title.pluralize, {:controller => klass.to_s.underscore.pluralize}, {:class => (request.parameters[:controller] == klass.to_s.underscore.pluralize ? "fg" : '')} %>
+      <% end %>
+      <%= link_to 'log out', {:controller => 'account', :action => 'logout'}, {:class => 'action'} %>
     	<div id="preferences">
     	  <input type="checkbox" id="showDetails" name="showDetails" value="1" class="spokepref"> <label for="showDetails">float details</label>
     	  <input type="checkbox" id="confirmDrops" name="confirmDrops" value="1" class="spokepref"> <label for="confirmDrops">confirm drops</label>
@@ -52,9 +42,13 @@
       <% for pad in @scratch %>
         <a href="#" class="padtab" id="tab_scratchpad_<%= pad.id %>"><%= pad.name %></a>
       <% end %>
+      <a href="#" class="padtab minor" id="tab_scratchpad_collections">collections</a>
     </div>
     <div id="box_scratchpad">
       <%= render :partial => 'shared/scratchpad', :collection => @scratch %>
+      <div id="scratchpad_collections" class="scratchpage">
+        collection list
+      </div>    
     </div>
   </div>
  
