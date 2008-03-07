@@ -14,8 +14,8 @@ class UsersController < ApplicationController
   # this is user review and management for admins
   # logging in and registration is in account_controller
 
-  def limit_to_active_collection
-    ["users.collection_id = ? or users.status >= 200", current_collection]
+  def limit_to_active_collections
+    [active_collections_clause(User) + " and users.status >= 200", current_collections]
   end
     
   def show

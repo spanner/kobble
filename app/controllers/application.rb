@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
     @scratch = current_user.find_or_create_scratchpads if logged_in?
     EditObserver.current_user = current_user
     Collection.current_collections = User.current_collections = current_collections
-    redirect_to :controller => 'collections', :action => 'index' if logged_in? && current_collections.empty?
+    redirect_to :controller => 'collections', :action => 'choose' if logged_in? && current_collections.empty?
   end
   
   def limit_to_active_collections(klass=nil)
@@ -55,7 +55,7 @@ class ApplicationController < ActionController::Base
     perpage = params[:perpage] || self.list_length
     sort_options = request.parameters[:controller].to_s._as_class.sort_options
     sort = sort_options[params[:sort]] || sort_options[request.parameters[:controller].to_s._as_class.default_sort]
-    @list = request.parameters[:controller].to_s._as_class.find(:all, :conditions => limit_to_active_collection, :order => sort, :page => {:size => perpage, :current => params[:page]})
+    @list = request.parameters[:controller].to_s._as_class.find(:all, :conditions => limit_to_active_collections, :order => sort, :page => {:size => perpage, :current => params[:page]})
     respond_to do |format|
       format.html { render :template => 'shared/mainlist' }
       format.js { render :template => 'shared/mainlist', :layout => false }
@@ -66,7 +66,7 @@ class ApplicationController < ActionController::Base
     perpage = params[:perpage] || 100
     sort_options = request.parameters[:controller].to_s._as_class.sort_options
     sort = sort_options[params[:sort]] || sort_options[request.parameters[:controller].to_s._as_class.default_sort]
-    @list = request.parameters[:controller].to_s._as_class.find(:all, :conditions => limit_to_active_collection, :order => sort, :page => {:size => perpage, :current => params[:page]})
+    @list = current_collections ? request.parameters[:controller].to_s._as_class.find(:all, :conditions => limit_to_active_collections, :order => sort, :page => {:size => perpage, :current => params[:page]}) : []
     respond_to do |format|
       format.html { render :template => 'shared/gallery' }
       format.js { render :template => 'shared/gallery', :layout => false }

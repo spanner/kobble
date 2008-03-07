@@ -115,7 +115,7 @@ module AuthenticatedSystem
       return false unless login_required
       activated? ? true : access_inactive
     end
-
+    
     # Redirect as appropriate when an access request fails.
     #
     # The default action is to redirect to the login screen.

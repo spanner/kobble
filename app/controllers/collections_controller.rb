@@ -9,10 +9,15 @@ class CollectionsController < ApplicationController
     @collection = Collection.find(params[:id])
   end
 
-  def limit_to_active_collection(klass=nil)
+  def limit_to_active_collections(klass=nil)
     []
   end
 
+  def choose
+    @collections = current_user.created_collections
+    @collections = Collection.find(:all, :conditions => "")
+  end
+  
   def new
     @collection = Collection.new
   end

@@ -7,8 +7,8 @@ class User < ActiveRecord::Base
 
   acts_as_spoke
 
-  has_many :active_collections, :dependent => :destroy
-  has_many :collections, :through => :active_collections, :conditions => ['active_collections.active = ?', true], :source => :collection
+  has_many :collection_users, :dependent => :destroy
+  has_many :collections, :through => :collection_users, :conditions => ['collection_users.active = ?', true], :source => :collection
   
   has_many :sources, :class_name => 'Source', :foreign_key => 'speaker_id'
   has_many :nodes, :class_name => 'Node', :foreign_key => 'speaker_id'
