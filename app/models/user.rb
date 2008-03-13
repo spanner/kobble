@@ -5,20 +5,22 @@ class User < ActiveRecord::Base
   attr_accessor :password_confirmation
   attr_accessor :old_password
 
-  acts_as_spoke
-
+  acts_as_spoke :except => :collection
+  
+  belongs_to :account
+  
   has_many :collection_users, :dependent => :destroy
   has_many :collections, :through => :collection_users, :conditions => ['collection_users.active = ?', true], :source => :collection
   
   has_many :sources, :class_name => 'Source', :foreign_key => 'speaker_id'
   has_many :nodes, :class_name => 'Node', :foreign_key => 'speaker_id'
-  has_many :posts, :class_name => 'Post', :foreign_key => 'created_by', :dependent => :nullify
-  
-  has_many :created_collections, :class_name => 'Collection', :foreign_key => 'created_by'
-  has_many :created_nodes, :class_name => 'Node', :foreign_key => 'created_by'
-  has_many :created_sources, :class_name => 'Source', :foreign_key => 'created_by'
+
+  has_many :created_collections, :class_name => 'Collection', :foreign_key => 'created_by', :dependent => :destroy
+  has_many :created_sources, :class_name => 'Source', :foreign_key => 'created_by', :dependent => :nullify
+  has_many :created_nodes, :class_name => 'Node', :foreign_key => 'created_by', :dependent => :nullify
   has_many :created_bundles, :class_name => 'Bundle', :foreign_key => 'created_by', :dependent => :destroy
   has_many :created_topics, :class_name => 'Topic', :foreign_key => 'created_by', :dependent => :destroy
+  has_many :created_posts, :class_name => 'Post', :foreign_key => 'created_by', :dependent => :destroy  
   has_many :created_scratchpads, :class_name => 'Scratchpad', :foreign_key => 'created_by', :dependent => :destroy
   has_many :created_tags, :class_name => 'Tag', :foreign_key => 'created_by', :dependent => :destroy
 
@@ -37,8 +39,6 @@ class User < ActiveRecord::Base
   before_create :make_activation_code
   before_save :encrypt_password
 
-  cattr_accessor :current_collections
-  
   def self.sort_options
     {
       "last name" => "lastname, firstname",

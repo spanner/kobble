@@ -9,27 +9,19 @@ module ActiveRecord
 
       # This +acts_as+ extension consolidates common spoke functionality in one place for dryness.
       #
-      # It defines three class methods:
+      # It defines one class method:
       #
       # acts_as_spoke
-      #   creates the standard ownership and collection relations
-      # acts_as_organised
-      #   creates the scratchpad, tagging, flagging and discussion links that most objects enjoy
-      # acts_as_illustrated
-      #   creates the file_column columns for image and clip files
+      #   which creates the standard ownership and collection relations
       #
       # :only and :except parameters can be supplied, so eg:
-      # acts_as_organised :only => :tags
-      # acts_as_illustrated :except => :clip
       #
       # the options are:
-      # acts_as_spoke: :collection, :creator, :updater
-      # acts_as_organised: :bundles, :scratchpads, :tags, :flags, :topics
-      # acts_as_illustrated: :clip, :image
+      # acts_as_spoke: :collection, :creator, :updater, :illustration, :discussion
       #
       # by default all relations are created
       #
-      # (which means that they're pushed onto class variable arrays that are used to define has_many_polymorphs relations after initialization)
+      # (which usually means that they're pushed onto class variable arrays that are used to define has_many_polymorphs relations after initialization)
       
       module ClassMethods
 

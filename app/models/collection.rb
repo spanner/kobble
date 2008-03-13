@@ -1,7 +1,9 @@
 class Collection < ActiveRecord::Base
 
   acts_as_spoke :except => [:collection]
-
+  belongs_to :user
+  belongs_to :account
+  
   has_many :active_collections, :dependent => :destroy
   has_many :users, :order => 'lastname, firstname', :dependent => :nullify
   has_many :sources, :order => 'name', :dependent => :destroy

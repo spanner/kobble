@@ -9,7 +9,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 80) do
+ActiveRecord::Schema.define(:version => 82) do
+
+  create_table "accounts", :force => true do |t|
+    t.integer "user_id"
+    t.string  "name"
+    t.string  "image"
+    t.string  "status"
+  end
 
   create_table "bundles", :force => true do |t|
     t.string   "name"
@@ -65,6 +72,7 @@ ActiveRecord::Schema.define(:version => 80) do
     t.integer  "editorial_forum_id"
     t.integer  "survey_forum_ud"
     t.string   "email_from"
+    t.integer  "account_id"
   end
 
   create_table "flaggings", :force => true do |t|
@@ -285,6 +293,7 @@ ActiveRecord::Schema.define(:version => 80) do
     t.integer  "receive_news_email",                      :default => 1
     t.integer  "receive_html_email"
     t.integer  "subscribe_everything"
+    t.integer  "account_id"
   end
 
   add_index "users", ["collection_id"], :name => "index_users_on_collection"

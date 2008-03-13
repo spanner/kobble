@@ -1,6 +1,6 @@
 class Tag < ActiveRecord::Base
   acts_as_spoke
-  has_many_polymorphs :taggables, :from => self.organised_classes(:except => :tags), :through => :taggings
+  #has_many_polymorphs :taggables, :from => self.organised_classes(:except => :tags), :through => :taggings
   acts_as_tree :order => 'name'
   acts_as_catcher :taggables, {:tag => :subsume}
 
