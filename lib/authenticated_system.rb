@@ -129,7 +129,7 @@ module AuthenticatedSystem
       respond_to do |accepts|
         accepts.html do
           store_location
-          redirect_to :controller => '/account', :action => 'login'
+          redirect_to :controller => '/login', :action => 'login'
         end
         accepts.xml do
           headers["Status"]           = "Unauthorized"
@@ -145,7 +145,7 @@ module AuthenticatedSystem
       respond_to do |accepts|
         accepts.html do
           store_location
-          redirect_to :controller => '/account', :action => 'forbidden'
+          redirect_to :controller => '/login', :action => 'forbidden'
         end
         accepts.xml do
           headers["Status"]           = "Unauthorized"
@@ -161,7 +161,7 @@ module AuthenticatedSystem
       respond_to do |accepts|
         accepts.html do
           store_location
-          redirect_to :controller => '/account', :action => 'index'
+          redirect_to :controller => '/login', :action => 'index'
         end
         accepts.xml do
           headers["Status"]           = "Unauthorized"

@@ -19,11 +19,11 @@ class LoginController < ApplicationController
     @user = User.find_by_activation_code(activator) 
     if @user and @user.activate
       current_user = @user
-      redirect_to :controller => '/account', :action => 'index'
+      redirect_to :controller => '/login', :action => 'index'
       flash[:notice] = "Your account has been activated." 
     else
       flash[:error] = "Unable to activate your account. Please check activation code." 
-      redirect_to :controller => '/account', :action => 'index'
+      redirect_to :controller => '/login', :action => 'index'
     end
   end 
   
@@ -51,7 +51,7 @@ class LoginController < ApplicationController
     @user = User.find_by_activation_code(activator)
     if @user and @user.accept_new_password
       self.current_user = @user
-      redirect_to :controller => '/account', :action => 'index'
+      redirect_to :controller => '/login', :action => 'index'
       flash[:notice] = "Your password has been reset. Click on the 'you' tab to change it to something more memorable." 
     else
       flash[:error] = "Unable to reset your password. Please check activation code." 
@@ -79,7 +79,7 @@ class LoginController < ApplicationController
     cookies.delete :auth_token
     reset_session
     flash[:notice] = "You have been logged out."
-    redirect_back_or_default(:controller => '/account', :action => 'index')
+    redirect_back_or_default(:controller => '/login', :action => 'index')
   end
 
   def forbidden

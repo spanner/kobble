@@ -1,43 +1,13 @@
 require 'digest/sha1'
 
-class User < ActiveRecord::Base
-  attr_protected :activated_at
-  attr_accessor :password_confirmation
-  attr_accessor :old_password
+class Account < ActiveRecord::Base
 
-  acts_as_spoke
+  belongs_to :holder, :class_name => 'User', :foreign_key => 'user_id'
+  has_many :collections
+  before_create :find_or_create_holder
 
-  has_many :collection_users, :dependent => :destroy
-  has_many :collections, :through => :collection_users, :conditions => ['collection_users.active = ?', true], :source => :collection
-  
-  has_many :sources, :class_name => 'Source', :foreign_key => 'speaker_id'
-  has_many :nodes, :class_name => 'Node', :foreign_key => 'speaker_id'
-  has_many :posts, :class_name => 'Post', :foreign_key => 'created_by', :dependent => :nullify
-  
-  has_many :created_collections, :class_name => 'Collection', :foreign_key => 'created_by'
-  has_many :created_nodes, :class_name => 'Node', :foreign_key => 'created_by'
-  has_many :created_sources, :class_name => 'Source', :foreign_key => 'created_by'
-  has_many :created_bundles, :class_name => 'Bundle', :foreign_key => 'created_by', :dependent => :destroy
-  has_many :created_topics, :class_name => 'Topic', :foreign_key => 'created_by', :dependent => :destroy
-  has_many :created_scratchpads, :class_name => 'Scratchpad', :foreign_key => 'created_by', :dependent => :destroy
-  has_many :created_tags, :class_name => 'Tag', :foreign_key => 'created_by', :dependent => :destroy
 
-  has_many :monitorships, :dependent => :destroy
-  has_many :monitored_topics, :through => :monitorships, :conditions => ['monitorships.active = ?', true], :order => 'topics.replied_at desc', :source => :topic
 
-  validates_presence_of     :firstname, :lastname
-  validates_presence_of     :login,                      :if => :login_required?
-  validates_presence_of     :password,                   :if => :password_required?
-  validates_length_of       :password, :within => 4..40, :if => :password_required?
-  validates_confirmation_of :password,                   :if => :password_required?
-  validates_length_of       :login,    :within => 3..40
-  validates_length_of       :email,    :within => 3..100
-  validates_uniqueness_of   :login, :email, :case_sensitive => false
-  
-  before_create :make_activation_code
-  before_save :encrypt_password
-
-  cattr_accessor :current_collections
   
   def self.sort_options
     {
