@@ -28,14 +28,14 @@ module AuthenticatedSystem
     def current_user=(new_user)
       session[:user] = (new_user.nil? || new_user.is_a?(Symbol)) ? nil : new_user.id
       @current_user = EditObserver.current_user = new_user
-      Collection.current_collection = User.current_collection = current_collection
+      Collection.current_collections = User.current_collections = current_collections
       session[:topics] = session[:forums] = {}
       update_last_seen_at
     end
 
     # handy access to the foreground collection
     def current_collections
-      @current_collections ||= current_user.collections
+      logged_in? && @current_collections ||= current_user.collections
     end
     
     def update_last_seen_at
@@ -43,7 +43,6 @@ module AuthenticatedSystem
       User.update_all ['last_seen_at = ?', Time.now.utc], ['id = ?', current_user.id] 
       current_user.last_seen_at = Time.now.utc
     end
-    
     
     # Check if the user is authorized.
     #

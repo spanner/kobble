@@ -1,15 +1,5 @@
-
-<% if current_collection and current_collection.allow_registration %>
-
-	<h1 class="pagetitle">Please log in</h1>
-	<p>If you haven't already, you will first need to <%= link_to 'set up an account', :controller => 'account', :action => 'signup' %>.</p>
-
-<% else %>
-
-	<h1 class="pagetitle">Hello and<br />welcome to spoke</h1>
-	<p>This system is private. Please log in below.</p>
-	
-<% end %>
+<h1 class="pagetitle">Hello and welcome to <a href="http://spoke.spanner.org/">spoke</a></h1>
+<p>This system is private. Please log in below.</p>
 
 <% if @error %>
 	<p class="haserror">
@@ -21,17 +11,17 @@
  <div class="mainform">
 	<% form_tag do -%>
 
-		<p><label for="login">Login</label>
+		<p><label for="login">Username</label><br />
 		<%= text_field_tag 'login', '', :class => 'friendly' %></p>
 
-		<p><label for="password">Password</label>
+		<p><label for="password">Password</label><br />
 		<%= password_field_tag 'password', '', :class => 'friendly' %></p>
 
 		<p><label for="remember_me"><%= check_box_tag 'remember_me' %> Remember me</label></p>
 
 		<p><%= submit_tag 'Log in' %></p>
 		
-		<p><%= link_to "Click here if you've forgotten your password or lost your activation message.", {:action => 'repassword'} %></p>
+		<p><%= link_to "Forgotten your login?", {:action => 'repassword'} %></p>
        
 	<% end -%>
  </div>

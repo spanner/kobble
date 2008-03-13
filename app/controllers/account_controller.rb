@@ -1,103 +1,61 @@
-class AccountController < ApplicationController
-  before_filter :set_context
-  skip_before_filter :login_required  
-  layout :choose_layout
-  
-  def choose_layout
-    return 'standard' if logged_in?
-    return 'login'
+class AccountsController < ApplicationController
+  layout 'standard'
+
+  # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
+  verify :method => :post, :only => [ :reallydestroy, :create, :update ],
+         :redirect_to => { :action => :list }
+
+  def show
+    @collection = Collection.find(params[:id])
   end
 
-  def index
-    @pagetitle = 'welcome'
+  def limit_to_active_collections(klass=nil)
+    []
+  end
+
+  def choose
+    @collections = current_user.created_collections
+    @collections = Collection.find(:all, :conditions => "")
   end
   
-  def activate
-    flash.clear  
-    return if params[:id].nil? and params[:activation_code].nil?
-    activator = params[:id] || params[:activation_code]
-    @user = User.find_by_activation_code(activator) 
-    if @user and @user.activate
-      current_user = @user
-      redirect_to :controller => '/account', :action => 'index'
-      flash[:notice] = "Your account has been activated." 
+  def new
+    @collection = Collection.new
+  end
+
+  def create
+    @collection = Collection.new(params[:collection])
+    if @collection.save
+      flash[:notice] = 'Collection was successfully created.'
+      redirect_to :action => 'list'
     else
-      flash[:error] = "Unable to activate your account. Please check activation code." 
-      redirect_to :controller => '/account', :action => 'index'
+      render :action => 'new'
     end
-  end 
-  
-  def resend_activation
-    
   end
 
-  def repassword
-    @pagetitle = 'reset'
-    return unless request.post?
-    return @error = "Please enter an email address." unless params[:email] && !params[:email].nil? 
-    @user = User.find_by_email(params[:email])
-    return @error = "Sorry: The email address <strong>#{params[:email]}</strong> is not known here." unless @user
-    unless (@user.activated?)
-      UserNotifier.deliver_welcome(@user)
-      return @error = "Sorry: You can't change the password for an account that hasn't been activated. We have resent the activation message instead. Clicking the activation link will log you in and allow you to change your password." 
-    end
-    newpass = @user.provisional_new_password
-    UserNotifier.deliver_newpassword(@user, current_collection)
+  def edit
+    @collection = Collection.find(params[:id])
   end
-  
-  def fixpassword
-    activator = params[:id] || params[:activation_code]
-    redirect_to :action => 'repassword' if activator.nil?
-    @user = User.find_by_activation_code(activator)
-    if @user and @user.accept_new_password
-      self.current_user = @user
-      redirect_to :controller => '/account', :action => 'index'
-      flash[:notice] = "Your password has been reset. Click on the 'you' tab to change it to something more memorable." 
+
+  def update
+    @collection = Collection.find(params[:id])
+    if @collection.update_attributes(params[:collection])
+      flash[:notice] = 'Collection was successfully updated.'
+      redirect_to :action => 'list'
     else
-      flash[:error] = "Unable to reset your password. Please check activation code." 
+      render :action => 'edit'
     end
   end
 
-  def login
-    @pagetitle = 'login'
-    return unless request.post?
-    self.current_user = User.authenticate(params[:login], params[:password])
-    if logged_in?
-      if params[:remember_me] == "1"
-        self.current_user.remember_me
-        cookies[:auth_token] = { :value => self.current_user.remember_token , :expires => self.current_user.remember_token_expires_at }
-      end
-      redirect_back_or_default(:controller => current_user.editor? ? 'nodes' : '/')
-      flash[:notice] = "Logged in successfully"
-    else
-      @error = true
-    end
+  def destroy
+    @collection = Collection.find(params[:id])
+    # shows confirmation page
   end
 
-  def logout
-    self.current_user.forget_me if logged_in?
-    cookies.delete :auth_token
-    reset_session
-    flash[:notice] = "You have been logged out."
-    redirect_back_or_default(:controller => '/account', :action => 'index')
+  def reallydestroy
+    @collection = Collection.find(params[:id])
+    name = @collection.name
+    @collection.destroy
+    flash[:notice] = "#{name} collection removed"
+    redirect_to :action => 'list'
   end
-
-  def forbidden
-    flash[:error] = "Access Denied." 
-  end
-
-  # user's active collection preference is carried in collection relationship
-  
-  def choosecollection
-    collection = Collection.find(params[:id])
-    if(current_user && collection) then
-      current_user.collection = collection
-      current_user.save!
-      redirect_to :controller => 'nodes', :action => 'index'
-    else
-      flash['notice'] = "no such collection?"
-      render :action => 'index'
-    end
-  end
-    
 end
