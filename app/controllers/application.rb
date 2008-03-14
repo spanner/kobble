@@ -53,19 +53,13 @@ class ApplicationController < ActionController::Base
     
   def list
     @klass = request.parameters[:controller].to_s._as_class
-    page = params[:page] || 0
+    page = params[:page] || 1
     perpage = params[:perpage] || self.list_length
     sort_options = request.parameters[:controller].to_s._as_class.sort_options
     sort = sort_options[params[:sort]] || sort_options[request.parameters[:controller].to_s._as_class.default_sort]
     conditions = limit_to_active_collections
 
-
-
-    @count = @klass.count(:conditions => conditions)
-    @pager = ::Paginator.new(@count, perpage) do |offset, pp|
-      @klass.find(:all, :conditions => conditions, :order => sort, :limit => pp, :offset => offset)
-    end
-    @page = @pager.page(page)
+    @list = @klass.paginate :conditions => conditions, :order => sort, :page => page, :per_page => perpage
 
     respond_to do |format|
       format.html { render :template => 'shared/mainlist' }

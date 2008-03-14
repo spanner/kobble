@@ -9,8 +9,10 @@
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
-require 'stemmer'
-require 'will_paginate'
+
+#require 'will_paginate'
+
+#require 'stemmer'
 
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence those specified here

@@ -7,32 +7,19 @@
   <%= render :partial => 'shared/viewcontrol' %>
 </h1>
 
-<% if @page %>
-	<p class="listsummary">
-  	showing <%= @page.first_item_number %> to <%= @page.last_item_number %> 
-  	of <%= pluralize(@count, @klass.nice_title) %>
-  	found in  <%= link_to pluralize(current_collections.size, 'collection'), :controller => 'collections', :action => 'list' %>:
-  	<%= current_collections.map {|c| c.abbreviation }.join(', ') %>
-  	<br />
-  	Order by: 
-  	<% @klass.sort_options.keys.sort.each do |order| %>
-	    <%= link_to_unless_current order, :page => @page.number, :sort => order %><span class="pale"> | </span>
-    <% end %>
-	</p>
+<% if @list %>
 
   <p class="pagecontrol">
-  	pages: <%= @page.number %>
-    <%= link_to("Prev", :page => @page.prev.number) if @page.prev? %>
-    <%= link_to("Next", :page => @page.next.number) if @page.next? %>
+    <%= will_paginate @list %>
   </p>
 
   <div class="mainlist">
     <% counter = 0 %>
-    <% column_length = @pager.per_page / controller.list_columns %>
+    <% column_length = @list.per_page / controller.list_columns %>
     <% column_width = 800 / controller.list_columns %>
     
     <ul class="listcolumn" style="width: <%= column_width.to_i %>px;">
-      <% @page.each do |listed| %>
+      <% @list.each do |listed| %>
         <%= render :partial => 'shared/listed', :locals => {:listed => listed, :catch => true} %>
         <% counter += 1 %>
         <% if counter.remainder(column_length.to_i) == 0 %>
@@ -44,9 +31,7 @@
   </div>
 
   <p class="pagecontrol">
-  	pages: <%= @page.number %>
-    <%= link_to("Prev", :page => @page.prev.number) if @page.prev? %>
-    <%= link_to("Next", :page => @page.next.number) if @page.next? %>
+    <%= will_paginate @list %>
   </p>
 
   <% if editor? %>
