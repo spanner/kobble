@@ -4,20 +4,52 @@ class CollectionsController < ApplicationController
   # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
   verify :method => :post, :only => [ :reallydestroy, :create, :update ],
          :redirect_to => { :action => :list }
-
-  def show
-    @collection = Collection.find(params[:id])
+  
+  def index
+    list
+    render :action => "list"
+  end
+  
+  def set_context
+    @scratch = current_user.find_or_create_scratchpads if logged_in?
+    EditObserver.current_user = current_user
   end
 
-  def limit_to_active_collections(klass=nil)
+  def limit_to_active_collections()
     []
   end
 
-  def choose
-    @collections = current_user.created_collections
-    @collections = Collection.find(:all, :conditions => "")
+  def list
+    # this will be the main dashboard view
+    # but might get moved to accounts_controller::show
+
+    @collections = current_user.account.collections
   end
   
+  def activate
+    @activation = Activation.find_or_initialize_by_user_id_and_collection_id(current_user.id, params[:id])
+    @activation.update_attribute :active, true
+    respond_to do |format| 
+      format.html { render :action => 'list' }
+      format.js { render :layout => false }
+    end
+  end
+  
+  def deactivate
+    Activation.update_all ['active = ?', false], ['user_id = ? and collection_id = ?', current_user.id, params[:id]]
+    respond_to do |format| 
+      format.html { render :action => 'list' }
+      format.js { render :layout => false }
+    end
+  end
+  
+  # and the usual crud:
+  
+  def show
+    @collection = Collection.find(params[:id])
+    # check permission
+  end
+
   def new
     @collection = Collection.new
   end

@@ -16,6 +16,7 @@ var Interface = new Class({
     this.tabs = [];
     this.tabsets = {};
     this.fixedbottom = [];
+    this.inlinelinks = [];
     this.clickthreshold = 6;
     this.cloud = null;
     this.notifyfx = null;
@@ -135,6 +136,9 @@ var Interface = new Class({
   makeTippable: function (elements) {
     this.tips = new SpokeTips(elements);
   },
+  makeToggle: function (elements) {
+    var intf = this; elements.each(function (element) { intf.inlinelinks.push(new Toggle(element)); });
+  },
     
   // this is the main page initialisation routine: it gets called on domready
   
@@ -156,9 +160,8 @@ var Interface = new Class({
 	  this.addTabs($ES('a.tab', scope));
 	  this.addScratchTabs($ES('a.padtab', scope));
 	  this.makeFixed($ES('div.fixedbottom', scope));
+    this.makeToggle($ES('a.toggle', scope))
 
-    $ES('a.autolink', scope).each( function (a) { new AutoLink(a); });
-    $ES('a.toggle', scope).each( function (a) { new Toggle(a); });
     $ES('input.cloudcontrol', scope).each( function (element) {
       element.addEvent('click', function (e) {
         var band = element.idparts().id;
@@ -875,9 +878,51 @@ var ScratchSet = TabSet.extend({
         bodyholder.remove();
 		  }
 		}).request();
-		
-    
-    
 	}
 });
 
+var AutoLink = new Class({
+  initialize: function (a) {
+    this.link = a;
+    this.link.onclick = this.send.bind(this);
+    this.catcher = new Element('div', {'style': 'display: none;'}).injectAfter(a).hide();
+  },
+  send: function (e) {
+    e = new Event(e).stop();
+    e.preventDefault();
+    this.link.blur();
+    al = this;
+		new Ajax(this.link.getProperty('href'), {
+			method: 'get',
+			update: al.catcher,
+		  onRequest: function () {al.waiting();},
+		  onComplete: function () {al.finished();},
+		  onFailure: function () {al.failed();}
+		}).request();
+  },
+  waiting: function () { this.link.addClass('waiting'); },
+  notWaiting: function () { this.link.removeClass('waiting'); },
+  finished: function () {
+    this.link.remove();
+    this.catcher.show();
+    $ES('a.autolink', this.catcher).each( function (a) { new AutoLink(a); });
+  },
+  failed: function () {
+    this.notWaiting();
+    this.catcher.remove();
+    this.link.show();
+  }
+});
+
+var Toggle = AutoLink.extend ({
+  finished: function () {
+    this.notWaiting();
+    if (this.link.hasClass('ticked')) {
+      this.link.removeClass('ticked');
+      this.link.addClass('crossed');
+    } else {
+      this.link.removeClass('crossed');
+      this.link.addClass('ticked');
+    }
+  }
+});

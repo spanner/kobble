@@ -28,7 +28,7 @@ module AuthenticatedSystem
     def current_user=(new_user)
       session[:user] = (new_user.nil? || new_user.is_a?(Symbol)) ? nil : new_user.id
       @current_user = EditObserver.current_user = new_user
-      Collection.current_collections = User.current_collections = current_collections
+      Collection.current_collections = current_collections
       session[:topics] = session[:forums] = {}
       update_last_seen_at
     end

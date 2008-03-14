@@ -91,6 +91,12 @@ module ActiveRecord
         
         public
         
+        def owned_by
+          return self.account if self.respond_to?('account')
+          return self.collection.account if self.respond_to?('collection')
+          return self.creator.account if self.respond_to?('creator')
+        end
+        
         def has_tags?
           self.respond_to?('tags') && self.tags.count > 0
         end

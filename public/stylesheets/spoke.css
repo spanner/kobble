@@ -241,10 +241,6 @@ ul.starry {
   color: #695D54;
 }
 
-
-
-
-
 li.add { list-style-image: url(/images/furniture/buttons/plus.png); }
 li.add a { color: #6cb262; }
 li.delete { list-style-image: url(/images/furniture/buttons/cross.png);}

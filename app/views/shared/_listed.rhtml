@@ -4,7 +4,7 @@
 <li 
   id="<%= listed.class.to_s.downcase %>_<%= listed.id %>" 
   class="<%= listed.class.to_s.downcase %> draggable expandable<%= ' catcher' if catch && listed.can_catch %>"
-  title="<%= listed.class.nice_title %>: <%= name %>"
+  title="<%= listed.collection.abbreviation %>: <%= name %>"
   <% if catch && listed.can_catch %>catches="<%= listed.can_catch.join(',') %>"<% end %>
 >
 

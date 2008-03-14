@@ -9,8 +9,8 @@ class User < ActiveRecord::Base
   
   belongs_to :account
   
-  has_many :collection_users, :dependent => :destroy
-  has_many :collections, :through => :collection_users, :conditions => ['collection_users.active = ?', true], :source => :collection
+  has_many :activations, :dependent => :destroy
+  has_many :collections, :through => :activations, :conditions => ['activations.active = ?', true], :source => :collection
   
   has_many :sources, :class_name => 'Source', :foreign_key => 'speaker_id'
   has_many :nodes, :class_name => 'Node', :foreign_key => 'speaker_id'
@@ -189,6 +189,10 @@ class User < ActiveRecord::Base
     
     def has_sources?
       self.respond_to?('sources') && self.sources.count > 0
+    end
+    
+    def using_collection? (collection)
+      self.collections.include?(collection)
     end
     
   protected

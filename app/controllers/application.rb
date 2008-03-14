@@ -19,17 +19,17 @@ class ApplicationController < ActionController::Base
   def set_context
     @scratch = current_user.find_or_create_scratchpads if logged_in?
     EditObserver.current_user = current_user
-    Collection.current_collections = User.current_collections = current_collections
-    redirect_to :controller => 'collections', :action => 'choose' if logged_in? && current_collections.empty?
+    Collection.current_collections = current_collections
+    redirect_to :controller => 'collections', :action => 'list' if logged_in? && current_collections.empty?
   end
   
   def limit_to_active_collections(klass=nil)
-    [active_collections_clause(klass), current_collections]
+    [active_collections_clause(klass)] + current_collections.map { |c| c.id }
   end
   
   def limit_to_active_collections_and_visible(klass=nil)
     t = klass ? "#{klass.table_name}." : ''
-    [active_collections_clause(klass) + " and #{t}visibility <= ?", current_collections, current_user.status]
+    [active_collections_clause(klass) + " and #{t}visibility <= ?"] + current_collections + [current_user.status]
   end
 
   def limit_to_active_collections_and_this_week(klass=nil)
@@ -52,10 +52,21 @@ class ApplicationController < ActionController::Base
   end
     
   def list
+    @klass = request.parameters[:controller].to_s._as_class
+    page = params[:page] || 0
     perpage = params[:perpage] || self.list_length
     sort_options = request.parameters[:controller].to_s._as_class.sort_options
     sort = sort_options[params[:sort]] || sort_options[request.parameters[:controller].to_s._as_class.default_sort]
-    @list = request.parameters[:controller].to_s._as_class.find(:all, :conditions => limit_to_active_collections, :order => sort, :page => {:size => perpage, :current => params[:page]})
+    conditions = limit_to_active_collections
+
+
+
+    @count = @klass.count(:conditions => conditions)
+    @pager = ::Paginator.new(@count, perpage) do |offset, pp|
+      @klass.find(:all, :conditions => conditions, :order => sort, :limit => pp, :offset => offset)
+    end
+    @page = @pager.page(page)
+
     respond_to do |format|
       format.html { render :template => 'shared/mainlist' }
       format.js { render :template => 'shared/mainlist', :layout => false }

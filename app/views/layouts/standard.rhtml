@@ -23,10 +23,11 @@
     </div>  
           
 	  <div id="navigation">
+      <%= link_to 'account', {:controller => 'accounts', :action => 'show', :id => current_user.account}, {:class => 'action'} %>
       <% [Collection, Source, Node, Bundle, User, Tag].each do |klass| %>
         <%= link_to klass.nice_title.pluralize, {:controller => klass.to_s.underscore.pluralize}, {:class => (request.parameters[:controller] == klass.to_s.underscore.pluralize ? "fg" : '')} %>
       <% end %>
-      <%= link_to 'log out', {:controller => 'account', :action => 'logout'}, {:class => 'action'} %>
+      <%= link_to 'log out', {:controller => 'login', :action => 'logout'}, {:class => 'admin'} %>
     	<div id="preferences">
     	  <input type="checkbox" id="showDetails" name="showDetails" value="1" class="spokepref"> <label for="showDetails">float details</label>
     	  <input type="checkbox" id="confirmDrops" name="confirmDrops" value="1" class="spokepref"> <label for="confirmDrops">confirm drops</label>
@@ -42,13 +43,9 @@
       <% for pad in @scratch %>
         <a href="#" class="padtab" id="tab_scratchpad_<%= pad.id %>"><%= pad.name %></a>
       <% end %>
-      <a href="#" class="padtab minor" id="tab_scratchpad_collections">collections</a>
     </div>
     <div id="box_scratchpad">
       <%= render :partial => 'shared/scratchpad', :collection => @scratch %>
-      <div id="scratchpad_collections" class="scratchpage">
-        collection list
-      </div>    
     </div>
   </div>
  
