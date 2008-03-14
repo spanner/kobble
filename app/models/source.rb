@@ -9,6 +9,18 @@ class Source < ActiveRecord::Base
   file_column :file
   before_save FileCallbacks.new
   acts_as_catcher :tags, :flags
+  acts_as_ferret :fields => {
+    :name => { :boost => 3 },
+    :synopsis => { :boost => 2 },
+    :body => { :boost => 1 },
+    :notes => {},
+    :extracted_text => {},
+    :notes => {},
+    :synopsis => {},
+    :arising => {},
+    :observations => {},
+    :emotions => {}
+  }
 
   def self.nice_title
     "source"

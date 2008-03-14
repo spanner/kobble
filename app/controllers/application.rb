@@ -51,6 +51,18 @@ class ApplicationController < ActionController::Base
     admin?
   end
     
+
+  # shared retrieval mechanisms
+
+  def search
+    @klass = request.parameters[:controller].to_s._as_class
+    @list = @klass.paginate_search params[:q], :page => params[:page]
+    respond_to do |format|
+      format.html { render :template => 'shared/searchresults' }
+      format.js { render :template => 'shared/searchresults', :layout => false }
+    end
+  end
+  
   def list
     @klass = request.parameters[:controller].to_s._as_class
     page = params[:page] || 1

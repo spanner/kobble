@@ -7,6 +7,18 @@ class Node < ActiveRecord::Base
   belongs_to :collection
 
   acts_as_catcher :tags, :flags
+  acts_as_ferret :fields => {
+    :name => { :boost => 3 },
+    :synopsis => { :boost => 2 },
+    :body => { :boost => 1 },
+    :notes => {},
+    :extracted_text => {},
+    :notes => {},
+    :synopsis => {},
+    :arising => {},
+    :observations => {},
+    :emotions => {}
+  }
 
   file_column :file
   before_save FileCallbacks.new

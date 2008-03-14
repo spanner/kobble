@@ -7,6 +7,7 @@ ActionController::Routing::Routes.draw do |map|
   map.catch '/:controller/catch/:id/:caughtClass/:caughtID', :action => 'catch'
   map.drop '/:controller/drop/:id/:droppedClass/:droppedID', :action => 'drop'
   map.trash '/:controller/trash/:id', :action => 'trash'
+  map.search '/:controller/search/:q', :action => 'search'
 
   map.connect ':controller/:action/:id'
   
