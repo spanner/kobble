@@ -20,7 +20,7 @@
 
 <p class="small" style="clear: left;">
   <% if node.source %><strong>taken from:</strong> <%= link_to node.source.name, :action => 'show', :controller => 'sources', :id => node.source %><br /><% end %>
-  <strong>synopsis:</strong> <%= node.synopsis %>
+  <strong>synopsis:</strong> <%= node.description %>
 </p>
 
 <% if node.flags.length > 0 %>

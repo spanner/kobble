@@ -10,7 +10,7 @@
       <%= render :partial => 'shared/admin_buttons', :locals => {:item => list, :inplace => true} %>
 		</h2>
     <p>
-      <%= truncate( list.synopsis, 240 ) %><br />
+      <%= truncate( list.description, 240 ) %><br />
       <span class="footnote">source of <%= list.nodes.count %> fragments.</span>
     </p>
   </div>

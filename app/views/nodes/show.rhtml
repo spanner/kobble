@@ -6,8 +6,8 @@
 	</h1>
 </div>
 
-<% if @node.has_synopsis? %>
-	  <%= @node.synopsis.formatted %>
+<% if @node.has_description? %>
+	  <%= @node.description.formatted %>
 <% else %>
   <p>No summary given</p>
 <% end %>

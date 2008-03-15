@@ -8,8 +8,8 @@
 
 <%= render :partial => 'shared/edit_tags', :locals => {:item => @source} %>
 
-<p><label for="source_synopsis">Synopsis or description</label><br />
-<%= text_area 'source', 'synopsis', 'rows' => 6, 'class' => "standard" %>
+<p><label for="source_description">Synopsis or description</label><br />
+<%= text_area 'source', 'description', 'rows' => 6, 'class' => "standard" %>
 </p>
 
 <%= render :partial => 'shared/edit_body', :locals => {:item => @source} %>

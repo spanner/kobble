@@ -14,8 +14,8 @@
 
 <%= render :partial => 'shared/edit_tags', :locals => {:item => @node} %>
 
-<p><label for="node_synopsis">Synopsis</label><br />
-<%= text_area 'node', 'synopsis', 'rows' => 4, :class => "standard" %>
+<p><label for="node_description">Synopsis</label><br />
+<%= text_area 'node', 'description', 'rows' => 4, :class => "standard" %>
 </p>
 
 <%= render :partial => 'shared/edit_body', :locals => {:item => @node} %>

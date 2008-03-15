@@ -9,13 +9,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 82) do
+ActiveRecord::Schema.define(:version => 83) do
 
   create_table "accounts", :force => true do |t|
     t.integer "user_id"
     t.string  "name"
     t.string  "image"
     t.string  "status"
+  end
+
+  create_table "activations", :force => true do |t|
+    t.integer "collection_id"
+    t.integer "user_id"
+    t.integer "active",        :default => 1
   end
 
   create_table "bundles", :force => true do |t|
@@ -31,7 +37,7 @@ ActiveRecord::Schema.define(:version => 82) do
     t.text     "emotions"
     t.text     "arising"
     t.string   "image"
-    t.string   "synopsis"
+    t.text     "synopsis"
   end
 
   add_index "bundles", ["collection_id"], :name => "index_bundles_on_collection"
@@ -44,12 +50,6 @@ ActiveRecord::Schema.define(:version => 82) do
   end
 
   add_index "bundlings", ["member_type", "member_id"], :name => "index_bundle_members"
-
-  create_table "collection_users", :force => true do |t|
-    t.integer "collection_id"
-    t.integer "user_id"
-    t.integer "active"
-  end
 
   create_table "collections", :force => true do |t|
     t.integer  "user_id"
@@ -141,6 +141,9 @@ ActiveRecord::Schema.define(:version => 82) do
     t.string   "image"
     t.string   "clip"
     t.integer  "collection_id"
+    t.text     "observations"
+    t.text     "arising"
+    t.text     "emotions"
   end
 
   create_table "paddings", :force => true do |t|

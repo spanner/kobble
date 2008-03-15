@@ -1,6 +1,6 @@
 class Post < ActiveRecord::Base
 
-  acts_as_spoke :except => [:illustration, :discussion]
+  acts_as_spoke :except => [:illustration, :discussion, :index]
 
   belongs_to :topic, :counter_cache => true
 

@@ -1,6 +1,6 @@
 class Topic < ActiveRecord::Base
 
-  acts_as_spoke :except => [:illustration, :discussion]
+  acts_as_spoke :except => [:illustration, :discussion, :index]
 
   belongs_to :speaker, :class_name => 'User', :foreign_key => 'speaker_id'
   has_many :monitorships, :dependent => :destroy

@@ -3,8 +3,8 @@
 	<%= @bundle.name %>
 </h1>
 
-<% if @bundle.has_synopsis? %>
-	  <%= @bundle.synopsis.formatted %>
+<% if @bundle.has_description? %>
+	  <%= @bundle.description.formatted %>
 <% else %>
   <p>No summary given</p>
 <% end %>

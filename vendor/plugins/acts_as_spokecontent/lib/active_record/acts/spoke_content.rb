@@ -7,9 +7,6 @@ module Spoke
     
     def self.indexed_model(klass)
       unless @@indexed_models.detect {|k| k.to_s == klass.to_s}
-        
-        STDERR.puts "^^^ indexed_model is adding #{klass.to_s} to '" + @@indexed_models.to_sentence + "'"
-        
         @@indexed_models.push(klass) 
       end
     end
@@ -52,16 +49,8 @@ module ActiveRecord
           end
         
           if definitions.include?(:index)
-            acts_as_ferret :single_index => true, 
-              :store_class_name => true, 
-              :fields => {
-                :name => { :boost => 3 },
-                :body => { :boost => 1 },
-              },
-              :ferret => {
-                :default_field => [:name ,:body], 
-              }
-              Spoke::Config.indexed_model(self)
+            is_indexed :fields => self.index_fields, 
+                       :concatenate => self.index_concatenation
           end
           if definitions.include?(:collection)
             belongs_to :collection
@@ -98,6 +87,14 @@ module ActiveRecord
           end
           oc
         end       
+        
+        def index_fields
+          ['name', 'description', 'body', 'created_by', 'created_at', 'collection_id']
+        end
+
+        def index_concatenation
+          [{:fields => ['observations', 'arising', 'emotions'], :as => 'field_notes'}]
+        end
         
         def sort_options
           {
@@ -229,6 +226,10 @@ module ActiveRecord
         def main_person
           return speaker if has_speaker?
           return creator
+        end
+        
+        def field_notes
+          return self.observations + "\n\n" + self.emotions + "\n\n" + self.arising
         end
         
       end #instancemethods

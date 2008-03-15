@@ -5,8 +5,8 @@
 	</h1>
 </div>
 
-<% if @source.has_synopsis? %>
-	  <%= @source.synopsis.formatted %>
+<% if @source.has_description? %>
+	  <%= @source.description.formatted %>
 <% else %>
   <p>No summary given</p>
 <% end %>
