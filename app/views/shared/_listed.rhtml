@@ -4,14 +4,12 @@
 <li 
   id="<%= listed.class.to_s.downcase %>_<%= listed.id %>" 
   class="<%= listed.class.to_s.downcase %> draggable expandable<%= ' catcher' if catch && listed.can_catch %>"
-  title="<%= listed.collection.abbreviation %>: <%= name %>"
   <% if catch && listed.can_catch %>catches="<%= listed.can_catch.join(',') %>"<% end %>
 >
 
   <%= link_to( name, {:controller => listed.class.to_s.downcase.pluralize, :action => 'show', :id => listed}, {:class => 'listed'}) %> 
 
-  <div class="tiptext">
-    <%= truncate( listed.find_some_text, 300 ) %>
-  </div>
+  <div class="tiptitle"><%= listed.collection.abbreviation %>: <%= name %></div>
+  <div class="tiptext"><%= truncate( listed.find_some_text, 300 ) %></div>
     
 </li>

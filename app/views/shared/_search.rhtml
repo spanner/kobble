@@ -1,0 +1,12 @@
+<% @klass ||= request.parameters[:controller].to_s._as_class %>
+
+<div style="float: right; width: 260px;" id="searchform">
+  <% form_tag "/#{@klass.to_s.pluralize.underscore}/search", :method => 'get' do -%>
+    <h2>search</h2>
+    <%= text_field_tag 'q', params[:q], :class => 'searchbox' %>
+    <%= submit_tag 'go', :class => 'gobutton' %><br />
+    among:
+    <%= radio_button_tag 'scope', 'local', params[:scope] != 'global' %> <%= @klass.nice_title.pluralize %>
+    <%= radio_button_tag 'scope', 'global', params[:scope] == 'global' %> everything
+  <% end %>
+</div>

@@ -1753,3 +1753,16 @@ li.drophere a {
 .tiptext, .tiptitle {
   display: none;
 }
+
+div#searchform {
+  font-family: HelveticaNeue-Roman, helvetica, arial, sans-serif;
+  color: #695D54;
+	font-size: 12px;
+	line-height: 24px;
+	float: left;
+	height: 24px;
+}
+
+div#searchform h2 {
+  margin: 0;
+}

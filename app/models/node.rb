@@ -7,18 +7,19 @@ class Node < ActiveRecord::Base
   belongs_to :collection
 
   acts_as_catcher :tags, :flags
-  acts_as_ferret :fields => {
-    :name => { :boost => 3 },
-    :synopsis => { :boost => 2 },
-    :body => { :boost => 1 },
-    :notes => {},
-    :extracted_text => {},
-    :notes => {},
-    :synopsis => {},
-    :arising => {},
-    :observations => {},
-    :emotions => {}
-  }
+  acts_as_ferret :single_index => true, 
+    :store_class_name => true, 
+    :fields => {
+      :name => { :boost => 3 },
+      :synopsis => { :boost => 2 },
+      :body => { :boost => 1 },
+      :arising => { :boost => 0 },
+      :observations => { :boost => 0 },
+      :emotions => { :boost => 0 }
+    },
+    :ferret => {
+      :default_field => [:name, :synopsis ,:body ,:emotions ,:observations ,:arising], 
+    }
 
   file_column :file
   before_save FileCallbacks.new

@@ -56,7 +56,16 @@ class ApplicationController < ActionController::Base
 
   def search
     @klass = request.parameters[:controller].to_s._as_class
-    @list = @klass.paginate_search params[:q], :page => params[:page]
+    if (params[:scope] == 'global')
+      @list = @klass.find_with_ferret params[:q], 
+        :page => params[:page], 
+        :per_page => 40, 
+        :models => [Node,Source,Bundle]
+    else
+      @list = @klass.find_with_ferret params[:q], 
+        :page => params[:page], 
+        :per_page => 40
+    end
     respond_to do |format|
       format.html { render :template => 'shared/searchresults' }
       format.js { render :template => 'shared/searchresults', :layout => false }

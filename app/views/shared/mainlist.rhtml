@@ -1,6 +1,4 @@
-<% 
-	@klass = request.parameters[:controller].to_s._as_class
-%>
+<%= render :partial => 'shared/search' %>
 
 <h1 class="pagetitle">
   <%= @klass.nice_title.pluralize %>
