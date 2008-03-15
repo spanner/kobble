@@ -1,5 +1,5 @@
-module ActsAsFerret
-  module ClassMethods
+module ActiveRecord
+  module Configuration
     def paginate_search(query, options = {})
       page, per_page, total = wp_parse_options(options)
       pager = WillPaginate::Collection.new(page, per_page, total)

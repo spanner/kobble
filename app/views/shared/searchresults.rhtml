@@ -1,43 +1,37 @@
 <%= render :partial => 'shared/search' %>
 
 <h1 class="pagetitle">
-  <%= params[:scope] == 'global' ? 
+  searching <%= params[:scope] == 'global' ? 
     'everything' :
     @klass.nice_title.pluralize 
   %>
 </h1>
 
-<p>
-  We found <%= @list.total_hits %> <%= params[:scope] == 'global' ? 
-     'items' :
-     @klass.nice_title.pluralize 
-   %> matching <strong><%= params[:q] %></strong>:</p>
-   
-<% if @list && @list.size %>
+<% if @list && @list.total_hits > 0 %>
 
-  <p class="pagecontrol">
-    <%= will_paginate @list %>
+  <p>
+    We found 
+    <% if params[:scope] == 'global' %>
+      <%= @indexed_models.select{ |k| @sublists[k.to_s.intern] && @sublists[k.to_s.intern].total_hits > 0 }.map{ |k| link_to(pluralize(@sublists[k.to_s.intern].total_hits.to_s, k.nice_title), :controller => k.to_s.underscore.pluralize, :action => 'search', :q => params[:q]) }.to_sentence %> (<%= @list.total_hits %> items altogether) matching <strong><%= params[:q] %></strong>:
+    <% else %>
+      <%= @list.total_hits %> <%= @klass.nice_title.pluralize %> matching <strong><%= params[:q] %></strong> <% if @biglist.total_hits > @list.total_hits %>(and <%= link_to pluralize(@biglist.total_hits, 'item'), :scope => 'global', :q => params[:q] %> altogether)<% end %>:
+    <% end %>    
   </p>
+      
+  <%= render :partial => 'shared/list', :locals => { :list => @list } %>
+  
+<% else %>
 
-  <div class="mainlist">
-    <% counter = 0 %>
-    <% column_length = @list.per_page / controller.list_columns %>
-    <% column_width = 800 / controller.list_columns %>
-    
-    <ul class="listcolumn" style="width: <%= column_width.to_i %>px;">
-      <% @list.each do |listed| %>
-        <%= render :partial => 'shared/listed', :locals => {:listed => listed, :catch => true} %>
-        <% counter += 1 %>
-        <% if counter.remainder(column_length.to_i) == 0 %>
-          </ul>
-          <ul class="listcolumn" style="width: <%= column_width.to_i %>px;">
-        <% end %>
-      <% end %>
-  	</ul>
-  </div>
-
-  <p class="pagecontrol">
-    <%= will_paginate @list %>
+  <p>
+    <% if params[:scope] == 'global' %>
+       Sorry: we found no items of any kind matching <strong><%= params[:q] %></strong>.
+    <% else %>
+      We found no <%= @klass.nice_title.pluralize %> matching <strong><%= params[:q] %></strong> but we did find <%= link_to pluralize(@biglist.total_hits, 'other item'), :scope => 'global' %>:
+      
+      <%= render :partial => 'shared/list', :locals => { :list => @biglist } %>
+      
+    <% end %>    
   </p>
 
 <% end %>
+

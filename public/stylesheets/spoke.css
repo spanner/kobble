@@ -1761,6 +1761,7 @@ div#searchform {
 	line-height: 24px;
 	float: left;
 	height: 24px;
+	margin: 0 5px 10px 30px;
 }
 
 div#searchform h2 {

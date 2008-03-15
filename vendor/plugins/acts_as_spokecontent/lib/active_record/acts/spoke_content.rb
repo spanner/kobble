@@ -1,9 +1,27 @@
+require 'active_support'
+
+module Spoke
+  module Config
+    @@indexed_models = []
+    mattr_reader :indexed_models
+    
+    def self.indexed_model(klass)
+      unless @@indexed_models.detect {|k| k.to_s == klass.to_s}
+        
+        STDERR.puts "^^^ indexed_model is adding #{klass.to_s} to '" + @@indexed_models.to_sentence + "'"
+        
+        @@indexed_models.push(klass) 
+      end
+    end
+
+  end
+end
+
 module ActiveRecord
   module Acts #:nodoc:
     module SpokeContent #:nodoc:
       
       def self.included(base)
-        # base.class_eval "cattr_accessor :bundleable_classes, :taggable_classes, :flaggable_classes, :discussable_classes, :paddable_classes"   # for once we want shared variables among subclasses
         base.extend(ClassMethods)
       end
 
@@ -26,13 +44,25 @@ module ActiveRecord
       module ClassMethods
 
         def acts_as_spoke(options={})
-          definitions = [:collection, :creator, :updater, :illustration, :discussion]
+          definitions = [:collection, :creator, :updater, :illustration, :discussion, :index]
           if options[:except]
             definitions = definitions - Array(options[:except]) 
           elsif options[:only]
             definitions = definitions & Array(options[:only]) 
           end
         
+          if definitions.include?(:index)
+            acts_as_ferret :single_index => true, 
+              :store_class_name => true, 
+              :fields => {
+                :name => { :boost => 3 },
+                :body => { :boost => 1 },
+              },
+              :ferret => {
+                :default_field => [:name ,:body], 
+              }
+              Spoke::Config.indexed_model(self)
+          end
           if definitions.include?(:collection)
             belongs_to :collection
           end

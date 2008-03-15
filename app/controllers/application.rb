@@ -56,16 +56,25 @@ class ApplicationController < ActionController::Base
 
   def search
     @klass = request.parameters[:controller].to_s._as_class
+    @sublists = {}
+    @indexed_models = Spoke::Config.indexed_models.reject {|k| k.to_s == @klass.to_s }
+    
     if (params[:scope] == 'global')
       @list = @klass.find_with_ferret params[:q], 
         :page => params[:page], 
-        :per_page => 40, 
-        :models => [Node,Source,Bundle]
+        :per_page => 20, 
+        :models => @indexed_models
+      @indexed_models.each do |k|
+        @sublists[k.to_s.intern] = k.find_with_ferret params[:q]
+      end
     else
+      @biglist = @klass.find_with_ferret params[:q], :models => @indexed_models
       @list = @klass.find_with_ferret params[:q], 
         :page => params[:page], 
-        :per_page => 40
+        :per_page => 20
     end
+    
+    
     respond_to do |format|
       format.html { render :template => 'shared/searchresults' }
       format.js { render :template => 'shared/searchresults', :layout => false }

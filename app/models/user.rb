@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
   attr_accessor :password_confirmation
   attr_accessor :old_password
 
-  acts_as_spoke :except => :collection
+  acts_as_spoke :except => [:collection, :index]
   
   belongs_to :account
   

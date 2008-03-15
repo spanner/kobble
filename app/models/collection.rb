@@ -1,6 +1,6 @@
 class Collection < ActiveRecord::Base
 
-  acts_as_spoke :except => [:collection]
+  acts_as_spoke :except => [:collection, :index]
   belongs_to :user
   belongs_to :account
   
