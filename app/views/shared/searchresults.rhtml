@@ -1,15 +1,16 @@
 <%= render :partial => 'shared/search' %>
 
 <h1 class="pagetitle">
-  search results
+  searching <%= params[:scope] == 'global' ? 
+    'everything' :
+    @klass.nice_title.pluralize 
+  %>
 </h1>
 
 <% if @search && @search.total_entries > 0 %>
 
   <p>
-    We found 
-    <%= @search.total_entries %>
-    items matching <strong><%= params[:q] %></strong>
+    We found <%= @search.total_entries %> <%= params[:scope] == 'global' ? 'items' : @klass.nice_title.pluralize %> matching <strong><%= params[:q] %></strong>:
   </p>
       
   <p class="pagecontrol">

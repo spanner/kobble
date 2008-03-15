@@ -66,4 +66,17 @@ class Topic < ActiveRecord::Base
       self.replied_at = Time.now.utc
       self.sticky   ||= 0
     end
+
+    def self.index_fields
+      STDERR.puts "%%% Topic.index_fields"
+      ['name']
+    end
+
+    def self.index_concatenation
+      STDERR.puts "%%% Topic.index_concatenation"
+      [
+        {:association_name => 'posts', :field => 'body', :as => 'posts'}
+      ]
+    end
+
 end

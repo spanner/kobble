@@ -31,8 +31,10 @@ module ActiveRecord
       #
       # :only and :except parameters can be supplied, so eg:
       #
+      # acts_as_spoke :except => :illustration
+      #
       # the options are:
-      # acts_as_spoke: :collection, :creator, :updater, :illustration, :discussion
+      # :collection, :creator, :updater, :illustration, :discussion, :index
       #
       # by default all relations are created
       #
@@ -49,8 +51,7 @@ module ActiveRecord
           end
         
           if definitions.include?(:index)
-            is_indexed :fields => self.index_fields, 
-                       :concatenate => self.index_concatenation
+            is_indexed :fields => self.index_fields, :concatenate => self.index_concatenation
           end
           if definitions.include?(:collection)
             belongs_to :collection
@@ -86,13 +87,15 @@ module ActiveRecord
             oc &= Array(options[:only]) 
           end
           oc
-        end       
+        end
         
         def index_fields
+          STDERR.puts "%%% spokecontent.index_fields (self is #{self})"
           ['name', 'description', 'body', 'created_by', 'created_at', 'collection_id']
         end
 
         def index_concatenation
+          STDERR.puts "%%% spokecontent.index_concatenation (self is #{self})"
           [{:fields => ['observations', 'arising', 'emotions'], :as => 'field_notes'}]
         end
         
