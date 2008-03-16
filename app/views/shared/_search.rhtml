@@ -6,7 +6,7 @@
     <%= text_field_tag 'q', params[:q], :class => 'searchbox' %>
     <%= submit_tag 'go', :class => 'gobutton' %><br />
     among:
-    <%= radio_button_tag 'scope', 'local', params[:scope] != 'global' %> <%= @klass.nice_title.pluralize %>
-    <%= radio_button_tag 'scope', 'global', params[:scope] == 'global' %> everything
+    <%= radio_button_tag 'scope', 'local', params[:scope] != 'global' %> <label for="scope_local"><%= @klass.nice_title.pluralize %></label>
+    <%= radio_button_tag 'scope', 'global', params[:scope] == 'global' %> <label for="scope_global">everything</label>
   <% end %>
 </div>

@@ -128,7 +128,7 @@ blockquote {
   color: #695D54;
 }
 
-label {
+div.mainform label {
   font-size: 18px;
   font-weight: lighter;
   font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
@@ -721,6 +721,7 @@ div.padcontrol a.clearpad:hover, div.padcontrol a.deletepad:hover {
 }
 
 div.mainlist {
+  clear: both;
 }
 
 ul.listcolumn {
@@ -1766,4 +1767,55 @@ div#searchform {
 
 div#searchform h2 {
   margin: 0;
+}
+
+
+.pagination {
+  clear: both;
+  padding: 3px;
+  margin: 3px;
+}
+.pagination a {
+  font-family: HelveticaNeue-Roman, helvetica, arial, sans-serif;
+	font-size: 12px;
+  height: 20px;
+  line-height: 20px;
+  padding: 5px 7px 5px 7px;
+  margin-bottom: 20px;
+  border: 0;
+  text-decoration: none;
+  color: white;
+  background-image: url(/images/furniture/spoke/pagination/bg.png);
+  background-repeat: no-repeat;
+  background-position: top center;
+}
+.pagination a:hover, .pagination a:active {
+  background-image: url(/images/furniture/spoke/pagination/overbg.png);
+  color: white;
+}
+.pagination a:first-child {
+  background-position: top left;
+}
+.pagination a:last-child {
+  background-position: top right;
+}
+.pagination span.current {
+  font-family: HelveticaNeue-Roman, helvetica, arial, sans-serif;
+	font-size: 12px;
+  background-image: url(/images/furniture/spoke/pagination/herebg.png);
+  background-repeat: no-repeat;
+  background-position: top center;
+  line-height: 20px;
+  padding: 5px 7px 5px 7px;
+  color: white;
+}
+.pagination span.disabled {
+  font-family: HelveticaNeue-Roman, helvetica, arial, sans-serif;
+	font-size: 12px;
+  background-image: url(/images/furniture/spoke/pagination/bg.png);
+  background-repeat: no-repeat;
+  background-position: top left;
+  line-height: 20px;
+  padding: 5px 7px 5px 7px;
+  color: #B2AAA4;
 }
