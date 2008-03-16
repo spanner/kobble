@@ -347,6 +347,9 @@ div.scratchpage li.question a.listed:hover { background-image: url(/images/furni
 div.scratchpage li.answer a.listed:hover { background-image: url(/images/furniture/spoke/white/answer.png); }
 div.scratchpage li.waiting a.listed:hover { background-image: url(/images/furniture/signals/wait_16_white.gif); }
 
+div#scratchpad .drophere {
+	background-color: #d1005d;
+}
 
 
 /* main content list */
@@ -425,8 +428,18 @@ div#mainlist li.waiting a.listed {
   color: #695D54;
 }
 
+div.drophere, ul.drophere {
+	background-color: #daf2ff;
+}
 
+li.drophere {
+  color: white;
+  background-color: #B2AAA4;
+}
 
+li.drophere a {
+  color: #695D54;
+}
 
 
 
@@ -495,7 +508,7 @@ div.boxtabs a.fg:hover {
 
 
 
-/* content formatting */
+/* standard content formatting */
 
 p.standfirst {
 	font-weight: bold;
@@ -578,36 +591,23 @@ div.floatcolumn {
   margin: 6px 10px 6px 20px;
 }
 
-#monitorform {
-  padding: 3px;
-  float: right;
+/* search box */
+
+div#searchform {
+  display: none;
+  font-family: HelveticaNeue-Roman, helvetica, arial, sans-serif;
+  color: black;
+	font-size: 12px;
+	line-height: 24px;
+	float: left;
+	height: 24px;
+	margin: 0 5px 10px 30px;
 }
 
-div.padform {
-  background-color: #559DC4;
-  border: 1px solid #559DC4;
-  color: white;
+div#searchform h2 {
+  margin: 0;
 }
 
-div.padform p {
-  margin: 10px;
-}
-
-div.padform label, div.padform a {
-  color: white;
-}
-
-div.bigspinner {
-  width: 500px;
-  height: 200px;
- 	background-image: url('/images/furniture/signals/wait_32_ob.gif');
- 	background-position: 10px 10px;
- 	background-repeat: no-repeat;
-}
-
-li.waiter {
- 	list-style-image: url('/images/furniture/signals/wait_og.gif');
-}
 
 
 /* signals */
@@ -633,6 +633,8 @@ div.setdrop div.waiting {
 div.waiting input {
   visibility: hidden;
 }
+
+
 
 /* bar charts thanks to http://www.standards-schmandards.com/exhibits/barchart/ */
 
@@ -765,30 +767,7 @@ span.countlabel {
 }
 
 
-div.drophere, ul.drophere {
-	background-color: #daf2ff;
-}
-
-li.drophere {
-  color: white;
-  background-color: #B2AAA4;
-}
-
-li.drophere a {
-  color: #695D54;
-}
-
-
-#scratchpad .drophere {
-	background-color: #5c5449;
-}
-
-
-
-
-
-
-
+/* tooltips and other parantheticals */
 
 
 .tool-tip {
@@ -813,8 +792,6 @@ li.drophere a {
 	padding: 4px 8px 8px;
 	background: url(/images/furniture/spoke/tooltips/bigblack.png) bottom right;
 }
-
-
 
 .drag-tip {
 	color: #fff;
@@ -849,74 +826,38 @@ li.drophere a {
 .mergeable .drag-title { background: url(/images/furniture/spoke/tooltips/orange.png) top left; }
 .mergeable .drag-text { background: url(/images/furniture/spoke/tooltips/orange.png) bottom left; }
 
+/* hidden divs that provide tooltip content */
+
 .tiptext, .tiptitle {
   display: none;
 }
 
-div#searchform {
-  display: none;
-  font-family: HelveticaNeue-Roman, helvetica, arial, sans-serif;
-  color: black;
-	font-size: 12px;
-	line-height: 24px;
-	float: left;
-	height: 24px;
-	margin: 0 5px 10px 30px;
-}
-
-div#searchform h2 {
-  margin: 0;
-}
-
+/* pagination */
 
 .pagination {
   clear: both;
-  padding: 3px;
-  margin: 10px 3px 10px 3px;
+  margin: 16px 3px 20px 0;
 }
+
 .pagination a {
-  font-family: HelveticaNeue-Roman, helvetica, arial, sans-serif;
-	font-size: 12px;
-  height: 20px;
-  line-height: 20px;
-  padding: 5px 7px 5px 7px;
-  margin-bottom: 20px;
-  border: 0;
-  text-decoration: none;
-  color: white;
-  background-image: url(/images/furniture/spoke/pagination/bg.png);
-  background-repeat: no-repeat;
-  background-position: top center;
+  padding: 2px 6px 2px 0;
+  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
+	font-size: 18px;
+  color: #559DC4;
 }
+
 .pagination a:hover, .pagination a:active {
-  background-image: url(/images/furniture/spoke/pagination/overbg.png);
-  color: white;
+  color: #d1005d;
 }
-.pagination span.current {
-  font-family: HelveticaNeue-Roman, helvetica, arial, sans-serif;
-	font-size: 12px;
-  background-image: url(/images/furniture/spoke/pagination/herebg.png);
-  background-repeat: no-repeat;
-  background-position: top center;
-  line-height: 20px;
-  padding: 5px 7px 5px 7px;
-  color: white;
+
+.pagination span.current, .pagination span.disabled {
+  padding: 2px 4px 2px 0;
+  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
+	font-size: 18px;
+  color: #695D54;
 }
 .pagination span.disabled {
-  font-family: HelveticaNeue-Roman, helvetica, arial, sans-serif;
-	font-size: 12px;
-  background-image: url(/images/furniture/spoke/pagination/bg.png);
-  background-repeat: no-repeat;
-  background-position: top center;
-  line-height: 20px;
-  padding: 5px 7px 5px 7px;
   color: #B2AAA4;
-}
-.pagination a:first-child, .pagination span:first-child {
-  background-position: top left;
-}
-.pagination a:last-child, .pagination span:last-child {
-  background-position: top right;
 }
 
 .formnote {
@@ -990,7 +931,7 @@ div.player {
 
 
 
-/* taglist */
+/* tag helper list */
 
 div.taglist-holder
 {
@@ -1132,4 +1073,39 @@ div.cloudsummary label {
   font-size: 10px;
   line-height: 1.2;
   color: #695D54;
+}
+
+
+
+
+
+#monitorform {
+  padding: 3px;
+  float: right;
+}
+
+div.padform {
+  background-color: #559DC4;
+  border: 1px solid #559DC4;
+  color: white;
+}
+
+div.padform p {
+  margin: 10px;
+}
+
+div.padform label, div.padform a {
+  color: white;
+}
+
+div.bigspinner {
+  width: 500px;
+  height: 200px;
+ 	background-image: url('/images/furniture/signals/wait_32_ob.gif');
+ 	background-position: 10px 10px;
+ 	background-repeat: no-repeat;
+}
+
+li.waiter {
+ 	list-style-image: url('/images/furniture/signals/wait_og.gif');
 }

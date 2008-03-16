@@ -7,7 +7,7 @@
     We found <%= @search.total_entries %> <%= params[:scope] == 'global' ? 'items' : @klass.nice_title.pluralize %> matching <strong><%= params[:q] %></strong>:
   </p>
       
-  <%= will_paginate @search, :prev_label => 'previous', :next_label => 'next', :separator => '' %>
+  <%= will_paginate @search, :prev_label => '&lt;', :next_label => '&gt;', :separator => '' %>
 
   <div id="mainlist">
     <% counter = 0 %>
@@ -26,7 +26,7 @@
   	</ul>
   </div>
 
-  <%= will_paginate @search, :prev_label => 'previous', :next_label => 'next', :separator => '' %>
+  <%= will_paginate @search, :prev_label => '&lt;', :next_label => '&gt;', :separator => '' %>
   
 <% else %>
 
