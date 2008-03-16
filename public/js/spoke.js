@@ -692,7 +692,6 @@ var ScratchTab = Tab.extend({
     this.clearer.onclick = this.clear.bind(this);
     this.deleter.onclick = this.remove.bind(this);
     this.setter.onclick = this.toSet.bind(this);
-    $E('a.closepad', this.tabbody).onclick = this.close.bind(this);
     $E('a.createpad', this.tabbody).onclick = this.createTab.bind(this);
   },
   open: function () { 
@@ -824,26 +823,27 @@ var ScratchTab = Tab.extend({
 var ScratchSet = TabSet.extend({
 	initialize: function(tag){
 		this.parent(tag);
-	  this.container = $E('#scratchpad');
+	  this.container = $E('#box_scratchpad');
+	  this.headcontainer = $E('#headbox_scratchpad');
 		this.isopen = false;
-		this.openFX = this.container.effects({duration: 600, transition: Fx.Transitions.Cubic.easeOut});
-		this.closeFX = this.container.effects({duration: 1000, transition: Fx.Transitions.Bounce.easeOut});
+
+		this.openpadFX = this.container.effects({duration: 600, transition: Fx.Transitions.Cubic.easeOut});
+		this.opentabsFX = this.headcontainer.effects({duration: 600, transition: Fx.Transitions.Cubic.easeOut});
+
+		this.closepadFX = this.container.effects({duration: 1000, transition: Fx.Transitions.Bounce.easeOut});
+		this.closetabsFX = this.headcontainer.effects({duration: 1000, transition: Fx.Transitions.Bounce.easeOut});
 	},
   postselect: function () {
     if (!this.isopen) this.open();
   },
   open: function () {
-    this.openFX.start({
-      'top': window.getScrollTop() + 10,
-      'height': window.getHeight() - 10
-    });
+    this.openpadFX.start({ 'width': 440 });
+    this.opentabsFX.start({ 'right': 438 });
     this.isopen = true;
 	},
 	close: function (delay) {
-    this.closeFX.start({
-      'top': window.getScrollTop() + window.getHeight() - 34, 
-      'height': 34
-    }); 
+    this.closepadFX.start({ 'width': 10 }); 
+    this.closetabsFX.start({ 'right': 8 }); 
     this.isopen = false;
 	},
 	toggle: function (delay) {

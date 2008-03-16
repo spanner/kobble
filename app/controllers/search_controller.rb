@@ -1,4 +1,4 @@
-class AccountsController < ApplicationController
+class SearchController < ApplicationController
   layout :choose_layout
 
   def index
@@ -6,13 +6,12 @@ class AccountsController < ApplicationController
     render :action => 'results'
   end
 
-  def search
-    @klass = request.parameters[:controller].to_s._as_class
+  def results
     @search = Ultrasphinx::Search.new(
       :query => params[:q],
       :page => params[:page] || 1, 
       :per_page => 20,
-      :class_names => params[:scope] == 'global' ? nil : @klass
+      :class_names => nil
     )
     @search.run
   end

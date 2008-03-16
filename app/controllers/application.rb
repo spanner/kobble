@@ -50,7 +50,22 @@ class ApplicationController < ActionController::Base
   def local_request?
     admin?
   end
-      
+    
+
+  # shared retrieval mechanisms
+
+  def search
+    @klass = request.parameters[:controller].to_s._as_class
+    @search = Ultrasphinx::Search.new(
+      :query => params[:q],
+      :page => params[:page] || 1, 
+      :per_page => 20,
+      :class_names => @klass
+    )
+    @search.run
+    render :template => 'search/results'
+  end
+  
   def list
     @klass = request.parameters[:controller].to_s._as_class
     page = params[:page] || 1

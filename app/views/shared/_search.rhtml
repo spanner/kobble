@@ -1,5 +1,3 @@
-<% @klass ||= request.parameters[:controller].to_s._as_class %>
-
 <div style="float: right; width: 260px;" id="searchform">
   <% form_tag "/#{@klass.to_s.pluralize.underscore}/search", :method => 'get' do -%>
     <h2>search</h2>

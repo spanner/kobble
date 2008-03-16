@@ -1,10 +1,9 @@
-<%= render :partial => 'shared/search' %>
 <% @title = 'search' %>
 
 <% if @search && @search.total_entries > 0 %>
 
   <p>
-    We found <%= @search.total_entries %> <%= params[:scope] == 'global' ? 'items' : @klass.nice_title.pluralize %> matching <strong><%= params[:q] %></strong>:
+    We found <%= pluralize @search.total_entries, 'item' %> matching <strong><%= params[:q] %></strong>:
   </p>
       
   <%= will_paginate @search, :prev_label => '&lt;', :next_label => '&gt;', :separator => '' %>
@@ -24,6 +23,8 @@
         <% end %>
       <% end %>
   	</ul>
+  	
+  	<p class="clear">&nbsp;</p>
   </div>
 
   <%= will_paginate @search, :prev_label => '&lt;', :next_label => '&gt;', :separator => '' %>
@@ -36,3 +37,8 @@
 
 <% end %>
 
+<% form_tag "/search", :method => 'get' do -%>
+  <h2>search again</h2>
+  <%= text_field_tag 'q', params[:q], :class => 'searchbox' %>
+  <%= submit_tag 'go', :class => 'gobutton' %><br />
+<% end %>

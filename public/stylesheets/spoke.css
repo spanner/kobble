@@ -44,11 +44,11 @@ a, a:link, a:visited {
 }
 
 a:hover {
-  color:#CC6E1F;
+  color:#d1005d;
 }
 
 em {
-	color: #CC6E1F;
+	color:#CC6E1F;
 }
 
 h1 {
@@ -91,8 +91,8 @@ blockquote {
 div#masthead {
   position: absolute;
   left: 0;
-  top: 48px;
-  width: 120px;
+  top: 47px;
+  width: 122px;
   text-align: right;
 }
 
@@ -154,8 +154,8 @@ div#notification {
 }
 
 div#trash {
-  position: absolute;
-  right: 40px;
+  position: fixed;
+  left: 20px;
 	bottom: 10px;
 	height: 80px;
 	width: 90px;
@@ -174,24 +174,25 @@ div#trash.drophere {
 
 /* scratchpad */
 
+div#scratchpad {
+}
+
 div#box_scratchpad {
   position: fixed;
   top: 0;
   right: 0;
+  margin: 0 0 0 120px;
   height: 100%;
   width: 10px;
-  overflow: hidden;
-  background-image:  url(/images/furniture/layout/padshadow.png);
-	background-repeat: no-repeat;
-	background-position: top left;
+  overflow: auto;
 	background-color: #695D54;
 }
 
 div#headbox_scratchpad {
   position: fixed;
-  top: 16px;
-  right: 10px;
-  width: 150px;
+  top: 24px;
+  right: 8px;
+  width: 120px;
 }
 
 div#headbox_scratchpad a, div#headbox_scratchpad a:link {
@@ -201,9 +202,8 @@ div#headbox_scratchpad a, div#headbox_scratchpad a:link {
   margin: 1px 0 0 0;
   font-size: 12px;
   line-height: 16px;
-  height: 17px;
-  padding: 4px 6px 4px 6px;
-  background-color: #695D54;
+  padding: 5px 8px 4px 6px;
+  background-color: #8f7f69;
   white-space: nowrap;
   text-decoration: none;
   overflow: hidden;
@@ -212,7 +212,7 @@ div#headbox_scratchpad a, div#headbox_scratchpad a:link {
 }
 
 div#headbox_scratchpad a.red { background-color: #9e0b0f; }
-div#headbox_scratchpad a.fg { font-weight: bold; color: white;}
+div#headbox_scratchpad a.fg { font-weight: bold; color: white; background-color: #695D54; }
 div#headbox_scratchpad a.editing { background-color: #559DC4; }
 div#headbox_scratchpad a.louder { color: #CC6E1F; }
 div#headbox_scratchpad a:hover { background-color: #d1005d; color: white;}
@@ -220,7 +220,7 @@ div#headbox_scratchpad a.receptive, div.scratchpage.receptive { background-color
 
 div.scratchpage {
   position:relative;
-	width: 500px;
+	width: 430px;
 	height:100%;
 	margin: 0;
   overflow: auto;
@@ -229,10 +229,10 @@ div.scratchpage {
 }
 
 div.scratchpage ul {
-  margin: 0;
+  padding: 0 0 0 10px;
   color: white;
-	padding: 0;
-	min-height: 100%;
+	margin: 0;
+	min-height: 300px;
 }
 
 div.scratchpage li {
@@ -267,8 +267,6 @@ div.scratchpage li a:hover {
 }
 
 div.scratchpage div.padcontrol a, div.scratchpage div.padcontrol a:visited {
-  display: block;
-  float: left;
   padding: 4px;
   font-size: 11px;
   color: #B2AAA4;
@@ -276,18 +274,12 @@ div.scratchpage div.padcontrol a, div.scratchpage div.padcontrol a:visited {
 
 div.scratchpage div.padcontrol a:hover {
   color: white;
-  background-color: #CC6E1F;
+  background-color: #d1005d;
 }
 
 div.scratchpage div.padcontrol a.closepad {
   float: right;
 }
-
-div.scratchpage div.padcontrol a.clearpad:hover, div.padcontrol a.deletepad:hover {
-  color: white;
-  background-color: red;
-}
-
 
 div.scratchpage li {
   list-style: none;
@@ -308,11 +300,6 @@ div.scratchpage li a.listed {
 
 div.scratchpage li a.listed:hover {
   color: #fff;
-}
-
-div.mainlist li a img {
-  margin: 0 8px 0 0;
-  float: left;
 }
 
 div.scratchpage li.collection a.listed { background-image: url(/images/furniture/spoke/mid/collection.png); }
@@ -385,6 +372,11 @@ div#mainlist li a.listed {
   background-image: url(/images/furniture/spoke/grey/node.png);
   background-position: 4px 8px;
   background-repeat: no-repeat;
+}
+
+div#mainlist li a img {
+  margin: 0 8px 0 0;
+  float: left;
 }
 
 div#mainlist li a img {
@@ -1108,4 +1100,34 @@ div.bigspinner {
 
 li.waiter {
  	list-style-image: url('/images/furniture/signals/wait_og.gif');
+}
+
+
+
+/* inline toggle links */
+
+a.ticked, a.crossed, a.waiting {
+  display: block;
+  height: 16px;
+  font-size: 16px;
+  line-height: 22px;
+  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
+  letter-spacing: -0.05em;
+  padding-left: 22px;
+  background-repeat: no-repeat;
+  background-position: top left;
+  margin-bottom: 3px;
+}
+       
+a.ticked {
+  color: #6cb262;
+  background-image: url('/images/furniture/buttons/tick.png');
+}
+a.crossed {
+  color: #ef4447;
+  background-image: url('/images/furniture/buttons/cross.png');
+}
+a.waiting {
+  color: #695D54;
+  background-image: url('/images/furniture/signals/wait_16_grey.gif');
 }

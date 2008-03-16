@@ -1,8 +1,7 @@
-<% listedclass = Collection %>
-
-<h1 class="pagetitle">
-  collections
-</h1>
+<% 
+  listedclass = Collection 
+  @title = 'collections'
+%>
 
 <p>In <a href="http://trac.spanner.org/spoke/milestone/spoke%201.6">version 1.6</a> this will be the equivalent of basecamp's dashboard page: an overview of all the collections attached to this account with links to recent activity and administrative control of collections and users.</p>
 
@@ -13,9 +12,8 @@
   <% @collections.each do |c| %>
 
     <h3> 
-      <%= c.name %>
       <% active = current_user.using_collection?(c) %>
-      <%= link_to "active", {
+      <%= link_to c.name, {
     		:controller => 'collections', 
     		:action => active ? 'deactivate' : 'activate',
     		:id => c, 
