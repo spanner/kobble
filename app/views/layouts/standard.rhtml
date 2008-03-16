@@ -3,7 +3,7 @@
 
 <html>
 <head>
-  <title>Spoke</title>
+  <title>materiali.st<% if @title %> - <%= @title %><% end%></title>
   <script type="text/javascript" src="/js/mootools.js"></script>
   <script type="text/javascript" src="/js/extensions.js"></script>
   <script type="text/javascript" src="/js/spoke.js"></script>
@@ -11,34 +11,32 @@
 </head>
 <body>
 
-  <div id="canvas">
-   
-    <%= @content_for_layout %>
-
+  <div id="masthead">
+    <p>
+      <%= link_to "materialist/", "http://materiali.st/" %><br />
+      <%= link_to "#{current_user.account.name}/", {:controller => 'accounts', :action => 'home'}, {:class => 'account'} %>
+    </p>
+  </div>
+  
+  <div id="pagetitle">
+    <h1><%= @title || 'welcome' %></h1>
   </div>
 
-  <div id="mastfoot" class="fixedbottom">
-    <div id="logo" class="hideondrag">
-      <a href="/"><img src="/images/furniture/layout/sparklogo.png" width="49" height="39" alt="sparknow" /></a>
-    </div>  
-          
+  <div id="canvas">
+    <%= yield %>
+  </div>
+
+  <div id="mastfoot">
 	  <div id="navigation">
-      <%= link_to 'account', {:controller => 'accounts', :action => 'show', :id => current_user.account}, {:class => 'action'} %>
+      <%= link_to 'home', {:controller => 'accounts', :action => 'show', :id => current_user.account}, {:class => 'action'} %>
       <% [Collection, Source, Node, Bundle, User, Tag].each do |klass| %>
         <%= link_to klass.nice_title.pluralize, {:controller => klass.to_s.underscore.pluralize}, {:class => (request.parameters[:controller] == klass.to_s.underscore.pluralize ? "fg" : '')} %>
       <% end %>
       <%= link_to 'log out', {:controller => 'login', :action => 'logout'}, {:class => 'admin'} %>
-    	<div id="preferences">
-    	  <input type="checkbox" id="showDetails" name="showDetails" value="1" class="spokepref"> <label for="showDetails">float details</label>
-    	  <input type="checkbox" id="confirmDrops" name="confirmDrops" value="1" class="spokepref"> <label for="confirmDrops">confirm drops</label>
-    	</div>
-      <div id="notification">
-        <%= flash[:notice] %>
-      </div>  
     </div>
   </div> 
 
-  <div id="scratchpad" class="fixedbottom">
+  <div id="scratchpad" class="fixedright">
     <div id="headbox_scratchpad">
       <% for pad in @scratch %>
         <a href="#" class="padtab" id="tab_scratchpad_<%= pad.id %>"><%= pad.name %></a>
@@ -48,12 +46,12 @@
       <%= render :partial => 'shared/scratchpad', :collection => @scratch %>
     </div>
   </div>
- 
+
   <% if editor? %>
-    <div id="trash" class="trashdrop showondrag fixedbottom" id="trashcan" catches="all">
+    <div id="trash" class="trashdrop showondrag" id="trashcan" catches="all">
       &nbsp;
     </div>  
   <% end %>
-  
+   
 </body>
 </html>

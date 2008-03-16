@@ -1,11 +1,5 @@
 <%= render :partial => 'shared/search' %>
-
-<h1 class="pagetitle">
-  searching <%= params[:scope] == 'global' ? 
-    'everything' :
-    @klass.nice_title.pluralize 
-  %>
-</h1>
+<% @title = 'search' %>
 
 <% if @search && @search.total_entries > 0 %>
 
@@ -15,7 +9,7 @@
       
   <%= will_paginate @search, :prev_label => 'previous', :next_label => 'next', :separator => '' %>
 
-  <div class="mainlist">
+  <div id="mainlist">
     <% counter = 0 %>
     <% column_length = @search.per_page / controller.list_columns %>
     <% column_width = 800 / controller.list_columns %>

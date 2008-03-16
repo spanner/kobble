@@ -9,7 +9,7 @@
 
   <%= will_paginate @list, :prev_label => 'previous', :next_label => 'next', :separator => '' %>
 
-  <div class="mainlist">
+  <div id="mainlist">
     <% counter = 0 %>
     <% column_length = @list.per_page / controller.list_columns %>
     <% column_width = 800 / controller.list_columns %>
