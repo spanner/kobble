@@ -486,7 +486,7 @@ var DragHelper = new Class({
     this.fx = new Fx.Style(this.container, 'opacity', {duration: 250, wait: false}).set(0);
 		this.name = this.draggee.name;
 		this.startingfrom = draggee.original.getCoordinates();
-		this.startingfrom.opacity = 0;
+    // this.startingfrom.opacity = 0;
     this.currentState = null;
     this.currentText = null;
 		this.setText(this.name);
@@ -524,7 +524,9 @@ var DragHelper = new Class({
 	},
 	flyback: function () {
 	  helper = this;
-    this.container.effects({ duration: 600, transition: Fx.Transitions.Back.easeOut }).start( this.startingfrom ).chain(function(){ helper.remove() });
+    this.container.effects({ duration: 600, transition: Fx.Transitions.Back.easeOut }).start( this.startingfrom ).chain(function(){ 
+      helper.remove() 
+    });
 	},
 	moveto: function (top, left) {
 	  var offsetY = this.container.getCoordinates().height + 12;
@@ -540,8 +542,7 @@ var DragHelper = new Class({
   show: function () { this.fx.start(0.8); },
   hide: function () { this.fx.start(0); },
 	remove: function () { 
-	  this.container.remove();
-	  this.draggee.remove();
+    this.container.remove();
 	},
 	explode: function () { this.remove(); },  // something more vivid should happen here
 	disappear: function () { this.original.dwindle(); },
