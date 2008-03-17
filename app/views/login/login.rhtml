@@ -1,21 +1,26 @@
-<h1 class="pagetitle">Hello and welcome to <a href="http://spoke.spanner.org/">spoke</a></h1>
-<p>This system is private. Please log in below.</p>
+<% @title = 'login'%>
 
 <% if @error %>
 	<p class="haserror">
 		Sorry: we don't recognise that combination of username and password.<br />
 		If you've forgotten your password we can always <%= link_to 'make you a new one', :action => 'repassword' %>.
 	</p>
+	
+<% else %>
+  <p>
+    If you haven't already, you can create a <%= link_to "trial account", :action => 'signup' %>
+  </p>
+
 <% end %>
 	
  <div class="mainform">
 	<% form_tag do -%>
 
 		<p><label for="login">Username</label><br />
-		<%= text_field_tag 'login', '', :class => 'friendly' %></p>
+		<%= text_field_tag 'login', '', :class => 'login' %></p>
 
 		<p><label for="password">Password</label><br />
-		<%= password_field_tag 'password', '', :class => 'friendly' %></p>
+		<%= password_field_tag 'password', '', :class => 'login' %></p>
 
 		<p><label for="remember_me"><%= check_box_tag 'remember_me' %> Remember me</label></p>
 

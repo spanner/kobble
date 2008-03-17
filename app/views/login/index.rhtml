@@ -1,38 +1,57 @@
-<% if logged_in? && !@show_field %>
 
-	<% if activated? %>
+<% if logged_in?%>
+  <div class="welcome">
 
-		<% if current_user.recently_activated? %>
-			<h1>Hello <%= current_user.firstname %>, and welcome!</h1>
-			<p>Thank you! Your account is now active and you can feel free to explore spoke</p>
-		  <p>...</p>
+  <% if activated? %>
 
-		<% else %>
-			<h1>Hello <%= current_user.name %></h1>
-			<p class="footnote">(Not you? Please <%= link_to 'log out', :action => 'logout' %>)</p>
-			<p>Welcome back to spoke. This page will say something useful about what has happened since you were last here.
+  	<% if current_user.recently_activated? %>
+      <% @title = "Hello #{current_user.name}, and welcome" %>
+  		<p>Thank you! Your account is now active and you can start collecting.</p>
+  	  <p>...</p>
 
-		<% end %>
-		
-	<% else %>
-
-		<h1 class="pagetitle">welcome to spoke</h1>
+  	<% else %>
+      <% @title = "Hello #{current_user.name}" %>
+  		<p class="footnote">(Not you? Please <%= link_to 'log out', :action => 'logout' %>)</p>
+  		<p>Welcome back. This page will give an overview of recent activity in your account.
+  	<% end %>
 	
-		<p>
-			Please check your email: you should have received an invitation message. 
-			In it you will find a long code that you can paste into the box below (and a link that you can click to achieve the same thing). 
-			This will activate your account and log you into the system. If not, please enter email address etc etc.
-		</p>
-		
-		<%= render :partial => 'activate' %>
+  <% else %>
 
-	<% end %>
+    <% @title = 'Please activate your account' %>
+
+  	<p>
+  		Please check your email: you should have received an invitation message. 
+  		In it you will find a long code that you can paste into the box below (and a link that you can click to achieve the same thing more directly). 
+  		Either route will activate your account and log you into the system.
+  	</p>
+	
+  	<%= render :partial => 'activate' %>
+
+  <% end %>
+  </div>
 
 <% else %>
 
-	<% @show_field ||= 'welcome' %>
-	
-	<%= current_collection.send(@show_field).formatted %>
+  <p>
+    Materialist is a new way of capturing and organising your knowledge. It takes in text, audio, video, pdfs and other documents and helps you cut them up and recombine them, just as you do in your head (but without forgetting anything). It's suitable for everything from homework assignments to large-scale research projects and corporate archives, and it's especially useful for collaborative desk research. It's not all that clever or complicated: its strength is that it's obvious, easy, and very, very helpful.
+  </p>
+  
+  <p>
+    The best way to find out more is to <%= link_to "sign up for a free account", :action => 'signup' %>. Individual accounts will always be free, but while we're in beta you also get the benefit of the teamwork and multimedia tools.
+  </p> 
+
+  <p>
+    <h2 class="invitation"><%= link_to "&rarr; try it now &larr;", :action => 'signup' %></h2>
+  </p>
+    
+  <p>Materialist has emerged from several years of oral history work, in which interview recordings, written anecdotes and archival material had to be combined into a representative synthesis that retains connections back to the gathered evidence. There was too much to keep in our heads, so we made some simple tools to remember thing for us, and quickly became addicted to them. We found ourselves using them for everything else too, and when our clients started to demand their own workspaces, we thought we'd roll it a general offering and see what happened. If you have suggestions, comments or any other feedback we'd be delighted to <%= link_to "hear them", 'mailto:will@materiali.st' %>.
+  </p>
+  
+  <p>
+    You will find background, case studies and a growing FAQ on <%= link_to "about.materiali.st", 'http://about.materiali.st/' %>, and on the <%= link_to "development site", "http://trac.spanner.org" %> you find more detailed plans and file bug reports.
+  </p>
+  
+  
+
 
 <% end %>
-
