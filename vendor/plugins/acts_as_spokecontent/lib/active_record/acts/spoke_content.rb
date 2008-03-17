@@ -3,7 +3,7 @@ require 'active_support'
 module Spoke
   module Config
     @@indexed_models = []
-    mattr_reader :indexed_models
+    mattr_accessor :indexed_models
     
     def self.indexed_model(klass)
       unless @@indexed_models.detect {|k| k.to_s == klass.to_s}

@@ -1,5 +1,4 @@
 class AccountsController < ApplicationController
-  layout :choose_layout
   before_filter :admin_required, :except => [:show, :edit, :update, :create, :new]
 
   def show

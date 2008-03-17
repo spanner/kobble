@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_user, :current_account, :current_collections, :logged_in?, :activated?, :admin?, :editor?, :last_active
   before_filter :login_required
   before_filter :set_context
-  layout :choose_layout
+  layout 'standard'
   exception_data :exception_report_data
   
   def index
@@ -45,11 +45,6 @@ class ApplicationController < ActionController::Base
   def active_collections_clause(klass=nil)
     t = klass ? "#{klass.table_name}." : ''
     "#{t}collection_id in (" + current_collections.map{'?'}.join(',') + ")"
-  end
-
-  def choose_layout
-    return 'standard' if logged_in? && editor?
-    return 'login'
   end
 
   def local_request?

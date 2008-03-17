@@ -1,13 +1,8 @@
 class LoginController < ApplicationController
   before_filter :set_context
   skip_before_filter :login_required  
-  layout :choose_layout
+  layout 'login'
   
-  def choose_layout
-    return 'standard' if logged_in?
-    return 'login'
-  end
-
   def index
     render :action => 'index'
   end
@@ -96,6 +91,10 @@ class LoginController < ApplicationController
     reset_session
     flash[:notice] = "You have been logged out."
     redirect_back_or_default(:controller => '/login', :action => 'index')
+  end
+  
+  def preferences 
+    
   end
 
   def forbidden

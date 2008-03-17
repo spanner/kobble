@@ -1,5 +1,4 @@
 class SearchController < ApplicationController
-  layout :choose_layout
 
   def index
     results
@@ -24,7 +23,7 @@ class SearchController < ApplicationController
       :query => params[:q],
       :page => params[:page] || 1, 
       :per_page => 20,
-      :class_names => nil
+      :class_names => params[:among]
     )
     @search.run
   end

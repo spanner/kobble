@@ -1,7 +1,8 @@
 <% if list %>
   <div class="pagination">
-    found: <span class="current"><%= pluralize list.total_entries, @klass ? @klass.nice_title : 'item' %></span> in <%= link_to pluralize( current_collections.size, 'collection'), :controller => 'collections', :action => 'list' %><br />
+    found: <span class="current"><%= pluralize list.total_entries, @klass ? @klass.nice_title : 'item' %></span> 
+    <% if !@klass || @klass != Tag %>in <%= link_to pluralize( current_collections.size, 'collection'), :controller => 'collections', :action => 'list' %><% end %><br />
     show as: <%= render :partial => 'shared/viewcontrol' %><br />
-    pages: <%= will_paginate list, :prev_label => 'previous', :next_label => 'next', :separator => ' &middot; ', :container => false %>
+    <%= will_paginate list, :prev_label => 'previous', :next_label => 'next', :separator => ' &middot; ', :container => false %>
   </div>
 <% end %>

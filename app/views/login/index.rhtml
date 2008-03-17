@@ -12,6 +12,14 @@
   	<% else %>
       <% @title = "Hello #{current_user.name}" %>
   		<p class="footnote">(Not you? Please <%= link_to 'log out', :action => 'logout' %>)</p>
+  		
+  		<p class="pagination">
+  		  Jump to:
+        <% [Collection, Source, Node, Bundle, User, Tag].each do |klass| %>
+          <%= link_to klass.nice_title.pluralize, {:controller => klass.to_s.underscore.pluralize} %>
+        <% end %>
+		  </p>
+  		
   		<p>Welcome back. This page will give an overview of recent activity in your account.
   	<% end %>
 	
