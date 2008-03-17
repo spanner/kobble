@@ -144,7 +144,7 @@ div#mastfoot {
 }
 
 div#navigation {
-  margin: 10px 100px 5px 130px;
+  margin: 10px 100px 5px 125px;
 }
 
 div#navigation a, div#navigation a:link {
@@ -846,7 +846,8 @@ span.countlabel {
 
 .pagination a { color: #559DC4; }
 .pagination a:hover, .pagination a:active { color: #d1005d; }
-.pagination span.current, .pagination span.disabled { color: #695D54; }
+.pagination span.current { color: #695D54; }
+.pagination span.disabled { color: #B2AAA4; }
 
 
 

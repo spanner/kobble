@@ -6,7 +6,20 @@ class SearchController < ApplicationController
     render :action => 'results'
   end
 
+  def list
+    do_search
+    render :action => 'results'
+  end
+
   def results
+    do_search
+  end
+
+  def gallery
+    do_search
+  end
+  
+  def do_search
     @search = Ultrasphinx::Search.new(
       :query => params[:q],
       :page => params[:page] || 1, 
@@ -15,4 +28,5 @@ class SearchController < ApplicationController
     )
     @search.run
   end
+
 end

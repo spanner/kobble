@@ -35,7 +35,7 @@
     <% if @user.errors.on(:email) %><div class="formError">warning: <%= @user.errors.on(:email).to_a.last %></div><% end %>
     </p>
 
-    <p><label for="user_login"<%= ' class="formError"' if @user.errors.on(:login) %>>A login username</label><br />
+    <p><label for="user_login"<%= ' class="formError"' if @user.errors.on(:login) %>>Preferred login username</label><br />
     <%= f.text_field :login, :class => 'friendly' %>
     <% if @user.errors.on(:login) %><div class="formError">warning: this username <%= @user.errors.on(:login).to_a.last %></div><% end %>
     </p>

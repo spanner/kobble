@@ -2,23 +2,16 @@
 
 <% if @list && @list.total_entries > 0 %>
 
-  <div class="pagination">
-    found: <%= pluralize @list.total_entries, @klass.nice_title %><br />
-    show as: <%= render :partial => 'shared/viewcontrol' %><br />
-    pages: <%= will_paginate @list, :prev_label => 'previous', :next_label => 'next', :separator => ' &middot; ', :container => false %>
-  </div>
+  <%= render :partial => 'shared/pagination', :locals => {:list => @list} %>
 
   <div class="gallery">
     <ul>
       <%= render :partial => 'shared/galleried', :collection => @list, :locals => {:catch => true} %>
     </ul>
+  	<p class="clear">&nbsp;</p>
   </div>
 
-  <div class="pagination">
-    found: <%= pluralize @list.total_entries, @klass.nice_title %><br />
-    show as: <%= render :partial => 'shared/viewcontrol' %><br />
-    pages: <%= will_paginate @list, :prev_label => 'previous', :next_label => 'next', :separator => ' &middot; ', :container => false %>
-  </div>
+  <%= render :partial => 'shared/pagination', :locals => {:list => @list} %>
 
   <% if editor? %>
   	<p class="clear"><%= link_to  "Add a new #{@klass.nice_title}", {:action => 'new'}, {:class => 'additem'} %></p>

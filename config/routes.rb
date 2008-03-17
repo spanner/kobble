@@ -3,7 +3,9 @@ ActionController::Routing::Routes.draw do |map|
   map.home '', :controller => 'login', :action => 'index'
   map.login '/login', :controller => 'login', :action => 'login'
   map.logout '/logout', :controller => 'login', :action => 'logout'
-  map.search '/search/:q', :controller => 'search', :action => 'index'
+
+  map.searchlist '/search/list/:q', :controller => 'search', :action => 'list'
+  map.searchgallery '/search/gallery/:q', :controller => 'search', :action => 'gallery'
   
   map.catch '/:controller/catch/:id/:caughtClass/:caughtID', :action => 'catch'
   map.drop '/:controller/drop/:id/:droppedClass/:droppedID', :action => 'drop'

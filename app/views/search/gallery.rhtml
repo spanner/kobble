@@ -4,22 +4,10 @@
 
   <%= render :partial => 'shared/pagination', :locals => {:list => @search} %>
   
-  <div class="mainlist">
-    <% counter = 0 %>
-    <% column_length = @search.per_page / controller.list_columns %>
-    <% column_width = 800 / controller.list_columns %>
-
-    <ul class="listcolumn" style="width: <%= column_width.to_i %>px;">
-      <% @search.results.each do |listed| %>
-        <%= render :partial => 'shared/listed', :locals => {:listed => listed, :catch => true} %>
-        <% counter += 1 %>
-        <% if counter.remainder(column_length.to_i) == 0 %>
-          </ul>
-          <ul class="listcolumn" style="width: <%= column_width.to_i %>px;">
-        <% end %>
-      <% end %>
-  	</ul>
-  	
+  <div class="gallery">
+    <ul>
+      <%= render :partial => 'shared/galleried', :collection => @search.results, :locals => {:catch => true} %>
+    </ul>
   	<p class="clear">&nbsp;</p>
   </div>
 
