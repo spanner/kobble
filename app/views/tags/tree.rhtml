@@ -1,7 +1,8 @@
-<h1 class="pagetitle">
-	 tags
-   <%= render :partial => 'shared/viewcontrol' %>
-</h1>
+<% @title = 'tags' %>
+
+<div class="pagination">
+  show as: <%= render :partial => 'shared/viewcontrol' %>
+</div>
 
 <div class="tree">
   <% if @list && @list.size > 0 %>
@@ -12,14 +13,20 @@
 
     <% else %>
       <div style="marginal" class="floatcolumn">
-        <h2 class="boxhead">loose tags</h2>
-        <p style="font-size: 11px;">
+        <h2>loose tags</h2>
+      	<ul class="cloud">
     	  <% for tag in @shoots %>
-          <%= link_to( "#{tag.name}", :action => 'show', :id => tag) %> <span class="countlabel"><%= tag.use_count %></span><br />
+          <li 
+            id="tag_<%= tag.id %>" 
+            class="draggable<%= ' catcher' if tag.can_catch %>"
+            catches="<%= tag.can_catch.join(',') %>"
+          >
+            <%= link_to( "#{tag.name}", :action => 'show', :id => tag) %><span class="countlabel"><%= tag.use_count %></span>
+          </li>
       	<% end %>
-      	</p>
+      	</ul>
       </div>
-      <h2 class="boxhead">tag trees</h2>
+
       <%= render :partial => 'shared/branch', :collection => @roots %>
 
     <% end %>

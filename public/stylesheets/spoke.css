@@ -442,8 +442,6 @@ li.drophere a {
   color: #695D54;
 }
 
-
-
 /* tabbed pages */
 
 div.boxed {
@@ -529,7 +527,7 @@ div.synopsis p, div.marginal p, ul.marginal li {
 
 div.floatcolumn {
   float: right;
-  width: 160px;
+  width: 400px;
   margin-top: 0;
   margin-bottom: 40px;
   margin-left: 40px;
@@ -763,8 +761,10 @@ div.terminal {
 }
 
 span.countlabel {
-  font-size: 9px;
   color: #695D54;
+  font-size:70%;
+  position:relative;
+  bottom: 0.5em;
 }
 
 

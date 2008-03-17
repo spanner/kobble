@@ -12,16 +12,19 @@ class TagsController < ApplicationController
     60
   end
 
+
+
   def tree
     @list = Tag.find(:all, 
       :select => "tags.*, count(taggings.id) as use_count",
       :joins => "LEFT JOIN taggings on taggings.tag_id = tags.id",
-      :conditions => ["tags.collection_id = ?", current_collection],
+      :conditions => limit_to_this_account,
       :group => "taggings.tag_id",
       :order => @sort
     )
     @shoots = @list.select{|tag| tag.parent.nil?}
     @roots = @shoots.select{|tag| tag.children.count > 0}
+    @shoots -= @roots
   end
   
   def treemap

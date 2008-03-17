@@ -25,11 +25,12 @@
       <% end %>
     <% end %>
   <% end %>
-  <div class="leaf draggable catcher" id="<%= branch.class.to_s.downcase %>_<%= branch.id %>"><%= link_to branch.name, {:action => 'show', :id => branch} %>  <span class="countlabel"><%= branch.use_count %></span></div>
+  <div class="leaf draggable catcher" id="<%= branch.class.to_s.downcase %>_<%= branch.id %>"><%= link_to branch.name, {:action => 'show', :id => branch} %><span class="countlabel"><%= branch.use_count %></span></div>
 </div>  
 
 <% if max_depth > columns.length %>
   <% children = branch.children_with_count %>
+  
   <% columns << children.last %>
 
   <%=  render :partial => 'shared/branch', :collection => children, :locals => {

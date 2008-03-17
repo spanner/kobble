@@ -67,7 +67,7 @@ class Tag < ActiveRecord::Base
     Tag.find(:all, 
       :select => "tags.*, count(taggings.id) as use_count",
       :joins => "LEFT JOIN taggings on taggings.tag_id = tags.id",
-      :conditions => ["tags.parent_id = ?", self.object_id],
+      :conditions => ["tags.parent_id = ?", self.id],
       :group => "taggings.tag_id",
       :order => 'use_count DESC'
     )
@@ -77,7 +77,7 @@ class Tag < ActiveRecord::Base
     Tag.find(:all, 
       :select => "tags.*, count(taggings.id) as use_count",
       :joins => "LEFT JOIN taggings on taggings.tag_id = tags.id",
-      :conditions => ["tags.parent_id = ?", self.object_id],
+      :conditions => ["tags.parent_id = ?", self.id],
       :group => "taggings.tag_id",
       :order => 'name ASC'
     )
