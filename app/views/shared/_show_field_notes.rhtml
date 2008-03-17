@@ -1,7 +1,6 @@
 <% tabset ||= 'tabs' %>
 <% if item.has_notes? %>
   <div id="<%= tabset %>_notes">
-	  <h2 class="boxhead">field notes</h2>
 		<% unless item.observations.nil? || item.observations.size == 0 %>
 			<%= "*Observations*: #{item.observations}".formatted %>
 		<% end %>

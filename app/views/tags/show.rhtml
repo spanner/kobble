@@ -1,14 +1,14 @@
-<h1 class="pagetitle">
-  <%= render :partial => 'shared/icon', :locals => { :this => @tag } %>
-  <%= @tag.name %>
-  <% if @tag.ancestry %>
-    <span class="headernote">
-      <% @tag.ancestry.reverse.each do |t| %>
-         &lt; <%= link_to t.name, :action => 'show', :id => t %>
-      <% end %>
-    </p>
-  <% end %>
-</h1>
+<% 
+  @title = @tag.name 
+%>
+
+<% if @tag.ancestry %>
+  <p class="headernote">
+    <% @tag.ancestry.reverse.each do |t| %>
+       &lt; <%= link_to t.name, :action => 'show', :id => t %>
+    <% end %>
+  </p>
+<% end %>
 
 <% if @tag.description %>
   <%= @tag.nice('description') %>

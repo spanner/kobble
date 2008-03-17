@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   include StringExtensions
   include ExceptionNotifiable
 
-  helper_method :current_user, :current_collections, :logged_in?, :activated?, :admin?, :editor?, :last_active
+  helper_method :current_user, :current_account, :current_collections, :logged_in?, :activated?, :admin?, :editor?, :last_active
   before_filter :login_required
   before_filter :set_context
   layout :choose_layout
@@ -23,6 +23,11 @@ class ApplicationController < ActionController::Base
     redirect_to :controller => 'collections', :action => 'list' if logged_in? && current_collections.empty?
   end
   
+  def limit_to_this_account(klass=nil)
+    t = klass ? "#{klass.table_name}." : ''
+    ["#{t}account_id =?", current_account]
+  end
+
   def limit_to_active_collections(klass=nil)
     [active_collections_clause(klass)] + current_collections.map { |c| c.id }
   end
@@ -67,15 +72,7 @@ class ApplicationController < ActionController::Base
   end
   
   def list
-    @klass = request.parameters[:controller].to_s._as_class
-    page = params[:page] || 1
-    perpage = params[:perpage] || self.list_length
-    sort_options = request.parameters[:controller].to_s._as_class.sort_options
-    sort = sort_options[params[:sort]] || sort_options[request.parameters[:controller].to_s._as_class.default_sort]
-    conditions = limit_to_active_collections
-
-    @list = @klass.paginate :conditions => conditions, :order => sort, :page => page, :per_page => perpage
-
+    @list = paged_list
     respond_to do |format|
       format.html { render :template => 'shared/mainlist' }
       format.js { render :template => 'shared/mainlist', :layout => false }
@@ -83,14 +80,21 @@ class ApplicationController < ActionController::Base
   end
 
   def gallery
-    perpage = params[:perpage] || 100
-    sort_options = request.parameters[:controller].to_s._as_class.sort_options
-    sort = sort_options[params[:sort]] || sort_options[request.parameters[:controller].to_s._as_class.default_sort]
-    @list = current_collections ? request.parameters[:controller].to_s._as_class.find(:all, :conditions => limit_to_active_collections, :order => sort, :page => {:size => perpage, :current => params[:page]}) : []
+    @list = paged_list
     respond_to do |format|
       format.html { render :template => 'shared/gallery' }
       format.js { render :template => 'shared/gallery', :layout => false }
     end
+  end
+  
+  def paged_list
+    @klass = request.parameters[:controller].to_s._as_class
+    page = params[:page] || 1
+    perpage = params[:perpage] || self.list_length
+    sort_options = request.parameters[:controller].to_s._as_class.sort_options
+    sort = sort_options[params[:sort]] || sort_options[request.parameters[:controller].to_s._as_class.default_sort]
+    conditions = limit_to_active_collections
+    @list = @klass.paginate :conditions => conditions, :order => sort, :page => page, :per_page => perpage
   end
     
   def views

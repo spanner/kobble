@@ -1,3 +1,7 @@
+<% 
+  @title = @topic.name 
+%>
+
 <div class="crumbs">
   <%= link_to "Discussion", home_path %> <span class="arrow">&rarr;</span>
   <%= link_to h(@topic.forum.name), forum_path(@topic.forum) %> 
@@ -11,24 +15,6 @@
   <% end %>
   <span class="arrow">&rarr;</span>
 </div>
-
-<h1 class="pagetitle">
-  <%= h @topic.title %>
-  <% if @topic.locked? %>
-  	<span>(locked)</span>
-  <% end %>
-  <% if editor? %>
-    <sup><%= link_to image_tag("/images/furniture/buttons/circle.png"), edit_topic_path( :forum_id => @forum,  :id => @topic ), {
-  		  :id => "edit_post_#{@topic.posts.first.id}",
-  		  :title => "edit this topic"
-  	  } 
-  	%><%= link_to image_tag("/images/furniture/buttons/cross.png"), delete_topic_path( :forum_id => @forum,  :id => @topic), {
-    		  :id => "delete_post_#{@topic.posts.first.id}",
-    		  :title => "delete this topic"
-    	  } 
-    	%></sup>
-	<% end %>
-</h1>
 
 <p class="subtitle">
 	Started by <%= link_to @topic.creator.name, :controller => 'users', :action => 'show', :id => @topic.creator %>

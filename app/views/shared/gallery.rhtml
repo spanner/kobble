@@ -1,41 +1,28 @@
-<% 
-	listedclass = request.parameters[:controller].to_s._as_class
-%>
+<% @title = @klass.nice_title.pluralize %>
 
-<h1 class="pagetitle">
-  <%= listedclass.nice_title.pluralize %>
-  <%= render :partial => 'shared/viewcontrol' %>
-</h1>
+<% if @list && @list.total_entries > 0 %>
 
-<% if @list && @list.size > 0 %>
-	<p class="listsummary">
-  	showing <%= @list.first_item %> to <%= @list.last_item %> of <%= pluralize(@list.size, listedclass.nice_title) %>.<br />
-  	pages: <%= paginating_links(@list, {:window_size => 3, :params => {:sort => params[:sort]}}, {}) %><br />
-  	Order by: 
-  	<% listedclass.sort_options.keys.sort.each do |order| %>
-	    <%= link_to_unless_current order, :page => @list.page, :sort => order %><span class="pale"> | </span>
-    <% end %>
-	</p>
-
-  <p class="pagecontrol">
-    <% if @list.previous_page? %><%= link_to "&larr; previous page", :page => @list.previous_page %><% end %>
-    <% if @list.previous_page? && @list.next_page? %>&nbsp;<% end %>
-    <% if @list.next_page? %><%= link_to "next page &rarr;", :page => @list.next_page %><% end %>
-  </p>
-
-  <div class="gallery">
-    <%= render :partial => 'shared/galleried', :collection => @list, :locals => {:catch => true} %>
+  <div class="pagination">
+    found: <%= pluralize @list.total_entries, @klass.nice_title %><br />
+    show as: <%= render :partial => 'shared/viewcontrol' %><br />
+    pages: <%= will_paginate @list, :prev_label => 'previous', :next_label => 'next', :separator => ' &middot; ', :container => false %>
   </div>
 
-  <p class="pagecontrol">
-    <% if @list.previous_page? %><%= link_to "&larr; previous page", :page => @list.previous_page %><% end %>
-    <% if @list.previous_page? && @list.next_page? %>&nbsp;<% end %>
-    <% if @list.next_page? %><%= link_to "next page &rarr;", :page => @list.next_page %><% end %>
-  </p>
+  <div class="gallery">
+    <ul>
+      <%= render :partial => 'shared/galleried', :collection => @list, :locals => {:catch => true} %>
+    </ul>
+  </div>
+
+  <div class="pagination">
+    found: <%= pluralize @list.total_entries, @klass.nice_title %><br />
+    show as: <%= render :partial => 'shared/viewcontrol' %><br />
+    pages: <%= will_paginate @list, :prev_label => 'previous', :next_label => 'next', :separator => ' &middot; ', :container => false %>
+  </div>
 
   <% if editor? %>
-  	<p class="clear"><%= link_to  "Add a new #{listedclass.nice_title}", {:action => 'new'}, {:class => 'additem'} %></p>
+  	<p class="clear"><%= link_to  "Add a new #{@klass.nice_title}", {:action => 'new'}, {:class => 'additem'} %></p>
   <% end %>
 <% else %>
-	<p>There are no <%= listedclass.nice_title.pluralize %> to display in this collection</p>
+	<p>There are no <%= @klass.nice_title.pluralize %> to display in this collection</p>
 <% end %>

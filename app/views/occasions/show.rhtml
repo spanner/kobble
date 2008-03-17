@@ -1,7 +1,6 @@
-<div class="header" id="header_occasion_<%= @occasion.id %>">
-	<%= render :partial => 'shared/icon', :locals => { :this => @occasion, :with_caption => false } %>
-	<h1 class="pagetitle"><%= @occasion.name %></h1>
-</div>
+<% 
+  @title = @occasion.name 
+%>
 
 <div id="margin" class="floatcolumn" style="width: 175px;">	
 	<% if editor? %>

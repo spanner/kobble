@@ -1,9 +1,8 @@
 <% itsme = (current_user.id == @user.id) -%>
 
-<div class="header" id="header_source_<%= @user.id %>">
-	<%= render :partial => 'shared/icon', :locals => { :this => @user, :with_caption => false } %>
-	<h1 class="pagetitle"><%= @user.name %></h1>
-</div>
+<% 
+  @title = @user.name 
+%>
 
 <% if @user.has_description? %>
 	  <%= @user.description.formatted %>

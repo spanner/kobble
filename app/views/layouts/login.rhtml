@@ -2,19 +2,39 @@
         "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>
 <head>
-  <title><% if logged_in? %><%= current_user.collection.name %><% else %>spoke!<% end %></title>
+  <title>materiali.st<% if @title %> - <%= @title %><% end%></title>
   <link rel="stylesheet" href="/stylesheets/spoke.css" type="text/css" />
   <script type="text/javascript" src="/js/mootools.js"></script>
   <script type="text/javascript" src="/js/extensions.js"></script>
   <script type="text/javascript" src="/js/spoke.js"></script>
 </head>
 <body>
+  <div id="masthead">
+    <p>
+      <%= link_to "materialist/", "/" %><br />
+    </p>
+  </div>
+
+  <div id="pagetitle">
+    <h1<% if @title && @title.size > 50 %> class="longtitle"<% end %>><%= @title || 'welcome' %></h1>
+  </div>
 
   <div id="canvas">
-   
-<%= @content_for_layout %>
-
+    <%= yield %>
   </div>
+
+  <div id="mastfoot">
+    <div id="navigation">
+      <%= link_to 'welcome', '/', {:class => (request.parameters[:action] == 'index' ? "fg" : '')} %>
+      <%= link_to 'background', 'http://about.materiali.st/' %>
+      <%= link_to 'how it works', 'http://about.materiali.st/how/' %>
+      <%= link_to 'faq', 'http://about.materiali.st/faq/' %>
+      <%= link_to 'examples',  'http://about.materiali.st/examples/' %>
+      <%= link_to 'sign up', {:controller => 'login', :action => 'signup'}, {:class => (request.parameters[:action] == 'signup' ? "fg" : '')} %>
+      <%= link_to 'log in', {:controller => 'login', :action => 'login'}, {:class => (request.parameters[:action] == 'login' ? "fg" : '')} %>
+      <%= link_to 'spanner', 'http://spanner.org/', {:class => 'pale'} %> 
+    </div>
+  </div> 
 
 </body>
 </html>

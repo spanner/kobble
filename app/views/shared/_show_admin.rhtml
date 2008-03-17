@@ -3,7 +3,6 @@
 
 <% if editor? %>
   <div id="<%= tabset %>_admin">
-	  <h2 class="boxhead">admin</h2>
 	  <ul class="starry">
 			<% if with_snip %><li class="add"><%= link_to 'extract a fragment from this', {:controller => 'nodes', :action => 'new'}, {:class => 'snipper'} %> (highlight some text first)</li><% end %>
 			<li class="edit"><%= link_to "edit this #{item.class.to_s.downcase}" , {:controller => item.class.to_s.pluralize.underscore, :action => 'edit', :id => item} %></li>

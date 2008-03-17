@@ -1,7 +1,6 @@
-<h1 class="pagetitle">
-	<%= render :partial => 'shared/icon', :locals => { :this => @bundle } %>
-	<%= @bundle.name %>
-</h1>
+<% 
+  @title = @bundle.name || 'nameless set'
+%>
 
 <% if @bundle.has_description? %>
 	  <%= @bundle.description.formatted %>
@@ -19,13 +18,11 @@
   <% if editor? %><a href="#" id="tab_content_admin" class="tab">admin</a><% end %>
 </div>
 
-
 <div class="boxed" id="box_content">
-
   <div id="content_members">
     
     <h2 class="boxhead">set members</h2>
-	  
+
     <div id="bundle_<%= @bundle.id %>" class="catcher" catches="<%= @bundle.can_catch.join(',') %>">
       <div class="mainlist">
         <%= render :partial => 'shared/listed', :collection => @bundle.members %>

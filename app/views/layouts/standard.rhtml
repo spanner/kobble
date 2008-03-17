@@ -13,13 +13,13 @@
 
   <div id="masthead">
     <p>
-      <%= link_to "materialist/", "http://materiali.st/" %><br />
-      <%= link_to "#{current_user.account.name}/", {:controller => 'accounts', :action => 'home'}, {:class => 'account'} %>
+      <%= link_to "materialist/", "/" %><br />
+      <%= link_to "#{current_user.account.name}/", {:controller => 'accounts', :action => 'home'}, {:class => 'account'} %><br />
     </p>
   </div>
   
   <div id="pagetitle">
-    <h1><%= @title || 'welcome' %></h1>
+    <h1<% if @title && @title.size > 50 %> class="longtitle"<% end %>><%= @title || 'welcome' %></h1>
   </div>
 
   <div id="canvas">

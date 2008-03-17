@@ -15,7 +15,7 @@ class UsersController < ApplicationController
   # logging in and registration is in account_controller
 
   def limit_to_active_collections
-    [active_collections_clause(User) + " and users.status >= 200", current_collections]
+    [active_collections_clause(User) + " and users.status >= 200"] + current_collections
   end
     
   def show

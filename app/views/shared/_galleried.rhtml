@@ -6,17 +6,17 @@
 
 <li 
   id="<%= galleried.class.to_s.downcase %>_<%= galleried.id %>" 
-  class="gallery expandable draggable<%= ' catcher' if catch && galleried.can_catch %>"
-  title="<%= name %>"
+  class="<%= galleried.class.to_s.downcase %> expandable draggable<%= ' catcher' if catch && galleried.can_catch %>"
   <% if catch && galleried.can_catch %>catches="<%= galleried.can_catch.join(',') %>"<% end %>
 >
 
-  <% name = galleried.name.nil? || galleried.name.size == 0 ? "nameless #{galleried.class.nice_title}" : galleried.name %>
   <% if galleried.has_image? %>
     <%= link_to(image_tag(url_for_file_column("galleried", "image", "slide"), :size => "135x135", :alt => name), {:action => 'show', :id => galleried}) %>
   <% else %>
     <%= link_to(image_tag("/images/furniture/layout/defaultimage.png", :size => "135x135", :alt => name), {:action => 'show', :id => galleried}) %>
   <% end %>
+
+  <div class="tiptitle"><% if galleried.has_collection? %><%= galleried.collection.abbreviation %>: <% end %><%= name %></div>
   <div class="tiptext"><%= truncate( galleried.find_some_text, 300 ) %></div>
 </li>
 

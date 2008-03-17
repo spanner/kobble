@@ -25,6 +25,10 @@ module AuthenticatedSystem
       @current_user ||= (session[:user] && User.find_by_id(session[:user])) || :false
     end
     
+    def current_account
+      @current_account ||= current_user.account
+    end
+    
     def current_user=(new_user)
       session[:user] = (new_user.nil? || new_user.is_a?(Symbol)) ? nil : new_user.id
       @current_user = EditObserver.current_user = new_user

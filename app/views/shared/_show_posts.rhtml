@@ -1,7 +1,6 @@
 <% tabset ||= 'tabs' %>
 <% if item.has_posts? %>
 	<div id="<%= tabset %>_posts">
-	  <h2 class="boxhead">discussion posts</h2>
 		<ul class="starry" id="postlist">
       <%= render :partial => 'nodes/minilist', :collection => item.posts %>
 		</ul>

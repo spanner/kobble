@@ -9,34 +9,50 @@ class LoginController < ApplicationController
   end
 
   def index
-    @pagetitle = 'welcome'
+    render :action => 'index'
   end
   
+  def signup
+    @user = User.new(params[:user])
+    if request.post?
+      @user.status = 0
+      @user.save!
+      session[:user] = @user.id
+      self.current_user = @user
+      flash[:notice] = "Registration processed."
+      redirect_to :controller => '/login', :action => 'index'
+    end
+  rescue ActiveRecord::RecordInvalid
+    @known_user = User.find_by_email(@user.email)
+    render :action => 'signup'
+  end
+
   def activate
-    flash.clear  
-    return if params[:id].nil? and params[:activation_code].nil?
+    flash.clear 
+    if params[:id].nil? && params[:activation_code].nil? then
+      render :action => 'activate'
+    end
     activator = params[:id] || params[:activation_code]
-    @user = User.find_by_activation_code(activator) 
+    @user = User.find_by_activation_code(activator)
     if @user and @user.activate
       current_user = @user
       redirect_to :controller => '/login', :action => 'index'
-      flash[:notice] = "Your account has been activated." 
+      flash[:notice] = "Your login has been activated."
     else
-      flash[:error] = "Unable to activate your account. Please check activation code." 
-      redirect_to :controller => '/login', :action => 'index'
+      flash[:error] = "Unable to activate your account. Please check activation code."
+      render :action => 'activate'
     end
-  end 
-  
-  def resend_activation
-    
   end
-
+  
   def repassword
     @pagetitle = 'reset'
     return unless request.post?
     return @error = "Please enter an email address." unless params[:email] && !params[:email].nil? 
     @user = User.find_by_email(params[:email])
-    return @error = "Sorry: The email address <strong>#{params[:email]}</strong> is not known here." unless @user
+    unless @user
+      flash[:error] = "Sorry: The email address <strong>#{params[:email]}</strong> is not known here."
+      render :action => 'repassword'
+    end
     unless (@user.activated?)
       UserNotifier.deliver_welcome(@user)
       return @error = "Sorry: You can't change the password for an account that hasn't been activated. We have resent the activation message instead. Clicking the activation link will log you in and allow you to change your password." 

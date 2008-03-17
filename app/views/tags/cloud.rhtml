@@ -14,6 +14,7 @@
     cssclass[tag.object_id] = "cloud#{band}"
     incidence[band] += 1
   end
+  @title = 'tags'
 %>
 
 <script type="text/javascript">
@@ -23,10 +24,9 @@
   cloud_bands = <%= cssbands %>;
 </script>
 
-<h1 class="pagetitle">
-	 tags
-   <%= render :partial => 'shared/viewcontrol' %>
-</h1>
+<div class="pagination">
+  show as: <%= render :partial => 'shared/viewcontrol' %>
+</div>
 
 <div class="cloud">
 	<ul class="cloud">
@@ -48,14 +48,6 @@
  
   	<% end %>
   	</ul>
-
-    <form class="cloudsummary">
-    <h3>displaying</h3>
-    <% cssbands.times do |band| %>
-      <input type="checkbox" id="band_<%= band %>" name="band_<%= band %>" class="cloudcontrol" checked="checked">
-      <label for="band_<%= band %>" class="cloud<%= band %>"><%= bandlabels[band] %> uses: <%= pluralize(incidence[band], 'tag') %></label><br />
-    <% end %>
-    </form>
 
   <% else %>
   	<p>There are no tags to display in this collection</p>

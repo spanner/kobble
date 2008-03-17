@@ -191,7 +191,7 @@ var Interface = new Class({
 var SpokeTips = Tips.extend({
   options: {
   	initialize:function(){ this.fx = new Fx.Style(this.toolTip, 'opacity', {duration: 250, wait: false}).set(0); },
-  	onShow: function(toolTip) { if (interface.getPref('showDetails') && !interface.dragging) this.fx.start(0.8); },
+  	onShow: function(toolTip) { if (!interface.dragging) this.fx.start(0.8); },
   	onHide: function(toolTip) { this.fx.start(0); }
   },
 	build: function(el){
@@ -458,10 +458,10 @@ var Draggee = new Class({
 		this.original = element;
 		this.tag = element.spokeType() + '_' + element.spokeID();   //omitting other id parts that only serve to avoid duplicate element ids
 		this.link = $E('a', element);
-		this.name = this.original.title || this.link.getText();
+		this.name = this.findTitle();
 		this.draggedfrom = interface.lookForDropper(element.getParent());
 		this.helper = new DragHelper(this);
-		this.helper.start(event);
+    this.helper.start(event);
 	},
   spokeID: function () { return this.original.spokeID(); },
   spokeType: function () { return this.original.spokeType(); },
@@ -471,7 +471,10 @@ var Draggee = new Class({
 	remove: function () { this.original.remove(); },
 	explode: function () { this.original.explode(); },
 	disappear: function () { this.original.dwindle(); },
-	clone: function () { return this.original.clone(); }
+	clone: function () { return this.original.clone(); },
+	findTitle: function () { 
+	   this.original.title || $E('div.tiptitle', this.original).getText() || this.link.getText();
+	}
 });
 
 // the dragged representation is a new DragHelper object with useful abilities

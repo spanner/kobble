@@ -1,7 +1,6 @@
 <% tabset ||= 'tabs' %>
 <% if item.has_file? %>
 	<div id="<%= tabset %>_file">
-	  <h2 class="boxhead">download file</h2>
     <p style="clear:left">This is an uploaded file. You can download the original file here, and for convenience we have extracted whatever (unformatted) text can be found within it.</p>
     <%= render :partial => 'shared/download_file', :locals => {:item => item} %>
   </div>

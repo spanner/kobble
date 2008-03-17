@@ -1,6 +1,4 @@
-<span class="viewcontrol">
-  <% controller.views.each do |view| %>
-    <%= link_to_unless_current view, :action => view %> |
-  <% end %>
-  <%= link_to_unless_current 'list', :action => 'index' %>
-</span>
+<% controller.views.each do |view| %>
+  <%= link_to_unless_current view, :action => view, :page => params[:page] %> &middot;
+<% end %>
+<%= link_to_unless_current 'list', :action => 'index', :page => params[:page] %>

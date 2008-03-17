@@ -90,20 +90,17 @@ module ActiveRecord
         end
         
         def index_fields
-          STDERR.puts "%%% spokecontent.index_fields (self is #{self})"
           ['name', 'description', 'body', 'created_by', 'created_at', 'collection_id']
         end
 
         def index_concatenation
-          STDERR.puts "%%% spokecontent.index_concatenation (self is #{self})"
           [{:fields => ['observations', 'arising', 'emotions'], :as => 'field_notes'}]
         end
         
         def sort_options
           {
             "name" => "name",
-            "date created" => "created_at",
-            "date modified" => "updated_at",
+            "date" => "created_at DESC",
           }
         end
 
@@ -127,6 +124,10 @@ module ActiveRecord
           return self.creator.account if self.respond_to?('creator')
         end
         
+        def has_collection?
+          self.respond_to?('collection') && !self.collection.nil?
+        end
+
         def has_tags?
           self.respond_to?('tags') && self.tags.count > 0
         end
@@ -179,10 +180,18 @@ module ActiveRecord
         end
 
         def has_clip?
+          self.respond_to?('clip') && !self.clip.nil?
+        end
+        
+        def clip_exists?
           self.respond_to?('clip') && !self.clip.nil? and File.file? self.clip
         end
 
         def has_file?
+          self.respond_to?('file') && !self.file.nil?
+        end
+        
+        def file_exists?
           self.respond_to?('file') && !self.file.nil? and File.file? self.file
         end
 

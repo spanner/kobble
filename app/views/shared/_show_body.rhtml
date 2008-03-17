@@ -1,20 +1,9 @@
 <% 
   tabset ||= 'tabs' 
-  with_raw ||= false 
 %>
 
 <% if item.has_body? %>
 	<div id="<%= tabset %>_body">
-	  <h2 class="boxhead"><% if with_raw %>formatted <% end %>text or transcript<% if with_raw %> (best for reading)<% end %></h2>
 	  <%= item.body.formatted %>
 	</div>
-  
-  <% if with_raw %>
-  	<div id="<%= tabset %>_raw">
-  	  <h2 class="boxhead">unformatted text (best for snipping)</h2>
-  	  <div class="rawtranscript">
-  	    <%= simple_format(item.body) %>
-  	  </div>
-  	</div>
-  <% end %>
 <% end %>

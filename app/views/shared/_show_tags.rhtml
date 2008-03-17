@@ -1,7 +1,6 @@
 <% tabset ||= 'tabs' %>
 <% if editor? || item.has_tags? %>
   <div id="<%= tabset %>_tags">
-	  <h2 class="boxhead">tags</h2>
     <div class="mainlist">
     	<ul 
     	  id="tagsfor_<%= item.class.to_s.downcase %>_<%= item.id %>"

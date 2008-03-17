@@ -1,7 +1,6 @@
 <% if item.has_origins? %>
   <% tabset ||= 'tabs' %>
 	<div id="<%= tabset %>_origins">
-	  <h2 class="boxhead">origins</h2>
   	<p>
   		<% if item.source %>
   		  <% if item.source %>taken from <%= link_to item.source.name, :action => 'show', :controller => 'sources', :id => item.source %><br /><% end %>

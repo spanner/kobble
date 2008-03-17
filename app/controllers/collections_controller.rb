@@ -23,7 +23,7 @@ class CollectionsController < ApplicationController
     # this will be the main dashboard view
     # but might get moved to accounts_controller::show
 
-    @collections = current_user.account.collections
+    @collections = current_account.collections
   end
   
   def activate

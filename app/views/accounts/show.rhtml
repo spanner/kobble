@@ -1,8 +1,5 @@
-<h1 class="pagetitle">
-	<%= @collection.name %>
-	<% if admin? %>
-		<%= link_to 'edit', :action => 'edit', :id => @collection %>
-	<% end %>
-</h1>
+<% 
+  @title = @account.name
+%>
 
-<%= @collection.description.formatted unless @collection.description.nil? %>
+<%= @account.description.formatted unless @account.description.nil? %>

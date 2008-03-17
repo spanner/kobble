@@ -1,15 +1,17 @@
 <% @title = @klass.nice_title.pluralize %>
 
-<% if @list %>
-
-  <p>Drawn from <%= current_collections.map{|c| "<strong>#{c.name}</strong>"}.to_sentence %>.</p>
+<% if @list && @list.total_entries > 0 %>
   
-  <%= will_paginate @list, :prev_label => 'previous', :next_label => 'next', :separator => '' %>
+  <div class="pagination">
+    found: <%= pluralize @list.total_entries, @klass.nice_title %><br />
+    show as: <%= render :partial => 'shared/viewcontrol' %><br />
+    pages: <%= will_paginate @list, :prev_label => 'previous', :next_label => 'next', :separator => ' &middot; ', :container => false %>
+  </div>
 
-  <div id="mainlist">
+  <div class="mainlist">
     <% counter = 0 %>
     <% column_length = @list.per_page / controller.list_columns %>
-    <% column_width = 800 / controller.list_columns %>
+    <% column_width = 700 / controller.list_columns %>
     
     <ul class="listcolumn" style="width: <%= column_width.to_i %>px;">
       <% @list.each do |listed| %>
@@ -23,7 +25,11 @@
   	</ul>
   </div>
 
-  <%= will_paginate @list, :prev_label => 'previous', :next_label => 'next', :separator => '' %>
+  <div class="pagination">
+    found: <%= pluralize @list.total_entries, @klass.nice_title %><br />
+    show as: <%= render :partial => 'shared/viewcontrol' %><br />
+    pages: <%= will_paginate @list, :prev_label => 'previous', :next_label => 'next', :separator => ' &middot; ', :container => false %>
+  </div>
 
   <% if editor? %>
   	<p class="clear"><%= link_to  "Add a new #{@klass.nice_title}", {:action => 'new'}, {:class => 'additem'} %></p>

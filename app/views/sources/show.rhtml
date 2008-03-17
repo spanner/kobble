@@ -1,9 +1,6 @@
-<div class="header" id="header_source_<%= @source.id %>">
-	<h1 class="pagetitle">
-	<%= render :partial => 'shared/icon', :locals => { :this => @source } %>
-	<%= @source.name %>
-	</h1>
-</div>
+<% 
+  @title = @source.name || 'nameless source' 
+%>
 
 <% if @source.has_description? %>
 	  <%= @source.description.formatted %>
@@ -12,37 +9,27 @@
 <% end %>
 
 <div class="boxtabs">
-  <% if @source.has_file? %><a href="#" id="tab_descriptive_file" class="tab">download file</a><% end %>
-  <% if @source.has_clip? %><a href="#" id="tab_descriptive_clip" class="tab">audio file</a><% end %>
-  <% if @source.has_circumstances? %><a href="#" id="tab_descriptive_circumstances" class="tab">circumstances</a><% end %>
-  <% if @source.has_notes? %><a href="#" id="tab_descriptive_notes" class="tab">field notes</a><% end %>
-  <% if editor? || @source.has_tags? %><a href="#" id="tab_descriptive_tags" class="tab">tags</a><% end %>
-  <a href="#" id="tab_descriptive_topics" class="tab">discussions</a>
-  <% if editor? %><a href="#" id="tab_descriptive_admin" class="tab">admin</a><% end %>
-</div>
-
-<div class="boxed" id="box_descriptive">
-  <%= render :partial => 'shared/show_file', :locals => {:item => @source, :tabset => 'descriptive'} %>
-  <%= render :partial => 'shared/show_clip', :locals => {:item => @source, :tabset => 'descriptive'} %>
-  <%= render :partial => 'shared/show_circumstances', :locals => {:item => @source, :tabset => 'descriptive'} %>
-  <%= render :partial => 'shared/show_field_notes', :locals => {:item => @source, :tabset => 'descriptive'} %>
-  <%= render :partial => 'shared/show_tags', :locals => {:item => @source, :tabset => 'descriptive'} %>
-  <%= render :partial => 'shared/show_admin', :locals => {:item => @source, :with_snip => true, :tabset => 'descriptive'} %>
-  <%= render :partial => 'shared/show_topics', :locals => {:item => @source, :tabset => 'descriptive'} %>
-</div>
-
-<div class="boxtabs">
-  <% if @source.has_body? %><a href="#" id="tab_content_body" class="tab">formatted text</a><% end %>
-  <% if @source.has_body? %><a href="#" id="tab_content_raw" class="tab">textile</a><% end %>
+  <% if @source.has_file? %><a href="#" id="tab_content_file" class="tab">download file</a><% end %>
+  <% if @source.has_clip? %><a href="#" id="tab_content_clip" class="tab">audio file</a><% end %>
+  <% if @source.has_body? %><a href="#" id="tab_content_body" class="tab">text</a><% end %>
+  <% if @source.has_circumstances? %><a href="#" id="tab_content_circumstances" class="tab">circumstances</a><% end %>
+  <% if @source.has_notes? %><a href="#" id="tab_content_notes" class="tab">field notes</a><% end %>
+  <% if editor? || @source.has_tags? %><a href="#" id="tab_content_tags" class="tab">tags</a><% end %>
+  <a href="#" id="tab_content_topics" class="tab">discussions</a>
   <% if @source.has_extracted_text? %><a href="#" id="tab_content_extracted" class="tab">extracted text</a><% end %>
   <% if @source.has_image? %><a href="#" id="tab_content_image" class="tab">image</a><% end %>
   <a href="#" id="tab_content_nodes" class="tab">fragments</a>
 </div>
 
 <div class="boxed" id="box_content">
+  <%= render :partial => 'shared/show_file', :locals => {:item => @source, :tabset => 'content'} %>
+  <%= render :partial => 'shared/show_clip', :locals => {:item => @source, :tabset => 'content'} %>
+  <%= render :partial => 'shared/show_circumstances', :locals => {:item => @source, :tabset => 'content'} %>
+  <%= render :partial => 'shared/show_field_notes', :locals => {:item => @source, :tabset => 'content'} %>
+  <%= render :partial => 'shared/show_tags', :locals => {:item => @source, :tabset => 'content'} %>
+  <%= render :partial => 'shared/show_topics', :locals => {:item => @source, :tabset => 'content'} %>
   <%= render :partial => 'shared/show_body', :locals => {:item => @source, :tabset => 'content', :with_raw => true} %>
   <%= render :partial => 'shared/show_extracted', :locals => {:item => @source, :tabset => 'content'} %>
   <%= render :partial => 'shared/show_image', :locals => {:item => @source, :tabset => 'content'} %>
   <%= render :partial => 'shared/show_nodes', :locals => {:item => @source, :tabset => 'content'} %>
 </div>
-  

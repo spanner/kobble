@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 83) do
+ActiveRecord::Schema.define(:version => 84) do
 
   create_table "accounts", :force => true do |t|
     t.integer "user_id"
@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(:version => 83) do
     t.text     "emotions"
     t.text     "arising"
     t.string   "image"
-    t.text     "synopsis"
+    t.text     "description"
   end
 
   add_index "bundles", ["collection_id"], :name => "index_bundles_on_collection"
@@ -102,7 +102,7 @@ ActiveRecord::Schema.define(:version => 83) do
 
   create_table "nodes", :force => true do |t|
     t.string   "name"
-    t.text     "synopsis"
+    t.text     "description"
     t.text     "notes"
     t.text     "body"
     t.integer  "speaker_id"
@@ -144,6 +144,7 @@ ActiveRecord::Schema.define(:version => 83) do
     t.text     "observations"
     t.text     "arising"
     t.text     "emotions"
+    t.text     "body"
   end
 
   create_table "paddings", :force => true do |t|
@@ -190,7 +191,7 @@ ActiveRecord::Schema.define(:version => 83) do
   create_table "sources", :force => true do |t|
     t.string   "name"
     t.text     "notes"
-    t.text     "synopsis"
+    t.text     "description"
     t.integer  "speaker_id"
     t.text     "body"
     t.string   "clip"
@@ -235,6 +236,7 @@ ActiveRecord::Schema.define(:version => 83) do
     t.datetime "updated_at"
     t.integer  "collection_id"
     t.string   "image"
+    t.integer  "account_id"
   end
 
   create_table "topics", :force => true do |t|

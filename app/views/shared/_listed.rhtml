@@ -9,7 +9,7 @@
 
   <%= link_to( name, {:controller => listed.class.to_s.downcase.pluralize, :action => 'show', :id => listed}, {:class => 'listed'}) %> 
 
-  <div class="tiptitle"><%= listed.collection.abbreviation %>: <%= name %></div>
+  <div class="tiptitle"><% if listed.has_collection? %><%= listed.collection.abbreviation %>: <% end %><%= name %></div>
   <div class="tiptext"><%= truncate( listed.find_some_text, 300 ) %></div>
     
 </li>
