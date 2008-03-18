@@ -1,33 +1,40 @@
 <% @title = 'login'%>
 
-<% if @error %>
-	<p class="haserror">
-		Sorry: we don't recognise that combination of username and password.<br />
-		If you've forgotten your password we can always <%= link_to 'make you a new one', :action => 'repassword' %>.
-	</p>
-	
+<% if logged_in? %>
+
+  <p>You are currently logged in as <strong><%= current_user.name %></strong>.<br />If that's not you, or you want to log in with another account, please <%= link_to "log out", :action => 'logout' %> first.</p>
+
 <% else %>
-  <p>
-    If you haven't already, you can create a <%= link_to "free individual account", :action => 'signup' %>.
-  </p>
 
-<% end %>
+  <% if @error %>
+  	<p class="haserror">
+  		Sorry: we don't recognise that combination of username and password.<br />
+  		If you've forgotten your password we can always <%= link_to 'make you a new one', :action => 'repassword' %>.
+  	</p>
 	
- <div class="mainform">
-	<% form_tag do -%>
+  <% else %>
+    <p>
+      If you haven't already, you can create a <%= link_to "free individual account", :action => 'signup' %>.
+    </p>
 
-		<p><label for="login">Username</label><br />
-		<%= text_field_tag 'login', '', :class => 'login' %></p>
+  <% end %>
+	
+   <div class="mainform">
+  	<% form_tag do -%>
 
-		<p><label for="password">Password</label><br />
-		<%= password_field_tag 'password', '', :class => 'login' %></p>
+  		<p><label for="login">Username</label><br />
+  		<%= text_field_tag 'login', '', :class => 'login' %></p>
 
-		<p><label for="remember_me"><%= check_box_tag 'remember_me' %> Remember me</label></p>
+  		<p><label for="password">Password</label><br />
+  		<%= password_field_tag 'password', '', :class => 'login' %></p>
 
-		<p><%= submit_tag 'Log in' %></p>
+  		<p><label for="remember_me"><%= check_box_tag 'remember_me' %> Remember me</label></p>
+
+  		<p><%= submit_tag 'Log in' %></p>
 		
-		<p><%= link_to "Forgotten your login?", {:action => 'repassword'} %></p>
+  		<p><%= link_to "Forgotten your login?", {:action => 'repassword'} %></p>
        
-	<% end -%>
- </div>
- 
+  	<% end -%>
+   </div>
+
+ <% end %>

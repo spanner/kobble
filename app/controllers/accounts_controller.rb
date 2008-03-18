@@ -1,6 +1,15 @@
 class AccountsController < ApplicationController
   before_filter :admin_required, :except => [:show, :edit, :update, :create, :new]
 
+  def index
+    home
+    render :action => 'home'
+  end
+
+  def home
+    @account = current_user.account
+  end
+
   def show
     @account = admin? ? Account.find(params[:id]) : current_user.account
   end

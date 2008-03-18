@@ -1,0 +1,32 @@
+<% 
+  @title = 'Home'
+%>
+
+<p>In  version 1.6 (April) This will be your dashboard page, with settings, updates, recent activity and account-management. Lots of lovely lists. For now it's a useful place to put the activation of collections.</p>
+  
+<p>If a collection is ticked below, it is included in your searching and browsing. If not, it remains invisible until you activate it. This is just a personal setting and doesn't affect what other people see.</p>
+
+<% if current_account.collections.count > 0 %>
+
+  <% current_account.collections.each do |c| %>
+
+    <h3> 
+      <% active = current_user.using_collection?(c) %>
+      <%= link_to c.name, {
+    		:controller => 'collections', 
+    		:action => active ? 'deactivate' : 'activate',
+    		:id => c, 
+    	}, {
+    		:class => active ? 'toggle ticked' : 'toggle crossed',
+    		:title => 'click to toggle activation',
+    	} %>
+    </h3>
+
+  <% end %>
+
+  <% if account_holder? %>
+  	<p class="clear"><%= link_to  "Add a new collection", {:action => 'new'}, {:class => 'additem'} %></p>
+  <% end %>
+<% else %>
+	<p>There are no collections to display in this account</p>
+<% end %>

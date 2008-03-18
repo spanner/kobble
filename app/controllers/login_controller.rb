@@ -3,6 +3,10 @@ class LoginController < ApplicationController
   skip_before_filter :login_required  
   layout 'login'
   
+  def choose_layout
+    logged_in? ? 'standard' : 'login'
+  end
+  
   def index
     render :action => 'index'
   end
@@ -78,7 +82,7 @@ class LoginController < ApplicationController
         self.current_user.remember_me
         cookies[:auth_token] = { :value => self.current_user.remember_token , :expires => self.current_user.remember_token_expires_at }
       end
-      redirect_back_or_default(:controller => current_user.editor? ? 'nodes' : '/')
+      redirect_back_or_default(:controller => 'accounts', :action => 'home')
       flash[:notice] = "Logged in successfully"
     else
       @error = true
@@ -90,7 +94,7 @@ class LoginController < ApplicationController
     cookies.delete :auth_token
     reset_session
     flash[:notice] = "You have been logged out."
-    redirect_back_or_default(:controller => '/login', :action => 'index')
+    redirect_back_or_default(:controller => '/login', :action => 'login')
   end
   
   def preferences 

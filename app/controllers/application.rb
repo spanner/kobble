@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   include StringExtensions
   include ExceptionNotifiable
 
-  helper_method :current_user, :current_account, :current_collections, :logged_in?, :activated?, :admin?, :editor?, :last_active
+  helper_method :current_user, :current_account, :current_collections, :logged_in?, :activated?, :admin?, :editor?, :account_holder?, :last_active
   before_filter :login_required
   before_filter :set_context
   layout 'standard'

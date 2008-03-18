@@ -1,5 +1,4 @@
 <% 
-  listedclass = Collection 
   @title = 'collections'
 %>
 
@@ -25,8 +24,8 @@
 
   <% end %>
 
-  <% if editor? %>
-  	<p class="clear"><%= link_to  "Add a new #{listedclass.nice_title}", {:action => 'new'}, {:class => 'additem'} %></p>
+  <% if account_holder? %>
+  	<p class="clear"><%= link_to  "Add a new collection", {:action => 'new'}, {:class => 'additem'} %></p>
   <% end %>
 <% else %>
 	<p>There are no collections to display in this account</p>

@@ -21,6 +21,10 @@ module AuthenticatedSystem
       logged_in? && current_user.editor?
     end
     
+    def account_holder?
+      logged_in? && current_user == current_user.account.user
+    end
+    
     def current_user
       @current_user ||= (session[:user] && User.find_by_id(session[:user])) || :false
     end

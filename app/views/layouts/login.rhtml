@@ -11,7 +11,7 @@
 <body>
   <div id="masthead">
     <p>
-      <%= link_to "materialist/", "/" %><% if current_user %><br />
+      <%= link_to "materialist/", "/" %><% if logged_in? %><br />
       <%= link_to "#{current_user.account.name}/", {:controller => 'accounts', :action => 'home'}, {:class => 'account'} %><% end %><br />
     </p>
   </div>

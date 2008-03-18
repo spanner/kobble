@@ -891,21 +891,21 @@ p.pagecontrol {
 div.mainform input.titular {
   width: 540px;
   height: 28px;
-  font-family: HelveticaNeue-Roman, helvetica, arial, sans-serif;
+  font-family: Georgia, "Times New Roman", serif;
   font-size: 22px;
   font-weight: bold;
   line-height: 28px;
 }
 
 div.mainform input.login {
-  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
-  font-size: 14px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 18px;
   line-height: 18px;
   width: 340px;
 }
 
 div.mainform input.friendly {
-  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
+  font-family: Georgia, "Times New Roman", serif;
   font-size: 14px;
   line-height: 18px;
   width: 540px;

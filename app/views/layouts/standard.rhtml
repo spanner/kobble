@@ -28,11 +28,11 @@
 
   <div id="mastfoot">
 	  <div id="navigation">
-      <%= link_to 'home', {:controller => 'accounts', :action => 'show', :id => current_user.account}, {:class => 'action'} %>
-      <% [Collection, Source, Node, Bundle, User, Tag].each do |klass| %>
+      <%= link_to 'home', {:controller => 'accounts', :action => 'home'}, {:class => request.parameters[:action] == 'home' ? " fg" : ''} %>
+      <% [Source, Node, Bundle, User, Tag].each do |klass| %>
         <%= link_to klass.nice_title.pluralize, {:controller => klass.to_s.underscore.pluralize}, {:class => (request.parameters[:controller] == klass.to_s.underscore.pluralize ? "fg" : '')} %>
       <% end %>
-      <%= link_to 'search', {:controller => 'search', :action => 'index'}, {:class => 'searchme' + (request.parameters[:controller] == 'search' ? " fg" : '')} %>
+      <%= link_to 'search', {:controller => 'search', :action => 'index'}, {:class => request.parameters[:controller] == 'search' ? " fg" : ''} %>
       <%= link_to 'preferences', {:controller => 'login', :action => 'preferences'} %>
       <%= link_to 'log out', {:controller => 'login', :action => 'logout'}, {:class => 'admin'} %>
     </div>
