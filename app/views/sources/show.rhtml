@@ -2,6 +2,8 @@
   @title = @source.name || 'nameless source' 
 %>
 
+<%= render :partial => 'shared/show_clip', :locals => {:item => @source} %>
+
 <% if @source.has_description? %>
 	  <%= @source.description.formatted %>
 <% else %>
@@ -10,7 +12,6 @@
 
 <div class="boxtabs">
   <% if @source.has_file? %><a href="#" id="tab_content_file" class="tab">download file</a><% end %>
-  <% if @source.has_clip? %><a href="#" id="tab_content_clip" class="tab">audio file</a><% end %>
   <% if @source.has_body? %><a href="#" id="tab_content_body" class="tab">text</a><% end %>
   <% if @source.has_circumstances? %><a href="#" id="tab_content_circumstances" class="tab">circumstances</a><% end %>
   <% if @source.has_notes? %><a href="#" id="tab_content_notes" class="tab">field notes</a><% end %>
@@ -23,7 +24,6 @@
 
 <div class="boxed" id="box_content">
   <%= render :partial => 'shared/show_file', :locals => {:item => @source, :tabset => 'content'} %>
-  <%= render :partial => 'shared/show_clip', :locals => {:item => @source, :tabset => 'content'} %>
   <%= render :partial => 'shared/show_circumstances', :locals => {:item => @source, :tabset => 'content'} %>
   <%= render :partial => 'shared/show_field_notes', :locals => {:item => @source, :tabset => 'content'} %>
   <%= render :partial => 'shared/show_tags', :locals => {:item => @source, :tabset => 'content'} %>
@@ -33,3 +33,11 @@
   <%= render :partial => 'shared/show_image', :locals => {:item => @source, :tabset => 'content'} %>
   <%= render :partial => 'shared/show_nodes', :locals => {:item => @source, :tabset => 'content'} %>
 </div>
+
+<% content_for :admin do %>
+  <p>
+    source:<br />
+    <%= link_to "excerpt", {:controller => 'topics', :action => 'new', :subject_type => 'Source', :subject_id => @source} %><br />
+    <%= render :partial => 'shared/show_admin', :locals => {:item => @source} %>
+  </p>
+<% end %>

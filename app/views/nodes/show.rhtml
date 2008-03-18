@@ -1,6 +1,6 @@
-<% 
-  @title = @node.name || 'nameless fragment'
-%>
+<% @title = @node.name || 'nameless fragment' %>
+
+<%= render :partial => 'shared/show_clip', :locals => {:item => @node} %>
 
 <% if @node.has_description? %>
 	  <%= @node.description.formatted %>
@@ -10,7 +10,6 @@
 
 <div class="boxtabs">
   <% if @node.has_file? %><a href="#" id="tab_content_file" class="tab">download file</a><% end %>
-  <% if @node.has_clip? %><a href="#" id="tab_content_clip" class="tab">audio file</a><% end %>
   <% if @node.has_body? %><a href="#" id="tab_content_body" class="tab">text</a><% end %>
   <% if @node.has_origins? %><a href="#" id="tab_content_origins" class="tab">origins</a><% end %>
   <% if @node.has_notes? %><a href="#" id="tab_content_notes" class="tab">field notes</a><% end %>
@@ -22,7 +21,6 @@
 
 <div class="boxed" id="box_content">
   <%= render :partial => 'shared/show_file', :locals => {:item => @node, :tabset => 'content'} %>
-  <%= render :partial => 'shared/show_clip', :locals => {:item => @node, :tabset => 'content'} %>
   <%= render :partial => 'shared/show_body', :locals => {:item => @node, :tabset => 'content'} %>
   <%= render :partial => 'shared/show_origins', :locals => {:item => @node, :tabset => 'content'} %>
   <%= render :partial => 'shared/show_field_notes', :locals => {:item => @node, :tabset => 'content'} %>
@@ -31,3 +29,10 @@
   <%= render :partial => 'shared/show_extracted', :locals => {:item => @node, :tabset => 'content'} %>
   <%= render :partial => 'shared/show_image', :locals => {:item => @node, :tabset => 'content'} %>
 </div>
+
+<% content_for :admin do %>
+  <p>
+    fragment:<br />
+    <%= render :partial => 'shared/show_admin', :locals => {:item => @node} %>
+  </p>
+<% end %>

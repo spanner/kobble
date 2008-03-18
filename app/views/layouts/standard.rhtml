@@ -49,11 +49,13 @@
     </div>
   </div>
 
-  <% if editor? %>
-    <div id="trash" class="trashdrop showondrag" id="trashcan" catches="all">
-      &nbsp;
-    </div>  
-  <% end %>
+  <div id="trash" class="trashdrop showondrag" catches="all">
+    &nbsp;
+  </div>  
+   
+  <div id="admin" class="hideondrag">
+    <%= yield :admin %>
+  </div>
    
 </body>
 </html>

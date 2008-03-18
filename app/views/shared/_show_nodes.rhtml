@@ -1,11 +1,9 @@
 <% tabset ||= 'tabs' %>
-<div id="<%= tabset %>_nodes">
-	<ul class="starry">
-	  <li class="add"><%= link_to 'extract a fragment from this', {:controller => 'nodes', :action => 'new'}, {:class => 'snipper'} %> (highlight some text first)</li>
-  </ul>
-  <ul class="starry" id="nodelist">
+<div id="<%= tabset %>_nodes" class="mainlist">
+  <p>You can drag these onto a scratchpad or drop tags on them.</p>
+  <ul id="nodelist">
     <% if item.nodes.count %>
-      <%= render :partial => 'shared/_listed', :collection => item.nodes %>
+      <%= render :partial => 'shared/listed', :collection => item.nodes %>
     <% else %>
     <% end %>
   </ul>

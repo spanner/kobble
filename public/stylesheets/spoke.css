@@ -162,6 +162,29 @@ div#notification {
   position: absolute;
 }
 
+/* admin controls */
+
+div#admin {
+  position: fixed;
+  left: 20px;
+	bottom: 12px;
+	width: 90px;
+	z-index: 12000;
+}
+
+div#admin p {
+  margin: 0;
+  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
+	font-size: 18px;
+	line-height: 1.1;
+	color: #B2AAA4;
+}
+
+div#admin a { color: #559DC4; }
+div#admin a:hover, .pagination a:active { color: #d1005d; }
+div#admin a.warning { color: #CC6E1F; }
+div#admin a.create { color: #6cb262; }
+
 div#trash {
   position: fixed;
   left: 20px;
