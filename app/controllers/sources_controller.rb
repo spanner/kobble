@@ -25,6 +25,8 @@ class SourcesController < ApplicationController
 
   def edit
     @source = Source.find(params[:id])
+    @people = Person.find(:all, :conditions => limit_to_active_collections, :order => 'name')
+    @occasions = Occasion.find(:all, :conditions => limit_to_active_collections, :order => 'name')
   end
 
   def update

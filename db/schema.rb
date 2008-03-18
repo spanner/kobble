@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 84) do
+ActiveRecord::Schema.define(:version => 86) do
 
   create_table "accounts", :force => true do |t|
     t.integer "user_id"
@@ -156,6 +156,18 @@ ActiveRecord::Schema.define(:version => 84) do
 
   add_index "paddings", ["scrap_type", "scrap_id"], :name => "index_scratchpad_scraps"
 
+  create_table "people", :force => true do |t|
+    t.string  "name"
+    t.string  "image"
+    t.string  "clip"
+    t.text    "description"
+    t.text    "body"
+    t.text    "emotions"
+    t.text    "observations"
+    t.text    "arising"
+    t.integer "collection_id"
+  end
+
   create_table "posts", :force => true do |t|
     t.integer  "topic_id"
     t.text     "body"
@@ -299,6 +311,7 @@ ActiveRecord::Schema.define(:version => 84) do
     t.integer  "receive_html_email"
     t.integer  "subscribe_everything"
     t.integer  "account_id"
+    t.integer  "person_id"
   end
 
   add_index "users", ["collection_id"], :name => "index_users_on_collection"

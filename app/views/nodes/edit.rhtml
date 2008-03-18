@@ -1,6 +1,7 @@
-<h1 class="pagetitle">Edit fragment <%= link_to @node.name, :action => 'show', :id => @node %></h1>
+<% @title = "Edit: #{@node.name}" %>
 
-<% form_tag({:action => 'update', :id => @node}, :multipart => true) do %>
-  <%= render :partial => 'form' %>
-<% end %>
-
+<div class="mainform">
+  <% form_tag({:action => 'update', :id => @node}, :multipart => true) do %>
+    <%= render :partial => 'form' %>
+  <% end %>
+</div>

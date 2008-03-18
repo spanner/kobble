@@ -888,36 +888,23 @@ div.mainform label {
   font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
   letter-spacing: -0.05em;
   line-height: 20px;
-  color: #695D54;
+  color: #559DC4;
   clear: both;
 }
 
-label a {
-  color: #695D54;
+div.mainform label a {
+  color: #559DC4;
   text-decoration: none;
 }
 
-p.listsummary {
-  font-size: 0.8em;
-  line-height: 1.1;
-  color: #695D54;
-}
-
-p.pagecontrol {
-  clear: left;
-  font-size: 1.3em;
-  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
-  letter-spacing: -0.04em;
-}
-
-
 div.mainform input.titular {
-  width: 540px;
+  width: 90%;
   height: 28px;
   font-family: Georgia, "Times New Roman", serif;
   font-size: 22px;
   font-weight: bold;
   line-height: 28px;
+  color: #695D54;
 }
 
 div.mainform input.login {
@@ -925,6 +912,7 @@ div.mainform input.login {
   font-size: 18px;
   line-height: 18px;
   width: 340px;
+  color: #695D54;
 }
 
 div.mainform input.friendly {
@@ -932,7 +920,22 @@ div.mainform input.friendly {
   font-size: 14px;
   line-height: 18px;
   width: 540px;
+  color: #695D54;
 }
+
+div.mainform input.standard, div.mainform select.standard, div.mainform textarea.standard {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 14px;
+  line-height: 18px;
+  width: 90%;
+  color: #695D54;
+}
+
+div.formbuttons {
+  clear: both;
+}
+
+
 
 /* gallery view */
 

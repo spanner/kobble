@@ -2,67 +2,80 @@
 
 <p>
 	'Fragments' are individual pieces of evidence. 
-	Often they are excerpts from a <%= link_to 'source document', :controller => 'sources', :action => 'list' %>, 
-	or responses to a <%= link_to 'question', :controller => 'questions', :action => 'list' %>, 
+	Usually they are excerpts from a <%= link_to 'source document', :controller => 'sources', :action => 'list' %>, 
 	but they don't have to be: if you spot something small and useful (that is unlikely to be further divided), you can feed it in as a disconnected fragment.
 </p>
 
-<div>
- <p><label for="node_name">Fragment name</label><br />
- <%= text_field 'node', 'name', :class => "titular" %>
-</p>
-
-<%= render :partial => 'shared/edit_tags', :locals => {:item => @node} %>
-
-<p><label for="node_description">Synopsis</label><br />
-<%= text_area 'node', 'description', 'rows' => 4, :class => "standard" %>
-</p>
-
-<%= render :partial => 'shared/edit_body', :locals => {:item => @node} %>
-
-<%= render :partial => 'shared/edit_file', :locals => {:item => @node} %>
-
-<%= render :partial => 'shared/edit_source', :locals => {:item => @node} %>
-
-<%#= render :partial => 'shared/edit_file', :locals => {:item => @node} %>
-
-<%= render :partial => 'shared/edit_image', :locals => {:item => @node} %>
-
-<a href="#" class="displaycontrol disappears" id="show_clip">+ add audio or video</a>
-
-<div id="hide_clip">
-	<p>You can choose a section of the audio (or video) belonging to the source document by entering start and finish times here:</p>
-
-	<% if !@node.source.nil? && @node.source.clip %>
-		<% @source = @node.source %>
-	  <%= render :partial => 'shared/player', :locals => {
-	    :mp3url => url_for_file_column("source", "clip")
-	  } %>
-	<% end %>
-
-	<div style="float: left; width: 180px;">
-		<p><label for="node_playfrom">Start (seconds):</label><br />
-		<%= text_field 'node', 'playfrom', :style =>  "width: 180px;" %></p>
-	</div>
-	<div style="float: left; width: 180px; margin-left: 10px">
-		<p><label for="node_playto">Stop (seconds):</label><br />
-		<%= text_field 'node', 'playto', :style =>  "width: 180px;" %></p>
-	</div>
-
-	<p>Or give this fragment a clip of its own:</p>
-	
-	<div style="clear: both;">
-		<p><label for="node_playto">Upload a new clip</label><br />
-		<%= file_column_field "source", "clip" %></p>
-	</div>
+<div class="boxtabs">
+  <a href="#" id="tab_editing_summary" class="tab">summary</a>
+  <a href="#" id="tab_editing_body" class="tab">clip and text</a>
+  <a href="#" id="tab_editing_notes" class="tab">field notes</a>
 </div>
 
-<%= render :partial => 'shared/edit_speaker', :locals => {:item => @node} %>
+<div class="boxed" id="box_editing">
+	<div id="editing_summary">
 
-<%= render :partial => 'shared/edit_fieldnotes', :locals => {:item => @node} %>
+    <p><label for="node_name">Fragment name</label><br />
+     <%= text_field 'node', 'name', :class => "titular" %>
+    </p>
+
+    <%= render :partial => 'shared/edit_tags', :locals => {:item => @node} %>
+
+    <p><label for="node_description">Synopsis or description</label><br />
+    <%= text_area 'node', 'description', 'rows' => 6, :class => "standard" %>
+    </p>
+
+    <%= render :partial => 'shared/edit_source', :locals => {:item => @node} %>
+    <%= render :partial => 'shared/edit_speaker', :locals => {:item => @node} %>
+    <%= render :partial => 'shared/edit_image', :locals => {:item => @node} %>
+
+  </div>
+  <div id="editing_body">
+
+  	<% if @node.has_source? and @node.source.has_clip? %>
+  		<% @source = @node.source %>
+  	  <%= render :partial => 'shared/player', :locals => {
+  	    :mp3url => url_for_file_column("source", "clip")
+  	  } %>
+
+    	<p>To snip a segment of the source clip, choose your in and out times above and enter them here:</p>
+
+      <table border="0">
+        <tr>
+          <td>
+            <label for="node_playfrom">Start (seconds):</label><br />
+    		    <%= text_field 'node', 'playfrom', :class => "standard" %>
+    	    </td>
+    	    <td>
+    		    <label for="node_playto">Stop (seconds):</label><br />
+            <%= text_field 'node', 'playto', :class => "standard" %>
+          </td
+        </tr>
+      </table>
+
+    	<p>Or you can give this fragment a clip of its own:</p>
+
+    <% else %>
+
+  	  <p class="clear">There is no source clip to cut up, but you can add a new clip to this fragment:</p>
+
+  	<% end %>
+	
+    <%= render :partial => 'shared/edit_clip', :locals => {:item => @node} %>
+    <%= render :partial => 'shared/edit_body', :locals => {:item => @node} %>
+    <%= render :partial => 'shared/edit_file', :locals => {:item => @node} %>
+
+    <p class="clear">&nbsp</p>
+
+  </div>
+
+  <div id="editing_notes">
+    <%= render :partial => 'shared/edit_fieldnotes', :locals => {:item => @node} %>
+  </div>
+</div>
 
 <div class="formbuttons">
-<%= submit_tag "Store Fragment" %> 	or
+  <%= submit_tag "Store Fragment" %> or
   <%= link_to 'cancel', :action => 'list' %>
 </div>
 

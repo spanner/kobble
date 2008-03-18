@@ -1,6 +1,6 @@
 class Source < ActiveRecord::Base
 
-  belongs_to :speaker, :class_name => 'User', :foreign_key => 'speaker_id'
+  belongs_to :speaker, :class_name => 'Person', :foreign_key => 'speaker_id'
   belongs_to :occasion
   has_many :nodes
 

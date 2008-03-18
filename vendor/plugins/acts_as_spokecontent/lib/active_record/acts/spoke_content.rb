@@ -80,7 +80,7 @@ module ActiveRecord
         end
 
         def organised_classes(options={})
-          oc = [:users, :sources, :nodes, :bundles, :tags, :flags, :occasions, :topics, :posts]
+          oc = [:users, :sources, :nodes, :bundles, :people, :tags, :flags, :occasions, :topics, :posts]
           if options[:except]
             oc -= Array(options[:except]) 
           elsif options[:only]
@@ -128,6 +128,10 @@ module ActiveRecord
           self.respond_to?('collection') && !self.collection.nil?
         end
 
+        def has_source?
+          self.respond_to?('source') && !self.source.nil?
+        end
+
         def has_tags?
           self.respond_to?('tags') && self.tags.count > 0
         end
@@ -152,6 +156,7 @@ module ActiveRecord
 
         def has_origins?
           (self.respond_to?('source') && source.nil?) && 
+          (self.respond_to?('speaker') && speaker.nil?) && 
           (self.respond_to?('creator') && creator.nil?) ? false : true
         end
 

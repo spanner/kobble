@@ -22,7 +22,7 @@ module AuthenticatedSystem
     end
     
     def account_holder?
-      logged_in? && current_user == current_user.account.user
+      logged_in? && current_user.account_holder?
     end
     
     def current_user

@@ -1,11 +1,7 @@
-<h1>
-	<% if @node.source %>Excerpt a new snippet from 
-		<%= link_to @node.source.name, {:controller => 'sources', :action => 'show', :id => @node.source} %>
-	<% else %>
-		Create a new fragment
-	<% end %>
-</h1>
+<% @title = "Create a new fragment" %>
 
+<div class="mainform">
 <% form_tag({:action => 'create'}, :id => 'nodeform', :multipart => true) do %>
  <%= render :partial => 'form' %>
 <% end %>
+</div>

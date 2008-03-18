@@ -46,6 +46,8 @@ class NodesController < ApplicationController
   
   def edit
     @node = Node.find(params[:id])
+    @people = Person.find(:all, :conditions => limit_to_active_collections, :order => 'name')
+    @sources = Source.find(:all, :conditions => limit_to_active_collections, :order => 'name')
   end
 
   def update

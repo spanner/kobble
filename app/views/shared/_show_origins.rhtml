@@ -2,9 +2,14 @@
   <% tabset ||= 'tabs' %>
 	<div id="<%= tabset %>_origins">
   	<p>
-  		<% if item.source %>
-  		  <% if item.source %>taken from <%= link_to item.source.name, :action => 'show', :controller => 'sources', :id => item.source %><br /><% end %>
-  		  <% if item.creator %>by <%= link_to item.creator.name, :action => 'show', :controller => 'user', :id => item.creator %><% end %>
+  		<% if item.respond_to?('speaker') %>
+  		  speaker: <% if item.speaker %><%= link_to item.speaker.name, :action => 'show', :controller => 'people', :id => item.speaker %><% else %>not known<% end %><br />
+  		<% end %>
+  		<% if item.respond_to?('source') %>
+  		  source: <% if item.source %><%= link_to item.source.name, :action => 'show', :controller => 'sources', :id => item.source %><% else %>not known<% end %><br />
+  		<% end %>
+  		<% if item.creator %>
+  		  created by <%= link_to item.creator.name, :action => 'show', :controller => 'user', :id => item.creator %>
   		<% end %>
   		</p>
 	</div>

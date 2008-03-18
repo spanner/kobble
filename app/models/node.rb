@@ -1,6 +1,6 @@
 class Node < ActiveRecord::Base
 
-  belongs_to :speaker, :class_name => 'User', :foreign_key => 'speaker_id'
+  belongs_to :speaker, :class_name => 'Person', :foreign_key => 'speaker_id'
   belongs_to :source
   belongs_to :collection
 

@@ -8,13 +8,11 @@ class User < ActiveRecord::Base
   acts_as_spoke :except => [:collection, :index]
   
   belongs_to :account
+  belongs_to :person
   
   has_many :activations, :dependent => :destroy
   has_many :collections, :through => :activations, :conditions => ['activations.active = ?', true], :source => :collection
   
-  has_many :sources, :class_name => 'Source', :foreign_key => 'speaker_id'
-  has_many :nodes, :class_name => 'Node', :foreign_key => 'speaker_id'
-
   has_many :created_collections, :class_name => 'Collection', :foreign_key => 'created_by', :dependent => :destroy
   has_many :created_sources, :class_name => 'Source', :foreign_key => 'created_by', :dependent => :nullify
   has_many :created_nodes, :class_name => 'Node', :foreign_key => 'created_by', :dependent => :nullify
@@ -27,7 +25,6 @@ class User < ActiveRecord::Base
   has_many :monitorships, :dependent => :destroy
   has_many :monitored_topics, :through => :monitorships, :conditions => ['monitorships.active = ?', true], :order => 'topics.replied_at desc', :source => :topic
 
-  validates_presence_of     :firstname, :lastname
   validates_presence_of     :login,                      :if => :login_required?
   validates_presence_of     :password,                   :if => :password_required?
   validates_length_of       :password, :within => 4..40, :if => :password_required?
@@ -41,18 +38,17 @@ class User < ActiveRecord::Base
 
   def self.sort_options
     {
-      "last name" => "lastname, firstname",
-      "first name" => "firstname, lastname",
+      "login" => "lastname, firstname",
       "registration date" => "created_at",
     }
   end
   
   def self.default_sort
-    "last name"
+    "login"
   end
   
   def self.nice_title
-    "person"
+    "user"
   end
 
   def find_or_create_scratchpads
@@ -78,6 +74,10 @@ class User < ActiveRecord::Base
   
   def is_developer?
     status >= 300
+  end
+  
+  def account_holder?
+    account.user == self
   end
   
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.

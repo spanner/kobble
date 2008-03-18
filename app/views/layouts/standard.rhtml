@@ -29,7 +29,7 @@
   <div id="mastfoot">
 	  <div id="navigation">
       <%= link_to 'home', {:controller => 'accounts', :action => 'home'}, {:class => request.parameters[:action] == 'home' ? " fg" : ''} %>
-      <% [Source, Node, Bundle, User, Tag].each do |klass| %>
+      <% [Source, Node, Bundle, Person, Tag].each do |klass| %>
         <%= link_to klass.nice_title.pluralize, {:controller => klass.to_s.underscore.pluralize}, {:class => (request.parameters[:controller] == klass.to_s.underscore.pluralize ? "fg" : '')} %>
       <% end %>
       <%= link_to 'search', {:controller => 'search', :action => 'index'}, {:class => request.parameters[:controller] == 'search' ? " fg" : ''} %>
