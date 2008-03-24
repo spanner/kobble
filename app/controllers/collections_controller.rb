@@ -25,23 +25,6 @@ class CollectionsController < ApplicationController
     @collections = current_account.collections
   end
   
-  def activate
-    @activation = Activation.find_or_initialize_by_user_id_and_collection_id(current_user.id, params[:id])
-    @activation.update_attribute :active, true
-    respond_to do |format| 
-      format.html { render :action => 'list' }
-      format.js { render :layout => false }
-    end
-  end
-  
-  def deactivate
-    Activation.update_all ['active = ?', false], ['user_id = ? and collection_id = ?', current_user.id, params[:id]]
-    respond_to do |format| 
-      format.html { render :action => 'list' }
-      format.js { render :layout => false }
-    end
-  end
-  
   # and the usual crud:
   
   def show

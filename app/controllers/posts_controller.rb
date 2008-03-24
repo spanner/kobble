@@ -102,7 +102,7 @@ class PostsController < ApplicationController
     @post.destroy
     flash[:notice] = "One post attached to #{CGI::escapeHTML(@post.topic.title)} was deleted."
     # check for posts_count == 1 because its cached and counting the currently deleted post
-    @post.topic.destroy and redirect_to :controller => @post.topic.subject_path if @post.topic.posts_count == 1
+    @post.topic.destroy and redirect_to :controller => @post.topic.referent_path if @post.topic.posts_count == 1
     respond_to do |format|
       format.html do
         redirect_to topic_path(:id => params[:topic_id], :page => params[:page]) unless performed?

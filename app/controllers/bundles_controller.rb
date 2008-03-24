@@ -16,11 +16,9 @@ class BundlesController < ApplicationController
   def new
     @bundle = Bundle.new
     @members = []
-    if params[:scrap]
-      params[:scrap].split('|').each do |s|
-        input = s.split('_')
-        @bundle.members << input[0].camelize.constantize.find(input[1])
-      end
+    if params[:scratchpad_id]
+      @expad = Scratchpad.find(:scratchpad_id)
+      @members << @expad.scraps
     end
     @members.uniq!
   end

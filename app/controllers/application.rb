@@ -69,8 +69,8 @@ class ApplicationController < ActionController::Base
   def list
     @list = paged_list
     respond_to do |format|
-      format.html { render :template => 'shared/mainlist' }
-      format.js { render :template => 'shared/mainlist', :layout => false }
+      format.html { render :template => 'shared/list' }
+      format.js { render :template => 'shared/list', :layout => false }
     end
   end
 

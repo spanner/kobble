@@ -12,8 +12,6 @@ class TagsController < ApplicationController
     60
   end
 
-
-
   def tree
     @list = Tag.find(:all, 
       :select => "tags.*, count(taggings.id) as use_count",

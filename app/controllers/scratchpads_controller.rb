@@ -41,19 +41,7 @@ class ScratchpadsController < ApplicationController
       render :action => 'edit'
     end
   end
-  
-  def toset
-    @scratchpad = Scratchpad.find(params[:id])
-    @bundle = Bundle.new
-    @bundle.name = @scratchpad.name
-    @bundle.save!
-    @bundle.members << @scratchpad.scraps
-    @scratchpad.scraps.clear
-    @scratchpad.name = 'empty'
-    @scratchpad.save!
-    redirect_to :controller => 'bundles', :action => 'show', :id => @bundle
-  end
-  
+    
   def clear
     @scratchpad = Scratchpad.find(params[:id])
     @scratchpad.scraps.clear
