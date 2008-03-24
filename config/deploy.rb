@@ -1,5 +1,5 @@
-set :application, "spoke"
-set :repository, "http://svn.spanner.org/#{application}/trunk"
+set :application, "materialist"
+set :repository, "http://svn.spanner.org/spoke/trunk"
 
 # If you aren't deploying to /u/apps/#{application} on the target
 # servers (which is the default), you can specify the actual location
@@ -11,7 +11,7 @@ set :repository, "http://svn.spanner.org/#{application}/trunk"
 # set :scm, :subversion
 
 role :web, "bluebottle.spanner.org", :primary => true
-role :app, "seagoon.spanner.org", "bluebottle.spanner.org"
+role :app, "seagoon.spanner.org", "bluebottle.spanner.org", "bloodnok.spanner.org"
 role :db,  "eccles.spanner.org", :primary => true
 
 set :deploy_to, "/var/www/#{application}"

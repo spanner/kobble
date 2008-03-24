@@ -31,6 +31,10 @@
 		list.push(listitem);
 		return this.setValueAsList(list);
 	},
+	moveto: function (here) {
+    this.setStyle('top', here.y);
+    this.setStyle('left', here.x);
+	},
 	toBottom: function () {
 		this.setStyles({
 		  'top': window.getScrollTop() + window.getHeight() - parseInt(this.getStyle('height'))
@@ -64,7 +68,13 @@
   },
   explode: function () {
     this.dwindle();   //temporarily
-  }
+  },
+	duplicate: function () {
+    var clone = this.clone();
+    clone.setStyle('position', 'absolute');
+    clone.setStyles(this.getCoordinates());
+    return clone;
+	}
 });
 
 

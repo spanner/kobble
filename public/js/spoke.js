@@ -19,38 +19,41 @@ var Interface = new Class({
     this.inlinelinks = [];
     this.clickthreshold = 6;
     this.cloud = null;
+    this.announcer = $E('div#notification');
+    this.admin = $E('div#admin');
+    this.fader = new Fx.Tween(this.announcer, 'opacity', {duration: 'long', link: 'chain'});
 	},
 	setPrefFromCheckbox: function (element, event) {
-    this.setPref(element.id, element.getProperty('checked') ? true : false);
+    // this.setPref(element.id, element.getProperty('checked') ? true : false);
     // console.log(this.preferences);
 	},
 	setPref: function (key, value) {
-    this.preferences[key] = value;
-    this.savePrefs();
+    // this.preferences[key] = value;
+    // this.savePrefs();
 	},
 	getPref: function (key) {
-	  return this.preferences[key];
+    // return this.preferences[key];
 	},
 	savePrefs: function () {
-	  this.preferences['set'] = true;
-    this.storedPreferences.extend(this.preferences);
+    // this.preferences['set'] = true;
+    //     this.storedPreferences.extend(this.preferences);
 	},
-  announce: function (message) {
-    if (message) $E('#notification').setText(message);
-    this.flashfooter('#695D54');
+  announce: function (message, title) {
+    this.announcer.removeClass('error');
+    this.announcer.getElements('h4')[0].setText(title || 'Notice');
+    this.announcer.getElements('p')[0].setText(message);
+    this.fader.start(1);
+    this.fader.start(0);
   },
-  complain: function (message) {
-    if (message) $E('#notification').setText(message);
-    this.flashfooter('#ff0000');
-  },
-  clearnotification: function () {
-    $E('#notification').setText('');
+  complain: function (message, title) {
+    this.announcer.addClass('error');
+    this.announcer.getElements('h4')[0].setText(title || 'Error');
+    this.announcer.getElements('p')[0].setText(message);
+    this.fader.start(1);
+    this.fader.start(0);
   },
   flash: function (element, color) {
-    element.highlight();
-  },
-  flashfooter: function (colour) {
-    $E('#mastfoot').highlight();
+    element.highlight(color);
   },
   moveFixed: function (e) {
     this.fixedbottom.each(function (element) { element.toBottom(); });
@@ -61,22 +64,17 @@ var Interface = new Class({
   // hideTips: function () {
   //   if (this.tips) this.tips.hide();
   // },
-  startDragging: function (element) {
+  startDragging: function (draggee) {
     $$('.hideondrag').each(function (element) { element.setStyle('visibility', 'hidden'); })
     $$('.showondrag').each(function (element) { element.setStyle('visibility', 'visible'); })
-    this.tabs.each(function (t) { t.makeReceptiveTo(element); })
-    // this.hideTips();
+    this.dragging = draggee.original;
     var catchers = [];
-  	this.droppers.each(function(d){ if (d.makeReceptiveTo(element)) catchers.push(d.container); });
+  	this.droppers.each(function(d){ if (d.can_catch(draggee.spokeType())) catchers.push(d.container); });
   	return catchers;        // returns list of elements ready to receive drop, suitable for initializing draggable
   },
   stopDragging: function () {
-    this.dragging = false;
+    this.dragging = null;
     this.tabs.each(function (t) { t.makeUnreceptive(); })
-  	this.droppers.each(function (d) { 
-  	  d.makeUnreceptive();
-  	  d.makeUnregretful();
-  	})
     $$('.hideondrag').each(function (element) { element.setStyle('visibility', 'visible'); })
     $$('.showondrag').each(function (element) { element.setStyle('visibility', 'hidden'); })
   },
@@ -109,8 +107,11 @@ var Interface = new Class({
   addTrashDropzones: function (elements) {
     var intf = this; elements.each(function (element) { intf.droppers.push(new TrashDropzone(element)); });
   },
-  makeDraggable: function (elements) {
-    var intf = this; elements.each(function (element) { element.addEvent('mousedown', function(event) { intf.dragging = new Draggee(this, event); }); });
+  makeDraggables: function (elements) {
+    var intf = this; 
+    elements.each(function (element) { 
+      element.addEvent('mousedown', function(event) { new Draggee(element, event); }); 
+    });
   },
   makeFixed: function (elements) {
     var intf = this; elements.each(function (element) { intf.fixedbottom.push(element); });
@@ -128,13 +129,13 @@ var Interface = new Class({
     var scope = element || null;
 	  this.addDropzones($$('.catcher', scope));
 	  this.addTrashDropzones($$('.trashdrop', scope));
-	  this.makeDraggable($$('.draggable', scope));
+	  this.makeDraggables($$('.draggable', scope));
     // this.makeTippable($$('.expandable', scope));
     // this.makeExpandable($$('.expandable', scope));
 	  if (scope) {
 	    if (scope.hasClass('catcher')) this.addDropzones([scope]);
   	  if (scope.hasClass('trashdrop')) this.addTrashDropzones([scope]);
-  	  if (scope.hasClass('draggable')) this.makeDraggable([scope]);
+  	  if (scope.hasClass('draggable')) this.makeDraggables([scope]);
       // if (scope.hasClass('expandable')) this.makeTippable([scope]);
       // if (scope.hasClass('expandable')) this.makeExpandable([scope]);
 	  } 
@@ -227,70 +228,22 @@ var Dropzone = new Class({
   spokeType: function () { return this.container.spokeType(); },
 	recipient: function () { return this.container; },
 	flasher: function () { return this.container; },
-	contents: function () { return $$('.draggable', this.container).map(function(el){ return el.id; }); },
+	contents: function () { return this.container.getElements('.draggable').map(function(el){ return el.id; }); },
 	contains: function (draggee) { return this.contents().contains(draggee.tag); },
 	can_catch: function (type) { if (this.catches) return this.catches == 'all' || this.catches.split(',').contains(type); },
-	makeReceptiveTo: function (helper) {
+  respond: function (helper) {
     // this gets called when a drag from elsewhere enters this space
-	  type = helper.draggee.spokeType();
-	  if (this.can_catch(type)) {
-  		var dropzone = this;
-  		dropzone.container.addEvents({
-  			'drop': function() { dropzone.receiveDrop(helper); },
-  			'mouseenter': function() { dropzone.showInterest(helper); },
-  			'mouseleave': function() { dropzone.loseInterest(helper); },
-  		});
-  		return this.isReceptive = true;
-    } else {
-  		return this.isReceptive = false;
-    }
-	},
-	makeUnreceptive: function () { 
+    // catchability checks were performed when the drag began and this method should not
+    // be called if we weren't activated then
+    this.container.addClass('drophere');
+  	if (this.tab) this.tab.tabhead.addClass('over');
+  },
+  forget: function (helper) {
     // this gets called when a drag from elsewhere leaves this space
-	  if (this.isReceptive) {
-  	  this.container.removeEvents('mouseenter');
-  	  this.container.removeEvents('mouseleave');
-  	  this.container.removeEvents('drop');
-  		this.isReceptive = false;
-	  }
-	},
-	makeRegretful: function (helper) {
-    // this gets called when we drag something out of this space that began here
-    console.log('makeRegretful');
-		var dropzone = this;
-		dropzone.container.addEvents({
-	    'mouseenter': function() { 
-			  console.log('back again');
-        helper.clearState();
-    	  dropzone.container.removeClass('bereft');
-			},
-			'mouseleave': function() { 
-			  console.log('leaving the area');
-        helper.droppable(dropzone);
-    	  dropzone.container.addClass('bereft');
-			}
-    });
-		this.isRegretful = true;
-	},
-	makeUnregretful: function () {
-	  if (this.isRegretful) {
-      console.log('makeUnregretful');
-  	  this.container.removeEvents('mouseenter');
-  	  this.container.removeEvents('mouseleave');
-  		this.isRegretful = false;
-    }
-	},
-	showInterest: function (helper) {
-	  if (this.container != helper.draggee.original && this != helper.draggee.draggedfrom && !this.contains(helper.draggee)) {
-  	  this.container.addClass('drophere');
-  	  if (this.tab) this.tab.tabhead.addClass('over');
-  	  helper.insertable(this);
-	  }
-	},
-	loseInterest: function (helper) { // nb. trigger set up during showInterest
     this.container.removeClass('drophere');
-    if(this.tab) this.tab.tabhead.removeClass('over');
-	},
+	  if (this.tab) this.tab.tabhead.removeClass('over');
+  },
+  
 	receiveDrop: function (helper) {
 	  interface.stopDragging();
 		var dropzone = this;
@@ -302,7 +255,8 @@ var Dropzone = new Class({
 			helper.flyback();
 			
 		} else if (dropzone.contains(draggee)) {
-			interface.complain('already there');
+		  console.log(draggee);
+			interface.complain(draggee.name + ' is already there');
 			helper.flyback();
 			
 		} else {
@@ -444,11 +398,26 @@ var Draggee = new Class({
 	  event.preventDefault();
 		this.original = element;
 		this.tag = element.spokeType() + '_' + element.spokeID();   //omitting other id parts that only serve to avoid duplicate element ids
-		this.link = $E('a', element);
+		this.link = element.getElements('a')[0];
 		this.name = this.findTitle();
 		this.draggedfrom = interface.lookForDropper(element.getParent());
-		this.helper = new DragHelper(this);
-    this.helper.start(event);
+    this.dragholder = new Element('div', {class: 'dragholder'});
+    this.link.duplicate().makeDraggable({ 
+			droppables: interface.startDragging(this),
+      onEnter: function(element, dropzone) { dropzone.respond(); },
+      onLeave: function(element, dropzone) { dropzone.forget(); },
+      onDrop: function(element, dropzone) {
+        if (!dropzone) {
+          dh.emptydrop();
+        } else {
+          dropzone.receiveDrop();
+          dh.remove();
+        } 
+      }
+		}).start(e);
+		
+    // this.helper = new DragHelper(this);
+    //     this.helper.start(event);
 	},
   spokeID: function () { return this.original.spokeID(); },
   spokeType: function () { return this.original.spokeType(); },
@@ -460,7 +429,7 @@ var Draggee = new Class({
 	disappear: function () { this.original.dwindle(); },
 	clone: function () { return this.original.clone(); },
 	findTitle: function () { 
-	   this.original.title || $E('div.tiptitle', this.original).getText() || this.link.getText();
+	   return this.link.getText() || this.original.getElements('div.tiptitle').getText();
 	}
 });
 
@@ -473,27 +442,43 @@ var DragHelper = new Class({
 		this.container = new Element('div', { 'class': 'drag-tip' }).injectInside(document.body);
 		this.textholder = new Element('div', { 'class': 'drag-title' }).injectInside(this.container);
 		this.footer = new Element('div', { 'class': 'drag-text' }).injectInside(this.container);
+		this.container.dragHelper = this;
 		this.name = this.draggee.name;
-		this.startingfrom = draggee.original.getCoordinates();
-    this.currentState = null;
-    this.currentText = null;
+		this.startingfrom = null;
 		this.setText(this.name);
+		this.original = this.draggee.original;
+		var dh = this;
+		interface.dh = this;
+
+		this.dragmove = this.container.makeDraggable({ 
+			droppables: interface.startDragging(this),
+      onEnter: function(container, dropzone) { dropzone.respond(); },
+      onLeave: function(container, dropzone) { dropzone.forget(); },
+      onDrop: function(container, dropzone) {
+        console.log('onDrop! container is ');
+        console.log(container);
+        console.log('and droppable ');
+        console.log(dropzone);
+        if (!dropzone) {
+          dh.emptydrop();
+        } else {
+          dropzone.receiveDrop();
+          dh.remove();
+        } 
+      }
+		});
 	},
 	start: function (event) {
 	  event.stop();
 	  event.preventDefault();
-		this.moveto(event.page.y, event.page.x);
-		var helper = this;
-		this.container.addEvent('emptydrop', function() { helper.emptydrop(); })      // should just bind this?
-		if (this.draggee.draggedfrom) this.draggee.draggedfrom.makeRegretful(helper);
+	  this.startingfrom = this.container.getPosition();
+		this.moveto(event.page);
 		this.show();
-		this.container.makeDraggable({ 
-			droppables: interface.startDragging(this)     // returns list of activated dropzones.
-		}).start(event);
+		this.dragmove.start(event);
 	},
 	emptydrop: function () {
 		interface.stopDragging();
-		if (!this.hasMoved()) {
+		if (this.moved < interface.clickthreshold) {
 		  this.draggee.doClick();
 		  this.remove();
     } else if (this.draggee.draggedfrom) {
@@ -512,67 +497,21 @@ var DragHelper = new Class({
 	},
 	flyback: function () {
 	  helper = this;
-    new Fx.Morph(this.container, {duration: 'long', transition: Fx.Transitions.Back.easeOut}).start( this.startingfrom ).chain(function(){ 
-      helper.remove() 
-    });
+    new Fx.Morph(this.container, {duration: 'long', transition: Fx.Transitions.Back.easeOut}).start( this.startingfrom );
 	},
-	moveto: function (top, left) {
+	moveto: function (here) {
 	  var offsetY = this.container.getCoordinates().height + 12;
 	  var offsetX = Math.floor(this.container.getCoordinates().width / 2);
-    this.container.setStyles({'top': top - offsetY, 'left': left - offsetX});
+    this.container.setStyle('top', here.y - offsetY);
+    this.container.setStyle('left', here.x - offsetX);
 	},
-	hasMoved: function () {
-		var now = this.container.getCoordinates();
-		var hm = Math.abs(this.startingfrom.left - now.left) + Math.abs(this.startingfrom.top - now.top) >= interface.clickthreshold;
-		console.log('hasmoved? ' + hm);
-		return hm;
-	},
-  show: function () { this.fade(0.8); },
-  hide: function () { this.fade('out'); },
-	remove: function () { 
-    this.container.remove();
-	},
-	explode: function () { this.remove(); },  // something more vivid should happen here
+  show: function () { this.container.fade(0.8); },
+  hide: function () { this.container.fade('out'); },
+	remove: function () { this.container.remove(); },
+	explode: function () { this.remove(); },  // something more explosive should happen here
 	disappear: function () { this.original.dwindle(); },
-	deleteable: function () { 
-    this.setState('deleteable', "Delete '" + this.name + "' from the collection");
-	},
-	droppable: function (dropzone) { 
-    this.setState('droppable', "Remove '" + this.name + "' from " + dropzone.name);
-	},
-	insertable: function (dropzone) {
-	  if (this.draggee.spokeType() == dropzone.spokeType()) {
-      this.setState('mergeable', "Merge '" + this.name + "' into '" + dropzone.name + "'");
-	  } else {
-      this.setState('insertable', "Apply '" + this.name + "' to '" + dropzone.name + "'");
-	  }
-	},
-	setState: function (state, text) {
-    this.clearState();
- 	  console.log('setState(' + state + ', ' + text + ')');
-    this.container.addClass(state);
-    this.currentState = state;
-    this.setText(text || this.name);
-	},
-	getState: function () {
-	  console.log('getState returning ' + this.currentState);
-    return this.currentState;
-	},
-	clearState: function () {
-	  console.log('clearState');
-    this.container.removeClass('droppable');
-    this.container.removeClass('insertable');
-    this.container.removeClass('deleteable');
-    this.container.removeClass('mergeable');
-    this.currentState = null;
-    this.setText(this.name);
-	},
-	setText: function (text) {
-	  this.textholder.setText(text);
-	},
-	getText: function () {
-	  return this.textholder.getText();
-	}
+	setText: function (text) { this.textholder.set('text', text); },
+	getText: function () { return this.textholder.get('text'); }
 });
 
 var Tab = new Class({
@@ -606,12 +545,11 @@ var Tab = new Class({
     this.tabbody.hide();
     this.tabhead.removeClass('fg');
   },
-	makeReceptiveTo: function (draggee) {
-	  var tab = this;
- 		this.tabhead.addEvent('mouseenter', function (e) { tab.select(e); });
+	respondTo: function (helper) {
+	  this.select();
 	},
-	makeUnreceptive: function () {
-    this.tabhead.removeEvents('mouseenter');
+	receiveDrop: function (helper) {
+    return false;
 	}
 });
 
@@ -672,7 +610,7 @@ var ScratchTab = new Class({
 		this.dropzone.tab = this;
   	this.padform = null;
     this.formholder = new Element('div', {'class': 'padform bigspinner', 'style': 'height: 0'}).injectTop(this.tabbody).hide();
-    this.formfx = new Fx.Tween(this.formholder, {duration: 'long'});
+    this.formfx = new Fx.Tween(this.formholder, 'height', {duration: 'long'});
     this.renamer = $E('a.renamepad', this.tabbody);
     this.deleter = $E('a.deletepad', this.tabbody);
     this.setter = $E('a.setfrompad', this.tabbody);
@@ -733,7 +671,7 @@ var ScratchTab = new Class({
     this.tabhead.addClass('editing');
     this.formholder.show();
     if (! this.padform) {
-  	  this.formfx.start('height', 64);
+  	  this.formfx.start(64);
   	  var stab = this;
   		new Request.HTML({
   		  url: url,

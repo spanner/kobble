@@ -1,6 +1,6 @@
 --- 
-cwd: /var/www/spoke/current
-port: "8020"
+cwd: /var/www/materialist/current
+port: "8070"
 environment: production
 pid_file: log/mongrel.pid
 servers: 3

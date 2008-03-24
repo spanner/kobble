@@ -163,7 +163,38 @@ div#navigation a.pale { color: #B2AAA4; }
 div#navigation a.fg:hover {}
 
 div#notification {
-  position: absolute;
+  position: fixed;
+  left: 20px;
+	bottom: 10px;
+	width: 130px;
+	z-index: 13000;
+  visibility: hidden;
+  background-color: white;
+}
+
+div#notification h4 {
+	font-weight: bold;
+	font-size: 11px;
+	margin: 0;
+	color: white;
+	padding: 8px 8px 4px 8px;
+	background: url(/images/furniture/spoke/tooltips/blue.png) top left;
+}
+ 
+div#notification p {
+	font-size: 11px;
+	margin: 0;
+	color: white;
+	padding: 4px 8px 8px 8px;
+	background: url(/images/furniture/spoke/tooltips/blue.png) bottom right;
+}
+
+div#notification.error h4 {
+	background: url(/images/furniture/spoke/tooltips/red.png) top left;
+}
+
+div#notification.error p {
+	background: url(/images/furniture/spoke/tooltips/red.png) bottom right;
 }
 
 /* admin controls */
@@ -857,6 +888,14 @@ span.countlabel {
 /* hidden divs that provide tooltip content */
 
 .tiptext, .tiptitle {
+  display: none;
+  margin: 0 3px 0 32px;
+  font-family: HelveticaNeue-Roman, helvetica, arial, sans-serif;
+	font-size: 11px;
+}
+
+div.dragholder {
+  opacity: 0.8;
   display: none;
 }
 
