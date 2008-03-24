@@ -1,9 +1,10 @@
+
+
 <div id ="monitorform">
 	<%= link_to "email notification", {
 		:controller => 'monitorships', 
 		:action => @monitoring ? 'destroy' : 'create',
-		:topic_id => @topic, 
-		:forum_id => @forum
+		:topic_id => @topic
 	}, {
 		:class => @monitoring ? 'autolink ticked' : 'autolink crossed',
 		:title => @monitoring ? 'click to switch off email subscription' : 'click to receive email notification of new posts',
@@ -16,9 +17,6 @@
 	<% else %>
 		Responses
 	<% end %>
-	<% if @posts.size > @posts.page_size %>
-		<span class="pagination"><%= paginating_links(list, {:window_size => 3, :params => {:display => @display}}, {}) %></span>
-	<% end %>
 </h2>
 
 <%= render :partial => 'posts/single', :collection => @posts.reject {|p| p.id == @topic.posts.first.id} %>
@@ -27,8 +25,3 @@
 
 <%= link_to 'Add comment', {:controller => 'posts', :action => 'new', :topic_id => @topic, :forum_id => @forum}, {:id => 'edit_reply', :class => "additem editinplace onlyonce", :style => 'margin: 6px 0;'} %>
 
-<% if @posts.size > @posts.page_size %>
-	<p>
-		Page <%= paginating_links(list, {:window_size => 3, :params => {:display => @display}}, {}) %>
-	</p>
-<% end %>

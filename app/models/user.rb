@@ -182,17 +182,13 @@ class User < ActiveRecord::Base
     def self.currently_online
       User.find(:all, :conditions => ["last_seen_at > ?", Time.now.utc-5.minutes])
     end
-    
-    def has_nodes?
-      self.respond_to?('nodes') && self.nodes.count > 0
-    end
-    
-    def has_sources?
-      self.respond_to?('sources') && self.sources.count > 0
-    end
-    
+        
     def using_collection? (collection)
-      self.collections.include?(collection)
+      collections.include?(collection)
+    end
+    
+    def activation_of (collection)
+      self.activations.select { |a| a.collection == collection && a.is_active? }.first
     end
     
   protected

@@ -4,6 +4,8 @@ module Spoke
   module Config
     @@indexed_models = []
     mattr_accessor :indexed_models
+    @@discussed_models = []
+    mattr_accessor :discussed_models
     
     def self.indexed_model(klass)
       unless @@indexed_models.detect {|k| k.to_s == klass.to_s}
@@ -11,6 +13,12 @@ module Spoke
       end
     end
 
+    def self.discussed_model(klass)
+      unless @@discussed_models.detect {|k| k.to_s == klass.to_s}
+        @@discussed_models.push(klass) 
+      end
+    end
+    
   end
 end
 
@@ -51,6 +59,7 @@ module ActiveRecord
           end
         
           if definitions.include?(:index)
+            Spoke::Config.indexed_model(self)
             is_indexed :fields => self.index_fields, :concatenate => self.index_concatenation
           end
           if definitions.include?(:collection)
@@ -73,7 +82,8 @@ module ActiveRecord
             }
           end
           if definitions.include?(:discussion)
-            has_many :topics, :as => :subject
+            has_many :topics, :as => :referent
+            Spoke::Config.discussed_model(self)
           end
 
           self.class_eval("include InstanceMethods")

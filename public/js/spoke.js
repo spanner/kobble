@@ -3,13 +3,13 @@
 window.addEvent('domready', function(){
   interface = new Interface();
   interface.activate();
-	window.addEvent('scroll', function (e) { interface.moveFixed(e); });
-	window.addEvent('resize', function (e) { interface.moveFixed(e); });
+  // window.addEvent('scroll', function (e) { interface.moveFixed(e); });
+  // window.addEvent('resize', function (e) { interface.moveFixed(e); });
 });
 
 var Interface = new Class({
 	initialize: function(){
-    this.tips = null;
+    // this.tips = null;
     this.dragging = false;
     this.draggables = [];
     this.droppers = [];
@@ -19,13 +19,6 @@ var Interface = new Class({
     this.inlinelinks = [];
     this.clickthreshold = 6;
     this.cloud = null;
-    this.notifyfx = null;
-    // defaults
-    this.storedPreferences = new Hash.Cookie('SpokePrefs');
-    this.preferences = {
-      confirmDrops: this.storedPreferences.get('set') ? this.storedPreferences.get('confirmDrops') : false,
-      showDetails: this.storedPreferences.get('set') ? this.storedPreferences.get('showDetails') : true
-    };
 	},
 	setPrefFromCheckbox: function (element, event) {
     this.setPref(element.id, element.getProperty('checked') ? true : false);
@@ -54,21 +47,10 @@ var Interface = new Class({
     $E('#notification').setText('');
   },
   flash: function (element, color) {
-    return;
-    var bgbackto = element.getStyle('background-color');
-    var fgbackto = element.getStyle('color');
-    new Fx.Styles(element, {duration:300, wait:false}).start({
-  		'background-color': [color || '#cc6e1f', '#ffffff'],
-  		'color': ['#ffffff',fgbackto]
-    }).chain(function () {
-      element.setStyle('background-color', bgbackto)
-    });
+    element.highlight();
   },
   flashfooter: function (colour) {
-    var footer = $E('#mastfoot');
-    var backto = footer.getStyle('background-color');
-    if (!this.notifyfx) this.notifyfx = new Fx.Styles($E('#mastfoot'), {duration:2000, wait:false});
-    this.notifyfx.start({ 'background-color': [colour,backto] });
+    $E('#mastfoot').highlight();
   },
   moveFixed: function (e) {
     this.fixedbottom.each(function (element) { element.toBottom(); });
@@ -76,14 +58,14 @@ var Interface = new Class({
   prefer: function (setting, value) {
     this.preferences[setting] = value;
   },
-  hideTips: function () {
-    if (this.tips) this.tips.hide();
-  },
+  // hideTips: function () {
+  //   if (this.tips) this.tips.hide();
+  // },
   startDragging: function (element) {
-    $ES('.hideondrag').each(function (element) { element.setStyle('visibility', 'hidden'); })
-    $ES('.showondrag').each(function (element) { element.setStyle('visibility', 'visible'); })
+    $$('.hideondrag').each(function (element) { element.setStyle('visibility', 'hidden'); })
+    $$('.showondrag').each(function (element) { element.setStyle('visibility', 'visible'); })
     this.tabs.each(function (t) { t.makeReceptiveTo(element); })
-    this.hideTips();
+    // this.hideTips();
     var catchers = [];
   	this.droppers.each(function(d){ if (d.makeReceptiveTo(element)) catchers.push(d.container); });
   	return catchers;        // returns list of elements ready to receive drop, suitable for initializing draggable
@@ -95,8 +77,8 @@ var Interface = new Class({
   	  d.makeUnreceptive();
   	  d.makeUnregretful();
   	})
-    $ES('.hideondrag').each(function (element) { element.setStyle('visibility', 'visible'); })
-    $ES('.showondrag').each(function (element) { element.setStyle('visibility', 'hidden'); })
+    $$('.hideondrag').each(function (element) { element.setStyle('visibility', 'visible'); })
+    $$('.showondrag').each(function (element) { element.setStyle('visibility', 'hidden'); })
   },
   lookForDropper: function (element) {
     if (element) {
@@ -133,9 +115,9 @@ var Interface = new Class({
   makeFixed: function (elements) {
     var intf = this; elements.each(function (element) { intf.fixedbottom.push(element); });
   },
-  makeTippable: function (elements) {
-    this.tips = new SpokeTips(elements);
-  },
+  // makeTippable: function (elements) {
+  //   this.tips = new SpokeTips(elements);
+  // },
   makeToggle: function (elements) {
     var intf = this; elements.each(function (element) { intf.inlinelinks.push(new Toggle(element)); });
   },
@@ -144,70 +126,71 @@ var Interface = new Class({
   
   activate: function (element) {
     var scope = element || null;
-	  this.addDropzones($ES('.catcher', scope));
-	  this.addTrashDropzones($ES('.trashdrop', scope));
-	  this.makeDraggable($ES('.draggable', scope));
-	  this.makeTippable($ES('.expandable', scope));
-    // this.makeExpandable($ES('.expandable', scope));
+	  this.addDropzones($$('.catcher', scope));
+	  this.addTrashDropzones($$('.trashdrop', scope));
+	  this.makeDraggable($$('.draggable', scope));
+    // this.makeTippable($$('.expandable', scope));
+    // this.makeExpandable($$('.expandable', scope));
 	  if (scope) {
 	    if (scope.hasClass('catcher')) this.addDropzones([scope]);
   	  if (scope.hasClass('trashdrop')) this.addTrashDropzones([scope]);
   	  if (scope.hasClass('draggable')) this.makeDraggable([scope]);
-  	  if (scope.hasClass('expandable')) this.makeTippable([scope]);
+      // if (scope.hasClass('expandable')) this.makeTippable([scope]);
       // if (scope.hasClass('expandable')) this.makeExpandable([scope]);
 	  } 
 
-	  this.addTabs($ES('a.tab', scope));
-	  this.addScratchTabs($ES('a.padtab', scope));
-	  this.makeFixed($ES('div.fixedbottom', scope));
-    this.makeToggle($ES('a.toggle', scope))
+	  this.addTabs($$('a.tab', scope));
+	  this.addScratchTabs($$('a.padtab', scope));
+	  this.makeFixed($$('div.fixedbottom', scope));
+    this.makeToggle($$('a.toggle', scope))
 
-    $ES('input.cloudcontrol', scope).each( function (element) {
+    $$('input.cloudcontrol', scope).each( function (element) {
       element.addEvent('click', function (e) {
         var band = element.idparts().id;
-        element.checked ? $ES('a.cloud' + band).setStyle('display', 'inline') : $ES('a.cloud' + band).hide();
+        element.checked ? $$('a.cloud' + band).setStyle('display', 'inline') : $$('a.cloud' + band).hide();
       })
     });
-    // $ES('input.tagbox', scope).each(function (element, i) {
+    // $$('input.tagbox', scope).each(function (element, i) {
     //  new TagSuggestion(element, '/tags/matching', {
     //    postVar: 'stem',
     //    onRequest: function(el) { element.addClass('waiting'); },
     //    onComplete: function(el) { element.removeClass('waiting'); }
     //  });
     // });
-    $ES('a.snipper', scope).each( function (element) {
+    $$('a.snipper', scope).each( function (element) {
       element.addEvent('click', function (e) {
         new Snipper(element, e);
       });
     });
     
-    $ES('input.spokepref').each( function (element) {
+    $$('input.spokepref').each( function (element) {
       element.addEvent('click', function (e) { interface.setPrefFromCheckbox(element, e) });
       if (interface.getPref(element.id)) element.setProperty('checked', true);
     })
   }
 });
 
-var SpokeTips = Tips.extend({
-  options: {
-  	initialize:function(){ this.fx = new Fx.Style(this.toolTip, 'opacity', {duration: 250, wait: false}).set(0); },
-  	onShow: function(toolTip) { if (!interface.dragging) this.fx.start(0.8); },
-  	onHide: function(toolTip) { this.fx.start(0); }
-  },
-	build: function(el){
-    el.$tmp.myTitle = el.title || $E('div.tiptitle', el).getText();
-    el.$tmp.myText = $E('div.tiptext', el).getText();
-		el.addEvent('mouseenter', function(event){
-			this.start(el);
-			if (!this.options.fixed) this.locate(event);
-			else this.position(el);
-		}.bind(this));
-		if (!this.options.fixed) el.addEvent('mousemove', this.locate.bindWithEvent(this));
-		var end = this.end.bind(this);
-		el.addEvent('mouseleave', end);
-		el.addEvent('trash', end);
-	}
-});
+// var SpokeTips = new Class({
+//   Extends: Tips,
+//   options: {
+//    initialize:function(){ this.fx = new Fx.Style(this.toolTip, 'opacity', {duration: 250, wait: false}).set(0); },
+//    onShow: function(toolTip) { if (!interface.dragging) this.fx.start(0.8); },
+//    onHide: function(toolTip) { this.fx.start(0); }
+//   },
+//  build: function(el){
+//     el.$tmp.myTitle = el.title || $E('div.tiptitle', el).getText();
+//     el.$tmp.myText = $E('div.tiptext', el).getText();
+//    el.addEvent('mouseenter', function(event){
+//      this.start(el);
+//      if (!this.options.fixed) this.locate(event);
+//      else this.position(el);
+//    }.bind(this));
+//    if (!this.options.fixed) el.addEvent('mousemove', this.locate.bindWithEvent(this));
+//    var end = this.end.bind(this);
+//    el.addEvent('mouseleave', end);
+//    el.addEvent('trash', end);
+//  }
+// });
 
 var Outcome = new Class({
 	initialize: function(response){
@@ -244,7 +227,7 @@ var Dropzone = new Class({
   spokeType: function () { return this.container.spokeType(); },
 	recipient: function () { return this.container; },
 	flasher: function () { return this.container; },
-	contents: function () { return $ES('.draggable', this.container).map(function(el){ return el.id; }); },
+	contents: function () { return $$('.draggable', this.container).map(function(el){ return el.id; }); },
 	contains: function (draggee) { return this.contents().contains(draggee.tag); },
 	can_catch: function (type) { if (this.catches) return this.catches == 'all' || this.catches.split(',').contains(type); },
 	makeReceptiveTo: function (helper) {
@@ -325,7 +308,9 @@ var Dropzone = new Class({
 		} else {
 			helper.remove();
 			if (!interface.getPref('confirmDrops') || confirm(message)) {
-  			var req = new Ajax(this.addURL(draggee), {
+
+  			var req = new Request.JSON( {
+  			  url: this.addURL(draggee),
   				method: 'get',
   			  onRequest: function () { 
   			    dropzone.waiting(); 
@@ -352,7 +337,7 @@ var Dropzone = new Class({
   			    dropzone.showFailure();
   			    interface.complain('remote call failed');
   			  }
-  			}).request();
+  			}).send();
 			}
 		}
   },
@@ -364,8 +349,9 @@ var Dropzone = new Class({
 		helper.remove();
 	  
 		if (!interface.getPref('confirmDrops') || confirm(message)) {
-  		new Ajax(dropzone.removeURL(draggee), {
-  			method : 'post',
+  		new Request.JSON({
+  		  url: dropzone.removeURL(draggee),
+  			method: 'post',
   		  onRequest: function () { draggee.waiting(); },
   		  onSuccess: function (response) { 
           var outcome = new Outcome(response);
@@ -426,7 +412,8 @@ var Dropzone = new Class({
 	}
 });
 
-var TrashDropzone = Dropzone.extend({
+var TrashDropzone = new Class({
+  Extends: Dropzone,
 	initialize: function (element) { 
     this.parent(element);
     this.receiptAction = 'trash';
@@ -486,10 +473,8 @@ var DragHelper = new Class({
 		this.container = new Element('div', { 'class': 'drag-tip' }).injectInside(document.body);
 		this.textholder = new Element('div', { 'class': 'drag-title' }).injectInside(this.container);
 		this.footer = new Element('div', { 'class': 'drag-text' }).injectInside(this.container);
-    this.fx = new Fx.Style(this.container, 'opacity', {duration: 250, wait: false}).set(0);
 		this.name = this.draggee.name;
 		this.startingfrom = draggee.original.getCoordinates();
-    // this.startingfrom.opacity = 0;
     this.currentState = null;
     this.currentText = null;
 		this.setText(this.name);
@@ -527,7 +512,7 @@ var DragHelper = new Class({
 	},
 	flyback: function () {
 	  helper = this;
-    this.container.effects({ duration: 600, transition: Fx.Transitions.Back.easeOut }).start( this.startingfrom ).chain(function(){ 
+    new Fx.Morph(this.container, {duration: 'long', transition: Fx.Transitions.Back.easeOut}).start( this.startingfrom ).chain(function(){ 
       helper.remove() 
     });
 	},
@@ -542,8 +527,8 @@ var DragHelper = new Class({
 		console.log('hasmoved? ' + hm);
 		return hm;
 	},
-  show: function () { this.fx.start(0.8); },
-  hide: function () { this.fx.start(0); },
+  show: function () { this.fade(0.8); },
+  hide: function () { this.fade('out'); },
 	remove: function () { 
     this.container.remove();
 	},
@@ -678,7 +663,8 @@ var TabSet = new Class({
 	}
 });
 
-var ScratchTab = Tab.extend({
+var ScratchTab = new Class({
+  Extends: Tab,
 	initialize: function(element){
 		this.parent(element);
  		this.holdopen = false;
@@ -686,13 +672,11 @@ var ScratchTab = Tab.extend({
 		this.dropzone.tab = this;
   	this.padform = null;
     this.formholder = new Element('div', {'class': 'padform bigspinner', 'style': 'height: 0'}).injectTop(this.tabbody).hide();
-    this.formfx = new Fx.Style(this.formholder, 'height', {duration:1000});
+    this.formfx = new Fx.Tween(this.formholder, {duration: 'long'});
     this.renamer = $E('a.renamepad', this.tabbody);
-    this.clearer = $E('a.clearpad', this.tabbody);
     this.deleter = $E('a.deletepad', this.tabbody);
     this.setter = $E('a.setfrompad', this.tabbody);
     this.renamer.onclick = this.getForm.bind(this);
-    this.clearer.onclick = this.clear.bind(this);
     this.deleter.onclick = this.remove.bind(this);
     this.setter.onclick = this.toSet.bind(this);
     $E('a.createpad', this.tabbody).onclick = this.createTab.bind(this);
@@ -714,32 +698,15 @@ var ScratchTab = Tab.extend({
 	deselect: function () {
     this.hideForm();
 	},
-	clear: function (e) {
-	  e = new Event(e).stop();
-    e.preventDefault();
-	  var stab = this;
-		new Ajax(e.target.getProperty('href'), {
-			method: 'get',
-			onRequest: function () {
-    	  $ES('li', stab.tabbody).addClass('waiting');
-			},
-		  onSuccess: function (response) { 
-    	  $ES('li', stab.tabbody).dwindle();
-    	  interface.announce("scratchpad cleared");
-		  },
-		  onFailure: function (response) { 
-        interface.complain("scratchpad clear failed!");
-		  }
-		}).request();
-	},
 	remove: function (e) {
 	  e = new Event(e).stop();
     e.preventDefault();
     this.tabhead.addClass('red');
     if (confirm("are you sure you want to completely remove the scratchpad '" + this.tabhead.getText() + "'?")) {
       var stab = this;
-  		new Ajax(e.target.getProperty('href'), {
-  			method: 'get',
+  		new Request.JSON({
+  		  url: e.target.getProperty('href'),
+  			method: 'delete',
   		  onSuccess: function (response) { 
   		    stab.tabhead.dwindle(); 
   		    stab.tabbody.dwindle(); 
@@ -754,7 +721,7 @@ var ScratchTab = Tab.extend({
     }
 	},
 	toSet: function (e) {
-	  $ES('li', this.tabbody).addClass('waiting');
+	  $$('li', this.tabbody).addClass('waiting');
 	  // and we let nature take its course
 	},
 	getForm: function (e) {
@@ -766,9 +733,10 @@ var ScratchTab = Tab.extend({
     this.tabhead.addClass('editing');
     this.formholder.show();
     if (! this.padform) {
-  	  this.formfx.start(64);
+  	  this.formfx.start('height', 64);
   	  var stab = this;
-  		new Ajax(url, {
+  		new Request.HTML({
+  		  url: url,
   			method: 'get',
   			update: stab.formholder,
   		  onSuccess: function () { stab.bindForm() },
@@ -782,7 +750,7 @@ var ScratchTab = Tab.extend({
 	hideFormNicely: function (e) {
     if (e) e = new Event(e).stop();
     var stab = this;
-	  this.formfx.start(0).chain(function () { stab.hideForm(e) });
+	  this.formfx.start('height', 0).chain(function () { stab.hideForm(e) });
 	},
 	hideForm: function (e) {
     if (e) e = new Event(e).stop();
@@ -823,30 +791,30 @@ var ScratchTab = Tab.extend({
 	}
 });
 
-var ScratchSet = TabSet.extend({
+var ScratchSet = new Class({
+  Extends: TabSet,
 	initialize: function(tag){
 		this.parent(tag);
 	  this.container = $E('#box_scratchpad');
 	  this.headcontainer = $E('#headbox_scratchpad');
 		this.isopen = false;
 
-		this.openpadFX = this.container.effects({duration: 600, transition: Fx.Transitions.Cubic.easeOut});
-		this.opentabsFX = this.headcontainer.effects({duration: 600, transition: Fx.Transitions.Cubic.easeOut});
-
-		this.closepadFX = this.container.effects({duration: 1000, transition: Fx.Transitions.Bounce.easeOut});
-		this.closetabsFX = this.headcontainer.effects({duration: 1000, transition: Fx.Transitions.Bounce.easeOut});
+		this.openpadFX = new Fx.Tween(this.container, 'width', {duration: 400, transition: Fx.Transitions.Cubic.easeOut});
+		this.opentabsFX = new Fx.Tween(this.headcontainer, 'right', {duration: 400, transition: Fx.Transitions.Cubic.easeOut});
+		this.closepadFX = new Fx.Tween(this.container, 'width', {duration: 1000, transition: Fx.Transitions.Bounce.easeOut});
+		this.closetabsFX = new Fx.Tween(this.headcontainer, 'right', {duration: 1000, transition: Fx.Transitions.Bounce.easeOut});
 	},
   postselect: function () {
     if (!this.isopen) this.open();
   },
   open: function () {
-    this.openpadFX.start({ 'width': 440 });
-    this.opentabsFX.start({ 'right': 438 });
+    this.openpadFX.start( 440 );
+    this.opentabsFX.start( 438 );
     this.isopen = true;
 	},
 	close: function (delay) {
-    this.closepadFX.start({ 'width': 10 }); 
-    this.closetabsFX.start({ 'right': 8 }); 
+    this.closepadFX.start( 10 ); 
+    this.closetabsFX.start( 8 ); 
     this.isopen = false;
 	},
 	toggle: function (delay) {
@@ -861,8 +829,9 @@ var ScratchSet = TabSet.extend({
     var bodyholder = new Element('div', {'class': "temporary"}).injectInside($E('body'));
     var tabs = this;
     var workingtab = new Element('a', {'class': 'padtab red', 'href': "#"}).setText('working').injectInside(this.headcontainer);
-		var req = new Ajax(e.target.getProperty('href'), {
-			method: 'get',
+		var req = new Request.HTML({
+		  url: e.target.getProperty('href'),
+			method: 'post',
 			update: bodyholder,
 		  onSuccess: function (response) { 
     		var newbody = $E('div.scratchpage', bodyholder);
@@ -891,13 +860,17 @@ var AutoLink = new Class({
     this.link.onclick = this.send.bind(this);
     this.catcher = new Element('div', {'style': 'display: none;'}).injectAfter(a).hide();
   },
+  method: function () {
+    return 'GET';
+  },
   send: function (e) {
     e = new Event(e).stop();
     e.preventDefault();
     this.link.blur();
     al = this;
-		new Ajax(this.link.getProperty('href'), {
-			method: 'get',
+		new Request.HTML({
+		  url: al.link.getProperty('href'),
+			method: al.method(),
 			update: al.catcher,
 		  onRequest: function () {al.waiting();},
 		  onComplete: function () {al.finished();},
@@ -909,7 +882,7 @@ var AutoLink = new Class({
   finished: function () {
     this.link.remove();
     this.catcher.show();
-    $ES('a.autolink', this.catcher).each( function (a) { new AutoLink(a); });
+    $$('a.autolink', this.catcher).each( function (a) { new AutoLink(a); });
   },
   failed: function () {
     this.notWaiting();
@@ -918,7 +891,11 @@ var AutoLink = new Class({
   }
 });
 
-var Toggle = AutoLink.extend ({
+var Toggle = new Class({
+  Extends: AutoLink,
+  method: function () {
+    return this.ticked() ? 'DELETE' : 'POST';
+  },
   finished: function () {
     this.notWaiting();
     if (this.link.hasClass('ticked')) {
@@ -928,5 +905,8 @@ var Toggle = AutoLink.extend ({
       this.link.removeClass('crossed');
       this.link.addClass('ticked');
     }
+  },
+  ticked: function () {
+    return this.link.hasClass('ticked');
   }
 });

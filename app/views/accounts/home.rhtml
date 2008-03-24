@@ -1,6 +1,4 @@
-<% 
-  @title = 'Home'
-%>
+<% @title = 'Home' %>
 
 <p>In  version 1.6 (April) This will be your dashboard page, with settings, updates, recent activity and account-management. Lots of lovely lists. For now it's a useful place to put the activation of collections.</p>
   
@@ -11,15 +9,28 @@
   <% current_account.collections.each do |c| %>
 
     <h3> 
-      <% active = current_user.using_collection?(c) %>
-      <%= link_to c.name, {
-    		:controller => 'collections', 
-    		:action => active ? 'deactivate' : 'activate',
-    		:id => c, 
-    	}, {
-    		:class => active ? 'toggle ticked' : 'toggle crossed',
-    		:title => 'click to toggle activation',
-    	} %>
+      <% activation = current_user.activation_of(c) %>
+      <% if activation %>
+        <%= link_to c.name, {
+      		:controller => 'activations', 
+      		:action => 'deactivate',
+      		:id => activation,
+      		:user_id => current_user
+      	}, {
+      		:class => 'toggle ticked',
+      		:title => 'click to deactivate',
+      	} %>
+    	<% else %>
+        <%= link_to c.name, {
+      		:controller => 'activations', 
+      		:action => 'activate',
+      		:collection_id => c,
+      		:user_id => current_user,
+      	}, {
+      		:class => 'toggle crossed',
+      		:title => 'click to activate',
+      	} %>
+    	<% end %>
     </h3>
 
   <% end %>

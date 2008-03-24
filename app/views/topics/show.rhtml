@@ -1,41 +1,56 @@
-<% 
-  @title = @topic.name 
-%>
-
-<div class="crumbs">
-  <%= link_to "Discussion", home_path %> <span class="arrow">&rarr;</span>
-  <%= link_to h(@topic.forum.name), forum_path(@topic.forum) %> 
-  <% 
-  	page=session[:forum_page] ? session[:forum_page][@topic.forum.id] : nil
-  	if page and page!=1 
-	%>
-  <small style="color:#ccc">
-  (<%= link_to "page #{page}", forum_path(:id => @topic.forum, :page => page) %>)
-  </small>
-  <% end %>
-  <span class="arrow">&rarr;</span>
-</div>
+<% @title = @topic.name %>
 
 <p class="subtitle">
-	Started by <%= link_to @topic.creator.name, :controller => 'users', :action => 'show', :id => @topic.creator %>
+	A conversation about <%= link_to @topic.referent.name || "nameless #{@topic.referent.class.nice_title}", url_for(@topic.referent) %> started by <%= link_to @topic.creator.name, url_for(@topic.creator) %>
 	<span class="when"><%= time_ago_in_words(@topic.created_at) %> ago</span>.
-	<% if @topic.posts_count == 1 %>
-		No responses yet.
-	<% else %>
-		<%= pluralize(@topic.posts_count-1, 'responses') %>.
-	<% end %>
-	<% if editor? %>
-    <%= link_to image_tag("/images/furniture/buttons/circle.png"), edit_post_path( :forum_id => @forum,  :topic_id => @topic, :id => @topic.posts.first ), {
-  		  :id => "edit_post_#{@topic.posts.first.id}",
-  		  :title => "edit this text",
-  		  :class => "editinplace",
-  	  } 
-  	%>
-  <% end %>
 </p>
 
-<div class="commentbody" id="post_<%= @topic.posts.first.id %>">
-  <%= @topic.body.formatted %>
+<div class="boxtabs">
+  <a href="#" id="tab_content_conversation" class="tab">conversation</a>
+  <a href="#" id="tab_content_referent" class="tab">subject</a>
 </div>
 
-<%= render :partial => 'comments' %>
+<div class="boxed" id="box_content">
+  
+	<div id="content_conversation">
+    <div class="commentbody" id="post_<%= @topic.posts.first.id %>">
+      <%= @topic.body.formatted %>
+    </div>
+
+    <%= render :partial => 'comments' %>
+  </div>
+
+	<div id="content_referent">
+    <h2><%= link_to @topic.referent.name || "nameless #{@topic.referent.class.nice_title}", url_for(@topic.referent) %></h2>
+
+    <%= render :partial => 'shared/show_clip', :locals => {:item => @topic.referent} %>
+
+  	<p>
+  		<% if @topic.referent.respond_to?('speaker') %>
+  		  speaker: <% if @topic.referent.speaker %><%= link_to @topic.referent.speaker.name, url_for(@topic.referent.speaker) %><% else %>not known<% end %><br />
+  		<% end %>
+  		<% if @topic.referent.respond_to?('source') %>
+  		  source: <% if @topic.referent.source %><%= link_to @topic.referent.source.name, url_for(@topic.referent.source) %><% else %>not known<% end %><br />
+  		<% end %>
+  		<% if @topic.referent.creator %>
+  		  created by <%= link_to @topic.referent.creator.name, url_for(@topic.referent.creator) %>
+  		<% end %>
+		</p>
+
+    <% if @topic.referent.has_description? %>
+    	  <%= @topic.referent.description.formatted %>
+    <% else %>
+      <p>No summary given</p>
+    <% end %>
+    
+    
+    
+  </div>
+</div>
+
+<% content_for :admin do %>
+  <p>
+    conversation:<br />
+    <%= render :partial => 'shared/show_admin', :locals => {:item => @topic} %>
+  </p>
+<% end %>

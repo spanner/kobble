@@ -3,14 +3,14 @@
 </p>
 
 <p>
-  The best way to find out more is to <%= link_to "sign up for a free account", :action => 'signup' %>. Individual accounts will always be free, but while we're in beta you also get the benefit of the teamwork and multimedia tools.
+  The best way to find out more is to <%= link_to "sign up for a free account", new_account_url %>. Individual accounts will always be free, but while we're in beta you also get the benefit of the teamwork and multimedia tools.
 </p> 
 
 <p>
   <% if logged_in? %>
     <h2 class="invitation"><%= link_to "&rarr; your home page &larr;", :controller => 'accounts', :action => 'home' %></h2>
   <% else %>
-    <h2 class="invitation"><%= link_to "&rarr; try it now &larr;", :action => 'signup' %></h2>
+    <h2 class="invitation"><%= link_to "&rarr; try it now &larr;", new_account_url %></h2>
   <% end %>
 </p>
   

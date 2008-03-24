@@ -1,3 +1,5 @@
 <%= link_to "edit" , {:controller => item.class.to_s.pluralize.underscore, :action => 'edit', :id => item} %><br />
-<%= link_to "discuss", {:controller => 'topics', :action => 'new', :subject_type => item.class, :subject_id => item} %><br />
+<% if Spoke::Config.discussed_models.find{ |k| k == item.class } %><%= link_to "discuss", {:controller => 'topics', :action => 'new', :referent_type => item.class, :referent_id => item}, {:class => 'create discuss'} %><br /><% end %>
 <%= link_to "delete", {:controller => item.class.to_s.pluralize.underscore, :action => 'destroy', :id => item}, {:class => 'warning', :confirm => "do you really want to completely get rid of the #{item.class.nice_title} #{item.name}?"} %><br />
+
+

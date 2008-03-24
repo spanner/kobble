@@ -14,6 +14,10 @@ class PeopleAgain < ActiveRecord::Migration
       table.column :observations, :text
       table.column :arising, :text
       table.column :collection_id, :integer
+      table.column :created_by, :integer
+      table.column :updated_by, :integer
+      table.column :created_at, :datetime
+      table.column :updated_at, :datetime
     end
     
     add_column :users, :person_id, :integer
@@ -21,5 +25,6 @@ class PeopleAgain < ActiveRecord::Migration
 
   def self.down
     drop_table :people
+    remove_column :users, :person_id
   end
 end

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 86) do
+ActiveRecord::Schema.define(:version => 87) do
 
   create_table "accounts", :force => true do |t|
     t.integer "user_id"
@@ -171,16 +171,14 @@ ActiveRecord::Schema.define(:version => 86) do
   create_table "posts", :force => true do |t|
     t.integer  "topic_id"
     t.text     "body"
-    t.integer  "forum_id"
     t.text     "body_html"
-    t.integer  "collection_id"
     t.datetime "created_at"
     t.integer  "created_by"
     t.datetime "updated_at"
     t.integer  "updated_by"
   end
 
-  add_index "posts", ["forum_id", "created_at"], :name => "index_posts_on_forum_id"
+  add_index "posts", ["created_at"], :name => "index_posts_on_forum_id"
   add_index "posts", ["created_by", "created_at"], :name => "index_posts_oncreator_id"
 
   create_table "scratchpads", :force => true do |t|
@@ -252,15 +250,12 @@ ActiveRecord::Schema.define(:version => 86) do
   end
 
   create_table "topics", :force => true do |t|
-    t.string   "title"
-    t.integer  "hits",          :default => 0
-    t.integer  "sticky",        :default => 0
-    t.integer  "posts_count",   :default => 0
+    t.string   "name"
+    t.integer  "posts_count",  :default => 0
     t.datetime "replied_at"
-    t.boolean  "locked",        :default => false
+    t.boolean  "locked",       :default => false
     t.integer  "replied_by"
     t.integer  "last_post_id"
-    t.integer  "collection_id"
     t.integer  "speaker_id"
     t.datetime "created_at"
     t.integer  "created_by"
@@ -270,7 +265,7 @@ ActiveRecord::Schema.define(:version => 86) do
     t.integer  "subject_id"
   end
 
-  add_index "topics", ["sticky", "replied_at"], :name => "index_topics_on_sticky_and_replied_at"
+  add_index "topics", ["replied_at"], :name => "index_topics_on_sticky_and_replied_at"
   add_index "topics", ["replied_at"], :name => "index_topics_on_forum_id_and_replied_at"
 
   create_table "users", :force => true do |t|

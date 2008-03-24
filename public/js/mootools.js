@@ -1,1 +1,1 @@
-mootools-release-1.11.js
+mootools-beta-1.2b2.js

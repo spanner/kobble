@@ -20,7 +20,7 @@ class Post < ActiveRecord::Base
     "response to #{self.topic.title}"
   end
   
-  def subject_path 
-    topic.subject_path
+  def referent_path 
+    topic.referent_path
   end
 end

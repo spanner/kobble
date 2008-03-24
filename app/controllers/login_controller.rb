@@ -11,21 +11,6 @@ class LoginController < ApplicationController
     render :action => 'index'
   end
   
-  def signup
-    @user = User.new(params[:user])
-    if request.post?
-      @user.status = 0
-      @user.save!
-      session[:user] = @user.id
-      self.current_user = @user
-      flash[:notice] = "Registration processed."
-      redirect_to :controller => '/login', :action => 'index'
-    end
-  rescue ActiveRecord::RecordInvalid
-    @known_user = User.find_by_email(@user.email)
-    render :action => 'signup'
-  end
-
   def activate
     flash.clear 
     if params[:id].nil? && params[:activation_code].nil? then

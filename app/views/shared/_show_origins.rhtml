@@ -3,13 +3,13 @@
 	<div id="<%= tabset %>_origins">
   	<p>
   		<% if item.respond_to?('speaker') %>
-  		  speaker: <% if item.speaker %><%= link_to item.speaker.name, :action => 'show', :controller => 'people', :id => item.speaker %><% else %>not known<% end %><br />
+  		  speaker: <% if item.speaker %><%= link_to item.speaker.name, url_for(item.speaker) %><% else %>not known<% end %><br />
   		<% end %>
   		<% if item.respond_to?('source') %>
-  		  source: <% if item.source %><%= link_to item.source.name, :action => 'show', :controller => 'sources', :id => item.source %><% else %>not known<% end %><br />
+  		  source: <% if item.source %><%= link_to item.source.name, url_for(item.source) %><% else %>not known<% end %><br />
   		<% end %>
   		<% if item.creator %>
-  		  created by <%= link_to item.creator.name, :action => 'show', :controller => 'user', :id => item.creator %>
+  		  created by <%= link_to item.creator.name, url_for(item.creator) %>
   		<% end %>
   		</p>
 	</div>

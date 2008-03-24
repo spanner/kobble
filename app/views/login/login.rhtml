@@ -2,7 +2,9 @@
 
 <% if logged_in? %>
 
-  <p>You are currently logged in as <strong><%= current_user.name %></strong>.<br />If that's not you, or you want to log in with another account, please <%= link_to "log out", :action => 'logout' %> first.</p>
+  <p>You are currently logged in as <strong><%= current_user.name %></strong>.<br />
+    If that's not you, or you want to log in with another account, 
+    please <%= link_to "log out", :action => 'logout' %> first.</p>
 
 <% else %>
 
@@ -14,7 +16,7 @@
 	
   <% else %>
     <p>
-      If you haven't already, you can create a <%= link_to "free individual account", :action => 'signup' %>.
+      If you haven't already, you can create a <%= link_to "free individual account", :controller => 'accounts', :action => 'new' %>.
     </p>
 
   <% end %>

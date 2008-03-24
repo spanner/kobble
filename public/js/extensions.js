@@ -1,4 +1,4 @@
-﻿Element.extend({
+﻿Element.implement({
 	isVisible: function() {
 		return this.getStyle('display') != 'none';
 	},
@@ -12,7 +12,7 @@
 	},
 	show: function(display) {
 		this.originalDisplay = (this.originalDisplay=="none")?'block':this.originalDisplay;
-		this.setStyle('display',(display || this.originalDisplay || 'block'));
+		this.setStyle('display', (display || this.originalDisplay || 'block'));
 		return this;
 	},
 	getValueAsList: function (separator) {
@@ -67,16 +67,18 @@
   }
 });
 
-var spokeObject = new Class({
-	initialize: function(id){
-    this.id = id;
-	}
-});
 
-var Node = spokeObject.extend({ });
-var Source = spokeObject.extend({ });
-var Bundle = spokeObject.extend({ });
-var Tag = spokeObject.extend({ });
-var Flag = spokeObject.extend({ });
-var User = spokeObject.extend({ });
-var Post = spokeObject.extend({ });
+// 
+// var spokeObject = new Class({
+//  initialize: function(id){
+//     this.id = id;
+//  }
+// });
+// 
+// var Node = spokeObject.extend({ });
+// var Source = spokeObject.extend({ });
+// var Bundle = spokeObject.extend({ });
+// var Tag = spokeObject.extend({ });
+// var Flag = spokeObject.extend({ });
+// var User = spokeObject.extend({ });
+// var Post = spokeObject.extend({ });

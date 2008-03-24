@@ -1,5 +1,6 @@
 class AccountsController < ApplicationController
   before_filter :admin_required, :except => [:show, :edit, :update, :create, :new]
+  before_filter :login_required, :except => [:create, :new]
 
   def index
     home
@@ -19,7 +20,20 @@ class AccountsController < ApplicationController
   end
 
   def new
-    @collection = Account.new
+    @account = Account.new(params[:account])
+    @user = User.new(params[:user])
+    if request.post?
+      @user.status = 0
+      @user.save!
+      session[:user] = @user.id
+      self.current_user = @user
+      flash[:notice] = "Registration processed."
+      redirect_to :controller => '/login', :action => 'index'
+    end
+    render :layout => 'login'
+  rescue ActiveRecord::RecordInvalid
+    @known_user = User.find_by_email(@user.email)
+    render :action => 'new', :layout => 'login'
   end
 
   def create
