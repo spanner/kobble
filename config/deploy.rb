@@ -10,6 +10,9 @@ set :repository, "http://svn.spanner.org/spoke/trunk"
 # your SCM below:
 # set :scm, :subversion
 
+set :scm_username, "spanner" 
+set :scm_password, "monkey" 
+
 role :web, "bluebottle.spanner.org", :primary => true
 role :app, "seagoon.spanner.org", "bluebottle.spanner.org", "bloodnok.spanner.org"
 role :db,  "eccles.spanner.org", :primary => true
