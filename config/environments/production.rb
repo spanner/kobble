@@ -18,9 +18,9 @@ config.action_controller.perform_caching             = true
 
 config.action_mailer.raise_delivery_errors = false
 config.action_mailer.delivery_method = :smtp
-config.action_mailer.server_settings = {
-    :address        => 'seagoon.spanner.org',
-    :domain         => 'sparknow.net',
+config.action_mailer.smtp_settings = {
+    :address        => 'mail.spanner.org',
+    :domain         => 'spanner.org',
     :authentication => :login,
     :user_name      => 'sender@sparknow.net',
     :password       => 'sender'
