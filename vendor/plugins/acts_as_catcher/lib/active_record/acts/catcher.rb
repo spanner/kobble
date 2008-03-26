@@ -24,9 +24,10 @@ module ActiveRecord
           end
       
           # here we examine the dispatch table and deduce the proper method
-          # deferred so that has_many_polymorphs can create its relationships
+          # action is deferred so that has_many_polymorphs can create its 
+          # relationships before we look for them
       
-          # nbeg Scratchpad.acts_as_catcher :scraps, :merge
+          # eg Scratchpad.acts_as_catcher :scraps, :merge
 
           def self.initialize_catchers
             return self.catch_dispatch if self.catch_dispatch && self.catch_dispatch.size
@@ -67,7 +68,7 @@ module ActiveRecord
               @message = self.send(association, thrown)
               @message ||= "#{thrown.name} caught by #{self.name}"
             else
-              raise CatchError "no such catch relation: #{self.class}->#{dropped.class}"
+              raise "no such catch relation: #{self.class}->#{dropped.class}"
             end
           end
       
@@ -81,7 +82,7 @@ module ActiveRecord
               end
               @message = "#{dropped.name} removed from #{self.name}"
             else
-              raise CatchError "no such drop relation: #{self.class}->#{dropped.class}"
+              raise "no such drop relation: #{self.class}->#{dropped.class}"
             end
             
           end
