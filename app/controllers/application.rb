@@ -18,10 +18,12 @@ class ApplicationController < ActionController::Base
   end
   
   def set_context
-    @scratch = current_user.find_or_create_scratchpads if logged_in?
-    EditObserver.current_user = current_user
-    Collection.current_collections = current_collections
-    redirect_to :controller => 'collections', :action => 'list' if logged_in? && current_collections.empty?
+    if logged_in?
+      @scratch = current_user.find_or_create_scratchpads 
+      EditObserver.current_user = current_user
+      Collection.current_collections = current_collections
+      redirect_to :controller => 'collections', :action => 'list' if current_collections.empty?
+    end
   end
   
   def limit_to_this_account(klass=nil)
