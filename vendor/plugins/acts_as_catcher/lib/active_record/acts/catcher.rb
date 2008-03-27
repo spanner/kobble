@@ -1,6 +1,3 @@
-class CatchError < ActionController::MethodNotAllowed 
-end
-
 module ActiveRecord
   module Acts #:nodoc:
     module Catcher #:nodoc:
