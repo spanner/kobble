@@ -19,6 +19,20 @@ module Spoke
       end
     end
     
+    # these are the taggable, discussable main content models
+    # they have to be defined in advance for hmp to call on in has_many_polymorphs :from
+    # otherwise would much prefer to set them as we go along using acts_as_spoke
+
+    def self.content_models(options={})
+      oc = [:sources, :nodes, :bundles, :people, :occasions]
+      if options[:except]
+        oc -= Array(options[:except]) 
+      elsif options[:only]
+        oc &= Array(options[:only]) 
+      end
+      oc
+    end
+    
   end
 end
 
@@ -88,17 +102,7 @@ module ActiveRecord
 
           self.class_eval("include InstanceMethods")
         end
-
-        def organised_classes(options={})
-          oc = [:users, :sources, :nodes, :bundles, :people, :tags, :flags, :occasions, :topics, :posts]
-          if options[:except]
-            oc -= Array(options[:except]) 
-          elsif options[:only]
-            oc &= Array(options[:only]) 
-          end
-          oc
-        end
-        
+                
         def index_fields
           ['name', 'description', 'body', 'created_by', 'created_at', 'collection_id']
         end
