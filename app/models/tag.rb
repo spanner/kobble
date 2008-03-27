@@ -1,6 +1,6 @@
 class Tag < ActiveRecord::Base
 
-  has_many_polymorphs :taggables, :from => Spoke::Config.content_models, :through => :taggings
+  has_many_polymorphs :taggables, :from => Spoke::Config.content_models :except => :tags, :through => :taggings
   acts_as_spoke :except => :index
   belongs_to :account
   acts_as_tree :order => 'name'

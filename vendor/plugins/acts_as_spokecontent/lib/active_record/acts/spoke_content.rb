@@ -19,12 +19,12 @@ module Spoke
       end
     end
     
-    # these are the taggable, discussable main content models
+    # these are the taggable, discussable, scratchpaddable main content models
     # they have to be defined in advance for hmp to call on in has_many_polymorphs :from
-    # otherwise would much prefer to set them as we go along using acts_as_spoke
+    # otherwise would much prefer to set them as we go along during acts_as_spoke
 
     def self.content_models(options={})
-      oc = [:sources, :nodes, :bundles, :people, :occasions]
+      oc = [:sources, :nodes, :bundles, :people, :occasions, :topics, :tags]
       if options[:except]
         oc -= Array(options[:except]) 
       elsif options[:only]

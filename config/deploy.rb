@@ -25,7 +25,7 @@ set :deploy_via, :remote_cache
 namespace :deploy do
   task :after_update do
     run "ln -s #{shared_path}/config/database.yml #{current_release}/config/database.yml" 
-    ['collection', 'user', 'source', 'node', 'bundle', 'occasion', 'tag'].each do |directory|
+    ['collection', 'user', 'person', 'source', 'node', 'bundle', 'occasion', 'tag'].each do |directory|
       run "ln -s #{shared_path}/assets/#{directory} #{current_release}/public/#{directory}" 
     end
   end
