@@ -1,3 +1,6 @@
+class CatchError < ActionController::MethodNotAllowed 
+end
+
 module ActiveRecord
   module Acts #:nodoc:
     module Catcher #:nodoc:
@@ -65,7 +68,7 @@ module ActiveRecord
               @message = self.send(association, thrown)
               @message ||= "#{thrown.name} caught by #{self.name}"
             else
-              raise "no such catch relation: #{self.class}->#{dropped.class}"
+              raise CatchError "no such catch relation: #{self.class}->#{dropped.class}"
             end
           end
       
@@ -79,7 +82,7 @@ module ActiveRecord
               end
               @message = "#{dropped.name} removed from #{self.name}"
             else
-              raise "no such drop relation: #{self.class}->#{dropped.class}"
+              raise CatchError "no such drop relation: #{self.class}->#{dropped.class}"
             end
             
           end
