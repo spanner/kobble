@@ -28,7 +28,6 @@ namespace :deploy do
     ['collection', 'user', 'source', 'node', 'bundle', 'occasion', 'tag'].each do |directory|
       run "ln -s #{shared_path}/assets/#{directory} #{current_release}/public/#{directory}" 
     end
-    sudo "RAILS_ENV=production rake ultrasphinx:configure"
   end
 	
   task :start, :roles => :app do
@@ -41,4 +40,3 @@ namespace :deploy do
     sudo "mongrel_rails cluster::restart -C #{mongrel_conf}" 
   end
 end
-
