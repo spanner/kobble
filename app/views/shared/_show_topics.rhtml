@@ -1,10 +1,9 @@
 <% tabset ||= '' %>
 <div id="<%= tabset %>_topics" class="mainlist">
+	<p><%= link_to "start a conversation about this #{item.class.nice_title}", item_new_topic_url(item), {:class => 'create discuss'}  %></p>
 	<ul>
 	<% if item.has_topics? %>
     <%= render :partial => 'shared/listed', :collection => item.topics %>
 	<% end %>
-	
-	<li><%= link_to "start a conversation about this #{item.class.nice_title}", item_new_topic_url(item), {:class => 'create discuss'}  %></li>
-</ul>
+	</ul>
 </div>

@@ -2,7 +2,10 @@
 
 <% if logged_in? %>
 
-  <p>You are currently logged in as <strong><%= current_user.name %></strong>.<br />If that's not you, or you want to log in with another account, please <%= link_to "log out", :action => 'logout' %> first.</p>
+  <p>
+    You are currently logged in as <strong><%= current_user.name %></strong>.<br />
+    If that's not you, or you want to log in with another account, please <%= link_to "log out", :controller => 'login', :action => 'logout' %> first.
+  </p>
   
   <p>If you want to add more people to your account, you need the users page in the account management tools, which won't exist until version 1.6 in April. It says here. Please ask <%= link_to "will", "mailto:will@materiali.st" %> to add people for you.</p>
 

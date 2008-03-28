@@ -27,7 +27,10 @@ class NodesController < ApplicationController
   
   def new
     @node = Node.new
-    @node.source = Source.find(params[:source]) if params[:source] && params[:source] != ""
+    @sources = Source.find(:all, :conditions => limit_to_active_collections)
+    @people = Person.find(:all, :conditions => limit_to_active_collections)
+    @node.source = Source.find(params[:source_id]) if params[:source_id]
+    @node.speaker = Person.find(params[:speaker_id]) if params[:speaker_id]
     @node.body = URI.unescape(params[:excerpt]) if params[:excerpt]
     @node.playfrom = params[:inat]
     @node.playto = params[:outat]

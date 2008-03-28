@@ -114,6 +114,7 @@ div#masthead a, div#masthead a:visited {
 div#pagetitle {
   position: relative;
   margin: 34px 180px 20px 130px;
+  max-width: 640px;
 }
 
 div#pagetitle h1 {
@@ -263,7 +264,7 @@ div#headbox_scratchpad {
   width: 120px;
 }
 
-div#headbox_scratchpad a, div#headbox_scratchpad a:link {
+div#headbox_scratchpad a {
   display: block;
   float: right;
   clear: right;

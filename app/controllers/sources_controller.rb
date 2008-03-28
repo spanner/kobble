@@ -9,6 +9,8 @@ class SourcesController < ApplicationController
   end
 
   def new
+    @occasions = Occasion.find(:all, :conditions => limit_to_active_collections)
+    @people = Person.find(:all, :conditions => limit_to_active_collections)
     @source = Source.new
   end
 
