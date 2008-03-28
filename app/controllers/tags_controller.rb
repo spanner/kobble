@@ -5,11 +5,11 @@ class TagsController < ApplicationController
   end
 
   def list_columns
-    3
+    4
   end
 
   def list_length
-    60
+    80
   end
 
   def tree

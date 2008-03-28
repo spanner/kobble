@@ -11,12 +11,12 @@ ActionController::Routing::Routes.draw do |map|
   map.home '/accounts/home', :action => 'home', :controller => 'accounts'
 
   [:sources, :bundles, :nodes, :people].each do |k|
-    map.resources k, :has_many => :topics, :collection => { :gallery => :get } 
+    map.resources k, :has_many => :topics, :collection => { :gallery => :get }, :member => {:annotate => :post}
   end
   
   map.resources :tags, :has_many => :taggings, :collection => { :gallery => :get, :cloud => :get, :tree => :get, :treemap => :get } 
   map.resources :flags, :has_many => :flaggings
-  map.resources :users, :has_many => :activations, :collection => { :gallery => :get }, :method => { :home => :get }
+  map.resources :users, :has_many => :activations, :collection => { :gallery => :get }, :member => { :home => :get }
   map.resources :topics, :has_many => :posts
   map.resources :scratchpads, :has_many => :scraps
 

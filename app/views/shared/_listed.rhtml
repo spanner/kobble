@@ -7,7 +7,7 @@
   <% if catch && listed.can_catch %>catches="<%= listed.can_catch.join(',') %>"<% end %>
 >
 
-  <%= link_to( name, {:controller => listed.class.to_s.downcase.pluralize, :action => 'show', :id => listed}, {:class => 'listed'}) %> 
+  <%= link_to( name, {:controller => listed.class.to_s.underscore.pluralize, :action => 'show', :id => listed}, {:class => 'listed'}) %> 
 
   <div class="tiptitle"><% if listed.has_collection? %><%= listed.collection.abbreviation %>: <% end %><%= name %></div>
   <div class="tiptext" style="display: block; font-size: 80%;"><%= truncate( listed.find_some_text, 100 ) %></div>

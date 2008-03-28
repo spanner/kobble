@@ -135,7 +135,7 @@ div#pagetitle h1.longtitle {
 div#canvas {
   position: relative;
 	padding: 0;
-	margin: 0 180px 40px 130px;
+	margin: 0 80px 40px 130px;
 }
 
 div#mastfoot {
@@ -219,6 +219,7 @@ div#admin a { color: #559DC4; }
 div#admin a:hover, .pagination a:active { color: #d1005d; }
 div#admin a.warning { color: #CC6E1F; }
 div#admin a.create { color: #6cb262; }
+div#admin a.annotate { text-decoration: line-through; color: #B2AAA4;}
 
 div#trash {
   position: fixed;
@@ -296,33 +297,21 @@ div.scratchpage {
 }
 
 div.scratchpage ul {
-  padding: 0 0 0 10px;
+  margin: 0 10px 0 0;
+  padding: 6px 0 0 30px;
   color: white;
-	margin: 0;
 	min-height: 300px;
 }
 
 div.scratchpage li {
-  height: 36px;
-	overflow: hidden;
-  list-style: none;
-  margin: 0;
+  list-style-image: url(/images/furniture/spoke/mid/node.png);
+  margin: 0 0 7px 0;
+  font-size: 16px;
+  line-height: 20px;
 }
 
 div.scratchpage li a {
-  display: block;
-  height: 36px;
-  font-size: 16px;
-  line-height: 20px;
-	white-space: nowrap;
-	overflow: hidden;
-  padding: 8px 0 8px 3px;
-  color: #fff;
-}
-
-div.scratchpage li a img {
-  margin: 0 8px 0 0;
-  float: left;
+  color: white;
 }
 
 div.scratchpage li.waiting a {
@@ -348,60 +337,31 @@ div.scratchpage div.padcontrol a.closepad {
   float: right;
 }
 
-div.scratchpage li {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  clear: left;
-}
-
 div.scratchpage li a.listed {
   color: #B2AAA4;
-  padding: 10px 6px 6px 30px;
-  font-size: 16px;
-  line-height: 20px;
-  background-image: url(/images/furniture/spoke/mid/node.png);
-  background-position: 4px 8px;
-  background-repeat: no-repeat;
 }
 
 div.scratchpage li a.listed:hover {
   color: #fff;
 }
 
-div.scratchpage li.collection a.listed { background-image: url(/images/furniture/spoke/mid/collection.png); }
-div.scratchpage li.node a.listed { background-image: url(/images/furniture/spoke/mid/node.png); }
-div.scratchpage li.source a.listed { background-image: url(/images/furniture/spoke/mid/source.png); }
-div.scratchpage li.bundle a.listed { background-image: url(/images/furniture/spoke/mid/bundle.png); }
-div.scratchpage li.user a.listed { background-image: url(/images/furniture/spoke/mid/user.png); }
-div.scratchpage li.usergroup a.listed { background-image: url(/images/furniture/spoke/mid/usergroup.png); }
-div.scratchpage li.tag a.listed { background-image: url(/images/furniture/spoke/mid/tag.png); }
-div.scratchpage li.flag a.listed { background-image: url(/images/furniture/spoke/mid/flag.png); }
-div.scratchpage li.forum a.listed { background-image: url(/images/furniture/spoke/mid/forum.png); }
-div.scratchpage li.topic a.listed { background-image: url(/images/furniture/spoke/mid/post.png); }
-div.scratchpage li.post a.listed { background-image: url(/images/furniture/spoke/mid/post.png); }
-div.scratchpage li.blogentry a.listed { background-image: url(/images/furniture/spoke/mid/blogentry.png); }
-div.scratchpage li.question a.listed { background-image: url(/images/furniture/spoke/mid/question.png); }
-div.scratchpage li.answer a.listed { background-image: url(/images/furniture/spoke/mid/answer.png); }
-div.scratchpage li.waiting a.listed { background-image: url(/images/furniture/signals/wait_16_white.gif); }
+div.scratchpage li.collection { list-style-image: url(/images/furniture/spoke/mid/collection.png); }
+div.scratchpage li.node { list-style-image: url(/images/furniture/spoke/mid/node.png); }
+div.scratchpage li.source { list-style-image: url(/images/furniture/spoke/mid/source.png); }
+div.scratchpage li.bundle { list-style-image: url(/images/furniture/spoke/mid/bundle.png); }
+div.scratchpage li.user { list-style-image: url(/images/furniture/spoke/mid/user.png); }
+div.scratchpage li.person { list-style-image: url(/images/furniture/spoke/mid/user.png); }
+div.scratchpage li.tag { list-style-image: url(/images/furniture/spoke/mid/tag.png); }
+div.scratchpage li.flag { list-style-image: url(/images/furniture/spoke/mid/flag.png); }
+div.scratchpage li.forum { list-style-image: url(/images/furniture/spoke/mid/forum.png); }
+div.scratchpage li.topic { list-style-image: url(/images/furniture/spoke/mid/post.png); }
+div.scratchpage li.post { list-style-image: url(/images/furniture/spoke/mid/post.png); }
+div.scratchpage li.blogentry { list-style-image: url(/images/furniture/spoke/mid/blogentry.png); }
+div.scratchpage li.question { list-style-image: url(/images/furniture/spoke/mid/question.png); }
+div.scratchpage li.answer { list-style-image: url(/images/furniture/spoke/mid/answer.png); }
+div.scratchpage li.waiting { list-style-image: url(/images/furniture/signals/wait_16_white.gif); }
 
-div.scratchpage li.collection a.listed:hover { background-image: url(/images/furniture/spoke/grey/collection.png); }
-div.scratchpage li.node a.listed:hover { background-image: url(/images/furniture/spoke/white/node.png); }
-div.scratchpage li.source a.listed:hover { background-image: url(/images/furniture/spoke/white/source.png); }
-div.scratchpage li.bundle a.listed:hover { background-image: url(/images/furniture/spoke/white/bundle.png); }
-div.scratchpage li.user a.listed:hover { background-image: url(/images/furniture/spoke/white/user.png); }
-div.scratchpage li.usergroup a.listed:hover { background-image: url(/images/furniture/spoke/white/usergroup.png); }
-div.scratchpage li.tag a.listed:hover { background-image: url(/images/furniture/spoke/white/tag.png); }
-div.scratchpage li.flag a.listed:hover { background-image: url(/images/furniture/spoke/white/flag.png); }
-div.scratchpage li.forum a.listed:hover { background-image: url(/images/furniture/spoke/white/forum.png); }
-div.scratchpage li.topic a.listed:hover { background-image: url(/images/furniture/spoke/white/post.png); }
-div.scratchpage li.post a.listed:hover { background-image: url(/images/furniture/spoke/white/post.png); }
-div.scratchpage li.blogentry a.listed:hover { background-image: url(/images/furniture/spoke/white/blogentry.png); }
-div.scratchpage li.question a.listed:hover { background-image: url(/images/furniture/spoke/white/question.png); }
-div.scratchpage li.answer a.listed:hover { background-image: url(/images/furniture/spoke/white/answer.png); }
-div.scratchpage li.waiting a.listed:hover { background-image: url(/images/furniture/signals/wait_16_white.gif); }
-
-div#scratchpad .drophere {
+div.scratchpage .drophere {
 	background-color: #d1005d;
 }
 
@@ -416,7 +376,7 @@ div.mainlist ul.listcolumn {
   display: block;
   float: left;
   width: 220px;
-  margin-right: 20px;
+  margin: 0 20px 20px 0;
 }
 
 div.mainlist ul {
@@ -426,19 +386,11 @@ div.mainlist ul {
 }
 
 div.mainlist li {
-  list-style: none;
   margin: 0;
-  padding: 6px;
-  clear: left;
-}
-
-div.mainlist li a.listed {
-  padding: 10px 6px 6px 30px;
+  list-style-image: url(/images/furniture/spoke/blue/what.png);
+  margin: 0 10px 4px 0;
   font-size: 16px;
   line-height: 20px;
-  background-image: url(/images/furniture/spoke/blue/node.png);
-  background-position: 4px 8px;
-  background-repeat: no-repeat;
 }
 
 div.mainlist li a img {
@@ -451,41 +403,29 @@ div.mainlist li a img {
   float: left;
 }
 
-div.mainlist li.collection a.listed { background-image: url(/images/furniture/spoke/blue/collection.png); }
-div.mainlist li.node a.listed { background-image: url(/images/furniture/spoke/blue/node.png); }
-div.mainlist li.source a.listed { background-image: url(/images/furniture/spoke/blue/source.png); }
-div.mainlist li.bundle a.listed { background-image: url(/images/furniture/spoke/blue/bundle.png); }
-div.mainlist li.user a.listed { background-image: url(/images/furniture/spoke/blue/user.png); }
-div.mainlist li.usergroup a.listed { background-image: url(/images/furniture/spoke/blue/usergroup.png); }
-div.mainlist li.tag a.listed { background-image: url(/images/furniture/spoke/blue/tag.png); }
-div.mainlist li.flag a.listed { background-image: url(/images/furniture/spoke/blue/flag.png); }
-div.mainlist li.forum a.listed { background-image: url(/images/furniture/spoke/blue/forum.png); }
-div.mainlist li.topic a.listed { background-image: url(/images/furniture/spoke/blue/post.png); }
-div.mainlist li.post a.listed { background-image: url(/images/furniture/spoke/blue/post.png); }
-div.mainlist li.blogentry a.listed { background-image: url(/images/furniture/spoke/blue/blogentry.png); }
-div.mainlist li.question a.listed { background-image: url(/images/furniture/spoke/blue/question.png); }
-div.mainlist li.answer a.listed { background-image: url(/images/furniture/spoke/blue/answer.png); }
-div.mainlist li.waiting a.listed { background-image: url(/images/furniture/signals/wait_16_blue.gif); }
+div.mainlist li.collection { list-style-image: url(/images/furniture/spoke/blue/collection.png); }
+div.mainlist li.node { list-style-image: url(/images/furniture/spoke/blue/node.png); }
+div.mainlist li.source { list-style-image: url(/images/furniture/spoke/blue/source.png); }
+div.mainlist li.bundle { list-style-image: url(/images/furniture/spoke/blue/bundle.png); }
+div.mainlist li.user { list-style-image: url(/images/furniture/spoke/blue/user.png); }
+div.mainlist li.person { list-style-image: url(/images/furniture/spoke/blue/user.png); }
+div.mainlist li.tag { list-style-image: url(/images/furniture/spoke/blue/tag.png); }
+div.mainlist li.flag { list-style-image: url(/images/furniture/spoke/blue/flag.png); }
+div.mainlist li.forum { list-style-image: url(/images/furniture/spoke/blue/forum.png); }
+div.mainlist li.topic { list-style-image: url(/images/furniture/spoke/blue/post.png); }
+div.mainlist li.post { list-style-image: url(/images/furniture/spoke/blue/post.png); }
+div.mainlist li.blogentry { list-style-image: url(/images/furniture/spoke/blue/blogentry.png); }
+div.mainlist li.question { list-style-image: url(/images/furniture/spoke/blue/question.png); }
+div.mainlist li.answer { list-style-image: url(/images/furniture/spoke/blue/answer.png); }
 
-div.mainlist li.collection a.listed:hover { background-image: url(/images/furniture/spoke/grey/collection.png); }
-div.mainlist li.node a.listed:hover { background-image: url(/images/furniture/spoke/orange/node.png); }
-div.mainlist li.source a.listed:hover { background-image: url(/images/furniture/spoke/orange/source.png); }
-div.mainlist li.bundle a.listed:hover { background-image: url(/images/furniture/spoke/orange/bundle.png); }
-div.mainlist li.user a.listed:hover { background-image: url(/images/furniture/spoke/orange/user.png); }
-div.mainlist li.usergroup a.listed:hover { background-image: url(/images/furniture/spoke/orange/usergroup.png); }
-div.mainlist li.tag a.listed:hover { background-image: url(/images/furniture/spoke/orange/tag.png); }
-div.mainlist li.flag a.listed:hover { background-image: url(/images/furniture/spoke/orange/flag.png); }
-div.mainlist li.forum a.listed:hover { background-image: url(/images/furniture/spoke/orange/forum.png); }
-div.mainlist li.topic a.listed:hover { background-image: url(/images/furniture/spoke/orange/post.png); }
-div.mainlist li.post a.listed:hover { background-image: url(/images/furniture/spoke/orange/post.png); }
-div.mainlist li.blogentry a.listed:hover { background-image: url(/images/furniture/spoke/orange/blogentry.png); }
-div.mainlist li.question a.listed:hover { background-image: url(/images/furniture/spoke/orange/question.png); }
-div.mainlist li.answer a.listed:hover { background-image: url(/images/furniture/spoke/orange/answer.png); }
-
-div.mainlist li.waiting a.listed {
+div.mainlist li.waiting {
   list-style-image: url(/images/furniture/signals/wait_16_grey.gif);
+}
+
+div.mainlist li.waiting a {  
   color: #695D54;
 }
+
 
 div.drophere, ul.drophere {
 	background-color: #daf2ff;
@@ -500,13 +440,28 @@ li.drophere a {
   color: #695D54;
 }
 
+/* hidden divs that provide tooltip content */
+
+.tiptext, .tiptitle {
+  display: none;
+/*  margin: 0 3px 0 32px;*/
+  font-family: HelveticaNeue-Roman, helvetica, arial, sans-serif;
+	font-size: 11px;
+	color: #B2AAA4;
+}
+
 /* tabbed pages */
 
 div.boxed {
   border: 1px solid #B2AAA4;
   padding: 0 15px 5px 15px;
   margin: -1px 0 32px 0;
+  max-width: 640px;
 /*  overflow: hidden;*/
+}
+
+div.boxed ul {
+  margin-left: 20px;
 }
 
 .boxhead {
@@ -884,20 +839,6 @@ span.countlabel {
 .droppable .drag-text { background: url(/images/furniture/spoke/tooltips/black.png) bottom left; }
 .mergeable .drag-title { background: url(/images/furniture/spoke/tooltips/orange.png) top left; }
 .mergeable .drag-text { background: url(/images/furniture/spoke/tooltips/orange.png) bottom left; }
-
-/* hidden divs that provide tooltip content */
-
-.tiptext, .tiptitle {
-  display: none;
-  margin: 0 3px 0 32px;
-  font-family: HelveticaNeue-Roman, helvetica, arial, sans-serif;
-	font-size: 11px;
-}
-
-div.dragholder {
-  opacity: 0.8;
-  display: none;
-}
 
 /* pagination */
 

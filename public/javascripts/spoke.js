@@ -402,7 +402,6 @@ var Draggee = new Class({
 		this.link = element.getElements('a')[0];
 		this.name = this.findTitle();
 		this.draggedfrom = intf.lookForDropper(element.getParent());
-    this.dragholder = new Element('div', {class: 'dragholder'});
     this.link.duplicate().makeDraggable({ 
 			droppables: intf.startDragging(this),
       onEnter: function(element, dropzone) { dropzone.respond(); },

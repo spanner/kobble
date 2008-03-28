@@ -4,6 +4,14 @@ class PeopleController < ApplicationController
   verify :method => :post, :only => [ :destroy, :create, :update ],
          :redirect_to => { :action => :list }
 
+  def list_columns
+    4
+  end
+
+  def list_length
+    80
+  end
+
   def show
     @person = Person.find(params[:id])
   end
