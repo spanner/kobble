@@ -808,6 +808,10 @@ span.countlabel {
 	background: url(/images/furniture/spoke/tooltips/bigblack.png) bottom right;
 }
 
+.dragging {
+  border: 1px solid red;
+}
+
 .drag-tip {
 	color: #fff;
 	width: 130px;

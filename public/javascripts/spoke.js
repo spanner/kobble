@@ -10,7 +10,7 @@ window.addEvent('domready', function(){
 var Interface = new Class({
 	initialize: function(){
     // this.tips = null;
-    this.dragging = false;
+    this.dragging = null;
     this.draggables = [];
     this.droppers = [];
     this.tabs = [];
@@ -65,17 +65,20 @@ var Interface = new Class({
   // hideTips: function () {
   //   if (this.tips) this.tips.hide();
   // },
-  startDragging: function (draggee) {
+
+  startDragging: function (helper) {
     $$('.hideondrag').each(function (element) { element.setStyle('visibility', 'hidden'); })
     $$('.showondrag').each(function (element) { element.setStyle('visibility', 'visible'); })
-    this.dragging = draggee.original;
+    this.dragging = helper;
     var catchers = [];
-  	this.droppers.each(function(d){ if (d.can_catch(draggee.spokeType())) catchers.push(d.container); });
-  	return catchers;        // returns list of elements ready to receive drop, suitable for initializing draggable
+  	this.tabs.each(function (t) { t.makeReceptiveTo(helper); })
+  	this.droppers.each(function(d){ if (d.makeReceptiveTo(helper)) catchers.push(d.container); });
+  	return catchers;
   },
-  stopDragging: function () {
+  stopDragging: function (helper) {
     this.dragging = null;
-    this.tabs.each(function (t) { t.makeUnreceptive(); })
+    this.tabs.each(function (t) { t.makeUnreceptive(helper); })
+    this.droppers.each(function (d) { d.makeUnreceptive(helper); })
     $$('.hideondrag').each(function (element) { element.setStyle('visibility', 'visible'); })
     $$('.showondrag').each(function (element) { element.setStyle('visibility', 'hidden'); })
   },
@@ -232,19 +235,69 @@ var Dropzone = new Class({
 	contents: function () { return this.container.getElements('.draggable').map(function(el){ return el.id; }); },
 	contains: function (draggee) { return this.contents().contains(draggee.tag); },
 	can_catch: function (type) { if (this.catches) return this.catches == 'all' || this.catches.split(',').contains(type); },
-  respond: function (helper) {
-    // this gets called when a drag from elsewhere enters this space
-    // catchability checks were performed when the drag began and this method should not
-    // be called if we weren't activated then
-    this.container.addClass('drophere');
-  	if (this.tab) this.tab.tabhead.addClass('over');
-  },
-  forget: function (helper) {
-    // this gets called when a drag from elsewhere leaves this space
-    this.container.removeClass('drophere');
-	  if (this.tab) this.tab.tabhead.removeClass('over');
-  },
   
+  makeReceptiveTo: function (helper) {
+    // this gets called when a drag from elsewhere enters this space
+    var type = helper.draggee.spokeType();
+    if (this.can_catch(type)) {
+      var dropzone = this;
+      dropzone.container.addEvents({
+        'drop': function() { dropzone.receiveDrop(helper); },
+        'mouseenter': function() { dropzone.showInterest(helper); },
+        'mouseleave': function() { dropzone.loseInterest(helper); },
+      });
+      return this.isReceptive = true;
+    } else {
+      return this.isReceptive = false;
+    }
+  },
+  makeUnreceptive: function (helper) {
+    // this gets called when a drag from elsewhere leaves this space
+    if (this.isReceptive) {
+      this.container.removeEvents('mouseenter');
+      this.container.removeEvents('mouseleave');
+      this.container.removeEvents('drop');
+      this.isReceptive = false;
+    }
+  },
+  makeRegretful: function (helper) {
+    // this gets called when we drag something out of this space that began here
+    console.log('makeRegretful');
+    var dropzone = this;
+    dropzone.container.addEvents({
+      mouseenter: function() {
+        console.log('back again');
+        helper.clearState();
+        dropzone.container.removeClass('bereft');
+      },
+      mouseleave: function() {
+        console.log('leaving the area');
+        helper.droppable(dropzone);
+        dropzone.container.addClass('bereft');
+      }
+    });
+    this.isRegretful = true;
+  },
+  makeUnregretful: function () {
+    if (this.isRegretful) {
+      console.log('makeUnregretful');
+      this.container.removeEvents('mouseenter');
+      this.container.removeEvents('mouseleave');
+      this.isRegretful = false;
+    }
+  },
+  showInterest: function (helper) {
+    if (this.container != helper.draggee.original && this != helper.draggee.draggedfrom && !this.contains(helper.draggee)) {
+      this.container.addClass('drophere');
+      if (this.tab) this.tab.tabhead.addClass('over');
+      // helper.insertable(this);
+    }
+  },
+  loseInterest: function (helper) { // nb. trigger set up during showInterest
+    this.container.removeClass('drophere');
+    if(this.tab) this.tab.tabhead.removeClass('over');
+  },
+	        
 	receiveDrop: function (helper) {
 	  intf.stopDragging();
 		var dropzone = this;
@@ -394,30 +447,19 @@ var TrashDropzone = new Class({
 // now we always drag whole <li> elements. no more thumbnails.
 
 var Draggee = new Class({
-	initialize: function(element, e){
+	initialize: function(element, e) {
 	  event = new Event(e).stop();
 	  event.preventDefault();
 		this.original = element;
 		this.tag = element.spokeType() + '_' + element.spokeID();   //omitting other id parts that only serve to avoid duplicate element ids
 		this.link = element.getElements('a')[0];
 		this.name = this.findTitle();
-		this.draggedfrom = intf.lookForDropper(element.getParent());
-    this.link.duplicate().makeDraggable({ 
-			droppables: intf.startDragging(this),
-      onEnter: function(element, dropzone) { dropzone.respond(); },
-      onLeave: function(element, dropzone) { dropzone.forget(); },
-      onDrop: function(element, dropzone) {
-        if (!dropzone) {
-          dh.emptydrop();
-        } else {
-          dropzone.receiveDrop();
-          dh.remove();
-        } 
-      }
-		}).start(e);
 		
-    // this.helper = new DragHelper(this);
-    //     this.helper.start(event);
+		console.log('got a dragger: ' + this.name);
+		
+    this.draggedfrom = intf.lookForDropper(element.getParent());
+    this.helper = new DragHelper(this);
+    this.helper.start(event);
 	},
   spokeID: function () { return this.original.spokeID(); },
   spokeType: function () { return this.original.spokeType(); },
@@ -451,21 +493,7 @@ var DragHelper = new Class({
 		intf.dh = this;
 
 		this.dragmove = this.container.makeDraggable({ 
-			droppables: intf.startDragging(this),
-      onEnter: function(container, dropzone) { dropzone.respond(); },
-      onLeave: function(container, dropzone) { dropzone.forget(); },
-      onDrop: function(container, dropzone) {
-        console.log('onDrop! container is ');
-        console.log(container);
-        console.log('and droppable ');
-        console.log(dropzone);
-        if (!dropzone) {
-          dh.emptydrop();
-        } else {
-          dropzone.receiveDrop();
-          dh.remove();
-        } 
-      }
+			droppables: intf.startDragging(dh)
 		});
 	},
 	start: function (event) {
@@ -514,6 +542,9 @@ var DragHelper = new Class({
 	getText: function () { return this.textholder.get('text'); }
 });
 
+
+
+
 var Tab = new Class({
 	initialize: function(element){
 		this.tabhead = element;
@@ -545,7 +576,7 @@ var Tab = new Class({
     this.tabbody.hide();
     this.tabhead.removeClass('fg');
   },
-	respondTo: function (helper) {
+	respond: function (helper) {
 	  this.select();
 	},
 	receiveDrop: function (helper) {
