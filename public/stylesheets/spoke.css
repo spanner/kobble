@@ -436,7 +436,7 @@ div.mainlist li a.listed {
   padding: 10px 6px 6px 30px;
   font-size: 16px;
   line-height: 20px;
-  background-image: url(/images/furniture/spoke/grey/node.png);
+  background-image: url(/images/furniture/spoke/blue/node.png);
   background-position: 4px 8px;
   background-repeat: no-repeat;
 }
@@ -941,13 +941,13 @@ div.mainform label a {
 }
 
 div.mainform input.titular {
-  width: 90%;
+  width: 80%;
   height: 28px;
   font-family: Georgia, "Times New Roman", serif;
   font-size: 22px;
   font-weight: bold;
   line-height: 28px;
-  color: #695D54;
+  color: black;
 }
 
 div.mainform input.login {
@@ -955,7 +955,7 @@ div.mainform input.login {
   font-size: 18px;
   line-height: 18px;
   width: 340px;
-  color: #695D54;
+  color: black;
 }
 
 div.mainform input.friendly {
@@ -963,15 +963,21 @@ div.mainform input.friendly {
   font-size: 14px;
   line-height: 18px;
   width: 540px;
-  color: #695D54;
+  color: black;
 }
 
 div.mainform input.standard, div.mainform select.standard, div.mainform textarea.standard {
   font-family: Georgia, "Times New Roman", serif;
   font-size: 14px;
   line-height: 18px;
-  width: 90%;
-  color: #695D54;
+  width: 80%;
+  color: black;
+}
+
+div.mainform input.gobutton {
+  height: 28px;
+  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
+  font-size: 22px;
 }
 
 div.formbuttons {

@@ -25,6 +25,8 @@
 
   <%= render :partial => 'shared/pagination', :locals => {:list => @list} %>
 
+  <%= render :partial => 'searches/form' %>
+
 <% else %>
 	<p>There are no <%= @klass.nice_title.pluralize %> to display in this collection</p>
 <% end %>

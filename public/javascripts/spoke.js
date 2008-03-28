@@ -1,10 +1,10 @@
-﻿var interface = null;
+﻿var intf = null;
 
 window.addEvent('domready', function(){
-  interface = new Interface();
-  interface.activate();
-  // window.addEvent('scroll', function (e) { interface.moveFixed(e); });
-  // window.addEvent('resize', function (e) { interface.moveFixed(e); });
+  intf = new Interface();
+  intf.activate();
+  // window.addEvent('scroll', function (e) { intf.moveFixed(e); });
+  // window.addEvent('resize', function (e) { intf.moveFixed(e); });
 });
 
 var Interface = new Class({
@@ -22,6 +22,7 @@ var Interface = new Class({
     this.announcer = $E('div#notification');
     this.admin = $E('div#admin');
     this.fader = new Fx.Tween(this.announcer, 'opacity', {duration: 'long', link: 'chain'});
+    // this.activate();
 	},
 	setPrefFromCheckbox: function (element, event) {
     // this.setPref(element.id, element.getProperty('checked') ? true : false);
@@ -96,31 +97,31 @@ var Interface = new Class({
   // useful abstractions used when initialising page and also when making newly created objects active
   
   addTabs: function (elements) {  
-    var intf = this; elements.each(function (element) { intf.tabs.push(new Tab(element)); });
+    elements.each(function (element) { intf.tabs.push(new Tab(element)); });
   },
   addScratchTabs: function (elements) {
-    var intf = this; elements.each(function (element) { intf.tabs.push(new ScratchTab(element)); });
+    elements.each(function (element) { intf.tabs.push(new ScratchTab(element)); });
   },
   addDropzones: function (elements) {
-    var intf = this; elements.each(function (element) { intf.droppers.push(new Dropzone(element)); });
+    elements.each(function (element) { intf.droppers.push(new Dropzone(element)); });
   },
   addTrashDropzones: function (elements) {
-    var intf = this; elements.each(function (element) { intf.droppers.push(new TrashDropzone(element)); });
+    elements.each(function (element) { intf.droppers.push(new TrashDropzone(element)); });
   },
   makeDraggables: function (elements) {
-    var intf = this; 
+    
     elements.each(function (element) { 
       element.addEvent('mousedown', function(event) { new Draggee(element, event); }); 
     });
   },
   makeFixed: function (elements) {
-    var intf = this; elements.each(function (element) { intf.fixedbottom.push(element); });
+    elements.each(function (element) { intf.fixedbottom.push(element); });
   },
   // makeTippable: function (elements) {
   //   this.tips = new SpokeTips(elements);
   // },
   makeToggle: function (elements) {
-    var intf = this; elements.each(function (element) { intf.inlinelinks.push(new Toggle(element)); });
+    elements.each(function (element) { intf.inlinelinks.push(new Toggle(element)); });
   },
     
   // this is the main page initialisation routine: it gets called on domready
@@ -165,8 +166,8 @@ var Interface = new Class({
     });
     
     $$('input.spokepref').each( function (element) {
-      element.addEvent('click', function (e) { interface.setPrefFromCheckbox(element, e) });
-      if (interface.getPref(element.id)) element.setProperty('checked', true);
+      element.addEvent('click', function (e) { intf.setPrefFromCheckbox(element, e) });
+      if (intf.getPref(element.id)) element.setProperty('checked', true);
     })
   }
 });
@@ -175,7 +176,7 @@ var Interface = new Class({
 //   Extends: Tips,
 //   options: {
 //    initialize:function(){ this.fx = new Fx.Style(this.toolTip, 'opacity', {duration: 250, wait: false}).set(0); },
-//    onShow: function(toolTip) { if (!interface.dragging) this.fx.start(0.8); },
+//    onShow: function(toolTip) { if (!intf.dragging) this.fx.start(0.8); },
 //    onHide: function(toolTip) { this.fx.start(0); }
 //   },
 //  build: function(el){
@@ -245,7 +246,7 @@ var Dropzone = new Class({
   },
   
 	receiveDrop: function (helper) {
-	  interface.stopDragging();
+	  intf.stopDragging();
 		var dropzone = this;
 	  var message = helper.getText() + '?';
 		var draggee = helper.draggee;
@@ -256,12 +257,12 @@ var Dropzone = new Class({
 			
 		} else if (dropzone.contains(draggee)) {
 		  console.log(draggee);
-			interface.complain(draggee.name + ' is already there');
+			intf.complain(draggee.name + ' is already there');
 			helper.flyback();
 			
 		} else {
 			helper.remove();
-			if (!interface.getPref('confirmDrops') || confirm(message)) {
+			if (!intf.getPref('confirmDrops') || confirm(message)) {
 
   			var req = new Request.JSON( {
   			  url: this.addURL(draggee),
@@ -279,30 +280,30 @@ var Dropzone = new Class({
               dropzone.showSuccess();
               if (outcome.consequence == 'move' || outcome.consequence == 'insert') dropzone.accept(draggee);
               if (outcome.consequence == 'move' || outcome.consequence == 'delete') draggee.disappear();
-              interface.announce(outcome.message);
+              intf.announce(outcome.message);
             } else {
       		    dropzone.showFailure();
-              interface.complain(outcome.message);
+              intf.complain(outcome.message);
             }
           },
   			  onFailure: function (response) { 
   			    dropzone.notWaiting(); 
   			    draggee.notWaiting(); 
   			    dropzone.showFailure();
-  			    interface.complain('remote call failed');
+  			    intf.complain('remote call failed');
   			  }
   			}).send();
 			}
 		}
   },
 	removeDrop: function (helper) {
-	  interface.stopDragging();
+	  intf.stopDragging();
 		var dropzone = this;
     var draggee = helper.draggee;
 	  var message = helper.getText() + '?';
 		helper.remove();
 	  
-		if (!interface.getPref('confirmDrops') || confirm(message)) {
+		if (!intf.getPref('confirmDrops') || confirm(message)) {
   		new Request.JSON({
   		  url: dropzone.removeURL(draggee),
   			method: 'post',
@@ -310,16 +311,16 @@ var Dropzone = new Class({
   		  onSuccess: function (response) { 
           var outcome = new Outcome(response);
           if (outcome.status == 'success') {
-  		      interface.announce(outcome.message); 
+  		      intf.announce(outcome.message); 
             draggee.disappear(); 
   		    } else {
   			    dropzone.showFailure();
-            interface.complain(outcome.message);
+            intf.complain(outcome.message);
   		    }
   		  },
   		  onFailure: function (response) {
   		    dropzone.showFailure();
-  		    interface.complain('remote call failed');
+  		    intf.complain('remote call failed');
   		  }
   		}).request();
     }
@@ -353,7 +354,7 @@ var Dropzone = new Class({
 	  }
 	},
 	showSuccess: function () {
-	  interface.flash(this.flasher());
+	  intf.flash(this.flasher());
 	},
 	showFailure: function () {
 
@@ -361,7 +362,7 @@ var Dropzone = new Class({
 	accept: function (draggee) {
     if (this.zoneType() == 'list') {
       var element = draggee.clone().injectInside(this.container);
-      interface.activate(element);
+      intf.activate(element);
     }
 	}
 });
@@ -400,10 +401,10 @@ var Draggee = new Class({
 		this.tag = element.spokeType() + '_' + element.spokeID();   //omitting other id parts that only serve to avoid duplicate element ids
 		this.link = element.getElements('a')[0];
 		this.name = this.findTitle();
-		this.draggedfrom = interface.lookForDropper(element.getParent());
+		this.draggedfrom = intf.lookForDropper(element.getParent());
     this.dragholder = new Element('div', {class: 'dragholder'});
     this.link.duplicate().makeDraggable({ 
-			droppables: interface.startDragging(this),
+			droppables: intf.startDragging(this),
       onEnter: function(element, dropzone) { dropzone.respond(); },
       onLeave: function(element, dropzone) { dropzone.forget(); },
       onDrop: function(element, dropzone) {
@@ -448,10 +449,10 @@ var DragHelper = new Class({
 		this.setText(this.name);
 		this.original = this.draggee.original;
 		var dh = this;
-		interface.dh = this;
+		intf.dh = this;
 
 		this.dragmove = this.container.makeDraggable({ 
-			droppables: interface.startDragging(this),
+			droppables: intf.startDragging(this),
       onEnter: function(container, dropzone) { dropzone.respond(); },
       onLeave: function(container, dropzone) { dropzone.forget(); },
       onDrop: function(container, dropzone) {
@@ -477,8 +478,8 @@ var DragHelper = new Class({
 		this.dragmove.start(event);
 	},
 	emptydrop: function () {
-		interface.stopDragging();
-		if (this.moved < interface.clickthreshold) {
+		intf.stopDragging();
+		if (this.moved < intf.clickthreshold) {
 		  this.draggee.doClick();
 		  this.remove();
     } else if (this.draggee.draggedfrom) {
@@ -526,7 +527,7 @@ var Tab = new Class({
  		this.tabhead.onclick = this.select.bind(this);
 	},
 	addToSet: function () {
-    this.tabset = interface.tabsets[this.settag] || new TabSet(this.settag);
+    this.tabset = intf.tabsets[this.settag] || new TabSet(this.settag);
     this.tabset.addTab(this);
 	},
 	select: function (e) {
@@ -560,7 +561,7 @@ var TabSet = new Class({
     this.headcontainer = $E('#headbox_' + this.tag);
 	  this.container = $E('#box_' + this.tag);
     this.foreground = null;
-	  interface.tabsets[this.tag] = this;
+	  intf.tabsets[this.tag] = this;
 	},
 	addTab: function (tab) {
     this.tabs.push(tab);
@@ -627,7 +628,7 @@ var ScratchTab = new Class({
 	  this.tabset.close(); 
 	},
 	addToSet: function () {
-    this.tabset = interface.tabsets[this.settag] || new ScratchSet(this.settag);
+    this.tabset = intf.tabsets[this.settag] || new ScratchSet(this.settag);
     this.tabset.addTab(this);
 	},
 	reselect: function (tag) {
@@ -651,7 +652,7 @@ var ScratchTab = new Class({
   		    stab.tabset.removeTab(stab);
   		  },
   		  onFailure: function () { 
-  		    interface.complain('no way'); 
+  		    intf.complain('no way'); 
   		  }
   		}).request();
     } else {
@@ -680,7 +681,7 @@ var ScratchTab = new Class({
   		  onSuccess: function () { stab.bindForm() },
   		  onFailure: function () { 
   		    stab.hideFormNicely(); 
-  		    interface.complain('no way'); 
+  		    intf.complain('no way'); 
   		  }
   		}).request();
     }
@@ -779,7 +780,7 @@ var ScratchSet = new Class({
     		newhead.injectInside(tabs.headcontainer);
         newbody.injectInside(tabs.container);
         var newtab = new ScratchTab(newhead);
-        interface.activate(newbody);
+        intf.activate(newbody);
         tabs.select(newtab.tag);
         newtab.showForm('/scratchpads/edit/' + tabid);
         bodyholder.remove();

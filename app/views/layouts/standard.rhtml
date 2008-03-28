@@ -4,10 +4,8 @@
 <html>
 <head>
   <title>materiali.st<% if @title %> - <%= @title %><% end%></title>
-  <%= javascript_include_tag 'mootools' %>
-  <%= javascript_include_tag 'extensions' %>
-  <%= javascript_include_tag 'spoke' %>
-  <%= stylesheet_link_tag 'spoke' %>
+  <%= javascript_include_tag 'mootools', 'extensions', 'spoke', :cache => "cache/materialist" %>
+  <%= stylesheet_link_tag 'spoke', :cache => "cache/materialist" %>
 </head>
 <body>
 
@@ -32,7 +30,7 @@
       <% [Source, Node, Bundle, Person, Tag].each do |klass| %>
         <%= link_to klass.nice_title.pluralize, {:controller => klass.to_s.underscore.pluralize}, {:class => (request.parameters[:controller] == klass.to_s.underscore.pluralize ? "fg" : '')} %>
       <% end %>
-      <%= link_to 'search', search_url, {:class => request.parameters[:controller] == 'search' ? " fg" : ''} %>
+      <%= link_to 'search', search_url, {:class => request.parameters[:controller] == 'searches' ? " fg" : ''} %>
       <%= link_to 'discussion', {:controller => 'topics', :action => 'index'}, {:class => request.parameters[:controller] == 'topics' ? " fg" : ''} %>
       <%#= link_to 'preferences', {:controller => 'login', :action => 'preferences'} %>
       <%= link_to 'log out', {:controller => 'login', :action => 'logout'}, {:class => 'admin'} %>

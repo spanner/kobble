@@ -1,15 +1,20 @@
 <% 
   search_path ||= list_search_path
+  among ||= nil
 %>
 
 <div class="mainform">
   <% form_tag search_path, :method => :get do %>
-    <label for="q">search for:</label><br />
-    <%= text_field_tag :q, params[:q], :class => 'friendly' %>
-    <%= submit_tag 'search', :name => nil, :class => 'gobutton' %><br />
-    <% Spoke::Config.indexed_models.each do |klass| %>
-      <%= check_box_tag 'among[]', klass.to_s, !params[:among] || params[:among].empty? || params[:among].include?(klass.to_s) %>
-      <label for="among_<%= klass.to_s %>"><%= klass.nice_title.pluralize %></label> 
-    <% end %> 
+    <label for="q">search <%= "#{@klass.nice_title.pluralize}" if @klass %> for:</label><br />
+    <%= text_field_tag :q, params[:q], :class => 'titular' %>
+    <%= submit_tag 'go', :name => nil, :class => 'gobutton' %><br />
+    <% if @klass %>
+      <%= hidden_field_tag 'among[]', @klass.to_s %>
+    <% else %>
+      <% Spoke::Config.indexed_models.each do |klass| %>
+        <%= check_box_tag 'among[]', klass.to_s, !params[:among] || params[:among].empty? || params[:among].include?(klass.to_s) %>
+        <label for="among_<%= klass.to_s %>"><%= klass.nice_title.pluralize %></label> 
+      <% end %>     
+    <% end %>
   <% end %>
 </div>
