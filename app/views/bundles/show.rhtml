@@ -2,11 +2,13 @@
   @title = @bundle.name || 'nameless set'
 %>
 
-<% if @bundle.has_description? %>
-	  <%= @bundle.description.formatted %>
-<% else %>
-  <p>No summary given</p>
-<% end %>
+<div class="preamble">
+  <% if @bundle.has_description? %>
+  	  <%= @bundle.description.formatted %>
+  <% else %>
+    <p>No summary given</p>
+  <% end %>
+</div>
 
 <div class="boxtabs">
   <a href="#" id="tab_content_members" class="tab">set members</a>

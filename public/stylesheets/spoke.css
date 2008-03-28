@@ -354,20 +354,20 @@ div.scratchpage li.user { list-style-image: url(/images/furniture/spoke/mid/user
 div.scratchpage li.person { list-style-image: url(/images/furniture/spoke/mid/user.png); }
 div.scratchpage li.tag { list-style-image: url(/images/furniture/spoke/mid/tag.png); }
 div.scratchpage li.flag { list-style-image: url(/images/furniture/spoke/mid/flag.png); }
-div.scratchpage li.forum { list-style-image: url(/images/furniture/spoke/mid/forum.png); }
 div.scratchpage li.topic { list-style-image: url(/images/furniture/spoke/mid/post.png); }
 div.scratchpage li.post { list-style-image: url(/images/furniture/spoke/mid/post.png); }
-div.scratchpage li.blogentry { list-style-image: url(/images/furniture/spoke/mid/blogentry.png); }
-div.scratchpage li.question { list-style-image: url(/images/furniture/spoke/mid/question.png); }
-div.scratchpage li.answer { list-style-image: url(/images/furniture/spoke/mid/answer.png); }
+div.scratchpage li.occasion { list-style-image: url(/images/furniture/signals/wait_16_white.gif); }
 div.scratchpage li.waiting { list-style-image: url(/images/furniture/signals/wait_16_white.gif); }
 
 div.scratchpage .drophere {
 	background-color: #d1005d;
 }
 
-
 /* main content list */
+
+div.preamble {
+  max-width: 640px;
+}
 
 div.mainlist {
   clear: both;
@@ -388,7 +388,7 @@ div.mainlist ul {
 
 div.mainlist li {
   margin: 0;
-  list-style-image: url(/images/furniture/spoke/blue/what.png);
+  list-style-image: url(/images/furniture/spoke/blue/default.png);
   margin: 0 10px 4px 0;
   font-size: 16px;
   line-height: 20px;

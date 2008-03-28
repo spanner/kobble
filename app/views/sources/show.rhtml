@@ -4,11 +4,13 @@
 
 <%= render :partial => 'shared/show_clip', :locals => {:item => @source} %>
 
-<% if @source.has_description? %>
-	  <%= @source.description.formatted %>
-<% else %>
-  <p>No summary given</p>
-<% end %>
+<div class="preamble">
+  <% if @source.has_description? %>
+  	  <%= @source.description.formatted %>
+  <% else %>
+    <p>No summary given</p>
+  <% end %>
+</div>
 
 <div class="boxtabs">
   <% if @source.has_file? %><a href="#" id="tab_content_file" class="tab">download file</a><% end %>
