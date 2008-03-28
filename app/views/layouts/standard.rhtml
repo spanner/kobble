@@ -4,10 +4,10 @@
 <html>
 <head>
   <title>materiali.st<% if @title %> - <%= @title %><% end%></title>
-  <script type="text/javascript" src="/js/mootools.js"></script>
-  <script type="text/javascript" src="/js/extensions.js"></script>
-  <script type="text/javascript" src="/js/spoke.js"></script>
-  <link rel="stylesheet" href="/stylesheets/spoke.css" type="text/css" />
+  <%= javascript_include_tag 'mootools' %>
+  <%= javascript_include_tag 'extensions' %>
+  <%= javascript_include_tag 'spoke' %>
+  <%= stylesheet_link_tag 'spoke' %>
 </head>
 <body>
 

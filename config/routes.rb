@@ -26,11 +26,6 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :monitorships, :member => { :toggle => :any }
   map.resources :accounts
   
-  map.resource :search
-  
-#  map.connect ':controller/:action/:id'
-
-#  map.search '/search/list/:q', :controller => 'search', :action => 'list'
-#  map.searchgallery '/search/gallery/:q', :controller => 'search', :action => 'gallery'
+  map.resource :search, :member => { :list => :any, :gallery => :any }
   
 end

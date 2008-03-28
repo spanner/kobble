@@ -1,44 +1,28 @@
-<% @title = "search" %>
+<% @title = "search for '#{params[:q]}'" %>
 
-<% if params[:q] && params[:q].length > 0 %>
+<% if @search && @search.total_entries > 0 %>
 
-  <% @title += " for '#{params[:q]}'" %>
+  <div class="pagination">
+    found: <span class="current"><%= pluralize @search.total_entries, 'item' %></span><br />
+    show as:
+    <%= link_to_unless_current 'list', :action => 'list', :page => params[:page], :q => params[:q], :among => params[:among] %> &middot;
+    <%= link_to_unless_current 'gallery', :action => 'gallery', :page => params[:page], :q => params[:q], :among => params[:among] %><br />
+    <%= will_paginate @search, :prev_label => 'previous', :next_label => 'next', :separator => ' &middot; ', :container => false %>
+  </div>
 
-  <% if @search && @search.total_entries > 0 %>
+  <div class="gallery">
+    <ul>
+      <%= render :partial => 'shared/galleried', :collection => @search.results, :locals => {:catch => true} %>
+    </ul>
+  	<p class="clear">&nbsp;</p>
+  </div>
 
-    <div class="pagination">
-      found: <span class="current"><%= pluralize @search.total_entries, 'item' %></span><br />
-      show as:
-      <%= link_to_unless_current 'list', :action => 'list', :page => params[:page], :q => params[:q], :among => params[:among] %> &middot;
-      <%= link_to_unless_current 'gallery', :action => 'gallery', :page => params[:page], :q => params[:q], :among => params[:among] %><br />
-      <%= will_paginate @search, :prev_label => 'previous', :next_label => 'next', :separator => ' &middot; ', :container => false %>
-    </div>
-  
-    <div class="gallery">
-      <ul>
-        <%= render :partial => 'shared/galleried', :collection => @search.results, :locals => {:catch => true} %>
-      </ul>
-    	<p class="clear">&nbsp;</p>
-    </div>
-  
-  <% else %>
+<% else %>
 
-    <p>
-      Sorry: we found no items of any kind matching <strong><%= params[:q] %></strong>.
-    </p>
+  <p>
+    Sorry: we found no items of any kind matching <strong><%= params[:q] %></strong>.
+  </p>
 
-  <% end %>
 <% end %>
 
-<% form_tag "/search/list", :method => 'get' do -%>
-  <div class="mainform">
-    <p>
-      <label for="q">search for:</label><br />
-      <%= text_field_tag 'q', params[:q], :class => 'friendly' %>
-      <%= submit_tag 'search', :class => 'gobutton' %><br />
-      <% [Source, Node, Bundle].each do |klass| %>
-        <%= check_box_tag 'among[]', klass.to_s, params[:among].include?(klass.to_s) %>
-        <label for="among_<%= klass.to_s %>"><%= klass.nice_title.pluralize %></label> 
-      <% end %> 
-    </p>  
-<% end %>
+<%= render :partial => 'form', :locals => {:search_url => gallery_search_path} %>
