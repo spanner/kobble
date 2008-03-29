@@ -56,14 +56,13 @@
   },
   dwindle: function () {
     var element = this;
-    new Fx.Styles(element, {
-  		duration:600
+    new Fx.Morph(element, {
+  		duration: 600,
+  		onComplete: function () { element.remove(); }
   	}).start({ 
-  	  'opacity': 0, 
-  	  'width': 0, 
-  	  'height': 0 
-  	}).chain(function () {
-      element.remove();
+  	  'opacity': 0,
+  	  'width': 0,
+  	  'height': 0
   	});
   },
   explode: function () {

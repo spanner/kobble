@@ -153,7 +153,13 @@ class ApplicationController < ActionController::Base
     @consequence ||= 'delete';
     respond_to do |format|
       format.html { redirect_to :controller => params[:controller], :action => 'list' }
-      format.json { render :json => @trashed.to_json }
+      format.json { 
+        render :json => response = {
+          :outcome => @outcome,
+          :message => @message,
+          :consequence => @consequence,
+        }.to_json 
+      }
       format.xml { head 200 }
     end
   rescue => e
@@ -162,7 +168,12 @@ class ApplicationController < ActionController::Base
     flash[:error] = e.message
     respond_to do |format|
       format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @trashed }
-      format.json { render :json => @trashed.to_json }
+      format.json { 
+        render :json => response = {
+          :outcome => @outcome,
+          :message => @message,
+        }.to_json 
+      }
       format.xml { head 200 }
     end
   end
@@ -175,7 +186,13 @@ class ApplicationController < ActionController::Base
     @consequence ||= 'delete';
     respond_to do |format|
       format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @dropper }
-      format.json { render :json => @dropper.to_json }
+      format.json { 
+        render :json => response = {
+          :outcome => @outcome,
+          :message => @message,
+          :consequence => @consequence,
+        }.to_json 
+      }
       format.xml { head 200 }
     end
   rescue => e
@@ -184,7 +201,12 @@ class ApplicationController < ActionController::Base
     flash[:error] = e.message
     respond_to do |format|
       format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @catcher }
-      format.json { render :json => @dropper.to_json }
+      format.json { 
+        render :json => response = {
+          :outcome => @outcome,
+          :message => @message,
+        }.to_json 
+      }
       format.xml { head 200 }
     end
   end

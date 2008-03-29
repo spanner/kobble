@@ -263,7 +263,7 @@ var Dropzone = new Class({
       },
       mouseleave: function() {
         console.log('leaving the area');
-        helper.droppable(dropzone);
+        // helper.droppable(dropzone);
         dropzone.container.addClass('bereft');
       }
     });
@@ -344,23 +344,23 @@ var Dropzone = new Class({
 		helper.remove();
 	  
 		if (!intf.getPref('confirmDrops') || confirm(message)) {
-  		new Request.JSON({
-  		  url: dropzone.removeURL(draggee),
-  			method: 'post',
+		  
+  		var req = new Request.JSON( {
+  		  url: this.removeURL(draggee),
+  			method: 'delete',
   		  onRequest: function () { draggee.waiting(); },
   		  onSuccess: function (response) { 
-          var outcome = new Outcome(response);
-          if (outcome.status == 'success') {
-  		      intf.announce(outcome.message); 
-            draggee.disappear(); 
+          if (response.outcome == 'success') {
+  		      intf.announce(response.message); 
+            draggee.disappear();
   		    } else {
-            intf.complain(outcome.message);
+            intf.complain(response.message);
   		    }
   		  },
   		  onFailure: function (response) {
   		    intf.complain('remote call failed');
   		  }
-  		}).request();
+  		}).send();
     }
 	},
 	addURL: function (draggee) { 
@@ -442,7 +442,7 @@ var Draggee = new Class({
 	  console.log('click!');
 	  this.link.fireEvent('click');
 	},
-	waiting: function () { this.original.addClass('waiting'); },
+	waiting: function () { this.original.addClass('waiting'); console.log(this.original) },
 	notWaiting: function () { this.original.removeClass('waiting'); },
 	remove: function () { this.original.remove(); },
 	explode: function () { this.original.explode(); },
@@ -486,7 +486,7 @@ var DragHelper = new Class({
 	  this.clickedat = event.client;
 	  var dh = this;
 	  this.container.addEvent('emptydrop', function() { dh.emptydrop(); }) 		
-	  if (this.draggee.draggedfrom) this.draggee.draggedfrom.makeRegretful(helper);
+	  if (this.draggee.draggedfrom) this.draggee.draggedfrom.makeRegretful(this);
 		this.moveto(event.page);
 		this.show();
 		this.dragmove.start(event);
@@ -503,12 +503,8 @@ var DragHelper = new Class({
 		}
 	},
 	draggedOut: function () {
-    if (this.draggee.draggedfrom) {
-      this.draggee.draggedfrom.removeDrop(this);
-  	  this.explode();
-    } else {
-      this.remove();
-    }
+	  this.remove();
+    if (this.draggee.draggedfrom) this.draggee.draggedfrom.removeDrop(this);
 	},
 	flyback: function () {
     this.flybackfx.start( this.flybackto );
@@ -523,7 +519,7 @@ var DragHelper = new Class({
   },
   show: function () { this.container.fade(0.8); },
   hide: function () { this.container.fade('out'); },
-	remove: function () { this.container.remove(); },
+	remove: function () { this.container.fade('out'); },
 	explode: function () { this.remove(); },  // something more explosive should happen here
 	disappear: function () { this.original.dwindle(); },
 	setText: function (text) { this.textholder.set('text', text); },
