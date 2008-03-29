@@ -406,13 +406,13 @@ var TrashDropzone = new Class({
 	},
 	showInterest: function (helper) { 
 		var dropzone = this;
-	  var state = helper.getState();
+    // var state = helper.getState();
 	  var text = helper.getText();
 	  dropzone.container.addClass('drophere');
 	  dropzone.container.addEvents({
 	    'leave': function() { 
 			  dropzone.loseInterest();
-			  helper.setState(state, text);
+        // helper.setState(state, text);
 			}
 	  });
 	  helper.deleteable(dropzone);
@@ -432,16 +432,16 @@ var Draggee = new Class({
 		this.tag = element.spokeType() + '_' + element.spokeID();   //omitting other id parts that only serve to avoid duplicate element ids
 		this.link = element.getElements('a')[0];
 		this.name = this.findTitle();
-		
-		console.log('got a dragger: ' + this.name);
-		
     this.draggedfrom = intf.lookForDropper(element.getParent());
     this.helper = new DragHelper(this);
     this.helper.start(event);
 	},
   spokeID: function () { return this.original.spokeID(); },
   spokeType: function () { return this.original.spokeType(); },
-	doClick: function (e) { window.location = this.link.href; },  // this.link.fireEvent('click')?
+	doClick: function (e) { 
+	  console.log('click!');
+	  this.link.fireEvent('click');
+	},
 	waiting: function () { this.original.addClass('waiting'); },
 	notWaiting: function () { this.original.removeClass('waiting'); },
 	remove: function () { this.original.remove(); },
@@ -459,32 +459,41 @@ var Draggee = new Class({
 var DragHelper = new Class({
 	initialize: function(draggee){
 	  this.draggee = draggee;
+		this.original = this.draggee.original;
 		this.container = new Element('div', { 'class': 'drag-tip' }).injectInside(document.body);
 		this.textholder = new Element('div', { 'class': 'drag-title' }).injectInside(this.container);
 		this.footer = new Element('div', { 'class': 'drag-text' }).injectInside(this.container);
 		this.container.dragHelper = this;
 		this.name = this.draggee.name;
-		this.startingfrom = null;
 		this.setText(this.name);
-		this.original = this.draggee.original;
+		this.clickedat = null;
+		this.offsetY = this.container.getCoordinates().height + 12;
+	  this.offsetX = Math.floor(this.container.getCoordinates().width / 2);
+		var droppables = intf.startDragging(this);
 		var dh = this;
-		intf.dh = this;
-
-		this.dragmove = this.container.makeDraggable({ 
-			droppables: intf.startDragging(dh)
+    this.dragmove = this.container.makeDraggable({ droppables: droppables });
+		this.flybackto = this.original.getCoordinates();
+		this.flybackto['opacity'] = 0.4;
+		this.flybackfx = new Fx.Morph(this.container, {
+		  duration: 'long', 
+		  transition: 'bounce:out',
+		  onComplete: function () { dh.remove(); }
 		});
 	},
 	start: function (event) {
 	  event.stop();
 	  event.preventDefault();
-	  this.startingfrom = this.container.getPosition();
+	  this.clickedat = event.client;
+	  var dh = this;
+	  this.container.addEvent('emptydrop', function() { dh.emptydrop(); }) 		
+	  if (this.draggee.draggedfrom) this.draggee.draggedfrom.makeRegretful(helper);
 		this.moveto(event.page);
 		this.show();
 		this.dragmove.start(event);
 	},
 	emptydrop: function () {
 		intf.stopDragging();
-		if (this.moved < intf.clickthreshold) {
+		if (!this.hasMoved()) {
 		  this.draggee.doClick();
 		  this.remove();
     } else if (this.draggee.draggedfrom) {
@@ -502,15 +511,16 @@ var DragHelper = new Class({
     }
 	},
 	flyback: function () {
-	  helper = this;
-    new Fx.Morph(this.container, {duration: 'long', transition: Fx.Transitions.Back.easeOut}).start( this.startingfrom );
+    this.flybackfx.start( this.flybackto );
+
 	},
 	moveto: function (here) {
-	  var offsetY = this.container.getCoordinates().height + 12;
-	  var offsetX = Math.floor(this.container.getCoordinates().width / 2);
-    this.container.setStyle('top', here.y - offsetY);
-    this.container.setStyle('left', here.x - offsetX);
+    this.container.setStyles({top: here.y - this.offsetY, left: here.x - this.offsetX});
 	},
+  hasMoved: function () {
+    var now = this.container.getPosition();
+    return Math.abs(this.clickedat.x - now.x) + Math.abs(this.clickedat.y - now.y) >= intf.clickthreshold;
+  },
   show: function () { this.container.fade(0.8); },
   hide: function () { this.container.fade('out'); },
 	remove: function () { this.container.remove(); },
