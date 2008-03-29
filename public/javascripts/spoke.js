@@ -319,9 +319,18 @@ var Dropzone = new Class({
             console.log('outcome = ' + response.outcome + ', message = ' + response.message + ', consequence = ' + response.consequence);
             if (response.outcome == 'success') {
               dropzone.notWaiting();
-              draggee.notWaiting(); 
-              if (response.consequence == 'move' || response.consequence == 'insert') dropzone.accept(draggee);
-              if (response.consequence == 'move' || response.consequence == 'delete') draggee.disappear();
+              draggee.notWaiting();
+              switch (response.consequence) {
+              case "move": 
+                dropzone.accept(draggee);
+                draggee.disappear();
+                break; 
+              case "delete":
+                draggee.disappear();
+                break;
+              default:
+                dropzone.accept(draggee)
+              }
               intf.announce(response.message);
             } else {
               intf.complain(response.message);
@@ -369,23 +378,21 @@ var Dropzone = new Class({
 	removeURL: function (draggee) { 
 		return '/' + this.spokeType() + 's/' + this.removeAction + '/' + this.spokeID() + '/' + draggee.spokeType() + '/' + draggee.spokeID(); 
 	},
-	waiter: function () {
-    if (this.waitSignal) return this.waitSignal;
-    this.waitSignal = new Element('li', { 'class': 'waiting' }).setText('working...').injectInside(this.container);
-	  console.log(this.waitSignal);
-    return this.waitSignal;
-	},
 	waiting: function () {
 	  if (this.zoneType() == 'list') {
-  	  this.waiter().show();
+      this.waitSignal = new Element('li', { id: 'waiter', class: 'draggable waiting' }).grab(new Element('a', { id: 'dummy', class: 'listed', href: '#'}).setText('working...'));
+      this.waitSignal.injectInside(this.container)
+      return this.waitSignal;
 	  } else {
-	    console.log('waiting ' + this.tag);
 	    this.container.addClass('waiting');
 	  }
 	},
 	notWaiting: function () { 
 	  if (this.zoneType() == 'list') {
-      this.waiter().hide();
+      if (this.waitSignal) {
+        this.waitSignal.remove();
+        this.waitSignal = null;
+      } 
 	  } else {
 	    this.container.removeClass('waiting');
 	  }
@@ -488,8 +495,8 @@ var DragHelper = new Class({
 	  this.container.addEvent('emptydrop', function() { dh.emptydrop(); }) 		
 	  if (this.draggee.draggedfrom) this.draggee.draggedfrom.makeRegretful(this);
 		this.moveto(event.page);
-		this.show();
 		this.dragmove.start(event);
+		this.show();
 	},
 	emptydrop: function () {
 		intf.stopDragging();
