@@ -9,28 +9,19 @@
   <% current_account.collections.each do |c| %>
 
     <h3> 
-      <% activation = current_user.activation_of(c) %>
-      <% if activation %>
-        <%= link_to c.name, {
-      		:controller => 'activations', 
-      		:action => 'deactivate',
-      		:id => activation,
-      		:user_id => current_user
-      	}, {
-      		:class => 'toggle ticked',
-      		:title => 'click to deactivate',
-      	} %>
-    	<% else %>
-        <%= link_to c.name, {
-      		:controller => 'activations', 
-      		:action => 'activate',
-      		:collection_id => c,
-      		:user_id => current_user,
-      	}, {
-      		:class => 'toggle crossed',
-      		:title => 'click to activate',
-      	} %>
-    	<% end %>
+      <% 
+        activation = current_user.activation_of(c) 
+        linkclass =  activation.active ? 'ticked' : 'crossed'
+        linktitle =  activation.active ? 'click to deactivate' : 'click to activate'
+      %>
+      <%= link_to c.name, {
+    		:controller => 'activations', 
+    		:action => 'toggle',
+    		:id => activation,
+    	}, {
+    		:class => "toggle #{linkclass}",
+    		:title => linktitle
+    	} %>
     </h3>
 
   <% end %>

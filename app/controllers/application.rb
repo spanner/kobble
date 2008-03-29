@@ -117,7 +117,7 @@ class ApplicationController < ActionController::Base
     respond_to do |format|
       format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @catcher }
       format.json { 
-        render :json => response = {
+        render :json => {
           :outcome => @outcome,
           :message => @message,
           :consequence => @consequence,
@@ -132,7 +132,7 @@ class ApplicationController < ActionController::Base
     respond_to do |format|
       format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @catcher }
       format.json { 
-        render :json => response = {
+        render :json => {
           :outcome => @outcome,
           :message => @message,
         }.to_json 
@@ -169,7 +169,7 @@ class ApplicationController < ActionController::Base
     respond_to do |format|
       format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @trashed }
       format.json { 
-        render :json => response = {
+        render :json => {
           :outcome => @outcome,
           :message => @message,
         }.to_json 
@@ -187,7 +187,7 @@ class ApplicationController < ActionController::Base
     respond_to do |format|
       format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @dropper }
       format.json { 
-        render :json => response = {
+        render :json => {
           :outcome => @outcome,
           :message => @message,
           :consequence => @consequence,
@@ -202,7 +202,7 @@ class ApplicationController < ActionController::Base
     respond_to do |format|
       format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @catcher }
       format.json { 
-        render :json => response = {
+        render :json => {
           :outcome => @outcome,
           :message => @message,
         }.to_json 

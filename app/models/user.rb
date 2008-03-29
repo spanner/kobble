@@ -188,7 +188,7 @@ class User < ActiveRecord::Base
     end
     
     def activation_of (collection)
-      self.activations.select { |a| a.collection == collection && a.is_active? }.first
+      Activation.find_or_initialize_by_user_id_and_collection_id(self, collection)
     end
     
   protected

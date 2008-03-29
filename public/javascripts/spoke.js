@@ -449,7 +449,7 @@ var Draggee = new Class({
 	  console.log('click!');
 	  this.link.fireEvent('click');
 	},
-	waiting: function () { this.original.addClass('waiting'); console.log(this.original) },
+	waiting: function () { this.original.addClass('waiting'); },
 	notWaiting: function () { this.original.removeClass('waiting'); },
 	remove: function () { this.original.remove(); },
 	explode: function () { this.original.explode(); },
@@ -818,7 +818,6 @@ var AutoLink = new Class({
   initialize: function (a) {
     this.link = a;
     this.link.onclick = this.send.bind(this);
-    this.catcher = new Element('div', {'style': 'display: none;'}).injectAfter(a).hide();
   },
   method: function () {
     return 'GET';
@@ -828,42 +827,45 @@ var AutoLink = new Class({
     e.preventDefault();
     this.link.blur();
     al = this;
-		new Request.HTML({
+		new Request.JSON({
 		  url: al.link.getProperty('href'),
-			method: al.method(),
-			update: al.catcher,
+			method: this.method(),
 		  onRequest: function () {al.waiting();},
-		  onComplete: function () {al.finished();},
-		  onFailure: function () {al.failed();}
-		}).request();
+		  onComplete: function (response) {al.finished(response);},
+		  onFailure: function (response) {al.failed(response);}
+		}).send();
   },
   waiting: function () { this.link.addClass('waiting'); },
   notWaiting: function () { this.link.removeClass('waiting'); },
-  finished: function () {
-    this.link.remove();
-    this.catcher.show();
-    $$('a.autolink', this.catcher).each( function (a) { new AutoLink(a); });
-  },
-  failed: function () {
+  finished: function (response) {
     this.notWaiting();
-    this.catcher.remove();
-    this.link.show();
+    //...
+  },
+  failed: function (response) {
+    this.notWaiting();
+    //...
   }
 });
 
 var Toggle = new Class({
   Extends: AutoLink,
-  method: function () {
-    return this.ticked() ? 'DELETE' : 'POST';
-  },
-  finished: function () {
+  // method: function () {
+  //   return this.ticked() ? 'DELETE' : 'POST';
+  // },
+  finished: function (response) {
     this.notWaiting();
-    if (this.link.hasClass('ticked')) {
+    if (response.outcome == 'failure') {
+      intf.complain(response.message);
+      
+    } else if (response.outcome == 'active') {
+      this.link.addClass('ticked');
+      this.link.removeClass('crossed');
+      intf.announce(response.message);
+      
+    } else {
       this.link.removeClass('ticked');
       this.link.addClass('crossed');
-    } else {
-      this.link.removeClass('crossed');
-      this.link.addClass('ticked');
+      intf.announce(response.message);
     }
   },
   ticked: function () {
