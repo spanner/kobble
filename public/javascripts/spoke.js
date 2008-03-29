@@ -371,14 +371,13 @@ var Dropzone = new Class({
 	},
 	waiter: function () {
     if (this.waitSignal) return this.waitSignal;
-    if (this.zoneType() != 'list') return null;
-    this.waitSignal = new Element('li', { 'class': 'waiting hide' }).injectInside(this.container);
-    new Element('a', {'class': 'listed'}).setText('hold on').injectInside(this.waitSignal);
+    this.waitSignal = new Element('li', { 'class': 'waiting' }).setText('working...').injectInside(this.container);
+	  console.log(this.waitSignal);
     return this.waitSignal;
 	},
 	waiting: function () {
 	  if (this.zoneType() == 'list') {
-  	  if (this.waiter()) this.waiter().show();
+  	  this.waiter().show();
 	  } else {
 	    console.log('waiting ' + this.tag);
 	    this.container.addClass('waiting');
@@ -386,7 +385,7 @@ var Dropzone = new Class({
 	},
 	notWaiting: function () { 
 	  if (this.zoneType() == 'list') {
-      if (this.waiter()) this.waiter().hide();
+      this.waiter().hide();
 	  } else {
 	    this.container.removeClass('waiting');
 	  }

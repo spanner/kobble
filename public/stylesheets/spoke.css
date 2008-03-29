@@ -356,7 +356,6 @@ div.scratchpage li.tag { list-style-image: url(/images/furniture/spoke/mid/tag.p
 div.scratchpage li.flag { list-style-image: url(/images/furniture/spoke/mid/flag.png); }
 div.scratchpage li.topic { list-style-image: url(/images/furniture/spoke/mid/post.png); }
 div.scratchpage li.post { list-style-image: url(/images/furniture/spoke/mid/post.png); }
-div.scratchpage li.occasion { list-style-image: url(/images/furniture/signals/wait_16_white.gif); }
 div.scratchpage li.waiting { list-style-image: url(/images/furniture/signals/wait_16_white.gif); }
 
 div.scratchpage .drophere {
@@ -448,11 +447,14 @@ li.drophere a {
 /* hidden divs that provide tooltip content */
 
 div.mainlist .tiptext, div.mainlist .tiptitle {
-  display: none;
-/*  margin: 0 3px 0 32px;*/
   font-family: HelveticaNeue-Roman, helvetica, arial, sans-serif;
-	font-size: 11px;
+	font-size: 70%;
+	line-height: 1.2;
 	color: #B2AAA4;
+}
+
+div.mainlist .tiptitle {
+  display: none;
 }
 
 /* tabbed pages */
