@@ -197,15 +197,6 @@ var Interface = new Class({
 //  }
 // });
 
-var Outcome = new Class({
-	initialize: function(response){
-    var parts = response.split('|');
-    this.status = parts[0];
-    this.message = parts[1];
-    this.consequence = parts[2];
-	}
-})
-
 var Dropzone = new Class({
 	initialize: function (element) {
     // console.log('new dropzone: ' + element.id);
@@ -325,24 +316,20 @@ var Dropzone = new Class({
   			    draggee.waiting(); 
   			  },
           onSuccess: function(response){
-            var outcome = new Outcome(response);
-            console.log('status = ' + outcome.status + ', message = ' + outcome.message + ', consequence = ' + outcome.consequence);
-            if (outcome.status == 'success') {
+            console.log('outcome = ' + response.outcome + ', message = ' + response.message + ', consequence = ' + response.consequence);
+            if (response.outcome == 'success') {
               dropzone.notWaiting();
-    			    draggee.notWaiting(); 
-              dropzone.showSuccess();
-              if (outcome.consequence == 'move' || outcome.consequence == 'insert') dropzone.accept(draggee);
-              if (outcome.consequence == 'move' || outcome.consequence == 'delete') draggee.disappear();
-              intf.announce(outcome.message);
+              draggee.notWaiting(); 
+              if (response.consequence == 'move' || response.consequence == 'insert') dropzone.accept(draggee);
+              if (response.consequence == 'move' || response.consequence == 'delete') draggee.disappear();
+              intf.announce(response.message);
             } else {
-      		    dropzone.showFailure();
-              intf.complain(outcome.message);
+              intf.complain(response.message);
             }
           },
   			  onFailure: function (response) { 
   			    dropzone.notWaiting(); 
   			    draggee.notWaiting(); 
-  			    dropzone.showFailure();
   			    intf.complain('remote call failed');
   			  }
   			}).send();
@@ -367,12 +354,10 @@ var Dropzone = new Class({
   		      intf.announce(outcome.message); 
             draggee.disappear(); 
   		    } else {
-  			    dropzone.showFailure();
             intf.complain(outcome.message);
   		    }
   		  },
   		  onFailure: function (response) {
-  		    dropzone.showFailure();
   		    intf.complain('remote call failed');
   		  }
   		}).request();
@@ -406,16 +391,10 @@ var Dropzone = new Class({
 	    this.container.removeClass('waiting');
 	  }
 	},
-	showSuccess: function () {
-	  intf.flash(this.flasher());
-	},
-	showFailure: function () {
-
-	},
 	accept: function (draggee) {
     if (this.zoneType() == 'list') {
       var element = draggee.clone().injectInside(this.container);
-      intf.activate(element);
+      // intf.activate(element);
     }
 	}
 });

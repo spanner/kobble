@@ -110,12 +110,19 @@ class ApplicationController < ActionController::Base
   def catch
     @catcher = request.parameters[:controller].to_s._as_class.find( params[:id] )
     @caught = params[:caughtClass].to_s._as_class.find( params[:caughtID] )
-    @message = @catcher.catch(@caught) if @catcher and @caught                      # .catch method is inserted by acts_as_catcher and dispatches to specified instance method
+    # catch method is inserted by acts_as_catcher and dispatches to appropriate instance method
+    @message = @catcher.catch(@caught) if @catcher and @caught                     
     @outcome = 'success';
     @consequence ||= 'insert';
     respond_to do |format|
       format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @catcher }
-      format.js { render :template => 'shared/caught', :layout => false }
+      format.json { 
+        render :json => response = {
+          :outcome => @outcome,
+          :message => @message,
+          :consequence => @consequence,
+        }.to_json 
+      }
       format.xml { head 200 }
     end
   rescue => e
@@ -124,7 +131,12 @@ class ApplicationController < ActionController::Base
     flash[:error] = e.message
     respond_to do |format|
       format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @catcher }
-      format.js { render :template => 'shared/caught', :layout => false }
+      format.json { 
+        render :json => response = {
+          :outcome => @outcome,
+          :message => @message,
+        }.to_json 
+      }
       format.xml { head 200 }
     end
   end
@@ -141,7 +153,7 @@ class ApplicationController < ActionController::Base
     @consequence ||= 'delete';
     respond_to do |format|
       format.html { redirect_to :controller => params[:controller], :action => 'list' }
-      format.js { render :template => 'shared/trashed', :layout => false }
+      format.json { render :json => @trashed.to_json }
       format.xml { head 200 }
     end
   rescue => e
@@ -150,7 +162,7 @@ class ApplicationController < ActionController::Base
     flash[:error] = e.message
     respond_to do |format|
       format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @trashed }
-      format.js { render :template => 'shared/trashed', :layout => false }
+      format.json { render :json => @trashed.to_json }
       format.xml { head 200 }
     end
   end
@@ -163,7 +175,7 @@ class ApplicationController < ActionController::Base
     @consequence ||= 'delete';
     respond_to do |format|
       format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @dropper }
-      format.js { render :template => 'shared/dropped', :layout => false }
+      format.json { render :json => @dropper.to_json }
       format.xml { head 200 }
     end
   rescue => e
@@ -172,7 +184,7 @@ class ApplicationController < ActionController::Base
     flash[:error] = e.message
     respond_to do |format|
       format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @catcher }
-      format.js { render :template => 'shared/caught', :layout => false }
+      format.json { render :json => @dropper.to_json }
       format.xml { head 200 }
     end
   end

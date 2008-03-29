@@ -363,6 +363,10 @@ div.scratchpage .drophere {
 	background-color: #d1005d;
 }
 
+div.scratchpage .tiptext, div.scratchpage .tiptitle {
+  display: none;
+}
+
 /* main content list */
 
 div.preamble {
@@ -443,7 +447,7 @@ li.drophere a {
 
 /* hidden divs that provide tooltip content */
 
-.tiptext, .tiptitle {
+div.mainlist .tiptext, div.mainlist .tiptitle {
   display: none;
 /*  margin: 0 3px 0 32px;*/
   font-family: HelveticaNeue-Roman, helvetica, arial, sans-serif;
