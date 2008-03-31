@@ -25,21 +25,6 @@ var Interface = new Class({
     this.admin = $E('div#admin');
     this.fader = new Fx.Tween(this.announcer, 'opacity', {duration: 'long', link: 'chain'});
 	},
-	setPrefFromCheckbox: function (element, event) {
-    // this.setPref(element.id, element.getProperty('checked') ? true : false);
-    // console.log(this.preferences);
-	},
-	setPref: function (key, value) {
-    // this.preferences[key] = value;
-    // this.savePrefs();
-	},
-	getPref: function (key) {
-    // return this.preferences[key];
-	},
-	savePrefs: function () {
-    // this.preferences['set'] = true;
-    //     this.storedPreferences.extend(this.preferences);
-	},
   announce: function (message, title) {
     this.announcer.removeClass('error');
     this.announcer.getElements('h4')[0].setText(title || 'Notice');
@@ -152,11 +137,21 @@ var Interface = new Class({
     //     new Snipper(element, e);
     //   });
     // });
+  },
+  
+  activateElement: function (element) {
+    var scope = element || document;
+    this.activate(element);
     
-    // $$('input.spokepref').each( function (element) {
-    //   element.addEvent('click', function (e) { intf.setPrefFromCheckbox(element, e) });
-    //   if (intf.getPref(element.id)) element.setProperty('checked', true);
-    // })
+    //and the thing itself
+	  if (element.hasClass('catcher')) this.addDropzones( element );
+	  if (element.hasClass('trashdrop')) this.addTrashDropzones( element );
+	  if (element.hasClass('draggable')) this.makeDraggables( element );
+    if (element.hasClass('tippable')) this.makeTippable( element );
+	  if (element.hasClass('tab')) this.addTabs( element );
+	  if (element.hasClass('padtab')) this.addScratchTabs( element );
+	  if (element.hasClass('fixedbottom')) this.makeFixed( element );
+    if (element.hasClass('toggle')) this.makeToggle( element )
   }
 });
 
@@ -297,43 +292,41 @@ var Dropzone = new Class({
 			
 		} else {
 			helper.remove();
-			if (!intf.getPref('confirmDrops') || confirm(message)) {
 
-  			var req = new Request.JSON( {
-  			  url: this.addURL(draggee),
-  				method: 'get',
-  			  onRequest: function () { 
-  			    dropzone.waiting(); 
-  			    draggee.waiting(); 
-  			  },
-          onSuccess: function(response){
-            console.log('outcome = ' + response.outcome + ', message = ' + response.message + ', consequence = ' + response.consequence);
-            if (response.outcome == 'success') {
-              dropzone.notWaiting();
-              draggee.notWaiting();
-              switch (response.consequence) {
-              case "move": 
-                dropzone.accept(draggee);
-                draggee.disappear();
-                break; 
-              case "delete":
-                draggee.disappear();
-                break;
-              default:
-                dropzone.accept(draggee)
-              }
-              intf.announce(response.message);
-            } else {
-              intf.complain(response.message);
+			var req = new Request.JSON( {
+			  url: this.addURL(draggee),
+				method: 'get',
+			  onRequest: function () { 
+			    dropzone.waiting(); 
+			    draggee.waiting(); 
+			  },
+        onSuccess: function(response){
+          console.log('outcome = ' + response.outcome + ', message = ' + response.message + ', consequence = ' + response.consequence);
+          if (response.outcome == 'success') {
+            dropzone.notWaiting();
+            draggee.notWaiting();
+            switch (response.consequence) {
+            case "move": 
+              dropzone.accept(draggee);
+              draggee.disappear();
+              break; 
+            case "delete":
+              draggee.disappear();
+              break;
+            default:
+              dropzone.accept(draggee)
             }
-          },
-  			  onFailure: function (response) { 
-  			    dropzone.notWaiting(); 
-  			    draggee.notWaiting(); 
-  			    intf.complain('remote call failed');
-  			  }
-  			}).send();
-			}
+            intf.announce(response.message);
+          } else {
+            intf.complain(response.message);
+          }
+        },
+			  onFailure: function (response) { 
+			    dropzone.notWaiting(); 
+			    draggee.notWaiting(); 
+			    intf.complain('remote call failed');
+			  }
+			}).send();
 		}
   },
 	removeDrop: function (helper) {
@@ -343,25 +336,22 @@ var Dropzone = new Class({
 	  var message = helper.getText() + '?';
 		helper.remove();
 	  
-		if (!intf.getPref('confirmDrops') || confirm(message)) {
-		  
-  		var req = new Request.JSON( {
-  		  url: this.removeURL(draggee),
-  			method: 'delete',
-  		  onRequest: function () { draggee.waiting(); },
-  		  onSuccess: function (response) { 
-          if (response.outcome == 'success') {
-  		      intf.announce(response.message); 
-            draggee.disappear();
-  		    } else {
-            intf.complain(response.message);
-  		    }
-  		  },
-  		  onFailure: function (response) {
-  		    intf.complain('remote call failed');
-  		  }
-  		}).send();
-    }
+		var req = new Request.JSON( {
+		  url: this.removeURL(draggee),
+			method: 'delete',
+		  onRequest: function () { draggee.waiting(); },
+		  onSuccess: function (response) { 
+        if (response.outcome == 'success') {
+		      intf.announce(response.message); 
+          draggee.disappear();
+		    } else {
+          intf.complain(response.message);
+		    }
+		  },
+		  onFailure: function (response) {
+		    intf.complain('remote call failed');
+		  }
+		}).send();
 	},
 	addURL: function (draggee) { 
 		return '/' + this.spokeType() + 's/' + this.receiptAction + '/' + this.spokeID() + '/' + draggee.spokeType() + '/' + draggee.spokeID();  
@@ -577,6 +567,11 @@ var Tab = new Class({
 	  this.tabset.holdopen = false;
     this.tabhead.removeEvents('mouseenter');
 	},
+	erase: function (argument) {
+    this.tabhead.remove(); 
+    this.tabbody.dwindle(); 
+    this.tabset.removeTab(this);
+	},
 });
 
 var TabSet = new Class({
@@ -632,14 +627,13 @@ var ScratchTab = new Class({
 	initialize: function(element){
 		this.parent(element);
  		this.holdopen = false;
-		this.dropzone = $E('.catcher', this.container);
-		this.dropzone.tab = this;
+		this.dropzone = this.tabbody.getElement('.catcher');
   	this.padform = null;
-    this.formholder = new Element('div', {'class': 'padform bigspinner'}).inject(this.tabbody, 'top').set('html', '&nbsp;').hide();
-    this.formfx = new Fx.Tween(this.formholder, 'width', {duration: 'medium', transition: 'cubic:out'});
     var stab = this;
+    this.formholder = new Element('div', {'class': 'padform bigspinner'}).inject(this.tabbody, 'top').set('html', '&nbsp;').hide();
+    this.showformfx = new Fx.Tween(this.formholder, 'width', {duration: 'long', transition: 'cubic:out'});
+    this.hideformfx = new Fx.Tween(this.formholder, 'width', {duration: 'medium', transition: 'cubic:out', onComplete: function () { stab.hideForm(); }});
     this.tabbody.getElements('a.renamepad').each(function (a) { a.onclick = stab.getForm.bind(stab); });
-    this.tabbody.getElements('a.deletepad').each(function (a) { a.onclick = stab.remove.bind(stab); });
     this.tabbody.getElements('a.setfrompad').each(function (a) { a.onclick = stab.toSet.bind(stab); });
     this.tabbody.getElements('a.createpad').each(function (a) { a.onclick = stab.createTab.bind(stab); });
   },
@@ -660,31 +654,9 @@ var ScratchTab = new Class({
 	deselect: function () {
     this.hideForm();
 	},
-	remove: function (e) {
-	  e = new Event(e).stop();
-    e.preventDefault();
-    this.tabhead.addClass('red');
-    if (confirm("are you sure you want to completely remove the scratchpad '" + this.name + "'?")) {
-      var stab = this;
-  		new Request.JSON({
-  		  url: e.target.getProperty('href'),
-  			method: 'delete',
-  		  onSuccess: function (response) { 
-  		    stab.tabhead.remove(); 
-  		    stab.tabbody.dwindle(); 
-  		    stab.tabset.removeTab(stab);
-  		  },
-  		  onFailure: function () { 
-  		    intf.complain('no way'); 
-  		  }
-  		}).send();
-    } else {
-      this.tabhead.removeClass('red');
-    }
-	},
 	toSet: function (e) {
-	  $$('li', this.tabbody).addClass('waiting');
-	  // let nature take its course
+	  this.tabbody.getElements('li').addClass('waiting');
+	  // ...and let nature take its course
 	},
 	getForm: function (e) {
 	  e = new Event(e).stop();
@@ -696,7 +668,7 @@ var ScratchTab = new Class({
     this.tabhead.addClass('editing');
     this.formholder.show();
     if (! this.padform) {
-  	  this.formfx.start(440);
+  	  this.showformfx.start(440);
   	  var stab = this;
   		new Request.HTML({
   		  url: url,
@@ -709,10 +681,9 @@ var ScratchTab = new Class({
 	},
 	hideFormNicely: function (e) {
     if (e) e = new Event(e).stop();
-    var stab = this;
-	  this.formfx.start(0, {
-	    onComplete: function () { stab.hideForm(e); }
-	  });
+    this.hideForm();
+    //     var stab = this;
+    // this.hideformfx.start(0);
 	},
 	hideForm: function (e) {
     if (e) e = new Event(e).stop();
@@ -720,43 +691,58 @@ var ScratchTab = new Class({
     this.tabhead.removeClass('editing');
 	},
 	bindForm: function () {
-    console.log('bindForm');
+		var stab = this;
     this.formholder.removeClass('bigspinner');
     this.padform = this.formholder.getElement('form');
 		this.padform.onsubmit = this.doForm.bind(this);
-		this.padform.getElement('a.cancel_form').onclick = this.hideForm.bind(this);
+		this.padform.getElements('a.cancel_form').each(function (a) { a.onclick = stab.hideFormNicely.bind(stab); });
+		this.padform.getElements('a.remove_tab').each(function (a) { a.onclick = stab.erase.bind(stab); });
 		this.padform.getElement('input.titular').focus();
 	},
-	
-	// form method needs to vary with verb.
-	// grrrr
-	
 	doForm: function (e) {
-    console.log('doForm');
 	  e = new Event(e).stop();
 	  e.preventDefault();
 	  var stab = this;
     this.padform.hide();
     this.formholder.addClass('bigspinner');
-    
-    console.log('sending update to ' + this.padform.get('action'));
-    
+        
     var update = {
-		  '_method': this.padform.getElement('#_method') ? this.padform.getElement('#_method').get('value') : '',
+		  '_method': this.padform.getElement('input[name=_method]') ? this.padform.getElement('input[name=_method]').get('value') : '',
 		  'scratchpad[name]': this.padform.getElement('#scratchpad_name').get('value'),
 		  'scratchpad[body]': this.padform.getElement('#scratchpad_body').get('value'),
 		};
-		
+
 		new Request.JSON({
 		  url: this.padform.get('action'),
 			method: 'post',
 			data: update,
 		  onSuccess: function (response) {
-        stab.hideForm();
+        stab.hideFormNicely();
         stab.tabhead.set('text', response.name);
         stab.tabhead.set('title', response.body);
+        console.log(response);
+        if (response.updated_by == null) {
+          console.log('this is a new tab');
+          
+          var tabs = stab.tabset;
+          tabs.removeTab(stab);
+          stab.tabhead.set('id', 'tab_scratchpad_' + response.id);
+          
+      		new Request.HTML({
+      		  url: '/scratchpads/' + response.id,
+      			method: 'get',
+      			update: stab.tabbody,
+      		  onSuccess: function () { 
+      		    intf.addScratchTabs([stab.tabhead]);
+      		    intf.addDropzones(stab.tabbody.getElements('.catcher'));
+      		    tabs.select('scratchpad_' + request.id);
+      		  },
+      		  onFailure: function () { intf.complain('no way'); }
+      		}).send();
+          
+        }
       },
-		  onFailure: function (response) { stab.hideFormNicely(); }
+		  onFailure: function (response) { stab.hideForm(); intf.complain('remote call failed') }
 		}).send();
 	},
 	createTab: function (e) {
@@ -813,9 +799,6 @@ var ScratchSet = new Class({
     console.log(this.newtab);
     this.newtab.select(e);
     this.newtab.showForm('/scratchpads/new');
-    
-    // new tab needs a dropzone
-    // and the spinner needs to disappear
     
 	}
 });

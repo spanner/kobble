@@ -55,8 +55,17 @@
   </div>  
 
   <div id="notification">
-    <h4></h4><p></p>
-  </div>  
+    <h4><%= 'notice' if flash[:notice] %></h4>
+    <p><%= flash[:notice] %></p>
+  </div>
+  
+  <% if flash[:notice] %>
+    <script type="text/javascript">
+    window.addEvent('load', function(){
+      intf.announce('<%= flash[:notice] %>');
+    });
+    </script>
+  <% end %>
    
   <div id="admin" class="hideondrag">
     <%= yield :admin %>

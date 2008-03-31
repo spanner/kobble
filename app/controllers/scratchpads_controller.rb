@@ -2,6 +2,11 @@ class ScratchpadsController < ApplicationController
 
   def show
     @scratchpad = Scratchpad.find(params[:id])
+    respond_to do |format|
+      format.html {  }
+      format.js { render :template => 'shared/_scratchpad', :layout => false }
+      format.json { render :json => @scratchpad.to_json }
+    end
   end
 
   def new
@@ -45,11 +50,15 @@ class ScratchpadsController < ApplicationController
   end
 
   def destroy
-    Scratchpad.find(params[:id]).destroy
-    flash[:notice] = 'Scratchpad removed.'
+    @scratchpad = Scratchpad.find(params[:id])
+    @scratchpad.destroy
     respond_to do |format|
-      format.html { render :action => 'list' }
+      format.html { 
+        flash[:notice] = 'Scratchpad removed.'
+        redirect_to :back
+      }
       format.js { render :nothing => true }
+      format.json { render :json => @scratchpad.to_json }
     end
   end
 end

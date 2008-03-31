@@ -1,4 +1,7 @@
-<% name = scrap.name.nil? || scrap.name.size == 0 ? "nameless #{scrap.class.nice_title}" : scrap.name %>
+<% 
+  name = scrap.name.nil? || scrap.name.size == 0 ? "nameless #{scrap.class.nice_title}" : scrap.name 
+  pad ||= @scratchpad
+%>
 
 <li 
   id="pad_<%= pad.id %>_<%= scrap.class.to_s.downcase %>_<%= scrap.id %>" 

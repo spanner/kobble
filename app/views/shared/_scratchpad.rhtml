@@ -1,3 +1,5 @@
+<% scratchpad ||= @scratchpad %>
+
 <div id="scratchpad_<%= scratchpad.id %>" class="scratchpage">
   
 	<ul 
@@ -10,10 +12,10 @@
 	</ul>
 
   <div class="padcontrol">
-  	<%= link_to "new pad", {:controller => 'scratchpads', :action => 'create'}, {:class => 'createpad'} %> <span class="hide">|</span><br />
-  	<%= link_to "edit pad", {:controller => 'scratchpads', :action => 'edit', :id => scratchpad}, {:class => 'renamepad', :id => "rename_scratchpad_#{scratchpad.id}"} %> <span class="hide">|</span><br />
+  	<%= link_to "new pad", new_scratchpad_path, {:class => 'createpad'} %> <span class="hide">|</span><br />
+  	<%= link_to "edit pad", edit_scratchpad_path(scratchpad), {:class => 'renamepad', :id => "rename_scratchpad_#{scratchpad.id}"} %> <span class="hide">|</span><br />
   	<%= link_to "create set", {:controller => 'bundles', :action => 'new', :scratchpad_id => scratchpad}, {:class => 'setfrompad', :id => "setfrom_scratchpad_#{scratchpad.id}"} %> <span class="hide">|</span><br />
-  	<%= link_to "delete pad", {:controller => 'scratchpads', :action => 'destroy', :id => scratchpad}, {:class => 'deletepad', :id => "delete_scratchpad_#{scratchpad.id}"} %> <span class="hide">|</span><br />
+  	<%= link_to "delete pad", scratchpad_path(scratchpad), {:method => 'delete', :class => 'deletepad', :id => "delete_scratchpad_#{scratchpad.id}", :confirm => "Are you sure you want to discard the scratchpad '#{scratchpad.name}'?"} %> <span class="hide">|</span><br />
   </div>
 
 </div>

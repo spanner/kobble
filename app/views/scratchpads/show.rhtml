@@ -1,7 +1,9 @@
-<h1>scratchpad: <%= @scratchpad.name %></h1>
+<% @title = @scratchpad.name %>
 
-<p class="small">This pad belongs to <%= @scratchpad.user.name %></p>
+<p>A scratchpad belonging to <%= @scratchpad.creator.name %></p>
 
-<% @scratchpad.scraps.each do |scrap| %>
-  <%= render :partial => "#{scrap.class.to_s.underscore.pluralize}/list", :locals => {:list => scrap} %>
-<% end %>
+<div class="mainlist">
+<%= render :partial => "scrap", :collection => @scratchpad.scraps %>
+</div>
+
+<%= link_to "delete this pad", scratchpad_path(@scratchpad), :method => :delete %>
