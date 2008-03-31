@@ -4,7 +4,9 @@
 <html>
 <head>
   <title>materiali.st<% if @title %> - <%= @title %><% end%></title>
-  <%= javascript_include_tag 'mootools', 'extensions', 'spoke', :cache => "cache/materialist" %>
+  <%= javascript_include_tag 'mootools', 'extensions', :cache => "cache/mootools" %>
+  <% if @load_editing_scripts %><%= javascript_include_tag 'autocomplete', :cache => "cache/editing" %><% end %>
+  <%= javascript_include_tag 'spoke', :cache => "cache/materialist" %>
   <%= stylesheet_link_tag 'spoke', :cache => "cache/materialist" %>
 </head>
 <body>

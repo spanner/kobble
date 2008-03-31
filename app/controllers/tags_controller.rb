@@ -47,9 +47,18 @@ class TagsController < ApplicationController
     render :layout => false
   end
   
+  # this is an evil shortcut.
+  # loading tags properly for this is very slow because of all the HMP preloaders
+  # and since this is always an ajax call we need quick
+  # so we just pull out the names directly
   def matching
-    @tags = Tag.find(:all, :conditions => "name like '%#{params[:stem]}%' and collection_id = #{Collection.current_collection.id}").collect {|t| "'#{t.name}'"}
-    render :layout => false
+    @tagnames = Tag.connection.select_values("SELECT name FROM #{Tag.table_name} where account_id = #{current_account.id} and name like '#{params[:stem]}%'").uniq
+    respond_to do |format|
+      format.html {  }
+      format.json { 
+        render :json => @tagnames.to_json
+      }
+    end
   end
   
   # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)

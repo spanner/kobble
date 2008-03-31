@@ -902,7 +902,7 @@ div.mainform input.titular {
   font-family: Georgia, "Times New Roman", serif;
   font-size: 22px;
   font-weight: bold;
-  line-height: 28px;
+  line-height: 22px;
   color: black;
 }
 
@@ -928,6 +928,15 @@ div.mainform input.standard, div.mainform select.standard, div.mainform textarea
   line-height: 18px;
   width: 80%;
   color: black;
+}
+
+div.mainform input.tagbox {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 22px;
+  font-weight: lighter;
+  line-height: 22px;
+  width: 80%;
+  color: #559DC4;
 }
 
 div.mainform input.gobutton {
@@ -1195,3 +1204,63 @@ h2.invitation a {
   color: #d1005d;
 }
 
+
+
+
+
+div.autocompleter-loading
+{
+	float:					left;
+	clear:					right;
+	background:			#fff url(/images/furniture/signals/wait_16_grey.gif) no-repeat center;
+	width:					20px;
+	height:					16px;
+	display: none;
+}
+
+ul.autocompleter-choices
+{
+	position:				absolute;
+	margin:					0;
+	padding:				0;
+	list-style:				none;
+	border:					1px solid #eee;
+	background-color:		white;
+	border-right-color:		#ddd;
+	border-bottom-color:	#ddd;
+	text-align:				left;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 14px;
+  font-weight: lighter;
+  line-height: 14px;
+  color: #695D54;
+	z-index:				50;
+}
+
+ul.autocompleter-choices li
+{
+	position:				relative;
+	padding:				0.2em 1.5em 0.2em 1em;
+	display:				block;
+	margin-top:				-2px;
+	cursor:					pointer;
+	font-weight:			normal;
+	font-size:				1em;
+	line-height:			1.5em;
+}
+
+ul.autocompleter-choices li.autocompleter-selected
+{
+	background-color:		#d1005d;
+	color:					white;
+}
+
+ul.autocompleter-choices span.autocompleter-queried
+{
+	font-weight:			bold;
+}
+
+ul.autocompleter-choices li.autocompleter-selected span.autocompleter-queried
+{
+/*  color:          #d1005d;*/
+}

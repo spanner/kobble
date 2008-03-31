@@ -1,10 +1,12 @@
  <%= error_messages_for 'node' %>
 
-<p>
-	'Fragments' are individual pieces of evidence. 
-	Usually they are excerpts from a <%= link_to 'source document', :controller => 'sources', :action => 'index' %>, 
-	but they don't have to be: if you spot something small and useful (that is unlikely to be further divided), you can feed it in as a disconnected fragment.
-</p>
+<div class="preamble">
+  <p>
+  	'Fragments' are individual pieces of evidence. 
+  	Usually they are excerpts from a <%= link_to 'source document', :controller => 'sources', :action => 'index' %>, 
+  	but they don't have to be: if you spot something small and useful (that is unlikely to be further divided), you can feed it in as a disconnected fragment.
+  </p>
+</div>
 
 <div class="boxtabs">
   <a href="#" id="tab_editing_summary" class="tab">summary</a>
@@ -19,6 +21,7 @@
      <%= text_field 'node', 'name', :class => "titular" %>
     </p>
 
+    <%= render :partial => 'shared/edit_collection', :locals => {:item => @node} %>
     <%= render :partial => 'shared/edit_tags', :locals => {:item => @node} %>
 
     <p><label for="node_description">Synopsis or description</label><br />
@@ -78,4 +81,3 @@
   <%= submit_tag "Store Fragment" %> or
   <%= link_to 'cancel', :action => 'index' %>
 </div>
-

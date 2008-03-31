@@ -18,6 +18,7 @@
     <%= text_field 'source', 'name', 'class' => "titular" %>
     </p>
 
+    <%= render :partial => 'shared/edit_collection', :locals => {:item => @source} %>
     <%= render :partial => 'shared/edit_tags', :locals => {:item => @source} %>
 
     <p><label for="source_description">Synopsis or description</label><br />
@@ -40,7 +41,7 @@
 
 <div class="formbuttons">
   <%= submit_tag "Store Document" %> or
-  <%= link_to 'cancel', :action => 'list' %>
+  <%= link_to 'cancel', :action => 'index' %>
 </div>
 
 

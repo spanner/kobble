@@ -15,12 +15,12 @@ var Interface = new Class({
     this.dragging = null;
     this.draggables = [];
     this.droppers = [];
+    this.tagboxes = [];
     this.tabs = [];
     this.tabsets = {};
     this.fixedbottom = [];
     this.inlinelinks = [];
     this.clickthreshold = 6;
-    this.cloud = null;
     this.announcer = $E('div#notification');
     this.admin = $E('div#admin');
     this.fader = new Fx.Tween(this.announcer, 'opacity', {duration: 'long', link: 'chain'});
@@ -126,52 +126,37 @@ var Interface = new Class({
   makeToggle: function (elements) {
     elements.each(function (element) { intf.inlinelinks.push(new Toggle(element)); });
   },
+  makeSuggester: function (elements) {
+    elements.each(function (element) {
+      var waiter = new Element('div', {'class': 'autocompleter-loading'}).setHTML('&nbsp;').inject(element, 'after');
+      intf.tagboxes.push(new Autocompleter.Ajax.Json(element, '/tags/matching', { 'indicator': waiter, 'postVar': 'stem', 'multiple': true }));
+    });
+  },
     
   // this is the main page initialisation routine: it gets called on domready
   
   activate: function (element) {
-    var scope = element || null;
-	  this.addDropzones($$('.catcher', scope));
-	  this.addTrashDropzones($$('.trashdrop', scope));
-	  this.makeDraggables($$('.draggable', scope));
-    this.makeTippable($$('.tippable', scope));
-    // this.makeExpandable($$('.expandable', scope));
-	  if (scope) {
-	    if (scope.hasClass('catcher')) this.addDropzones([scope]);
-  	  if (scope.hasClass('trashdrop')) this.addTrashDropzones([scope]);
-  	  if (scope.hasClass('draggable')) this.makeDraggables([scope]);
-      if (scope.hasClass('tippable')) this.makeTippable([scope]);
-      // if (scope.hasClass('expandable')) this.makeExpandable([scope]);
-	  } 
+    var scope = element || document;
+	  this.addDropzones( scope.getElements('.catcher') );
+	  this.addTrashDropzones( scope.getElements('.trashdrop') );
+	  this.makeDraggables( scope.getElements('.draggable') );
+    this.makeTippable( scope.getElements('.tippable') );
+	  this.addTabs(scope.getElements('a.tab'));
+	  this.addScratchTabs(scope.getElements('a.padtab'));
+	  this.makeFixed(scope.getElements('div.fixedbottom'));
+    this.makeToggle(scope.getElements('a.toggle'))
+    this.makeSuggester(scope.getElements('input.tagbox'))
 
-	  this.addTabs($$('a.tab', scope));
-	  this.addScratchTabs($$('a.padtab', scope));
-	  this.makeFixed($$('div.fixedbottom', scope));
-    this.makeToggle($$('a.toggle', scope))
-
-    $$('input.cloudcontrol', scope).each( function (element) {
-      element.addEvent('click', function (e) {
-        var band = element.idparts().id;
-        element.checked ? $$('a.cloud' + band).setStyle('display', 'inline') : $$('a.cloud' + band).hide();
-      })
-    });
-    // $$('input.tagbox', scope).each(function (element, i) {
-    //  new TagSuggestion(element, '/tags/matching', {
-    //    postVar: 'stem',
-    //    onRequest: function(el) { element.addClass('waiting'); },
-    //    onComplete: function(el) { element.removeClass('waiting'); }
-    //  });
+    // $$('a.snipper', scope).each( function (element) {
+    //   element.addEvent('click', function (e) {
+    //     new Snipper(element, e);
+    //   });
     // });
-    $$('a.snipper', scope).each( function (element) {
-      element.addEvent('click', function (e) {
-        new Snipper(element, e);
-      });
-    });
     
-    $$('input.spokepref').each( function (element) {
-      element.addEvent('click', function (e) { intf.setPrefFromCheckbox(element, e) });
-      if (intf.getPref(element.id)) element.setProperty('checked', true);
-    })
+    // $$('input.spokepref').each( function (element) {
+    //   element.addEvent('click', function (e) { intf.setPrefFromCheckbox(element, e) });
+    //   if (intf.getPref(element.id)) element.setProperty('checked', true);
+    // })
   }
 });
 

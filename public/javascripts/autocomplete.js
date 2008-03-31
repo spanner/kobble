@@ -1,17 +1,15 @@
 /**
- *
- * this is slightly adapted by will from:
- *
  * Observer - Observe formelements for changes
  *
- * @version		1.0rc1
+ * @version		1.0rc3
  *
  * @license		MIT-style license
  * @author		Harald Kirschner <mail [at] digitarald.de>
  * @copyright	Author
  */
-
 var Observer = new Class({
+
+	Implements: [Options, Events],
 
 	options: {
 		periodical: false,
@@ -21,34 +19,49 @@ var Observer = new Class({
 	initialize: function(el, onFired, options){
 		this.setOptions(options);
 		this.addEvent('onFired', onFired);
-		this.element = $(el);
-		this.listener = this.fired.bind(this);
-		this.value = this.element.getValue();
-		if (this.options.periodical) this.timer = this.listener.periodical(this.options.periodical);
-		else this.element.addEvent('keyup', this.listener);
+		this.element = $(el) || $$(el);
+		this.value = this.element.get('value');
+		if (this.options.periodical) this.timer = this.changed.periodical(this.options.periodical, this);
+		else this.element.addEvent('keyup', this.changed.bind(this));
 	},
 
-	fired: function() {
-		var value = this.element.getValueAfterLastComma();
-		if (this.value == value) return;
+	changed: function() {
+		var value = this.element.get('value');
+		if ($equals(this.value, value)) return;
 		this.clear();
 		this.value = value;
-		this.timeout = this.fireEvent.delay(this.options.delay, this, ['onFired', [value]]);
+		this.timeout = this.onFired.delay(this.options.delay, this);
+	},
+
+	setValue: function(value) {
+		this.value = value;
+		this.element.set('value', value);
+		return this.clear();
+	},
+
+	onFired: function() {
+		this.fireEvent('onFired', [this.value, this.element]);
 	},
 
 	clear: function() {
-		$clear(this.timeout);
+		$clear(this.timeout || null);
 		return this;
 	}
+
 });
 
-Observer.implement(new Options);
-Observer.implement(new Events);
+var $equals = function(obj1, obj2) {
+	return (obj1 == obj2 || JSON.encode(obj1) == JSON.encode(obj2));
+};
+
 
 /**
  * Autocompleter
  *
- * @version		1.0rc4
+ * @version		1.1rc1
+ *
+ * @todo: Caching, no-result handling!
+ *
  *
  * @license		MIT-style license
  * @author		Harald Kirschner <mail [at] digitarald.de>
@@ -60,20 +73,42 @@ Autocompleter.Base = new Class({
 
 	options: {
 		minLength: 1,
-		useSelection: true,
 		markQuery: true,
-		inheritWidth: true,
+		choicesWidth: 'inherit',
 		maxChoices: 10,
 		injectChoice: null,
-		onSelect: Class.empty,
-		onShow: Class.empty,
-		onHide: Class.empty,
-		customTarget: null,
+		customChoices: null,
 		className: 'autocompleter-choices',
 		zIndex: 42,
+		delay: 400,
 		observerOptions: {},
 		fxOptions: {},
-		overflown: []
+		onOver: $empty,
+		onSelect: $empty,
+		onSelection: $empty,
+		onShow: $empty,
+		onHide: $empty,
+		onBlur: $empty,
+		onFocus: $empty,
+
+		autoSubmit: false,
+		overflow: false,
+		overflowMargin: 25,
+		selectFirst: true,
+		filter: null,
+		filterCase: false,
+		filterSubset: false,
+		forceSelect: false,
+		selectMode: true,
+		choicesMatch: null,
+
+		multiple: false,
+		separator: ', ',
+		separatorSplit: /\s*[,;]\s*/,
+		autoTrim: true,
+		allowDupes: false,
+
+		cache: true
 	},
 
 	initialize: function(el, options) {
@@ -81,10 +116,14 @@ Autocompleter.Base = new Class({
 		this.element = $(el);
 		this.build();
 		this.observer = new Observer(this.element, this.prefetch.bind(this), $merge({
-			delay: 400
+			'delay': this.options.delay
 		}, this.options.observerOptions));
-		this.value = this.observer.value;
 		this.queryValue = null;
+		if (this.options.filter) this.filter = this.options.filter.bind(this);
+		var mode = this.options.selectMode;
+		this.typeAhead = (mode == 'type-ahead');
+		this.selectMode = (mode === true) ? 'selection' : mode;
+		this.cached = [];
 	},
 
 	/**
@@ -94,138 +133,225 @@ Autocompleter.Base = new Class({
 	 * Override this function to modify the html generation.
 	 */
 	build: function() {
-		if ($(this.options.customTarget)) this.choices = this.options.customTarget;
-		else {
+		if ($(this.options.customChoices)) {
+			this.choices = this.options.customChoices;
+		} else {
 			this.choices = new Element('ul', {
 				'class': this.options.className,
-				styles: {zIndex: this.options.zIndex}
-			}).injectInside(document.body);
+				'styles': {
+					'zIndex': this.options.zIndex
+				}
+			}).inject(this.element, 'after');
 			this.fix = new OverlayFix(this.choices);
+			this.relative = this.choices.getOffsetParent();
 		}
-		this.fx = this.choices.effect('opacity', $merge({
-			wait: false,
-			duration: 200
-		}, this.options.fxOptions))
-			.addEvent('onStart', function() {
-				if (this.fx.now) return;
-				this.choices.setStyle('display', '');
-				this.fix.show();
-			}.bind(this))
-			.addEvent('onComplete', function() {
-				if (this.fx.now) return;
-				this.choices.setStyle('display', 'none');
-				this.fix.hide();
-			}.bind(this)).set(0);
+		if (!this.options.separator.test(this.options.separatorSplit)) {
+			this.options.separatorSplit = this.options.separator;
+		}
+		this.fx = (!this.options.fxOptions) ? null : new Fx.Tween(this.choices, 'opacity', $merge({
+			'link': 'cancel',
+			'duration': 200
+		}, this.options.fxOptions)).addEvent('onStart', Chain.prototype.clearChain).set(0);
 		this.element.setProperty('autocomplete', 'off')
-			.addEvent(window.ie ? 'keydown' : 'keypress', this.onCommand.bindWithEvent(this))
-			.addEvent('mousedown', this.onCommand.bindWithEvent(this, [true]))
-			.addEvent('focus', this.toggleFocus.bind(this, [true]))
-			.addEvent('blur', this.toggleFocus.bind(this, [false]))
+			.addEvent((Browser.Engine.trident || Browser.Engine.webkit) ? 'keydown' : 'keypress', this.onCommand.bind(this))
+			.addEvent('click', this.onCommand.bind(this, [false]))
+			.addEvent('focus', this.toggleFocus.create({bind: this, arguments: true, delay: 100}))
+			.addEvent('blur', this.toggleFocus.create({bind: this, arguments: false, delay: 100}))
 			.addEvent('trash', this.destroy.bind(this));
 	},
 
 	destroy: function() {
-		this.choices.remove();
+		this.choices = this.selected = this.choices.destroy();
 	},
 
 	toggleFocus: function(state) {
 		this.focussed = state;
-		if (!state) this.hideChoices();
+		if (!state) this.hideChoices(true);
+		this.fireEvent((state) ? 'onFocus' : 'onBlur', [this.element]);
 	},
 
-	onCommand: function(e, mouse) {
-		if (mouse && this.focussed) this.prefetch();
-		if (e.key && !e.shift) switch (e.key) {
-			case 'enter':
-				if (this.selected && this.visible) {
-					this.choiceSelect(this.selected);
-					e.stop();
-				} return;
-			case 'up': case 'down':
-				if (this.observer.value != (this.value || this.queryValue)) this.prefetch();
-				else if (this.queryValue === null) break;
-				else if (!this.visible) this.showChoices();
-				else {
-					this.choiceOver((e.key == 'up')
-						? this.selected.getPrevious() || this.choices.getLast()
-						: this.selected.getNext() || this.choices.getFirst() );
-					this.setSelection();
-				}
-				e.stop(); return;
-			case 'esc': this.hideChoices(); return;
+	onCommand: function(e) {
+		if (!e && this.focussed) return this.prefetch();
+		if (e && e.key && !e.shift) {
+			switch (e.key) {
+				case 'enter':
+					if (this.element.value != this.opted) return true;
+					if (this.selected && this.visible) {
+						this.choiceSelect(this.selected);
+						return !!(this.options.autoSubmit);
+					}
+					break;
+				case 'up': case 'down':
+					if (!this.prefetch() && this.queryValue !== null) {
+						var up = (e.key == 'up');
+						this.choiceOver((this.selected || this.choices)[
+							(this.selected) ? ((up) ? 'getPrevious' : 'getNext') : ((up) ? 'getLast' : 'getFirst')
+						](this.options.choicesMatch), true);
+					}
+					return false;
+				case 'esc': case 'tab':
+					this.hideChoices(true);
+					break;
+			}
 		}
-		this.value = false;
+		return true;
 	},
 
-	setSelection: function() {
-		if (!this.options.useSelection) return;
-		var startLength = this.queryValue.length;
-		if (this.element.value.indexOf(this.queryValue) != 0) return;
-		var insert = this.selected.inputValue.substr(startLength);
-		if (document.getSelection) {
-			this.element.value = this.queryValue + insert;
-			this.element.selectionStart = startLength;
-			this.element.selectionEnd = this.element.value.length;
-		} else if (document.selection) {
-			var sel = document.selection.createRange();
-			sel.text = insert;
-			sel.move("character", - insert.length);
-			sel.findText(insert);
-			sel.select();
+	setSelection: function(finish) {
+		var input = this.selected.inputValue, value = input;
+		var start = this.queryValue.length, end = input.length;
+		if (input.substr(0, start).toLowerCase() != this.queryValue.toLowerCase()) start = 0;
+		if (this.options.multiple) {
+			value = this.element.value, split = this.options.separatorSplit;
+			start += this.queryIndex;
+			end += this.queryIndex;
+			var old = value.substr(this.queryIndex).split(split, 1)[0];
+			value = value.substr(0, this.queryIndex) + input + value.substr(this.queryIndex + old.length);
+			if (finish) {
+				var tokens = value.split(this.options.separatorSplit).clean();
+				if (!this.options.allowDupes) tokens = [].merge(tokens);
+				var sep = this.options.separator;
+				value = tokens.join(sep) + sep;
+				end = value.length;
+			}
 		}
-		this.value = this.observer.value = this.element.value;
-	},
-
-	hideChoices: function() {
-		if (!this.visible) return;
-		this.visible = this.value = false;
-		this.observer.clear();
-		this.fx.start(0);
-		this.fireEvent('onHide', [this.element, this.choices]);
+		this.observer.setValue(value);
+		this.opted = value;
+		if (finish || this.selectMode == 'pick') start = end;
+		this.element.selectRange(start, end);
+		this.fireEvent('onSelection', [this.element, this.selected, value, input]);
 	},
 
 	showChoices: function() {
-		if (this.visible || !this.choices.getFirst()) return;
-		this.visible = true;
-		var pos = this.element.getCoordinates(this.options.overflown);
-		this.choices.setStyles({
-			left: pos.left,
-			top: pos.bottom
-		});
-		if (this.options.inheritWidth) this.choices.setStyle('width', pos.width);
-		this.fx.start(1);
-		this.choiceOver(this.choices.getFirst());
-		this.fireEvent('onShow', [this.element, this.choices]);
+		var match = this.options.choicesMatch, first = this.choices.getFirst(match);
+		this.selected = this.selectedValue = null;
+		if (this.relative) {
+			var pos = this.element.getCoordinates(this.relative), width = this.options.choicesWidth || 'auto';
+			this.choices.setStyles({
+				'left': pos.left,
+				'top': pos.bottom,
+				'width': (width === true || width == 'inherit') ? pos.width : width
+			});
+		}
+		if (!first) return;
+		if (!this.visible) {
+			this.visible = true;
+			if (this.fx) this.fx.start(1);
+			this.choices.setStyle('display', '');
+			this.fix.show();
+			this.fireEvent('onShow', [this.element, this.choices]);
+		}
+		if (this.options.selectFirst || this.typeAhead || first.inputValue == this.queryValue) this.choiceOver(first, this.typeAhead);
+		var items = this.choices.getChildren(match), max = this.options.maxChoices;
+		var styles = {'overflowY': 'hidden', 'height': ''};
+		if (items.length > max) {
+			var item = items[max - 1];
+			styles.overflowY = 'scroll';
+			styles.height = item.getCoordinates(this.choices).bottom;
+		};
+		this.choices.setStyles(styles);
+	},
+
+	hideChoices: function(clear) {
+		if (!this.visible) return;
+		this.visible = false;
+		if (clear) {
+			var value = this.element.value;
+			if (this.options.forceSelect) value = this.opted;
+			if (this.options.autoTrim) {
+				value = value.split(this.options.separatorSplit).clean().join(this.options.separator);
+			}
+			this.observer.setValue(value);
+		}
+		this.observer.clear();
+		var hide = function(){
+			this.choices.setStyle('display', 'none');
+			this.fix.hide();
+		}.bind(this);
+		if (this.fx) this.fx.start(0).chain(hide);
+		else hide();
+		this.fireEvent('onHide', [this.element, this.choices]);
 	},
 
 	prefetch: function() {
-		if (this.element.value.length < this.options.minLength) this.hideChoices();
-		else if (this.element.value == this.queryValue) this.showChoices();
-		else this.query();
+		var value = this.element.value, query = value;
+		if (this.options.multiple) {
+			var split = this.options.separatorSplit;
+			var values = value.split(split);
+			var index = this.element.getCaretPosition();
+			var toIndex = value.substr(0, index).split(split);
+			var last = toIndex.length - 1;
+			index -= toIndex[last].length;
+			query = values[last];
+		}
+		if (query.length < this.options.minLength) {
+			this.hideChoices();
+		} else {
+			if (query === this.queryValue || (this.visible && query == this.selectedValue)) {
+				if (this.visible) return false;
+				this.showChoices();
+			} else {
+				this.queryValue = query;
+				this.queryIndex = index;
+				if (!this.fetchCached()) this.query();
+			}
+		}
+		return true;
 	},
 
-	updateChoices: function(choices) {
+	fetchCached: function() {
+		return false;
+		if (!this.options.cache
+			|| !this.cached
+			|| !this.cached.length
+			|| this.cached.length >= this.options.maxChoices
+			|| this.queryValue) return false;
+		this.update(this.filter(this.cached));
+		return true;
+	},
+
+	update: function(tokens) {
 		this.choices.empty();
-		this.selected = null;
-		if (!choices || !choices.length) return;
-		if (this.options.maxChoices < choices.length) choices.length = this.options.maxChoices;
-		choices.each(this.options.injectChoice || function(choice, i){
-			var el = new Element('li').setHTML(this.markQueryValue(choice));
-			el.inputValue = choice;
-			this.addChoiceEvents(el).injectInside(this.choices);
-		}, this);
-		this.showChoices();
+		this.cached = tokens;
+		if (!tokens || !tokens.length) {
+			this.hideChoices();
+		} else {
+			if (this.options.maxChoices < tokens.length && !this.options.overflow) tokens.length = this.options.maxChoices;
+			tokens.each(this.options.injectChoice || function(token){
+				var choice = new Element('li', {'html': this.markQueryValue(token)});
+				choice.inputValue = token;
+				this.addChoiceEvents(choice).inject(this.choices);
+			}, this);
+			this.showChoices();
+		}
 	},
 
-	choiceOver: function(el) {
+	choiceOver: function(choice, selection) {
+		if (!choice || choice == this.selected) return;
 		if (this.selected) this.selected.removeClass('autocompleter-selected');
-		this.selected = el.addClass('autocompleter-selected');
+		this.selected = choice.addClass('autocompleter-selected');
+		this.fireEvent('onSelect', [this.element, this.selected, selection]);
+		if (!selection) return;
+		this.selectedValue = this.selected.inputValue;
+		if (this.options.overflow) {
+			var coords = this.selected.getCoordinates(this.choices), margin = this.options.overflowMargin,
+				top = this.choices.scrollTop, height = this.choices.offsetHeight, bottom = top + height;
+			if (coords.top - margin < top && top) this.choices.scrollTop = Math.max(coords.top - margin, 0);
+			else if (coords.bottom + margin > bottom) this.choices.scrollTop = Math.min(coords.bottom - height + margin, bottom);
+		}
+		if (this.selectMode) this.setSelection();
 	},
 
-	choiceSelect: function(el) {
-		this.observer.value = this.element.value = el.inputValue;
+	choiceSelect: function(choice) {
+		if (choice) this.choiceOver(choice);
+		this.setSelection(true);
+		this.queryValue = false;
 		this.hideChoices();
-		this.fireEvent('onSelect', [this.element], 20);
+	},
+
+	filter: function(tokens) {
+		var regex = new RegExp(((this.options.filterSubset) ? '' : '^') + this.queryValue.escapeRegExp(), (this.options.filterCase) ? '' : 'i');
+		return (tokens || this.tokens).filter(regex.test, regex);
 	},
 
 	/**
@@ -237,8 +363,9 @@ Autocompleter.Base = new Class({
 	 * @param		{String} Text
 	 * @return		{String} Text
 	 */
-	markQueryValue: function(txt) {
-		return (this.options.markQuery && this.queryValue) ? txt.replace(new RegExp('^(' + this.queryValue.escapeRegExp() + ')', 'i'), '<span class="autocompleter-queried">$1</span>') : txt;
+	markQueryValue: function(str) {
+		return (!this.options.markQuery || !this.queryValue) ? str
+			: str.replace(new RegExp('(' + ((this.options.filterSubset) ? '' : '^') + this.queryValue.escapeRegExp() + ')', (this.options.filterCase) ? '' : 'i'), '<span class="autocompleter-queried">$1</span>');
 	},
 
 	/**
@@ -251,8 +378,8 @@ Autocompleter.Base = new Class({
 	 */
 	addChoiceEvents: function(el) {
 		return el.addEvents({
-			mouseover: this.choiceOver.bind(this, [el]),
-			mousedown: this.choiceSelect.bind(this, [el])
+			'mouseover': this.choiceOver.bind(this, [el]),
+			'click': this.choiceSelect.bind(this, [el])
 		});
 	}
 });
@@ -260,106 +387,114 @@ Autocompleter.Base = new Class({
 Autocompleter.Base.implement(new Events);
 Autocompleter.Base.implement(new Options);
 
-Autocompleter.Local = Autocompleter.Base.extend({
+Autocompleter.Local = new Class({
+
+	Extends: Autocompleter.Base,
 
 	options: {
 		minLength: 0,
-		filterTokens : null
+		delay: 200
 	},
 
 	initialize: function(el, tokens, options) {
-		this.parent(el, options);
+		arguments.callee.parent(el, options);
 		this.tokens = tokens;
-		if (this.options.filterTokens) this.filterTokens = this.options.filterTokens.bind(this);
 	},
 
 	query: function() {
-		this.hideChoices();
-		this.queryValue = this.element.value;
-		this.updateChoices(this.filterTokens());
-	},
-
-	filterTokens: function(token) {
-		var regex = new RegExp('^' + this.queryValue.escapeRegExp(), 'i');
-		return this.tokens.filter(function(token) {
-			return regex.test(token);
-		});
+		this.update(this.filter());
 	}
 
 });
 
 Autocompleter.Ajax = {};
 
-Autocompleter.Ajax.Base = Autocompleter.Base.extend({
+Autocompleter.Ajax.Base = new Class({
+
+	Extends: Autocompleter.Base,
 
 	options: {
 		postVar: 'value',
 		postData: {},
 		ajaxOptions: {},
-		onRequest: Class.empty,
-		onComplete: Class.empty
+		onRequest: $empty,
+		onComplete: $empty
 	},
 
-	initialize: function(el, url, options) {
-		this.parent(el, options);
-		this.ajax = new Ajax(url, $merge({
-			autoCancel: true
-		}, this.options.ajaxOptions));
-		this.ajax.addEvent('onComplete', this.queryResponse.bind(this));
-		this.ajax.addEvent('onFailure', this.queryResponse.bind(this, [false]));
+	initialize: function(el, options) {
+		arguments.callee.parent(el, options);
+		var indicator = $(this.options.indicator);
+		this.addEvents({
+			'onRequest': indicator.setStyle.bind(indicator, ['display', '']),
+			'onComplete': indicator.setStyle.bind(indicator, ['display', 'none'])
+		}, true);
 	},
 
 	query: function(){
-		var data = $extend({}, this.options.postData);
-		data[this.options.postVar] = this.element.value;
-		this.fireEvent('onRequest', [this.element, this.ajax]);
-		this.ajax.request(data);
+		var data = $unlink(this.options.postData);
+		data[this.options.postVar] = this.queryValue;
+		this.fireEvent('onRequest', [this.element, this.request, data, this.queryValue]);
+		this.request.send({'data': data});
 	},
 
 	/**
 	 * queryResponse - abstract
 	 *
-	 * Inherated classes have to extend this function and use this.parent(resp)
+	 * Inherated classes have to extend this function and use arguments.callee.parent(resp)
 	 *
 	 * @param		{String} Response
 	 */
-	queryResponse: function(resp) {
-		this.value = this.queryValue = this.element.value;
-		this.selected = false;
-		this.hideChoices();
-		this.fireEvent(resp ? 'onComplete' : 'onFailure', [this.element, this.ajax], 20);
+	queryResponse: function() {
+		this.fireEvent('onComplete', [this.element, this.request, this.response]);
 	}
 
 });
 
-Autocompleter.Ajax.Json = Autocompleter.Ajax.Base.extend({
+Autocompleter.Ajax.Json = new Class({
 
-	queryResponse: function(resp) {
-		this.parent(resp);
-		var choices = Json.evaluate(resp || false);
-		if (!choices || !choices.length) return;
-		this.updateChoices(choices);
+	Extends: Autocompleter.Ajax.Base,
+
+	initialize: function(el, url, options) {
+		arguments.callee.parent(el, options);
+		this.request = new Request.JSON($merge({
+			'url': url,
+			'link': 'cancel'
+		}, this.options.ajaxOptions)).addEvent('onComplete', this.queryResponse.bind(this));
+	},
+
+	queryResponse: function(response) {
+		arguments.callee.parent();
+		this.update(response);
 	}
 
 });
 
-Autocompleter.Ajax.Xhtml = Autocompleter.Ajax.Base.extend({
+Autocompleter.Ajax.Xhtml = new Class({
 
-	options: {
-		parseChoices: null
+	Extends: Autocompleter.Ajax.Base,
+
+	initialize: function(el, url, options) {
+		arguments.callee.parent(el, options);
+		this.request = new Request.HTML($merge({
+			'url': url,
+			'link': 'cancel',
+			'update': this.choices
+		}, this.options.ajaxOptions)).addEvent('onComplete', this.queryResponse.bind(this));
 	},
 
-	queryResponse: function(resp) {
-		this.parent(resp);
-		if (!resp) return;
-		this.choices.setHTML(resp).getChildren().each(this.options.parseChoices || this.parseChoices, this);
-		this.showChoices();
-	},
+	queryResponse: function(response) {
+		arguments.callee.parent();
+		if (!response || !response.length) {
+			this.hideChoices();
+		} else {
+			this.choices.getChildren(this.options.choicesMatch).each(this.options.injectChoice || function(choice) {
+				var value = choice.innerHTML;
+				choice.inputValue = value;
+				choice.set('html', this.markQueryValue(value));
+			}, this);
+			this.showChoices();
+		}
 
-	parseChoices: function(el) {
-		var value = el.innerHTML;
-		el.inputValue = value;
-		el.setHTML(this.markQueryValue(value));
 	}
 
 });
@@ -368,31 +503,30 @@ Autocompleter.Ajax.Xhtml = Autocompleter.Ajax.Base.extend({
 var OverlayFix = new Class({
 
 	initialize: function(el) {
-		this.element = $(el);
-		if (window.ie){
-			this.element.addEvent('trash', this.destroy.bind(this));
+		if (Browser.Engine.trident) {
+			this.element = $(el).addEvent('trash', this.destroy.bind(this));
+			this.relative = this.element.getOffsetParent();
 			this.fix = new Element('iframe', {
-				properties: {
-					frameborder: '0',
-					scrolling: 'no',
-					src: 'javascript:false;'
-				},
-				styles: {
-					position: 'absolute',
-					border: 'none',
-					display: 'none',
-					filter: 'progid:DXImageTransform.Microsoft.Alpha(opacity=0)'
+				'frameborder': '0',
+				'scrolling': 'no',
+				'src': 'javascript:false;',
+				'styles': {
+					'position': 'absolute',
+					'border': 'none',
+					'display': 'none',
+					'filter': 'progid:DXImageTransform.Microsoft.Alpha(opacity=0)'
 				}
-			}).injectAfter(this.element);
+			}).inject(this.element, 'after');
 		}
 	},
 
 	show: function() {
-		if (this.fix) this.fix.setStyles($extend(
-			this.element.getCoordinates(), {
-				display: '',
-				zIndex: (this.element.getStyle('zIndex') || 1) - 1
+		if (this.fix) {
+			this.fix.setStyles($extend(this.element.getCoordinates(this.relative), {
+				'display': '',
+				'zIndex': (this.element.getStyle('zIndex') || 1) - 1
 			}));
+		}
 		return this;
 	},
 
@@ -402,130 +536,34 @@ var OverlayFix = new Class({
 	},
 
 	destroy: function() {
-		this.fix.remove();
+		this.fix = this.fix.destroy();
 	}
 
 });
 
+Element.implement({
 
-
-
-
-
-
-
-// here we jump on harald k's autocompleter to make it work only on the last entry in a commented list
-// and to show nicely formatted lists
-
-var TagSuggestion = Autocompleter.Ajax.Json.extend({
-	build: function() {
-		this.holder = new Element('div', {
-		  'class': 'taglist-holder',
-		  'styles': {zIndex: this.options.zIndex}
-		});
-		
-		this.choices = new Element('ul', {'class': 'taglist'}).injectInside(document.body);
-		
-    var header = new Element('div', {'class': 'taglist-header'})
-                  .adopt(new Element('div', {'class': 'taglist-corner'}))
-                  .adopt(new Element('div', {'class': 'taglist-bar'}));
-    var footer = new Element('div', {'class': 'taglist-footer'})
-                  .adopt(new Element('div', {'class': 'taglist-corner'}))
-                  .adopt(new Element('div', {'class': 'taglist-bar'}));
-
-    header.injectInside(this.holder);
-    this.choices.injectInside(this.holder);
-    footer.injectInside(this.holder);
-    this.holder.injectInside(document.body);
-    
-		this.fix = new OverlayFix(this.choices);
-		this.fx = this.holder.effect('opacity', $merge({
-			wait: false,
-			duration: 200
-		}, this.options.fxOptions))
-			.addEvent('onStart', function() {
-				if (this.fx.now) return;
-				this.choices.setStyle('display', '');
-				this.fix.show();
-			}.bind(this))
-			.addEvent('onComplete', function() {
-				if (this.fx.now) return;
-				this.choices.setStyle('display', 'none');
-				this.fix.hide();
-			}.bind(this)).set(0);
-			
-		this.element.setProperty('autocomplete', 'off')
-			.addEvent(window.ie ? 'keydown' : 'keypress', this.onCommand.bindWithEvent(this))
-			.addEvent('mousedown', this.onCommand.bindWithEvent(this, [true]))
-			.addEvent('focus', this.toggleFocus.bind(this, [true]))
-			.addEvent('blur', this.toggleFocus.bind(this, [false]))
-			.addEvent('trash', this.destroy.bind(this));
+	getCaretPosition: function() {
+		if (!Browser.Engine.trident) return this.selectionStart;
+		this.focus();
+		var work = document.selection.createRange();
+		var all = this.createTextRange();
+		work.setEndPoint('StartToStart', all);
+		return work.text.length;
 	},
-	showChoices: function() {
-		if (this.visible || !this.choices.getFirst()) return;
-		this.visible = true;
-		var pos = this.element.getCoordinates(this.options.overflown);
-		this.holder.setStyles({
-			left: pos.left,
-			top: pos.bottom
-		});
-		if (this.options.inheritWidth) this.holder.setStyle('width', pos.width);
-		this.fx.start(1);
-		this.choiceOver(this.choices.getFirst());
-		this.fireEvent('onShow', [this.element, this.choices]);
-	},
-	destroy: function() {
-		this.choices.remove();
-		this.holder.remove();
-	},
-	choiceOver: function(el) {
-		if (this.selected) this.selected.removeClass('taglist-highlight');
-		this.selected = el.addClass('taglist-highlight');
-	},
-	choiceSelect: function(el) {
-		this.observer.value = el.inputValue;
-		this.element.setValueAfterLastComma(el.inputValue + ', ');
-		this.hideChoices();
-		this.fireEvent('onSelect', [this.element], 20);
-	},
-	prefetch: function() {
-		var val = this.element.getValueAfterLastComma();
-		if (val.length < this.options.minLength) this.hideChoices();
-		else if (val == this.queryValue) this.showChoices();
-		else this.query();
-	},
-	onCommand: function(e, mouse) {
-		if (mouse && this.focussed) this.prefetch();
-		if (e.key && !e.shift) switch (e.key) {
-			case 'enter':
-				if (this.selected && this.visible) {
-					this.choiceSelect(this.selected);
-					e.stop();
-				} return;
-			case 'up': case 'down':
-				if (this.observer.value != (this.value || this.queryValue)) this.prefetch();
-				else if (this.queryValue === null) break;
-				else if (!this.visible) this.showChoices();
-				else if (this.selected){
-					this.choiceOver((e.key == 'up')
-						? this.selected.getPrevious() || this.choices.getLast()
-						: this.selected.getNext() || this.choices.getFirst() );
-					this.setSelection();
-				} else {
-					this.choiceOver( (e.key == 'up') ? this.choices.getFirst() : this.choices.getLast() );
-				}
-				e.stop(); return;
-			case 'esc': this.hideChoices(); return;
+
+	selectRange: function(start, end) {
+		if (Browser.Engine.trident) {
+			var range = this.createTextRange();
+			range.collapse(true);
+			range.moveEnd('character', end);
+			range.moveStart('character', start);
+			range.select();
+		} else {
+			this.focus();
+			this.setSelectionRange(start, end);
 		}
-		this.value = false;
-	},
-	query: function(){
-		var data = $extend({}, this.options.postData);
-		data[this.options.postVar] = this.element.getValueAfterLastComma();
-		this.fireEvent('onRequest', [this.element, this.ajax]);
-		this.ajax.request(data);
-	},
-	markQueryValue: function(txt) {
-		return (this.options.markQuery && this.queryValue) ? txt.replace(new RegExp('(' + this.queryValue.escapeRegExp() + ')', 'i'), '<em>$1</em>') : txt;
+		return this;
 	}
+
 });

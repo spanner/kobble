@@ -13,7 +13,7 @@ ActionController::Routing::Routes.draw do |map|
     map.resources k, :has_many => :topics, :collection => { :gallery => :get }, :member => {:annotate => :post}
   end
   
-  map.resources :tags, :has_many => :taggings, :collection => { :gallery => :get, :cloud => :get, :tree => :get, :treemap => :get } 
+  map.resources :tags, :has_many => :taggings, :collection => { :gallery => :get, :cloud => :get, :tree => :get, :treemap => :get, :matching => :any } 
   map.resources :flags, :has_many => :flaggings
   map.resources :users, :has_many => :activations, :collection => { :gallery => :get }, :member => { :home => :get }
   map.resources :topics, :has_many => :posts

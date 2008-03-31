@@ -1,1 +1,7 @@
-[<%= @tags.join(',') %>]
+<p>Tags matching <strong><%= params[:stem] %></strong>:</p>
+
+<ul>
+<% @tagnames.each do |tag| %>
+  <li><%= tag %></li>
+<% end %>
+</ul>

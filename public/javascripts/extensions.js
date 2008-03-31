@@ -15,22 +15,6 @@
 		this.setStyle('display', (display || this.originalDisplay || 'block'));
 		return this;
 	},
-	getValueAsList: function (separator) {
-		if (!separator) separator = /, +/
-		return this.getValue().split(separator);
-	},
-	getValueAfterLastComma: function () {
-		return this.getValueAsList().pop();
-	},
-	setValueAsList: function (list) {
-		return this.value = list.join(", ");
-	},
-	setValueAfterLastComma: function (listitem) {
-		var list = this.getValueAsList();
-		list.pop();
-		list.push(listitem);
-		return this.setValueAsList(list);
-	},
 	moveto: function (here) {
     this.setStyle('top', here.y);
     this.setStyle('left', here.x);
