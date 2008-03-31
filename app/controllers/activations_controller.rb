@@ -2,7 +2,7 @@ class ActivationsController < ApplicationController
 
   def toggle
     @activation = Activation.find(params[:id])
-    if @activation.active && @activation.active > 0
+    if @activation.active?
       deactivate
     else 
       activate

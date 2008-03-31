@@ -2,7 +2,7 @@
 
 <li 
   id="pad_<%= pad.id %>_<%= scrap.class.to_s.downcase %>_<%= scrap.id %>" 
-  class="<%= scrap.class.to_s.downcase %> draggable expandable"
+  class="<%= scrap.class.to_s.downcase %> draggable tippable"
   title="<%= scrap.collection.abbreviation %>: <%= name %>"
 >
   <%= link_to( scrap.name, {:controller => scrap.class.to_s.downcase.pluralize, :action => 'show', :id => scrap}, {:class => 'listed'}) %>

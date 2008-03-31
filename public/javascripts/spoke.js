@@ -2,14 +2,16 @@
 
 window.addEvent('domready', function(){
   intf = new Interface();
+  // console.profile()
   intf.activate();
+  // console.profileEnd()
   // window.addEvent('scroll', function (e) { intf.moveFixed(e); });
   // window.addEvent('resize', function (e) { intf.moveFixed(e); });
 });
 
 var Interface = new Class({
 	initialize: function(){
-    // this.tips = null;
+    this.tips = null;
     this.dragging = null;
     this.draggables = [];
     this.droppers = [];
@@ -22,7 +24,6 @@ var Interface = new Class({
     this.announcer = $E('div#notification');
     this.admin = $E('div#admin');
     this.fader = new Fx.Tween(this.announcer, 'opacity', {duration: 'long', link: 'chain'});
-    // this.activate();
 	},
 	setPrefFromCheckbox: function (element, event) {
     // this.setPref(element.id, element.getProperty('checked') ? true : false);
@@ -62,9 +63,9 @@ var Interface = new Class({
   prefer: function (setting, value) {
     this.preferences[setting] = value;
   },
-  // hideTips: function () {
-  //   if (this.tips) this.tips.hide();
-  // },
+  hideTips: function () {
+    if (this.tips) this.tips.hide();
+  },
 
   startDragging: function (helper) {
     $$('.hideondrag').each(function (element) { element.setStyle('visibility', 'hidden'); })
@@ -112,7 +113,6 @@ var Interface = new Class({
     elements.each(function (element) { intf.droppers.push(new TrashDropzone(element)); });
   },
   makeDraggables: function (elements) {
-    
     elements.each(function (element) { 
       element.addEvent('mousedown', function(event) { new Draggee(element, event); }); 
     });
@@ -120,9 +120,9 @@ var Interface = new Class({
   makeFixed: function (elements) {
     elements.each(function (element) { intf.fixedbottom.push(element); });
   },
-  // makeTippable: function (elements) {
-  //   this.tips = new SpokeTips(elements);
-  // },
+  makeTippable: function (elements) {
+    this.tips = new SpokeTips(elements);
+  },
   makeToggle: function (elements) {
     elements.each(function (element) { intf.inlinelinks.push(new Toggle(element)); });
   },
@@ -134,13 +134,13 @@ var Interface = new Class({
 	  this.addDropzones($$('.catcher', scope));
 	  this.addTrashDropzones($$('.trashdrop', scope));
 	  this.makeDraggables($$('.draggable', scope));
-    // this.makeTippable($$('.expandable', scope));
+    this.makeTippable($$('.tippable', scope));
     // this.makeExpandable($$('.expandable', scope));
 	  if (scope) {
 	    if (scope.hasClass('catcher')) this.addDropzones([scope]);
   	  if (scope.hasClass('trashdrop')) this.addTrashDropzones([scope]);
   	  if (scope.hasClass('draggable')) this.makeDraggables([scope]);
-      // if (scope.hasClass('expandable')) this.makeTippable([scope]);
+      if (scope.hasClass('tippable')) this.makeTippable([scope]);
       // if (scope.hasClass('expandable')) this.makeExpandable([scope]);
 	  } 
 
@@ -175,27 +175,28 @@ var Interface = new Class({
   }
 });
 
-// var SpokeTips = new Class({
-//   Extends: Tips,
-//   options: {
-//    initialize:function(){ this.fx = new Fx.Style(this.toolTip, 'opacity', {duration: 250, wait: false}).set(0); },
-//    onShow: function(toolTip) { if (!intf.dragging) this.fx.start(0.8); },
-//    onHide: function(toolTip) { this.fx.start(0); }
-//   },
-//  build: function(el){
-//     el.$tmp.myTitle = el.title || $E('div.tiptitle', el).getText();
-//     el.$tmp.myText = $E('div.tiptext', el).getText();
-//    el.addEvent('mouseenter', function(event){
-//      this.start(el);
-//      if (!this.options.fixed) this.locate(event);
-//      else this.position(el);
-//    }.bind(this));
-//    if (!this.options.fixed) el.addEvent('mousemove', this.locate.bindWithEvent(this));
-//    var end = this.end.bind(this);
-//    el.addEvent('mouseleave', end);
-//    el.addEvent('trash', end);
-//  }
-// });
+var SpokeTips = new Class({
+  Extends: Tips,
+  options: {
+   onShow: function(tip) { if (!intf.dragging) tip.fade(0.8); },
+   onHide: function(tip) { tip.fade('out'); }
+  },
+  build: function(el){
+    el.$attributes.myTitle = el.title || el.getElement('div.tiptitle').getText();
+    el.$attributes.myText = el.getElement('div.tiptext').getText();
+		el.removeProperty('title');
+		if (el.$attributes.myTitle && el.$attributes.myTitle.length > this.options.maxTitleChars)
+			el.$attributes.myTitle = el.$attributes.myTitle.substr(0, this.options.maxTitleChars - 1) + "&hellip;";
+		el.addEvent('mouseenter', function(event){
+			this.start(el);
+			if (!this.options.fixed) this.locate(event);
+			else this.position(el);
+		}.bind(this));
+		if (!this.options.fixed) el.addEvent('mousemove', this.locate.bind(this));
+		var end = this.end.bind(this);
+		el.addEvent('mouseleave', end);
+ }
+});
 
 var Dropzone = new Class({
 	initialize: function (element) {
@@ -233,7 +234,10 @@ var Dropzone = new Class({
     if (this.can_catch(type)) {
       var dropzone = this;
       dropzone.container.addEvents({
-        'drop': function() { dropzone.receiveDrop(helper); },
+        'drop': function() { 
+          console.log('drop!');
+    		  dropzone.receiveDrop(helper); 
+    		},
         'mouseenter': function() { dropzone.showInterest(helper); },
         'mouseleave': function() { dropzone.loseInterest(helper); },
       });
@@ -295,6 +299,8 @@ var Dropzone = new Class({
 	  var message = helper.getText() + '?';
 		var draggee = helper.draggee;
 		dropzone.loseInterest(helper);
+		
+		console.log(dropzone.name + ' catching ' + draggee.name);
 		
 		if (dropzone == draggee.draggedfrom) {
 			helper.flyback();
@@ -380,8 +386,9 @@ var Dropzone = new Class({
 	},
 	waiting: function () {
 	  if (this.zoneType() == 'list') {
-      this.waitSignal = new Element('li', { id: 'waiter', class: 'draggable waiting' }).grab(new Element('a', { id: 'dummy', class: 'listed', href: '#'}).setText('working...'));
-      this.waitSignal.injectInside(this.container)
+      this.waitSignal = new Element('li', { 'id': 'waiter', 'class': 'draggable waiting' });
+      this.waitSignal.setText('working...');
+      this.waitSignal.injectInside(this.container);
       return this.waitSignal;
 	  } else {
 	    this.container.addClass('waiting');

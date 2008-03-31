@@ -446,7 +446,7 @@ li.drophere a {
 
 /* hidden divs that provide tooltip content */
 
-div.mainlist .tiptext, div.mainlist .tiptitle {
+.tiptext, .tiptitle {
   font-family: HelveticaNeue-Roman, helvetica, arial, sans-serif;
 	font-size: 70%;
 	line-height: 1.2;
@@ -454,6 +454,10 @@ div.mainlist .tiptext, div.mainlist .tiptitle {
 }
 
 div.mainlist .tiptitle {
+  display: none;
+}
+
+div.gallery .tiptitle, div.gallery .tiptext {
   display: none;
 }
 
