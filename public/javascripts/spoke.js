@@ -564,7 +564,16 @@ var Tab = new Class({
 	},
 	receiveDrop: function (helper) {
     return false;
-	}
+	},
+	makeReceptiveTo: function (draggee) {
+	  var stab = this;
+	  this.tabset.holdopen = true;
+ 		this.tabhead.addEvent('mouseenter', function (e) { stab.select(e); });
+	},
+	makeUnreceptive: function () {
+	  this.tabset.holdopen = false;
+    this.tabhead.removeEvents('mouseenter');
+	},
 });
 
 var TabSet = new Class({
@@ -728,15 +737,6 @@ var ScratchTab = new Class({
       update: stab.tabhead,
       onComplete: function () { stab.hideFormNicely(); }
 	  });
-	},
-	makeReceptiveTo: function (draggee) {
-	  var stab = this;
-	  this.tabset.holdopen = true;
- 		this.tabhead.addEvent('mouseenter', function (e) { stab.select(e); });
-	},
-	makeUnreceptive: function () {
-	  this.tabset.holdopen = false;
-    this.tabhead.removeEvents('mouseenter');
 	},
 	createTab: function (e) {
     this.tabset.createTab(e);
