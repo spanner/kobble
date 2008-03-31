@@ -1,9 +1,5 @@
 class BundlesController < ApplicationController
   
-  # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
-  verify :method => :post, :only => [ :destroy, :create, :update ],
-         :redirect_to => { :action => :list }
-
   def show
     @display = case params['display']
       when "full" then "full"
@@ -16,6 +12,7 @@ class BundlesController < ApplicationController
   def new
     @bundle = Bundle.new
     @members = []
+    @bundle.tags << Tag.from_list(params[:tag_list]) if params[:tag_list]
     if params[:scratchpad_id]
       @expad = Scratchpad.find(:scratchpad_id)
       @members << @expad.scraps
@@ -27,7 +24,7 @@ class BundlesController < ApplicationController
     @bundle = Bundle.new(params[:bundle])
     if @bundle.save
       members = []
-      @bundle.tags << tags_from_list(params[:tag_list]) if params[:tag_list]
+      @bundle.tags << Tag.from_list(params[:tag_list]) if params[:tag_list]
       if params[:scrap]      
         params[:scrap].each do |s|
           input = s.split('_')
@@ -48,8 +45,8 @@ class BundlesController < ApplicationController
   def update
     @bundle = Bundle.find(params[:id])
     if @bundle.update_attributes(params[:bundle])
-      @bundle.tags.clear
-      @bundle.tags << tags_from_list(params[:tag_list])
+      @bundle.taggings.clear
+      @bundle.tags << Tag.from_list(params[:tag_list])
       flash[:notice] = 'Bundle was successfully updated.'
       redirect_to :action => 'show', :id => @bundle
     else

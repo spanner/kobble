@@ -1,10 +1,6 @@
 class NodesController < ApplicationController
   require 'uri'
 
-  # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
-  verify :method => :post, :only => [ :destroy, :create, :update, :snip ],
-         :redirect_to => { :action => :list }
-
   def show
     @node = Node.find(params[:id])
   end
@@ -17,7 +13,7 @@ class NodesController < ApplicationController
   def snip
     @node = Node.new(params[:node])
     if @node.save
-      @node.tags << tags_from_list(params[:tag_list])
+      @node.tags << Tag.from_list(params[:tag_list])
       flash[:notice] = 'Snipped!.'
       render :layout => false
     else
@@ -40,7 +36,7 @@ class NodesController < ApplicationController
   def create
     @node = Node.new(params[:node])
     if @node.save
-      @node.tags << tags_from_list(params[:tag_list])
+      @node.tags << Tag.from_list(params[:tag_list])
       flash[:notice] = 'Segment created.'
       redirect_to :action => 'show', :id => @node
     else
@@ -57,8 +53,8 @@ class NodesController < ApplicationController
   def update
     @node = Node.find(params[:id])
     if @node.update_attributes(params[:node])
-      @node.tags.clear
-      @node.tags << tags_from_list(params[:tag_list])
+      @node.taggings.clear
+      @node.tags << Tag.from_list(params[:tag_list])
       flash[:notice] = 'Node was successfully updated.'
       redirect_to :action => 'show', :id => @node
     else

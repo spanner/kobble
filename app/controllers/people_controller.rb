@@ -23,7 +23,7 @@ class PeopleController < ApplicationController
   def create
     @person = Person.new(params[:person])
     if @person.save
-      @person.tags << tags_from_list(params[:tag_list])
+      @person.tags << Tag.from_list(params[:tag_list])
       flash[:notice] = 'Person object successfully created.'
       redirect_to :action => 'show', :id => @person
     else
@@ -39,7 +39,7 @@ class PeopleController < ApplicationController
     @person = Person.find(params[:id])
     if @person.update_attributes(params[:person])
       @person.tags.clear
-      @person.tags << tags_from_list(params[:tag_list])
+      @person.tags << Tag.from_list(params[:tag_list])
       
       flash[:notice] = 'Person object successfully updated.'
       redirect_to :action => 'show', :id => @person

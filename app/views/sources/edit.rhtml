@@ -1,7 +1,13 @@
 <% @title = "Edit: #{@source.name}" %>
 
 <div class="mainform">
-<% form_tag ({:action => 'update', :id => @source}, :multipart => true) do %>
+<% form_for :source,
+            :url => source_path(@source),
+            :html => { 
+              :method => "put",
+              :multipart => true
+            } do |f| 
+%>
   <%= render :partial => 'form' %>
 <% end %>
 </div>

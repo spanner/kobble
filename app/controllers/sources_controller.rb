@@ -1,9 +1,5 @@
 class SourcesController < ApplicationController
 
-  # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
-  verify :method => :post, :only => [ :destroy, :create, :update ],
-         :redirect_to => { :action => :list }
-
   def show
     @source = Source.find(params[:id])
   end
@@ -12,12 +8,13 @@ class SourcesController < ApplicationController
     @occasions = Occasion.find(:all, :conditions => limit_to_active_collections)
     @people = Person.find(:all, :conditions => limit_to_active_collections)
     @source = Source.new
+    @source.tags << Tag.from_list(params[:tag_list]) if params[:tag_list]
   end
 
   def create
     @source = Source.new(params[:source])
     if @source.save
-      @source.tags << tags_from_list(params[:tag_list])
+      @source.tags << Tag.from_list(params[:tag_list])
       flash[:notice] = 'Source object successfully created.'
       redirect_to :action => 'show', :id => @source
     else
@@ -34,9 +31,8 @@ class SourcesController < ApplicationController
   def update
     @source = Source.find(params[:id])
     if @source.update_attributes(params[:source])
-      @source.tags.clear
-      @source.tags << tags_from_list(params[:tag_list])
-      
+      @source.taggings.clear
+      @source.tags << Tag.from_list(params[:tag_list])
       flash[:notice] = 'Source object successfully updated.'
       redirect_to :action => 'show', :id => @source
     else

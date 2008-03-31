@@ -2,10 +2,6 @@ class OccasionsController < ApplicationController
   
   # this is user review and management for admins
   # logging in and registration is in account_controller
-
-  # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
-  verify :method => :post, :only => [ :destroy, :create, :update ],
-         :redirect_to => { :action => :list }
   
   def show
     @occasion = Occasion.find(params[:id])
@@ -39,6 +35,8 @@ class OccasionsController < ApplicationController
   def update
     @occasion = Occasion.find(params[:id])
     if @occasion.update_attributes(params[:occasion])
+      @occasion.taggings.clear
+      @occasion.tags << Tag.from_list(params[:tag_list])
       flash[:notice] = 'Occasion successfully updated.'
       redirect_to :action => 'show', :id => @occasion
     else

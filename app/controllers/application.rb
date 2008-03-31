@@ -216,11 +216,7 @@ class ApplicationController < ActionController::Base
   end
 
   def tags_from_list (taglist)
-    branches = taglist.split(/[,;]\s*/).uniq
-    branches.collect!{ |b| 
-      Tag.find_or_create_branch( b.split(/\:\s*/) )
-    }
-    # tags.map! { |name| Tag.find_or_create_by_name( name ) }
+    Tag.from_list(taglist)
   end
   
   protected

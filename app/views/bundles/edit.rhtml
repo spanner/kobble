@@ -1,6 +1,12 @@
 <h1>Edit <%= link_to @bundle.name, :action => 'show', :id => @bundle.id %></h1>
 
-<% form_tag( {:action => 'update', :id => @bundle}, :id => 'bundleform', :multipart => true) do %>
- <%= render :partial => 'form' %>
+<% form_for :bundle,
+            :url => bundle_path(@bundle),
+            :html => { 
+              :method => "put",
+              :multipart => true
+            } do |f| 
+%>
+  <%= render :partial => 'form' %>
 <% end %>
 

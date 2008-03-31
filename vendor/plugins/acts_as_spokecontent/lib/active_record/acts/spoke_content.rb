@@ -22,6 +22,7 @@ module Spoke
     # these are the taggable, discussable, scratchpaddable main content models
     # they have to be defined in advance for hmp to call on in has_many_polymorphs :from
     # otherwise would much prefer to set them as we go along during acts_as_spoke
+    # also called from below to set up taggings relationship
 
     def self.content_models(options={})
       oc = [:sources, :nodes, :bundles, :people, :occasions, :topics, :tags]
@@ -98,6 +99,10 @@ module ActiveRecord
           if definitions.include?(:discussion)
             has_many :topics, :as => :referent
             Spoke::Config.discussed_model(self)
+          end
+          
+          if Spoke::Config.content_models(:except => :tags).include?(self)
+            has_many :taggings, :as => :taggable            
           end
 
           self.class_eval("include InstanceMethods")

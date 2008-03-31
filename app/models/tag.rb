@@ -37,6 +37,13 @@ class Tag < ActiveRecord::Base
     return unless self.parent
     return self.parent.parentage
   end  
+  
+  def self.from_list(taglist)
+    branches = taglist.split(/[,;]\s*/).uniq
+    branches.collect!{ |b| 
+      find_or_create_branch( b.split(/\:\s*/) )
+    }
+  end
 
   def self.find_or_create_branch(branch)
     name = branch.pop
@@ -60,8 +67,6 @@ class Tag < ActiveRecord::Base
     end
     return tag
   end
-
-
 
   def children_by_popularity
     Tag.find(:all, 

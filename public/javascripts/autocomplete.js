@@ -228,7 +228,7 @@ Autocompleter.Base = new Class({
 		if (this.relative) {
 			var pos = this.element.getCoordinates(this.relative), width = this.options.choicesWidth || 'auto';
 			this.choices.setStyles({
-				'left': pos.left,
+        'left': 0,
 				'top': pos.bottom,
 				'width': (width === true || width == 'inherit') ? pos.width : width
 			});
