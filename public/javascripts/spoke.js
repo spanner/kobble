@@ -140,18 +140,17 @@ var Interface = new Class({
   },
   
   activateElement: function (element) {
-    var scope = element || document;
     this.activate(element);
     
     //and the thing itself
-	  if (element.hasClass('catcher')) this.addDropzones( element );
-	  if (element.hasClass('trashdrop')) this.addTrashDropzones( element );
-	  if (element.hasClass('draggable')) this.makeDraggables( element );
-    if (element.hasClass('tippable')) this.makeTippable( element );
-	  if (element.hasClass('tab')) this.addTabs( element );
-	  if (element.hasClass('padtab')) this.addScratchTabs( element );
-	  if (element.hasClass('fixedbottom')) this.makeFixed( element );
-    if (element.hasClass('toggle')) this.makeToggle( element )
+	  if (element.hasClass('catcher')) this.addDropzones( [element] );
+	  if (element.hasClass('trashdrop')) this.addTrashDropzones( [element] );
+	  if (element.hasClass('draggable')) this.makeDraggables( [element] );
+    if (element.hasClass('tippable')) this.makeTippable( [element] );
+	  if (element.hasClass('tab')) this.addTabs( [element] );
+	  if (element.hasClass('padtab')) this.addScratchTabs( [element] );
+	  if (element.hasClass('fixedbottom')) this.makeFixed( [element] );
+    if (element.hasClass('toggle')) this.makeToggle( [element] )
   }
 });
 
@@ -382,7 +381,9 @@ var Dropzone = new Class({
 	accept: function (draggee) {
     if (this.zoneType() == 'list') {
       var element = draggee.clone().injectInside(this.container);
-      // intf.activate(element);
+      element.set('id', this.tag + '_' + draggee.tag);
+      console.log(element.id);
+      intf.activateElement(element);
     }
 	}
 });
