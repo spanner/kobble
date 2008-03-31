@@ -133,7 +133,7 @@ var Interface = new Class({
     });
   },
     
-  // this is the main page initialisation routine: it gets called on domready
+  // this is the main page initialisation: it gets called on domready
   
   activate: function (element) {
     var scope = element || document;
@@ -531,6 +531,7 @@ var DragHelper = new Class({
 var Tab = new Class({
 	initialize: function(element){
 		this.tabhead = element;
+		this.name = this.tabhead.get('text');
     var parts = element.id.split('_');
 		this.tag = parts.pop();
 		this.settag = parts.pop();
@@ -544,8 +545,10 @@ var Tab = new Class({
     this.tabset.addTab(this);
 	},
 	select: function (e) {
-	  e = new Event(e).stop();
-	  e.preventDefault();
+	  if (e) {
+	    e = new Event(e).stop();
+	    e.preventDefault();
+	  }
 	  this.tabhead.blur();
     this.tabset.select(this.tag);
 	},
@@ -632,15 +635,13 @@ var ScratchTab = new Class({
 		this.dropzone = $E('.catcher', this.container);
 		this.dropzone.tab = this;
   	this.padform = null;
-    this.formholder = new Element('div', {'class': 'padform bigspinner', 'style': 'height: 0'}).injectTop(this.tabbody).hide();
-    this.formfx = new Fx.Tween(this.formholder, 'height', {duration: 'long'});
-    this.renamer = $E('a.renamepad', this.tabbody);
-    this.deleter = $E('a.deletepad', this.tabbody);
-    this.setter = $E('a.setfrompad', this.tabbody);
-    this.renamer.onclick = this.getForm.bind(this);
-    this.deleter.onclick = this.remove.bind(this);
-    this.setter.onclick = this.toSet.bind(this);
-    $E('a.createpad', this.tabbody).onclick = this.createTab.bind(this);
+    this.formholder = new Element('div', {'class': 'padform bigspinner'}).inject(this.tabbody, 'top').set('html', '&nbsp;').hide();
+    this.formfx = new Fx.Tween(this.formholder, 'width', {duration: 'medium', transition: 'cubic:out'});
+    var stab = this;
+    this.tabbody.getElements('a.renamepad').each(function (a) { a.onclick = stab.getForm.bind(stab); });
+    this.tabbody.getElements('a.deletepad').each(function (a) { a.onclick = stab.remove.bind(stab); });
+    this.tabbody.getElements('a.setfrompad').each(function (a) { a.onclick = stab.toSet.bind(stab); });
+    this.tabbody.getElements('a.createpad').each(function (a) { a.onclick = stab.createTab.bind(stab); });
   },
   open: function () { 
     this.tabset.open(); 
@@ -663,27 +664,27 @@ var ScratchTab = new Class({
 	  e = new Event(e).stop();
     e.preventDefault();
     this.tabhead.addClass('red');
-    if (confirm("are you sure you want to completely remove the scratchpad '" + this.tabhead.getText() + "'?")) {
+    if (confirm("are you sure you want to completely remove the scratchpad '" + this.name + "'?")) {
       var stab = this;
   		new Request.JSON({
   		  url: e.target.getProperty('href'),
   			method: 'delete',
   		  onSuccess: function (response) { 
-  		    stab.tabhead.dwindle(); 
+  		    stab.tabhead.remove(); 
   		    stab.tabbody.dwindle(); 
   		    stab.tabset.removeTab(stab);
   		  },
   		  onFailure: function () { 
   		    intf.complain('no way'); 
   		  }
-  		}).request();
+  		}).send();
     } else {
       this.tabhead.removeClass('red');
     }
 	},
 	toSet: function (e) {
 	  $$('li', this.tabbody).addClass('waiting');
-	  // and we let nature take its course
+	  // let nature take its course
 	},
 	getForm: function (e) {
 	  e = new Event(e).stop();
@@ -691,27 +692,27 @@ var ScratchTab = new Class({
     this.showForm(e.target.getProperty('href'));
   },
   showForm: function (url) {
+    if (!url) url = '/scratchpads/new';
     this.tabhead.addClass('editing');
     this.formholder.show();
     if (! this.padform) {
-  	  this.formfx.start(64);
+  	  this.formfx.start(440);
   	  var stab = this;
   		new Request.HTML({
   		  url: url,
   			method: 'get',
   			update: stab.formholder,
   		  onSuccess: function () { stab.bindForm() },
-  		  onFailure: function () { 
-  		    stab.hideFormNicely(); 
-  		    intf.complain('no way'); 
-  		  }
-  		}).request();
+  		  onFailure: function () { stab.hideFormNicely(); }
+  		}).send();
     }
 	},
 	hideFormNicely: function (e) {
     if (e) e = new Event(e).stop();
     var stab = this;
-	  this.formfx.start('height', 0).chain(function () { stab.hideForm(e) });
+	  this.formfx.start(0, {
+	    onComplete: function () { stab.hideForm(e); }
+	  });
 	},
 	hideForm: function (e) {
     if (e) e = new Event(e).stop();
@@ -719,24 +720,44 @@ var ScratchTab = new Class({
     this.tabhead.removeClass('editing');
 	},
 	bindForm: function () {
+    console.log('bindForm');
     this.formholder.removeClass('bigspinner');
-    this.formholder.show();
-    this.padform = $E('form', this.formholder);
+    this.padform = this.formholder.getElement('form');
 		this.padform.onsubmit = this.doForm.bind(this);
-		$E('a.cancel_form', this.padform).onclick = this.hideForm.bind(this);
-		$E('input', this.padform).focus();
+		this.padform.getElement('a.cancel_form').onclick = this.hideForm.bind(this);
+		this.padform.getElement('input.titular').focus();
 	},
+	
+	// form method needs to vary with verb.
+	// grrrr
+	
 	doForm: function (e) {
+    console.log('doForm');
 	  e = new Event(e).stop();
 	  e.preventDefault();
 	  var stab = this;
     this.padform.hide();
     this.formholder.addClass('bigspinner');
-	  this.padform.send({
-      method: 'post',
-      update: stab.tabhead,
-      onComplete: function () { stab.hideFormNicely(); }
-	  });
+    
+    console.log('sending update to ' + this.padform.get('action'));
+    
+    var update = {
+		  '_method': this.padform.getElement('#_method') ? this.padform.getElement('#_method').get('value') : '',
+		  'scratchpad[name]': this.padform.getElement('#scratchpad_name').get('value'),
+		  'scratchpad[body]': this.padform.getElement('#scratchpad_body').get('value'),
+		};
+		
+		new Request.JSON({
+		  url: this.padform.get('action'),
+			method: 'post',
+			data: update,
+		  onSuccess: function (response) {
+        stab.hideForm();
+        stab.tabhead.set('text', response.name);
+        stab.tabhead.set('title', response.body);
+      },
+		  onFailure: function (response) { stab.hideFormNicely(); }
+		}).send();
 	},
 	createTab: function (e) {
     this.tabset.createTab(e);
@@ -778,31 +799,24 @@ var ScratchSet = new Class({
 	createTab: function (e) {
 	  e = new Event(e).stop();
 	  e.preventDefault();
-    var bodyholder = new Element('div', {'class': "temporary"}).injectInside($E('body'));
     var tabs = this;
-    var workingtab = new Element('a', {'class': 'padtab red', 'href': "#"}).setText('working').injectInside(this.headcontainer);
-		var req = new Request.HTML({
-		  url: e.target.getProperty('href'),
-			method: 'post',
-			update: bodyholder,
-		  onSuccess: function (response) { 
-    		var newbody = $E('div.scratchpage', bodyholder);
-    		var tabid = newbody.spokeID();
-        var newhead = new Element('a', {'class': 'padtab', 'href': "#", 'id': "tab_scratchpad_" + tabid}).setText('new pad');
-        workingtab.hide();
-    		newhead.injectInside(tabs.headcontainer);
-        newbody.injectInside(tabs.container);
-        var newtab = new ScratchTab(newhead);
-        intf.activate(newbody);
-        tabs.select(newtab.tag);
-        newtab.showForm('/scratchpads/edit/' + tabid);
-        bodyholder.remove();
-		  },
-		  onFailure: function (response) { 
-		    
-        bodyholder.remove();
-		  }
-		}).request();
+    var newhead = new Element('a', {
+      'id': 'tab_scratchpad_new',
+      'class': 'padtab', 
+      'href': "#"
+    }).setText('new scratchpad').injectInside(this.headcontainer);
+    var newbody = new Element('div', {
+      'id': 'scratchpad_new',
+      'class': 'scratchpage'
+    }).injectInside(this.container);
+    this.newtab = new ScratchTab(newhead);
+    console.log(this.newtab);
+    this.newtab.select(e);
+    this.newtab.showForm('/scratchpads/new');
+    
+    // new tab needs a dropzone
+    // and the spinner needs to disappear
+    
 	}
 });
 

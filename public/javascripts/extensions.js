@@ -51,23 +51,26 @@
   },
   explode: function () {
     this.dwindle();   //temporarily
-  },
-	duplicate: function () {
-    var clone = this.clone();
-    clone.setStyle('position', 'absolute');
-    clone.setStyles(this.getCoordinates());
-    return clone;
-	}
+  }
 });
 
 
-// 
-// var spokeObject = new Class({
-//  initialize: function(id){
-//     this.id = id;
-//  }
-// });
-// 
+
+var spokeObject = new Class({
+ initialize: function(id){
+    this.id = id;
+ },
+ get: function () {
+
+ },
+ edit: function () {
+   
+ },
+ update: function () {
+  // body...
+ }
+});
+
 // var Node = spokeObject.extend({ });
 // var Source = spokeObject.extend({ });
 // var Bundle = spokeObject.extend({ });
@@ -75,3 +78,9 @@
 // var Flag = spokeObject.extend({ });
 // var User = spokeObject.extend({ });
 // var Post = spokeObject.extend({ });
+
+var Scratchpad = new Class ({
+  Extends: spokeObject,
+  
+  
+});

@@ -42,7 +42,7 @@
   <div id="scratchpad" class="fixedright">
     <div id="headbox_scratchpad">
       <% for pad in @scratch %>
-        <a href="#" class="padtab" id="tab_scratchpad_<%= pad.id %>"><%= pad.name %></a>
+        <a href="#" class="padtab" id="tab_scratchpad_<%= pad.id %>" title="<%= pad.body %>"><%= pad.name %></a>
       <% end %>
     </div>
     <div id="box_scratchpad">

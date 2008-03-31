@@ -1,3 +1,8 @@
-<p class="small"><label for="scratchpad_name">scratchpad name:</label><br/>
-<%= text_field 'scratchpad', 'name', :style => "width: 180px;" %> <input type="submit" value="save"> or <a href="#" class="cancel_form">cancel</a>
+<p><label for="scratchpad_name">scratchpad name:</label><br/>
+  <%= text_field 'scratchpad', 'name', :class => "titular" %>
+</p>
+
+<p><label for="scratchpad_body">notes:</label><br/>
+  <%= text_area 'scratchpad', 'body', 'rows' => 12, :class => "standard" %><br>
+  <span class="formnote">These are just for your own use</span>
 </p>

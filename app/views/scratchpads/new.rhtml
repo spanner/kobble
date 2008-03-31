@@ -1,3 +1,13 @@
-<% form_tag ({:action => 'create'}, {:onsubmit => 'return false;'}) do %>
+<% form_for :scratchpad,
+            :url => scratchpad_url(@scratchpad),
+            :html => { 
+              :method => "post",
+              :onsubmit => 'return false;'
+            } do |f| 
+%>
   <%= render :partial => 'form' %>
+  <div class="formbuttons">
+    <%= submit_tag "create pad" %> or
+    <%= link_to 'cancel', '#', :class => 'cancel_form' %>
+  </div>
 <% end %>

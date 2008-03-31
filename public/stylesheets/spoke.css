@@ -949,6 +949,68 @@ div.formbuttons {
   clear: both;
 }
 
+div.padform label {
+  font-size: 18px;
+  font-weight: lighter;
+  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
+  letter-spacing: -0.05em;
+  line-height: 20px;
+  color: white;
+  clear: both;
+}
+
+div.padform label a {
+  color: #559DC4;
+  text-decoration: none;
+}
+
+div.padform input.titular {
+  width: 90%;
+  height: 28px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 22px;
+  font-weight: bold;
+  line-height: 22px;
+  color: black;
+}
+
+div.padform input.standard, div.padform select.standard, div.padform textarea.standard {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 14px;
+  line-height: 18px;
+  width: 90%;
+  color: black;
+}
+
+div.padform {
+  background-color: #559DC4;
+  border: 1px solid #559DC4;
+  color: white;
+  height: 100%;
+  width: 0;
+  float: left;
+  padding: 10px;
+}
+
+div.padform p {
+}
+
+div.padform label, div.padform a {
+  color: white;
+}
+
+div.bigspinner {
+ 	background-image: url('/images/furniture/signals/wait_32_ob.gif');
+ 	background-position: 10px 10px;
+ 	background-repeat: no-repeat;
+}
+
+li.waiter {
+ 	list-style-image: url('/images/furniture/signals/wait_og.gif');
+}
+
+
+
 
 
 /* gallery view */
@@ -1138,32 +1200,6 @@ div.cloudsummary label {
 #monitorform {
   padding: 3px;
   float: right;
-}
-
-div.padform {
-  background-color: #559DC4;
-  border: 1px solid #559DC4;
-  color: white;
-}
-
-div.padform p {
-  margin: 10px;
-}
-
-div.padform label, div.padform a {
-  color: white;
-}
-
-div.bigspinner {
-  width: 500px;
-  height: 200px;
- 	background-image: url('/images/furniture/signals/wait_32_ob.gif');
- 	background-position: 10px 10px;
- 	background-repeat: no-repeat;
-}
-
-li.waiter {
- 	list-style-image: url('/images/furniture/signals/wait_og.gif');
 }
 
 

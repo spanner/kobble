@@ -1,7 +1,5 @@
 class ScratchpadsController < ApplicationController
 
-  verify :redirect_to => { :action => :list }
-
   def show
     @scratchpad = Scratchpad.find(params[:id])
   end
@@ -18,10 +16,7 @@ class ScratchpadsController < ApplicationController
     @scratchpad = Scratchpad.new(params[:scratchpad])
     @scratchpad.name ||= 'new pad'
     if @scratchpad.save!
-      flash[:notice] = 'Scratchpad was successfully created.'
-      render :action => 'created', :layout => false
-    else
-      render :action => 'new'
+      render :json => @scratchpad.to_json
     end
   end
 
@@ -36,9 +31,7 @@ class ScratchpadsController < ApplicationController
   def update
     @scratchpad = Scratchpad.find(params[:id])
     if @scratchpad.update_attributes(params[:scratchpad])
-      render :action => 'updated', :layout => false
-    else
-      render :action => 'edit'
+      render :json => @scratchpad.to_json
     end
   end
     

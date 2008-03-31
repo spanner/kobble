@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 87) do
+ActiveRecord::Schema.define(:version => 88) do
 
   create_table "accounts", :force => true do |t|
     t.integer "user_id"
@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(:version => 87) do
   create_table "activations", :force => true do |t|
     t.integer "collection_id"
     t.integer "user_id"
-    t.integer "active",        :default => 1
+    t.integer "active",        :default => 0
   end
 
   create_table "bundles", :force => true do |t|
@@ -157,15 +157,19 @@ ActiveRecord::Schema.define(:version => 87) do
   add_index "paddings", ["scrap_type", "scrap_id"], :name => "index_scratchpad_scraps"
 
   create_table "people", :force => true do |t|
-    t.string  "name"
-    t.string  "image"
-    t.string  "clip"
-    t.text    "description"
-    t.text    "body"
-    t.text    "emotions"
-    t.text    "observations"
-    t.text    "arising"
-    t.integer "collection_id"
+    t.string   "name"
+    t.string   "image"
+    t.string   "clip"
+    t.text     "description"
+    t.text     "body"
+    t.text     "emotions"
+    t.text     "observations"
+    t.text     "arising"
+    t.integer  "collection_id"
+    t.integer  "created_by"
+    t.datetime "created_at"
+    t.integer  "updated_by"
+    t.datetime "updated_at"
   end
 
   create_table "posts", :force => true do |t|
@@ -188,6 +192,8 @@ ActiveRecord::Schema.define(:version => 87) do
     t.integer  "updated_by"
     t.datetime "updated_at"
     t.integer  "collection_id"
+    t.text     "notes"
+    t.string   "color"
   end
 
   create_table "sessions", :force => true do |t|
@@ -251,9 +257,8 @@ ActiveRecord::Schema.define(:version => 87) do
 
   create_table "topics", :force => true do |t|
     t.string   "name"
-    t.integer  "posts_count",  :default => 0
+    t.integer  "posts_count",   :default => 0
     t.datetime "replied_at"
-    t.boolean  "locked",       :default => false
     t.integer  "replied_by"
     t.integer  "last_post_id"
     t.integer  "speaker_id"
@@ -261,8 +266,9 @@ ActiveRecord::Schema.define(:version => 87) do
     t.integer  "created_by"
     t.datetime "updated_at"
     t.integer  "updated_by"
-    t.string   "subject_type"
-    t.integer  "subject_id"
+    t.string   "referent_type"
+    t.integer  "referent_id"
+    t.integer  "collection_id"
   end
 
   add_index "topics", ["replied_at"], :name => "index_topics_on_sticky_and_replied_at"
