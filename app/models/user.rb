@@ -188,7 +188,7 @@ class User < ActiveRecord::Base
     end
     
     def activation_of (collection)
-      Activation.find_or_initialize_by_user_id_and_collection_id(self, collection)
+      Activation.find_or_create_by_user_id_and_collection_id(self.id, collection.id)
     end
     
   protected

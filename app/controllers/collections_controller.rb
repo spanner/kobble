@@ -9,11 +9,6 @@ class CollectionsController < ApplicationController
     render :action => "list"
   end
   
-  def set_context
-    @scratch = current_user.find_or_create_scratchpads if logged_in?
-    EditObserver.current_user = current_user
-  end
-
   def limit_to_active_collections()
     []
   end

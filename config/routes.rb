@@ -18,9 +18,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :users, :has_many => :activations, :collection => { :gallery => :get }, :member => { :home => :get }
   map.resources :topics, :has_many => :posts
   map.resources :scratchpads, :has_many => :scraps
-
+  map.resources :collections
   map.resources :posts
-  
   map.resources :activations, :collection => { :activate => :any }, :member => { :deactivate => :any, :toggle => :any }
   map.resources :monitorships, :member => { :toggle => :any }
   map.resources :accounts, :collection => { :home => :any }

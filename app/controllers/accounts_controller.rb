@@ -2,6 +2,11 @@ class AccountsController < ApplicationController
   before_filter :admin_required, :except => [:show, :edit, :update, :create, :new]
   before_filter :login_required, :except => [:create, :new]
 
+  def set_context
+    @scratch = current_user.find_or_create_scratchpads if logged_in?
+    EditObserver.current_user = current_user
+  end
+
   def index
     home
     render :action => 'home'
@@ -55,9 +60,9 @@ class AccountsController < ApplicationController
     
     # check permission to change
     
-    if @collection.update_attributes(params[:collection])
-      flash[:notice] = 'Collection was successfully updated.'
-      redirect_to :action => 'list'
+    if @collection.update_attributes(params[:account])
+      flash[:notice] = 'account was successfully updated.'
+      redirect_to :action => 'home'
     else
       render :action => 'edit'
     end
@@ -74,6 +79,6 @@ class AccountsController < ApplicationController
     
     @account.destroy
     flash[:notice] = "account removed"
-    redirect_to :action => 'list'
+    redirect_to :action => 'index'
   end
 end

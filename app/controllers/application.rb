@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
       @scratch = current_user.find_or_create_scratchpads 
       EditObserver.current_user = current_user
       Collection.current_collections = current_collections
-      redirect_to :controller => 'collections', :action => 'list' if current_collections.empty?
+      redirect_to :controller => 'accounts', :action => 'home' if current_collections.empty?
     end
   end
   
