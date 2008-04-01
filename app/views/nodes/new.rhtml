@@ -1,7 +1,13 @@
 <% @title = "Create a new fragment" %>
 
 <div class="mainform">
-<% form_tag({:action => 'create'}, :id => 'nodeform', :multipart => true) do %>
- <%= render :partial => 'form' %>
-<% end %>
+  <% form_for :node,
+              :url => node_url(@node),
+              :html => { 
+                :multipart => true,
+                :id => 'nodeform'
+              } do |f| 
+  %>
+   <%= render :partial => 'form' %>
+  <% end %>
 </div>

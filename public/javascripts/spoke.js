@@ -82,9 +82,6 @@ var Interface = new Class({
       }
     }
   },
-  
-  // useful abstractions used when initialising page and also when making newly created objects active
-  
   addTabs: function (elements) {  
     elements.each(function (element) { intf.tabs.push(new Tab(element)); });
   },
@@ -117,6 +114,11 @@ var Interface = new Class({
       intf.tagboxes.push(new Autocompleter.Ajax.Json(element, '/tags/matching', { 'indicator': waiter, 'postVar': 'stem', 'multiple': true }));
     });
   },
+  makeSnipper: function (elements) {
+    elements.each(function (element) { 
+      element.addEvent('click', function (e) { new Snipper(element, e); })
+    });
+  },
     
   // this is the main page initialisation: it gets called on domready
   
@@ -131,18 +133,14 @@ var Interface = new Class({
 	  this.makeFixed(scope.getElements('div.fixedbottom'));
     this.makeToggle(scope.getElements('a.toggle'))
     this.makeSuggester(scope.getElements('input.tagbox'))
-
-    // $$('a.snipper', scope).each( function (element) {
-    //   element.addEvent('click', function (e) {
-    //     new Snipper(element, e);
-    //   });
-    // });
+    this.makeSnipper(scope.getElements('a.snipper'))
   },
   
   activateElement: function (element) {
     this.activate(element);
     
-    //and the thing itself
+    //and the thing itself. there doesn't seem to be a cleaner way to work with thing-and-children
+    
 	  if (element.hasClass('catcher')) this.addDropzones( [element] );
 	  if (element.hasClass('trashdrop')) this.addTrashDropzones( [element] );
 	  if (element.hasClass('draggable')) this.makeDraggables( [element] );
@@ -151,6 +149,26 @@ var Interface = new Class({
 	  if (element.hasClass('padtab')) this.addScratchTabs( [element] );
 	  if (element.hasClass('fixedbottom')) this.makeFixed( [element] );
     if (element.hasClass('toggle')) this.makeToggle( [element] )
+    if (element.hasClass('snipper')) this.makeSnipper( [element] )
+  },
+  getSelectedText: function () {
+  	var txt = '';
+  	if (window.getSelection) {
+  		txt = window.getSelection();
+  	} else if (document.getSelection) {
+  		txt = document.getSelection();
+  	} else if (document.selection) {
+  		txt = document.selection.createRange().text;
+  	}
+    return '' + txt;
+  },
+  getPlayerIn: function () {
+    var player = document.spannerplayer;
+    if (player && player.playerOk() ) return player.playerIn();
+  },
+  getPlayerOut: function () {
+    var player = document.spannerplayer;
+    if (player && player.playerOk() ) return player.playerOut();
   }
 });
 
@@ -860,5 +878,200 @@ var Toggle = new Class({
   },
   ticked: function () {
     return this.link.hasClass('ticked');
+  }
+});
+
+var ModalForm = new Class ({
+  initialize: function (element, e) {
+    event = new Event(e);
+    event.preventDefault();
+    var mf = this;
+    element.blur();
+		this.link = element;
+		this.form = null;
+    this.waiter = null;
+		this.eventPosition = this.position.bind(this);
+		this.overlay = new Element('div', {'class': 'overlay'}).inject(document.body);
+		this.floater = new Element('div', {'class': 'floater'}).inject(document.body);
+		this.spinner = new Element('div', {'class': 'bigspinner'}).inject(this.floater).show();
+		this.formholder = new Element('div', {'class': 'modalform'}).inject(this.floater).hide();
+    this.responseholder = new Element(this.responseholdertype());
+		this.overlay.onclick = this.hide.bind(this);
+    this.formholder.set('load', {
+      onRequest: function () { mf.waiting(); },
+      onSuccess: function () { mf.prepForm(); },
+      onFailure: function () { mf.failed(); }
+    });
+    this.show();
+  },
+  url: function () { return this.link.getProperty('href'); },
+  destination: function () { return $E('#' + this.source.id.replace('extend_','')); },
+  responseholdertype: function () { return 'select'; },
+ 
+  show: function () {
+    this.position();
+    this.getForm();
+		this.setup(true);
+		this.top = window.getScrollTop() + (window.getHeight() / 15);
+		this.floater.setStyles({top: this.top, display: ''});
+		this.overlay.fade(0.6);
+    this.floater.show();
+  },
+
+  hide: function () {
+    this.floater.fade('out');
+		this.overlay.fade('out');
+		this.setup(false);
+  },
+  
+  // overridable close-form link suitable for insertion into the dialog somewhere
+  canceller: function () {
+    var a = new Element('a', {'class': 'canceller', 'href': '#'}).setText('cancel [x]');
+    a.onclick = this.hide.bind(this);
+    return a;
+  },
+  
+  // hide embeds and objects to prevent display glitches
+	setup: function(opening){
+		var fn = opening ? 'addEvent' : 'removeEvent';
+		window[fn]('scroll', this.eventPosition)[fn]('resize', this.eventPosition);
+  },
+  
+  //position whiteout overlay
+	position: function(){
+		dimensions = this.floater.getCoordinates();
+		this.floater.setStyles({
+		  'top': window.getScrollTop() + Math.floor(window.getHeight() - dimensions.height) / 2, 
+		  'left': window.getScrollLeft() + Math.floor((window.getWidth() - dimensions.width) / 2), 
+		});
+		this.overlay.setStyles({
+		  'top': window.getScrollTop(), 
+		  'height': window.getHeight()
+		});
+	},
+	
+  getForm: function () {
+    this.canceller().inject(this.floater, 'top');
+    this.waiting();
+    this.formholder.load(this.url());
+  },
+  
+  // onSuccess trigger in formholder.load calls prepForm()
+
+  prepForm: function () {
+    console.log('prepform')
+    this.notWaiting();
+    this.form = this.formholder.getElement('form');
+		this.form.onsubmit = this.sendForm.bind(this);
+    var closer = this.hide.bind(this);
+    this.form.getElements('a.cancelform').each(function (a) { a.onclick = closer })
+    this.form.getElement('input').focus();
+    var mf = this;
+    
+    this.form.set('send', {
+      onComplete: function (response) { 
+        mf.page_update(response); 
+      }
+    });
+  },
+  
+  sendForm: function (e) {
+    e.preventDefault();
+    console.log('sendForm');
+    this.form.send();
+  },
+
+  // for wait signals on the page itself
+  page_waiting: function () { this.waiting(); },
+  
+  page_update: function (response) {    //response is a node tree
+    console.log('page_update');
+    this.hide();
+    this.destination().grab( response );
+    intf.announce('new item created');
+  },
+  
+  // really ought to do something constructive here
+  failed: function () {
+    this.hide();
+    intf.complain("oh no.");
+  },
+  
+  // just in case it's needed
+  destroy: function () {
+    this.floater.remove();
+    this.overlay.remove();
+  },
+  
+  waiting: function () {
+    this.formholder.hide();
+    this.spinner.show();
+  },
+
+  notWaiting: function () {
+    this.spinner.hide();
+    this.formholder.show();
+  }
+	
+});
+
+var Snipper = new Class ({
+	Extends: ModalForm,
+	
+  destination: function () { return $E('ul#nodelist'); },
+  responseholdertype: function () { return 'ul'; },
+
+  prepForm: function () {
+    console.log('filling in forms');
+    this.notWaiting();
+    this.form = this.formholder.getElement('form');
+    var closer = this.hide.bind(this);
+    this.form.getElements('a.cancelform').each(function (a) { a.onclick = closer })
+    intf.makeSuggester(this.form.getElements('input.tagbox'));
+    this.form.getElement('#node_body').set('value', intf.getSelectedText());
+    this.form.getElements('#node_playfrom').each( function (input) { input.set('value', intf.getPlayerIn()); });
+    this.form.getElements('#node_playto').each( function (input) { input.set('value', intf.getPlayerOut()); });
+    this.form.getElement('.titular').focus();
+		this.form.onsubmit = this.sendForm.bind(this);
+  },
+  
+  sendForm: function (e) {
+    var event = new Event(e).stop();
+    event.preventDefault();
+    
+    var mf = this;
+    var req = new Request.HTML({
+      url: this.form.get('action'),
+      update: this.responseholder,
+      onRequest: function () { mf.page_waiting(); },
+      onSuccess: function (response) { 
+        mf.page_update(response); 
+      }
+    }).post(this.form);
+  },
+  
+  // this is called when the form is submitted
+  // we disappear the form and stick a waiter in the node list
+  page_waiting: function (argument) {
+    console.log('page_waiting. this is');
+    console.log(this);
+    this.waiting();
+    var nodelist = this.destination();
+    console.log(nodelist)
+    this.waiter = new Element('li', {'class': 'waiting'}).setText('please wait').inject(nodelist, 'top');
+    if (intf.tabsets['content']) intf.tabsets['content'].select('nodes');
+    new Fx.Scroll(window).toTop();
+    this.hide();
+  },
+  
+  // this is called upon final response to the form
+  // we remove the waiter, insert into the node list and make the new insertion draggable
+  page_update: function () {
+    var fragments = this.responseholder.getChildren();    
+    var li = fragments[0];
+    this.waiter.remove();
+    li.inject(this.destination(), 'top');
+    intf.activateElement( li );
+    intf.announce('fragment created');
   }
 });

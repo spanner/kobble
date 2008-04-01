@@ -39,7 +39,7 @@
 <% content_for :admin do %>
   <p>
     source:<br />
-    <%= link_to "excerpt", {:controller => 'nodes', :action => 'new', :source_id => @source}, {:class => 'snipper create'} %><br />
+    <%= link_to "[snip]", new_source_node_path(@source), {:class => 'snipper create'} %><br />
     <%= render :partial => 'shared/show_admin', :locals => {:item => @source} %>
   </p>
 <% end %>

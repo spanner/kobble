@@ -1,6 +1,8 @@
-<% if item.has_clip? %>
-  <% @tempitem = item %>
-    <%= render :partial => 'shared/player', :locals => { :mp3url => url_for_file_column('tempitem', "clip") } %>
-    <%= link_to 'create audio fragment', {:controller => 'nodes', :action => 'new'}, {:class => 'snipper', :title => "first choose start and end times and highlight corresponding text"} %>
-  <% @tempitem = nil %>
-<% end %>
+<div class="mainclip">
+  <% if item.has_clip? %>
+    <% @tempitem = item %><%= render :partial => 'shared/player', :locals => { :mp3url => url_for_file_column('tempitem', "clip") } %><% @tempitem = nil %>
+    <% if item.class == Source %>
+      <%= link_to '[snip]', new_source_node_path(item), {:class => 'snipper', :title => "first choose start and end times and highlight corresponding text"} %>
+    <% end %>
+  <% end %>
+</div>

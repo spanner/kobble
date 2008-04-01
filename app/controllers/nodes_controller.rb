@@ -25,20 +25,37 @@ class NodesController < ApplicationController
     @node = Node.new
     @sources = Source.find(:all, :conditions => limit_to_active_collections)
     @people = Person.find(:all, :conditions => limit_to_active_collections)
-    @node.source = Source.find(params[:source_id]) if params[:source_id]
+    @source = Source.find(params[:source_id]) if params[:source_id]
+    @node.source = @source
     @node.collection = @node.source.collection if @node.source
     @node.speaker = Person.find(params[:speaker_id]) if params[:speaker_id]
     @node.body = URI.unescape(params[:excerpt]) if params[:excerpt]
     @node.playfrom = params[:inat]
     @node.playto = params[:outat]
+    respond_to do |format|
+      format.html { render :template => 'nodes/snipper' }
+      format.js { render :template => 'nodes/snipper', :layout => false }
+      format.json { render :json => @node.to_json }
+      format.xml { }
+    end
+  end
+  
+  def snip
+    
   end
 
   def create
     @node = Node.new(params[:node])
+    @node.source = Source.find(params[:source_id])
     if @node.save
       @node.tags << Tag.from_list(params[:tag_list])
-      flash[:notice] = 'Segment created.'
-      redirect_to :action => 'show', :id => @node
+      flash[:notice] = 'Fragment created.'
+      respond_to do |format|
+        format.html { redirect_to :action => 'show', :id => @node }
+        format.js { render :layout => false }
+        format.json { render :json => @node.to_json }
+        format.xml { }
+      end
     else
       render :action => 'new'
     end

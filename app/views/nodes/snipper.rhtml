@@ -5,40 +5,39 @@
 		Create a new fragment
 	<% end %>
 </h1>
+<% form_for ([@source, @node]) do |f| %>
 
-<% form_tag( {:action => 'snip'}, :id => 'nodeform', :multipart => true) do %>
-	<%= hidden_field_tag 'node[source_id]', @node.source.id %>
-	<% unless @node.source.speaker.nil? %><%= hidden_field_tag 'node[speaker_id]', @node.source.speaker.id %><% end %>
+  <%= f.hidden_field 'collection_id' %>
 
 	<p><label for="node_name">Fragment name</label><br/>
- 	<%= text_field 'node', 'name', :class => "titular" %>
+ 	<%= f.text_field 'name', :class => "titular" %>
 	</p>
 
 	<p><label for="node_description">Synopsis</label><br />
-	<%= text_area 'node', 'description', 'rows' => 3, :class => "standard" %>
+	<%= f.text_area 'description', 'rows' => 2, :class => "standard" %>
 	</p>
 
 	<p><label for="tag_list">Choose or create tags</label><br />
-	<input id="tag_list" name="tag_list" class="standard tagbox" value="<%= @node.source.tag_list %>" />
+	<input id="tag_list" name="tag_list" class="tagbox" value="<%= @source.tag_list %>" />
 	</p>
 
-	<p><label for="node_body">Text (or transcript)</label><br/>
-	<%= text_area 'node', 'body', 'rows' => 6, :class => "standard" %>
+	<p><label for="node_body">Text or transcript</label><br/>
+	<%= f.text_area 'body', 'rows' => 6, :class => "standard" %>
 	</p>
 
 	<% unless @node.source.nil? || @node.source.clip.nil? %>
 		<div style="float: left; width: 180px;">
-			<p><label for="node_playfrom">Start (seconds):</label><br />
-			<%= text_field 'node', 'playfrom', :style =>  "width: 180px;" %></p>
+			<p><label for="node_playfrom">Start (timecode):</label><br />
+			<%= f.text_field 'playfrom', :style =>  "width: 180px;" %></p>
 		</div>
 		<div style="float: left; width: 180px; margin-left: 10px">
-			<p><label for="node_playto">Stop (seconds):</label><br />
-			<%= text_field 'node', 'playto', :style =>  "width: 180px;" %></p>
+			<p><label for="node_playto">Stop (timecode):</label><br />
+			<%= f.text_field 'playto', :style =>  "width: 180px;" %></p>
 		</div>
 	<% end %>
 
 	<div class="formbuttons clear">
-		<%= submit_tag "create fragment and return" %>
+		<%= submit_tag "create fragment" %> or <%= link_to 'cancel', source_url(@source), {:class => 'cancelform'} %>
 	</div>
 
 <% end %>

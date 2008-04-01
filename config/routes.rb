@@ -8,10 +8,12 @@ ActionController::Routing::Routes.draw do |map|
   map.catch '/:controller/catch/:id/:caughtClass/:caughtID', :action => 'catch'
   map.drop '/:controller/drop/:id/:droppedClass/:droppedID', :action => 'drop'
   map.trash '/:controller/trash/:id', :action => 'trash'
-
-  [:sources, :bundles, :nodes, :people, :occasions].each do |k|
-    map.resources k, :has_many => :topics, :collection => { :gallery => :get }, :member => {:annotate => :post}
-  end
+  
+  map.resources :sources, :has_many => [:topics, :nodes], :collection => { :gallery => :get }, :member => {:annotate => :post}
+  map.resources :nodes, :has_many => :topics, :collection => { :gallery => :get }, :member => {:annotate => :post}
+  map.resources :bundles, :has_many => [:topics, :members], :collection => { :gallery => :get }, :member => {:annotate => :post}
+  map.resources :people, :collection => { :gallery => :get }, :member => {:annotate => :post}
+  map.resources :occasions, :collection => { :gallery => :get }, :member => {:annotate => :post}
   
   map.resources :tags, :has_many => :taggings, :collection => { :gallery => :get, :cloud => :get, :tree => :get, :treemap => :get, :matching => :any } 
   map.resources :flags, :has_many => :flaggings

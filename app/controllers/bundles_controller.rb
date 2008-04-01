@@ -14,8 +14,12 @@ class BundlesController < ApplicationController
     @members = []
     @bundle.tags << Tag.from_list(params[:tag_list]) if params[:tag_list]
     if params[:scratchpad_id]
-      @expad = Scratchpad.find(:scratchpad_id)
-      @members << @expad.scraps
+      @expad = Scratchpad.find(params[:scratchpad_id])
+      if @expad
+        @members << @expad.scraps
+        @bundle.name = @expad.name
+        @bundle.body = @expad.body
+      end
     end
     @members.uniq!
   end

@@ -2,6 +2,7 @@
   <%= render :partial => 'shared/download_file', :locals => {:item => item}%>
 <% end %>
 
-<p><label for="<%= item.class.to_s.downcase %>_file"><% if item.file %>Replace this with a new<% else %>or upload a<% end %> file: <%= file_column_field item.class.to_s.downcase, "file" %></label></p>
+<p class="formnote">You can also create a fragment or source document directly from a file (PDF or MS Word, please). The file will be made available as a download and we'll extract whatever text we can for indexing and snipping purposes. The extract tends to be a bit rough: if you would like to display a nicely formatted version, please enter it in the body text box above.</p>
 
-<p>You can also create a fragment or source document directly from a file (PDF or MS Word, please). The file will be made available as a download and we'll extract whatever text we can for indexing and snipping purposes. The extract tends to be a bit rough: if you would like to display a nicely formatted version, please enter it in the body text box above.</p>
+<p><label for="<%= item.class.to_s.downcase %>_file"><% if item.file %>Replace this with a new<% else %>Upload a<% end %> file: <%= file_column_field item.class.to_s.downcase, "file" %></label></p>
+

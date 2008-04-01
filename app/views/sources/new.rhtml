@@ -1,9 +1,7 @@
-<div id="inputform">
+<% @title = 'create source' %>
 
-<h1 class="pagetitle">Upload a new source document</h1>
-
-<% form_tag( {:action => 'create'}, :multipart => true) do %>
+<div class="mainform">
+<% form_for :source, :url => source_path(@source) do |f| %>
   <%= render :partial => 'form' %>
 <% end %>
-
 </div>

@@ -1,6 +1,7 @@
 /* 
   sparrow layout: v1.0
   spark blue: #559DC4
+  creative green: #6cb262
   warm grey 11: #695D54
   spark orange: #CC6E1F
   warm grey 5: #B2AAA4
@@ -374,6 +375,7 @@ div.scratchpage .tiptext, div.scratchpage .tiptitle {
 
 div.preamble {
   max-width: 640px;
+  clear: left;
 }
 
 div.mainlist {
@@ -564,58 +566,102 @@ div.floatcolumn {
 }
 
 
+
+
 /* snipper and other floating dialogs */
 
-#overlay {
+div.mainclip a.snipper {
+  font-size: 20px;
+  font-weight: lighter;
+  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
+  color: #6cb262;
+}
+
+div.overlay {
 	position: absolute;
 	left: 0;
 	width: 100%;
-	background-color: #000;
+	background-color: white;
 	cursor: pointer;
+	z-index: 20000;
+	opacity: 0;
 }
 
-#floater {
+div.floater {
 	position: absolute;
   left: 150px;
   top: 70px;
   width: 510px;
   max-height: 800px;
- 	background-image: url('/images/furniture/layout/snipperbg.png');
- 	background-position: bottom right;
- 	background-repeat: no-repeat;
   padding: 0 10px;
   overflow: hidden;
+  background-color: white;
+  border: 1px solid #d1005d;
+	z-index: 21000;
 }
 
-#floater h1 {
+div.floater h1 {
   max-height: 56px;
   overflow: hidden;
   margin: 20px 10px 6px 20px;
-  color: white;
+  color: #d1005d;
 }
 
-#floater form {
+div.floater form {
   margin: 0 20px;
 }
 
-#floater form p {
+div.floater label {
+  font-size: 18px;
+  font-weight: lighter;
+  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
+  letter-spacing: -0.05em;
+  line-height: 20px;
+  color: #695D54;
+  clear: both;
+}
+
+div.floater form p {
   margin: 5px 0;
 }
 
-#floater a, #floater a:link; #floater a:visited {
+div.floater a, div.floater a:link; div.floater a:visited {
   color: white;
 }
 
-#floater input.titular, #floater input.standard, #floater textarea.standard, #floater select.standard {
+div.floater input.titular, div.floater select.standard {
  	width: 460px;
+  height: 28px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 22px;
+  font-weight: bold;
+  line-height: 22px;
+  color: black;
 	clear: both; 
 }
 
-#floater a.canceller, #floater a.canceller:visited {
-  color: white;
+div.floater input.standard, div.floater select.standard, div.floater textarea.standard {
+ 	width: 460px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 14px;
+  line-height: 18px;
+  color: black;
+}
+
+div.floater input.tagbox {
+ 	width: 460px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 22px;
+  font-weight: lighter;
+  line-height: 22px;
+  color: #559DC4;
+}
+
+div.floater a.canceller, div.floater a.canceller:visited {
   font-size: 20px;
   font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
-  margin: 6px 10px 6px 20px;
+  margin: 14px;
+  float: right;
 }
 
 /* search box */
@@ -880,9 +926,13 @@ span.countlabel {
 /* edit forms */
 
 .formnote {
-  font-size: 0.7em;
+  font-size: 0.8em;
   line-height: 1.1;
   color: #695D54;
+}
+
+div.mainform h2 {
+  color: #d1005d;
 }
 
 div.mainform label {
