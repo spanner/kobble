@@ -12,3 +12,9 @@
 
 <% end %>
 </div>
+
+<% content_for :admin do %>
+  <p>
+    back to <%= link_to 'sources list', sources_url %>
+  </p>
+<% end %>

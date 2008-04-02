@@ -1,5 +1,5 @@
 <% @title = "Edit #{@bundle.name}" %>
-
+  
 <div class="mainform">
   <% form_for :bundle,
               :url => bundle_path(@bundle),
@@ -18,3 +18,9 @@
 
   <% end %>
 </div>
+
+<% content_for :admin do %>
+  <p>
+    back to <%= link_to 'set page', url_for(@bundle) %>
+  </p>
+<% end %>

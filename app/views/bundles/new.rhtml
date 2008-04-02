@@ -25,3 +25,9 @@
 
   <% end %>
 </div>
+
+<% content_for :admin do %>
+  <p>
+    back to <%= link_to 'set list', bundles_url %>
+  </p>
+<% end %>

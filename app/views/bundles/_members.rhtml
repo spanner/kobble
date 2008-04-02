@@ -9,8 +9,8 @@
   <p>Drag items into or out of this list to edit the set.</p>
 <% end %>
 
-<div id="bundle_<%= @bundle.id %>" class="catcher mainlist" catches="<%= @bundle.can_catch.join(',') %>">
-  <ul id="memberlist">
+<div id="bundle_<%= @bundle.id %>" class="<% 'catcher ' unless inactive %>mainlist"<% unless inactive %> catches="<%= @bundle.can_catch.join(',') %>"<% end %>>
+  <ul id="memberlist"<% if inactive %> class="inactive"<% end %>>
     <%= render :partial => 'shared/listed', :collection => members, :locals => {:inactive => inactive} %>
   </ul>
 </div>

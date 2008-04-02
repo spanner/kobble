@@ -415,6 +415,14 @@ div.mainlist a.listed {
   
 }
 
+div.mainlist a.inactive {
+  color: #B2AAA4;
+}
+
+div.mainlist a.inactive:hover {
+  color: #d1005d;
+}
+
 div.mainlist li a img {
   margin: 0 8px 0 0;
   float: left;
@@ -443,6 +451,22 @@ div.mainlist li.answer { list-style-image: url(/images/furniture/spoke/blue/answ
 div.mainlist li.waiting {
   list-style-image: url(/images/furniture/signals/wait_16_grey.gif);
 }
+
+div.mainlist ul.inactive li.collection { list-style-image: url(/images/furniture/spoke/mid/collection.png); }
+div.mainlist ul.inactive li.node { list-style-image: url(/images/furniture/spoke/mid/node.png); }
+div.mainlist ul.inactive li.source { list-style-image: url(/images/furniture/spoke/mid/source.png); }
+div.mainlist ul.inactive li.bundle { list-style-image: url(/images/furniture/spoke/mid/bundle.png); }
+div.mainlist ul.inactive li.user { list-style-image: url(/images/furniture/spoke/mid/user.png); }
+div.mainlist ul.inactive li.person { list-style-image: url(/images/furniture/spoke/mid/user.png); }
+div.mainlist ul.inactive li.tag { list-style-image: url(/images/furniture/spoke/mid/tag.png); }
+div.mainlist ul.inactive li.flag { list-style-image: url(/images/furniture/spoke/mid/flag.png); }
+div.mainlist ul.inactive li.forum { list-style-image: url(/images/furniture/spoke/mid/forum.png); }
+div.mainlist ul.inactive li.topic { list-style-image: url(/images/furniture/spoke/mid/post.png); }
+div.mainlist ul.inactive li.post { list-style-image: url(/images/furniture/spoke/mid/post.png); }
+div.mainlist ul.inactive li.blogentry { list-style-image: url(/images/furniture/spoke/mid/blogentry.png); }
+div.mainlist ul.inactive li.question { list-style-image: url(/images/furniture/spoke/mid/question.png); }
+div.mainlist ul.inactive li.answer { list-style-image: url(/images/furniture/spoke/mid/answer.png); }
+
 
 div.mainlist li.waiting a {  
   color: #695D54;

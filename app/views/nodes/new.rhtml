@@ -18,3 +18,9 @@
 
   <% end %>
 </div>
+
+<% content_for :admin do %>
+  <p>
+    back to <%= link_to 'fragments list', nodes_url %>
+  </p>
+<% end %>

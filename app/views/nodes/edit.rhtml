@@ -18,5 +18,10 @@
   </div>
   
   <% end %>
-
 </div>
+
+<% content_for :admin do %>
+  <p>
+    back to <%= link_to 'fragment page', url_for(@node) %>
+  </p>
+<% end %>
