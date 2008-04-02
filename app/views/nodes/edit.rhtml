@@ -1,6 +1,7 @@
 <% @title = "Edit: #{@node.name}" %>
 
 <div class="mainform">
+
   <% form_for :node,
               :url => node_url(@node),
               :html => { 
@@ -8,6 +9,14 @@
                 :multipart => true
               } do |f| 
   %>
-    <%= render :partial => 'form' %>
+
+  <%= render :partial => 'form' %>
+
+  <div class="formbuttons">
+    <%= submit_tag "Update Fragment" %> or
+    <%= link_to 'cancel', :action => 'index' %>
+  </div>
+  
   <% end %>
+
 </div>

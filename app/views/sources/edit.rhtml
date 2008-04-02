@@ -1,13 +1,21 @@
 <% @title = "Edit: #{@source.name}" %>
 
 <div class="mainform">
-<% form_for :source,
-            :url => source_path(@source),
-            :html => { 
-              :method => "put",
-              :multipart => true
-            } do |f| 
-%>
+
+  <% form_for :source,
+              :url => source_path(@source),
+              :html => { 
+                :method => "put",
+                :multipart => true
+              } do |f| 
+  %>
+
   <%= render :partial => 'form' %>
-<% end %>
+
+  <div class="formbuttons">
+    <%= submit_tag "Update Document" %> or
+    <%= link_to 'cancel', :action => 'index' %>
+  </div>
+
+  <% end %>
 </div>

@@ -1,6 +1,7 @@
 <% @title = "Create a new fragment" %>
 
 <div class="mainform">
+
   <% form_for :node,
               :url => node_url(@node),
               :html => { 
@@ -8,6 +9,12 @@
                 :id => 'nodeform'
               } do |f| 
   %>
-   <%= render :partial => 'form' %>
+  <%= render :partial => 'form' %>
+
+  <div class="formbuttons">
+    <%= submit_tag "Create Fragment" %> or
+    <%= link_to 'cancel', :action => 'index' %>
+  </div>
+
   <% end %>
 </div>

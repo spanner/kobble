@@ -2,6 +2,13 @@
 
 <div class="mainform">
 <% form_for :source, :url => source_path(@source) do |f| %>
+
   <%= render :partial => 'form' %>
+
+  <div class="formbuttons">
+    <%= submit_tag "Create Document" %> or
+    <%= link_to 'cancel', :action => 'index' %>
+  </div>
+
 <% end %>
 </div>

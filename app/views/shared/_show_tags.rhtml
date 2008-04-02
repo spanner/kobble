@@ -2,12 +2,12 @@
 <% if editor? || item.has_tags? %>
   <div id="<%= tabset %>_tags">
   	<% if editor? %>
-  	  <p>drop a tag here to add it to the list</p>
+  	  <p>Drop a tag here to add it to the list:</p>
     <% end %>
     <div class="mainlist">
     	<ul 
     	  id="tagsfor_<%= item.class.to_s.downcase %>_<%= item.id %>"
-    	  class="catcher" 
+    	  class="catcher dropzone" 
     	  catches="tag"    	  
     	>
     	<% if item.has_tags? %>

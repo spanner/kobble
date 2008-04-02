@@ -1,0 +1,16 @@
+<%
+  members ||= @bundle.members
+  inactive ||= false
+%>
+
+<% if inactive %>
+  <p>This list will be editable by drag and drop once the set has been created.</p>
+<% else %>
+  <p>Drag items into or out of this list to edit the set.</p>
+<% end %>
+
+<div id="bundle_<%= @bundle.id %>" class="catcher mainlist" catches="<%= @bundle.can_catch.join(',') %>">
+  <ul id="memberlist">
+    <%= render :partial => 'shared/listed', :collection => members, :locals => {:inactive => inactive} %>
+  </ul>
+</div>

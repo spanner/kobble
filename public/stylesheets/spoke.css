@@ -245,6 +245,11 @@ div#trash.drophere {
   background-color: transparent;
 }
 
+ul.dropzone {
+  min-height: 100px;
+/*  border: 1px dotted #B2AAA4;*/
+}
+
 
 /* scratchpad */
 
@@ -303,10 +308,10 @@ div.scratchpage {
 }
 
 div.scratchpage ul {
-  margin: 0 10px 0 0;
+  margin: 0;
   padding: 6px 0 0 30px;
   color: white;
-	min-height: 300px;
+	height: 99%;
 }
 
 div.scratchpage li {
@@ -328,13 +333,16 @@ div.scratchpage li a:hover {
   color: white;
 }
 
-div.scratchpage div.padcontrol a, div.scratchpage div.padcontrol a:visited {
-  padding: 4px;
+div.scratchpage li.padcontrol {
+  list-style: none;
   font-size: 11px;
+}
+
+div.scratchpage li.padcontrol a, div.scratchpage li.padcontrol a:visited {
   color: #B2AAA4;
 }
 
-div.scratchpage div.padcontrol a:hover {
+div.scratchpage li.padcontrol a:hover {
   color: white;
   background-color: #d1005d;
 }
@@ -401,6 +409,10 @@ div.mainlist li {
   margin: 0 10px 4px 0;
   font-size: 16px;
   line-height: 20px;
+}
+
+div.mainlist a.listed {
+  
 }
 
 div.mainlist li a img {

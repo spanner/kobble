@@ -11,32 +11,30 @@ class BundlesController < ApplicationController
 
   def new
     @bundle = Bundle.new
-    @members = []
     @bundle.tags << Tag.from_list(params[:tag_list]) if params[:tag_list]
     if params[:scratchpad_id]
       @expad = Scratchpad.find(params[:scratchpad_id])
       if @expad
-        @members << @expad.scraps
+        @members = @expad.scraps.uniq
         @bundle.name = @expad.name
         @bundle.body = @expad.body
       end
     end
-    @members.uniq!
   end
 
   def create
     @bundle = Bundle.new(params[:bundle])
     if @bundle.save
-      members = []
       @bundle.tags << Tag.from_list(params[:tag_list]) if params[:tag_list]
-      if params[:scrap]      
-        params[:scrap].each do |s|
-          input = s.split('_')
-          @bundle.members << input[0].camelize.constantize.find(input[1])
-        end
+      if params[:scratchpad_id]
+        @expad = Scratchpad.find(params[:scratchpad_id])
+        @expad.scraps.uniq.each { |m| @bundle.members << m }
+        @expad.destroy
+        flash[:notice] = "Bundle created from scratchpad #{@expad.name}"
+      else
+        flash[:notice] = 'Bundle created'
       end
-      flash[:notice] = 'Bundle was successfully created.'
-      redirect_to :controller => 'bundles', :action => 'list'
+      redirect_to :controller => 'bundles', :action => 'show', :id => @bundle
     else
       render :action => 'new'
     end

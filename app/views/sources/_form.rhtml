@@ -33,6 +33,9 @@
     <%= render :partial => 'shared/edit_clip', :locals => {:item => @source} %>
     <%= render :partial => 'shared/edit_body', :locals => {:item => @source} %>
     <%= render :partial => 'shared/edit_file', :locals => {:item => @source} %>
+
+    <p class="formnote">If you want to associated several images with a source document, the best way is to illustrate its fragments.</p>
+
     <%= render :partial => 'shared/edit_image', :locals => {:item => @source} %>
   </div>
   <div id="editing_notes">
@@ -40,11 +43,5 @@
     <%= render :partial => 'shared/edit_fieldnotes', :locals => {:item => @source} %>
   </div>
 </div>
-
-<div class="formbuttons">
-  <%= submit_tag "Store Document" %> or
-  <%= link_to 'cancel', :action => 'index' %>
-</div>
-
 
 

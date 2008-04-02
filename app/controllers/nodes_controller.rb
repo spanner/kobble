@@ -40,10 +40,6 @@ class NodesController < ApplicationController
     end
   end
   
-  def snip
-    
-  end
-
   def create
     @node = Node.new(params[:node])
     @node.source = Source.find(params[:source_id])

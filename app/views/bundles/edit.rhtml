@@ -1,12 +1,20 @@
-<h1>Edit <%= link_to @bundle.name, :action => 'show', :id => @bundle.id %></h1>
+<% @title = "Edit #{@bundle.name}" %>
 
-<% form_for :bundle,
-            :url => bundle_path(@bundle),
-            :html => { 
-              :method => "put",
-              :multipart => true
-            } do |f| 
-%>
-  <%= render :partial => 'form' %>
-<% end %>
+<div class="mainform">
+  <% form_for :bundle,
+              :url => bundle_path(@bundle),
+              :html => { 
+                :method => "put",
+                :multipart => true
+              } do |f| 
+  %>
 
+  <%= render :partial => 'form', :locals => {:f => f} %>
+
+  <div class="formbuttons">
+    <%= submit_tag "Update Set" %> or
+    <%= link_to 'cancel', :action => 'index' %>
+  </div>
+
+  <% end %>
+</div>

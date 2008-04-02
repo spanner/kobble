@@ -1,5 +1,27 @@
-<h1>Create a new set</h1>
+<% 
+  @title = @expad ? 'create set from scratchpad' : 'create set' 
+%>
 
-<% form_tag ( {:action => 'create'}, :id => 'bundleform', :multipart => true) do %>
- <%= render :partial => 'form' %>
-<% end %>
+<div class="mainform">
+  <% form_for :bundle,
+              :url => bundle_path(@bundle),
+              :html => { 
+                :multipart => true
+              } do |f| 
+  %>
+  
+  <%= render :partial => 'form', :locals => {:f => f} %>
+
+  <% if @expad %>
+
+    <%= hidden_field_tag 'scratchpad_id', @expad.id %>
+
+  <% end %>
+
+  <div class="formbuttons">
+    <%= submit_tag "Create Set" %> or
+    <%= link_to 'cancel', :action => 'index' %>
+  </div>
+
+  <% end %>
+</div>

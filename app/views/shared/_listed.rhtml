@@ -1,15 +1,28 @@
-<% catch ||= false %>
-<% name = listed.name.nil? || listed.name.size == 0 ? "nameless #{listed.class.nice_title}" : listed.name %>
+<% 
+  inactive ||= false
+  catch ||= false
+  catch = false if inactive
+  aclass = inactive ? "listed inactive" : "listed"
+  name = listed.name.nil? || listed.name.size == 0 ? "nameless #{listed.class.nice_title}" : listed.name 
+%>
 
 <li 
   id="<%= listed.class.to_s.downcase %>_<%= listed.id %>" 
-  class="<%= listed.class.to_s.downcase %> draggable<%= ' catcher' if catch && listed.can_catch %>"
+  class="<%= listed.class.to_s.downcase %><%= ' draggable' unless inactive %><%= ' catcher' if catch && listed.can_catch %>"
   <% if catch && listed.can_catch %>catches="<%= listed.can_catch.join(',') %>"<% end %>
 >
 
-  <%= link_to( name, {:controller => listed.class.to_s.underscore.pluralize, :action => 'show', :id => listed}, {:class => 'listed'}) %> 
-
-  <div class="tiptitle"><% if listed.has_collection? %><%= listed.collection.abbreviation %>: <% end %><%= name %></div>
-  <div class="tiptext"><%= truncate( listed.find_some_text, 100 ) %></div>
-    
+  <%= link_to( name, {
+    :controller => listed.class.to_s.underscore.pluralize, 
+    :action => 'show', 
+    :id => listed
+  }, {
+    :class => aclass
+  }) %>
+  
+  <% unless inactive %>
+    <div class="tiptitle"><% if listed.has_collection? %><%= listed.collection.abbreviation %>: <% end %><%= name %></div>
+    <div class="tiptext"><%= truncate( listed.find_some_text, 100 ) %></div>
+  <% end %>
+  
 </li>
