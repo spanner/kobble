@@ -10,18 +10,24 @@ class OccasionsController < ApplicationController
   def new
     @occasion = Occasion.new
     respond_to do |format|
-      format.html
-      format.js { render :layout => false, :template => 'occasions/new_inline' }
+      format.html { }
+      format.js { render :action => 'inline', :layout => false }
+      format.xml { }
     end
   end
 
   def create
     @occasion = Occasion.new(params[:occasion])
     if @occasion.save
-      flash[:notice] = 'Occasion created.'
+      @occasion.tags << Tag.from_list(params[:tag_list]) if params[:tag_list]
       respond_to do |format|
-        format.html
-        format.js { render :layout => false, :template => 'occasions/created_inline' }
+        format.html { 
+          flash[:notice] = 'Occasion object successfully created.'
+          redirect_to :action => 'show', :id => @occasion 
+        }
+        format.js { render :layout => false }
+        format.json { render :json => @occasion.to_json }
+        format.xml { }
       end
     else
       render :action => 'new'

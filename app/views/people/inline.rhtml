@@ -1,0 +1,18 @@
+<h1>Create a new person</h1>
+
+<% form_for :person,
+            :url => person_url(@person),
+            :html => { 
+              :multipart => true,
+              :id => 'personform'
+            } do |f| 
+%>
+
+  <%= render :partial => 'summary' %>
+
+  <div class="formbuttons clear">
+    <%= submit_tag "Create Person" %> or
+    <%= link_to 'cancel', '#', {:class => 'cancelform'} %>
+  </div>
+
+<% end %>

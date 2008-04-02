@@ -2,5 +2,5 @@
 	<label for="<%= item.class.to_s.underscore %>_speaker_id">Does this have to do with a particular incident or event?<br />
 	  <%= select(item.class.to_s.underscore, "occasion_id", @occasions.collect{|o| [o.name, o.id] }, {:include_blank => true}, {:class => 'standard'}) %>
 	</label><br />
-	<%= link_to "add a new occasion", {:controller => 'occasions', :action => 'new'}, {:class=>'modalform', :id => "extend_#{item.class.to_s.downcase}_occasion_id"} %>
+	<%= link_to "+ create occasion", new_occasion_url, {:class=>'inlinecreate', :id => "extend_#{item.class.to_s.underscore}_occasion_id"} %>
 </p>

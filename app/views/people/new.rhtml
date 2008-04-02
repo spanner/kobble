@@ -1,0 +1,28 @@
+<% @title = "Create a new person" %>
+
+<div class="mainform">
+
+  <% form_for :person,
+              :url => person_url(@person),
+              :html => { 
+                :multipart => true,
+                :id => 'personform'
+              } do |f| 
+  %>
+
+    <%= render :partial => 'form', :locals => {:f => f} %>
+
+    <div class="formbuttons">
+      <%= submit_tag "Create Person" %> or
+      <%= link_to 'cancel', {:action => 'index'} %>
+    </div>
+
+  <% end %>
+
+</div>
+
+<% content_for :admin do %>
+  <p>
+    back to <%= link_to 'people list', people_url %>
+  </p>
+<% end %>

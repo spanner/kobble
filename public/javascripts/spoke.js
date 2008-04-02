@@ -119,6 +119,12 @@ var Interface = new Class({
       element.addEvent('click', function (e) { new Snipper(element, e); })
     });
   },
+  
+  makeInlineCreate: function (elements) {
+    elements.each(function (element) { 
+      element.addEvent('click', function (e) { new ModalForm(element, e); })
+    });
+  },
     
   // this is the main page initialisation: it gets called on domready
   
@@ -131,9 +137,10 @@ var Interface = new Class({
 	  this.addTabs(scope.getElements('a.tab'));
 	  this.addScratchTabs(scope.getElements('a.padtab'));
 	  this.makeFixed(scope.getElements('div.fixedbottom'));
-    this.makeToggle(scope.getElements('a.toggle'))
-    this.makeSuggester(scope.getElements('input.tagbox'))
-    this.makeSnipper(scope.getElements('a.snipper'))
+    this.makeToggle(scope.getElements('a.toggle'));
+    this.makeSuggester(scope.getElements('input.tagbox'));
+    this.makeInlineCreate(scope.getElements('a.inlinecreate'));
+    this.makeSnipper(scope.getElements('a.snipper'));
   },
   
   activateElement: function (element) {
@@ -893,7 +900,9 @@ var ModalForm = new Class ({
 		this.eventPosition = this.position.bind(this);
 		this.overlay = new Element('div', {'class': 'overlay'}).inject(document.body);
 		this.floater = new Element('div', {'class': 'floater'}).inject(document.body);
-		this.spinner = new Element('div', {'class': 'bigspinner'}).inject(this.floater).show();
+		this.spinner = new Element('div', {'class': 'floatspinner'}).set('html', '&nbsp;').inject(this.floater).show();
+		console.log('spinner');
+		console.log(this.spinner);
 		this.formholder = new Element('div', {'class': 'modalform'}).inject(this.floater).hide();
     this.responseholder = new Element(this.responseholdertype());
 		this.overlay.onclick = this.hide.bind(this);
@@ -903,9 +912,11 @@ var ModalForm = new Class ({
       onFailure: function () { mf.failed(); }
     });
     this.show();
+    console.log('destination:');
+    console.log(this.destination());
   },
   url: function () { return this.link.getProperty('href'); },
-  destination: function () { return $E('#' + this.source.id.replace('extend_','')); },
+  destination: function () { return $E('#' + this.link.id.replace('extend_', '')); },
   responseholdertype: function () { return 'select'; },
  
   show: function () {
@@ -953,6 +964,8 @@ var ModalForm = new Class ({
   getForm: function () {
     this.canceller().inject(this.floater, 'top');
     this.waiting();
+    
+    console.log('getting input form from ' + this.url());
     this.formholder.load(this.url());
   },
   
@@ -962,32 +975,33 @@ var ModalForm = new Class ({
     console.log('prepform')
     this.notWaiting();
     this.form = this.formholder.getElement('form');
+    intf.makeSuggester(this.form.getElements('input.tagbox'));
 		this.form.onsubmit = this.sendForm.bind(this);
     var closer = this.hide.bind(this);
     this.form.getElements('a.cancelform').each(function (a) { a.onclick = closer })
     this.form.getElement('input').focus();
-    var mf = this;
-    
-    this.form.set('send', {
-      onComplete: function (response) { 
-        mf.page_update(response); 
-      }
-    });
   },
   
   sendForm: function (e) {
-    e.preventDefault();
-    console.log('sendForm');
-    this.form.send();
+    var event = new Event(e).stop();
+    event.preventDefault();
+    var mf = this;
+    var req = new Request.JSON({
+      url: this.form.get('action'),
+      onRequest: function () { mf.page_waiting(); },
+      onSuccess: function (response) { mf.page_update(response); },
+      onFailure: function (response) { mf.hide(); intf.complain('remote call failed')}
+    }).post(this.form);
   },
-
-  // for wait signals on the page itself
   page_waiting: function () { this.waiting(); },
-  
-  page_update: function (response) {    //response is a node tree
+  page_update: function (response) {
+    // response should be the JSON representation of a spoke object
     console.log('page_update');
+    console.log(response);
     this.hide();
-    this.destination().grab( response );
+    var sel = this.destination();
+    var opt = new Element('option', {'value': response.id, 'selected': 'selected'}).set('text',response.name);
+    opt.inject( sel, 'top' );
     intf.announce('new item created');
   },
   
@@ -1004,11 +1018,13 @@ var ModalForm = new Class ({
   },
   
   waiting: function () {
+    console.log('waiting');
     this.formholder.hide();
     this.spinner.show();
   },
 
   notWaiting: function () {
+    console.log('notWaiting');
     this.spinner.hide();
     this.formholder.show();
   }

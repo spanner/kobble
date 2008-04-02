@@ -1,0 +1,7 @@
+<p><label for="person_name">Person's name</label><br/>
+<%= text_field 'person', 'name', 'class' => "titular" %></p>
+
+<%= render :partial => 'shared/edit_tags', :locals => {:item => @person} %>
+
+<p><label for="person_description">Description or notes</label><br />
+<%= text_area 'person', 'description', 'rows' => 3, :class => "standard" %></p>

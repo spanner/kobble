@@ -33,9 +33,8 @@ class NodesController < ApplicationController
     @node.playfrom = params[:inat]
     @node.playto = params[:outat]
     respond_to do |format|
-      format.html { render :template => 'nodes/snipper' }
+      format.html { }
       format.js { render :template => 'nodes/snipper', :layout => false }
-      format.json { render :json => @node.to_json }
       format.xml { }
     end
   end

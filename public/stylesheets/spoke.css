@@ -88,6 +88,7 @@ blockquote {
 }
 
 .warning {
+  color: white;
   background-color: #d1005d !important;
 }
 
@@ -223,7 +224,7 @@ div#admin p {
 
 div#admin a { color: #559DC4; }
 div#admin a:hover, .pagination a:active { color: #d1005d; }
-div#admin a.warning { color: #CC6E1F; }
+div#admin a.warning { color: white; }
 div#admin a.create { color: #6cb262; }
 div#admin a.annotate { text-decoration: line-through; color: #B2AAA4;}
 
@@ -987,7 +988,7 @@ div.mainform label a {
 }
 
 div.mainform input.titular {
-  width: 80%;
+  width: 90%;
   height: 28px;
   font-family: Georgia, "Times New Roman", serif;
   font-size: 22px;
@@ -1016,7 +1017,7 @@ div.mainform input.standard, div.mainform select.standard, div.mainform textarea
   font-family: Georgia, "Times New Roman", serif;
   font-size: 14px;
   line-height: 18px;
-  width: 80%;
+  width: 90%;
   color: black;
 }
 
@@ -1025,7 +1026,7 @@ div.mainform input.tagbox {
   font-size: 22px;
   font-weight: lighter;
   line-height: 22px;
-  width: 80%;
+  width: 90%;
   color: #559DC4;
 }
 
@@ -1093,6 +1094,15 @@ div.bigspinner {
  	background-image: url('/images/furniture/signals/wait_32_ob.gif');
  	background-position: 10px 10px;
  	background-repeat: no-repeat;
+}
+
+div.floatspinner {
+ 	background-image: url('/images/furniture/signals/wait_32_grey.gif');
+ 	background-position: top left;
+ 	background-repeat: no-repeat;
+ 	height: 32px;
+ 	width: 32px;
+ 	margin: 10px;
 }
 
 li.waiter {
@@ -1390,3 +1400,10 @@ ul.autocompleter-choices li.autocompleter-selected span.autocompleter-queried
 {
 /*  color:          #d1005d;*/
 }
+
+
+
+a.inlinecreate, a.inlinecreate:visited {
+  color: #6cb262;
+}
+

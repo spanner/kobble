@@ -48,10 +48,18 @@ class Node < ActiveRecord::Base
   end
 
   def playfrom
-    read_attribute(:playfrom)
+    to_timecode(read_attribute(:playfrom))
   end
   
   def playto
+    to_timecode(read_attribute(:playto))
+  end
+  
+  def playfrom_seconds
+    read_attribute(:playfrom)
+  end
+
+  def playto_seconds
     read_attribute(:playto)
   end
 

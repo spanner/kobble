@@ -1,0 +1,30 @@
+<div class="preamble">
+  <p>
+  	'People' here are speakers, writers and actors to whom we refer. 
+  	It is possible to promote a 'person' to a user of this system, or rather it will be when the account admin tools are ready, but usually they remain objects rather than subjects.
+  </p>
+</div>
+
+<div class="boxtabs">
+  <a href="#" id="tab_editing_summary" class="tab">summary</a>
+  <a href="#" id="tab_editing_contact" class="tab">contact</a>
+  <a href="#" id="tab_editing_notes" class="tab">field notes</a>
+</div>
+
+<div class="boxed" id="box_editing">
+	<div id="editing_summary">
+
+	  <%= render :partial => 'summary' %>
+
+  </div>
+  <div id="editing_contact">
+	
+	  <%= render :partial => 'shared/edit_contact', :locals => {:item => @person} %>
+  
+  </div>
+  <div id="editing_notes">
+	
+	  <%= render :partial => 'shared/edit_fieldnotes', :locals => {:item => @person} %>
+  
+  </div>
+</div>

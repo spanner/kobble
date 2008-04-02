@@ -18,14 +18,31 @@ class PeopleController < ApplicationController
 
   def new
     @person = Person.new
+    respond_to do |format|
+      format.html { }
+      format.js { render :action => 'inline', :layout => false }
+      format.xml { }
+    end
+  end
+  
+  def inline
+    
   end
 
   def create
     @person = Person.new(params[:person])
     if @person.save
-      @person.tags << Tag.from_list(params[:tag_list])
-      flash[:notice] = 'Person object successfully created.'
-      redirect_to :action => 'show', :id => @person
+      @person.tags << Tag.from_list(params[:tag_list]) if params[:tag_list]
+      respond_to do |format|
+        format.html { 
+          flash[:notice] = 'Person object successfully created.'
+          redirect_to :action => 'show', :id => @person 
+        }
+        format.js { render :layout => false }
+        format.json { render :json => @person.to_json }
+        format.xml { }
+      end
+      
     else
       render :action => 'new'
     end

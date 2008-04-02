@@ -38,20 +38,22 @@
   	<% if @node.has_source? and @node.source.has_clip? %>
   		<% @source = @node.source %>
   	  <%= render :partial => 'shared/player', :locals => {
-  	    :mp3url => url_for_file_column("source", "clip")
+  	    :mp3url => url_for_file_column("source", "clip"),
+  	    :mp3in => @node.playfrom_seconds,
+  	    :mp3out => @node.playto_seconds
   	  } %>
 
-    	<p>To snip a segment of the source clip, choose your in and out times above and enter them here:</p>
+    	<p class="formnote">To snip a segment of the source clip, choose your in and out times in the player and enter them in the boxed below it.</p>
 
-      <table border="0">
+      <table border="0" style="clear: left;">
         <tr>
           <td>
             <label for="node_playfrom">Start (timecode):</label><br />
-    		    <%= text_field 'node', 'playfrom', :class => "standard" %>
+    		    <%= text_field_tag 'node[playfrom]', @node.playfrom, :class => "standard" %>
     	    </td>
     	    <td>
     		    <label for="node_playto">Stop (timecode):</label><br />
-            <%= text_field 'node', 'playto', :class => "standard" %>
+    		    <%= text_field_tag 'node[playto]', @node.playto, :class => "standard" %>
           </td
         </tr>
       </table>
@@ -65,6 +67,7 @@
   	<% end %>
 	
     <%= render :partial => 'shared/edit_clip', :locals => {:item => @node} %>
+
     <%= render :partial => 'shared/edit_body', :locals => {:item => @node} %>
     <%= render :partial => 'shared/edit_file', :locals => {:item => @node} %>
 

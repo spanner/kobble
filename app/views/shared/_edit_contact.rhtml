@@ -1,0 +1,17 @@
+<p><label for="<%= item.class.to_s.underscore %>_role">Role</label><br/>
+<%= text_field item, 'role', 'class' => "titular" %></p>
+
+<p><label for="<%= item.class.to_s.underscore %>_workplace">Workplace</label><br/>
+<%= text_field item, 'workplace', 'class' => "titular" %></p>
+
+<p><label for="<%= item.class.to_s.underscore %>_email">Email address</label><br/>
+<%= text_field item, 'email', 'class' => "standard" %></p>
+
+<p><label for="<%= item.class.to_s.underscore %>_phone">Phone number</label><br/>
+<%= text_field item, 'phone', 'class' => "standard" %></p>
+
+<p><label for="<%= item.class.to_s.underscore %>_address">Address</label><br />
+<%= text_area item, 'address', 'rows' => 6, :class => "standard" %></p>
+
+<p><label for="<%= item.class.to_s.underscore %>_postcode">Postcode</label><br/>
+<%= text_field item, 'postcode', 'class' => "standard" %></p>
