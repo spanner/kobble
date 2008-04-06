@@ -1,8 +1,4 @@
 class PostsController < ApplicationController
-  before_filter :find_post, :except => [:index, :new, :create, :monitored, :search, :preview]
-  before_filter :editor_required, :only => [:edit, :update, :destroy]
-
-  @@query_options = { :per_page => 25, :select => 'posts.*, topics.title as topic_title', :joins => 'inner join topics on posts.topic_id = topics.id', :order => 'posts.created_at desc' }
 
   def index
     conditions = []
@@ -10,21 +6,6 @@ class PostsController < ApplicationController
     conditions = conditions.any? ? conditions.collect { |c| "(#{c})" }.join(' AND ') : nil
     @post_pages, @posts = paginate(:posts, @@query_options.merge(:conditions => conditions))
     @users = User.find(:all, :select => 'distinct *', :conditions => ['id in (?)', @posts.collect(&:user_id).uniq]).index_by(&:id)
-    render_posts_or_xml
-  end
-
-  def search
-    conditions = params[:q].blank? ? nil : Post.send(:sanitize_sql, ['LOWER(posts.body) LIKE ?', "%#{params[:q]}%"])
-    @post_pages, @posts = paginate(:posts, @@query_options.merge(:conditions => conditions))
-    @users = User.find(:all, :select => 'distinct *', :conditions => ['id in (?)', @posts.collect(&:user_id).uniq]).index_by(&:id)
-    render_posts_or_xml :index
-  end
-
-  def monitored
-    @user = User.find params[:user_id]
-    options = @@query_options.merge(:conditions => ['monitorships.user_id = ? and posts.user_id != ? and monitorships.active = ?', params[:user_id], @user.id, true])
-    options[:joins] += ' inner join monitorships on monitorships.topic_id = topics.id'
-    @post_pages, @posts = paginate(:posts, options)
     render_posts_or_xml
   end
 
@@ -36,14 +17,19 @@ class PostsController < ApplicationController
   end
 
   def new
+    @topic = Topic.find(params[:topic_id])
     @post = @topic.posts.build
     respond_to do |format|
       format.html { redirect_to topic_path(@topic.id) }
-      format.js { render :template => 'posts/newinplace', :layout => false }
+      format.js { render :action => 'inline', :layout => false }
     end
+  end
+  
+  def inline
   end
 
   def preview
+    @topic = Topic.find(params[:topic_id])
     @post = @topic.posts.build(params[:post])
     @post.creator = current_user
     @post.created_at = Time.now()
@@ -58,42 +44,39 @@ class PostsController < ApplicationController
     @post  = @topic.posts.build(params[:post])
     @post.save!
     respond_to do |format|
-      format.js do
-        render :layout => false
-      end
-      format.html do
-        redirect_to topic_path(:id => params[:topic_id], :anchor => @post.dom_id, :page => params[:page] || '1')
-      end
+      format.js { render :layout => false }
+      format.json { render :json => @post.to_json }
+      format.html { redirect_to topic_path(:id => params[:topic_id], :anchor => @post.dom_id, :page => params[:page] || '1') }
       format.xml { head :created, :location => formatted_post_url(:topic_id => params[:topic_id], :id => @post, :format => :xml) }
     end
   rescue ActiveRecord::RecordInvalid
-    flash[:bad_reply] = 'Please post something!'[:post_something_message]
+    flash[:bad_reply] = 'Please post something!'
     respond_to do |format|
-      format.html do
-        redirect_to topic_path(:id => params[:topic_id], :anchor => 'reply-form', :page => params[:page] || '1')
-      end
+      format.html { redirect_to topic_path(:id => params[:topic_id], :anchor => 'reply-form', :page => params[:page] || '1') }
+      format.js { render :action => 'inline', :layout => false }
       format.xml { render :xml => @post.errors.to_xml, :status => 400 }
     end
   end
   
   def edit
+    @topic = Topic.find(params[:topic_id])
+    @post = @topic.posts.find(params[:id])
     respond_to do |format| 
-      format.html
-      format.js { render :template => 'posts/editinplace', :layout => false }
+      format.html { }
+      format.js { render :action => 'inline', :layout => false }
     end
   end
   
   def update
+    @topic = Topic.find(params[:topic_id])
+    @post = @topic.posts.find(params[:id])
     @post.attributes = params[:post]
     @post.save!
   rescue ActiveRecord::RecordInvalid
-    flash[:bad_reply] = 'An error occurred'[:error_occured_message]
-  ensure
+    flash[:bad_reply] = 'An error occurred'
     respond_to do |format|
-      format.html do
-        redirect_to topic_path(:id => params[:topic_id], :anchor => @post.dom_id, :page => params[:page] || '1')
-      end
-      format.js { render :layout => false }
+      format.html { redirect_to topic_path(:id => params[:topic_id], :anchor => @post.dom_id, :page => params[:page] || '1') }
+      format.js { render :action => 'inline', :layout => false }
       format.xml { head 200 }
     end
   end
@@ -102,11 +85,8 @@ class PostsController < ApplicationController
     @post.destroy
     flash[:notice] = "One post attached to #{CGI::escapeHTML(@post.topic.title)} was deleted."
     # check for posts_count == 1 because its cached and counting the currently deleted post
-    @post.topic.destroy and redirect_to :controller => @post.topic.referent_path if @post.topic.posts_count == 1
     respond_to do |format|
-      format.html do
-        redirect_to topic_path(:id => params[:topic_id], :page => params[:page]) unless performed?
-      end
+      format.html { redirect_to topic_path(:id => params[:topic_id], :page => params[:page]) unless performed? }
       format.js { render :nothing => true }
       format.xml { head 200 }
     end

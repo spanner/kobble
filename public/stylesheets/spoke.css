@@ -404,12 +404,16 @@ div.mainlist ul {
   list-style: none;
 }
 
-div.mainlist li {
+div.mainlist li, li.single {
   margin: 0;
   list-style-image: url(/images/furniture/spoke/blue/default.png);
   margin: 0 10px 4px 0;
   font-size: 16px;
   line-height: 20px;
+}
+
+li.single {
+  display: inline;
 }
 
 div.mainlist a.listed {

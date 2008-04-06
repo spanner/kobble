@@ -1,4 +1,5 @@
 <% 
+  single ||= false
   inactive ||= false
   catch ||= false
   catch = false if inactive
@@ -8,7 +9,7 @@
 
 <li 
   id="<%= listed.class.to_s.downcase %>_<%= listed.id %>" 
-  class="<%= listed.class.to_s.downcase %><%= ' draggable' unless inactive %><%= ' catcher' if catch && listed.can_catch %>"
+  class="<%= listed.class.to_s.downcase %><%= ' single' if single %><%= ' draggable' unless inactive %><%= ' catcher' if catch && listed.can_catch %>"
   <% if catch && listed.can_catch %>catches="<%= listed.can_catch.join(',') %>"<% end %>
 >
 

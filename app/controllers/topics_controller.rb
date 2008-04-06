@@ -10,7 +10,6 @@ class TopicsController < ApplicationController
     perpage = params[:perpage] || 25
     respond_to do |format|
       format.html do
-        @topic.body = @topic.posts.first.body
         @monitoring = !Monitorship.count(:all, :conditions => ['user_id = ? and topic_id = ? and active = ?', current_user.id, @topic.id, true]).zero?
         @posts = Post.paginate(:all, 
           :page => page, 
@@ -31,8 +30,8 @@ class TopicsController < ApplicationController
   def new
     @referent = find_referent
     @topic = Topic.new
-#    @topic.referent = @referent
-#    @topic.collection = @referent.collection
+    @topic.referent = @referent
+    @topic.collection = @referent.collection
     respond_to do |format|
       format.html { }
       format.js { render :action => 'inline', :layout => false }
