@@ -139,8 +139,9 @@ class User < ActiveRecord::Base
   # These create and unset the fields required for remembering users between browser closes
   def remember_me
     self.remember_token_expires_at = 2.weeks.from_now.utc
-    self.remember_token            = encrypt("#{email}--#{remember_token_expires_at}")
+    self.remember_token = encrypt("#{login}--#{remember_token_expires_at}")
     save(false)
+    { :value => self.remember_token, :expires => self.remember_token_expires_at }
   end
 
   def forget_me

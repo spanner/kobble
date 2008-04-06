@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 89) do
+ActiveRecord::Schema.define(:version => 91) do
 
   create_table "accounts", :force => true do |t|
     t.integer "user_id"
@@ -182,7 +182,6 @@ ActiveRecord::Schema.define(:version => 89) do
   create_table "posts", :force => true do |t|
     t.integer  "topic_id"
     t.text     "body"
-    t.text     "body_html"
     t.datetime "created_at"
     t.integer  "created_by"
     t.datetime "updated_at"
@@ -276,6 +275,7 @@ ActiveRecord::Schema.define(:version => 89) do
     t.string   "referent_type"
     t.integer  "referent_id"
     t.integer  "collection_id"
+    t.text     "body"
   end
 
   add_index "topics", ["replied_at"], :name => "index_topics_on_sticky_and_replied_at"

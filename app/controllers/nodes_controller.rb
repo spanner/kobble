@@ -4,22 +4,6 @@ class NodesController < ApplicationController
   def show
     @node = Node.find(params[:id])
   end
-
-  def snipper
-    @node = Node.new(params[:node])
-    render :layout => false
-  end
-
-  def snip
-    @node = Node.new(params[:node])
-    if @node.save
-      @node.tags << Tag.from_list(params[:tag_list])
-      flash[:notice] = 'Snipped!.'
-      render :layout => false
-    else
-      flash[:notice] = 'Snipping failed!.'
-    end
-  end
   
   def new
     @node = Node.new
@@ -34,24 +18,30 @@ class NodesController < ApplicationController
     @node.playto = params[:outat]
     respond_to do |format|
       format.html { }
-      format.js { render :template => 'nodes/snipper', :layout => false }
+      format.js { render :action => 'inline', :layout => false }
       format.xml { }
     end
   end
   
+  def inline
+  end
+
   def create
     @node = Node.new(params[:node])
     @node.source = Source.find(params[:source_id])
     if @node.save
       @node.tags << Tag.from_list(params[:tag_list])
-      flash[:notice] = 'Fragment created.'
       respond_to do |format|
-        format.html { redirect_to :action => 'show', :id => @node }
-        format.js { render :layout => false }
+        format.html { 
+          redirect_to :action => 'show', :id => @node 
+          flash[:notice] = "Fragment #{@node.name} created."
+        }
+        format.js { render :layout => false } # nodes/create.rhml is a bare list item
         format.json { render :json => @node.to_json }
         format.xml { }
       end
     else
+      # or what?
       render :action => 'new'
     end
   end

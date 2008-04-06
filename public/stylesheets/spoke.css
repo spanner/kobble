@@ -1403,7 +1403,7 @@ ul.autocompleter-choices li.autocompleter-selected span.autocompleter-queried
 
 
 
-a.inlinecreate, a.inlinecreate:visited {
+a.inlinecreate, a.inlinecreate:visited. a.inlinediscuss, a.inlinediscuss:visited {
   color: #6cb262;
 }
 

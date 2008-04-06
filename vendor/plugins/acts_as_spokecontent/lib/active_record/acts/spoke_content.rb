@@ -101,6 +101,9 @@ module ActiveRecord
             Spoke::Config.discussed_model(self)
           end
           
+          # content_models has to be defined in advance so that HMP preloads correctly
+          # would much rather do this with definitions.include?(:tags)
+          
           if Spoke::Config.content_models(:except => :tags).include?(self)
             has_many :taggings, :as => :taggable            
           end

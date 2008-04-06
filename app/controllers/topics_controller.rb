@@ -1,19 +1,9 @@
 class TopicsController < ApplicationController
-  before_filter :activation_required
-  
-  def list
-    page = params[:page] || 1
-    perpage = params[:perpage] || self.list_length
-    sort_options = request.parameters[:controller].to_s._as_class.sort_options
-    sort = sort_options[params[:sort]] || sort_options[request.parameters[:controller].to_s._as_class.default_sort]
 
-    @list = Topic.paginate :conditions => conditions, :order => sort, :page => page, :per_page => perpage
-    respond_to do |format|
-      format.html { render :template => 'shared/mainlist' }
-      format.js { render :template => 'shared/mainlist', :layout => false }
-    end
+  def views
+    ['latest']
   end
-
+  
   def show
     @topic = Topic.find(params[:id])
     page = params[:page] || 1
@@ -40,23 +30,34 @@ class TopicsController < ApplicationController
   
   def new
     @referent = find_referent
-    @topic = Topic.new(:referent => @referent)
+    logger.warn("&&& referent is #{@referent.inspect}")
+    @topic = Topic.new
+#    @topic.referent = @referent
+    logger.warn("&&& topic is #{@topic.inspect}")
+#    @topic.collection = @referent.collection
+    respond_to do |format|
+      format.html { }
+      format.js { render :action => 'inline', :layout => false }
+    end
+  end
+  
+  def inline
   end
   
   def create
-    # this is icky - move the topic/first post workings into the topic model?
-    Topic.transaction do
-      @topic = Topic.new(params[:topic])
-      @topic.referent = find_referent
-      @post = @topic.posts.build(params[:topic])
-      @post.topic = @topic
-      @topic.body = @post.body      # in case save fails and we go back to the form
-      @topic.save! if @post.valid?  # we only save topic if post is valid so if there was an error in the view then the topic object will still be a new record
-      @post.save! 
-    end    
-    respond_to do |format|
-      format.html { redirect_to :action => 'show', :id => @topic }
-      format.xml  { head :created, :location => formatted_topic_url(:id => @topic, :format => :xml) }
+    @topic = Topic.new(params[:topic])
+    @topic.referent = find_referent
+    @topic.save!
+    if @topic.save
+      @topic.tags << Tag.from_list(params[:tag_list])
+      respond_to do |format|
+        format.html { redirect_to :action => 'show', :id => @topic }
+        format.js { render :layout => false } # topics/create.rhtml is a bare list item
+        format.json { render :json => @topic.to_json }
+      end
+    else
+      # or what?
+      render :action => 'new'
     end
   end
   
@@ -65,7 +66,6 @@ class TopicsController < ApplicationController
     @topic.save!
     respond_to do |format|
       format.html { redirect_to_referent }
-      format.xml  { head 200 }
     end
   end
   

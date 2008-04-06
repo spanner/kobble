@@ -3,10 +3,8 @@
 <html>
 <head>
   <title>materiali.st<% if @title %> - <%= @title %><% end%></title>
-  <link rel="stylesheet" href="/stylesheets/spoke.css" type="text/css" />
-  <script type="text/javascript" src="/js/mootools.js"></script>
-  <script type="text/javascript" src="/js/extensions.js"></script>
-  <script type="text/javascript" src="/js/spoke.js"></script>
+  <%= javascript_include_tag 'mootools', 'extensions', 'autocomplete', 'spoke', :cache => "cache/materialist" %>
+  <%= stylesheet_link_tag 'spoke', :cache => "cache/materialist" %>
 </head>
 <body>
   <div id="masthead">

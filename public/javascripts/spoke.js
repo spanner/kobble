@@ -45,9 +45,6 @@ var Interface = new Class({
   moveFixed: function (e) {
     this.fixedbottom.each(function (element) { element.toBottom(); });
   },
-  prefer: function (setting, value) {
-    this.preferences[setting] = value;
-  },
   hideTips: function () {
     if (this.tips) this.tips.hide();
   },
@@ -125,6 +122,12 @@ var Interface = new Class({
       element.addEvent('click', function (e) { new ModalForm(element, e); })
     });
   },
+
+  makeConverser: function (elements) {
+    elements.each(function (element) { 
+      element.addEvent('click', function (e) { new Converser(element, e); })
+    });
+  },
     
   // this is the main page initialisation: it gets called on domready
   
@@ -140,6 +143,7 @@ var Interface = new Class({
     this.makeToggle(scope.getElements('a.toggle'));
     this.makeSuggester(scope.getElements('input.tagbox'));
     this.makeInlineCreate(scope.getElements('a.inlinecreate'));
+    this.makeConverser(scope.getElements('a.inlinediscuss'));
     this.makeSnipper(scope.getElements('a.snipper'));
   },
   
@@ -1029,6 +1033,50 @@ var ModalForm = new Class ({
     this.formholder.show();
   }
 	
+});
+
+var Converser = new Class ({
+	Extends: ModalForm,
+	
+  destination: function () { return $E('ul#topiclist'); },
+  responseholdertype: function () { return 'ul'; },
+  
+  sendForm: function (e) {
+    var event = new Event(e).stop();
+    event.preventDefault();
+    
+    var mf = this;
+    var req = new Request.HTML({
+      url: this.form.get('action'),
+      update: this.responseholder,
+      onRequest: function () { mf.page_waiting(); },
+      onSuccess: function (response) { mf.page_update(response); }
+    }).post(this.form);
+  },
+
+  // this is called when the form is submitted
+  // we disappear the form and stick a waiter in the node list
+  page_waiting: function (argument) {
+    this.waiting();
+    var topiclist = this.destination();
+    console.log(topiclist)
+    this.waiter = new Element('li', {'class': 'waiting'}).setText('please wait').inject(topiclist, 'top');
+    if (intf.tabsets['content']) intf.tabsets['content'].select('topics');
+    new Fx.Scroll(window).toTop();
+    this.hide();
+  },
+  
+  // this is called upon final response to the form
+  // we remove the waiter, insert into the node list and make the new insertion draggable
+  page_update: function () {
+    var topics = this.responseholder.getChildren();    
+    var li = fragments[0];
+    this.waiter.remove();
+    li.inject(this.destination(), 'top');
+    intf.activateElement( li );
+    intf.announce('conversation started');
+  }
+  
 });
 
 var Snipper = new Class ({
