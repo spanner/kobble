@@ -8,21 +8,17 @@ module Spoke
     mattr_accessor :discussed_models
     
     def self.indexed_model(klass)
-      unless @@indexed_models.detect {|k| k.to_s == klass.to_s}
-        @@indexed_models.push(klass) 
-      end
+      @@indexed_models.push(klass.to_s.underscore.intern) unless @@indexed_models.include?(klass.to_s.underscore.intern)         # keep model name as symbol to prevent staleness
     end
 
     def self.discussed_model(klass)
-      unless @@discussed_models.detect {|k| k.to_s == klass.to_s}
-        @@discussed_models.push(klass) 
-      end
+      @@discussed_models.push(klass.to_s.underscore.intern) unless @@discussed_models.include?(klass.to_s.underscore.intern)         # keep model name as (singular) symbol to prevent staleness
     end
     
-    # these are the taggable, discussable, scratchpaddable main content models
+    # these are the taggable, bundleable, scratchpaddable main content models
     # they have to be defined in advance for hmp to call on in has_many_polymorphs :from
-    # otherwise would much prefer to set them as we go along during acts_as_spoke
-    # also called from below to set up taggings relationship
+    # otherwise we would much prefer to set them as we go along during acts_as_spoke
+    # btw. also called from below to decide whether to join taggings relationship
 
     def self.content_models(options={})
       oc = [:sources, :nodes, :bundles, :people, :occasions, :topics, :tags]
@@ -66,7 +62,7 @@ module ActiveRecord
       module ClassMethods
 
         def acts_as_spoke(options={})
-          definitions = [:collection, :creator, :updater, :illustration, :discussion, :index]
+          definitions = [:collection, :owners, :illustration, :discussion, :index]
           if options[:except]
             definitions = definitions - Array(options[:except]) 
           elsif options[:only]
@@ -80,10 +76,8 @@ module ActiveRecord
           if definitions.include?(:collection)
             belongs_to :collection
           end
-          if definitions.include?(:creator)
+          if definitions.include?(:owners)
             belongs_to :creator, :class_name => 'User', :foreign_key => 'created_by'
-          end
-          if definitions.include?(:updater)
             belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
           end
           if definitions.include?(:illustration)
@@ -101,14 +95,15 @@ module ActiveRecord
             Spoke::Config.discussed_model(self)
           end
           
-          # content_models has to be defined in advance so that HMP preloads correctly
-          # would much rather do this with definitions.include?(:tags)
-          
-          if Spoke::Config.content_models(:except => :tags).include?(self)
-            has_many :taggings, :as => :taggable            
+          # content_models has to be defined in advance so that HMP defines associations correctly
+          # would rather do this with definitions.include?(:tags) but then list incomplete at load time
+
+          if Spoke::Config.content_models(:except => :tags).include?(self.to_s.underscore.pluralize.intern)
+            has_many :taggings, :as => :taggable
+            has_many :tags, :through => :taggings        
           end
 
-          self.class_eval("include InstanceMethods")
+          self.module_eval("include InstanceMethods")
         end
                 
         def index_fields
@@ -154,12 +149,21 @@ module ActiveRecord
           self.respond_to?('source') && !self.source.nil?
         end
 
+        def is_discussable?
+          Spoke::Config.discussed_models.include?( self.class.to_s.underscore.intern )
+        end
+
+        def is_taggable?
+          self.respond_to?('tags')
+        end
+        
         def has_tags?
-          self.respond_to?('tags') && self.tags.count > 0
+          STDERR.puts ">>> in has_tags? #{self}.class.object_id is #{self.class.object_id}"
+          is_taggable? && tags.count > 0
         end
 
         def tag_list
-          self.respond_to?('tags') && tags.map {|t| t.name }.uniq.join(', ')
+          has_tags? && tags.map {|t| t.name }.uniq.join(', ')
         end
 
         def has_members?
@@ -169,7 +173,11 @@ module ActiveRecord
         def has_circumstances?
           self.respond_to?('circumstances') && !self.circumstances.nil? and self.circumstances.length != 0
         end
-
+        
+        def is_notable?
+          respond_to?('observations') || respond_to?('emotions') || respond_to?('arising')
+        end
+        
         def has_notes?
           (self.respond_to?('observations') && (observations.nil? || observations.size == 0)) && 
           (self.respond_to?('emotions') && (emotions.nil? || emotions.size == 0)) && 
@@ -182,20 +190,12 @@ module ActiveRecord
           (self.respond_to?('creator') && creator.nil?) ? false : true
         end
 
-        def has_synopsis?
-          self.respond_to?('synopsis') && !self.synopsis.nil? and self.synopsis.length != 0
-        end
-
         def has_body?
           self.respond_to?('body') && !self.body.nil? and self.body.length != 0
         end
 
         def has_description?
           self.respond_to?('description') && !self.description.nil? and self.description.length != 0
-        end
-
-        def has_synopsis?
-          self.respond_to?('synopsis') && !self.synopsis.nil? and self.synopsis.length != 0
         end
 
         def has_extracted_text?
@@ -238,16 +238,11 @@ module ActiveRecord
           self.respond_to?('marks') && self.marks.count > 0
         end
 
-        def has_answers?
-          self.respond_to?('answers') && self.answers.count > 0
-        end
-
         def editable_by?(user)
           user && (user.id == created_by || user.admin?)
         end
 
         def find_some_text
-          return synopsis if has_synopsis?
           return description if has_description?
           return body if has_body?
           return extracted_text if has_extracted_text?

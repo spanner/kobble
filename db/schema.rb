@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 91) do
+ActiveRecord::Schema.define(:version => 92) do
 
   create_table "accounts", :force => true do |t|
     t.integer "user_id"
@@ -259,6 +259,7 @@ ActiveRecord::Schema.define(:version => 91) do
     t.integer  "collection_id"
     t.string   "image"
     t.integer  "account_id"
+    t.text     "body"
   end
 
   create_table "topics", :force => true do |t|

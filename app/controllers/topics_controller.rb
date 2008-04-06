@@ -30,10 +30,8 @@ class TopicsController < ApplicationController
   
   def new
     @referent = find_referent
-    logger.warn("&&& referent is #{@referent.inspect}")
     @topic = Topic.new
 #    @topic.referent = @referent
-    logger.warn("&&& topic is #{@topic.inspect}")
 #    @topic.collection = @referent.collection
     respond_to do |format|
       format.html { }
@@ -72,8 +70,10 @@ class TopicsController < ApplicationController
   protected
   
     def find_referent
-      referent_class = Spoke::Config.discussed_models.find{ |k| !params[(k.to_s.underscore + "_id").intern].nil? }
-      @referent = referent_class ? referent_class.find(params[(referent_class.to_s.underscore + "_id").intern]) : nil
+      logger.warn(Spoke::Config.discussed_models.inspect)
+      ref = Spoke::Config.discussed_models.find{ |k| !params[("#{k.to_s}_id").intern].nil? }
+      logger.warn("ref is #{ref.to_s._as_class}")
+      @referent = ref ? ref.to_s._as_class.find(params[(ref.to_s.underscore + "_id").intern]) : nil
     end
 
 end

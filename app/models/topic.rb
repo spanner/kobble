@@ -10,6 +10,7 @@ class Topic < ActiveRecord::Base
 
   has_many :monitorships, :dependent => :destroy
   has_many :monitors, :through => :monitorships, :conditions => ['monitorships.active = ?', true], :source => :user, :order => 'users.login'
+
   has_many :posts, :order => 'posts.created_at', :dependent => :destroy
 
   validates_presence_of :name, :referent

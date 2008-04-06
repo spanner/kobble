@@ -1058,9 +1058,7 @@ var Converser = new Class ({
   // we disappear the form and stick a waiter in the node list
   page_waiting: function (argument) {
     this.waiting();
-    var topiclist = this.destination();
-    console.log(topiclist)
-    this.waiter = new Element('li', {'class': 'waiting'}).setText('please wait').inject(topiclist, 'top');
+    this.waiter = new Element('li', {'class': 'waiting'}).setText('please wait').inject(this.destination(), 'top');
     if (intf.tabsets['content']) intf.tabsets['content'].select('topics');
     new Fx.Scroll(window).toTop();
     this.hide();
@@ -1069,12 +1067,11 @@ var Converser = new Class ({
   // this is called upon final response to the form
   // we remove the waiter, insert into the node list and make the new insertion draggable
   page_update: function () {
-    var topics = this.responseholder.getChildren();    
-    var li = fragments[0];
     this.waiter.remove();
+    var elements = this.responseholder.getChildren();    
+    var li = elements[0];
     li.inject(this.destination(), 'top');
     intf.activateElement( li );
-    intf.announce('conversation started');
   }
   
 });

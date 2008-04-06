@@ -1,9 +1,9 @@
 class Tag < ActiveRecord::Base
 
-  has_many_polymorphs :taggables, :from => Spoke::Config.content_models(:except => :tags), :through => :taggings
-  acts_as_spoke :except => :index
   belongs_to :account
-  acts_as_tree :order => 'name'
+  has_many :taggings
+  has_many_polymorphs :taggables, :from => Spoke::Config.content_models(:except => :tags), :through => :taggings
+  acts_as_spoke :except => [:discussion, :collection]
   acts_as_catcher :taggables, {:tag => :subsume}
 
   def self.sort_options 
@@ -19,73 +19,18 @@ class Tag < ActiveRecord::Base
   end
   
   def subsume(subsumed)
-    self.taggables << subsumed.taggables
-    self.flags << subsumed.flags
-    self.children << subsumed.children
+    self.taggables += subsumed.taggables
+    self.flags += subsumed.flags
+    self.children += subsumed.children
     self.description = subsumed.description if self.description.nil? or self.description.size == 0
+    self.body = subsumed.body if self.body.nil? or self.body.size == 0
     self.image = subsumed.image if self.image.nil? or self.image.size == 0
-    subsumed.destroy
-    "#{subsumed.name} merged into #{self.name}|move"
+    self.clip = subsumed.clip if self.clip.nil? or self.clip.size == 0
+    subsumed.delete
   end
-  
-  def parentage
-    return self unless self.parent
-    return [self.parent.parentage, self]
-  end
-  
-  def ancestry
-    return unless self.parent
-    return self.parent.parentage
-  end  
-  
+    
   def self.from_list(taglist)
-    branches = taglist.split(/[,;]\s*/).uniq
-    branches.collect!{ |b| 
-      find_or_create_branch( b.split(/\:\s*/) )
-    }
-  end
-
-  def self.find_or_create_branch(branch)
-    name = branch.pop
-    tag = (branch.nitems > 0) ?
-      Tag.find(:first,
-        :conditions => ["tags.name= ? AND tp.name = ?", name, branch[-1]], 
-        :select => "tags.*", 
-        :joins => "as tags inner join tags as tp on tags.parent_id = tp.id",
-        :order => "tags.name") :
-      Tag.find(:first,
-        :conditions => ["name= ? AND parent_id IS NULL", name]);
-
-    unless (tag)
-      if (branch.nitems > 0)
-        parent = Tag.find_or_create_branch(branch)
-        tag = Tag.new(:name => name, :parent => parent)
-      else
-        tag = Tag.new(:name => name)
-      end
-      tag.save
-    end
-    return tag
-  end
-
-  def children_by_popularity
-    Tag.find(:all, 
-      :select => "tags.*, count(taggings.id) as use_count",
-      :joins => "LEFT JOIN taggings on taggings.tag_id = tags.id",
-      :conditions => ["tags.parent_id = ?", self.id],
-      :group => "taggings.tag_id",
-      :order => 'use_count DESC'
-    )
-  end
-
-  def children_with_count
-    Tag.find(:all, 
-      :select => "tags.*, count(taggings.id) as use_count",
-      :joins => "LEFT JOIN taggings on taggings.tag_id = tags.id",
-      :conditions => ["tags.parent_id = ?", self.id],
-      :group => "taggings.tag_id",
-      :order => 'name ASC'
-    )
+    taglist.split(/[,;]\s*/).uniq.map { |t| Tag.find_or_create_by_name(t) }
   end
 
 end

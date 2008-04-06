@@ -50,18 +50,6 @@ Rails::Initializer.run do |config|
 
 end
 
-
-# Add new inflection rules using the following format 
-# (all these examples are active by default):
-# Inflector.inflections do |inflect|
-#   inflect.plural /^(ox)$/i, '\1en'
-#   inflect.singular /^(ox)en/i, '\1'
-#   inflect.irregular 'person', 'people'
-#   inflect.uncountable %w( fish sheep )
-# end
-
-# Include your application configuration below
-
 WhiteListHelper.tags.merge(%w(object param embed))
 
 ExceptionNotifier.sender_address = "sysadmin@spanner.org"

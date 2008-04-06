@@ -55,7 +55,6 @@ class ApplicationController < ActionController::Base
     admin?
   end
     
-
   # shared retrieval mechanisms
 
   def search
