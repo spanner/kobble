@@ -18,6 +18,7 @@ class PeopleController < ApplicationController
 
   def new
     @person = Person.new
+    @person.collection = Collection.find(params[:collection_id])
     respond_to do |format|
       format.html { }
       format.js { render :action => 'inline', :layout => false }
@@ -31,6 +32,7 @@ class PeopleController < ApplicationController
 
   def create
     @person = Person.new(params[:person])
+    @person.collection ||= Collection.find(params[:collection_id])
     if @person.save
       @person.tags << Tag.from_list(params[:tag_list]) if params[:tag_list]
       respond_to do |format|

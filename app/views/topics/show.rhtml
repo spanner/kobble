@@ -18,6 +18,21 @@
     </div>
 
     <%= render :partial => 'comments' %>
+    
+    <div id="reply" class="newcommentmarker"></div>
+    
+    <div class="mainform">
+    	<% form_for([@topic, @reply]) do |f| -%>
+
+        <h2>Add a reply</h2>
+        
+  	    <%= f.text_area :body, :rows => 6, :class => 'standard' %><br />
+
+    		<div class="waitme">
+    		 	<%= submit_tag "Preview Comment" %>
+        </div>
+    	<% end -%>
+    </div>
   </div>
 
 	<div id="content_referent">

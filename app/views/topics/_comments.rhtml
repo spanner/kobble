@@ -12,7 +12,7 @@
 </div>
 
 <h2>
-	<% if @topic.posts_count == 1 %>
+	<% if @topic.posts_count == 0 %>
 		No responses yet
 	<% else %>
 		Responses
@@ -21,7 +21,4 @@
 
 <%= render :partial => 'posts/single', :collection => @posts.reject {|p| p.id == @topic.posts.first.id} %>
 
-<div id="reply" class="newcommentmarker"></div>
-
-<%= link_to 'Add comment', {:controller => 'posts', :action => 'new', :topic_id => @topic, :forum_id => @forum}, {:id => 'edit_reply', :class => "additem editinplace onlyonce", :style => 'margin: 6px 0;'} %>
 

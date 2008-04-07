@@ -16,12 +16,17 @@ class PostsController < ApplicationController
     end
   end
 
+  # topic page includes empty post form
+  # new here == preview
+  
   def new
     @topic = Topic.find(params[:topic_id])
-    @post = @topic.posts.build
+    @post = @topic.posts.build(params[:post])
+    @post.creator = current_user
+    @post.created_at = Time.now()
     respond_to do |format|
-      format.html { redirect_to topic_path(@topic.id) }
-      format.js { render :action => 'inline', :layout => false }
+      format.js { render :layout => false }
+      format.html
     end
   end
   

@@ -1,6 +1,8 @@
 <p><label for="person_name">Person's name</label><br/>
 <%= text_field 'person', 'name', 'class' => "titular" %></p>
 
+<%= render :partial => 'shared/edit_collection', :locals => {:item => @person} %>
+
 <%= render :partial => 'shared/edit_tags', :locals => {:item => @person} %>
 
 <p><label for="person_description">Description or notes</label><br />

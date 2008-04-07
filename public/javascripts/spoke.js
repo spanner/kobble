@@ -66,18 +66,12 @@ var Interface = new Class({
     $$('.showondrag').each(function (element) { element.setStyle('visibility', 'hidden'); })
   },
   lookForDropper: function (element) {
-    if (element) {
-    	if (element.dropzone) {
-    		return element.dropzone;
-    	} else {
-      	var p = element.getParent();
-    	  if (p && p.getParent) {
-    		  return this.lookForDropper( p );
-    	  } else {
-    		  return null;
-    	  }
-      }
-    }
+    if (element) return element.dropzone || this.lookForDropper( element.getParent() );
+    else return null;
+  },
+  lookForTab: function (element) {
+    if (element) return element.tab || this.lookForTab( element.getParent() );
+    else return null;
   },
   addTabs: function (elements) {  
     elements.each(function (element) { intf.tabs.push(new Tab(element)); });
@@ -111,24 +105,19 @@ var Interface = new Class({
       intf.tagboxes.push(new Autocompleter.Ajax.Json(element, '/tags/matching', { 'indicator': waiter, 'postVar': 'stem', 'multiple': true }));
     });
   },
-  makeSnipper: function (elements) {
-    elements.each(function (element) { 
-      element.addEvent('click', function (e) { new Snipper(element, e); })
-    });
-  },
-  
-  makeInlineCreate: function (elements) {
-    elements.each(function (element) { 
-      element.addEvent('click', function (e) { new ModalForm(element, e); })
-    });
+
+  grabForm: function (elements) {
+    elements.each(function (element) { element.addEvent('click', function (e) { new htmlForm(element, e); }) });
   },
 
-  makeConverser: function (elements) {
-    elements.each(function (element) { 
-      element.addEvent('click', function (e) { new Converser(element, e); })
-    });
+  makeInlineCreate: function (elements) {
+    elements.each(function (element) { element.addEvent('click', function (e) { new jsonForm(element, e); }) });
   },
     
+  makeSnipper: function (elements) {
+    elements.each(function (element) { element.addEvent('click', function (e) { new Snipper(element, e); }) });
+  },
+  
   // this is the main page initialisation: it gets called on domready
   
   activate: function (element) {
@@ -143,7 +132,7 @@ var Interface = new Class({
     this.makeToggle(scope.getElements('a.toggle'));
     this.makeSuggester(scope.getElements('input.tagbox'));
     this.makeInlineCreate(scope.getElements('a.inlinecreate'));
-    this.makeConverser(scope.getElements('a.inlinediscuss'));
+    this.grabForm(scope.getElements('a.inlinediscuss'));
     this.makeSnipper(scope.getElements('a.snipper'));
   },
   
@@ -162,6 +151,7 @@ var Interface = new Class({
     if (element.hasClass('toggle')) this.makeToggle( [element] )
     if (element.hasClass('snipper')) this.makeSnipper( [element] )
   },
+  
   getSelectedText: function () {
   	var txt = '';
   	if (window.getSelection) {
@@ -173,10 +163,12 @@ var Interface = new Class({
   	}
     return '' + txt;
   },
+  
   getPlayerIn: function () {
     var player = document.spannerplayer;
     if (player && player.playerOk() ) return player.playerIn();
   },
+  
   getPlayerOut: function () {
     var player = document.spannerplayer;
     if (player && player.playerOk() ) return player.playerOut();
@@ -556,6 +548,7 @@ var Tab = new Class({
 		this.tag = parts.pop();
 		this.settag = parts.pop();
 		this.tabbody = $E('#' + this.settag + '_' + this.tag);
+		this.tabbody.tab = this;
 		this.tabset = null;
     this.addToSet();
  		this.tabhead.onclick = this.select.bind(this);
@@ -892,7 +885,7 @@ var Toggle = new Class({
   }
 });
 
-var ModalForm = new Class ({
+var jsonForm = new Class ({
   initialize: function (element, e) {
     event = new Event(e);
     event.preventDefault();
@@ -905,10 +898,7 @@ var ModalForm = new Class ({
 		this.overlay = new Element('div', {'class': 'overlay'}).inject(document.body);
 		this.floater = new Element('div', {'class': 'floater'}).inject(document.body);
 		this.spinner = new Element('div', {'class': 'floatspinner'}).set('html', '&nbsp;').inject(this.floater).show();
-		console.log('spinner');
-		console.log(this.spinner);
 		this.formholder = new Element('div', {'class': 'modalform'}).inject(this.floater).hide();
-    this.responseholder = new Element(this.responseholdertype());
 		this.overlay.onclick = this.hide.bind(this);
     this.formholder.set('load', {
       onRequest: function () { mf.waiting(); },
@@ -916,12 +906,11 @@ var ModalForm = new Class ({
       onFailure: function () { mf.failed(); }
     });
     this.show();
-    console.log('destination:');
-    console.log(this.destination());
   },
   url: function () { return this.link.getProperty('href'); },
   destination: function () { return $E('#' + this.link.id.replace('extend_', '')); },
-  responseholdertype: function () { return 'select'; },
+  destinationtype: function () { return this.destination().tagName; },
+  tab: function () { return intf.lookForTab( this.destination() )},
  
   show: function () {
     this.position();
@@ -968,20 +957,17 @@ var ModalForm = new Class ({
   getForm: function () {
     this.canceller().inject(this.floater, 'top');
     this.waiting();
-    
-    console.log('getting input form from ' + this.url());
     this.formholder.load(this.url());
   },
   
   // onSuccess trigger in formholder.load calls prepForm()
 
   prepForm: function () {
-    console.log('prepform')
     this.notWaiting();
     this.form = this.formholder.getElement('form');
     intf.makeSuggester(this.form.getElements('input.tagbox'));
-		this.form.onsubmit = this.sendForm.bind(this);
     var closer = this.hide.bind(this);
+		this.form.onsubmit = this.sendForm.bind(this);
     this.form.getElements('a.cancelform').each(function (a) { a.onclick = closer })
     this.form.getElement('input').focus();
   },
@@ -997,19 +983,21 @@ var ModalForm = new Class ({
       onFailure: function (response) { mf.hide(); intf.complain('remote call failed')}
     }).post(this.form);
   },
+  
   page_waiting: function () { this.waiting(); },
+  
   page_update: function (response) {
+    // default is that we expect to add an option to a select box
     // response should be the JSON representation of a spoke object
-    console.log('page_update');
-    console.log(response);
     this.hide();
-    var sel = this.destination();
-    var opt = new Element('option', {'value': response.id, 'selected': 'selected'}).set('text',response.name);
-    opt.inject( sel, 'top' );
+    var newitem = new Element('option', {'value': response.id}).set('text',response.name);
+    newitem.inject( this.destination(), 'top' );
+    this.destination().selectedIndex = 0;
     intf.announce('new item created');
   },
   
   // really ought to do something constructive here
+  // like show the form again with error messages. genius.
   failed: function () {
     this.hide();
     intf.complain("oh no.");
@@ -1035,16 +1023,16 @@ var ModalForm = new Class ({
 	
 });
 
-var Converser = new Class ({
-	Extends: ModalForm,
-	
-  destination: function () { return $E('ul#topiclist'); },
-  responseholdertype: function () { return 'ul'; },
-  
+// htmlForm inherits from modalform but expects to get html back at the end of the process: 
+// usually a list item but could be anything.
+
+var htmlForm = new Class ({
+	Extends: jsonForm,
+	  
   sendForm: function (e) {
     var event = new Event(e).stop();
     event.preventDefault();
-    
+    this.responseholder = new Element(this.destinationtype());
     var mf = this;
     var req = new Request.HTML({
       url: this.form.get('action'),
@@ -1055,13 +1043,14 @@ var Converser = new Class ({
   },
 
   // this is called when the form is submitted
-  // we disappear the form and stick a waiter in the node list
+  // we disappear the form, stick a waiter in the destination list
+  // make the list visible and scroll to it
   page_waiting: function (argument) {
     this.waiting();
     this.waiter = new Element('li', {'class': 'waiting'}).setText('please wait').inject(this.destination(), 'top');
-    if (intf.tabsets['content']) intf.tabsets['content'].select('topics');
-    new Fx.Scroll(window).toTop();
     this.hide();
+    if (this.tab) this.tab.select();
+    new Fx.Scroll(window).toElement(this.destination());
   },
   
   // this is called upon final response to the form
@@ -1069,21 +1058,19 @@ var Converser = new Class ({
   page_update: function () {
     this.waiter.remove();
     var elements = this.responseholder.getChildren();    
-    var li = elements[0];
-    li.inject(this.destination(), 'top');
-    intf.activateElement( li );
+    var newitem = elements[0];
+    newitem.inject(this.destination(), 'top');
+    intf.activateElement( newitem );
   }
   
 });
 
-var Snipper = new Class ({
-	Extends: ModalForm,
-	
-  destination: function () { return $E('ul#nodelist'); },
-  responseholdertype: function () { return 'ul'; },
+// snipper is a special case of htmlForm that does more work to populate the form
 
+var Snipper = new Class ({
+	Extends: htmlForm,
+	
   prepForm: function () {
-    console.log('filling in forms');
     this.notWaiting();
     this.form = this.formholder.getElement('form');
     var closer = this.hide.bind(this);
@@ -1094,45 +1081,6 @@ var Snipper = new Class ({
     this.form.getElements('#node_playto').each( function (input) { input.set('value', intf.getPlayerOut()); });
     this.form.getElement('.titular').focus();
 		this.form.onsubmit = this.sendForm.bind(this);
-  },
-  
-  sendForm: function (e) {
-    var event = new Event(e).stop();
-    event.preventDefault();
-    
-    var mf = this;
-    var req = new Request.HTML({
-      url: this.form.get('action'),
-      update: this.responseholder,
-      onRequest: function () { mf.page_waiting(); },
-      onSuccess: function (response) { 
-        mf.page_update(response); 
-      }
-    }).post(this.form);
-  },
-  
-  // this is called when the form is submitted
-  // we disappear the form and stick a waiter in the node list
-  page_waiting: function (argument) {
-    console.log('page_waiting. this is');
-    console.log(this);
-    this.waiting();
-    var nodelist = this.destination();
-    console.log(nodelist)
-    this.waiter = new Element('li', {'class': 'waiting'}).setText('please wait').inject(nodelist, 'top');
-    if (intf.tabsets['content']) intf.tabsets['content'].select('nodes');
-    new Fx.Scroll(window).toTop();
-    this.hide();
-  },
-  
-  // this is called upon final response to the form
-  // we remove the waiter, insert into the node list and make the new insertion draggable
-  page_update: function () {
-    var fragments = this.responseholder.getChildren();    
-    var li = fragments[0];
-    this.waiter.remove();
-    li.inject(this.destination(), 'top');
-    intf.activateElement( li );
-    intf.announce('fragment created');
   }
+  
 });

@@ -2,5 +2,5 @@
   <label for="<%= item.class.to_s.underscore %>_speaker_id">Primary speaker<br />
   <%= select(item.class.to_s.underscore, "speaker_id", @people.collect{|p| [p.name, p.id] }, {:include_blank => true}, {:class => 'standard'}) %>
   </label><br />
-  <%= link_to "+ create a new speaker", new_person_url, {:class=>'inlinecreate', :id => "extend_#{item.class.to_s.downcase}_speaker_id"} %>
+  <%= link_to "+ create a new speaker", new_person_url(:collection_id => item.collection), {:class=>'inlinecreate', :id => "extend_#{item.class.to_s.downcase}_speaker_id"} %>
 </p>

@@ -163,7 +163,7 @@ module ActiveRecord
         end
 
         def tag_list
-          has_tags? && tags.map {|t| t.name }.uniq.join(', ')
+          tags.map {|t| t.name }.uniq.join(', ') if has_tags?
         end
 
         def has_members?

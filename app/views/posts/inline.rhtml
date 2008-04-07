@@ -1,5 +1,5 @@
-<div class="comment">
-	<% form_for :post, :url => {:action => 'preview', :forum_id => @post.forum_id, :topic_id => @post.topic_id} do |f| -%>
+<div class="mainform">
+	<% form_for([@topic, @post]) do |f| -%>
 		<p class="commentheader">
 	   	<%= image_tag "clearbits/comment.gif", :class => 'icon' %>
 			<%= current_user.name %>
