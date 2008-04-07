@@ -18,6 +18,22 @@
       <%= @topic.body.formatted %>
     </div>
 
+
+    <div id ="monitorform">
+      <h3>
+        <%= 
+          monitorship = current_user.monitorship_of(@topic) 
+          linkclass =  monitorship.active? ? 'ticked' : 'crossed'
+          linktitle =  monitorship.active? ? 'click to switch off email subscription' : 'click to receive email notification of new posts'
+
+          link_to 'email notification', toggle_monitorship_url(monitorship), {
+      		  :class => "toggle #{linkclass}",
+      		  :title => linktitle
+      	  } 
+      	%>
+    	</h3>
+    </div>
+
     <%= render :partial => 'comments' %>
     <%= render :partial => 'posts/form' %>
         

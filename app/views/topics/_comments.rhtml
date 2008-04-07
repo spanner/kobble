@@ -1,16 +1,3 @@
-
-
-<div id ="monitorform">
-	<%= link_to "email notification", {
-		:controller => 'monitorships', 
-		:action => @monitoring ? 'destroy' : 'create',
-		:topic_id => @topic
-	}, {
-		:class => @monitoring ? 'autolink ticked' : 'autolink crossed',
-		:title => @monitoring ? 'click to switch off email subscription' : 'click to receive email notification of new posts',
-	} %>
-</div>
-
 <h2>
 	<% if @topic.posts_count == 0 %>
 		No responses yet

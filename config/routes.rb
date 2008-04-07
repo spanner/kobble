@@ -23,7 +23,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :collections
   map.resources :posts
   map.resources :activations, :collection => { :activate => :any }, :member => { :deactivate => :any, :toggle => :any }
-  map.resources :monitorships, :member => { :toggle => :any }
+  map.resources :monitorships, :collection => { :activate => :any }, :member => { :deactivate => :any, :toggle => :any }
   map.resources :accounts, :collection => { :home => :any }
   
   map.resource :search, :member => { :list => :any, :gallery => :any }

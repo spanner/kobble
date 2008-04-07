@@ -191,6 +191,10 @@ class User < ActiveRecord::Base
     def activation_of (collection)
       Activation.find_or_create_by_user_id_and_collection_id(self.id, collection.id)
     end
+
+    def monitorship_of (topic)
+      Monitorship.find_or_create_by_user_id_and_topic_id(self.id, topic.id)
+    end
     
   protected
   

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 92) do
+ActiveRecord::Schema.define(:version => 93) do
 
   create_table "accounts", :force => true do |t|
     t.integer "user_id"
@@ -97,7 +97,7 @@ ActiveRecord::Schema.define(:version => 92) do
   create_table "monitorships", :force => true do |t|
     t.integer "topic_id"
     t.integer "user_id"
-    t.boolean "active",   :default => true
+    t.boolean "active",   :default => false
   end
 
   create_table "nodes", :force => true do |t|
