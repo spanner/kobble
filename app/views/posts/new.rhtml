@@ -1,17 +1,18 @@
-<div class="comment">
-	<p class="commentheader<% if @post.creator.editor? %> admin<% end %>">
-	  <%= image_tag "clearbits/comment.gif", :class => 'icon', :title => @post.creator.editor? ? 'admin' : 'visitor' %>
+<div class="post preview">
+	<h3 class="postheader">
+  	<img src="/images/furniture/spoke/pink/user.png" width="16" height="15" alt="Post">
 		<%= h(@post.creator.name) %>
-		<span class="warning">preview</span>
-	</p>
+		<span class="when">preview</span>
+	</h3>
 
 	<%= @post.body.formatted %>
 
-	<% form_for :post, @post, :url => {:action => 'create', :forum_id => @forum.id, :topic_id => @topic.id, :id => @post} do |f| -%>
+	<% form_for([@topic, @post]) do |f| -%>
 
 		<%= f.hidden_field :body %>
+
 		<div class="waitme">
-	    <%= submit_tag 'add comment' %> or <%= link_to "edit again", '#', :class => 'revise' %> or <%= link_to 'cancel', '#', :class => 'cancel' %>
+	    <%= submit_tag 'confirm' %> or <%= link_to "revise message", '#', :class => 'revise message' %>
 	  </div>
 
 	<% end -%>

@@ -20,6 +20,7 @@ var Interface = new Class({
     this.tabsets = {};
     this.fixedbottom = [];
     this.inlinelinks = [];
+    this.replyform = null;
     this.clickthreshold = 6;
     this.announcer = $E('div#notification');
     this.admin = $E('div#admin');
@@ -48,7 +49,6 @@ var Interface = new Class({
   hideTips: function () {
     if (this.tips) this.tips.hide();
   },
-
   startDragging: function (helper) {
     $$('.hideondrag').each(function (element) { element.setStyle('visibility', 'hidden'); })
     $$('.showondrag').each(function (element) { element.setStyle('visibility', 'visible'); })
@@ -118,6 +118,14 @@ var Interface = new Class({
     elements.each(function (element) { element.addEvent('click', function (e) { new Snipper(element, e); }) });
   },
   
+  // there will only be one of these really
+
+  makeReplyForm: function (elements) {
+    elements.each(function (element) { 
+      this.replyform = new ReplyForm(element); 
+    }, this);
+  },
+  
   // this is the main page initialisation: it gets called on domready
   
   activate: function (element) {
@@ -134,6 +142,7 @@ var Interface = new Class({
     this.makeInlineCreate(scope.getElements('a.inlinecreate'));
     this.grabForm(scope.getElements('a.inlinediscuss'));
     this.makeSnipper(scope.getElements('a.snipper'));
+    this.makeReplyForm(scope.getElements('form#new_post'));
   },
   
   activateElement: function (element) {
@@ -899,6 +908,8 @@ var jsonForm = new Class ({
 		this.floater = new Element('div', {'class': 'floater'}).inject(document.body);
 		this.spinner = new Element('div', {'class': 'floatspinner'}).set('html', '&nbsp;').inject(this.floater).show();
 		this.formholder = new Element('div', {'class': 'modalform'}).inject(this.floater).hide();
+		this.destination = $E('#' + this.link.id.replace('extend_', ''));
+		this.tab = intf.lookForTab( this.destination );
 		this.overlay.onclick = this.hide.bind(this);
     this.formholder.set('load', {
       onRequest: function () { mf.waiting(); },
@@ -907,10 +918,8 @@ var jsonForm = new Class ({
     });
     this.show();
   },
+  
   url: function () { return this.link.getProperty('href'); },
-  destination: function () { return $E('#' + this.link.id.replace('extend_', '')); },
-  destinationtype: function () { return this.destination().tagName; },
-  tab: function () { return intf.lookForTab( this.destination() )},
  
   show: function () {
     this.position();
@@ -991,8 +1000,8 @@ var jsonForm = new Class ({
     // response should be the JSON representation of a spoke object
     this.hide();
     var newitem = new Element('option', {'value': response.id}).set('text',response.name);
-    newitem.inject( this.destination(), 'top' );
-    this.destination().selectedIndex = 0;
+    newitem.inject( this.destination, 'top' );
+    this.destination.selectedIndex = 0;
     intf.announce('new item created');
   },
   
@@ -1032,7 +1041,7 @@ var htmlForm = new Class ({
   sendForm: function (e) {
     var event = new Event(e).stop();
     event.preventDefault();
-    this.responseholder = new Element(this.destinationtype());
+    this.responseholder = new Element(this.destination.tagName);
     var mf = this;
     var req = new Request.HTML({
       url: this.form.get('action'),
@@ -1047,10 +1056,11 @@ var htmlForm = new Class ({
   // make the list visible and scroll to it
   page_waiting: function (argument) {
     this.waiting();
-    this.waiter = new Element('li', {'class': 'waiting'}).setText('please wait').inject(this.destination(), 'top');
+    this.waiter = new Element('li', {'class': 'waiting'}).setText('please wait').inject(this.destination, 'top');
     this.hide();
+    console.log(this.tab);
     if (this.tab) this.tab.select();
-    new Fx.Scroll(window).toElement(this.destination());
+    new Fx.Scroll(window).toElement(this.destination);
   },
   
   // this is called upon final response to the form
@@ -1059,10 +1069,9 @@ var htmlForm = new Class ({
     this.waiter.remove();
     var elements = this.responseholder.getChildren();    
     var newitem = elements[0];
-    newitem.inject(this.destination(), 'top');
+    newitem.inject(this.destination, 'top');
     intf.activateElement( newitem );
   }
-  
 });
 
 // snipper is a special case of htmlForm that does more work to populate the form
@@ -1083,4 +1092,111 @@ var Snipper = new Class ({
 		this.form.onsubmit = this.sendForm.bind(this);
   }
   
+});
+
+
+// separate inline form mechanism for discussion replies
+// and anything else that previews iteratively before 
+// returning html
+// unlike most interface elements this is initialized on load, not on click
+// but there will only be one on the page
+
+var ReplyForm = new Class ({
+  initialize: function (element) {
+    console.log('replyform!');
+    console.log(element);
+    
+    this.form = element;
+    this.wrapper = element.getParent();
+    this.previewform = null;
+    this.messagebox = this.form.getElement('textarea');
+		this.responseholder = new Element('div', {'class': 'previewform'}).inject(this.form, 'after').hide();
+		this.form.onsubmit = this.sendForm.bind(this);
+		$$('a.quoteme').each( function (a) {
+		  a.onclick = this.quote.bind(this);
+		}, this);  
+  },
+  
+  quote: function (e) {
+    event = new Event(e).stop();
+    event.preventDefault();
+		var source = $E('#' + event.target.id.replace('quote_', ''));
+    if (source) {
+  		var quote = "bq. " + source.getText().replace(/[\r\n]+\s*/g, "")  + "\n\n";
+      this.messagebox.set('value', quote);
+      new Fx.Scroll(window).toElement(this.messagebox);
+      this.messagebox.focus();
+    }
+  },
+  
+  sendForm: function (e) {
+    event = new Event(e).stop();
+    event.preventDefault();
+    var rf = this;
+    var req = new Request.HTML({
+      url: this.form.get('action'),
+      update: this.responseholder,
+      onRequest: function () { rf.waiting(); },
+      onSuccess: function (response) { rf.processResponse(response); }
+    }).get(this.form);    // get because this is really the new action. the preview form points to the create action.
+  },
+
+  // if the returned html contains a form, we'll assume that further confirmation is required
+  // if not, we assume job is done, display it and call finish.
+  
+  processResponse: function () {
+		this.notWaiting();
+    if (this.responseholder.getElement('.preview')) {
+      this.previewform = this.responseholder.getElement('form');
+      this.wrapper.addClass('previewing');
+      this.previewform.onsubmit = this.confirm.bind(this);
+      this.responseholder.getElement('a.revise').onclick = this.revise.bind(this);
+      this.form.hide();
+      this.responseholder.show();
+    } else {
+      this.form.hide();
+      this.responseholder.show();
+      this.finished();
+    }
+  },
+	
+	confirm: function (e) {
+    event = new Event(e).stop();
+    event.preventDefault();
+    this.wrapper.removeClass('previewing');
+    var rf = this;
+    var req = new Request.HTML({
+      url: this.previewform.get('action'),
+      update: this.responseholder,
+      onRequest: function () { rf.waiting(); },
+      onSuccess: function (response) { rf.processResponse(response); }
+    }).post(this.previewform);
+	},
+
+	revise: function (e) {
+    event = new Event(e).stop();
+    event.preventDefault();
+    this.wrapper.removeClass('previewing');
+    this.responseholder.hide();
+    this.form.show();
+	},
+
+  waiting: function () {
+    this.wrapper.getElements('div.waitme').each(function (element) {
+      element.addClass('waiting');
+    });
+  },
+  
+  notWaiting: function () {
+    this.wrapper.getElements('div.waitme').each(function (element) {
+      element.removeClass('waiting');
+    });
+  },
+
+	finished: function () {
+    intf.flash(this.responseholder);
+    this.form.remove();
+    intf.makeReplyForm(this.responseholder.getElements('form#new_post'));
+	}
+	
 });

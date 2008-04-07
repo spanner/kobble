@@ -727,7 +727,7 @@ div#searchform h2 {
 /* signals */
 
 div.previewing {
-  background-color: #ebc5a5;
+  color: #d1005d;
 }
 
 div.waiting {
@@ -1411,3 +1411,30 @@ a.inlinecreate, a.inlinecreate:visited. a.inlinediscuss, a.inlinediscuss:visited
   color: #6cb262;
 }
 
+
+
+div#replywrapper form {
+  margin-top: 50px;
+}
+
+div.post h3 {
+  color: #695D54;
+}
+
+div.previewing h3 {
+  color: #d1005d;
+}
+
+div.post span.when {
+  font-size: 11px;
+}
+
+div.post a.quoteme {
+  font-size: 11px;
+  color: #d1005d;
+}
+
+div.post blockquote {
+  padding-left: 26px;
+	background: url(/images/furniture/spoke/grey/post.png) no-repeat top left;
+}

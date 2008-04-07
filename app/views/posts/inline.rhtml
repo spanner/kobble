@@ -1,15 +1,12 @@
-<div class="mainform">
-	<% form_for([@topic, @post]) do |f| -%>
-		<p class="commentheader">
-	   	<%= image_tag "clearbits/comment.gif", :class => 'icon' %>
-			<%= current_user.name %>
-			<span class="when">now</span>		
-		</p>
-		<div class="commentbody">
-	    <%= f.text_area :body, :rows => 14 %><br />
-		</div>
-		<div class="waitme">
-		 	<%= submit_tag "Preview Comment" %> <span class="button_or">or <%= link_to 'cancel', '#', :class => 'cancel' %></span>
-    </div>
-	<% end -%>
-</div>
+<% form_for([@topic, @post]) do |f| -%>
+	<h3 class="commentheader">
+		<%= current_user.name %>
+		<span class="when">now</span>		
+	</h3>
+	<div class="commentbody">
+    <%= f.text_area :body, :rows => 14 %><br />
+	</div>
+	<div class="waitme">
+	 	<%= submit_tag "Preview Comment" %> <span class="button_or">or <%= link_to 'cancel', '#', :class => 'cancel' %></span>
+  </div>
+<% end -%>

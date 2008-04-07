@@ -1,9 +1,2 @@
-<div class="comment">
-	<p class="commentheader<% if @post.creator.editor? %> admin<% end %>">
-	  <%= image_tag "clearbits/comment.gif", :class => 'icon', :title => @post.creator.editor? ? 'admin' : 'visitor' %>
-		<%= h(@post.creator.name) %>
-		<span class="when"><%= time_ago_in_words(@post.created_at) %> ago</span>
-	</p>
-
-	<%= @post.body.formatted %>
-</div>
+<%= render :partial => 'single', :locals => {:single => @post} %>
+<%= render :partial => 'form', :locals => {:single => @post} %>

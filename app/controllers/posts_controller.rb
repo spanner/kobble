@@ -1,14 +1,5 @@
 class PostsController < ApplicationController
 
-  def index
-    conditions = []
-    [:user_id, :topic_id].each { |attr| conditions << Post.send(:sanitize_sql, ["posts.#{attr} = ?", params[attr]]) if params[attr] }
-    conditions = conditions.any? ? conditions.collect { |c| "(#{c})" }.join(' AND ') : nil
-    @post_pages, @posts = paginate(:posts, @@query_options.merge(:conditions => conditions))
-    @users = User.find(:all, :select => 'distinct *', :conditions => ['id in (?)', @posts.collect(&:user_id).uniq]).index_by(&:id)
-    render_posts_or_xml
-  end
-
   def show
     respond_to do |format|
       format.html { redirect_to topic_path(@post.topic_id) }
@@ -17,7 +8,8 @@ class PostsController < ApplicationController
   end
 
   # topic page includes empty post form
-  # new here == preview
+  # so 'new' here == 'preview' there
+  # and returns create form with hidden fields
   
   def new
     @topic = Topic.find(params[:topic_id])
@@ -48,6 +40,7 @@ class PostsController < ApplicationController
     @topic = Topic.find(params[:topic_id])
     @post  = @topic.posts.build(params[:post])
     @post.save!
+    @reply = Post.new
     respond_to do |format|
       format.js { render :layout => false }
       format.json { render :json => @post.to_json }

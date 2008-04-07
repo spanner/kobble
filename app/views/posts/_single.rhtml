@@ -1,23 +1,14 @@
 <% unless @omit_first && @omit_first.id == single.id %>
-	<div class="comment" id="commentholder_<%= single.id %>">
-		<p class="commentheader<% if single.creator.editor? %> admin<% end %>">
-			<%  if editor? %>
-				<%= render :partial => 'shared/editbutton', :locals => {
-					:url => edit_post_path( :topic_id => @topic, :id => single ),
-					:id => "edit_comment_#{single.id}",
-					:title => "delete this post"
-				} %>
-				<%= render :partial => 'shared/deletebutton', :locals => {
-					:url => delete_post_path( :topic_id => @topic, :id => single ),
-					:id => "edit_comment_#{single.id}",
-					:title => "edit this post"
-				} %>
-			<% end %>
-	    	<a name="<%= single.dom_id %>"><%= image_tag "clearbits/comment.gif", :class => 'icon', :title => single.creator.editor? ? 'admin' : 'visitor' %></a>
-			<%= h(single.creator.name) %>
+	<div class="post" id="postholder_<%= single.id %>">
+		<h3 class="postheader">
+	    <a href="<%= url_for(single.creator) %>" name="<%= single.dom_id %>">
+	    	<img src="/images/furniture/spoke/blue/user.png" width="16" height="16" alt="Post">
+			  <%= h(single.creator.name) %>
+  	  </a>
 			<span class="when"><%= time_ago_in_words(single.created_at) %> ago</span>
-		</p>
-		<div class="commentbody" id="comment_<%= single.id %>">
+			<a href="#" class="quoteme" id="quote_post_<%= single.id %>">quote</a>
+		</h3>
+		<div class="commentbody" id="post_<%= single.id %>">
 		  <%= single.body.formatted %>
 		</div>
 	</div>
