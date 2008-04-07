@@ -4,8 +4,9 @@ class Topic < ActiveRecord::Base
   # and hold administrative information like the latest poster and the initiator of the conversation
 
   acts_as_spoke :except => [:illustration, :discussion, :index]
-  belongs_to :speaker, :class_name => 'User', :foreign_key => 'speaker_id'
+  acts_as_catcher :tags, :flags
 
+  belongs_to :speaker, :class_name => 'User', :foreign_key => 'speaker_id'
   belongs_to :referent, :polymorphic => true
 
   has_many :monitorships, :dependent => :destroy

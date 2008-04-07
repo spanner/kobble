@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(:version => 92) do
   create_table "activations", :force => true do |t|
     t.integer "collection_id"
     t.integer "user_id"
-    t.integer "active",        :default => 0
+    t.integer "active",        :default => 1
   end
 
   create_table "bundles", :force => true do |t|

@@ -8,6 +8,7 @@
 <div class="boxtabs">
   <a href="#" id="tab_content_conversation" class="tab">conversation</a>
   <a href="#" id="tab_content_referent" class="tab">subject</a>
+  <a href="#" id="tab_content_tags" class="tab">tags</a>
 </div>
 
 <div class="boxed" id="box_content">
@@ -44,10 +45,10 @@
     <% else %>
       <p>No summary given</p>
     <% end %>
-    
-    
-    
   </div>
+  
+  <%= render :partial => 'shared/show_tags', :locals => {:item => @topic, :tabset => 'content'} %>
+  
 </div>
 
 <% content_for :admin do %>
