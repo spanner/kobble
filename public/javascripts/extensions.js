@@ -1,4 +1,18 @@
-﻿Element.implement({
+﻿Browser.extend({
+	supportsPositionFixed: function(){
+		if(!Browser.loaded) return null;
+		var test = new Element('div').setStyles({
+			position: 'fixed',
+			top: '0px',
+			right: '0px'
+		}).injectInside(document.body);
+		var supported = (test.offsetTop === 0);
+		test.remove();
+		return supported;
+	}
+});
+
+Element.implement({
 	isVisible: function() {
 		return this.getStyle('display') != 'none';
 	},
@@ -51,5 +65,27 @@
   },
   explode: function () {
     this.dwindle();   //temporarily
+  },
+  isFixed: function () {
+    return this.getStyle('position') == 'fixed' || this.getParent() && this.getParent().isFixed();
+  },
+	getCoordinates: function(element){
+    if ($body(this)) return this.getWindow().getCoordinates();
+    var position = this.getPosition(element), size = this.getSize();
+    var obj = {'top': position.y, 'left': position.x, 'width': size.x, 'height': size.y};
+    if (this.isFixed()) {
+      var offset = window.getScroll();
+      obj.left = obj.left + offset.x;
+      obj.top = obj.top + offset.y;
+    }
+    obj.right = obj.left + obj.width;
+    obj.bottom = obj.top + obj.height;
+    return obj;
   }
+  
+	
 });
+
+function $body(el){
+	return el.tagName.toLowerCase() == 'body';
+};

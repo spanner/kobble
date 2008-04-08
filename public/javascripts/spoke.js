@@ -5,8 +5,6 @@ window.addEvent('domready', function(){
   // console.profile()
   intf.activate();
   // console.profileEnd()
-  // window.addEvent('scroll', function (e) { intf.moveFixed(e); });
-  // window.addEvent('resize', function (e) { intf.moveFixed(e); });
 });
 
 var Interface = new Class({
@@ -21,6 +19,7 @@ var Interface = new Class({
     this.fixedbottom = [];
     this.inlinelinks = [];
     this.replyform = null;
+    this.debug_level = 2;
     this.clickthreshold = 6;
     this.announcer = $E('div#notification');
     this.admin = $E('div#admin');
@@ -56,6 +55,8 @@ var Interface = new Class({
     var catchers = [];
   	this.tabs.each(function (t) { t.makeReceptiveTo(helper); })
   	this.droppers.each(function(d){ if (d.makeReceptiveTo(helper)) catchers.push(d.container); });
+  	intf.debug('catchers will be: ', 5);
+  	intf.debug(catchers, 5);
   	return catchers;
   },
   stopDragging: function (helper) {
@@ -126,6 +127,10 @@ var Interface = new Class({
     }, this);
   },
   
+  makeFixed: function (elements) {
+    elements.each(function (element) { element.pin(); })
+  },
+  
   // this is the main page initialisation: it gets called on domready
   
   activate: function (element) {
@@ -143,6 +148,7 @@ var Interface = new Class({
     this.grabForm(scope.getElements('a.inlinediscuss'));
     this.makeSnipper(scope.getElements('a.snipper'));
     this.makeReplyForm(scope.getElements('form#new_post'));
+    this.makeFixed(scope.getElements('.fixed'));
   },
   
   activateElement: function (element) {
@@ -181,14 +187,20 @@ var Interface = new Class({
   getPlayerOut: function () {
     var player = document.spannerplayer;
     if (player && player.playerOk() ) return player.playerOut();
+  }, 
+  
+  debug: function (message, level) {
+    if (!level) level = 2;
+    if (this.debug_level >= level) console.log(message);
   }
+  	
 });
 
 var SpokeTips = new Class({
   Extends: Tips,
   options: {
-   onShow: function(tip) { if (!intf.dragging) tip.fade(0.8); },
-   onHide: function(tip) { tip.fade('out'); }
+    onShow: function(tip) { if (!intf.dragging) tip.fade(0.8); },
+    onHide: function(tip) { tip.fade('out'); }
   },
   build: function(el){
     el.$attributes.myTitle = el.title || el.getElement('div.tiptitle').getText();
@@ -209,10 +221,10 @@ var SpokeTips = new Class({
 
 var Dropzone = new Class({
 	initialize: function (element) {
-    // console.log('new dropzone: ' + element.id);
+    intf.debug('new dropzone: ' + element.id, 3);
 		this.container = element;
 	  this.tag = element.id;
-	  this.name = element.getProperty('title') || element.getText();
+	  this.name = element.getProperty('title') || element.getElement('a').get('text');
 		this.container.dropzone = this;   // when a draggee is picked up we climb the tree to see if it is being dragged from somewhere
 		this.isReceptive = false;
 		this.isRegretful = false;
@@ -238,11 +250,15 @@ var Dropzone = new Class({
 	can_catch: function (type) { if (this.catches) return this.catches == 'all' || this.catches.split(',').contains(type); },
   
   makeReceptiveTo: function (helper) {
-    // this gets called on drag start to decide whether we're interested and if so prepare us for a drop
+    // this gets called on drag start to decide whether we're interested and if so prepare us to receive a drop
     if (this.can_catch(helper.draggee.spokeType())) {
+      intf.debug('receptive: ' + this.name, 5);
       var dropzone = this;
-      dropzone.container.addEvents({
-        'drop': function() { dropzone.receiveDrop(helper); },
+      this.container.addEvents({
+        'drop': function() { 
+          intf.debug('hit drop event: ' + dropzone.name, 4);
+          dropzone.receiveDrop(helper); 
+        },
         'mouseenter': function() { dropzone.showInterest(helper); },
         'mouseleave': function() { dropzone.loseInterest(helper); },
       });
@@ -254,6 +270,7 @@ var Dropzone = new Class({
   makeUnreceptive: function (helper) {
     // this gets called when a drag from elsewhere leaves this space
     if (this.isReceptive) {
+      intf.debug('unReceptive: ' + this.name, 5);
       this.container.removeEvents('mouseenter');
       this.container.removeEvents('mouseleave');
       this.container.removeEvents('drop');
@@ -262,17 +279,16 @@ var Dropzone = new Class({
   },
   makeRegretful: function (helper) {
     // this gets called when we drag something out of this space that began here
-    console.log('makeRegretful');
+    intf.debug('regretful: ' + this.name, 4);
     var dropzone = this;
     dropzone.container.addEvents({
       mouseenter: function() {
-        console.log('back again');
+        intf.debug('returning to origin space', 3);
         helper.clearState();
         dropzone.container.removeClass('bereft');
       },
       mouseleave: function() {
-        console.log('leaving the area');
-        // helper.droppable(dropzone);
+        intf.debug('leaving origin space', 3);
         dropzone.container.addClass('bereft');
       }
     });
@@ -280,38 +296,38 @@ var Dropzone = new Class({
   },
   makeUnregretful: function () {
     if (this.isRegretful) {
-      console.log('makeUnregretful');
+      intf.debug('unRegretful: ' + this.name, 4);
       this.container.removeEvents('mouseenter');
       this.container.removeEvents('mouseleave');
       this.isRegretful = false;
     }
   },
   showInterest: function (helper) {
+    intf.debug('possibly interested: ' + this.name, 5);
     if (this.container != helper.draggee.original && this != helper.draggee.draggedfrom && !this.contains(helper.draggee)) {
+      intf.debug('definitely interested: ' + this.name, 4);
       this.container.addClass('drophere');
       if (this.tab) this.tab.tabhead.addClass('over');
-      // helper.insertable(this);
     }
   },
-  loseInterest: function (helper) { // nb. trigger set up during showInterest
+  loseInterest: function (helper) {
+    intf.debug('uninterested: ' + this.name, 4);
     this.container.removeClass('drophere');
     if(this.tab) this.tab.tabhead.removeClass('over');
   },
 	        
 	receiveDrop: function (helper) {
+    intf.debug('receiveDrop: ' + this.name, 3);
 	  intf.stopDragging();
 		var dropzone = this;
-	  var message = helper.getText() + '?';
 		var draggee = helper.draggee;
 		dropzone.loseInterest(helper);
-		
-		console.log(dropzone.name + ' catching ' + draggee.name);
-		
+    intf.debug(dropzone.name + ' catching ' + draggee.name, 2);
+
 		if (dropzone == draggee.draggedfrom) {
 			helper.flyback();
 			
 		} else if (dropzone.contains(draggee)) {
-		  console.log(draggee);
 			intf.complain(draggee.name + ' is already there');
 			helper.flyback();
 			
@@ -326,7 +342,8 @@ var Dropzone = new Class({
 			    draggee.waiting(); 
 			  },
         onSuccess: function(response){
-          console.log('outcome = ' + response.outcome + ', message = ' + response.message + ', consequence = ' + response.consequence);
+          intf.debug('drop successful: ', 3);
+          intf.debug('outcome = ' + response.outcome + ', message = ' + response.message + ', consequence = ' + response.consequence, 4);
           if (response.outcome == 'success') {
             dropzone.notWaiting();
             draggee.notWaiting();
@@ -347,6 +364,8 @@ var Dropzone = new Class({
           }
         },
 			  onFailure: function (response) { 
+          intf.debug('drop failed!', 2);
+          intf.debug('outcome = ' + response.outcome + ', message = ' + response.message + ', consequence = ' + response.consequence, 4);
 			    dropzone.notWaiting(); 
 			    draggee.notWaiting(); 
 			    intf.complain('remote call failed');
@@ -355,10 +374,10 @@ var Dropzone = new Class({
 		}
   },
 	removeDrop: function (helper) {
+    intf.debug('removeDrop: ' + this.name, 3);
 	  intf.stopDragging();
 		var dropzone = this;
     var draggee = helper.draggee;
-	  var message = helper.getText() + '?';
 		helper.remove();
 	  
 		var req = new Request.JSON( {
@@ -367,6 +386,8 @@ var Dropzone = new Class({
 		  onRequest: function () { draggee.waiting(); },
 		  onSuccess: function (response) { 
         if (response.outcome == 'success') {
+          intf.debug('drop successful: ', 3);
+          intf.debug('outcome = ' + response.outcome + ', message = ' + response.message + ', consequence = ' + response.consequence, 4);
 		      intf.announce(response.message); 
           draggee.disappear();
 		    } else {
@@ -408,7 +429,6 @@ var Dropzone = new Class({
     if (this.zoneType() == 'list') {
       var element = draggee.clone().injectInside(this.container);
       element.set('id', this.tag + '_' + draggee.tag);
-      console.log(element.id);
       intf.activateElement(element);
     }
 	}
@@ -416,25 +436,9 @@ var Dropzone = new Class({
 
 var TrashDropzone = new Class({
   Extends: Dropzone,
-  
-	showInterest: function (helper) { 
-		var dropzone = this;
-    // var state = helper.getState();
-    // var text = helper.getText();
-	  dropzone.container.addClass('drophere');
-	  dropzone.container.addEvents({
-	    'leave': function() { 
-			  dropzone.loseInterest();
-        // helper.setState(state, text);
-			}
-	  });
-    // helper.deleteable(dropzone);
-	},
-	addURL: function (draggee) { 
-		return draggee.spokeType() +'s/trash/' + draggee.spokeID();  
-	},
-	can_catch: function () { return true }
-})
+	addURL: function (draggee) { return draggee.spokeType() +'s/trash/' + draggee.spokeID(); },
+	can_catch: function (type) { return true; }
+});
 
 // now we always drag whole <li> elements. no more thumbnails.
 
@@ -453,7 +457,7 @@ var Draggee = new Class({
   spokeID: function () { return this.original.spokeID(); },
   spokeType: function () { return this.original.spokeType(); },
 	doClick: function (e) { 
-	  console.log('click!');
+	  intf.debug('click!', 4);
 	  this.link.fireEvent('click');
 	},
 	waiting: function () { this.original.addClass('waiting'); },
@@ -746,14 +750,11 @@ var ScratchTab = new Class({
         stab.hideFormNicely();
         stab.tabhead.set('text', response.name);
         stab.tabhead.set('title', response.body);
-        console.log(response);
+        intf.debug(response, 3);
         if (response.updated_by == null) {
-          console.log('this is a new tab');
-          
           var tabs = stab.tabset;
           tabs.removeTab(stab);
           stab.tabhead.set('id', 'tab_scratchpad_' + response.id);
-          
       		new Request.HTML({
       		  url: '/scratchpads/' + response.id,
       			method: 'get',
@@ -822,10 +823,8 @@ var ScratchSet = new Class({
       'class': 'scratchpage'
     }).injectInside(this.container);
     this.newtab = new ScratchTab(newhead);
-    console.log(this.newtab);
     this.newtab.select(e);
     this.newtab.showForm('/scratchpads/new');
-    
 	}
 });
 
@@ -1013,13 +1012,13 @@ var jsonForm = new Class ({
   },
   
   waiting: function () {
-    console.log('waiting');
+    intf.debug('jsonForm.waiting', 5);
     this.formholder.hide();
     this.spinner.show();
   },
 
   notWaiting: function () {
-    console.log('notWaiting');
+    intf.debug('jsonForm.notWaiting', 5);
     this.spinner.hide();
     this.formholder.show();
   }
@@ -1035,7 +1034,7 @@ var htmlForm = new Class ({
   sendForm: function (e) {
     var event = new Event(e).stop();
     event.preventDefault();
-    this.responseholder = new Element(this.destination.tagName);
+    this.responseholder = new Element(this.destination.get('tag'));
     var mf = this;
     var req = new Request.HTML({
       url: this.form.get('action'),
@@ -1052,7 +1051,6 @@ var htmlForm = new Class ({
     this.waiting();
     this.waiter = new Element('li', {'class': 'waiting'}).setText('please wait').inject(this.destination, 'top');
     this.hide();
-    console.log(this.tab);
     if (this.tab) this.tab.select();
     new Fx.Scroll(window).toElement(this.destination);
   },
@@ -1097,9 +1095,6 @@ var Snipper = new Class ({
 
 var ReplyForm = new Class ({
   initialize: function (element) {
-    console.log('replyform!');
-    console.log(element);
-    
     this.form = element;
     this.wrapper = element.getParent();
     this.previewform = null;

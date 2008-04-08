@@ -4356,9 +4356,9 @@ Drag.Move = new Class({
 	},
 
 	checkAgainst: function(el){
-		el = el.getCoordinates();
+		elp = el.getCoordinates();
 		var now = this.mouse.now;
-		return (now.x > el.left && now.x < el.right && now.y < el.bottom && now.y > el.top);
+		return (now.x > elp.left && now.x < elp.right && now.y < elp.bottom && now.y > elp.top);
 	},
 
 	checkDroppables: function(){
@@ -4376,7 +4376,11 @@ Drag.Move = new Class({
 
 	stop: function(event){
 		this.checkDroppables();
-		if (this.overed) this.overed.fireEvent('drop', [this.element, this]);
+		intf.debug('drag.overed is ' + this.overed, 5);
+		if (this.overed) {
+		  intf.debug('firing drop event on ' + this.overed, 3);
+		  this.overed.fireEvent('drop', [this.element, this]);
+		}
 		else this.element.fireEvent('emptydrop', this);
 		return arguments.callee.parent(event);
 	}
