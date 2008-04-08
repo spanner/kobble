@@ -29,7 +29,7 @@ class ApplicationController < ActionController::Base
   
   def limit_to_this_account(klass=nil)
     t = klass ? "#{klass.table_name}." : ''
-    ["#{t}account_id =?", current_account]
+    ["#{t}account_id = ?", current_account]
   end
 
   def limit_to_active_collections(klass=nil)
@@ -110,19 +110,11 @@ class ApplicationController < ActionController::Base
   def catch
     @catcher = request.parameters[:controller].to_s._as_class.find( params[:id] )
     @caught = params[:caughtClass].to_s._as_class.find( params[:caughtID] )
-    # catch method is inserted by acts_as_catcher and dispatches to appropriate instance method
-    @message = @catcher.catch(@caught) if @catcher and @caught                     
-    @outcome = 'success';
-    @consequence ||= 'insert';
+    # catch_object method is inserted by acts_as_catcher and dispatches to appropriate instance method
+    @response = @catcher.catch_object(@caught) if @catcher and @caught                     
     respond_to do |format|
       format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @catcher }
-      format.json { 
-        render :json => {
-          :outcome => @outcome,
-          :message => @message,
-          :consequence => @consequence,
-        }.to_json 
-      }
+      format.json { render :json => @response.to_json }
       format.xml { head 200 }
     end
   rescue => e
@@ -147,33 +139,23 @@ class ApplicationController < ActionController::Base
 
   def trash
     @trashed = request.parameters[:controller].to_s._as_class.find( params[:id] )
+    # permissions check!
     @trashed.destroy
-    @message = "#{@trashed.name} deleted from collection"
-    @outcome = 'success';
-    @consequence ||= 'delete';
+    @response = CatchResponse.new("#{@trashed.name} deleted", 'delete')
     respond_to do |format|
       format.html { redirect_to :controller => params[:controller], :action => 'list' }
-      format.json { 
-        render :json => response = {
-          :outcome => @outcome,
-          :message => @message,
-          :consequence => @consequence,
-        }.to_json 
-      }
+      format.json { render :json => @response.to_json }
       format.xml { head 200 }
     end
   rescue => e
-    @outcome = 'failure';
-    @message = e.message
     flash[:error] = e.message
+    @response = CatchResponse.new(e.message, '', 'failure')
     respond_to do |format|
-      format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @trashed }
-      format.json { 
-        render :json => {
-          :outcome => @outcome,
-          :message => @message,
-        }.to_json 
+      format.html { 
+        flash[:error] = e.message
+        redirect_to :controller => params[:controller], :action => 'show', :id => @trashed 
       }
+      format.json { render :json => @response.to_json }
       format.xml { head 200 }
     end
   end
@@ -181,32 +163,21 @@ class ApplicationController < ActionController::Base
   def drop
     @dropper = request.parameters[:controller].to_s._as_class.find( params[:id] )
     @dropped = params[:droppedClass]._as_class.find(params[:droppedID])
-    @message = @dropper.drop(@dropped) if @dropper and @dropped
-    @outcome = 'success';
-    @consequence ||= 'delete';
+    # drop_object method is inserted by acts_as_catcher and dispatches to appropriate instance method
+    @response = @dropper.drop_object(@dropped) if @dropper and @dropped
     respond_to do |format|
       format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @dropper }
-      format.json { 
-        render :json => {
-          :outcome => @outcome,
-          :message => @message,
-          :consequence => @consequence,
-        }.to_json 
-      }
+      format.json { render :json => @response.to_json }
       format.xml { head 200 }
     end
   rescue => e
-    @outcome = 'failure';
-    @message = e.message
-    flash[:error] = e.message
+    @response = CatchResponse.new(e.message, '', 'failure')
     respond_to do |format|
-      format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @catcher }
-      format.json { 
-        render :json => {
-          :outcome => @outcome,
-          :message => @message,
-        }.to_json 
+      format.html { 
+        flash[:error] = e.message
+        redirect_to :controller => params[:controller], :action => 'show', :id => @catcher 
       }
+      format.json { render :json => @response.to_json }
       format.xml { head 200 }
     end
   end

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 93) do
+ActiveRecord::Schema.define(:version => 94) do
 
   create_table "accounts", :force => true do |t|
     t.integer "user_id"
@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(:version => 93) do
   create_table "activations", :force => true do |t|
     t.integer "collection_id"
     t.integer "user_id"
-    t.integer "active",        :default => 1
+    t.integer "active",        :default => 0
   end
 
   create_table "bundles", :force => true do |t|
@@ -245,21 +245,19 @@ ActiveRecord::Schema.define(:version => 93) do
   add_index "taggings", ["taggable_type", "taggable_id"], :name => "index_tag_marks"
 
   create_table "tags", :force => true do |t|
-    t.integer  "parent_id"
     t.string   "name"
     t.text     "description"
-    t.string   "colour",         :limit => 7
-    t.integer  "nodes"
-    t.integer  "keywords_count"
     t.integer  "user_id"
     t.integer  "created_by"
     t.integer  "updated_by"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "collection_id"
     t.string   "image"
     t.integer  "account_id"
     t.text     "body"
+    t.text     "observations"
+    t.text     "emotions"
+    t.text     "arising"
   end
 
   create_table "topics", :force => true do |t|

@@ -1,9 +1,11 @@
 <% @title = @topic.name %>
 
-<p class="subtitle">
-	A conversation about <%= link_to @topic.referent.name || "nameless #{@topic.referent.class.nice_title}", url_for(@topic.referent) %> started by <%= link_to @topic.creator.name, url_for(@topic.creator) %>
-	<span class="when"><%= time_ago_in_words(@topic.created_at) %> ago</span>.
-</p>
+<div class="preamble">
+  <p>
+	  A conversation about <%= link_to @topic.referent.name || "nameless #{@topic.referent.class.nice_title}", url_for(@topic.referent) %> started by <%= link_to @topic.creator.name, url_for(@topic.creator) %>
+	  <span class="when"><%= time_ago_in_words(@topic.created_at) %> ago</span>.
+  </p>
+</div>
 
 <div class="boxtabs">
   <a href="#" id="tab_content_conversation" class="tab">conversation</a>

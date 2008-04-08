@@ -238,15 +238,11 @@ var Dropzone = new Class({
 	can_catch: function (type) { if (this.catches) return this.catches == 'all' || this.catches.split(',').contains(type); },
   
   makeReceptiveTo: function (helper) {
-    // this gets called when a drag from elsewhere enters this space
-    var type = helper.draggee.spokeType();
-    if (this.can_catch(type)) {
+    // this gets called on drag start to decide whether we're interested and if so prepare us for a drop
+    if (this.can_catch(helper.draggee.spokeType())) {
       var dropzone = this;
       dropzone.container.addEvents({
-        'drop': function() { 
-          console.log('drop!');
-    		  dropzone.receiveDrop(helper); 
-    		},
+        'drop': function() { dropzone.receiveDrop(helper); },
         'mouseenter': function() { dropzone.showInterest(helper); },
         'mouseleave': function() { dropzone.loseInterest(helper); },
       });
@@ -420,14 +416,11 @@ var Dropzone = new Class({
 
 var TrashDropzone = new Class({
   Extends: Dropzone,
-	initialize: function (element) { 
-    this.parent(element);
-    this.receiptAction = 'trash';
-	},
+  
 	showInterest: function (helper) { 
 		var dropzone = this;
     // var state = helper.getState();
-	  var text = helper.getText();
+    // var text = helper.getText();
 	  dropzone.container.addClass('drophere');
 	  dropzone.container.addEvents({
 	    'leave': function() { 
@@ -435,11 +428,12 @@ var TrashDropzone = new Class({
         // helper.setState(state, text);
 			}
 	  });
-	  helper.deleteable(dropzone);
+    // helper.deleteable(dropzone);
 	},
 	addURL: function (draggee) { 
 		return draggee.spokeType() +'s/trash/' + draggee.spokeID();  
-	}
+	},
+	can_catch: function () { return true }
 })
 
 // now we always drag whole <li> elements. no more thumbnails.

@@ -1,6 +1,25 @@
 class CatchError < ActionController::MethodNotAllowed 
 end
 
+class CatchResponse
+  attr_accessor :consequence, :message, :outcome
+
+  def initialize(m=nil, c=nil, o=nil)
+    @message = m
+    @consequence = c
+    @outcome = o
+  end  
+  
+  def to_json 
+    {
+      :message => self.message,
+      :consequence => self.consequence || 'insert',
+      :outcome => self.outcome || 'success',
+    }.to_json
+  end
+  
+end
+
 module ActiveRecord
   module Acts #:nodoc:
     module Catcher #:nodoc:
@@ -51,7 +70,8 @@ module ActiveRecord
 
           public 
       
-          def catch(thrown)
+          def catch_object(thrown)
+            response = CatchResponse.new
             association = self.class.get_catch_dispatch(thrown.class)
             # STDERR.puts "#{self}.catch(#{thrown}) -> #{association}"
             reflection = self.class.reflect_on_association(association)
@@ -59,20 +79,26 @@ module ActiveRecord
               case reflection.macro
               when :has_many
                 self.send(association) << thrown
-                @message = "#{thrown.name} added to #{self.name}"
+                response.message = "#{thrown.name} added to #{self.name}"
               when :belongs_to, :has_one
                 self.send("#{association}=", thrown)
-                @message = "#{self.name} has #{association} #{thrown.name}"
+                response.message = "#{self.name} has #{association} #{thrown.name}"
               end
             elsif self.respond_to?(association)
-              @message = self.send(association, thrown)
-              @message ||= "#{thrown.name} caught by #{self.name}"
+              
+              # little messy this: if catch is defined as a method rather than an association 
+              # then we let method return a whole new response object
+              
+              response = self.send(association, thrown) || CatchResponse.new("#{thrown.name} caught by #{self.name}")
+
             else
               raise CatchError "no such catch relation: #{self.class}->#{dropped.class}"
             end
+            response
           end
       
-          def drop(dropped)
+          def drop_object(dropped)
+            response = CatchResponse.new
             association = self.class.get_catch_dispatch(dropped.class)
             reflection = self.class.reflect_on_association(association)
             if (reflection)
@@ -80,11 +106,11 @@ module ActiveRecord
               when :has_many
                 self.send(association).send('delete', dropped)
               end
-              @message = "#{dropped.name} removed from #{self.name}"
+              response.message = "#{dropped.name} removed from #{self.name}"
             else
               raise CatchError "no such drop relation: #{self.class}->#{dropped.class}"
             end
-            
+            response
           end
           
           def self.can_catch

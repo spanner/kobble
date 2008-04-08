@@ -11,8 +11,14 @@ class TagsController < ApplicationController
   def list_length
     80
   end
+
+  # tags always work across collections but within an account
+
+  def limit_to_active_collections(klass=nil)
+    limit_to_this_account(klass)
+  end
   
-  # this is an evil shortcut.
+  # this is a dirty dirty shortcut.
   # loading tags properly for this is very slow because of all the HMP preloaders
   # and since this is always an ajax call we need quick
   # so we just pull out the names directly
