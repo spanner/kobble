@@ -1,11 +1,38 @@
-<%= error_messages_for 'tag' %>
+<div class="preamble">
+  <%= error_messages_for 'tag' %>
 
-<!--[form:keyword]-->
-<p><label for="tag_parentage">Keyword name (and family tree)</label><br />
-<input type="text" id="tag_parentage" name="parentage" size="50" value="<%= @tag.parentage %>" style="width: 360px;" class="wickEnabled"/><br />
-</p>
+  <p>
+    'Tags' are often simple subject markers with just a word or two to attach to whatever you like, 
+    but they work best with a picture and a bit of descriptive text to promote consistent use. You
+    can also use this as a place to put text together but sets are usually better for that.
+  </p>
+</div>
 
-<p><label for="keyword_description">Description</label><br />
-<%= text_area 'tag', 'description', :rows => 6, :style => 'width: 360px;'  %></p>
-<!--[eoform:keyword]-->
+<div class="boxtabs">
+  <a href="#" id="tab_editing_summary" class="tab">summary</a>
+  <a href="#" id="tab_editing_body" class="tab">associated text</a>
+  <a href="#" id="tab_editing_notes" class="tab">field notes</a>
+</div>
 
+<div class="boxed" id="box_editing">
+	<div id="editing_summary">
+    <p><label for="tag_name">Tag name</label><br />
+    <%= text_field 'tag', 'name', :class => 'titular'  %>
+    </p>
+
+    <p><label for="tag_description">Description</label><br />
+    <%= text_area 'tag', 'description', :rows => 4, :class => 'standard'  %>
+    </p>
+
+    <%= render :partial => 'shared/edit_image', :locals => {:item => @tag} %>
+
+  </div>
+
+  <div id="editing_body">
+    <%= render :partial => 'shared/edit_body', :locals => {:item => @tag} %>
+  </div>
+  
+  <div id="editing_notes">
+    <%= render :partial => 'shared/edit_fieldnotes', :locals => {:item => @tag} %>
+  </div>
+</div>

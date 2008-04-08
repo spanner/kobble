@@ -43,3 +43,10 @@
   <%= render :partial => 'shared/show_field_notes', :locals => {:item => @tag, :tabset => 'content'} %>
 
 </div>
+
+<% content_for :admin do %>
+  <p>
+    tag:<br />
+    <%= render :partial => 'shared/show_admin', :locals => {:item => @tag} %>
+  </p>
+<% end %>
