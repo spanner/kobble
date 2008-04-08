@@ -154,7 +154,7 @@ module ActiveRecord
         end
 
         def is_taggable?
-          self.respond_to?('tags')
+          true if self.class.reflect_on_association(:tags)
         end
         
         def has_tags?

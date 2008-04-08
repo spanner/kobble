@@ -508,8 +508,8 @@ var DragHelper = new Class({
 	emptydrop: function () {
 		intf.stopDragging();
 		if (!this.hasMoved()) {
-		  this.draggee.doClick();
 		  this.remove();
+		  this.draggee.doClick();
     } else if (this.draggee.draggedfrom) {
       this.draggedOut();
 		} else {

@@ -31,7 +31,7 @@ class TopicsController < ApplicationController
     @referent = find_referent
     @topic = Topic.new
     @topic.referent = @referent
-    @topic.collection = @referent.collection
+    @topic.collection = @referent.collection if @referent.has_collection?
     respond_to do |format|
       format.html { }
       format.js { render :action => 'inline', :layout => false }
