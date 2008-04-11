@@ -11,7 +11,8 @@
     <% if @klass %>
       <%= hidden_field_tag 'among[]', @klass.to_s %>
     <% else %>
-      <% Spoke::Config.indexed_models.each do |klass| %>
+      <% Spoke::Config.indexed_models.each do |k| %>
+        <% klass = k.to_s._as_class %>
         <%= check_box_tag 'among[]', klass.to_s, !params[:among] || params[:among].empty? || params[:among].include?(klass.to_s) %>
         <label for="among_<%= klass.to_s %>"><%= klass.nice_title.pluralize %></label> 
       <% end %>     

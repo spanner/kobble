@@ -44,7 +44,7 @@
           linkclass =  monitorship.active? ? 'ticked' : 'crossed'
           linktitle =  monitorship.active? ? 'click to switch off email subscription' : 'click to receive email notification of new posts'
 
-          link_to 'email notification', toggle_monitorship_url(monitorship), {
+          link_to monitorship.topic.name, toggle_monitorship_url(monitorship), {
       		  :class => "toggle #{linkclass}",
       		  :title => linktitle
       	  } 
