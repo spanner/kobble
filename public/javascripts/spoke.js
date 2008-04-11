@@ -19,7 +19,7 @@ var Interface = new Class({
     this.fixedbottom = [];
     this.inlinelinks = [];
     this.replyform = null;
-    this.debug_level = 2;
+    this.debug_level = 5;
     this.clickthreshold = 6;
     this.announcer = $E('div#notification');
     this.admin = $E('div#admin');
@@ -551,6 +551,7 @@ var Tab = new Class({
 	initialize: function(element){
 		this.tabhead = element;
 		this.name = this.tabhead.get('text');
+	  intf.debug("tab: " + this.name, 4)
     var parts = element.id.split('_');
 		this.tag = parts.pop();
 		this.settag = parts.pop();
@@ -759,10 +760,9 @@ var ScratchTab = new Class({
       		  url: '/scratchpads/' + response.id,
       			method: 'get',
       			update: stab.tabbody,
-      		  onSuccess: function () { 
-      		    intf.addScratchTabs([stab.tabhead]);
+      		  onSuccess: function (request) { 
+      		    var st = intf.addScratchTabs([stab.tabhead]);
       		    intf.addDropzones(stab.tabbody.getElements('.catcher'));
-      		    tabs.select('scratchpad_' + request.id);
       		  },
       		  onFailure: function () { intf.complain('no way'); }
       		}).send();

@@ -8,7 +8,8 @@
     	<ul 
     	  id="tagsfor_<%= item.class.to_s.downcase %>_<%= item.id %>"
     	  class="catcher dropzone" 
-    	  catches="tag"    	  
+    	  catches="tag" 
+    	  title="tags for <%= item.name %>"   	  
     	>
     	<% if item.has_tags? %>
     		<%= render :partial => "shared/listed", :collection => item.tags.uniq, :locals => {:catch => false} %>
