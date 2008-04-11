@@ -107,7 +107,7 @@ module ActiveRecord
         end
                 
         def index_fields
-          ['name', 'description', 'body', 'created_by', 'created_at', 'collection_id']
+          ['name', 'description', 'body', 'created_by', 'created_at']
         end
 
         def index_concatenation
