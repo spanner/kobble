@@ -32,7 +32,7 @@ class Node < ActiveRecord::Base
   end
   
   def duration
-    if (self.source.clip)
+    if (self.clip || self.source && self.source.clip)
       read_attribute(:playto) - read_attribute(:playfrom)
     else
       0
