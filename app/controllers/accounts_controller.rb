@@ -1,6 +1,7 @@
 class AccountsController < ApplicationController
   before_filter :admin_required, :except => [:show, :edit, :update, :create, :new]
   before_filter :login_required, :except => [:create, :new]
+  skip_before_filter :check_activations  
 
   def index
     home
