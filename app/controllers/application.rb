@@ -11,6 +11,7 @@ class ApplicationController < ActionController::Base
   before_filter :login_from_cookie
   before_filter :login_required
   before_filter :set_context
+  before_filter :check_activations  
   layout 'standard'
   exception_data :exception_report_data
   
@@ -22,9 +23,12 @@ class ApplicationController < ActionController::Base
     if logged_in?
       @scratch = current_user.find_or_create_scratchpads 
       EditObserver.current_user = current_user
-      Collection.current_collections = current_collections
-      redirect_to :controller => 'accounts', :action => 'home' if current_collections.empty?
     end
+  end
+  
+  def check_activations
+    redirect_to :controller => 'accounts', :action => 'home' if current_collections.empty?
+    Collection.current_collections = current_collections
   end
   
   def limit_to_this_account(klass=nil)

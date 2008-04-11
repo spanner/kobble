@@ -1,7 +1,7 @@
 class LoginController < ApplicationController
 
-  before_filter :set_context
   skip_before_filter :login_required  
+  skip_before_filter :check_activations  
   layout 'login'
   
   def index

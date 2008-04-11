@@ -1,5 +1,7 @@
 class ActivationsController < ApplicationController
 
+  skip_before_filter :check_activations  
+
   def toggle
     @activation = Activation.find(params[:id])
     if @activation.active?

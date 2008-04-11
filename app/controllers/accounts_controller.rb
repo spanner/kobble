@@ -2,11 +2,6 @@ class AccountsController < ApplicationController
   before_filter :admin_required, :except => [:show, :edit, :update, :create, :new]
   before_filter :login_required, :except => [:create, :new]
 
-  def set_context
-    @scratch = current_user.find_or_create_scratchpads if logged_in?
-    EditObserver.current_user = current_user
-  end
-
   def index
     home
     render :action => 'home'

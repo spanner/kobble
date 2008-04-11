@@ -40,6 +40,10 @@ class User < ActiveRecord::Base
     "user"
   end
 
+  def name
+    "#{firstname} #{lastname}"
+  end
+
   def find_or_create_scratchpads
     if (self.created_scratchpads.empty?)
       (1..4).each do |i|
