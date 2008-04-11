@@ -21,6 +21,7 @@
       <%= f.text_field 'name', :class => "titular" %>
     </p>
 
+    <%= render :partial => 'shared/edit_collection', :locals => {:item => @bundle} %>
     <%= render :partial => 'shared/edit_tags', :locals => {:item => @bundle} %>
 
     <p style="clear: both;"><label for="bundle_description">Synopsis or summary</label><br/>
