@@ -234,8 +234,20 @@ module ActiveRecord
           self.respond_to?('posts') && self.posts.count > 0
         end
 
-        def has_marks?
-          self.respond_to?('marks') && self.marks.count > 0
+        def has_monitorships?
+          self.respond_to?('monitorships') && self.monitorships.count > 0
+        end
+
+        def has_sources?
+          self.respond_to?('sources') && self.sources.count > 0
+        end
+
+        def has_nodes?
+          self.respond_to?('nodes') && self.nodes.count > 0
+        end
+        
+        def has_bundles?
+          self.respond_to?('bundles') && self.bundles.count > 0
         end
 
         def editable_by?(user)

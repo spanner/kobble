@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 94) do
+ActiveRecord::Schema.define(:version => 95) do
 
   create_table "accounts", :force => true do |t|
     t.integer "user_id"
@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(:version => 94) do
   create_table "activations", :force => true do |t|
     t.integer "collection_id"
     t.integer "user_id"
-    t.integer "active",        :default => 0
+    t.boolean "active",        :default => true
   end
 
   create_table "bundles", :force => true do |t|
@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(:version => 94) do
     t.text     "emotions"
     t.text     "arising"
     t.string   "image"
-    t.text     "description"
+    t.string   "description"
   end
 
   add_index "bundles", ["collection_id"], :name => "index_bundles_on_collection"
@@ -52,7 +52,6 @@ ActiveRecord::Schema.define(:version => 94) do
   add_index "bundlings", ["member_type", "member_id"], :name => "index_bundle_members"
 
   create_table "collections", :force => true do |t|
-    t.integer  "user_id"
     t.string   "name"
     t.text     "description"
     t.string   "status",             :limit => 20, :default => "0"
@@ -167,8 +166,8 @@ ActiveRecord::Schema.define(:version => 94) do
     t.text     "arising"
     t.integer  "collection_id"
     t.integer  "created_by"
-    t.datetime "created_at"
     t.integer  "updated_by"
+    t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "email"
     t.text     "address"
@@ -182,6 +181,7 @@ ActiveRecord::Schema.define(:version => 94) do
   create_table "posts", :force => true do |t|
     t.integer  "topic_id"
     t.text     "body"
+    t.integer  "collection_id"
     t.datetime "created_at"
     t.integer  "created_by"
     t.datetime "updated_at"
@@ -266,6 +266,7 @@ ActiveRecord::Schema.define(:version => 94) do
     t.datetime "replied_at"
     t.integer  "replied_by"
     t.integer  "last_post_id"
+    t.integer  "collection_id"
     t.integer  "speaker_id"
     t.datetime "created_at"
     t.integer  "created_by"
@@ -273,7 +274,6 @@ ActiveRecord::Schema.define(:version => 94) do
     t.integer  "updated_by"
     t.string   "referent_type"
     t.integer  "referent_id"
-    t.integer  "collection_id"
     t.text     "body"
   end
 
@@ -286,8 +286,6 @@ ActiveRecord::Schema.define(:version => 94) do
     t.string   "email",                     :limit => 60, :default => "", :null => false
     t.string   "diminutive",                :limit => 40
     t.string   "honorific"
-    t.string   "firstname",                 :limit => 40
-    t.string   "lastname",                  :limit => 40
     t.string   "salt",                      :limit => 40, :default => "", :null => false
     t.integer  "verified",                                :default => 0
     t.string   "role"
@@ -319,6 +317,7 @@ ActiveRecord::Schema.define(:version => 94) do
     t.integer  "subscribe_everything"
     t.integer  "account_id"
     t.integer  "person_id"
+    t.string   "name"
   end
 
   add_index "users", ["collection_id"], :name => "index_users_on_collection"

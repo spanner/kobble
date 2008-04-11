@@ -4,18 +4,17 @@ class UsersController < ApplicationController
   before_filter :activation_required, :only => [:edit, :update, :show]
   
   def list_columns
-    3
+    4
   end
 
   def list_length
-    60
+    80
   end
 
   # this is user review and management for admins
   # logging in and registration is in account_controller
 
   def limit_to_active_collections
-    [active_collections_clause(User) + " and users.status >= 200"] + current_collections
   end
     
   def show
@@ -55,7 +54,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    if (current_user.editor?)
+    if (current_user.admin?)
       userid = params[:id] || current_user.id
     else
       userid = current_user[:id]

@@ -228,7 +228,7 @@ div#admin a.warning { color: white; }
 div#admin a.create { color: #6cb262; }
 div#admin a.annotate { text-decoration: line-through; color: #B2AAA4;}
 
-div#trash {
+div#trashholder {
   position: fixed;
   left: 20px;
 	bottom: 10px;
@@ -236,14 +236,26 @@ div#trash {
 	width: 90px;
 	z-index: 12000;
   visibility: hidden;
-  background-image: url(/images/furniture/layout/trashcan.png);
-  background-repeat: no-repeat;
-  background-position: 20px 0;
+}
+
+div#trash {
+	width: 90px;
+	height: 80px;
+  background-color: white;
+  border: 1px solid red;
+  color: red;
+}
+
+div#trash p {
+  font-size: 11px;
+  line-height: 13px;
+  text-align: center;
+  margin: 28px 6px 0 6px;
 }
 
 div#trash.drophere {
-  background-image: url(/images/furniture/layout/trashcan_open.png);
-  background-color: transparent;
+  background-color: red;
+  color: white;
 }
 
 ul.dropzone {

@@ -11,13 +11,12 @@
 <% end %>
 
 <div class="boxtabs">
-  <a href="#" id="tab_content_details" class="tab">details</a>
+  <a href="#" id="tab_content_details" class="tab">summary</a>
+  <a href="#" id="tab_content_subscriptions" class="tab">subscriptions</a>
   <% if @user.has_image? %><a href="#" id="tab_content_image" class="tab">image</a><% end %>
   <% if @user.has_posts? %><a href="#" id="tab_content_posts" class="tab">comments</a><% end %>
-  <% if @user.has_answers? %><a href="#" id="tab_content_answers" class="tab">answers</a><% end %>
   <% if @user.has_sources? %><a href="#" id="tab_content_sources" class="tab">sources</a><% end %>
   <% if @user.has_nodes? %><a href="#" id="tab_content_nodes" class="tab">fragments</a><% end %>
-  <% if admin? %><a href="#" id="tab_content_admin" class="tab">admin</a><% end %>
 </div>
 
 <div class="boxed" id="box_content">
@@ -33,10 +32,31 @@
     role: <%= @user.role  %><br />
     phone: <%= @user.phone %>
     </p>
-    
-  	<h3>subscriptions</h3>
-  	<%= render :partial => 'monitorships/list', :collection => @user.monitorships %>
   </div>
+  
+
+  <div id="content_subscriptions">
+  <% if @user.has_monitorships? %>
+    <ul>
+      <% @user.monitorships.each do |monitorship| %>
+        <li>
+        <%= 
+          linkclass =  monitorship.active? ? 'ticked' : 'crossed'
+          linktitle =  monitorship.active? ? 'click to switch off email subscription' : 'click to receive email notification of new posts'
+
+          link_to 'email notification', toggle_monitorship_url(monitorship), {
+      		  :class => "toggle #{linkclass}",
+      		  :title => linktitle
+      	  } 
+      	%>
+    	  </li>
+      <% end %>
+  	</ul>
+  <% else %>
+    <p>No subscriptions.</p>
+  <% end %>
+  </div>
+
   
   <%= render :partial => 'shared/show_image', :locals => {:item => @user, :tabset => 'content'} %>
 
@@ -49,18 +69,9 @@
     </div>
   <% end %>
 
-  <% if @user.has_answers? %>
-    <div id="content_answers">
-      <h2 class="boxhead">has provided <%= pluralize(@user.answers.count, "Answer") %></h2>
-    	<ul class="starry">
-    		<%= render :partial => "answers/minilist", :collection => @user.answers %>
-      </ul>
-    </div>
-  <% end %>
-
   <% if @user.has_sources? %>
     <div id="content_sources">
-      <h2 class="boxhead">speaks in <%= pluralize(@user.sources.count, "Source document") %></h2>
+      <h2 class="boxhead">speaks in <%= pluralize(@user.sources.count, "source document") %></h2>
     	<ul class="starry">
     		<%= render :partial => "sources/minilist", :collection => @user.sources %>
       </ul>
@@ -76,7 +87,11 @@
     </div>
   <% end %>
 
-  <%= render :partial => 'shared/show_admin', :locals => {:item => @user, :with_snip => false, :tabset => 'content'} %>
 </div>
 
-
+<% content_for :admin do %>
+  <p>
+    user:<br />
+    <%= render :partial => 'shared/show_admin', :locals => {:item => @user} %>
+  </p>
+<% end %>

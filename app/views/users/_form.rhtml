@@ -1,34 +1,49 @@
 <%= error_messages_for 'user' %>
 
-<p>'users' here come in two kinds: there are people that we just refer to, and people who can log in and act within the system (as well as being referred to). They are stored together, so that anyone who features as a speaker can also be invited in to act as an editor.</p>
-
-<% if @user.login %>
-  <p><label for="user_login">Login name</label>: <%= @user.login %><br />
-  change login<br />
-  change password<br />
+<div class="preamble">
+  <p>
+    'users' here are people who can log into and act within the system.
+    People who are referred to are <%= link_to 'listed separately', people_url %>.
   </p>
-<% else %>
-  <p>create login for this user</p>
-<% end %>
+</div>
 
-<%= render :partial => 'basics' %>
+<div class="boxtabs">
+  <a href="#" id="tab_editing_summary" class="tab">summary</a>
+  <% if admin? %>
+    <a href="#" id="tab_editing_login" class="tab">login</a>
+  <% end%>
+</div>
 
-<p>
-<label for="user_status">User status:</label><br />
-<select name="user[status]">
-	<option value="-1">banned</option>
-	<option value="0">no login</option>
-	<option value="10" selected>reader</option>
-	<option value="100">editor</option>
-	<% if admin? %><option value="200">administrator</option><% end %>
-	<% if current_user.is_developer? %><option value="300">developer</option><% end %>
-</select>
-</p>
-
-
+<div class="boxed" id="box_editing">
+	<div id="editing_summary">
+    <%= render :partial => 'basics', :locals => {:f => f} %>
+  </div>
+  
+  <% if admin? %>
+  	<div id="editing_login">
+	  
+  	  <p><label for="user_login"<%= ' class="formError"' if @user.errors.on(:login) %>>Login</label><br />
+      <%= f.text_field :login, :class => 'standard' %>
+      <% if @user.errors.on(:login) %><div class="formError">warning: this username <%= @user.errors.on(:login).to_a.last %></div><% end %>
+      </p>
+  
+      <p><label for="user_password"<%= ' class="formError"' if @user.errors.on(:password) %>>Password</label><br />
+      <%= password_field_tag 'user[password]', '', :class => "standard" %></p>
+      <% if @user.errors.on(:password) %><div class="formError">warning: <%= @user.errors.on(:password).to_a.last %></div><% end %>
+      </p>
+  
+      <p><label for="password_confirmation"<%= ' class="formError"' if @user.errors.on(:password_confirmation) %>>Confirm password</label><br />
+      <%= password_field_tag 'user[password_confirmation]', '', :class => "standard" %></p>
+      <% if @user.errors.on(:password_confirmation) %><div class="formError">warning: <%= @user.errors.on(:password_confirmation).to_a.last %></div><% end %>
+      </p>
+	  
+    </div>
+  <% end %>
+  
+  
 <div class="formbuttons">
   <%= submit_tag "Store User" %> or
-  <%= link_to 'cancel', :action => 'list' %>
+  <%= link_to 'cancel', :action => 'show', :id => @user %>
 </div>
 
 

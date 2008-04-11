@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
   has_many :activations, :dependent => :destroy
   has_many :collections, :through => :activations, :conditions => ['activations.active = ?', true], :source => :collection
   
-  has_many :created_collections, :class_name => 'Collection', :foreign_key => 'created_by', :dependent => :destroy
+  has_many :created_collections, :class_name => 'Collection', :foreign_key => 'created_by', :dependent => :nullify
   has_many :created_sources, :class_name => 'Source', :foreign_key => 'created_by', :dependent => :nullify
   has_many :created_nodes, :class_name => 'Node', :foreign_key => 'created_by', :dependent => :nullify
   has_many :created_bundles, :class_name => 'Bundle', :foreign_key => 'created_by', :dependent => :destroy
@@ -35,18 +35,7 @@ class User < ActiveRecord::Base
   
   before_create :make_activation_code
   before_save :encrypt_password
-
-  def self.sort_options
-    {
-      "login" => "lastname, firstname",
-      "registration date" => "created_at",
-    }
-  end
-  
-  def self.default_sort
-    "login"
-  end
-  
+    
   def self.nice_title
     "user"
   end
@@ -149,11 +138,7 @@ class User < ActiveRecord::Base
     self.remember_token            = nil
     save(false)
   end
-  
-  def name
-    return firstname + ' ' + lastname
-  end
-  
+    
   def best_name
     self.diminutive.nil? ? self.name : self.diminutive
   end
@@ -200,7 +185,7 @@ class User < ActiveRecord::Base
   
     # before filter 
     def encrypt_password
-      return if password.blank?
+      return if password.blank?      
       self.salt = Digest::SHA1.hexdigest("--#{Time.now.to_s}--#{login}--") if new_record?
       self.crypted_password = encrypt(password)
     end

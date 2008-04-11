@@ -1,10 +1,7 @@
 <% @user = user unless @user %>
 
-<p><label for="user_firstname">First name</label><br/>
-<%= text_field 'user', 'firstname', 'class' => "standard" %></p>
-
-<p><label for="user_lastname">Surname</label><br/>
-<%= text_field 'user', 'lastname', 'class' => "standard" %></p>
+<p><label for="user_firstname">Name</label><br/>
+<%= text_field 'user', 'name', 'class' => "titular" %></p>
 
 <p><label for="user_login">Email address</label><br/>
 <%= text_field 'user', 'email', 'class' => "standard" %></p>

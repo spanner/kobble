@@ -1,18 +1,25 @@
-<div id="inputform">
+<div class="mainform">
+
+<% form_for :user,
+            :url => user_url(@user),
+            :html => { 
+              :method => "put",
+              :multipart => true
+            } do |f| 
+%>
 
 	<% if editor? && @user != current_user %>
+	
 		<h1 class="pagetitle">Edit <%= link_to @user.name, :action => 'show', :id => @user %></h1>
-
-		<% form_tag({:controller => 'users', :action => 'update', :id => @user}, :multipart => true) do %>
-		  <%= render :partial => 'form' %>
-		<% end %>
+	  <%= render :partial => 'form', :locals => {:f => f} %>
 		
 	<% else %>
 
+    <% @user = current_user %>
 		<h1 class="pagetitle">About yourself</h1>
-		<% form_tag({:controller => 'users', :action => 'update', :id => @user}, :multipart => true) do %>
-		  <%= render :partial => 'self_form' %>
-		<% end %>
+	  <%= render :partial => 'self_form', :locals => {:f => f} %>
 
 	<% end %>
+<% end %>
+
 </div>

@@ -37,7 +37,7 @@
     </div>
   </div> 
 
-  <div id="scratchpad" class="fixedright">
+  <div id="scratchpad">
     <div id="headbox_scratchpad">
       <% for pad in @scratch %>
         <a href="#" class="padtab" id="tab_scratchpad_<%= pad.id %>" title="<%= pad.body %>"><%= pad.name %></a>
@@ -47,27 +47,26 @@
       <%= render :partial => 'shared/scratchpad', :collection => @scratch %>
     </div>
   </div>
-
-  <div id="trash" class="trashdrop showondrag" catches="all">
-    &nbsp;
-  </div>  
-
-  <div id="notification">
-    <h4><%= 'notice' if flash[:notice] %></h4>
-    <p><%= flash[:notice] %></p>
+  
+  <div id="trashholder" class="showondrag">
+    <div id="trash" title="trash" class="trashdrop" catches="all">
+      <p>drop here to delete</p>
+    </div>  
   </div>
   
-  <% if flash[:notice] %>
-    <script type="text/javascript">
-    window.addEvent('load', function(){
-      intf.announce('<%= flash[:notice] %>');
-    });
-    </script>
-  <% end %>
-   
+  <div id="notification"><h4></h4><p></p></div>
+     
   <div id="admin" class="hideondrag">
     <%= yield :admin %>
   </div>
-   
+
+  <% if flash[:notice] %>
+    <script type="text/javascript">
+      //<![CDATA[
+        window.addEvent('load', function(){ intf.announce('<%= flash[:notice] %>'); });
+      //]]>
+    </script>
+  <% end %>
+
 </body>
 </html>

@@ -6,7 +6,6 @@ class TagFields < ActiveRecord::Migration
     add_column :tags, :observations, :text
     add_column :tags, :emotions, :text
     add_column :tags, :arising, :text
-    remove_column :tags, :collection_id
     remove_column :tags, :parent_id
     remove_column :tags, :colour            #
     remove_column :tags, :nodes             # ancient history
@@ -17,7 +16,6 @@ class TagFields < ActiveRecord::Migration
     remove_column :tags, :observations
     remove_column :tags, :emotions
     remove_column :tags, :arising
-    add_column :tags, :collection_id, :integer
     add_column :tags, :parent_id, :integer
   end
 end

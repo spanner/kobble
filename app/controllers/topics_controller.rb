@@ -28,10 +28,9 @@ class TopicsController < ApplicationController
   end
   
   def new
-    @referent = find_referent
     @topic = Topic.new
-    @topic.referent = @referent
-    @topic.collection = @referent.collection if @referent.has_collection?
+    @topic.referent = find_referent
+    @topic.collection = @topic.referent.collection if @topic.referent.has_collection?
     respond_to do |format|
       format.html { }
       format.js { render :action => 'inline', :layout => false }
@@ -44,6 +43,7 @@ class TopicsController < ApplicationController
   def create
     @topic = Topic.new(params[:topic])
     @topic.referent = find_referent
+    @topic.collection = @topic.referent.collection if @topic.referent.has_collection?
     @topic.save!
     if @topic.save
       @topic.tags << Tag.from_list(params[:tag_list])
@@ -62,16 +62,14 @@ class TopicsController < ApplicationController
     @topic.attributes = params[:topic]
     @topic.save!
     respond_to do |format|
-      format.html { redirect_to_referent }
+      format.html { redirect_to url_for(@topic) }
     end
   end
   
   protected
   
     def find_referent
-      logger.warn(Spoke::Config.discussed_models.inspect)
       ref = Spoke::Config.discussed_models.find{ |k| !params[("#{k.to_s}_id").intern].nil? }
-      logger.warn("ref is #{ref.to_s._as_class}")
       @referent = ref ? ref.to_s._as_class.find(params[(ref.to_s.underscore + "_id").intern]) : nil
     end
 
