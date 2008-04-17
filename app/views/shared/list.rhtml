@@ -2,9 +2,9 @@
 
 <% if @list && @list.total_entries > 0 %>
   
-  <%= render :partial => 'shared/pagination', :locals => {:list => @list} %>
-  
   <div class="mainlist">
+    <%= render :partial => 'shared/pagination', :locals => {:list => @list} %>
+  
     <% counter = 0 %>
     <% column_length = @list.per_page / controller.list_columns %>
     <% column_width = 700 / controller.list_columns %>

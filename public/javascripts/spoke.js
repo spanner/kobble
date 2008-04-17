@@ -19,7 +19,7 @@ var Interface = new Class({
     this.fixedbottom = [];
     this.inlinelinks = [];
     this.replyform = null;
-    this.debug_level = 0;
+    this.debug_level = 5;
     this.clickthreshold = 6;
     this.announcer = $E('div#notification');
     this.admin = $E('div#admin');
@@ -107,17 +107,10 @@ var Interface = new Class({
     });
   },
 
-  grabForm: function (elements) {
-    elements.each(function (element) { element.addEvent('click', function (e) { new htmlForm(element, e); }) });
-  },
-
-  makeInlineCreate: function (elements) {
-    elements.each(function (element) { element.addEvent('click', function (e) { new jsonForm(element, e); }) });
-  },
-    
-  makeSnipper: function (elements) {
-    elements.each(function (element) { element.addEvent('click', function (e) { new Snipper(element, e); }) });
-  },
+  grabForm: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new htmlForm(element, e); }) }); },
+  makeInlineCreate: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new jsonForm(element, e); }) }); },
+  makeSnipper: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new Snipper(element, e); }) }); },
+  makePopup: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new Popup(element, e); }) }); },
   
   // there will only be one of these really
 
@@ -127,9 +120,7 @@ var Interface = new Class({
     }, this);
   },
   
-  makeFixed: function (elements) {
-    elements.each(function (element) { element.pin(); })
-  },
+  makeFixed: function (elements) { elements.each(function (element) { element.pin(); }) },
   
   // this is the main page initialisation: it gets called on domready
   
@@ -149,6 +140,7 @@ var Interface = new Class({
     this.makeSnipper(scope.getElements('a.snipper'));
     this.makeReplyForm(scope.getElements('form#new_post'));
     this.makeFixed(scope.getElements('.fixed'));
+    this.makePopup(scope.getElements('.popup'));
   },
   
   activateElement: function (element) {
@@ -165,6 +157,7 @@ var Interface = new Class({
 	  if (element.hasClass('fixedbottom')) this.makeFixed( [element] );
     if (element.hasClass('toggle')) this.makeToggle( [element] )
     if (element.hasClass('snipper')) this.makeSnipper( [element] )
+    if (element.hasClass('popup')) this.makePopup( [element] )
   },
   
   getSelectedText: function () {
@@ -918,13 +911,15 @@ var jsonForm = new Class ({
     this.position();
     this.getForm();
 		this.setup(true);
-		this.top = window.getScrollTop() + (window.getHeight() / 15);
-		this.floater.setStyles({top: this.top, display: ''});
+    // this.top = window.getScrollTop() + (window.getHeight() / 15);
+    // this.floater.setStyles({top: this.top, display: ''});
 		this.overlay.fade(0.6);
     this.floater.show();
   },
 
-  hide: function () {
+  hide: function (e) {
+    event = new Event(e);
+    event.preventDefault();
     this.floater.fade('out');
 		this.overlay.fade('out');
 		this.setup(false);
@@ -948,7 +943,7 @@ var jsonForm = new Class ({
 		dimensions = this.floater.getCoordinates();
 		this.floater.setStyles({
 		  'top': window.getScrollTop() + Math.floor(window.getHeight() - dimensions.height) / 2, 
-		  'left': window.getScrollLeft() + Math.floor((window.getWidth() - dimensions.width) / 2), 
+		  'left': window.getScrollLeft() + Math.floor((window.getWidth() - dimensions.width) / 2) 
 		});
 		this.overlay.setStyles({
 		  'top': window.getScrollTop(), 
@@ -966,6 +961,7 @@ var jsonForm = new Class ({
 
   prepForm: function () {
     this.notWaiting();
+    this.position();
     this.form = this.formholder.getElement('form');
     intf.makeSuggester(this.form.getElements('input.tagbox'));
     var closer = this.hide.bind(this);
@@ -1073,6 +1069,7 @@ var Snipper = new Class ({
 	
   prepForm: function () {
     this.notWaiting();
+    this.position();
     this.form = this.formholder.getElement('form');
     var closer = this.hide.bind(this);
     this.form.getElements('a.cancelform').each(function (a) { a.onclick = closer })
@@ -1085,6 +1082,54 @@ var Snipper = new Class ({
   }
   
 });
+
+// popup is a simple case of htmlForm that doesn't expect any form submission and appears just over the triggering link
+
+var Popup = new Class ({
+	Extends: htmlForm,
+	
+  initialize: function (element, e) {
+    event = new Event(e);
+    event.preventDefault();
+    var popup = this;
+    element.blur();
+		this.link = element;
+		this.at = event.client;
+		this.overlay = new Element('div', {'class': 'overlay'}).inject(document.body);
+		this.floater = new Element('div', {'class': 'floater popup'}).inject(document.body);
+		this.spinner = new Element('div', {'class': 'floatspinner'}).set('html', '&nbsp;').inject(this.floater).show();
+		this.formholder = new Element('div', {'class': 'popupform'}).inject(this.floater).hide();
+		this.overlay.onclick = this.hide.bind(this);
+    this.formholder.set('load', {
+      onRequest: function () { popup.waiting(); },
+      onSuccess: function () { popup.prepForm(); },
+      onFailure: function () { popup.failed(); }
+    });
+    this.show();
+  },
+
+  show: function () {
+    this.position();
+    this.getForm();
+		this.setup(true);
+		this.overlay.fade(0.6);
+    this.floater.show();
+  },
+
+	position: function(){
+		this.floater.setStyles({
+		  'top': this.at.y, 
+		  'left': this.at.x
+		});
+	},
+	
+  prepForm: function () {
+    this.notWaiting();
+    this.position();
+    intf.activate(this.formholder);
+  }
+});
+
 
 
 // separate inline form mechanism for discussion replies

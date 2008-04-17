@@ -4,20 +4,20 @@ class CollectionsController < ApplicationController
   verify :method => :post, :only => [ :reallydestroy, :create, :update ],
          :redirect_to => { :action => :list }
   
-  def index
-    list
-    render :action => "list"
-  end
-  
   def limit_to_active_collections()
     []
   end
 
-  def list
-    # this will be the main dashboard view
-    # but might get moved to accounts_controller::show
+  def index
+    # if called by js, this returns just the collection-choice fragment
 
     @collections = current_account.collections
+    respond_to do |format|
+      format.html { }
+      format.js { render :action => 'choose', :layout => false }
+      format.json { render :json => @collections.to_json }
+      format.xml { }
+    end
   end
   
   # and the usual crud:
@@ -29,6 +29,10 @@ class CollectionsController < ApplicationController
 
   def new
     @collection = Collection.new
+  end
+  
+  def choose
+    
   end
 
   def create

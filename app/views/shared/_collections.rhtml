@@ -1,0 +1,17 @@
+<h3>activate collections</h3>
+<ul class="choicelist">
+<% current_account.collections.each do |c| %>
+  <li>
+    <%= 
+      activation = current_user.activation_of(c) 
+      linkclass =  activation.active? ? 'ticked' : 'crossed'
+      linktitle =  activation.active? ? 'click to deactivate' : 'click to activate'
+    
+      link_to c.name, toggle_activation_url(activation), {
+  		  :class => "toggle #{linkclass}",
+  		  :title => linktitle
+  	  } 
+  	%>
+  </li>
+<% end %>
+</ul>

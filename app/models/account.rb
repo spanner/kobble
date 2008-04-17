@@ -1,9 +1,10 @@
 class Account < ActiveRecord::Base
 
-  belongs_to :user        # the account holder
-  has_many :users         # the users added to this account by the account holder
+  belongs_to :user
+  has_many :users
   has_many :collections, :order => 'name'
-    
+  has_many :tags
+  
   def self.nice_title
     "account"
   end

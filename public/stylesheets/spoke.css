@@ -263,7 +263,6 @@ ul.dropzone {
 /*  border: 1px dotted #B2AAA4;*/
 }
 
-
 /* scratchpad */
 
 div#scratchpad {
@@ -310,14 +309,27 @@ div#headbox_scratchpad a.louder { color: #CC6E1F; }
 div#headbox_scratchpad a:hover { background-color: #d1005d; color: white;}
 div#headbox_scratchpad a.receptive, div.scratchpage.receptive { background-color: #d1005d; }
 
+div#headbox_scratchpad div.admin a { color: #db9962; }
+div#headbox_scratchpad div.admin a:hover { background-color: #CC6E1F; color: white;}
+div#headbox_scratchpad div.admin a.fg { font-weight: bold; color: white; background-color: #695D54; }
+
+div#scratchpad div.admin {
+  display: inline;
+}
+
 div.scratchpage {
   position:relative;
 	width: 430px;
 	height:100%;
 	margin: 0;
-  overflow: auto;
   padding: 0;
   display: none;
+}
+
+div.scratchpage h3 {
+  margin: 4px 0 4px 0;
+  padding: 6px 0 0 30px;
+  color: white;
 }
 
 div.scratchpage ul {
@@ -334,8 +346,11 @@ div.scratchpage li {
   line-height: 20px;
 }
 
-div.scratchpage li a {
-  color: white;
+div.admin div.scratchpage li {
+  list-style: none;
+  margin: 0;
+  font-size: 16px;
+  line-height: 20px;
 }
 
 div.scratchpage li.waiting a {
@@ -716,6 +731,18 @@ div.floater a.canceller, div.floater a.canceller:visited {
   margin: 14px;
   float: right;
 }
+
+div.popup {
+  width: 380px;
+  padding: 10px 10px 10px 10px;
+  float: none;
+}
+
+div.popup a.canceller, div.popup a.canceller:visited {
+  font-size: 10px;
+  font-family: HelveticaNeue-Roman, helvetica, arial, sans-serif;
+}
+
 
 /* search box */
 
@@ -1337,15 +1364,35 @@ a.ticked, a.crossed, a.waiting {
        
 a.ticked {
   color: #6cb262;
-  background-image: url('/images/furniture/buttons/tick.png');
+  background-image: url('/images/furniture/buttons/tick/green.png');
 }
 a.crossed {
   color: #ef4447;
-  background-image: url('/images/furniture/buttons/cross.png');
+  background-image: url('/images/furniture/buttons/cross/red.png');
 }
 a.waiting {
   color: #695D54;
   background-image: url('/images/furniture/signals/wait_16_grey.gif');
+}
+
+div.scratchpage a.ticked {
+  color: #fff;
+  background-image: url('/images/furniture/buttons/tick/white.png');
+}
+
+div.scratchpage a.crossed {
+  color: #B2AAA4;
+  background-image: url('/images/furniture/buttons/cross/grey.png');
+}
+
+div.scratchpage a.crossed:hover {
+  color: white;
+  background-image: url('/images/furniture/buttons/cross/white.png');
+}
+
+div.scratchpage a.waiting {
+  color: #B2AAA4;
+  background-image: url(/images/furniture/signals/wait_16_white.gif);
 }
 
 h2.invitation a {
