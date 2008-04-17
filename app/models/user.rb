@@ -12,6 +12,10 @@ class User < ActiveRecord::Base
   
   has_many :activations, :dependent => :destroy
   has_many :collections, :through => :activations, :conditions => ['activations.active = ?', true], :source => :collection
+  has_many :monitorships, :dependent => :destroy
+  has_many :monitored_topics, :through => :monitorships, :conditions => ['monitorships.active = ?', true], :order => 'topics.replied_at desc', :source => :topic
+  has_many :user_preferences, :dependent => :destroy
+  has_many :preferences, :through => :user_preferences, :conditions => ['user_preferences.active = ?', true], :source => :preference
   
   has_many :created_collections, :class_name => 'Collection', :foreign_key => 'created_by', :dependent => :nullify
   has_many :created_sources, :class_name => 'Source', :foreign_key => 'created_by', :dependent => :nullify
@@ -21,9 +25,6 @@ class User < ActiveRecord::Base
   has_many :created_posts, :class_name => 'Post', :foreign_key => 'created_by', :dependent => :destroy  
   has_many :created_scratchpads, :class_name => 'Scratchpad', :foreign_key => 'created_by', :dependent => :destroy
   has_many :created_tags, :class_name => 'Tag', :foreign_key => 'created_by', :dependent => :destroy
-
-  has_many :monitorships, :dependent => :destroy
-  has_many :monitored_topics, :through => :monitorships, :conditions => ['monitorships.active = ?', true], :order => 'topics.replied_at desc', :source => :topic
 
   validates_presence_of     :login,                      :if => :login_required?
   validates_presence_of     :password,                   :if => :password_required?
@@ -179,6 +180,10 @@ class User < ActiveRecord::Base
 
     def monitorship_of (topic)
       Monitorship.find_or_create_by_user_id_and_topic_id(self.id, topic.id)
+    end
+
+    def preference_for (preference)
+      UserPreference.find_or_create_by_user_id_and_preference_id(self.id, preference.id)
     end
     
   protected

@@ -1,13 +1,20 @@
 <h3>set preferences</h3>
 <ul class="choicelist">
-  <li><a href="#" class="toggle crossed">show hover tips</a></li>
-  <li><a href="#" class="toggle crossed">confirm drag and drop operations</a></li>
-  <li><a href="#" class="toggle crossed">default to condensed view</a></li>
-  <li><a href="#" class="toggle crossed">remember login</a></li>
-  <li><a href="#" class="toggle crossed">notify of comments</a></li>
-  <li><a href="#" class="toggle crossed">notify of use</a></li>
-  <li><a href="#" class="toggle crossed">play audio automatically</a></li>
-  <li><a href="#" class="toggle crossed">play video automatically</a></li>
+  <% Preference.find(:all).each do |p| %>
+    <li>
+      <%= 
+        up = current_user.preference_for(p) 
+        linkclass = up.active? ? 'ticked' : 'crossed'
+        linktitle = up.active? ? 'click to deactivate' : 'click to activate'
+
+        link_to p.name, toggle_user_preference_url(up), {
+    		  :class => "toggle #{linkclass}",
+    		  :title => linktitle
+    	  } 
+    	%>
+    </li>
+  <% end %>
+
 </ul>
 <ul>
   <li><a href="#">your profile</a></li>

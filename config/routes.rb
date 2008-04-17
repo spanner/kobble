@@ -9,6 +9,9 @@ ActionController::Routing::Routes.draw do |map|
   map.drop '/:controller/drop/:id/:droppedClass/:droppedID', :action => 'drop'
   map.trash '/:controller/trash/:id', :action => 'trash'
   
+  map.resources :accounts, :collection => { :home => :any }
+  map.resources :collections
+
   map.resources :sources, :has_many => [:topics, :nodes], :collection => { :gallery => :get }, :member => {:annotate => :post}
   map.resources :nodes, :has_many => :topics, :collection => { :gallery => :get }, :member => {:annotate => :post}
   map.resources :bundles, :has_many => [:topics, :members], :collection => { :gallery => :get }, :member => {:annotate => :post}
@@ -17,14 +20,15 @@ ActionController::Routing::Routes.draw do |map|
   
   map.resources :tags, :has_many => [:taggings, :topics], :collection => { :gallery => :get, :cloud => :get, :tree => :get, :treemap => :get, :matching => :any } 
   map.resources :flags, :has_many => :flaggings
-  map.resources :users, :has_many => :activations, :collection => { :gallery => :get }, :member => { :home => :get }
   map.resources :topics, :has_many => :posts, :collection => { :latest => :get }
   map.resources :scratchpads, :has_many => :scraps
-  map.resources :collections
   map.resources :posts
-  map.resources :activations, :collection => { :activate => :any }, :member => { :deactivate => :any, :toggle => :any }
-  map.resources :monitorships, :collection => { :activate => :any }, :member => { :deactivate => :any, :toggle => :any }
-  map.resources :accounts, :collection => { :home => :any }
+
+  map.resources :users, :has_many => [:activations, :user_preferences], :collection => { :gallery => :get }, :member => { :home => :get }
+  map.resources :preferences
+  map.resources :user_preferences, :member => { :activate => :any, :deactivate => :any, :toggle => :any }
+  map.resources :activations, :member => { :activate => :any, :deactivate => :any, :toggle => :any }
+  map.resources :monitorships, :member => { :activate => :any, :deactivate => :any, :toggle => :any }
   
   map.resource :search, :member => { :list => :any, :gallery => :any }
   

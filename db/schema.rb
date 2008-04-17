@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 96) do
+ActiveRecord::Schema.define(:version => 97) do
 
   create_table "accounts", :force => true do |t|
     t.integer "user_id"
@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(:version => 96) do
   create_table "activations", :force => true do |t|
     t.integer "collection_id"
     t.integer "user_id"
-    t.boolean "active",        :default => false
+    t.boolean "active",        :default => true
   end
 
   create_table "bundles", :force => true do |t|
@@ -190,6 +190,22 @@ ActiveRecord::Schema.define(:version => 96) do
 
   add_index "posts", ["created_at"], :name => "index_posts_on_forum_id"
   add_index "posts", ["created_by", "created_at"], :name => "index_posts_oncreator_id"
+
+  create_table "preferences", :force => true do |t|
+    t.string   "name"
+    t.string   "type"
+    t.text     "description"
+    t.integer  "created_by"
+    t.integer  "updated_by"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "preferences_users", :force => true do |t|
+    t.integer "user_id"
+    t.integer "preference_id"
+    t.boolean "active"
+  end
 
   create_table "scratchpads", :force => true do |t|
     t.string   "name"
