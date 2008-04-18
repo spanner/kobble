@@ -3,6 +3,7 @@
 window.addEvent('domready', function(){
   intf = new Interface();
   // console.profile()
+  intf.activate();
   intf.getPreferences();
   // console.profileEnd()
 });
@@ -147,11 +148,9 @@ var Interface = new Class({
         intf.preferences = response;
         intf.debug("preferences object retrieved", 2);
         intf.enactPreferences();
-        intf.activate();
       },
 		  onFailure: function (response) { 
 		    intf.complain("preferences call failed");
-        intf.activate();
 		  }
 		}).send();
   },
@@ -185,7 +184,7 @@ var Interface = new Class({
     this.makeReplyForm(scope.getElements('form#new_post'));
     this.makeFixed(scope.getElements('.fixed'));
     this.makePopup(scope.getElements('.popup'));
-    this.makeCollectionsLinks(scope.getElements('a.choosecollections'))
+    this.makeCollectionsLinks(scope.getElements('a.choosecollections'));
   },
   
   activateElement: function (element) {

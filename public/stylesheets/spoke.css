@@ -39,6 +39,10 @@ img {
   padding:0;
 }
 
+td {
+  vertical-align: top;
+}
+
 a, a:link, a:visited {
   color: #559DC4;
   text-decoration: none;
@@ -1007,6 +1011,12 @@ span.countlabel {
 
 .formnote {
   font-size: 0.8em;
+  line-height: 1.1;
+  color: #695D54;
+}
+
+.minorfield {
+  font-size: 0.9em;
   line-height: 1.1;
   color: #695D54;
 }

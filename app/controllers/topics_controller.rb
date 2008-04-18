@@ -44,8 +44,8 @@ class TopicsController < ApplicationController
     @topic = Topic.new(params[:topic])
     @topic.referent = find_referent
     @topic.collection = @topic.referent.collection if @topic.referent.has_collection?
-    @topic.save!
     if @topic.save
+      @topic.add_monitors(User.find_by_id(params[:monitors])) if params[:monitors]
       @topic.tags << Tag.from_list(params[:tag_list])
       respond_to do |format|
         format.html { redirect_to :action => 'show', :id => @topic }
