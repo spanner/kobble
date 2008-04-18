@@ -183,7 +183,13 @@ class User < ActiveRecord::Base
     end
 
     def preference_for (preference)
+      preference = Preference.find_by_abbr(preference) unless preference.class == Preference
       UserPreference.find_or_create_by_user_id_and_preference_id(self.id, preference.id)
+    end
+    
+    def prefers? (abbr)
+      preference = Preference.find_by_abbr(abbr)
+      UserPreference.find_or_create_by_user_id_and_preference_id(self.id, preference.id).is_active?
     end
     
   protected

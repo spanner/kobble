@@ -9,7 +9,7 @@
 
 <li 
   id="<%= listed.class.to_s.downcase %>_<%= listed.id %>" 
-  class="<%= listed.class.to_s.downcase %><%= ' single' if single %><%= ' draggable' unless inactive %><%= ' catcher' if catch && listed.can_catch %>"
+  class="<%= listed.class.to_s.downcase %><%= ' single' if single %><%= ' draggable tippable' unless inactive %><%= ' catcher' if catch && listed.can_catch %>"
   <% if catch && listed.can_catch %>catches="<%= listed.can_catch.join(',') %>"<% end %>
 >
 
@@ -23,7 +23,7 @@
   
   <% unless inactive %>
     <div class="tiptitle"><% if listed.has_collection? %><%= listed.collection.abbreviation %>: <% end %><%= name %></div>
-    <div class="tiptext"><%= truncate( listed.find_some_text, 100 ) %></div>
+    <div class="tiptext"<%= ' style="display: none;"' if current_user.prefers?('condensed') %>><%= truncate( listed.find_some_text, 200 ) %></div>
   <% end %>
   
 </li>

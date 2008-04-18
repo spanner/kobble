@@ -5,10 +5,11 @@
       <%= 
         up = current_user.preference_for(p) 
         linkclass = up.active? ? 'ticked' : 'crossed'
-        linktitle = up.active? ? 'click to deactivate' : 'click to activate'
+        linktitle = p.description
 
         link_to p.name, toggle_user_preference_url(up), {
-    		  :class => "toggle #{linkclass}",
+          :id => "prefs_#{p.abbr}",
+    		  :class => "preference #{linkclass}",
     		  :title => linktitle
     	  } 
     	%>
@@ -17,7 +18,7 @@
 
 </ul>
 <ul>
-  <li><a href="#">your profile</a></li>
-  <li><a href="#">your account</a></li>
-  <li><a href="#">your people</a></li>
+  <li><a href="/account/me">your profile</a></li>
+  <li><a href="/account/home">your account</a></li>
+  <li><a href="/account/users">your users</a></li>
 </ul>

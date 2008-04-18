@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 97) do
+ActiveRecord::Schema.define(:version => 98) do
 
   create_table "accounts", :force => true do |t|
     t.integer "user_id"
@@ -193,18 +193,12 @@ ActiveRecord::Schema.define(:version => 97) do
 
   create_table "preferences", :force => true do |t|
     t.string   "name"
-    t.string   "type"
     t.text     "description"
     t.integer  "created_by"
     t.integer  "updated_by"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "preferences_users", :force => true do |t|
-    t.integer "user_id"
-    t.integer "preference_id"
-    t.boolean "active"
+    t.string   "tag"
   end
 
   create_table "scratchpads", :force => true do |t|
@@ -295,6 +289,12 @@ ActiveRecord::Schema.define(:version => 97) do
 
   add_index "topics", ["replied_at"], :name => "index_topics_on_sticky_and_replied_at"
   add_index "topics", ["replied_at"], :name => "index_topics_on_forum_id_and_replied_at"
+
+  create_table "user_preferences", :force => true do |t|
+    t.integer "user_id"
+    t.integer "preference_id"
+    t.boolean "active",        :default => false
+  end
 
   create_table "users", :force => true do |t|
     t.string   "login",                     :limit => 80, :default => "", :null => false

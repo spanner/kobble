@@ -3,7 +3,7 @@
 window.addEvent('domready', function(){
   intf = new Interface();
   // console.profile()
-  intf.activate();
+  intf.getPreferences();
   // console.profileEnd()
 });
 
@@ -16,10 +16,11 @@ var Interface = new Class({
     this.tagboxes = [];
     this.tabs = [];
     this.tabsets = {};
+    this.preferences = {};
     this.fixedbottom = [];
     this.inlinelinks = [];
     this.replyform = null;
-    this.debug_level = 5;
+    this.debug_level = 2;
     this.clickthreshold = 6;
     this.announcer = $E('div#notification');
     this.admin = $E('div#admin');
@@ -53,7 +54,7 @@ var Interface = new Class({
     $$('.showondrag').each(function (element) { element.setStyle('visibility', 'visible'); })
     this.dragging = helper;
     var catchers = [];
-  	this.tabs.each(function (t) { t.makeReceptiveTo(helper); })
+  	if (this.preferences.tabs_responsive) this.tabs.each(function (t) { t.makeReceptiveTo(helper); })
   	this.droppers.each(function(d){ if (d.makeReceptiveTo(helper)) catchers.push(d.container); });
   	intf.debug('catchers will be: ', 5);
   	intf.debug(catchers, 5);
@@ -74,6 +75,9 @@ var Interface = new Class({
     if (element) return element.tab || this.lookForTab( element.getParent() );
     else return null;
   },
+  
+  // these are convenient shortcuts called by activate()
+  
   addTabs: function (elements) {  
     elements.each(function (element) { intf.tabs.push(new Tab(element)); });
   },
@@ -100,6 +104,9 @@ var Interface = new Class({
   makeToggle: function (elements) {
     elements.each(function (element) { intf.inlinelinks.push(new Toggle(element)); });
   },
+  makePreference: function (elements) {
+    elements.each(function (element) { intf.inlinelinks.push(new Preference(element)); });
+  },
   makeSuggester: function (elements) {
     elements.each(function (element) {
       var waiter = new Element('div', {'class': 'autocompleter-loading'}).setHTML('&nbsp;').inject(element, 'after');
@@ -121,6 +128,42 @@ var Interface = new Class({
   },
   
   makeFixed: function (elements) { elements.each(function (element) { element.pin(); }) },
+
+  makeCollectionsLinks: function (elements) {
+    elements.each(function (a) {
+      a.onclick = function (e) { 
+        event = new Event(e).preventDefault();
+        event.target.blur();
+        intf.tabsets['scratchpad'].select('collections');
+      }
+    });
+  },
+  
+  getPreferences: function () {
+		var req = new Request.JSON({
+		  url: "/user_preferences",
+			method: 'get',
+      onSuccess: function(response) { 
+        intf.preferences = response;
+        intf.debug("preferences object retrieved", 2);
+        intf.enactPreferences();
+        intf.activate();
+      },
+		  onFailure: function (response) { 
+		    intf.complain("preferences call failed");
+        intf.activate();
+		  }
+		}).send();
+  },
+  
+  enactPreferences: function (argument) {
+    this.debug('enacting preferences', 2);
+    if (this.preferences.condensed) {
+      $$('div.tiptext').hide();
+    } else {
+      $$('div.tiptext').show();
+    }
+  },
   
   // this is the main page initialisation: it gets called on domready
   
@@ -134,6 +177,7 @@ var Interface = new Class({
 	  this.addScratchTabs(scope.getElements('a.padtab'));
 	  this.makeFixed(scope.getElements('div.fixedbottom'));
     this.makeToggle(scope.getElements('a.toggle'));
+    this.makePreference(scope.getElements('a.preference'));
     this.makeSuggester(scope.getElements('input.tagbox'));
     this.makeInlineCreate(scope.getElements('a.inlinecreate'));
     this.grabForm(scope.getElements('a.inlinediscuss'));
@@ -141,6 +185,7 @@ var Interface = new Class({
     this.makeReplyForm(scope.getElements('form#new_post'));
     this.makeFixed(scope.getElements('.fixed'));
     this.makePopup(scope.getElements('.popup'));
+    this.makeCollectionsLinks(scope.getElements('a.choosecollections'))
   },
   
   activateElement: function (element) {
@@ -202,9 +247,11 @@ var SpokeTips = new Class({
 		if (el.$attributes.myTitle && el.$attributes.myTitle.length > this.options.maxTitleChars)
 			el.$attributes.myTitle = el.$attributes.myTitle.substr(0, this.options.maxTitleChars - 1) + "&hellip;";
 		el.addEvent('mouseenter', function(event){
-			this.start(el);
-			if (!this.options.fixed) this.locate(event);
-			else this.position(el);
+		  if (intf.preferences.tooltips) {
+  			this.start(el);
+  			if (!this.options.fixed) this.locate(event);
+  			else this.position(el);
+		  }
 		}.bind(this));
 		if (!this.options.fixed) el.addEvent('mousemove', this.locate.bind(this));
 		var end = this.end.bind(this);
@@ -326,44 +373,46 @@ var Dropzone = new Class({
 			
 		} else {
 			helper.remove();
+			if (intf.preferences.confirmation == false || confirm('are you sure you wanted to drop that there?')) {
 
-			var req = new Request.JSON( {
-			  url: this.addURL(draggee),
-				method: 'get',
-			  onRequest: function () { 
-			    dropzone.waiting(); 
-			    draggee.waiting(); 
-			  },
-        onSuccess: function(response){
-          intf.debug('drop successful: ', 3);
-          intf.debug('outcome = ' + response.outcome + ', message = ' + response.message + ', consequence = ' + response.consequence, 4);
-          if (response.outcome == 'success') {
-            dropzone.notWaiting();
-            draggee.notWaiting();
-            switch (response.consequence) {
-            case "move": 
-              dropzone.accept(draggee);
-              draggee.disappear();
-              break; 
-            case "delete":
-              draggee.disappear();
-              break;
-            default:
-              dropzone.accept(draggee)
+  			var req = new Request.JSON( {
+  			  url: this.addURL(draggee),
+  				method: 'get',
+  			  onRequest: function () { 
+  			    dropzone.waiting(); 
+  			    draggee.waiting(); 
+  			  },
+          onSuccess: function(response){
+            intf.debug('drop successful: ', 3);
+            intf.debug('outcome = ' + response.outcome + ', message = ' + response.message + ', consequence = ' + response.consequence, 4);
+            if (response.outcome == 'success') {
+              dropzone.notWaiting();
+              draggee.notWaiting();
+              switch (response.consequence) {
+              case "move": 
+                dropzone.accept(draggee);
+                draggee.disappear();
+                break; 
+              case "delete":
+                draggee.disappear();
+                break;
+              default:
+                dropzone.accept(draggee)
+              }
+              intf.announce(response.message);
+            } else {
+              intf.complain(response.message);
             }
-            intf.announce(response.message);
-          } else {
-            intf.complain(response.message);
-          }
-        },
-			  onFailure: function (response) { 
-          intf.debug('drop failed!', 2);
-          intf.debug('outcome = ' + response.outcome + ', message = ' + response.message + ', consequence = ' + response.consequence, 4);
-			    dropzone.notWaiting(); 
-			    draggee.notWaiting(); 
-			    intf.complain('remote call failed');
-			  }
-			}).send();
+          },
+  			  onFailure: function (response) { 
+            intf.debug('drop failed!', 2);
+            intf.debug('outcome = ' + response.outcome + ', message = ' + response.message + ', consequence = ' + response.consequence, 4);
+  			    dropzone.notWaiting(); 
+  			    draggee.notWaiting(); 
+  			    intf.complain('remote call failed');
+  			  }
+  			}).send();
+			}
 		}
   },
 	removeDrop: function (helper) {
@@ -879,6 +928,17 @@ var Toggle = new Class({
     return this.link.hasClass('ticked');
   }
 });
+
+var Preference = new Class({
+  Extends: Toggle,
+  finished: function (response) {
+    arguments.callee.parent(response);
+    var abbr = this.link.id.replace('prefs_', '');
+    intf.preferences[abbr] = response.outcome == 'active';
+    intf.debug('set preference ' + abbr + ' to ' + intf.preferences[abbr], 1);
+    intf.enactPreferences();
+  }
+})
 
 var jsonForm = new Class ({
   initialize: function (element, e) {

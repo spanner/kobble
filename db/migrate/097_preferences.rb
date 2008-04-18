@@ -6,6 +6,7 @@ class Preferences < ActiveRecord::Migration
   def self.up
     create_table :preferences do |table|
       table.column :name, :string
+      table.column :abbr, :string
       table.column :description, :text
       table.column :created_by, :integer
       table.column :updated_by, :integer

@@ -1,5 +1,15 @@
 class UserPreferencesController < ApplicationController
 
+  def index
+    @user = params[:user_id] ? User.find(params[:user_id]) : current_user
+    @preferences = Hash.new
+    Preference.find(:all).map{ |p| @preferences[p.abbr.intern] = @user.preference_for(p).active }
+    respond_to do |format| 
+      format.html { }
+      format.json { render :json => @preferences.to_json }
+    end
+  end
+
   def toggle
     @up = UserPreference.find(params[:id])
     if @up.active?
