@@ -107,7 +107,10 @@ module ActiveRecord
         end
                 
         def index_fields
-          ['name', 'description', 'body', 'created_by', 'created_at']
+          [
+            'name', 'description', 'body', 
+            'created_at', 'collection_id', 'created_by'   # these are faceted
+          ]
         end
 
         def index_concatenation
@@ -275,7 +278,7 @@ module ActiveRecord
         end
         
         def field_notes
-          return self.observations + "\n\n" + self.emotions + "\n\n" + self.arising
+          ['observations', 'emotions', 'arising'].map { |col| self.send(col) || ''}.join("\n\n")
         end
         
       end #instancemethods

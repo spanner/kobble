@@ -58,5 +58,5 @@ Ultrasphinx::Search.excerpting_options = HashWithIndifferentAccess.new({
   :chunk_separator => "...",
   :limit => 256,
   :around => 3,
-  :content_methods => [['name'], ['body', 'description'], ['field_notes']]
+  :content_methods => [['name'], ['body', 'description', 'extracted_text'], ['field_notes']]
 })

@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(:version => 98) do
   create_table "activations", :force => true do |t|
     t.integer "collection_id"
     t.integer "user_id"
-    t.boolean "active",        :default => true
+    t.boolean "active",        :default => false
   end
 
   create_table "bundles", :force => true do |t|
@@ -193,12 +193,12 @@ ActiveRecord::Schema.define(:version => 98) do
 
   create_table "preferences", :force => true do |t|
     t.string   "name"
+    t.string   "abbr"
     t.text     "description"
     t.integer  "created_by"
     t.integer  "updated_by"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "tag"
   end
 
   create_table "scratchpads", :force => true do |t|

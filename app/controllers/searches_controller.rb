@@ -31,8 +31,9 @@ class SearchesController < ApplicationController
       :query => params[:q],
       :page => params[:page] || 1, 
       :per_page => 20,
-      :class_names => params[:among]
+      :class_names => params[:among],
+      :weights => {'name' => 4, 'description' => 3, 'body' => 2}
     )
-    @search.run
+    @search.excerpt
   end
 end

@@ -3,7 +3,7 @@ class Tag < ActiveRecord::Base
   belongs_to :account
   has_many :taggings, :dependent => :destroy
   has_many_polymorphs :taggables, :from => Spoke::Config.content_models(:except => :tags), :through => :taggings
-  acts_as_spoke :except => [:collection]
+  acts_as_spoke :except => [:collection, :index]
   acts_as_catcher :taggables, {:tag => :subsume}
 
   def stem
@@ -26,10 +26,6 @@ class Tag < ActiveRecord::Base
     
   def self.from_list(taglist)
     taglist.split(/[,;]\s*/).uniq.map { |t| Tag.find_or_create_by_name(t) }
-  end
-
-  def index_fields
-    ['name', 'description', 'body', 'created_by', 'created_at']
   end
 
 end
