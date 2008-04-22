@@ -43,7 +43,7 @@
           <%
             selected = @search.options['filters']['collection_id']
             current_collections.each do |c| 
-              this_selected = selected.nil? || selected.empty? || selected.include?(c.id)
+              this_selected = selected.nil? || selected.empty? || selected.include?(c.id.to_s)
           %>
             <%= check_box_tag 'collection[]', c.id, this_selected, :class => 'fancy' %>
             <%= c.name %>
@@ -61,8 +61,8 @@
 </div>
 <div class="formbuttons">
   <p style="line-height: 1">
-    <span class="countlabel">Figures in pink show the number of items in the search that are present because that item is selected.</span><br />
-    <span class="nocountlabel">Figures in blue show the number of items that would be added to the search results if that item were selected (other filters permitting).</span>
+    <span class="countlabel">Figures in pink estimate the number of items in the search that are present because that item is selected.</span><br />
+    <span class="nocountlabel">Figures in blue estimate the number of items that would be added to the search results if that item were selected (other filters permitting).</span>
   </p>
   <%= submit_tag 'revise search', :name => nil %>
 </div>
