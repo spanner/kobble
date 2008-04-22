@@ -765,6 +765,27 @@ div#searchform h2 {
   margin: 0;
 }
 
+div.faceting {
+/*  display: none;*/
+  font-size: 0.9em;
+  line-height: 1.1;
+  color: #695D54;
+  margin: 0 0 12px 0;
+}
+
+div.faceting th {
+  text-align: left;
+  font-size: 18px;
+  font-weight: lighter;
+  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
+  color: #695D54;
+  padding: 0 20px 0 0;
+}
+
+div.faceting td {
+  text-align: left;
+  padding: 0 20px 0 0;
+}
 
 
 /* signals */
@@ -919,10 +940,17 @@ div.terminal {
 }
 
 span.countlabel {
+  color: #d1005d;
+  font-size:70%;
+  position:relative;
+/*  bottom: 0.5em;*/
+}
+
+span.nocountlabel {
   color: #559DC4;
   font-size:70%;
   position:relative;
-  bottom: 0.5em;
+/*  bottom: 0.5em;*/
 }
 
 
@@ -1004,8 +1032,6 @@ span.countlabel {
 .pagination a:hover, .pagination a:active { color: #d1005d; }
 .pagination span.current { color: #695D54; }
 .pagination span.disabled { color: #B2AAA4; }
-
-
 
 /* edit forms */
 

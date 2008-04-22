@@ -60,3 +60,7 @@ Ultrasphinx::Search.excerpting_options = HashWithIndifferentAccess.new({
   :around => 3,
   :content_methods => [['name'], ['body', 'description', 'extracted_text'], ['field_notes']]
 })
+
+Ultrasphinx::Search.client_options[:with_subtotals] = true
+
+

@@ -27,13 +27,24 @@ class SearchesController < ApplicationController
   end  
 
   def perform_search
+    filters = Hash.new
+    filters['collection_id'] = params[:collection] || current_collections.map{ |c| c.id }
+    filters['created_by'] = params[:creator] if params[:creator]
+    @fullsearch = Ultrasphinx::Search.new(
+      :query => params[:q],
+      :weights => {'name' => 4, 'description' => 3, 'body' => 2},
+      :facets => ['collection_id', 'created_by']
+    )
     @search = Ultrasphinx::Search.new(
       :query => params[:q],
       :page => params[:page] || 1, 
       :per_page => 20,
+      :weights => {'name' => 4, 'description' => 3, 'body' => 2},
+      :facets => ['collection_id', 'created_by'],
       :class_names => params[:among],
-      :weights => {'name' => 4, 'description' => 3, 'body' => 2}
+      :filters => filters
     )
+    @fullsearch.run
     @search.excerpt
   end
 end
