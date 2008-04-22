@@ -43,7 +43,7 @@
           <%
             selected = @search.options['filters']['collection_id']
             current_collections.each do |c| 
-              this_selected = selected.nil? || selected.empty? || selected.include?(c.id.to_s)
+              this_selected = selected.nil? || selected.empty? || selected.include?(c.id) || selected.include?(c.id.to_s)
           %>
             <%= check_box_tag 'collection[]', c.id, this_selected, :class => 'fancy' %>
             <%= c.name %>
