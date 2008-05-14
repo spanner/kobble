@@ -15,7 +15,7 @@
 		<% end %>
 
     <h2>
-      <% if list.editor? %><strong><% end %><%= link_to( "#{list.name}", {:action => 'show', :id => list}) %><% if list.editor? %></strong><% end %>
+      <% if list.account_admin? %><strong><% end %><%= link_to( "#{list.name}", {:action => 'show', :id => list}) %><% if list.account_admin? %></strong><% end %>
       <%= render :partial => 'shared/admin_buttons', :locals => {:item => list, :inplace => true} %>
     </h2>
 

@@ -1,4 +1,6 @@
 <% 
+  addendum ||= ''
+  colourclass ||= nil
   single ||= false
   inactive ||= false
   catch ||= false
@@ -9,7 +11,7 @@
 
 <li 
   id="<%= listed.class.to_s.downcase %>_<%= listed.id %>" 
-  class="<%= listed.class.to_s.downcase %><%= ' single' if single %><%= ' draggable tippable' unless inactive %><%= ' catcher' if catch && listed.can_catch %>"
+  class="<%= "#{colourclass}_" if colourclass %><%= listed.class.to_s.downcase %><%= ' single' if single %><%= ' draggable tippable' unless inactive %><%= ' catcher' if catch && listed.can_catch %> <%= colourclass %>"
   <% if catch && listed.can_catch %>catches="<%= listed.can_catch.join(',') %>"<% end %>
 >
 
@@ -20,6 +22,9 @@
   }, {
     :class => aclass
   }) %>
+  <% unless addendum.nil? %>
+    <span class="listnote"><%= addendum %></span>
+  <% end %>
   
   <% unless inactive %>
     <div class="tiptitle"><% if listed.has_collection? %><%= listed.collection.abbreviation %>: <% end %><%= name %></div>

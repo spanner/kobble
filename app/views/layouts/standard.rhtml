@@ -38,16 +38,16 @@
 
   <div id="scratchpad">
     <div id="headbox_scratchpad">
-      <% for pad in @scratch %>
+      <% for pad in current_user.scratchpads %>
         <a href="#" class="padtab" id="tab_scratchpad_<%= pad.id %>" title="<%= pad.body %>"><%= pad.name %></a>
       <% end %>
       <div class="admin">
-        <%= link_to "preferences", {:controller => 'accounts', :action => 'home'}, {:id => 'tab_scratchpad_preferences', :class => 'padtab admintab'} %>
+        <%= link_to "preferences", edit_user_url(current_user), {:id => 'tab_scratchpad_preferences', :class => 'padtab admintab'} %>
         <%= link_to "collections", {:controller => 'collections', :action => 'index'}, {:id => 'tab_scratchpad_collections', :class => 'padtab admintab'} %>
       </div>
     </div>
     <div id="box_scratchpad">
-      <%= render :partial => 'shared/scratchpad', :collection => @scratch %>
+      <%= render :partial => 'shared/scratchpad', :collection => current_user.scratchpads %>
       <div class="admin">
         <div id="scratchpad_preferences" class="scratchpage"><%= render :partial => 'shared/preferences' %></div>
         <div id="scratchpad_collections" class="scratchpage"><%= render :partial => 'shared/collections' %></div>

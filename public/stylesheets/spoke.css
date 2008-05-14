@@ -438,7 +438,7 @@ div.mainlist ul {
 div.mainlist li, li.single {
   margin: 0;
   list-style-image: url(/images/furniture/spoke/blue/default.png);
-  margin: 0 10px 4px 0;
+  margin: 0 10px 4px 22px;
   font-size: 16px;
   line-height: 20px;
 }
@@ -477,12 +477,52 @@ div.mainlist li.user { list-style-image: url(/images/furniture/spoke/blue/user.p
 div.mainlist li.person { list-style-image: url(/images/furniture/spoke/blue/user.png); }
 div.mainlist li.tag { list-style-image: url(/images/furniture/spoke/blue/tag.png); }
 div.mainlist li.flag { list-style-image: url(/images/furniture/spoke/blue/flag.png); }
-div.mainlist li.forum { list-style-image: url(/images/furniture/spoke/blue/forum.png); }
 div.mainlist li.topic { list-style-image: url(/images/furniture/spoke/blue/post.png); }
-div.mainlist li.post { list-style-image: url(/images/furniture/spoke/blue/post.png); }
-div.mainlist li.blogentry { list-style-image: url(/images/furniture/spoke/blue/blogentry.png); }
-div.mainlist li.question { list-style-image: url(/images/furniture/spoke/blue/question.png); }
-div.mainlist li.answer { list-style-image: url(/images/furniture/spoke/blue/answer.png); }
+
+div.mainlist li.created_collection { list-style-image: url(/images/furniture/spoke/green/collection.png); }
+div.mainlist li.created_node { list-style-image: url(/images/furniture/spoke/green/node.png); }
+div.mainlist li.created_source { list-style-image: url(/images/furniture/spoke/green/source.png); }
+div.mainlist li.created_bundle { list-style-image: url(/images/furniture/spoke/green/bundle.png); }
+div.mainlist li.created_user { list-style-image: url(/images/furniture/spoke/green/user.png); }
+div.mainlist li.created_person { list-style-image: url(/images/furniture/spoke/green/user.png); }
+div.mainlist li.created_tag { list-style-image: url(/images/furniture/spoke/green/tag.png); }
+div.mainlist li.created_flag { list-style-image: url(/images/furniture/spoke/green/flag.png); }
+div.mainlist li.created_topic { list-style-image: url(/images/furniture/spoke/green/post.png); }
+
+div.mainlist li.updated_collection { list-style-image: url(/images/furniture/spoke/orange/collection.png); }
+div.mainlist li.updated_node { list-style-image: url(/images/furniture/spoke/orange/node.png); }
+div.mainlist li.updated_source { list-style-image: url(/images/furniture/spoke/orange/source.png); }
+div.mainlist li.updated_bundle { list-style-image: url(/images/furniture/spoke/orange/bundle.png); }
+div.mainlist li.updated_user { list-style-image: url(/images/furniture/spoke/orange/user.png); }
+div.mainlist li.updated_person { list-style-image: url(/images/furniture/spoke/orange/user.png); }
+div.mainlist li.updated_tag { list-style-image: url(/images/furniture/spoke/orange/tag.png); }
+div.mainlist li.updated_flag { list-style-image: url(/images/furniture/spoke/orange/flag.png); }
+div.mainlist li.updated_topic { list-style-image: url(/images/furniture/spoke/orange/post.png); }
+
+div.mainlist li.deleted_collection { list-style-image: url(/images/furniture/spoke/pink/collection.png); }
+div.mainlist li.deleted_node { list-style-image: url(/images/furniture/spoke/pink/node.png); }
+div.mainlist li.deleted_source { list-style-image: url(/images/furniture/spoke/pink/source.png); }
+div.mainlist li.deleted_bundle { list-style-image: url(/images/furniture/spoke/pink/bundle.png); }
+div.mainlist li.deleted_user { list-style-image: url(/images/furniture/spoke/pink/user.png); }
+div.mainlist li.deleted_person { list-style-image: url(/images/furniture/spoke/pink/user.png); }
+div.mainlist li.deleted_tag { list-style-image: url(/images/furniture/spoke/pink/tag.png); }
+div.mainlist li.deleted_flag { list-style-image: url(/images/furniture/spoke/pink/flag.png); }
+div.mainlist li.deleted_topic { list-style-image: url(/images/furniture/spoke/pink/post.png); }
+
+div.mainlist li.created, div.mainlist li.created a { color: #a0a500; }
+div.mainlist li.updated, div.mainlist li.updated a { color: #CC6E1F; }
+div.mainlist li.deleted, div.mainlist li.deleted a { color: #d1005d; }
+
+
+
+
+
+
+
+
+
+
+
 
 div.mainlist li.waiting {
   list-style-image: url(/images/furniture/signals/wait_16_grey.gif);
@@ -503,11 +543,9 @@ div.mainlist ul.inactive li.blogentry { list-style-image: url(/images/furniture/
 div.mainlist ul.inactive li.question { list-style-image: url(/images/furniture/spoke/mid/question.png); }
 div.mainlist ul.inactive li.answer { list-style-image: url(/images/furniture/spoke/mid/answer.png); }
 
-
 div.mainlist li.waiting a {  
   color: #695D54;
 }
-
 
 div.drophere, ul.drophere {
 	background-color: #daf2ff;
@@ -538,6 +576,8 @@ div.mainlist .tiptitle {
 div.gallery .tiptitle, div.gallery .tiptext {
   display: none;
 }
+
+
 
 /* tabbed pages */
 
@@ -637,8 +677,15 @@ div.floatcolumn {
   padding: 0;
 }
 
+h3.listheader {
+  margin: 20px 0 10px 0;
+  border-bottom: 1px dotted #695D54;
+}
 
-
+span.headernote, span.listnote {
+  font-size: 0.7em;
+  color: #B2AAA4;
+}
 
 /* snipper and other floating dialogs */
 

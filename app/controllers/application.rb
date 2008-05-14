@@ -7,11 +7,12 @@ class ApplicationController < ActionController::Base
   include StringExtensions
   include ExceptionNotifiable
 
-  helper_method :current_user, :current_account, :current_collections, :logged_in?, :activated?, :admin?, :editor?, :account_holder?, :last_active
+  helper_method :current_user, :current_account, :current_collections, :logged_in?, :activated?, :admin?, :account_admin?, :account_holder?, :last_active
   before_filter :login_from_cookie
   before_filter :login_required
   before_filter :set_context
   before_filter :check_activations  
+    
   layout 'standard'
   exception_data :exception_report_data
   
@@ -21,7 +22,7 @@ class ApplicationController < ActionController::Base
   
   def set_context
     if logged_in?
-      @scratch = current_user.find_or_create_scratchpads 
+      current_user.account.last_active_at = Time.now
       EditObserver.current_user = current_user
     end
   end
@@ -206,7 +207,7 @@ class ApplicationController < ActionController::Base
     def render_invalid_record(record)
       render :action => (record.new_record? ? 'new' : 'edit')
     end
-
+    
     def exception_report_data
       {
         :user => current_user,

@@ -9,8 +9,9 @@ ActionController::Routing::Routes.draw do |map|
   map.drop '/:controller/drop/:id/:droppedClass/:droppedID', :action => 'drop'
   map.trash '/:controller/trash/:id', :action => 'trash'
   
-  map.resources :accounts, :collection => { :home => :any }
-  map.resources :collections
+  map.resources :accounts, :has_many => [:users, :collections, :events], :collection => { :home => :any }
+  map.resources :collections, :has_many => [:events]
+  map.resources :users, :has_many => [:activations, :user_preferences, :permissions, :scratchpads, :events], :collection => { :gallery => :get }, :member => { :home => :get }
 
   map.resources :sources, :has_many => [:topics, :nodes], :collection => { :gallery => :get }, :member => {:annotate => :post}
   map.resources :nodes, :has_many => :topics, :collection => { :gallery => :get }, :member => {:annotate => :post}
@@ -24,7 +25,6 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :scratchpads, :has_many => :scraps
   map.resources :posts
 
-  map.resources :users, :has_many => [:activations, :user_preferences], :collection => { :gallery => :get }, :member => { :home => :get }
   map.resources :preferences
   map.resources :user_preferences, :member => { :activate => :any, :deactivate => :any, :toggle => :any }
   map.resources :activations, :member => { :activate => :any, :deactivate => :any, :toggle => :any }

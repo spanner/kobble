@@ -17,8 +17,8 @@ module AuthenticatedSystem
       logged_in? && current_user.admin?
     end
 
-    def editor?
-      logged_in? && current_user.editor?
+    def account_admin?
+      logged_in? && current_user.account_admin?
     end
     
     def account_holder?
@@ -83,7 +83,6 @@ module AuthenticatedSystem
     #   skip_before_filter :login_required
     #
     def login_required
-      logger.warn "!!! login_required"
       username, passwd = get_auth_data
       self.current_user = User.authenticate(username, passwd) || :false if username && passwd
       logged_in? ? true : access_denied
@@ -95,30 +94,26 @@ module AuthenticatedSystem
     #
     #   before_filter :admin_required
     #
-    # likewise :editor_required and :developer_required
+    # likewise :account_admin_required and :developer_required
     #
     # other options as for :login_required and other filters
 
     def admin_required
-      logger.warn "!!! admin_required"
       return false unless login_required
       admin? ? true : access_insufficient
     end
 
-    def editor_required
-      logger.warn "!!! editor_required"
+    def account_admin_required
       return false unless login_required
-      editor? ? true : access_insufficient
+      account_admin? ? true : access_insufficient
     end
 
     def developer_required
-      logger.warn "!!! developer_required"
       return false unless login_required
       developer? ? true : access_insufficient
     end
 
     def activation_required
-      logger.warn "!!! activation_required"
       return false unless login_required
       activated? ? true : access_inactive
     end

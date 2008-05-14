@@ -62,7 +62,7 @@ module ActiveRecord
       module ClassMethods
 
         def acts_as_spoke(options={})
-          definitions = [:collection, :owners, :illustration, :discussion, :index]
+          definitions = [:collection, :owners, :illustration, :discussion, :index, :log]
           if options[:except]
             definitions = definitions - Array(options[:except]) 
           elsif options[:only]
@@ -73,13 +73,16 @@ module ActiveRecord
             Spoke::Config.indexed_model(self)
             is_indexed :fields => self.index_fields, :concatenate => self.index_concatenation
           end
+          
           if definitions.include?(:collection)
             belongs_to :collection
           end
+          
           if definitions.include?(:owners)
             belongs_to :creator, :class_name => 'User', :foreign_key => 'created_by'
             belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
           end
+          
           if definitions.include?(:illustration)
             file_column :clip
             file_column :image, :magick => { 
@@ -90,11 +93,16 @@ module ActiveRecord
               }
             }
           end
+          
           if definitions.include?(:discussion)
             has_many :topics, :as => :referent
             Spoke::Config.discussed_model(self)
           end
-          
+
+          if definitions.include?(:log)
+            has_many :logged_events, :as => :affected, :order => 'at DESC'
+          end
+
           # content_models has to be defined in advance so that HMP defines associations correctly
           # would rather do this with definitions.include?(:tags) but then list incomplete at load time
 
@@ -130,7 +138,7 @@ module ActiveRecord
         
         def nice_title
           self.to_s.downcase
-        end
+        end        
          
       end #classmethods
       

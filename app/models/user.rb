@@ -7,16 +7,18 @@ class User < ActiveRecord::Base
 
   acts_as_spoke :except => [:collection, :index, :discussion]
   
-  belongs_to :account
+  belongs_to :account, :dependent => :destroy
   belongs_to :person
   
+  has_many :permissions, :dependent => :destroy
+  has_many :permitted_collections, :through => :permissions, :conditions => ['permissions.active = ?', true], :source => :collection
   has_many :activations, :dependent => :destroy
   has_many :collections, :through => :activations, :conditions => ['activations.active = ?', true], :source => :collection
   has_many :monitorships, :dependent => :destroy
   has_many :monitored_topics, :through => :monitorships, :conditions => ['monitorships.active = ?', true], :order => 'topics.replied_at desc', :source => :topic
   has_many :user_preferences, :dependent => :destroy
   has_many :preferences, :through => :user_preferences, :conditions => ['user_preferences.active = ?', true], :source => :preference
-  
+
   has_many :created_collections, :class_name => 'Collection', :foreign_key => 'created_by', :dependent => :nullify
   has_many :created_sources, :class_name => 'Source', :foreign_key => 'created_by', :dependent => :nullify
   has_many :created_nodes, :class_name => 'Node', :foreign_key => 'created_by', :dependent => :nullify
@@ -25,6 +27,15 @@ class User < ActiveRecord::Base
   has_many :created_posts, :class_name => 'Post', :foreign_key => 'created_by', :dependent => :destroy  
   has_many :created_scratchpads, :class_name => 'Scratchpad', :foreign_key => 'created_by', :dependent => :destroy
   has_many :created_tags, :class_name => 'Tag', :foreign_key => 'created_by', :dependent => :destroy
+
+  has_many :events do
+    def recent
+      find(:all, :limit => 10, :order => 'at DESC')
+    end
+    def latest
+      find(:first, :order => 'at DESC')
+    end
+  end
 
   validates_presence_of     :login,                      :if => :login_required?
   validates_presence_of     :password,                   :if => :password_required?
@@ -41,10 +52,10 @@ class User < ActiveRecord::Base
     "user"
   end
 
-  def find_or_create_scratchpads
-    if (self.created_scratchpads.empty?)
+  def scratchpads
+    if self.created_scratchpads.empty?
       (1..4).each do |i|
-        self.created_scratchpads.create({:name => "pad#{i}"})
+        self.created_scratchpads.create({:name => "pad #{i}"})
       end
     end
     self.created_scratchpads
@@ -54,7 +65,7 @@ class User < ActiveRecord::Base
     status > 0 and !login.nil? and login != '' and !email.nil?
   end
 
-  def editor?
+  def account_admin?
     status >= 100
   end
 
@@ -71,10 +82,12 @@ class User < ActiveRecord::Base
   end
   
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
+
   def self.authenticate(login, password)
     u = find :first, :conditions => ['login = ? and activated_at IS NOT NULL', login]
     return nil unless u && u.authenticated?(password)
-    u.last_login = Time.now.utc
+    u.previously_logged_in_at = u.logged_in_at
+    u.logged_in_at = Time.now.utc
     u.save!
     u
   end
@@ -82,7 +95,7 @@ class User < ActiveRecord::Base
   def activate
     @activated = true
     self.status = 10
-    self.last_login = self.activated_at = Time.now.utc
+    self.logged_in_at = self.activated_at = Time.now.utc
     self.activation_code = nil
     self.save!
   end
@@ -169,13 +182,29 @@ class User < ActiveRecord::Base
     def self.currently_online
       User.find(:all, :conditions => ["last_seen_at > ?", Time.now.utc-5.minutes])
     end
-        
+  
+    def has_permission? (collection)
+      permitted_collections.include?(collection)
+    end
+    
+    def permission_for (collection)
+      Permission.find_or_create_by_user_id_and_collection_id(self.id, collection.id)
+    end
+    
+    def all_permissions
+      account.collections.map { |c| permission_for(c) }
+    end
+
     def using_collection? (collection)
       collections.include?(collection)
     end
-    
+
     def activation_of (collection)
       Activation.find_or_create_by_user_id_and_collection_id(self.id, collection.id)
+    end
+
+    def monitoring? (topic)
+      monitorships.include?(topic)
     end
 
     def monitorship_of (topic)

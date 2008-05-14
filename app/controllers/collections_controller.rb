@@ -1,74 +1,105 @@
 class CollectionsController < ApplicationController
-
-  # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
-  verify :method => :post, :only => [ :reallydestroy, :create, :update ],
-         :redirect_to => { :action => :list }
   
-  def limit_to_active_collections()
-    []
-  end
-
+  before_filter :find_account
+  before_filter :account_admin_required, :except => [:index, :show]
+  before_filter :admin_or_same_account_required
+  
+  # only accessible as nested resource of account
+  # but if no account specified then current_user's account is assumed to provide context
+  
   def index
-    # if called by js, this returns just the collection-choice fragment
-
-    @collections = current_account.collections
-    respond_to do |format|
-      format.html { }
-      format.js { render :action => 'choose', :layout => false }
+    @collections = @account.collections
+    respond_to do |format| 
+      format.html
       format.json { render :json => @collections.to_json }
-      format.xml { }
+      format.js { render :layout => false }
     end
   end
   
-  # and the usual crud:
-  
   def show
-    @collection = Collection.find(params[:id])
-    # check permission
+    @collection = @account.collections.find(params[:id])
+    respond_to do |format| 
+      format.html
+      format.json { render :json => @collection.to_json }
+      format.js { render :layout => false }
+    end
   end
 
   def new
-    @collection = Collection.new
+    @collection = @account.collections.build
+    respond_to do |format| 
+      format.html
+      format.json { render :json => @collection.to_json }
+      format.js { render :layout => false }
+    end
   end
   
-  def choose
-    
-  end
-
   def create
-    @collection = Collection.new(params[:collection])
+    @collection = @account.collections.build(params[:collection])
     if @collection.save
-      flash[:notice] = 'Collection was successfully created.'
-      redirect_to :action => 'list'
+      flash[:notice] = 'Collection was created.'
+      respond_to do |format| 
+        format.html { redirect_to :action => 'show' }
+        format.json { render :json => @collection.to_json }
+        format.js { render :layout => false }
+      end
     else
       render :action => 'new'
     end
   end
 
   def edit
-    @collection = Collection.find(params[:id])
+    @collection = @account.collections.find(params[:id])
+    respond_to do |format| 
+      format.html
+      format.json { render :json => @collection.to_json }
+      format.js { render :layout => false }
+    end
   end
 
   def update
-    @collection = Collection.find(params[:id])
+    @collection = @account.collections.find(params[:id])
     if @collection.update_attributes(params[:collection])
-      flash[:notice] = 'Collection was successfully updated.'
-      redirect_to :action => 'list'
+      flash[:notice] = 'Collection was updated.'
+      respond_to do |format| 
+        format.html { redirect_to :action => 'show' }
+        format.json { render :json => @collection.to_json }
+        format.js { render :layout => false }
+      end
     else
       render :action => 'edit'
     end
   end
 
   def destroy
-    @collection = Collection.find(params[:id])
-    # shows confirmation page
+    @collection = @account.collections.find(params[:id])
+    respond_to do |format| 
+      format.html
+      format.json { render :json => @collection.to_json }
+      format.js { render :layout => false }
+    end
   end
 
   def reallydestroy
-    @collection = Collection.find(params[:id])
-    name = @collection.name
-    @collection.destroy
-    flash[:notice] = "#{name} collection removed"
+    @collection = @account.collections.delete(params[:id])
+    flash[:notice] = "'#{@collection.name}' removed"
     redirect_to :action => 'list'
   end
+
+  private
+  
+  def find_account
+    @account = Account.find(params[:account_id]) || current_account
+  end
+  
+  def admin_or_same_account_required
+    return true if current_user.admin?
+    return true if current_user.account == @account
+    access_insufficient
+  end
+  
+
+
+
+
 end

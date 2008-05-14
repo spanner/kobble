@@ -1,6 +1,6 @@
 <% inplace ||= false %>
 <sup>
-<% if editor? and item %>
+<% if account_admin? and item %>
 	<%= link_to image_tag("/images/furniture/buttons/circle.png"), {
 		:controller => item.class.to_s.pluralize.underscore, 
 		:action => 'edit', 

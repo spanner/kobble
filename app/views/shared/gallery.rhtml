@@ -13,7 +13,7 @@
 
   <%= render :partial => 'shared/pagination', :locals => {:list => @list} %>
 
-  <% if editor? %>
+  <% if account_admin? %>
   	<p class="clear"><%= link_to  "Add a new #{@klass.nice_title}", {:action => 'new'}, {:class => 'additem'} %></p>
   <% end %>
 <% else %>

@@ -1,6 +1,6 @@
 class AccountsController < ApplicationController
-  before_filter :admin_required, :except => [:show, :edit, :update, :create, :new]
-  before_filter :login_required, :except => [:create, :new]
+  before_filter :admin_required, :except => [:show, :edit, :update, :create, :new, :home]
+  before_filter :account_admin_required, :except => [:create, :new, :home]
   skip_before_filter :check_activations  
 
   def index
@@ -10,6 +10,19 @@ class AccountsController < ApplicationController
 
   def home
     @account = current_user.account
+    @collections = current_account.collections_by_activity
+    case params[:since]
+    when 'today'
+      @since = 1.day.ago
+    when 'week'
+      @since = 1.week.ago
+    when 'month'
+      @since = 1.month.ago
+    when 'login'
+      @since = current_user.previously_logged_in_at
+    else
+      @since = nil
+    end
   end
 
   def show
@@ -53,9 +66,6 @@ class AccountsController < ApplicationController
 
   def update
     @account = admin? ? Account.find(params[:id]) : current_user.account
-    
-    # check permission to change
-    
     if @collection.update_attributes(params[:account])
       flash[:notice] = 'account was successfully updated.'
       redirect_to :action => 'home'

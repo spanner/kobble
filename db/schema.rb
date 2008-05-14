@@ -9,13 +9,37 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 98) do
+ActiveRecord::Schema.define(:version => 103) do
+
+  create_table "account_types", :force => true do |t|
+    t.string   "name"
+    t.string   "description"
+    t.float    "price_monthly"
+    t.float    "price_yearly"
+    t.integer  "collections_limit"
+    t.integer  "users_limit"
+    t.integer  "sources_limit"
+    t.boolean  "can_audio"
+    t.boolean  "can_video"
+    t.boolean  "can_rss"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "created_by"
+    t.integer  "updated_by"
+  end
 
   create_table "accounts", :force => true do |t|
-    t.integer "user_id"
-    t.string  "name"
-    t.string  "image"
-    t.string  "status"
+    t.integer  "user_id"
+    t.string   "name"
+    t.string   "image"
+    t.string   "status"
+    t.integer  "account_type_id"
+    t.datetime "last_active_at"
+    t.integer  "created_by"
+    t.integer  "updated_by"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "clip"
   end
 
   create_table "activations", :force => true do |t|
@@ -54,24 +78,27 @@ ActiveRecord::Schema.define(:version => 98) do
   create_table "collections", :force => true do |t|
     t.string   "name"
     t.text     "description"
-    t.string   "status",             :limit => 20, :default => "0"
     t.integer  "created_by"
     t.integer  "updated_by"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "allow_registration"
-    t.text     "invitation"
-    t.text     "welcome"
-    t.text     "privacy"
     t.string   "abbreviation"
     t.string   "url"
-    t.text     "background"
-    t.text     "faq"
-    t.integer  "blog_forum_id"
-    t.integer  "editorial_forum_id"
-    t.integer  "survey_forum_ud"
     t.string   "email_from"
     t.integer  "account_id"
+    t.datetime "last_active_at"
+  end
+
+  create_table "events", :force => true do |t|
+    t.integer  "affected_id"
+    t.string   "affected_type"
+    t.string   "affected_name"
+    t.string   "event_type"
+    t.integer  "account_id"
+    t.integer  "collection_id"
+    t.integer  "user_id"
+    t.text     "notes"
+    t.datetime "at"
   end
 
   create_table "flaggings", :force => true do |t|
@@ -176,6 +203,17 @@ ActiveRecord::Schema.define(:version => 98) do
     t.string   "honorific"
     t.string   "workplace"
     t.string   "role"
+  end
+
+  create_table "permissions", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "collection_id"
+    t.boolean  "admin",         :default => false
+    t.boolean  "active",        :default => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "created_by"
+    t.integer  "updated_by"
   end
 
   create_table "posts", :force => true do |t|
@@ -304,7 +342,6 @@ ActiveRecord::Schema.define(:version => 98) do
     t.string   "honorific"
     t.string   "salt",                      :limit => 40, :default => "", :null => false
     t.integer  "verified",                                :default => 0
-    t.string   "role"
     t.string   "remember_token",            :limit => 40
     t.datetime "remember_token_expires_at"
     t.datetime "created_at"
@@ -312,7 +349,6 @@ ActiveRecord::Schema.define(:version => 98) do
     t.datetime "logged_in_at"
     t.integer  "deleted",                                 :default => 0
     t.datetime "delete_after"
-    t.integer  "collection_id"
     t.integer  "status",                                  :default => 10
     t.string   "image"
     t.text     "description"
@@ -320,13 +356,9 @@ ActiveRecord::Schema.define(:version => 98) do
     t.integer  "updated_by"
     t.datetime "activated_at"
     t.string   "activation_code",           :limit => 40
-    t.string   "workplace"
-    t.string   "phone"
-    t.integer  "posts_count",                             :default => 0
     t.datetime "last_seen_at"
     t.string   "postcode"
     t.string   "new_password"
-    t.datetime "last_login"
     t.string   "password"
     t.integer  "receive_news_email",                      :default => 1
     t.integer  "receive_html_email"
@@ -334,9 +366,10 @@ ActiveRecord::Schema.define(:version => 98) do
     t.integer  "account_id"
     t.integer  "person_id"
     t.string   "name"
+    t.datetime "last_active_at"
+    t.datetime "previously_logged_in_at"
   end
 
-  add_index "users", ["collection_id"], :name => "index_users_on_collection"
   add_index "users", ["login"], :name => "index_users_on_login"
   add_index "users", ["last_seen_at"], :name => "index_users_on_last_seen_at"
 

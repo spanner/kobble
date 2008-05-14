@@ -1,20 +1,18 @@
 <% tabset ||= 'tabs' %>
-<% if editor? || item.has_tags? %>
-  <div id="<%= tabset %>_tags">
-  	<% if editor? %>
-  	  <p>Drop a tag here to add it to the list:</p>
-    <% end %>
-    <div class="mainlist">
-    	<ul 
-    	  id="tagsfor_<%= item.class.to_s.downcase %>_<%= item.id %>"
-    	  class="catcher dropzone" 
-    	  catches="tag" 
-    	  title="tags for <%= item.name %>"   	  
-    	>
-    	<% if item.has_tags? %>
-    		<%= render :partial => "shared/listed", :collection => item.tags.uniq, :locals => {:catch => false} %>
-    	<% end %>
-      </ul>
-    </div>
-	</div>
-<% end %>
+<div id="<%= tabset %>_tags">
+	<% if account_admin? %>
+	  <p>Drop a tag here to add it to the list:</p>
+  <% end %>
+  <div class="mainlist">
+  	<ul 
+  	  id="tagsfor_<%= item.class.to_s.downcase %>_<%= item.id %>"
+  	  class="catcher dropzone" 
+  	  catches="tag" 
+  	  title="tags for <%= item.name %>"   	  
+  	>
+  	<% if item.has_tags? %>
+  		<%= render :partial => "shared/listed", :collection => item.tags.uniq, :locals => {:catch => false} %>
+  	<% end %>
+    </ul>
+  </div>
+</div>
