@@ -62,7 +62,7 @@ module ActiveRecord
       module ClassMethods
 
         def acts_as_spoke(options={})
-          definitions = [:collection, :owners, :illustration, :discussion, :index, :log]
+          definitions = [:collection, :owners, :illustration, :discussion, :index, :log, :undelete]
           if options[:except]
             definitions = definitions - Array(options[:except]) 
           elsif options[:only]
@@ -102,7 +102,11 @@ module ActiveRecord
           if definitions.include?(:log)
             has_many :logged_events, :as => :affected, :order => 'at DESC'
           end
-
+          
+          if definitions.include?(:undelete)
+            acts_as_paranoid
+          end
+          
           # content_models has to be defined in advance so that HMP defines associations correctly
           # would rather do this with definitions.include?(:tags) but then list incomplete at load time
 

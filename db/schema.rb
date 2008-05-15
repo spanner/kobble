@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 103) do
+ActiveRecord::Schema.define(:version => 104) do
 
   create_table "account_types", :force => true do |t|
     t.string   "name"
@@ -62,15 +62,17 @@ ActiveRecord::Schema.define(:version => 103) do
     t.text     "arising"
     t.string   "image"
     t.string   "description"
+    t.datetime "deleted_at"
   end
 
   add_index "bundles", ["collection_id"], :name => "index_bundles_on_collection"
 
   create_table "bundlings", :force => true do |t|
-    t.integer "superbundle_id"
-    t.integer "member_id"
-    t.string  "member_type",    :limit => 20
-    t.integer "position"
+    t.integer  "superbundle_id"
+    t.integer  "member_id"
+    t.string   "member_type",    :limit => 20
+    t.integer  "position"
+    t.datetime "deleted_at"
   end
 
   add_index "bundlings", ["member_type", "member_id"], :name => "index_bundle_members"
@@ -87,6 +89,7 @@ ActiveRecord::Schema.define(:version => 103) do
     t.string   "email_from"
     t.integer  "account_id"
     t.datetime "last_active_at"
+    t.datetime "deleted_at"
   end
 
   create_table "events", :force => true do |t|
@@ -102,9 +105,10 @@ ActiveRecord::Schema.define(:version => 103) do
   end
 
   create_table "flaggings", :force => true do |t|
-    t.integer "flag_id"
-    t.string  "flaggable_type"
-    t.integer "flaggable_id"
+    t.integer  "flag_id"
+    t.string   "flaggable_type"
+    t.integer  "flaggable_id"
+    t.datetime "deleted_at"
   end
 
   create_table "flags", :force => true do |t|
@@ -118,12 +122,14 @@ ActiveRecord::Schema.define(:version => 103) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "severity",                     :default => 0
+    t.datetime "deleted_at"
   end
 
   create_table "monitorships", :force => true do |t|
-    t.integer "topic_id"
-    t.integer "user_id"
-    t.boolean "active",   :default => false
+    t.integer  "topic_id"
+    t.integer  "user_id"
+    t.boolean  "active",     :default => false
+    t.datetime "deleted_at"
   end
 
   create_table "nodes", :force => true do |t|
@@ -152,6 +158,7 @@ ActiveRecord::Schema.define(:version => 103) do
     t.text     "original_text"
     t.string   "file"
     t.text     "extracted_text"
+    t.datetime "deleted_at"
   end
 
   add_index "nodes", ["collection_id"], :name => "index_nodes_on_collection"
@@ -203,6 +210,7 @@ ActiveRecord::Schema.define(:version => 103) do
     t.string   "honorific"
     t.string   "workplace"
     t.string   "role"
+    t.datetime "deleted_at"
   end
 
   create_table "permissions", :force => true do |t|
@@ -224,6 +232,7 @@ ActiveRecord::Schema.define(:version => 103) do
     t.integer  "created_by"
     t.datetime "updated_at"
     t.integer  "updated_by"
+    t.datetime "deleted_at"
   end
 
   add_index "posts", ["created_at"], :name => "index_posts_on_forum_id"
@@ -280,14 +289,16 @@ ActiveRecord::Schema.define(:version => 103) do
     t.integer  "occasion_id"
     t.string   "file",           :limit => 355
     t.text     "extracted_text"
+    t.datetime "deleted_at"
   end
 
   add_index "sources", ["collection_id"], :name => "index_sources_on_collection"
 
   create_table "taggings", :force => true do |t|
-    t.integer "tag_id"
-    t.string  "taggable_type", :limit => 20
-    t.integer "taggable_id"
+    t.integer  "tag_id"
+    t.string   "taggable_type", :limit => 20
+    t.integer  "taggable_id"
+    t.datetime "deleted_at"
   end
 
   add_index "taggings", ["taggable_type", "taggable_id"], :name => "index_tag_marks"
@@ -306,6 +317,7 @@ ActiveRecord::Schema.define(:version => 103) do
     t.text     "observations"
     t.text     "emotions"
     t.text     "arising"
+    t.datetime "deleted_at"
   end
 
   create_table "topics", :force => true do |t|
@@ -323,6 +335,7 @@ ActiveRecord::Schema.define(:version => 103) do
     t.string   "referent_type"
     t.integer  "referent_id"
     t.text     "body"
+    t.datetime "deleted_at"
   end
 
   add_index "topics", ["replied_at"], :name => "index_topics_on_sticky_and_replied_at"
@@ -368,6 +381,7 @@ ActiveRecord::Schema.define(:version => 103) do
     t.string   "name"
     t.datetime "last_active_at"
     t.datetime "previously_logged_in_at"
+    t.datetime "deleted_at"
   end
 
   add_index "users", ["login"], :name => "index_users_on_login"

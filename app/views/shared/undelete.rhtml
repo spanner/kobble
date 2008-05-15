@@ -1,0 +1,19 @@
+<% if @deleted %>
+  <% 
+    @title = "undelete"
+  %>
+
+  <div class="preamble">
+    <p>
+      The <%= @deleted.class.nice_title %> <strong><%= @deleted.name %></strong> has been deleted from the <strong><%= @deleted.collection.name %></strong> collection.
+      Would you like to restore it? This will also restore all of its subsidiary objects and associations.
+    </p>
+  </div>
+  
+  
+  
+<% else %>
+  <% 
+    @title = "not found"
+  %>
+<% end %>

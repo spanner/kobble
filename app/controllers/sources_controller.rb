@@ -2,6 +2,9 @@ class SourcesController < ApplicationController
 
   def show
     @source = Source.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    @source = Source.find_with_deleted(params[:id])
+    render :action => 'restore'
   end
 
   def new
@@ -50,4 +53,5 @@ class SourcesController < ApplicationController
       format.xml { head 200 }
     end
   end
+  
 end

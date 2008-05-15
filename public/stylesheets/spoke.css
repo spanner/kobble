@@ -1,7 +1,7 @@
 /* 
   sparrow layout: v1.0
   spark blue: #559DC4
-  creative green: #6cb262
+  creative green: #a0a500
   warm grey 11: #695D54
   spark orange: #CC6E1F
   warm grey 5: #B2AAA4
@@ -229,7 +229,7 @@ div#admin p {
 div#admin a { color: #559DC4; }
 div#admin a:hover, .pagination a:active { color: #d1005d; }
 div#admin a.warning { color: white; }
-div#admin a.create { color: #6cb262; }
+div#admin a.create { color: #a0a500; }
 div#admin a.annotate { text-decoration: line-through; color: #B2AAA4;}
 
 div#trashholder {
@@ -513,20 +513,10 @@ div.mainlist li.created, div.mainlist li.created a { color: #a0a500; }
 div.mainlist li.updated, div.mainlist li.updated a { color: #CC6E1F; }
 div.mainlist li.deleted, div.mainlist li.deleted a { color: #d1005d; }
 
+div.mainlist li.administrative { list-style-image: url(/images/furniture/spoke/mid/collection.png); }
+div.mainlist li.administrative a { color: #B2AAA4; }
 
-
-
-
-
-
-
-
-
-
-
-div.mainlist li.waiting {
-  list-style-image: url(/images/furniture/signals/wait_16_grey.gif);
-}
+div.mainlist li.waiting { list-style-image: url(/images/furniture/signals/wait_16_grey.gif); }
 
 div.mainlist ul.inactive li.collection { list-style-image: url(/images/furniture/spoke/mid/collection.png); }
 div.mainlist ul.inactive li.node { list-style-image: url(/images/furniture/spoke/mid/node.png); }
@@ -645,9 +635,14 @@ div.boxtabs a.fg:hover {
   color: #695D54;
 }
 
+/* big friendly buttons */
 
-
-
+input.bigbutton {
+  font-size: 32px;
+  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
+  line-height: 44px;
+  color: #a0a500;
+}
 
 /* standard content formatting */
 
@@ -693,7 +688,7 @@ div.mainclip a.snipper {
   font-size: 20px;
   font-weight: lighter;
   font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
-  color: #6cb262;
+  color: #a0a500;
 }
 
 div.overlay {
@@ -1446,7 +1441,7 @@ a.ticked, a.crossed, a.waiting {
 }
        
 a.ticked {
-  color: #6cb262;
+  color: #a0a500;
   background-image: url('/images/furniture/buttons/tick/green.png');
 }
 a.crossed {
@@ -1550,7 +1545,7 @@ ul.autocompleter-choices li.autocompleter-selected span.autocompleter-queried
 
 
 a.inlinecreate, a.inlinecreate:visited. a.inlinediscuss, a.inlinediscuss:visited {
-  color: #6cb262;
+  color: #a0a500;
 }
 
 

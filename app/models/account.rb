@@ -1,6 +1,7 @@
 class Account < ActiveRecord::Base
 
-  acts_as_spoke :only => [:log, :illustration, :discussion, :owners]
+  acts_as_spoke :only => [:illustration, :discussion, :owners]
+  
   belongs_to :user
   has_many :users, :order => 'name'
   has_many :collections, :order => 'name'

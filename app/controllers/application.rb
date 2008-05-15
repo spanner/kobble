@@ -183,12 +183,23 @@ class ApplicationController < ActionController::Base
         redirect_to :controller => params[:controller], :action => 'show', :id => @catcher 
       }
       format.json { render :json => @response.to_json }
-      format.xml { head 200 }
     end
   end
   
   def dropped
     render :layout => false
+  end
+
+  def restore
+    @restored = request.parameters[:controller].to_s._as_class.find( params[:id] )
+    @restored.deleted_at = nil
+    @restored.save!
+    flash[:notice] = "#{@restored.name} restored"
+    
+    respond_to do |format|
+      format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @restored }
+      format.json { render :json => @restored.to_json }
+    end
   end
 
   def tags_from_list (taglist)

@@ -1,9 +1,9 @@
 class Tag < ActiveRecord::Base
 
+  acts_as_spoke :except => [:collection, :index]
   belongs_to :account
   has_many :taggings, :dependent => :destroy
   has_many_polymorphs :taggables, :from => Spoke::Config.content_models(:except => :tags), :through => :taggings
-  acts_as_spoke :except => [:collection, :index]
   acts_as_catcher :taggables, {:tag => :subsume}
 
   def stem

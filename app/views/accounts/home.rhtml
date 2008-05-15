@@ -20,8 +20,9 @@
       <option value="week"<%= ' selected="selected"' if params[:since] == 'week' %>>in the last week</option>
       <option value="month"<%= ' selected="selected"' if params[:since] == 'month' %>>in the last month</option>
       <% unless current_user.previously_logged_in_at.nil? %><option value="login"<%= ' selected="selected"' if params[:since] == 'login' %>>since you were last here</option><% end %>
-    </select>
+    </select> <input type="submit" value="refresh">
   </p>
+  </form>
 </div>
 
 <% @collections.each do |collection| %>
@@ -35,20 +36,15 @@
     <% else %>    
       <ul>
         <% events.each do |event| %>
-          <% if event.event_type == 'deleted' || event.affected.nil? %>
-            <li id="<%= event.affected_type.downcase %>_<%= event.affected_id %>" class="<%= event.event_type %>_<%= event.affected_type.downcase %> <%= event.event_type %>">
-              <%= event.affected_name %> <span class="listnote"><%= event.event_type %> <%= time_ago_in_words(event.at) %> ago</span>
-            </li>
-          <% else %>
-            <%= render :partial => "shared/listed", :locals => {
-              :listed => event.affected, 
-              :colourclass => event.event_type, 
-              :addendum => "#{event.event_type} #{time_ago_in_words(event.at)} ago"
-            } %>
-          <% end %> 
+          <% who = event.user == current_user ? 'you' : event.user.name %>
+          <%= render :partial => "shared/listed", :locals => {
+            :listed => event.victim, 
+            :colourclass => event.event_type, 
+            :addendum => "#{event.event_type} by #{who} #{time_ago_in_words(event.at)} ago"
+          } %>
         <% end %>
         
-        <li><%= link_to 'collection history', collection_events_url(collection) %></li>
+        <li class="administrative"><%= link_to 'full collection history', collection_events_url(collection) %></li>
       </ul>
     <% end %>
   </div>
