@@ -95,15 +95,15 @@ module ActiveRecord
           end
           
           if definitions.include?(:discussion)
-            has_many :topics, :as => :referent
+            has_many :topics, :as => :referent, :dependent => :destroy
             Spoke::Config.discussed_model(self)
           end
 
           if definitions.include?(:log)
-            has_many :logged_events, :as => :affected, :order => 'at DESC'
+            has_many :logged_events, :class_name => Event, :as => :affected, :order => 'at DESC'
           end
           
-          if definitions.include?(:undelete)
+          if definitions.include?(:undelete) && self.column_names.include?('deleted_at')
             acts_as_paranoid
           end
           
@@ -111,8 +111,8 @@ module ActiveRecord
           # would rather do this with definitions.include?(:tags) but then list incomplete at load time
 
           if Spoke::Config.content_models(:except => :tags).include?(self.to_s.underscore.pluralize.intern)
-            has_many :taggings, :as => :taggable
-            has_many :tags, :through => :taggings        
+            has_many :taggings, :as => :taggable, :dependent => :destroy
+            has_many :tags, :through => :taggings       
           end
 
           self.module_eval("include InstanceMethods")

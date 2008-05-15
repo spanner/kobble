@@ -6,13 +6,12 @@
   <div class="preamble">
     <p>
       The source <strong><%= @source.name %></strong> has been deleted from the <strong><%= @source.collection.name %></strong> collection.
-      Would you like to restore it? This will also restore all of its fragments, descriptions and discussions.
+      Would you like to recover it? This will also recover all of its fragments, descriptions and discussions.
     </p>
   </div>
   
-  <% form_for :source do |f| %>
-    <%= f.hidden_field :deleted_at, :value => nil %>
-    <%= submit_tag "restore source", :class => 'bigbutton' %>
+  <% form_for :source, :url => recover_source_path(@source) do |f| %>
+    <%= submit_tag "recover source", :class => 'bigbutton' %>
   <% end %>
   
 <% else %>

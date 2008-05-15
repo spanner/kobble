@@ -2,7 +2,7 @@ class Source < ActiveRecord::Base
 
   belongs_to :speaker, :class_name => 'Person', :foreign_key => 'speaker_id'
   belongs_to :occasion
-  has_many :nodes
+  has_many :nodes, :dependent => :destroy
 
   acts_as_spoke
   acts_as_catcher :tags, :flags

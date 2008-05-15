@@ -11,19 +11,7 @@ class Collection < ActiveRecord::Base
   has_many :bundles, :order => 'name', :dependent => :destroy, :conditions => "deleted_at IS NULL"
   has_many :occasions, :order => 'name', :dependent => :destroy, :conditions => "deleted_at IS NULL"
   has_many :topics, :order => 'name', :dependent => :destroy, :conditions => "deleted_at IS NULL"
-
-  has_many :events do
-    def recent(since=nil)
-      if (since.nil?)
-        find(:all, :limit => 5, :order => 'at DESC')
-      else
-        find(:all, :conditions => ['at > ?', since], :order => 'at DESC')
-      end
-    end
-    def latest
-      find(:first, :order => 'at DESC')
-    end
-  end
+  has_many :events, :order => 'at DESC'
   
   cattr_accessor :current_collections
  

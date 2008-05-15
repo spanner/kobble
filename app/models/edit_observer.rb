@@ -4,11 +4,11 @@ class EditObserver < ActiveRecord::Observer
   cattr_accessor :current_user
   
   def before_create(model)
-    model.creator = @@current_user
+    model.creator = @@current_user if model.record_timestamps
   end
   
   def before_update(model)
-    model.updater = @@current_user
+    model.updater = @@current_user if model.record_timestamps
   end
  
   def after_create(model)
@@ -16,7 +16,7 @@ class EditObserver < ActiveRecord::Observer
   end
 
   def after_update(model)
-    record_event(model, 'updated')
+    record_event(model, 'updated') if model.record_timestamps
   end
 
   def after_destroy(model)
@@ -25,11 +25,11 @@ class EditObserver < ActiveRecord::Observer
 
   def record_event(model, type)
     model.collection.last_active_at = Time.now if model.has_collection?
-    @@current_user.last_active_at = Time.now
+    @@current_user.last_active_at = Time.now unless @@current_user.nil?
     Event.create({
       :affected => model,
-      :user => @@current_user,
-      :account => @@current_user.account,
+      :user => (@@current_user unless @@current_user.nil?),
+      :account => (@@current_user.account unless @@current_user.nil?),
       :collection => model.collection,
       :affected_name => model.name,
       :event_type => type,

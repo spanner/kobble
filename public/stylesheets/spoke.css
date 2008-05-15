@@ -550,6 +550,12 @@ li.drophere a {
   color: #695D54;
 }
 
+li.deleted a {
+  color: #B2AAA4;
+  text-decoration: line-through;
+  
+}
+
 /* hidden divs that provide tooltip content */
 
 .tiptext, .tiptitle {

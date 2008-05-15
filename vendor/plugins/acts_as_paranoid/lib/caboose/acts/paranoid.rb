@@ -107,6 +107,12 @@ module Caboose #:nodoc:
             self.update_all ["#{self.deleted_attribute} = ?", current_time], conditions
           end
 
+          # cascading recover added by will 15.5.08
+
+          def retrievable_associations
+            reflect_on_all_associations.select{ |a| a.options[:dependent] == :destroy && a.class_name._as_class.paranoid? }
+          end
+
           protected
             def current_time
               default_timezone == :utc ? Time.now.utc : Time.now
@@ -148,11 +154,26 @@ module Caboose #:nodoc:
         end
 
         def recover!
-          self.deleted_at = nil
-          save!
+          transaction do
+            self.deleted_at = nil
+            self.retrievable_associates.each { |other| other.recover! }
+            save!
+          end
         end
+                
+        # cascading recover added by will 15.5.08
         
+        def retrievable_associates
+          associates = []
+          self.class.retrievable_associations.each do |association| 
+            associates += association.class_name._as_class.find_with_deleted(:all, :conditions => { 
+              association.primary_key_name => self.id
+            })
+          end
+          associates
+        end
       end
+
     end
   end
 end

@@ -143,26 +143,7 @@ class ApplicationController < ActionController::Base
   end
 
   def trash
-    @trashed = request.parameters[:controller].to_s._as_class.find( params[:id] )
-    # permissions check!
-    @trashed.destroy
-    @response = CatchResponse.new("#{@trashed.name} deleted", 'delete')
-    respond_to do |format|
-      format.html { redirect_to :controller => params[:controller], :action => 'list' }
-      format.json { render :json => @response.to_json }
-      format.xml { head 200 }
-    end
-  rescue => e
-    flash[:error] = e.message
-    @response = CatchResponse.new(e.message, '', 'failure')
-    respond_to do |format|
-      format.html { 
-        flash[:error] = e.message
-        redirect_to :controller => params[:controller], :action => 'show', :id => @trashed 
-      }
-      format.json { render :json => @response.to_json }
-      format.xml { head 200 }
-    end
+    delete
   end
   
   def drop
@@ -189,16 +170,41 @@ class ApplicationController < ActionController::Base
   def dropped
     render :layout => false
   end
-
-  def restore
-    @restored = request.parameters[:controller].to_s._as_class.find( params[:id] )
-    @restored.deleted_at = nil
-    @restored.save!
-    flash[:notice] = "#{@restored.name} restored"
-    
+  
+  # most models are paranoid
+  
+  def destroy
+    @deleted = request.parameters[:controller].to_s._as_class.find( params[:id] )
+    @deleted.destroy
     respond_to do |format|
-      format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @restored }
-      format.json { render :json => @restored.to_json }
+      format.html { 
+        redirect_to :controller => params[:controller], :action => 'show', :id => @deleted
+      }
+      format.json { 
+        @response = CatchResponse.new("#{@deleted.name} deleted", 'delete')
+        render :json => @response.to_json 
+      }
+    end
+  rescue => e
+    respond_to do |format|
+      format.html { 
+        flash[:error] = e.message
+        redirect_to :controller => params[:controller], :action => 'show', :id => @deleted 
+      }
+      format.json { 
+        @response = CatchResponse.new(e.message, '', 'failure')
+        render :json => @response.to_json 
+      }
+    end
+  end
+
+  def recover
+    @recovered = request.parameters[:controller].to_s._as_class.find_with_deleted( params[:id] )
+    @recovered.recover!
+    flash[:notice] = "#{@recovered.name} recovered"
+    respond_to do |format|
+      format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @recovered }
+      format.json { render :json => @recovered.to_json }
     end
   end
 

@@ -2,7 +2,7 @@
   addendum ||= ''
   colourclass ||= nil
   single ||= false
-  inactive ||= false
+  inactive ||= listed.deleted?
   catch ||= false
   catch = false if inactive
   aclass = inactive ? "listed inactive" : "listed"
@@ -11,7 +11,7 @@
 
 <li 
   id="<%= listed.class.to_s.downcase %>_<%= listed.id %>" 
-  class="<%= "#{colourclass}_" if colourclass %><%= listed.class.to_s.downcase %><%= ' single' if single %><%= ' draggable tippable' unless inactive %><%= ' catcher' if catch && listed.can_catch %> <%= colourclass %>"
+  class="<%= "#{colourclass}_" if colourclass %><%= listed.class.to_s.downcase %><%= ' single' if single %><%= ' draggable tippable' unless inactive %><%= ' catcher' if catch && listed.can_catch %> <%= colourclass %><%= ' deleted' if listed.deleted? %>"
   <% if catch && listed.can_catch %>catches="<%= listed.can_catch.join(',') %>"<% end %>
 >
 

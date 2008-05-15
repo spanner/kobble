@@ -5,11 +5,10 @@ class Event < ActiveRecord::Base
   belongs_to :user
   belongs_to :affected, :polymorphic => true
 
-  # just calling affected will return nil for deleted objects even though they're paranoid
-
-  def victim
-    affected_type._as_class.find_with_deleted(affected_id)
-  end
-
+  has_finder :since, lambda {|start| { :conditions => ['at > ?', start] } }
+  has_finder :creations, :conditions => {:event_type => 'created'}
+  has_finder :updates, :conditions => {:event_type => 'updated'}
+  has_finder :deletions, :conditions => {:event_type => 'deleted'}  
+  has_finder :latest, :limit => 5, :order => 'at DESC'
+  
 end
-

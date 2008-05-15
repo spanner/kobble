@@ -29,16 +29,16 @@
   <div class="mainlist">
     <h3 class="listheader"><%= collection.name %> <span class="headernote">last activity <%= time_ago_in_words(collection.last_active_at) %> ago</span></h3>
     <% 
-      events = collection.events.recent(@since) 
+      events = @since ? collection.events.since(@since) : collection.events.latest
       if events.empty?
     %>
-      <p>No activity recorded<% unless params[:since].nil? %> in this period<% end %>.</p>
+      <p>No activity recorded<% unless @since.nil? %> in this period<% end %>.</p>
     <% else %>    
       <ul>
         <% events.each do |event| %>
           <% who = event.user == current_user ? 'you' : event.user.name %>
           <%= render :partial => "shared/listed", :locals => {
-            :listed => event.victim, 
+            :listed => event.affected, 
             :colourclass => event.event_type, 
             :addendum => "#{event.event_type} by #{who} #{time_ago_in_words(event.at)} ago"
           } %>
