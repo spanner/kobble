@@ -1,0 +1,29 @@
+<% if @thing %>
+  <% 
+    @title = "undelete"
+  %>
+
+  <div class="preamble">
+    <p>
+      The <%= @thing.class.nice_title %> <strong><%= @thing.name %></strong> has been deleted.
+      Would you like to recover it? This will also recover all of its associated objects, taggings and discussions.
+    </p>
+  </div>
+  
+  <% form_for :thing, :url => {:action => 'recover', :id => @thing} do |f| %>
+    <%= submit_tag "recover", :class => 'bigbutton' %>
+  <% end %>
+  
+  <p>These are the immediate children that would be recovered with this object:</p>
+  
+  <div class="mainlist">
+    <%= render :partial => 'shared/listed', :collection => @thing.retrievable_associates %>
+  </div>
+  
+<% else %>
+  <% 
+    @title = "not found"
+  %>
+<% end %>
+
+
