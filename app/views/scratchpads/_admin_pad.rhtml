@@ -1,0 +1,23 @@
+<h3><%= link_to "admin: account", edit_account_url(current_account) %></h3>
+<ul class="padded">
+  <li class="administrative"><%= link_to_unless_current "account settings", edit_account_url(current_account) %></li>
+  <li class="administrative"><%= link_to_unless_current "review deletions", account_events_url(current_account) %></li>
+  <li class="administrative"><%= link_to_unless_current "edit tags", account_tags_url(current_account) %></li>
+</ul>
+
+<h3><%= link_to "admin: collections", account_collections_url(current_account) %></h3>
+<ul class="padded">
+  <% current_account.collections.each do |collection| %>
+    <li class="collection"><%= link_to collection.name, edit_collection_url(collection), :class => 'listed' %></li>
+  <% end %>
+  <li class="create create_collection"><%= link_to "create a new collection", new_account_collection_url(current_account) %></li>
+</ul>
+
+<h3><%= link_to "admin: users", account_users_url(current_account) %></h3>
+<ul class="padded">
+  <% current_account.users.each do |user| %>
+    <li class="user"><%= link_to user.name, user_url(user), :class => 'listed' %></li>
+  <% end %>
+  <li class="create create_user"><%= link_to "invite a new user", new_account_user_url(current_account) %></li>
+</ul>
+

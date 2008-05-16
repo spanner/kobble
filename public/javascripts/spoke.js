@@ -823,6 +823,8 @@ var ScratchSet = new Class({
 	initialize: function(tag){
 		this.parent(tag);
 	  this.container = $E('#scratchpad');
+	  this.tabscontainer = $E('#scratchpad_tabs');
+	  this.pagescontainer = $E('#scratchpad_pages');
 		this.isopen = false;
 		this.openFX = new Fx.Tween(this.container, 'width', {duration: 400, transition: Fx.Transitions.Cubic.easeOut});
 		this.closeFX = new Fx.Tween(this.container, 'width', {duration: 1000, transition: Fx.Transitions.Cubic.easeOut});
@@ -852,11 +854,11 @@ var ScratchSet = new Class({
       'id': 'tab_scratchpad_new',
       'class': 'padtab', 
       'href': "#"
-    }).setText('new scratchpad').injectInside(this.headcontainer);
+    }).setText('new scratchpad').injectInside(this.tabscontainer);
     var newbody = new Element('div', {
       'id': 'scratchpad_new',
       'class': 'scratchpage'
-    }).injectInside(this.container);
+    }).injectInside(this.pagescontainer);
     this.newtab = new ScratchTab(newhead);
     this.newtab.select(e);
     this.newtab.showForm('/scratchpads/new');

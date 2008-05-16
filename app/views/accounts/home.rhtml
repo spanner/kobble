@@ -23,7 +23,7 @@
 
 <% @collections.each do |collection| %>
   <div class="mainlist">
-    <h3 class="listheader"><%= collection.name %> <span class="headernote">last activity <%= time_ago_in_words(collection.last_active_at) %> ago</span></h3>
+    <h3 class="listheader"><%= collection.name %><br /><span class="headernote">last activity <%= time_ago_in_words(collection.last_active_at) %> ago</span></h3>
     <% 
       events = @since ? collection.events.since(@since) : collection.events.latest
       if events.empty?

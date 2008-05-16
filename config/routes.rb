@@ -9,7 +9,7 @@ ActionController::Routing::Routes.draw do |map|
   map.drop '/:controller/drop/:id/:droppedClass/:droppedID', :action => 'drop'
   map.trash '/:controller/trash/:id', :action => 'trash'
   
-  map.resources :accounts, :has_many => [:users, :collections, :events, :deletions], :collection => { :home => :any }
+  map.resources :accounts, :has_many => [:users, :collections, :events, :deletions, :tags], :collection => { :home => :any }
   map.resources :collections, :has_many => [:events], :member => {:recover => :post}
   map.resources :users, :has_many => [:activations, :user_preferences, :permissions, :scratchpads, :events], :collection => { :gallery => :get }, :member => { :home => :get, :recover => :post }
 

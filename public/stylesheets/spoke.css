@@ -296,7 +296,7 @@ div#admin_tabs {
   width: 120px;
 }
 
-div#box_scratchpad {
+div#scratchpad_pages {
   position: absolute;
   top: 0;
 	width: 440px;
@@ -320,7 +320,6 @@ div#scratchpad_tabs a, div#admin_tabs a {
   color: #cacac8;
   font-family: helvetica, arial, sans-serif;
   background-color: #8c8d8e;  
-  color: #cacac8;
 }
 
 div#scratchpad_tabs a.fg, div#admin_tabs a.fg { font-weight: bold; color: white; background-color: #4d4e53; }
@@ -336,6 +335,7 @@ div.scratchpage {
   padding: 0;
   display: none;
 	background-color: #4d4e53;
+	overflow: auto;
 }
 
 div.admin_scratchpage {
@@ -344,27 +344,54 @@ div.admin_scratchpage {
 
 div.scratchpage h3 {
   margin: 4px 0 4px 0;
-  padding: 6px 0 0 30px;
+  padding: 6px 0 0 12px;
   color: white;
+}
+
+div.scratchpage h3 a, div.scratchpage h3 a:visited {
+  color: white;
+}
+
+div.scratchpage span.separator {
+	color: #4d4e53;
 }
 
 div.scratchpage ul {
   margin: 0;
   padding: 6px 0 0 30px;
   color: white;
-	height: 99%;
+}
+
+div.scratchpage ul.fullheight {
+  height: 99%;
+}
+
+div.scratchpage ul.padded {
+ margin: 0 0 0 5px;
 }
 
 div.scratchpage li {
-  list-style-image: url(/images/furniture/spoke/mid/node.png);
-  margin: 0 0 4px 0;
+  list-style-image: url(/images/furniture/spoke/mid/what.png);
+  margin: 0 0 6px 0;
   font-size: 16px;
-  line-height: 20px;
+  line-height: 18px;
 }
 
-div.admin div.scratchpage ul.choicelist li {
-  list-style: none;
+div.scratchpage li.create a {
+  color: #a0a500;
+}
+
+div.scratchpage li.administrative a {
+  color: #cacac8;
+}
+
+div.scratchpage ul.choicelist {
   margin: 0;
+  padding: 6px 0 0 10px;
+}
+
+div.scratchpage ul.choicelist li {
+  list-style: none;
 }
 
 div.scratchpage li.waiting a {
@@ -394,7 +421,7 @@ div.scratchpage div.padcontrol a.closepad {
 }
 
 div.scratchpage li a.listed {
-  color: #8c8d8e;
+  color: #cacac8;
 }
 
 div.scratchpage li a.listed:hover {
@@ -412,6 +439,16 @@ div.scratchpage li.flag { list-style-image: url(/images/furniture/spoke/mid/flag
 div.scratchpage li.topic { list-style-image: url(/images/furniture/spoke/mid/post.png); }
 div.scratchpage li.post { list-style-image: url(/images/furniture/spoke/mid/post.png); }
 div.scratchpage li.waiting { list-style-image: url(/images/furniture/signals/wait_16_white.gif); }
+
+div.scratchpage li.create_collection { list-style-image: url(/images/furniture/spoke/green/collection.png); }
+div.scratchpage li.create_node { list-style-image: url(/images/furniture/spoke/green/node.png); }
+div.scratchpage li.create_source { list-style-image: url(/images/furniture/spoke/green/source.png); }
+div.scratchpage li.create_bundle { list-style-image: url(/images/furniture/spoke/green/bundle.png); }
+div.scratchpage li.create_user { list-style-image: url(/images/furniture/spoke/green/user.png); }
+div.scratchpage li.create_person { list-style-image: url(/images/furniture/spoke/green/user.png); }
+div.scratchpage li.create_tag { list-style-image: url(/images/furniture/spoke/green/tag.png); }
+div.scratchpage li.create_flag { list-style-image: url(/images/furniture/spoke/green/flag.png); }
+div.scratchpage li.create_topic { list-style-image: url(/images/furniture/spoke/green/post.png); }
 
 div.scratchpage .drophere {
 	background-color: #d1005d;

@@ -49,11 +49,11 @@
       <%= link_to "account admin", edit_account_url(current_account), {:id => 'tab_scratchpad_admin', :class => 'padtab admintab'} %>
     </div>
 
-    <div id="box_scratchpad">
+    <div id="scratchpad_pages">
       <%= render :partial => 'shared/scratchpad', :collection => current_user.scratchpads %>
-      <div id="scratchpad_preferences" class="scratchpage"><%= render :partial => 'shared/preferences_pad' %></div>
-      <div id="scratchpad_collections" class="scratchpage"><%= render :partial => 'shared/collections_pad' %></div>
-      <div id="scratchpad_admin" class="scratchpage"><%= render :partial => 'shared/admin_pad' %></div>
+      <div id="scratchpad_preferences" class="scratchpage"><%= render :partial => 'scratchpads/preferences_pad' %></div>
+      <div id="scratchpad_collections" class="scratchpage"><%= render :partial => 'scratchpads/collections_pad' %></div>
+      <div id="scratchpad_admin" class="scratchpage"><%= render :partial => 'scratchpads/admin_pad' %></div>
     </div>
   </div>
   
