@@ -62,6 +62,13 @@ class ApplicationController < ActionController::Base
     
   # shared retrieval mechanisms
 
+  def show
+    @thing = request.parameters[:controller].to_s._as_class.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    @thing = request.parameters[:controller].to_s._as_class.find_with_deleted(params[:id])
+    render :template => 'shared/deleted'
+  end
+
   def search
     @klass = request.parameters[:controller].to_s._as_class
     @search = Ultrasphinx::Search.new(
@@ -143,7 +150,7 @@ class ApplicationController < ActionController::Base
   end
 
   def trash
-    delete
+    destroy
   end
   
   def drop

@@ -166,9 +166,7 @@ module Caboose #:nodoc:
         def retrievable_associates
           associates = []
           self.class.retrievable_associations.each do |association| 
-            associates += association.class_name._as_class.find_with_deleted(:all, :conditions => { 
-              association.primary_key_name => self.id
-            })
+            associates += association.class_name._as_class.find_with_deleted(:all, :conditions => { association.primary_key_name => self.id })
           end
           associates
         end

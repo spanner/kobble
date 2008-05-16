@@ -8,13 +8,12 @@
 </div>
 
 <div class="boxtabs">
-  <a href="#" id="tab_editing_summary" class="tab">summary</a>
-  <a href="#" id="tab_editing_body" class="tab">contents</a>
+  <a href="#" id="tab_editing_body" class="tab">source document</a>
   <a href="#" id="tab_editing_notes" class="tab">field notes</a>
 </div>
 
 <div class="boxed" id="box_editing">
-	<div id="editing_summary">
+	<div id="editing_body">
 
     <p><label for="source_name">Document name</label><br />
     <%= text_field 'source', 'name', 'class' => "titular" %>
@@ -24,20 +23,20 @@
     <%= render :partial => 'shared/edit_tags', :locals => {:item => @source} %>
 
     <p><label for="source_description">Synopsis or description</label><br />
-    <%= text_area 'source', 'description', 'rows' => 6, 'class' => "standard" %>
+    <%= text_area 'source', 'description', 'rows' => 4, 'class' => "standard" %>
     </p>
 
-    <%= render :partial => 'shared/edit_speaker', :locals => {:item => @source} %>
-  </div>
-  <div id="editing_body">
     <%= render :partial => 'shared/edit_clip', :locals => {:item => @source} %>
     <%= render :partial => 'shared/edit_body', :locals => {:item => @source} %>
     <%= render :partial => 'shared/edit_file', :locals => {:item => @source} %>
+    <%= render :partial => 'shared/edit_image', :locals => {:item => @source} %>
 
     <p class="formnote">If you want to associated several images with a source document, the best way is to illustrate its fragments.</p>
 
-    <%= render :partial => 'shared/edit_image', :locals => {:item => @source} %>
+    <%= render :partial => 'shared/edit_speaker', :locals => {:item => @source} %>
+
   </div>
+  
   <div id="editing_notes">
     <%= render :partial => 'shared/edit_occasion', :locals => {:item => @source} %>
     <%= render :partial => 'shared/edit_fieldnotes', :locals => {:item => @source} %>

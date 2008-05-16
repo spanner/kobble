@@ -1,12 +1,5 @@
 class SourcesController < ApplicationController
 
-  def show
-    @source = Source.find(params[:id])
-  rescue ActiveRecord::RecordNotFound
-    @source = Source.find_with_deleted(params[:id])
-    render :action => 'restore'
-  end
-
   def new
     @occasions = Occasion.find(:all, :conditions => limit_to_active_collections)
     @people = Person.find(:all, :conditions => limit_to_active_collections)

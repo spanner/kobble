@@ -2,10 +2,6 @@
   @title = 'Home' 
 %>
 
-<div id="margin">
-
-</div>
-
 <div class="preamble">
   <p>This is a summary of recent activity across the collections to which you have access.</p>
 </div>
@@ -16,7 +12,7 @@
     <label for="since">Show activity:</label>
     <select name="since" id="since">
       <option value="latest"<%= ' selected="selected"' if params[:since].nil? %>>last few changes</option>
-      <option value="day"<%= ' selected="selected"' if params[:since] =='day' %>>today</option>
+      <option value="today"<%= ' selected="selected"' if params[:since] =='today' %>>today</option>
       <option value="week"<%= ' selected="selected"' if params[:since] == 'week' %>>in the last week</option>
       <option value="month"<%= ' selected="selected"' if params[:since] == 'month' %>>in the last month</option>
       <% unless current_user.previously_logged_in_at.nil? %><option value="login"<%= ' selected="selected"' if params[:since] == 'login' %>>since you were last here</option><% end %>
@@ -44,7 +40,7 @@
           } %>
         <% end %>
         
-        <li class="administrative"><%= link_to 'full collection history', collection_events_url(collection) %></li>
+        <li class="administrative"><%= link_to 'collection history', collection_events_url(collection) %></li>
       </ul>
     <% end %>
   </div>

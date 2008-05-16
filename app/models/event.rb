@@ -10,5 +10,9 @@ class Event < ActiveRecord::Base
   has_finder :updates, :conditions => {:event_type => 'updated'}
   has_finder :deletions, :conditions => {:event_type => 'deleted'}  
   has_finder :latest, :limit => 5, :order => 'at DESC'
+    
+  def affected
+    self.affected_type._as_class.find_with_deleted(self.affected_id)
+  end
   
 end

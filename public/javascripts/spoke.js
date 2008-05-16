@@ -822,26 +822,20 @@ var ScratchSet = new Class({
   Extends: TabSet,
 	initialize: function(tag){
 		this.parent(tag);
-	  this.container = $E('#box_scratchpad');
-	  this.headcontainer = $E('#headbox_scratchpad');
+	  this.container = $E('#scratchpad');
 		this.isopen = false;
-
-		this.openpadFX = new Fx.Tween(this.container, 'width', {duration: 400, transition: Fx.Transitions.Cubic.easeOut});
-		this.opentabsFX = new Fx.Tween(this.headcontainer, 'right', {duration: 400, transition: Fx.Transitions.Cubic.easeOut});
-		this.closepadFX = new Fx.Tween(this.container, 'width', {duration: 1000, transition: Fx.Transitions.Bounce.easeOut});
-		this.closetabsFX = new Fx.Tween(this.headcontainer, 'right', {duration: 1000, transition: Fx.Transitions.Bounce.easeOut});
+		this.openFX = new Fx.Tween(this.container, 'width', {duration: 400, transition: Fx.Transitions.Cubic.easeOut});
+		this.closeFX = new Fx.Tween(this.container, 'width', {duration: 1000, transition: Fx.Transitions.Cubic.easeOut});
 	},
   postselect: function () {
     if (!this.isopen) this.open();
   },
   open: function () {
-    this.openpadFX.start( 440 );
-    this.opentabsFX.start( 438 );
+    this.openFX.start( 560 );
     this.isopen = true;
 	},
 	close: function (delay) {
-    this.closepadFX.start( 10 ); 
-    this.closetabsFX.start( 8 ); 
+    this.closeFX.start( 130 ); 
     this.isopen = false;
 	},
 	toggle: function (delay) {

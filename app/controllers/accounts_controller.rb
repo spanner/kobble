@@ -13,7 +13,7 @@ class AccountsController < ApplicationController
     @collections = current_account.collections_by_activity
     case params[:since]
     when 'today'
-      @since = 1.day.ago
+      @since = Time.now.beginning_of_day
     when 'week'
       @since = 1.week.ago
     when 'month'
