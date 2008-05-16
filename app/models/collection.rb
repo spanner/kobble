@@ -14,5 +14,7 @@ class Collection < ActiveRecord::Base
   has_many :events, :order => 'at DESC'
   
   cattr_accessor :current_collections
+
+  has_finder :in_account, lambda { |account| {:conditions => { :account_id => account.id }} }
  
 end

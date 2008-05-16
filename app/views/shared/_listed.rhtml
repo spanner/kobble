@@ -28,7 +28,7 @@
   
   <% unless inactive %>
     <div class="tiptitle"><% if listed.has_collection? %><%= listed.collection.abbreviation %>: <% end %><%= name %></div>
-    <div class="tiptext"<%= ' style="display: none;"' if current_user.prefers?('condensed') %>><%= truncate( listed.find_some_text, 200 ) %></div>
+    <div class="tiptext"<%= ' style="display: none;"' if current_user.prefers?('condensed') %>><%= truncate( listed.find_some_text, 100 ) %></div>
   <% end %>
   
 </li>

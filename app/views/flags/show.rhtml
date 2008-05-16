@@ -1,8 +1,8 @@
 <% for column in Flag.content_columns %>
 <p>
-  <b><%= column.human_name %>:</b> <%=h @flag.send(column.name) %>
+  <b><%= column.human_name %>:</b> <%=h @thing.send(column.name) %>
 </p>
 <% end %>
 
-<%= link_to 'Edit', :action => 'edit', :id => @flag %> |
+<%= link_to 'Edit', :action => 'edit', :id => @thing %> |
 <%= link_to 'Back', :action => 'list' %>

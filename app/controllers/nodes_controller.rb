@@ -1,9 +1,5 @@
 class NodesController < ApplicationController
   require 'uri'
-
-  def show
-    @node = Node.find(params[:id])
-  end
   
   def new
     @node = Node.new

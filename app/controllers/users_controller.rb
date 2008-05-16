@@ -17,17 +17,14 @@ class UsersController < ApplicationController
   # only accessible as nested resource of account
   # logging in and registration are in account_controller
 
-  def index
-    @users = @account.users
-    respond_to do |format| 
-      format.html
-      format.json { render :json => @users.to_json }
-    end
+
+  def view_scope
+    'account'
   end
 
   def show
     userid = params[:id] || current_user.id
-    @user = @account.users.find(userid)
+    @thing = @account.users.find(userid)
   end
 
   def new

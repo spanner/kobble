@@ -6,25 +6,11 @@ class CollectionsController < ApplicationController
   
   # only accessible as nested resource of account
   # but if no account specified then current_user's account is assumed to provide context
-  
-  def index
-    @collections = @account.collections
-    respond_to do |format| 
-      format.html
-      format.json { render :json => @collections.to_json }
-      format.js { render :layout => false }
-    end
+    
+  def view_scope
+    'account'
   end
   
-  def show
-    @collection = @account.collections.find(params[:id])
-    respond_to do |format| 
-      format.html
-      format.json { render :json => @collection.to_json }
-      format.js { render :layout => false }
-    end
-  end
-
   def new
     @collection = @account.collections.build
     respond_to do |format| 

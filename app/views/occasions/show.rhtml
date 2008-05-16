@@ -1,20 +1,6 @@
 <% 
-  @title = @occasion.name 
+  @title = @thing.name 
 %>
-
-<div id="margin" class="floatcolumn" style="width: 175px;">	
-	<% if account_admin? %>
-		<h2>
-			<a href="#" class="displaycontrol editor" id="show_admin">+ admin controls</a>
-		</h2>
-    <div class="marginal" id="hide_admin">
-			<%= link_to 'extract fragment', {:controller => 'nodes', :action => 'new'}, {:class => 'additem snipper'} %>
-			<%= link_to 'edit source', {:action => 'edit', :id => @source}, {:class => 'edititem'} %>
-			<%= link_to 'remove source', {:action => 'destroy', :id => @source}, {:class => 'removeitem', :confirm => "do you really want to completely get rid of #{@source.name}?"} %>
-			<%= link_to 'upload another source', {:action => 'new'}, {:class => 'additem'} %>
-		</div>
-	<% end %>
-</div>
 
 <h2>documents associated with this occasion</h2>
 

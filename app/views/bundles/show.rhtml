@@ -1,10 +1,10 @@
 <% 
-  @title = @bundle.name || 'nameless set'
+  @title = @thing.name || 'nameless set'
 %>
 
 <div class="preamble">
-  <% if @bundle.has_description? %>
-  	  <%= @bundle.description.formatted %>
+  <% if @thing.has_description? %>
+  	  <%= @thing.description.formatted %>
   <% else %>
     <p>No summary given</p>
   <% end %>
@@ -12,26 +12,26 @@
 
 <div class="boxtabs">
   <a href="#" id="tab_content_members" class="tab">set members</a>
-  <% if @bundle.has_body? %><a href="#" id="tab_content_body" class="tab">body text</a><% end %>
-  <% if @bundle.has_image? %><a href="#" id="tab_content_image" class="tab">image</a><% end %>
-  <% if @bundle.has_notes? %><a href="#" id="tab_content_notes" class="tab">field notes</a><% end %>
+  <% if @thing.has_body? %><a href="#" id="tab_content_body" class="tab">body text</a><% end %>
+  <% if @thing.has_image? %><a href="#" id="tab_content_image" class="tab">image</a><% end %>
+  <% if @thing.has_notes? %><a href="#" id="tab_content_notes" class="tab">field notes</a><% end %>
   <a href="#" id="tab_content_tags" class="tab">tags</a>
   <a href="#" id="tab_content_topics" class="tab">discussions</a>
 </div>
 
 <div class="boxed" id="box_content">
   <div id="content_members"><%= render :partial => 'members' %></div>
-  <%= render :partial => 'shared/show_body', :locals => {:item => @bundle, :tabset => 'content'} %>
-  <%= render :partial => 'shared/show_image', :locals => {:item => @bundle, :tabset => 'content'} %>
-  <%= render :partial => 'shared/show_tags', :locals => {:item => @bundle, :tabset => 'content'} %>
-  <%= render :partial => 'shared/show_topics', :locals => {:item => @bundle, :tabset => 'content'} %>
-  <%= render :partial => 'shared/show_field_notes', :locals => {:item => @bundle, :tabset => 'content'} %>
+  <%= render :partial => 'shared/show_body', :locals => {:item => @thing, :tabset => 'content'} %>
+  <%= render :partial => 'shared/show_image', :locals => {:item => @thing, :tabset => 'content'} %>
+  <%= render :partial => 'shared/show_tags', :locals => {:item => @thing, :tabset => 'content'} %>
+  <%= render :partial => 'shared/show_topics', :locals => {:item => @thing, :tabset => 'content'} %>
+  <%= render :partial => 'shared/show_field_notes', :locals => {:item => @thing, :tabset => 'content'} %>
 
 </div>
 
 <% content_for :admin do %>
   <p>
     set:<br />
-    <%= render :partial => 'shared/show_admin', :locals => {:item => @bundle} %>
+    <%= render :partial => 'shared/show_admin', :locals => {:item => @thing} %>
   </p>
 <% end %>

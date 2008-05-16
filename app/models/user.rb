@@ -37,6 +37,8 @@ class User < ActiveRecord::Base
     end
   end
 
+  has_finder :in_account, lambda { |account| {:conditions => { :account_id => account.id }} }
+
   validates_presence_of     :login,                      :if => :login_required?
   validates_presence_of     :password,                   :if => :password_required?
   validates_length_of       :password, :within => 4..40, :if => :password_required?

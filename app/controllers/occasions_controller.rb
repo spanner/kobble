@@ -3,10 +3,6 @@ class OccasionsController < ApplicationController
   # this is user review and management for admins
   # logging in and registration is in account_controller
   
-  def show
-    @occasion = Occasion.find(params[:id])
-  end
-
   def new
     @occasion = Occasion.new
     respond_to do |format|

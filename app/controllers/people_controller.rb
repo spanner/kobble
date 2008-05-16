@@ -12,10 +12,6 @@ class PeopleController < ApplicationController
     80
   end
 
-  def show
-    @person = Person.find(params[:id])
-  end
-
   def new
     @person = Person.new
     @person.collection = Collection.find(params[:collection_id])

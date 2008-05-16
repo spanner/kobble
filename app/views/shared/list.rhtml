@@ -6,16 +6,15 @@
     <%= render :partial => 'shared/pagination', :locals => {:list => @list} %>
   
     <% counter = 0 %>
-    <% column_length = @list.per_page / controller.list_columns %>
-    <% column_width = 700 / controller.list_columns %>
+    <% column_length = 10 %>
     
-    <ul class="listcolumn" style="width: <%= column_width.to_i %>px;">
+    <ul class="listcolumn">
       <% @list.each do |listed| %>
         <%= render :partial => 'shared/listed', :locals => {:listed => listed, :catch => true} %>
         <% counter += 1 %>
         <% if counter.remainder(column_length.to_i) == 0 %>
           </ul>
-          <ul class="listcolumn" style="width: <%= column_width.to_i %>px;">
+          <ul class="listcolumn">
         <% end %>
       <% end %>
   	</ul>
@@ -27,7 +26,7 @@
   <%= render :partial => 'searches/form' %>
 
 <% else %>
-	<p>There are no <%= @klass.nice_title.pluralize %> to display in this collection</p>
+	<p>We have no <%= @klass.nice_title.pluralize %>.</p>
 <% end %>
 
 <% content_for :admin do %>

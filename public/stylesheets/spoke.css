@@ -33,6 +33,7 @@ body {
 .small { font-size: 0.7em; line-height: 1.4; }
 .hide, .hidden, .temporary { display: none; }
 .separator { color: white; }
+.modifier { font-size: 0.7em; font-weight: bold;}
 /*.draggable { cursor: move; }*/
 
 /* default entity formatting */
@@ -291,7 +292,7 @@ div#scratchpad_tabs {
 
 div#admin_tabs {
   position: absolute;
-  bottom: 32px;
+  bottom: 44px;
   left: 0;
   width: 120px;
 }
@@ -480,6 +481,12 @@ div.mainlist ul {
   margin: 0;
 	padding: 0;
   list-style: none;
+}
+
+div.mainlist ul.listcolumn {
+  width: 250px;
+  float: left;
+  overflow-x: hidden;
 }
 
 div.mainlist li, li.single {

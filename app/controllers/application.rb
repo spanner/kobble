@@ -16,6 +16,14 @@ class ApplicationController < ActionController::Base
   layout 'standard'
   exception_data :exception_report_data
   
+  def views
+    ['gallery', 'list']
+  end
+
+  def view_scope
+    params[:user_id] ? 'user' : 'collections'
+  end
+  
   def index
     list
   end
@@ -32,30 +40,6 @@ class ApplicationController < ActionController::Base
     Collection.current_collections = current_collections
   end
   
-  def limit_to_this_account(klass=nil)
-    t = klass ? "#{klass.table_name}." : ''
-    ["#{t}account_id = ?", current_account]
-  end
-
-  def limit_to_active_collections(klass=nil)
-    [active_collections_clause(klass)] + current_collections.map { |c| c.id }
-  end
-  
-  def limit_to_active_collections_and_visible(klass=nil)
-    t = klass ? "#{klass.table_name}." : ''
-    [active_collections_clause(klass) + " and #{t}visibility <= ?"] + current_collections + [current_user.status]
-  end
-
-  def limit_to_active_collections_and_this_week(klass=nil)
-    t = klass ? "#{klass.table_name}." : ''
-    [active_collections_clause(klass) + " and #{t}created_at >= ?", current_collection, (Time.now - (86400 * 7)).utc]
-  end
-
-  def active_collections_clause(klass=nil)
-    t = klass ? "#{klass.table_name}." : ''
-    "#{t}collection_id in (" + current_collections.map{'?'}.join(',') + ")"
-  end
-
   def local_request?
     admin?
   end
@@ -99,24 +83,26 @@ class ApplicationController < ActionController::Base
   
   def paged_list
     @klass = request.parameters[:controller].to_s._as_class
-    page = params[:page] || 1
-    perpage = params[:perpage] || self.list_length
-    sort_options = request.parameters[:controller].to_s._as_class.sort_options
-    sort = sort_options[params[:sort]] || sort_options[request.parameters[:controller].to_s._as_class.default_sort]
-    conditions = limit_to_active_collections
-    @list = @klass.paginate :conditions => conditions, :order => sort, :page => page, :per_page => perpage
-  end
-    
-  def views
-    ['gallery']
+    @scope = view_scope
+    case @scope
+    when 'account'
+      @list = @klass.in_account(current_account).paginate(self.paging)
+    when 'user'
+      @user = User.find(params[:user_id]) || current_user
+      @list = @klass.created_by_user(@user).paginate(self.paging)
+    else
+      @list = @klass.in_collections(current_collections).paginate(self.paging)
+    end
   end
   
-  def list_columns
-    2
-  end
-
-  def list_length
-    40
+  def paging
+    sort_options = request.parameters[:controller].to_s._as_class.sort_options
+    default_sort = request.parameters[:controller].to_s._as_class.default_sort
+    {
+      :page => (params[:page] || 1),
+      :per_page => params[:per_page],   # specify defaults in model but 30 is usually fine
+      :order => (sort_options[params[:sort]] || sort_options[default_sort])
+    }
   end
 
   def catch

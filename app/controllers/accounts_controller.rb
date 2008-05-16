@@ -26,11 +26,7 @@ class AccountsController < ApplicationController
   end
 
   def show
-    @account = admin? ? Account.find(params[:id]) : current_user.account
-  end
-
-  def limit_to_active_collections(klass=nil)
-    []
+    @thing = admin? ? Account.find(params[:id]) : current_user.account
   end
 
   def new

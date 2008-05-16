@@ -1,14 +1,5 @@
 class ScratchpadsController < ApplicationController
 
-  def show
-    @scratchpad = Scratchpad.find(params[:id])
-    respond_to do |format|
-      format.html {  }
-      format.js { render :template => 'shared/_scratchpad', :layout => false }
-      format.json { render :json => @scratchpad.to_json }
-    end
-  end
-
   def new
     @scratchpad = Scratchpad.new
     respond_to do |format|

@@ -76,11 +76,14 @@ module ActiveRecord
           
           if definitions.include?(:collection)
             belongs_to :collection
+            has_finder :in_collection, lambda { |collection| {:conditions => { :collection_id => collection.id }} }
+            has_finder :in_collections, lambda { |collections| {:conditions => ["#{table_name}.collection_id in (" + collections.map{'?'}.join(',') + ")"] + collections.map { |c| c.id }} }
           end
           
           if definitions.include?(:owners)
             belongs_to :creator, :class_name => 'User', :foreign_key => 'created_by'
             belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
+            has_finder :created_by_user, lambda { |user| {:conditions => { :created_by => user.id }} }
           end
           
           if definitions.include?(:illustration)
@@ -138,6 +141,10 @@ module ActiveRecord
 
         def default_sort
           "name"
+        end
+        
+        def per_page
+          50
         end
         
         def nice_title

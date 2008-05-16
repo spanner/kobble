@@ -24,6 +24,13 @@
   <% 
     @title = "not found"
   %>
+  
+  <div class="preamble">
+    <p>
+      Sorry: There is no <%= request.parameters[:controller].to_s._as_class.nice_title %> here with the id <%= params[:id] %>, and nothing in the trash either.
+    </p>
+  </div>
+  
 <% end %>
 
 

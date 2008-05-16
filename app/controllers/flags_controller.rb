@@ -4,10 +4,6 @@ class FlagsController < ApplicationController
   verify :method => :post, :only => [ :destroy, :create, :update ],
          :redirect_to => { :action => :list }
 
-  def show
-    @flag = Flag.find(params[:id])
-  end
-
   def new
     @flag = Flag.new
   end
