@@ -67,6 +67,7 @@ class ApplicationController < ActionController::Base
   
   def list
     @list = paged_list
+    @view = 'index'
     respond_to do |format|
       format.html { render :template => 'shared/list' }
       format.js { render :template => 'shared/list', :layout => false }
@@ -75,6 +76,7 @@ class ApplicationController < ActionController::Base
 
   def gallery
     @list = paged_list
+    @view = 'gallery'
     respond_to do |format|
       format.html { render :template => 'shared/gallery' }
       format.js { render :template => 'shared/gallery', :layout => false }
@@ -101,7 +103,6 @@ class ApplicationController < ActionController::Base
     {
       :page => (params[:page] || 1),
       :per_page => params[:per_page],   # specify defaults in model but 30 is usually fine
-      :order => (sort_options[params[:sort]] || sort_options[default_sort])
     }
   end
 

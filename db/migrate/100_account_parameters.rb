@@ -9,6 +9,7 @@ class AccountParameters < ActiveRecord::Migration
       table.column :collections_limit, :integer
       table.column :users_limit, :integer
       table.column :sources_limit, :integer
+      table.column :space_limit, :integer, :default => 0
       table.column :can_audio, :boolean
       table.column :can_video, :boolean
       table.column :can_rss, :boolean

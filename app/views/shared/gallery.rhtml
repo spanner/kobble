@@ -13,9 +13,12 @@
 
   <%= render :partial => 'shared/pagination', :locals => {:list => @list} %>
 
-  <% if account_admin? %>
-  	<p class="clear"><%= link_to  "Add a new #{@klass.nice_title}", {:action => 'new'}, {:class => 'additem'} %></p>
-  <% end %>
 <% else %>
 	<p>There are no <%= @klass.nice_title.pluralize %> to display in this collection</p>
+<% end %>
+
+<% content_for :admin do %>
+  <p>
+    <%= link_to "create <br />#{@klass.nice_title}", {:action => 'new'}, {:class => 'create'} %>
+  </p>
 <% end %>

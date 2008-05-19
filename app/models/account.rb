@@ -3,17 +3,11 @@ class Account < ActiveRecord::Base
   acts_as_spoke :only => [:illustration, :discussion, :owners]
   
   belongs_to :user
+  belongs_to :account_type
   has_many :users, :order => 'name'
   has_many :collections, :order => 'name'
   has_many :tags
-  has_many :events do
-    def recent
-      find(:all, :limit => 10, :order => 'at DESC')
-    end
-    def latest
-      find(:first, :order => 'at DESC')
-    end
-  end
+  has_many :events, :order => 'at DESC'
   
   def self.nice_title
     "account"
@@ -25,6 +19,26 @@ class Account < ActiveRecord::Base
   
   def users_by_activity 
     self.users.find(:all, :order => 'last_active_at DESC')
+  end
+  
+  def can_have_users?
+    self.account_type.users_limit > 1
+  end
+
+  def can_have_audio?
+    self.account_type.can_audio
+  end
+
+  def can_have_video?
+    self.account_type.can_video
+  end
+  
+  def can_add_user?
+    self.account_type.users_limit > self.users.count
+  end
+
+  def can_add_collection?
+    self.account_type.collections_limit > self.collections.count
   end
   
 end

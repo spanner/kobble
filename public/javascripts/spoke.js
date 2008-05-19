@@ -157,11 +157,17 @@ var Interface = new Class({
   
   enactPreferences: function (argument) {
     this.debug('enacting preferences', 2);
-    if (this.preferences.condensed) {
-      $$('div.tiptext').hide();
+    if (this.preferences.pads_condensed) {
+      $$('div.scratchpage div.tiptext').hide();
     } else {
-      $$('div.tiptext').show();
+      $$('div.scratchpage div.tiptext').show();
     }
+    if (this.preferences.lists_condensed) {
+      $$('div.mainlist div.tiptext').hide();
+    } else {
+      $$('div.mainlist div.tiptext').show();
+    }
+    
   },
   
   // this is the main page initialisation: it gets called on domready

@@ -1,7 +1,7 @@
 <h3><%= link_to "admin: account", edit_account_url(current_account) %></h3>
 <ul class="padded">
   <li class="administrative"><%= link_to_unless_current "account settings", edit_account_url(current_account) %></li>
-  <li class="administrative"><%= link_to_unless_current "review deletions", account_events_url(current_account) %></li>
+  <li class="administrative"><%= link_to_unless_current "review deletions", account_events_url(current_account, :type => 'deleted') %></li>
   <li class="administrative"><%= link_to_unless_current "edit tags", account_tags_url(current_account) %></li>
 </ul>
 

@@ -10,7 +10,7 @@
               } do |f| 
   %>
 
-  <%= render :partial => 'form' %>
+  <%= render :partial => 'form', :locals => {:f => f} %>
 
   <div class="formbuttons">
     <%= submit_tag "Update Document" %> or

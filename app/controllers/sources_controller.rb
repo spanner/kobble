@@ -1,8 +1,8 @@
 class SourcesController < ApplicationController
 
   def new
-    @occasions = Occasion.find(:all, :conditions => limit_to_active_collections)
-    @people = Person.find(:all, :conditions => limit_to_active_collections)
+    @occasions = Occasion.in_collections(current_collections)
+    @people = Person.in_collections(current_collections)
     @source = Source.new
     @source.tags << Tag.from_list(params[:tag_list]) if params[:tag_list]
   end
@@ -20,8 +20,8 @@ class SourcesController < ApplicationController
 
   def edit
     @source = Source.find(params[:id])
-    @people = Person.find(:all, :conditions => limit_to_active_collections, :order => 'name')
-    @occasions = Occasion.find(:all, :conditions => limit_to_active_collections, :order => 'name')
+    @people = Person.in_collections(current_collections)
+    @occasions = Occasion.in_collections(current_collections)
   end
 
   def update

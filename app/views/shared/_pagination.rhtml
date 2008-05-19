@@ -5,14 +5,16 @@
       in your account<br />
     <% elsif @scope == 'user' %>
       created by <%= link_to @user.name, url_for(@user) %> 
-      <span class="modifier"><%= link_to 'show all', :controller => request.parameters[:controller], :action => 'index', :page => params[:page], :user_id => nil %></span>
+      <span class="modifier"><%= link_to 'show all', :controller => request.parameters[:controller], :action => @view, :page => params[:page], :user_id => nil %></span>
       <br />
     <% else %>
       in <%= link_to "#{current_collections.count} collections", {:controller => 'accounts', :action => 'home'}, {:class => 'choosecollections'} %> 
-      <span class="modifier"><%= link_to 'show only yours', :action => 'index', :page => params[:page], :user_id => current_user.id %></span>
+      <span class="modifier"><%= link_to 'show only yours', :action => @view, :page => params[:page], :user_id => current_user.id %></span>
       <br />
     <% end %>
-    show as: <%= render :partial => 'shared/viewcontrol' %><br />
+    <% if controller.views && controller.views.length > 1 %>
+      show as: <%= render :partial => 'shared/viewcontrol' %><br />
+    <% end %>
     <%= will_paginate list, :prev_label => 'previous', :next_label => 'next', :separator => ' &middot; ', :container => false %>
   </div>
 <% end %>

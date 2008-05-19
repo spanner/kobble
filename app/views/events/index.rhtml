@@ -1,0 +1,46 @@
+<% 
+  @title = 'Account history' 
+  case params[:type]
+  when 'deleted'
+    @title += ": deletions"
+  when 'updated'
+    @title += ": updates"
+  when 'created'
+    @title += ": creations"
+  end
+  @scope = 'account'
+  @klass = Event
+%>
+
+<div class="preamble">
+  <p>This is a summary of recent activity in this account. You can review <%= link_to 'everything at once', :type => nil %> or limit the list to
+    <%= link_to 'creations', {:type => 'created'}, {:class => 'created'} %>,
+    <%= link_to 'updates', {:type => 'updated'}, {:class => 'updated'} %> or
+    <%= link_to 'deletions', {:type => 'deleted'}, {:class => 'deleted'} %>. 
+    Any item that has since been deleted will be displayed <span class="deleted">struck through</span> even if the listed event is an update or creation. To recover a deleted object, click through to the object page and press 'recover'.
+  </p>
+</div>
+
+<div class="mainlist">
+  <% if @events.empty? %>
+    <p>No activity recorded.</p>
+  <% else %>    
+
+    <%= render :partial => 'shared/pagination', :locals => {:list => @events} %>
+
+    <ul>
+      <% @events.each do |event| %>
+        <% who = event.user == current_user ? 'you' : event.user.name %>
+        <%= render :partial => "shared/listed", :locals => {
+          :listed => event.affected, 
+          :colourclass => event.event_type, 
+          :addendum => "#{event.event_type} by #{who} #{time_ago_in_words(event.at)} ago"
+        } %>
+      <% end %>
+    </ul>
+
+    <%= render :partial => 'shared/pagination', :locals => {:list => @events} %>
+
+  <% end %>
+
+</div>

@@ -1,7 +1,6 @@
 class AccountsController < ApplicationController
-  before_filter :admin_required, :except => [:show, :edit, :update, :create, :new, :home]
-  before_filter :account_admin_required, :except => [:create, :new, :home]
   skip_before_filter :check_activations  
+  before_filter :admin_or_owner_required, :except => [:create, :new, :home]
 
   def index
     home
@@ -57,12 +56,12 @@ class AccountsController < ApplicationController
   end
 
   def edit
-    @account = admin? ? Account.find(params[:id]) : current_user.account
+    @account = Account.find(params[:id])
   end
 
   def update
-    @account = admin? ? Account.find(params[:id]) : current_user.account
-    if @collection.update_attributes(params[:account])
+    @account = Account.find(params[:id])
+    if @account.update_attributes(params[:account])
       flash[:notice] = 'account was successfully updated.'
       redirect_to :action => 'home'
     else
@@ -70,17 +69,13 @@ class AccountsController < ApplicationController
     end
   end
 
-  def destroy
-    @account = admin? ? Account.find(params[:id]) : current_user.account
+  private
+  
+  def admin_or_owner_required
+    return true if current_user.admin?
+    @account = Account.find(params[:id])
+    return true if @account && @account.user == current_user
+    access_insufficient
   end
 
-  def reallydestroy
-    @account = admin? ? Account.find(params[:id]) : current_user.account
-    
-    # check permission to change
-    
-    @account.destroy
-    flash[:notice] = "account removed"
-    redirect_to :action => 'index'
-  end
 end

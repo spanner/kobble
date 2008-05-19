@@ -455,10 +455,6 @@ div.scratchpage .drophere {
 	background-color: #d1005d;
 }
 
-div.scratchpage .tiptext, div.scratchpage .tiptitle {
-  display: none;
-}
-
 /* main content list */
 
 div.preamble {
@@ -553,19 +549,19 @@ div.mainlist li.updated_tag { list-style-image: url(/images/furniture/spoke/oran
 div.mainlist li.updated_flag { list-style-image: url(/images/furniture/spoke/orange/flag.png); }
 div.mainlist li.updated_topic { list-style-image: url(/images/furniture/spoke/orange/post.png); }
 
-div.mainlist li.deleted_collection { list-style-image: url(/images/furniture/spoke/pink/collection.png); }
-div.mainlist li.deleted_node { list-style-image: url(/images/furniture/spoke/pink/node.png); }
-div.mainlist li.deleted_source { list-style-image: url(/images/furniture/spoke/pink/source.png); }
-div.mainlist li.deleted_bundle { list-style-image: url(/images/furniture/spoke/pink/bundle.png); }
-div.mainlist li.deleted_user { list-style-image: url(/images/furniture/spoke/pink/user.png); }
-div.mainlist li.deleted_person { list-style-image: url(/images/furniture/spoke/pink/user.png); }
-div.mainlist li.deleted_tag { list-style-image: url(/images/furniture/spoke/pink/tag.png); }
-div.mainlist li.deleted_flag { list-style-image: url(/images/furniture/spoke/pink/flag.png); }
-div.mainlist li.deleted_topic { list-style-image: url(/images/furniture/spoke/pink/post.png); }
+div.mainlist li.deleted_collection { list-style-image: url(/images/furniture/spoke/mid/collection.png); }
+div.mainlist li.deleted_node { list-style-image: url(/images/furniture/spoke/mid/node.png); }
+div.mainlist li.deleted_source { list-style-image: url(/images/furniture/spoke/mid/source.png); }
+div.mainlist li.deleted_bundle { list-style-image: url(/images/furniture/spoke/mid/bundle.png); }
+div.mainlist li.deleted_user { list-style-image: url(/images/furniture/spoke/mid/user.png); }
+div.mainlist li.deleted_person { list-style-image: url(/images/furniture/spoke/mid/user.png); }
+div.mainlist li.deleted_tag { list-style-image: url(/images/furniture/spoke/mid/tag.png); }
+div.mainlist li.deleted_flag { list-style-image: url(/images/furniture/spoke/mid/flag.png); }
+div.mainlist li.deleted_topic { list-style-image: url(/images/furniture/spoke/mid/post.png); }
 
-div.mainlist li.created, div.mainlist li.created a { color: #a0a500; }
-div.mainlist li.updated, div.mainlist li.updated a { color: #CC6E1F; }
-div.mainlist li.deleted, div.mainlist li.deleted a { color: #d1005d; }
+div.mainlist li.created, div.mainlist li.created a, a.created { color: #a0a500; }
+div.mainlist li.updated, div.mainlist li.updated a, a.updated { color: #CC6E1F; }
+div.mainlist li.deleted, div.mainlist li.deleted a, a.deleted { color: #8c8d8e; }
 
 div.mainlist li.administrative { list-style-image: url(/images/furniture/spoke/mid/collection.png); }
 div.mainlist li.administrative a { color: #8c8d8e; }
@@ -604,10 +600,9 @@ li.drophere a {
   color: #4d4e53;
 }
 
-li.deleted a {
+li.deleted a, span.deleted {
   color: #8c8d8e;
   text-decoration: line-through;
-  
 }
 
 /* hidden divs that provide tooltip content */
@@ -1291,7 +1286,15 @@ li.waiter {
  	list-style-image: url('/images/furniture/signals/wait_og.gif');
 }
 
-
+ul.optionslist {
+  list-style: none;
+  font-size: 18px;
+  font-weight: lighter;
+  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
+  letter-spacing: -0.05em;
+  line-height: 20px;
+  padding: 0;
+}
 
 
 

@@ -3,8 +3,8 @@ class NodesController < ApplicationController
   
   def new
     @node = Node.new
-    @sources = Source.find(:all, :conditions => limit_to_active_collections)
-    @people = Person.find(:all, :conditions => limit_to_active_collections)
+    @sources = Source.in_collections(current_collections)
+    @people = Person.in_collections(current_collections)
     @source = Source.find(params[:source_id]) if params[:source_id]
     @node.source = @source
     @node.collection = @node.source.collection if @node.source
@@ -44,8 +44,8 @@ class NodesController < ApplicationController
   
   def edit
     @node = Node.find(params[:id])
-    @people = Person.find(:all, :conditions => limit_to_active_collections, :order => 'name')
-    @sources = Source.find(:all, :conditions => limit_to_active_collections, :order => 'name')
+    @people = Person.in_collections(current_collections)
+    @sources = Source.in_collections(current_collections)
   end
 
   def update

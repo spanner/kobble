@@ -1,19 +1,46 @@
 <%= error_messages_for 'collection' %>
 
-<p>'Collections' are completely distinct: each has its own users, editors, materials, outputs and preferences. Only admin users can move from one collection to another or even see that there is more than one.</p>
+<div class="preamble">
+  <p>This is all theoretical while we're in beta.</p>
+</div>
 
-<p><label for="collection_name">Collection name</label><br />
-<%= text_field 'collection', 'name', 'class' => "standard" %></p>
+<p>
+  <label for="name">Account name</label><br />
+  <%= f.text_field :name, :class => 'titular' %>
+</p>
 
-<p><label for="collection_abbreviation">Abbreviation (eg in headers)</label><br />
-<%= text_field 'collection', 'abbreviation', 'class' => "standard" %></p>
+<% if @account.can_have_users? %>
+  <p>
+    <label for="account_user_id">Account owner<br />
+      <%= collection_select :account, :user_id, current_account.users, :id, :name, {:prompt => true, :class => 'standard'} %>
+    </label><br />
+    <span class="formnote">If you change this then control of the account will be reassigned and you may not be able to change it back.</span>
+  </p>
+  
+<% end %>
 
-<p><label for="collection_description">Description</label><br />
-<%= text_area 'collection', 'description', 'rows' => 4, 'class' => "standard" %></p>
-	
+<ul class="optionslist">
+<% 
+  types = AccountType.find(:all, :order => 'name')
+  types.each do |type| 
+%>
+  <li>
+    <%= f.radio_button("account_type_id", type.id) %>
+    <%= type.name %><br />
+    <span class="listnote">
+      <%= pluralize(type.users_limit, 'user') %>, 
+      <%= pluralize(type.collections_limit, 'collection') %>, 
+      <%= 'audio, ' if type.can_audio %>
+      <%= 'video, ' if type.can_video %>
+      <%= type.readable_space_limit %> storage.
+    </span>
+  </li>
+<% end %>
+</ul>
+
 <div class="formbuttons">
-  <%= submit_tag "Store Document" %> or
-  <%= link_to 'cancel', :action => 'list' %>
+  <%= submit_tag "Update Account" %> or
+  <%= link_to 'cancel', :action => 'home' %>
 </div>
 
 
