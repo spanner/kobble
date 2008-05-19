@@ -1,5 +1,5 @@
 <% 
-  @title = 'Account history' 
+  @title = @collection ? "#{@collection.abbreviation} history" : 'Account history' 
   case params[:type]
   when 'deleted'
     @title += ": deletions"
@@ -13,7 +13,13 @@
 %>
 
 <div class="preamble">
-  <p>This is a summary of recent activity in this account. You can review <%= link_to 'everything at once', :type => nil %> or limit the list to
+  <p>
+    <% if @collection %>
+      This is a log of activity in the <strong><%= @collection.name %></strong> collection. 
+    <% else %>
+      This is a log of activity in this account. 
+    <% end %>
+    You can review <%= link_to 'everything at once', :type => nil %> or limit the list to
     <%= link_to 'creations', {:type => 'created'}, {:class => 'created'} %>,
     <%= link_to 'updates', {:type => 'updated'}, {:class => 'updated'} %> or
     <%= link_to 'deletions', {:type => 'deleted'}, {:class => 'deleted'} %>. 
