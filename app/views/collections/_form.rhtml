@@ -1,20 +1,26 @@
 <%= error_messages_for 'collection' %>
 
-<p>'Collections' are completely distinct: each has its own users, editors, materials, outputs and preferences. Only admin users can move from one collection to another or even see that there is more than one.</p>
-
-<p><label for="collection_name">Collection name</label><br />
-<%= text_field 'collection', 'name', 'class' => "standard" %></p>
-
-<p><label for="collection_abbreviation">Abbreviation (eg in headers)</label><br />
-<%= text_field 'collection', 'abbreviation', 'class' => "standard" %></p>
-
-<p><label for="collection_description">Description</label><br />
-<%= text_area 'collection', 'description', 'rows' => 4, 'class' => "standard" %></p>
-	
-<div class="formbuttons">
-  <%= submit_tag "Store Document" %> or
-  <%= link_to 'cancel', :action => 'list' %>
+<div class="preamble">
+  <p>
+    'Collections' are your broad filing drawers and usually correspond to projects or subjects or some other natural division in your body of materials.
+    It is possible, but unusual, to move materials from one collection to another.
+    It is easy, and common, to combine materials from various collections in the same set.
+  </p>
+  
+  <p>Tags and users are shared among your collections, and if you have a team account you can control who has what level of access to each collection.</p>
 </div>
 
+<div class="boxed" id="box_editing">
 
+<p><label for="collection_name">Collection name</label><br />
+<%= f.text_field 'name', 'class' => "titular" %></p>
 
+<p><label for="collection_abbreviation">Abbreviation (useful in labels and headers)</label><br />
+<%= f.text_field 'abbreviation', 'class' => "standard" %></p>
+
+<p><label for="collection_description">Description</label><br />
+<%= f.text_area 'description', 'rows' => 4, 'class' => "standard" %></p>
+
+<%= render :partial => 'shared/edit_image', :locals => {:item => @collection} %>
+
+</div>

@@ -11,6 +11,12 @@
               } do |f| 
   %>
     <%= render :partial => 'form', :locals => {:f => f} %>
+
+    <div class="formbuttons">
+      <%= submit_tag "Update Account" %> or
+      <%= link_to 'cancel', :action => 'home' %>
+    </div>
+
   <% end %>
 </div>
 

@@ -157,6 +157,10 @@ module ActiveRecord
         
         public
         
+        def nice_title
+          self.class.nice_title
+        end        
+
         def owned_by
           return self.account if self.respond_to?('account')
           return self.collection.account if self.respond_to?('collection')
@@ -297,7 +301,7 @@ module ActiveRecord
         end
         
         def field_notes
-          ['observations', 'emotions', 'arising'].map { |col| self.send(col) || ''}.join("\n\n")
+          ['circumstances', 'observations', 'emotions', 'arising'].map { |col| self.send(col) || ''}.join("\n\n")
         end
         
       end #instancemethods

@@ -1,5 +1,5 @@
 class EditObserver < ActiveRecord::Observer
-  observe Source, Node, Bundle, Tag, Occasion, Flag, Topic, Post
+  observe Collection, Source, Node, Bundle, Tag, Occasion, Flag, Topic, Post
   
   cattr_accessor :current_user
   
@@ -30,7 +30,7 @@ class EditObserver < ActiveRecord::Observer
       :affected => model,
       :user => (@@current_user unless @@current_user.nil?),
       :account => (@@current_user.account unless @@current_user.nil?),
-      :collection => model.collection,
+      :collection => model.class == Collection ? model : model.collection,
       :affected_name => model.name,
       :event_type => type,
       :at => Time.now

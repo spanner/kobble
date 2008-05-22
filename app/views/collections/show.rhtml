@@ -1,8 +1,16 @@
-<h1 class="pagetitle">
-	<%= @thing.name %>
-	<% if admin? %>
-		<%= link_to 'edit', :action => 'edit', :id => @thing %>
-	<% end %>
-</h1>
+<% @title = @thing.name %>
 
-<%= @thing.description.formatted unless @thing.description.nil? %>
+<div id="collection_description" class="squashable contentblock">
+  <% if @thing.has_description? %>
+  	  <%= @thing.description.formatted %>
+  <% else %>
+    <p>No summary given</p>
+  <% end %>
+</div>
+
+<div id="collection_history">
+  <div class="mainlist">
+    <h3 class="listheader">Recent activity in this collection</h3>
+    <%= render :partial => 'collections/history', :locals => {:collection => @thing, :count => 100} %>
+  </div>
+</div>

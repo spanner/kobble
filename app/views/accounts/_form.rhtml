@@ -4,44 +4,40 @@
   <p>This is all theoretical while we're in beta.</p>
 </div>
 
-<p>
-  <label for="name">Account name</label><br />
-  <%= f.text_field :name, :class => 'titular' %>
-</p>
+<div class="boxed" id="box_editing">
 
-<% if @account.can_have_users? %>
   <p>
-    <label for="account_user_id">Account owner<br />
-      <%= collection_select :account, :user_id, current_account.users, :id, :name, {:prompt => true, :class => 'standard'} %>
-    </label><br />
-    <span class="formnote">If you change this then control of the account will be reassigned and you may not be able to change it back.</span>
+    <label for="name">Account name</label><br />
+    <%= f.text_field :name, :class => 'titular' %>
   </p>
+
+  <% if @account.can_have_users? %>
+    <p>
+      <label for="account_user_id">Account owner<br />
+        <%= collection_select :account, :user_id, current_account.users, :id, :name, {:prompt => true, :class => 'standard'} %>
+      </label><br />
+      <span class="formnote">If you change this then control of the account will be reassigned and you may not be able to change it back.</span>
+    </p>
   
-<% end %>
+  <% end %>
 
-<ul class="optionslist">
-<% 
-  types = AccountType.find(:all, :order => 'name')
-  types.each do |type| 
-%>
-  <li>
-    <%= f.radio_button("account_type_id", type.id) %>
-    <%= type.name %><br />
-    <span class="listnote">
-      <%= pluralize(type.users_limit, 'user') %>, 
-      <%= pluralize(type.collections_limit, 'collection') %>, 
-      <%= 'audio, ' if type.can_audio %>
-      <%= 'video, ' if type.can_video %>
-      <%= type.readable_space_limit %> storage.
-    </span>
-  </li>
-<% end %>
-</ul>
+  <ul class="optionslist">
+  <% 
+    types = AccountType.find(:all, :order => 'name')
+    types.each do |type| 
+  %>
+    <li>
+      <%= f.radio_button("account_type_id", type.id) %>
+      <%= type.name %><br />
+      <span class="listnote">
+        <%= pluralize(type.users_limit, 'user') %>, 
+        <%= pluralize(type.collections_limit, 'collection') %>, 
+        <%= 'audio, ' if type.can_audio %>
+        <%= 'video, ' if type.can_video %>
+        <%= type.readable_space_limit %> storage.
+      </span>
+    </li>
+  <% end %>
+  </ul>
 
-<div class="formbuttons">
-  <%= submit_tag "Update Account" %> or
-  <%= link_to 'cancel', :action => 'home' %>
 </div>
-
-
-

@@ -22,10 +22,11 @@ class CollectionsController < ApplicationController
   
   def create
     @collection = @account.collections.build(params[:collection])
+    @collection.last_active_at = Time.now
     if @collection.save
       flash[:notice] = 'Collection was created.'
       respond_to do |format| 
-        format.html { redirect_to :action => 'show' }
+        format.html { redirect_to url_for(@collection) }
         format.json { render :json => @collection.to_json }
         format.js { render :layout => false }
       end
@@ -75,7 +76,7 @@ class CollectionsController < ApplicationController
   private
   
   def find_account
-    @account = Account.find(params[:account_id]) || current_account
+    @account = admin? && params[:account_id] ? Account.find(params[:account_id]) : current_account
   end
   
   def admin_or_same_account_required

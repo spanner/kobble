@@ -23,25 +23,18 @@
 
 <% @collections.each do |collection| %>
   <div class="mainlist">
-    <h3 class="listheader"><%= collection.name %><br /><span class="headernote">last activity <%= time_ago_in_words(collection.last_active_at) %> ago</span></h3>
-    <% 
-      events = @since ? collection.events.since(@since) : collection.events.latest
-      if events.empty?
-    %>
-      <p>No activity recorded<% unless @since.nil? %> in this period<% end %>.</p>
-    <% else %>    
-      <ul>
-        <% events.each do |event| %>
-          <% who = event.user == current_user ? 'you' : event.user.name %>
-          <%= render :partial => "shared/listed", :locals => {
-            :listed => event.affected, 
-            :colourclass => event.event_type, 
-            :addendum => "#{event.event_type} by #{who} #{time_ago_in_words(event.at)} ago"
-          } %>
-        <% end %>
+    <h3 class="listheader"><%= link_to collection.name, url_for(collection) %></h3>
+      <% if collection.last_active_at %>
+        <p class="subhead">
+          last activity <%= time_ago_in_words(collection.last_active_at) %> ago: 
+        </p>
         
-        <li class="administrative"><%= link_to 'collection history', collection_events_url(collection) %></li>
-      </ul>
-    <% end %>
+        <div id="history_<%= collection.id %>">
+          <%= render :partial => 'collections/history', :locals => {:collection => collection, :count => 4} %>
+        </div>
+        
+      <% else %>
+        <p class="subhead">no activity recorded</p>
+      <% end %>
   </div>
 <% end %>

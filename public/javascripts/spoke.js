@@ -140,6 +140,12 @@ var Interface = new Class({
     });
   },
   
+  makeSquash: function (elements) {
+    elements.each(function (element) { 
+      console.log(element.id + ': height is ' + element.getHeight());
+      if (element.getHeight() > 200) new Squash(element) })
+  },
+  
   getPreferences: function () {
 		var req = new Request.JSON({
 		  url: "/user_preferences",
@@ -167,7 +173,6 @@ var Interface = new Class({
     } else {
       $$('div.mainlist div.tiptext').show();
     }
-    
   },
   
   // this is the main page initialisation: it gets called on domready
@@ -191,6 +196,27 @@ var Interface = new Class({
     this.makeFixed(scope.getElements('.fixed'));
     this.makePopup(scope.getElements('.popup'));
     this.makeCollectionsLinks(scope.getElements('a.choosecollections'));
+    this.makeSquash(scope.getElements('div.squashable'));
+    
+    this.accordion = new Accordion(
+      scope.getElements('a.squeezebox'), 
+      scope.getElements('div.squeezed'),
+      {
+        alwaysHide: true,
+        onActive: function (toggler, element) {
+          toggler.addClass('expanded');
+          toggler.removeClass('squeezed');
+        },
+        onBackground: function (toggler, element) {
+          toggler.blur();
+          toggler.removeClass('expanded');
+          toggler.addClass('squeezed');
+        }
+        
+      }
+      
+    );
+    
   },
   
   activateElement: function (element) {
@@ -1295,3 +1321,54 @@ var ReplyForm = new Class ({
 	}
 	
 });
+
+var Squash = new Class ({
+  initialize: function (element) {
+    this.container = element;
+    this.description = element.id.split('_').pop();
+    this.foot = new Element('div', {'class': 'expander'}).inject(this.container, 'after');
+    this.expander = new Element('a', {'href': '#', 'class': 'expander'}).set('text','show ' + this.description).inject(this.foot, 'inside');
+    this.expander.onclick = this.toggle.bind(this);
+    this.openheight = this.container.getHeight();
+    this.closedheight = 110;
+    this.isopen = false;
+		this.fx = new Fx.Morph(this.container, {
+		  duration: 'long', 
+		  transition: Fx.Transitions.Cubic.easeOut
+		});
+		this.close();
+  },
+  open: function () {
+    this.fx.start({
+      height: this.openheight,
+      opacity: 1.0
+    });
+    this.expander.set('text','close ' + this.description);
+    this.container.removeClass('squashed');
+    this.container.addClass('expanded');
+    this.expander.addClass('closer');
+    this.isopen = true;
+	},
+	close: function (delay) {
+    this.fx.start({
+      height: this.closedheight,
+      opacity: 0.3
+    });
+    this.expander.set('text','show ' + this.description)
+    this.container.removeClass('expanded');
+    this.container.addClass('squashed');
+    this.expander.removeClass('closer');
+    this.isopen = false;
+	},
+	toggle: function (e) {
+	  var event = new Event(e).stop();
+	  event.preventDefault();
+	  event.target.blur();
+    this.isopen ? this.close() : this.open();
+	}
+});
+
+
+
+
+

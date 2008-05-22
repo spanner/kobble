@@ -1,0 +1,18 @@
+<% 
+  count ||= 100
+  events = @since ? collection.events.since(@since) : collection.events.latest(count)
+  if events.empty?
+%>
+  <p>No activity recorded<% unless @since.nil? %> in this period<% end %>.</p>
+<% else %>    
+  <ul>
+    <% events.each do |event| %>
+      <% who = event.user == current_user ? 'you' : event.user.name %>
+      <%= render :partial => "shared/listed", :locals => {
+        :listed => event.affected, 
+        :colourclass => event.event_type, 
+        :addendum => "#{event.event_type} by #{who} #{time_ago_in_words(event.at)} ago"
+      } %>
+    <% end %>
+  </ul>
+<% end %>
