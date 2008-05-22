@@ -1,0 +1,43 @@
+<% 
+  item ||= @thing
+  count ||= 100
+  events ||= @since ? item.events.since(@since) : item.events.latest(count)
+%>
+
+<h3 class="pagesection">
+  <a href="#" class="squeezebox">
+    event log 
+    <span class="headernote">
+      <% if events.count > 0 %>
+        <%
+          latest = events.first
+          who = latest.user == current_user ? 'you' : latest.user.name
+        %>
+        <strong><%= latest.affected.name %></strong> <%= latest.event_type %> by <%= who %> <%= time_ago_in_words(latest.at) %> ago
+        <% else %>
+          No history recorded
+        <% end %>
+    </span>
+  </a>
+</h3>
+
+<div class="squeezed">
+  <div class="mainlist">
+    <% if events.empty? %>
+      <p>No activity recorded<% unless @since.nil? %> in this period<% end %>.</p>
+    <% else %>    
+      <ul>
+        <% events.each do |event| %>
+          <% who = event.user == current_user ? 'you' : event.user.name %>
+          <%= render :partial => "shared/listed", :locals => {
+            :listed => event.affected,
+            :name => event.affected_name || event.affected.name,
+            :colourclass => event.event_type, 
+            :addendum => "#{event.event_type} by #{who} #{time_ago_in_words(event.at)} ago"
+          } %>
+        <% end %>
+      </ul>
+    <% end %>
+
+  </div>
+</div>

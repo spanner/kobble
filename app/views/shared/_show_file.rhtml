@@ -1,7 +1,19 @@
-<% tabset ||= 'tabs' %>
-<% if item.has_file? %>
-	<div id="<%= tabset %>_file">
-    <p style="clear:left">This is an uploaded file. You can download the original file here, and for convenience we have extracted whatever (unformatted) text can be found within it.</p>
-    <%= render :partial => 'shared/download_file', :locals => {:item => item} %>
+<% 
+  item ||= @thing 
+%>
+
+<% if item.has_clip? && item.has_file? %>
+  <h3 class="pagesection">
+    <a href="#" class="squeezebox">
+      download file 
+      <span class="headernote">
+        <%= File.basename(item.file_relative_path) %>
+      </span>
+    </a>
+  </h3>
+
+  <div id="source_file" class="squeezed contentblock">
+    <p>There is a file associated with this item. You can download the original here, and for convenience we have extracted whatever (unformatted) text can be found within it.</p>
+    <%= render :partial => 'shared/download_file' %>
   </div>
 <% end %>

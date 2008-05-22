@@ -1,16 +1,16 @@
-<% if item.has_origins? %>
-  <% tabset ||= 'tabs' %>
-	<div id="<%= tabset %>_origins">
-  	<p>
-  		<% if item.respond_to?('speaker') %>
-  		  speaker: <% if item.speaker %><%= link_to item.speaker.name, url_for(item.speaker) %><% else %>not known<% end %><br />
-  		<% end %>
-  		<% if item.respond_to?('source') %>
-  		  source: <% if item.source %><%= link_to item.source.name, url_for(item.source) %><% else %>not known<% end %><br />
-  		<% end %>
-  		<% if item.creator %>
-  		  created by <%= link_to item.creator.name, url_for(item.creator) %>
-  		<% end %>
-  		</p>
-	</div>
-<% end %>
+<% item ||= @thing %>
+
+<p>
+	<% if item.respond_to?('collection') %>
+	  Collection: <% if item.collection %><%= link_to item.collection.name, url_for(item.collection) %><% else %>none<% end %>. 
+	<% end %>
+	<% if item.respond_to?('speaker') %>
+	  Speaker: <% if item.speaker %><%= link_to item.speaker.name, url_for(item.speaker) %><% else %>not known<% end %>. 
+	<% end %>
+	<% if item.respond_to?('source') %>
+	  Source: <% if item.source %><%= link_to item.source.name, url_for(item.source) %><% else %>not known<% end %>.
+	<% end %>
+	<% if item.creator %>
+	  Created by: <%= link_to item.creator.name, url_for(item.creator) %>
+	<% end %>
+</p>

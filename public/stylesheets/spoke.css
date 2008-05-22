@@ -1054,6 +1054,7 @@ caption {
 
 p.downloadlink {
   font-size: 24px;
+  line-height: 22px;
   font-family: HelveticaNeue-Bold, helvetica, arial, sans-serif;
   font-weight: bold;
 }

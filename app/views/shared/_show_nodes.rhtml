@@ -1,11 +1,22 @@
-<% tabset ||= 'tabs' %>
-<div id="<%= tabset %>_nodes" class="mainlist">
-  <p>You can drag these onto a scratchpad or drop tags on them.</p>
-  <ul id="nodelist">
-    <% if item.nodes.count %>
-      <%= render :partial => 'shared/listed', :collection => item.nodes %>
-    <% else %>
-      Extract a fragment from this and it will appear here.
-    <% end %>
-  </ul>
+<% item ||= @thing %>
+
+<h3 class="pagesection">
+  <a href="#" class="squeezebox">
+    fragments 
+    <span class="headernote">
+      <%= pluralize(item.nodes.count, 'fragment') %>
+    </span>
+  </a>
+</h3>
+
+<div id="source_fragments" class="squeezed">
+  <div class="mainlist">
+    <ul id="nodelist">
+      <% if item.nodes.count %>
+        <%= render :partial => 'shared/listed', :collection => item.nodes %>
+      <% else %>
+        Extract a fragment from this and it will appear here.
+      <% end %>
+    </ul>
+  </div>
 </div>

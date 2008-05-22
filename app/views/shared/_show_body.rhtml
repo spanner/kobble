@@ -1,9 +1,0 @@
-<% 
-  tabset ||= 'tabs' 
-%>
-
-<% if item.has_body? %>
-	<div id="<%= tabset %>_body">
-	  <%= item.body.formatted %>
-	</div>
-<% end %>

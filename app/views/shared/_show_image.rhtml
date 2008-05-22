@@ -1,6 +1,0 @@
-<% tabset ||= 'tabs' %>
-<% if item.has_image? %>
-	<div id="<%= tabset %>_image">
-  	<%= image_tag(url_for_file_column(item.class.to_s.downcase, "image", "preview"), :alt => '') %>
-	</div>
-<% end %>

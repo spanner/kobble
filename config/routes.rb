@@ -10,13 +10,13 @@ ActionController::Routing::Routes.draw do |map|
   map.trash '/:controller/trash/:id', :action => 'trash'
   
   map.resources :accounts, :has_many => [:users, :collections, :events, :deletions, :tags], :collection => { :home => :any }
-  map.resources :collections, :has_many => [:events], :member => {:recover => :post}, :collection => { :gallery => :get }
+  map.resources :collections, :has_many => [:events, :topics], :member => {:recover => :post}, :collection => { :gallery => :get }
   map.resources :users, :has_many => [:activations, :user_preferences, :permissions, :scratchpads, :events, :sources, :nodes, :bundles, :people], :collection => { :gallery => :get }, :member => { :home => :get, :recover => :post }
 
   map.resources :sources, :has_many => [:topics, :nodes], :collection => { :gallery => :get }, :member => {:annotate => :post, :recover => :post}
   map.resources :nodes, :has_many => :topics, :collection => { :gallery => :get }, :member => {:annotate => :post, :recover => :post}
   map.resources :bundles, :has_many => [:topics, :members], :collection => { :gallery => :get }, :member => {:annotate => :post, :recover => :post}
-  map.resources :people, :collection => { :gallery => :get }, :member => {:annotate => :post, :recover => :post}
+  map.resources :people, :has_many => [:topics], :collection => { :gallery => :get }, :member => {:annotate => :post, :recover => :post}
   map.resources :occasions, :collection => { :gallery => :get }, :member => {:annotate => :post, :recover => :post}
   
   map.resources :tags, :has_many => [:taggings, :topics], :collection => { :gallery => :get, :cloud => :get, :tree => :get, :treemap => :get, :matching => :any }, :member => {:recover => :post}

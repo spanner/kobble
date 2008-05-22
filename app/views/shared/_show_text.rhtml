@@ -1,0 +1,26 @@
+<% 
+  item ||= @thing 
+  extracted = false
+  if item.has_body?
+    text = item.body
+  elsif item.has_extracted_text?
+    extracted = true
+    text = item.extracted_text
+  else
+    text = nil
+  end
+%>
+
+<h3 class="pagesection">
+  <a href="#" class="squeezebox">
+    text 
+    <span class="headernote">
+      <% if text %><%= truncate(text, 100) %><% else %>no text<% end %>
+    </span>
+  </a>
+</h3>
+
+<div id="source_text" class="squeezed">
+  <% if extracted %><p class="standfirst">This text was extracted from an uploaded file and might be a bit scrappy:</p><% end %>
+  <%= text.formatted %>
+</div>

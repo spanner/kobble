@@ -1,9 +1,23 @@
-<% tabset ||= '' %>
-<div id="<%= tabset %>_topics" class="mainlist">
-	<p><%= link_to "+ start a conversation", item_new_topic_url(item), {:id => 'extend_topiclist', :class => 'inlinediscuss'}  %></p>
-	<ul id="topiclist">
-	<% if item.has_topics? %>
-    <%= render :partial => 'shared/listed', :collection => item.topics %>
-	<% end %>
-	</ul>
+<% 
+  item ||= @thing 
+  topics ||= item.topics
+%>
+
+<h3 class="pagesection">
+  <a href="#" class="squeezebox">
+    discussion 
+    <span class="headernote">
+      <%= pluralize(topics.length, 'conversation') %>
+    </span>
+  </a>
+</h3>
+
+<div id="source_discussions" class="squeezed">
+  <div class="mainlist">
+  	<ul id="topiclist">
+      <%= render :partial => 'shared/listed', :collection => topics %>
+  	</ul>
+  </div>
+	<p><%= link_to "+ start a conversation", item_new_topic_url(item), {:id => 'extend_topiclist', :class => 'inlinediscuss'} %></p>
 </div>
+

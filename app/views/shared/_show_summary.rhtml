@@ -1,0 +1,18 @@
+<% item ||= @thing %>
+
+<h3 class="pagesection">
+  <a href="#" class="squeezebox">
+    summary 
+    <span class="headernote">
+      <% if item.has_description? %><%= truncate(item.description, 100) %><% else %>no summary<% end %>
+    </span>
+  </a>
+</h3>
+
+<div class="contentblock squeezed">
+  <% if item.has_description? %>
+	  <%= item.description.formatted %>
+  <% else %>
+    <p>No summary given.</p>
+  <% end %>
+</div>

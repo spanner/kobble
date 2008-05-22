@@ -1,48 +1,35 @@
-<% 
-  @title = @thing.name 
-%>
+<% @title = @thing.name || 'nameless tag'  %>
 
-<div class="preamble">
-  <% if @thing.description %>
-    <%= @thing.description.formatted %>
-  <% else %>
-    <p class="pale">We don't have a summary for this tag yet.</p>
-  <% end %>
-</div>
+<div class="preamble"><%= render :partial => 'shared/show_origins' %></div>
 
-<div class="boxtabs">
-  <a href="#" id="tab_content_tagged" class="tab">tagged items</a>
-  <a href="#" id="tab_content_topics" class="tab">discussions</a>
-  <% if @thing.has_image? %><a href="#" id="tab_content_image" class="tab">image</a><% end %>
-  <% if @thing.has_notes? %><a href="#" id="tab_content_notes" class="tab">field notes</a><% end %>
-</div>
+<%= render :partial => 'shared/show_summary' %>
 
-<div class="boxed" id="box_content">
-  <div id="content_tagged">
-    <h2 class="boxhead">tagged items</h2>
+<h3 class="pagesection">
+  <a href="#" class="squeezebox">
+    tagged items 
+    <span class="headernote">
+      <%= pluralize(@thing.taggables.count, 'uses') %>
+    </span>
+  </a>
+</h3>
 
-    <div class="mainlist">
-      <% if @thing.taggables.count > 0 %>
-      <p>This tag has been applied to:</p>
-      	<ul 
-      	  id="tagged_tag_<%= @thing.id %>"
-      	  class="catcher"
-      	  catches="<%= @thing.can_catch.join(',') %>"
-      	>
-      		<%= render :partial => 'shared/listed', :collection => @thing.taggables.uniq, :locals => {:catch => false} %>
-      	</ul>
-      <% else %>
-        <p class="pale">This tag hasn't been used yet.</p>
-      <% end %>
-    </div>
+<div id="tag_usage" class="squeezed">
+  <div class="mainlist">
+  	<ul 
+  	  id="taggedby_tag_<%= @thing.id %>"
+  	  class="catcher"
+  	  catches="<%= @thing.can_catch.join(',') %>"
+  	>
+	    <%= render :partial => 'shared/listed', :collection => @thing.taggables.uniq, :locals => {:catch => false} %>
+    </ul>
   </div>
-
-  <%= render :partial => 'shared/show_topics', :locals => {:item => @thing, :tabset => 'content'} %>
-  
-  <%= render :partial => 'shared/show_image', :locals => {:item => @thing, :tabset => 'content'} %>
-  <%= render :partial => 'shared/show_field_notes', :locals => {:item => @thing, :tabset => 'content'} %>
-
+  <p>Drag items into the list (or space) above to apply this tag to them.</p>
 </div>
+
+<%= render :partial => 'shared/show_field_notes' %>
+<%= render :partial => 'shared/show_topics' %>
+<%= render :partial => 'shared/show_history', :locals => {:events => @thing.logged_events} %>
+
 
 <% content_for :admin do %>
   <p>

@@ -1,0 +1,5 @@
+<% if @thing.has_image? %>
+  <div class="illustration">
+    <%= image_tag(url_for_file_column('thing', "image", "slide"), :alt => '') %>
+  </div>
+<% end %>

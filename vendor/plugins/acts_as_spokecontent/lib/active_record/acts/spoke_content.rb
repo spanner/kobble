@@ -92,6 +92,7 @@ module ActiveRecord
               :versions => { 
                 "thumb" => "56x56!", 
                 "slide" => "135x135!", 
+                "illustration" => "240>", 
                 "preview" => "750x540>" 
               }
             }
@@ -103,7 +104,7 @@ module ActiveRecord
           end
 
           if definitions.include?(:log)
-            has_many :logged_events, :class_name => Event, :as => :affected, :order => 'at DESC'
+            has_many :logged_events, :class_name => 'Event', :as => :affected, :order => 'at DESC'
           end
           
           if definitions.include?(:undelete) && self.column_names.include?('deleted_at')
@@ -286,7 +287,7 @@ module ActiveRecord
           return extracted_text if has_extracted_text?
           "No text available"
         end
-        
+                
         def has_creator?
           self.respond_to?('creator') && !self.creator.nil?
         end

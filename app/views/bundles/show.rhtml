@@ -1,33 +1,13 @@
-<% 
-  @title = @thing.name || 'nameless set'
-%>
+<% @title = @thing.name || 'nameless set' %>
 
-<div class="preamble">
-  <% if @thing.has_description? %>
-  	  <%= @thing.description.formatted %>
-  <% else %>
-    <p>No summary given</p>
-  <% end %>
-</div>
+<div class="preamble"><%= render :partial => 'shared/show_origins' %></div>
 
-<div class="boxtabs">
-  <a href="#" id="tab_content_members" class="tab">set members</a>
-  <% if @thing.has_body? %><a href="#" id="tab_content_body" class="tab">body text</a><% end %>
-  <% if @thing.has_image? %><a href="#" id="tab_content_image" class="tab">image</a><% end %>
-  <% if @thing.has_notes? %><a href="#" id="tab_content_notes" class="tab">field notes</a><% end %>
-  <a href="#" id="tab_content_tags" class="tab">tags</a>
-  <a href="#" id="tab_content_topics" class="tab">discussions</a>
-</div>
-
-<div class="boxed" id="box_content">
-  <div id="content_members"><%= render :partial => 'members' %></div>
-  <%= render :partial => 'shared/show_body', :locals => {:item => @thing, :tabset => 'content'} %>
-  <%= render :partial => 'shared/show_image', :locals => {:item => @thing, :tabset => 'content'} %>
-  <%= render :partial => 'shared/show_tags', :locals => {:item => @thing, :tabset => 'content'} %>
-  <%= render :partial => 'shared/show_topics', :locals => {:item => @thing, :tabset => 'content'} %>
-  <%= render :partial => 'shared/show_field_notes', :locals => {:item => @thing, :tabset => 'content'} %>
-
-</div>
+<%= render :partial => 'shared/show_summary' %>
+<%= render :partial => 'members' %>
+<%= render :partial => 'shared/show_text' %>
+<%= render :partial => 'shared/show_field_notes' %>
+<%= render :partial => 'shared/show_topics' %>
+<%= render :partial => 'shared/show_history', :locals => {:events => @thing.logged_events} %>
 
 <% content_for :admin do %>
   <p>

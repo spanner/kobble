@@ -1,8 +1,15 @@
-<% tabset ||= 'tabs' %>
-<div id="<%= tabset %>_tags">
-	<% if account_admin? %>
-	  <p>Drop a tag here to add it to the list:</p>
-  <% end %>
+<% item ||= @thing %>
+
+<h3 class="pagesection">
+  <a href="#" class="squeezebox">
+    tags 
+    <span class="headernote">
+      <%= pluralize(item.tags.count, 'tag') %>
+    </span>
+  </a>
+</h3>
+
+<div id="source_tags" class="squeezed mainlist">
   <div class="mainlist">
   	<ul 
   	  id="tagsfor_<%= item.class.to_s.downcase %>_<%= item.id %>"
@@ -10,9 +17,8 @@
   	  catches="tag" 
   	  title="tags for <%= item.name %>"   	  
   	>
-  	<% if item.has_tags? %>
   		<%= render :partial => "shared/listed", :collection => item.tags.uniq, :locals => {:catch => false} %>
-  	<% end %>
     </ul>
   </div>
+  <p>Drop tags above to add them to this <%= item.class.nice_title %>.
 </div>

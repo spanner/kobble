@@ -1,173 +1,24 @@
-<% 
-  @title = @thing.name || 'nameless source' 
-%>
+<% @title = @thing.name || 'nameless source'  %>
 
-<%= render :partial => 'shared/show_clip', :locals => {:item => @thing} %>
-
-<div class="preamble">
-  <p>
-		<% if @thing.respond_to?('collection') %>
-		  Collection: <% if @thing.collection %><%= link_to @thing.collection.name, url_for(@thing.collection) %><% else %>none<% end %>. 
-		<% end %>
-		<% if @thing.respond_to?('speaker') %>
-		  Speaker: <% if @thing.speaker %><%= link_to @thing.speaker.name, url_for(@thing.speaker) %><% else %>not known<% end %>. 
-		<% end %>
-		<% if @thing.respond_to?('source') %>
-		  Source: <% if @thing.source %><%= link_to @thing.source.name, url_for(@thing.source) %><% else %>not known<% end %>.
-		<% end %>
-		<% if @thing.creator %>
-		  Created by: <%= link_to @thing.creator.name, url_for(@thing.creator) %>
-		<% end %>
-	</p>
-</div>
-
-<h3 class="pagesection">
-  <a href="#" class="squeezebox">
-    summary 
-    <span class="headernote">
-      <% if @thing.has_description? %><%= truncate(@thing.description, 100) %><% else %>no summary<% end %>
-    </span>
-  </a>
-</h3>
-
-<div class="contentblock squeezed">
-  <% if @thing.has_description? %>
-  	  <%= @thing.description.formatted %>
-  <% else %>
-    <p>No summary given</p>
-  <% end %>
-</div>
-
-<% if @thing.has_file? %>
-  <h3 class="pagesection">
-    <a href="#" class="squeezebox">
-      download file 
-      <span class="headernote">
-        <%= File.basename(@thing.file_relative_path) %>
-      </span>
-    </a>
-  </h3>
-
-  <div id="source_file" class="squeezed contentblock">
-    <p style="clear:left">This is an uploaded file. You can download the original file here, and for convenience we have extracted whatever (unformatted) text can be found within it.</p>
-    <p class="downloadlink">
-      <%= link_to image_tag("/images/furniture/icons/#{@thing.filetype}.gif"), url_for_file_column('thing', "file") %> 
-      <%= link_to File.basename(@thing.file_relative_path), url_for_file_column('thing', "file") %>
-    </p>
-  </div>
+<% if @thing.has_clip? %>
+  <%= render :partial => 'shared/show_clip' %>
+<% elsif @thing.has_file? %>
+  <%= render :partial => 'shared/download_file' %>
 <% end %>
 
-<h3 class="pagesection">
-  <a href="#" class="squeezebox">
-    text 
-    <span class="headernote">
-      <% if @thing.has_body? %><%= truncate(@thing.body, 100) %><% else %>no body text<% end %>
-    </span>
-  </a>
-</h3>
+<div class="preamble"><%= render :partial => 'shared/show_origins' %></div>
 
-<div id="source_text" class="squeezed"><%= @thing.body.formatted %></div>
-
-<h3 class="pagesection">
-  <a href="#" class="squeezebox">
-    fragments 
-    <span class="headernote">
-      <%= pluralize(@thing.nodes.count, 'fragment') %>
-    </span>
-  </a>
-</h3>
-
-<div id="source_fragments" class="squeezed">
-  <div class="mainlist">
-    <ul id="nodelist">
-      <% if @thing.nodes.count %>
-        <%= render :partial => 'shared/listed', :collection => @thing.nodes %>
-      <% else %>
-        Extract a fragment from this and it will appear here.
-      <% end %>
-    </ul>
-  </div>
-</div>
-
-<h3 class="pagesection">
-  <a href="#" class="squeezebox">
-    tags 
-    <span class="headernote">
-      <%= pluralize(@thing.tags.count, 'tag') %>
-    </span>
-  </a>
-</h3>
-
-<div id="source_tags" class="squeezed mainlist">
-  <div class="mainlist">
-  	<ul 
-  	  id="tagsfor_<%= @thing.class.to_s.downcase %>_<%= @thing.id %>"
-  	  class="catcher dropzone" 
-  	  catches="tag" 
-  	  title="tags for <%= @thing.name %>"   	  
-  	>
-  		<%= render :partial => "shared/listed", :collection => @thing.tags.uniq, :locals => {:catch => false} %>
-    </ul>
-  </div>
-  <p>Drop tags above to add them to this <%= @thing.class.nice_title %>.
-</div>
-
-<h3 class="pagesection">
-  <a href="#" class="squeezebox">
-    field notes 
-    <span class="headernote">
-      <% if @thing.has_notes? %>
-        <%= truncate(@thing.field_notes, 100) %>
-      <% else %>
-        No field notes
-      <% end%>
-    </span>
-  </a>
-</h3>
-
-<div id="source_field notes" class="squeezed contentblock">
-	<% unless @thing.circumstances.nil? || @thing.circumstances.size == 0 %>
-		<%= "*Circumstances*: #{@thing.circumstances}".formatted %>
-	<% end %>
-	<% unless @thing.observations.nil? || @thing.observations.size == 0 %>
-		<%= "*Observations*: #{@thing.observations}".formatted %>
-	<% end %>
-	<% unless @thing.emotions.nil? || @thing.emotions.size == 0 %>
-		<%= "*Emotions*: #{@thing.emotions}".formatted %>
-	<% end %>
-	<% unless @thing.arising.nil? || @thing.arising.size == 0 %>
-		<%= "*Connections*: #{@thing.arising}".formatted %>
-	<% end %>
-	<p><%= link_to "+ add a note", '#', {:id => "annotate_#{@thing.nice_title}_#{@thing.id}", :class => 'inlineannotate'} %></p>
-</div>
-
-<h3 class="pagesection">
-  <a href="#" class="squeezebox">
-    discussion 
-    <span class="headernote">
-      <%= pluralize(@thing.topics.count, 'conversation') %>
-    </span>
-  </a>
-</h3>
-
-<div id="source_discussions" class="squeezed">
-  <div class="mainlist">
-  	<ul id="topiclist">
-      <%= render :partial => 'shared/listed', :collection => @thing.topics %>
-  	</ul>
-  </div>
-	<p><%= link_to "+ start a conversation", item_new_topic_url(@thing), {:id => 'extend_topiclist', :class => 'inlinediscuss'} %></p>
-</div>
-
-
-
+<%= render :partial => 'shared/show_summary' %>
+<%= render :partial => 'shared/show_file' %>
+<%= render :partial => 'shared/show_text' %>
+<%= render :partial => 'shared/show_nodes' %>
+<%= render :partial => 'shared/show_tags' %>
+<%= render :partial => 'shared/show_field_notes' %>
+<%= render :partial => 'shared/show_topics' %>
+<%= render :partial => 'shared/show_history', :locals => {:events => @thing.logged_events} %>
 
 <% content_for :illustration do %>
-  <% if @thing.has_image? %>
-    <div id="illustration">
-      <%= image_tag(url_for_file_column('thing', "image", "slide"), :alt => '') %>
-    </div>
-  <% end %>
+  <%= render :partial => 'shared/illustration' %>
 <% end %>
 
 <% content_for :admin do %>

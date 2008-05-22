@@ -1,16 +1,5 @@
 <% @title = @thing.name %>
 
-<div id="collection_description" class="squashable contentblock">
-  <% if @thing.has_description? %>
-  	  <%= @thing.description.formatted %>
-  <% else %>
-    <p>No summary given</p>
-  <% end %>
-</div>
-
-<div id="collection_history">
-  <div class="mainlist">
-    <h3 class="listheader">Recent activity in this collection</h3>
-    <%= render :partial => 'collections/history', :locals => {:collection => @thing, :count => 100} %>
-  </div>
-</div>
+<%= render :partial => 'shared/show_summary' %>
+<%= render :partial => 'shared/show_history', :locals => {:item => @thing, :count => 100} %>
+<%= render :partial => 'shared/show_topics', :locals => {:item => @thing, :count => 100} %>
