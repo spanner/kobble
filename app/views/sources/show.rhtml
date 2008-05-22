@@ -38,6 +38,25 @@
   <% end %>
 </div>
 
+<% if @thing.has_file? %>
+  <h3 class="pagesection">
+    <a href="#" class="squeezebox">
+      download file 
+      <span class="headernote">
+        <%= File.basename(@thing.file_relative_path) %>
+      </span>
+    </a>
+  </h3>
+
+  <div id="source_file" class="squeezed contentblock">
+    <p style="clear:left">This is an uploaded file. You can download the original file here, and for convenience we have extracted whatever (unformatted) text can be found within it.</p>
+    <p class="downloadlink">
+      <%= link_to image_tag("/images/furniture/icons/#{@thing.filetype}.gif"), url_for_file_column('thing', "file") %> 
+      <%= link_to File.basename(@thing.file_relative_path), url_for_file_column('thing', "file") %>
+    </p>
+  </div>
+<% end %>
+
 <h3 class="pagesection">
   <a href="#" class="squeezebox">
     text 
@@ -143,14 +162,13 @@
 
 
 
-
-
-
-
-
-
-
-
+<% content_for :illustration do %>
+  <% if @thing.has_image? %>
+    <div id="illustration">
+      <%= image_tag(url_for_file_column('thing', "image", "slide"), :alt => '') %>
+    </div>
+  <% end %>
+<% end %>
 
 <% content_for :admin do %>
   <p>

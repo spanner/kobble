@@ -214,6 +214,12 @@ div#notification.error p {
 	background: url(/images/furniture/spoke/tooltips/red.png) bottom right;
 }
 
+div#illustration {
+  width: 135px;
+  float: right;
+  margin: 0 0 20px 40px;
+}
+
 /* admin controls */
 
 div#admin {
