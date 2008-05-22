@@ -1,5 +1,7 @@
 <% @title = @thing.name %>
 
+<div class="preamble"><%= render :partial => 'shared/show_origins' %></div>
+
 <%= render :partial => 'shared/show_summary' %>
 <%= render :partial => 'shared/show_history', :locals => {:item => @thing, :count => 100} %>
 <%= render :partial => 'shared/show_topics', :locals => {:item => @thing, :count => 100} %>

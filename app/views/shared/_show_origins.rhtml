@@ -11,6 +11,9 @@
 	  Source: <% if item.source %><%= link_to item.source.name, url_for(item.source) %><% else %>not known<% end %>.
 	<% end %>
 	<% if item.creator %>
-	  Created by: <%= link_to item.creator.name, url_for(item.creator) %>
+	  Created by: <%= link_to item.creator.name, url_for(item.creator) %>.
+	<% end %>
+	<% if item.updater %>
+	  Last updated by: <%= link_to item.updater.name, url_for(item.updater) %>.
 	<% end %>
 </p>
