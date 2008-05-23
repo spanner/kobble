@@ -11,8 +11,8 @@
 
 <li 
   id="<%= listed.class.to_s.downcase %>_<%= listed.id %>" 
-  class="<%= "#{colourclass}_" if colourclass %><%= listed.class.to_s.downcase %><%= ' single' if single %><%= ' draggable tippable' unless inactive %><%= ' catcher' if catch && listed.can_catch %> <%= colourclass %><%= ' deleted' if listed.deleted? %>"
-  <% if catch && listed.can_catch %>catches="<%= listed.can_catch.join(',') %>"<% end %>
+  class="<%= "#{colourclass}_" if colourclass %><%= listed.class.to_s.downcase %><%= ' single' if single %><%= ' draggable tippable' unless inactive %><%= ' catcher' if catch && listed.catcher? %> <%= colourclass %><%= ' deleted' if listed.deleted? %>"
+  <% if catch && listed.catcher? %>catches="<%= listed.catchlist %>"<% end %>
 >
 
   <%= link_to( name, {

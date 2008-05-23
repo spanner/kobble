@@ -1,4 +1,9 @@
 class Flag < ActiveRecord::Base
-  acts_as_spoke :except => [:collection, :illustration, :index, :discussion]
-  has_many_polymorphs :flaggables, :from => Spoke::Config.content_models, :through => :flaggings, :dependent => :destroy
+  acts_as_spoke :except => [:collection, :illustration, :index, :description]
+  has_many :flaggings, :dependent => :destroy
+
+  def flagged_items
+    flaggings.map{ |f| f.flaggable }
+  end
+
 end

@@ -6,7 +6,7 @@
 	  id="dropzone_scratchpad_<%= scratchpad.id %>" 
 	  class="catcher fullheight"
 	  title="<%= scratchpad.name %>"
-	  catches="<%= scratchpad.can_catch.join(',') %>"
+	  catches="<%= scratchpad.catchable_classes.join(',') %>"
 	>
   	<li class="padcontrol">
     	<%= link_to "new pad", new_scratchpad_path, {:class => 'createpad'} %> <span class="separator">|</span>

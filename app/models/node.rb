@@ -1,11 +1,9 @@
 class Node < ActiveRecord::Base
 
-  belongs_to :speaker, :class_name => 'Person', :foreign_key => 'speaker_id'
   belongs_to :source
   belongs_to :collection
 
   acts_as_spoke
-  acts_as_catcher :tags, :flags
 
   file_column :file
   before_save FileCallbacks.new
@@ -32,7 +30,7 @@ class Node < ActiveRecord::Base
   end
   
   def duration
-    if (self.clip || self.source && self.source.clip)
+    if (self.clip || self.source && xself.source.clip)
       read_attribute(:playto) - read_attribute(:playfrom)
     else
       0

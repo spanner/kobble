@@ -1,38 +1,5 @@
 require 'active_support'
 
-module Spoke
-  module Config
-    @@indexed_models = []
-    mattr_accessor :indexed_models
-    @@discussed_models = []
-    mattr_accessor :discussed_models
-    
-    def self.indexed_model(klass)
-      @@indexed_models.push(klass.to_s.underscore.intern) unless @@indexed_models.include?(klass.to_s.underscore.intern)         # keep model name as symbol to prevent staleness
-    end
-
-    def self.discussed_model(klass)
-      @@discussed_models.push(klass.to_s.underscore.intern) unless @@discussed_models.include?(klass.to_s.underscore.intern)         # keep model name as (singular) symbol to prevent staleness
-    end
-    
-    # these are the taggable, bundleable, scratchpaddable main content models
-    # they have to be defined in advance for hmp to call on in has_many_polymorphs :from
-    # otherwise we would much prefer to set them as we go along during acts_as_spoke
-    # btw. also called from below to decide whether to join taggings relationship
-
-    def self.content_models(options={})
-      oc = [:sources, :nodes, :bundles, :people, :occasions, :topics, :tags]
-      if options[:except]
-        oc -= Array(options[:except]) 
-      elsif options[:only]
-        oc &= Array(options[:only]) 
-      end
-      oc
-    end
-    
-  end
-end
-
 module ActiveRecord
   module Acts #:nodoc:
     module SpokeContent #:nodoc:
@@ -62,7 +29,7 @@ module ActiveRecord
       module ClassMethods
 
         def acts_as_spoke(options={})
-          definitions = [:collection, :owners, :illustration, :discussion, :index, :log, :undelete]
+          definitions = [:collection, :owners, :illustration, :organisation, :description, :discussion, :index, :log, :undelete]
           if options[:except]
             definitions = definitions - Array(options[:except]) 
           elsif options[:only]
@@ -70,55 +37,96 @@ module ActiveRecord
           end
         
           if definitions.include?(:index)
-            Spoke::Config.indexed_model(self)
             is_indexed :fields => self.index_fields, :concatenate => self.index_concatenation
           end
           
           if definitions.include?(:collection)
-            belongs_to :collection
-            has_finder :in_collection, lambda { |collection| {:conditions => { :collection_id => collection.id }} }
-            has_finder :in_collections, lambda { |collections| {:conditions => ["#{table_name}.collection_id in (" + collections.map{'?'}.join(',') + ")"] + collections.map { |c| c.id }} }
+            if self.column_names.include?('collection_id')
+              belongs_to :collection
+              has_finder :in_collection, lambda { |collection| {:conditions => { :collection_id => collection.id }} }
+              has_finder :in_collections, lambda { |collections| {:conditions => ["#{table_name}.collection_id in (" + collections.map{'?'}.join(',') + ")"] + collections.map { |c| c.id }} }
+            else
+              logger.warn("!! #{self.to_s} should belong_to collection but has no collection_id column")
+            end
           end
           
           if definitions.include?(:owners)
             belongs_to :creator, :class_name => 'User', :foreign_key => 'created_by'
             belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
             has_finder :created_by_user, lambda { |user| {:conditions => { :created_by => user.id }} }
+            if column_names.include?('speaker_id')
+              belongs_to :speaker, :class_name => 'Person', :foreign_key => 'speaker_id'
+              has_finder :spoken_by_person, lambda { |person| {:conditions => { :speaker_id => person.id }} }
+            end
           end
           
           if definitions.include?(:illustration)
-            file_column :clip
-            file_column :image, :magick => { 
-              :versions => { 
-                "thumb" => "56x56!", 
-                "slide" => "135x135!", 
-                "illustration" => "240>", 
-                "preview" => "750x540>" 
+            if self.column_names.include?('clip')
+              file_column :clip
+            else
+              logger.warn("!! #{self.to_s} should be illustrated but has no clip column")
+            end
+            if self.column_names.include?('image')
+               file_column :image, :magick => { 
+                 :versions => { 
+                  "thumb" => "56x56!", 
+                  "slide" => "135x135!", 
+                  "illustration" => "240>", 
+                  "preview" => "750x540>" 
+                }
               }
-            }
+            else
+              logger.warn("!! #{self.to_s} should be illustrated but has no image column")
+            end
           end
           
+          if definitions.include?(:description)
+            has_many :taggings, :as => :taggable, :dependent => :destroy
+            has_many :tags, :through => :taggings
+            self.can_catch(Tag)
+            self.can_drop(Tag)
+            Tag.can_catch(self)
+            
+            has_many :flaggings, :as => :flaggable, :dependent => :destroy
+            has_many :flags, :through => :flaggings
+            self.can_catch(Flag)
+            self.can_drop(Flag)
+            Flag.can_catch(self)
+          end
+
+          if definitions.include?(:organisation)
+            has_many :paddings, :as => :scrap, :dependent => :destroy
+            has_many :scratchpads, :through => :paddings       
+            Scratchpad.can_catch(self)
+            Scratchpad.can_drop(self)
+            
+            has_many :bundlings, :as => :scrap, :dependent => :destroy
+            has_many :bundles, :through => :bundlings       
+            Bundle.can_catch(self)
+            Bundle.can_drop(self)
+          end
+
+          if definitions.include?(:annnotation)
+            # has_many :annotations, :as => :notable, :dependent => :destroy
+            # has_many :notes, :through => :annotations
+          end
+
           if definitions.include?(:discussion)
             has_many :topics, :as => :referent, :dependent => :destroy
-            Spoke::Config.discussed_model(self)
           end
 
           if definitions.include?(:log)
             has_many :logged_events, :class_name => 'Event', :as => :affected, :order => 'at DESC'
           end
           
-          if definitions.include?(:undelete) && self.column_names.include?('deleted_at')
-            acts_as_paranoid
+          if definitions.include?(:undelete)
+            if self.column_names.include?('deleted_at')
+              acts_as_paranoid
+            else
+              logger.warn("!! #{self.to_s} should be paranoid but has no deleted_at column")
+            end
           end
           
-          # content_models has to be defined in advance so that HMP defines associations correctly
-          # would rather do this with definitions.include?(:tags) but then list incomplete at load time
-
-          if Spoke::Config.content_models(:except => :tags).include?(self.to_s.underscore.pluralize.intern)
-            has_many :taggings, :as => :taggable, :dependent => :destroy
-            has_many :tags, :through => :taggings       
-          end
-
           self.module_eval("include InstanceMethods")
         end
                 
@@ -177,7 +185,11 @@ module ActiveRecord
         end
 
         def is_discussable?
-          Spoke::Config.discussed_models.include?( self.class.to_s.underscore.intern )
+          true if self.class.reflect_on_association(:topics)
+        end
+
+        def has_topics?
+          is_discussable? && topics.count > 0
         end
 
         def is_taggable?
@@ -185,7 +197,6 @@ module ActiveRecord
         end
         
         def has_tags?
-          STDERR.puts ">>> in has_tags? #{self}.class.object_id is #{self.class.object_id}"
           is_taggable? && tags.count > 0
         end
 

@@ -1,10 +1,9 @@
 class Tag < ActiveRecord::Base
 
-  acts_as_spoke :except => [:collection, :index]
-  belongs_to :account
+  acts_as_spoke :except => [:collection, :index, :description]
   has_many :taggings, :dependent => :destroy
-  has_many_polymorphs :taggables, :from => Spoke::Config.content_models(:except => :tags), :through => :taggings
-  acts_as_catcher :taggables, {:tag => :subsume}
+  belongs_to :account
+  has_finder :in_account, lambda { |account| {:conditions => { :account_id => account.id }} }
 
   def stem
     name.split.map{|w| w.stem}.join('_')
@@ -27,6 +26,11 @@ class Tag < ActiveRecord::Base
   def self.from_list(taglist)
     taglist.split(/[,;]\s*/).uniq.map { |t| Tag.find_or_create_by_name(t) }
   end
+
+  def tagged_items
+    taggings.map{|t| t.taggable }
+  end
+
 
 end
 

@@ -6,8 +6,8 @@
 
 <li 
   id="<%= galleried.class.to_s.downcase %>_<%= galleried.id %>" 
-  class="<%= galleried.class.to_s.downcase %> draggable tippable<%= ' catcher' if catch && galleried.can_catch %>"
-  <% if catch && galleried.can_catch %>catches="<%= galleried.can_catch.join(',') %>"<% end %>
+  class="<%= galleried.class.to_s.downcase %> draggable tippable<%= ' catcher' if catch && galleried.catcher? %>"
+  <% if catch && galleried.catcher? %>catches="<%= galleried.catchlist %>"<% end %>
 >
 
   <% if galleried.has_image? %>

@@ -1,6 +1,18 @@
 class Scratchpad < ActiveRecord::Base
+
   acts_as_spoke :only => [:owners]
   has_many :paddings, :dependent => :destroy
-  has_many_polymorphs :scraps, :from => Spoke::Config.content_models, :through => :paddings
-  acts_as_catcher :scraps
+
+  def scraps
+    paddings.map{ |p| p.scrap }
+  end
+  
+  def catch(object)
+    self.paddings.create(:scrap => object)
+  end
+
+  def drop(object)
+    self.paddings.delete(:scrap => object)
+  end
+
 end

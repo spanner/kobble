@@ -17,7 +17,7 @@
     <ul 
       id="members_bundle_<%= @thing.id %>" 
       class="<%= inactive ? 'inactive' : 'catcher' %>"
-      <% unless inactive %> catches="<%= @thing.can_catch.join(',') %>"<% end %>
+      <% unless inactive %> catches="<%= @thing.catchlist %>"<% end %>
     >
       <%= render :partial => 'shared/listed', :collection => members, :locals => {:inactive => inactive} %>
     </ul>

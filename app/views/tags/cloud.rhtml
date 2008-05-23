@@ -39,8 +39,8 @@
 
       <li 
         id="tag_<%= tag.id %>" 
-        class="<%= tag.class.to_s.downcase %> draggable<%= ' catcher' if tag.can_catch %>"
-        catches="<%= tag.can_catch.join(',') %>"
+        class="<%= tag.class.to_s.downcase %> draggable<%= ' catcher' if tag.catcher? %>"
+        catches="<%= tag.catchlist %>"
       >
         <% name = tag.name.nil? || tag.name.size == 0 ? "nameless #{tag.class.nice_title}" : tag.name %>
         <%= link_to( name, {:controller => tag.class.to_s.downcase.pluralize, :action => 'show', :id => tag}, {:class => "#{cssclass[tag.object_id]} listed", :title => tag.use_count}) %> 

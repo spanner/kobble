@@ -1,0 +1,26 @@
+<% 
+  item ||= @thing 
+  weighted_tags ||= item.weighted_tags
+%>
+
+<h3 class="pagesection">
+  <a href="#" class="squeezebox">
+    tag cloud 
+    <span class="headernote">
+      <%= pluralize(weighted_tags.count, 'tag') %>
+    </span>
+  </a>
+</h3>
+
+<div id="tag_cloud" class="squeezed">
+
+
+
+
+
+
+
+
+
+
+</div>

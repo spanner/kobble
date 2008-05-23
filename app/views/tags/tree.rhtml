@@ -18,8 +18,8 @@
     	  <% for tag in @shoots %>
           <li 
             id="tag_<%= tag.id %>" 
-            class="draggable<%= ' catcher' if tag.can_catch %>"
-            catches="<%= tag.can_catch.join(',') %>"
+            class="draggable<%= ' catcher' if tag.catcher? %>"
+            catches="<%= tag.catchlist %>"
           >
             <%= link_to( "#{tag.name}", :action => 'show', :id => tag) %><span class="countlabel"><%= tag.use_count %></span>
           </li>

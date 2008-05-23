@@ -11,7 +11,11 @@ class TagsController < ApplicationController
   def list_length
     80
   end
-  
+
+  def view_scope
+    'account'
+  end
+
   # this is a dirty dirty shortcut.
   # loading tags properly for this is very slow because of all the HMP preloaders
   # and since this is always an ajax call we need quick
@@ -28,13 +32,7 @@ class TagsController < ApplicationController
   end
   
   def cloud
-    @list = Tag.find(:all, 
-      :select => "tags.*, count(taggings.id) as use_count",
-      :joins => "LEFT JOIN taggings on taggings.tag_id = tags.id",
-      :conditions => limit_to_this_account,
-      :group => "taggings.tag_id",
-      :order => 'name'
-    )
+    @list = Tag.weighted
   end
   
   def new
