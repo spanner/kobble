@@ -7,6 +7,7 @@
   catch = false if inactive
   aclass = inactive ? "listed inactive" : "listed"
   name ||= listed.name.nil? || listed.name.size == 0 ? "nameless #{listed.class.nice_title}" : listed.name 
+  collection_name = listed.has_collection? ? "#{listed.collection.abbreviation}: " : ''
 %>
 
 <li 
@@ -20,13 +21,13 @@
     :action => 'show', 
     :id => listed
   }, {
-    :class => aclass
+    :class => aclass,
+    :title => "#{collection_name}#{name}"
   }) %>
   <% unless addendum.nil? %>
     <span class="listnote"><%= addendum %></span>
   <% end %>
   
-  <div class="tiptitle"><% if listed.has_collection? %><%= listed.collection.abbreviation %>: <% end %><%= name %></div>
   <div class="tiptext"<%= ' style="display: none;"' if current_user.prefers?('lists_condensed') %>><%= truncate( listed.find_some_text, 100 ) %></div>
   
 </li>

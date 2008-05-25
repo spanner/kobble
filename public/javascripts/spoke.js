@@ -22,7 +22,7 @@ var Interface = new Class({
     this.inlinelinks = [];
     this.replyform = null;
     this.debug_level = 0;
-    this.clickthreshold = 6;
+    this.clickthreshold = 20;
     this.announcer = $E('div#notification');
     this.admin = $E('div#admin');
     this.squeezebox = null;
@@ -50,11 +50,9 @@ var Interface = new Class({
     if (this.tips) this.tips.hide();
   },
   startDragging: function (helper) {
-    $$('.hideondrag').each(function (element) { element.setStyle('visibility', 'hidden'); })
-    $$('.showondrag').each(function (element) { element.setStyle('visibility', 'visible'); })
     this.dragging = helper;
     var catchers = [];
-  	if (this.preferences.tabs_responsive) this.tabs.each(function (t) { t.makeReceptiveTo(helper); })
+  	if (this.preferences.tabs_responsive) this.tabs.each(function (t) { t.makeReceptiveTo(helper); });
   	this.droppers.each(function(d){ if (d.makeReceptiveTo(helper)) catchers.push(d.container); });
   	intf.debug('catchers will be: ', 5);
   	intf.debug(catchers, 5);
@@ -62,10 +60,10 @@ var Interface = new Class({
   },
   stopDragging: function (helper) {
     this.dragging = null;
-    this.tabs.each(function (t) { t.makeUnreceptive(helper); })
-    this.droppers.each(function (d) { d.makeUnreceptive(helper); })
-    $$('.hideondrag').each(function (element) { element.setStyle('visibility', 'visible'); })
-    $$('.showondrag').each(function (element) { element.setStyle('visibility', 'hidden'); })
+    this.tabs.each(function (t) { t.makeUnreceptive(helper); });
+    this.droppers.each(function (d) { d.makeUnreceptive(helper); });
+    $$('.hideondrag').each(function (element) { element.setStyle('visibility', 'visible'); });
+    $$('.showondrag').each(function (element) { element.setStyle('visibility', 'hidden'); });
   },
   lookForDropper: function (element) {
     if (element) return element.dropzone || this.lookForDropper( element.getParent() );
@@ -118,10 +116,10 @@ var Interface = new Class({
     });
   },
 
-  grabForm: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new htmlForm(element, e); }) }); },
-  makeInlineCreate: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new jsonForm(element, e); }) }); },
-  makeSnipper: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new Snipper(element, e); }) }); },
-  makePopup: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new Popup(element, e); }) }); },
+  grabForm: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new htmlForm(element, e); }); }); },
+  makeInlineCreate: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new jsonForm(element, e); }); }); },
+  makeSnipper: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new Snipper(element, e); }); }); },
+  makePopup: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new Popup(element, e); }); }); },
   makeSquash: function (handles, blocks) { this.squeezebox = new Squeezebox(handles, blocks); },
   
   // there will only be one of these really
@@ -132,7 +130,7 @@ var Interface = new Class({
     }, this);
   },
   
-  makeFixed: function (elements) { elements.each(function (element) { element.pin(); }) },
+  makeFixed: function (elements) { elements.each(function (element) { element.pin(); }); },
 
   makeCollectionsLinks: function (elements) {
     elements.each(function (a) {
@@ -209,9 +207,9 @@ var Interface = new Class({
 	  if (element.hasClass('tab')) this.addTabs( [element] );
 	  if (element.hasClass('padtab')) this.addScratchTabs( [element] );
 	  if (element.hasClass('fixedbottom')) this.makeFixed( [element] );
-    if (element.hasClass('toggle')) this.makeToggle( [element] )
-    if (element.hasClass('snipper')) this.makeSnipper( [element] )
-    if (element.hasClass('popup')) this.makePopup( [element] )
+    if (element.hasClass('toggle')) this.makeToggle( [element] );
+    if (element.hasClass('snipper')) this.makeSnipper( [element] );
+    if (element.hasClass('popup')) this.makePopup( [element] );
   },
   
   getSelectedText: function () {
@@ -308,8 +306,8 @@ var Dropzone = new Class({
           intf.debug('hit drop event: ' + dropzone.name, 4);
           dropzone.receiveDrop(helper); 
         },
-        'mouseenter': function() { dropzone.showInterest(helper); },
-        'mouseleave': function() { dropzone.loseInterest(helper); },
+        'mouseover': function() { dropzone.showInterest(helper); },   // don't use mouseenter in case dragged item occludes dropzone
+        'mouseout': function() { dropzone.loseInterest(helper); }
       });
       return this.isReceptive = true;
     } else {
@@ -320,9 +318,7 @@ var Dropzone = new Class({
     // this gets called when a drag from elsewhere leaves this space
     if (this.isReceptive) {
       intf.debug('unReceptive: ' + this.name, 5);
-      this.container.removeEvents('mouseenter');
-      this.container.removeEvents('mouseleave');
-      this.container.removeEvents('drop');
+      this.container.removeEvents('mouseover', 'mouseout', 'drop');
       this.isReceptive = false;
     }
   },
@@ -377,7 +373,7 @@ var Dropzone = new Class({
 			helper.flyback();
 			
 		} else if (dropzone.contains(draggee)) {
-			intf.complain(draggee.name + ' is already there');
+			intf.complain(draggee.name + ' is already in' + dropzone.name);
 			helper.flyback();
 			
 		} else {
@@ -388,8 +384,8 @@ var Dropzone = new Class({
   			  url: this.addURL(draggee),
   				method: 'get',
   			  onRequest: function () { 
-  			    dropzone.waiting(); 
-  			    draggee.waiting(); 
+  			    dropzone.waiting();
+  			    draggee.waiting();
   			  },
           onSuccess: function(response){
             intf.debug('drop successful: ', 3);
@@ -406,7 +402,7 @@ var Dropzone = new Class({
                 draggee.disappear();
                 break;
               default:
-                dropzone.accept(draggee)
+                dropzone.accept(draggee);
               }
               intf.announce(response.message);
             } else {
@@ -478,7 +474,7 @@ var Dropzone = new Class({
 	},
 	accept: function (draggee) {
     if (this.zoneType() == 'list') {
-      var element = draggee.clone().injectInside(this.container);
+      var element = draggee.clone().inject(this.container, 'inside');
       element.set('id', this.tag + '_' + draggee.tag);
       intf.activateElement(element);
     }
@@ -503,7 +499,6 @@ var Draggee = new Class({
 		this.name = this.findTitle();
     this.draggedfrom = intf.lookForDropper(element.getParent());
     this.helper = new DragHelper(this);
-    this.helper.start(event);
 	},
   spokeID: function () { return this.original.spokeID(); },
   spokeType: function () { return this.original.spokeType(); },
@@ -529,43 +524,32 @@ var DragHelper = new Class({
 	initialize: function(draggee){
 	  this.draggee = draggee;
 		this.original = this.draggee.original;
-		this.container = new Element('div', { 'class': 'drag-tip' }).injectInside(document.body);
-		this.textholder = new Element('div', { 'class': 'drag-title' }).injectInside(this.container);
-		this.footer = new Element('div', { 'class': 'drag-text' }).injectInside(this.container);
-		this.container.dragHelper = this;
 		this.name = this.draggee.name;
-		this.setText(this.name);
-		this.clickedat = null;
-		this.offsetY = this.container.getCoordinates().height + 12;
-	  this.offsetX = Math.floor(this.container.getCoordinates().width / 2);
-		var droppables = intf.startDragging(this);
-    this.dragmove = this.container.makeDraggable({ 
-      droppables: droppables,
-      snap: intf.clickthreshold
-    });
-		this.flybackto = this.original.getCoordinates();
-		this.flybackto['opacity'] = 0.4;
-		var dh = this;
-		this.flybackfx = new Fx.Morph(this.container, {
-		  duration: 'long', 
-		  transition: 'bounce:out',
-		  onComplete: function () { dh.remove(); }
-		});
-	},
-	start: function (event) {
-	  event.stop();
-	  event.preventDefault();
-	  this.clickedat = event.client;
+    this.active = false;
+    
+    this.dragger = new Element('ul', {'class': 'dragging'});
+    this.original.clone().inject(this.dragger);
+    this.dragger.inject(document.body, 'inside');
+    this.dragger.setStyles(this.original.getCoordinates());
+    
 	  var dh = this;
-	  this.container.addEvent('emptydrop', function() { dh.emptydrop(); }) 		
-	  if (this.draggee.draggedfrom) this.draggee.draggedfrom.makeRegretful(this);
-		this.moveto(event.page);      // move dragbubble into (offset) position
-		this.dragmove.start(event);   // make dragbubble follow mouse
-    // this.show();                  // fade in dragbubble
+	  this.dragger.addEvent('emptydrop', function() { dh.emptydrop(); });	
+    this.dragmove = this.dragger.makeDraggable({ 
+      droppables: intf.startDragging(this),
+      snap: intf.clickthreshold,
+      onSnap: function (element) { dh.reveal(); }
+    });
+		this.dragmove.start(event);
+	},
+	reveal: function () {
+    $$('.hideondrag').each(function (element) { element.setStyle('visibility', 'hidden'); });
+    $$('.showondrag').each(function (element) { element.setStyle('visibility', 'visible'); });
+		this.dragger.setStyle('visibility', 'visible');
+    this.active = true;
 	},
 	emptydrop: function () {
 		intf.stopDragging();
-		if (!this.hasMoved()) {
+		if (!this.active) {
 		  this.remove();
 		  this.draggee.doClick();
     } else if (this.draggee.draggedfrom) {
@@ -579,23 +563,19 @@ var DragHelper = new Class({
     if (this.draggee.draggedfrom) this.draggee.draggedfrom.removeDrop(this);
 	},
 	flyback: function () {
-    this.flybackfx.start( this.flybackto );
-
+		var dh = this;
+		var flybackto = $merge(this.original.getCoordinates(), {'opacity': 0.2});
+		new Fx.Morph(this.dragger, {
+		  duration: 'long', 
+		  transition: 'bounce:out',
+		  onComplete: function () { dh.remove(); }
+		}).start( flybackto );
 	},
-	moveto: function (here) {
-    this.container.setStyles({top: here.y - this.offsetY, left: here.x - this.offsetX});
-	},
-  hasMoved: function () {
-    var now = this.container.getPosition();
-    return Math.abs(this.clickedat.x - now.x) + Math.abs(this.clickedat.y - now.y) >= intf.clickthreshold;
-  },
-  show: function () { this.container.fade(0.8); },
-  hide: function () { this.container.fade('out'); },
-	remove: function () { this.container.fade('out'); },
+  show: function (event) { this.dragger.show(); },
+  hide: function () { this.dragger.fade('out'); },
+	remove: function () { this.hide(); },
 	explode: function () { this.remove(); },  // something more explosive should happen here
-	disappear: function () { this.original.dwindle(); },
-	setText: function (text) { this.textholder.set('text', text); },
-	getText: function () { return this.textholder.get('text'); }
+	disappear: function () { this.original.dwindle(); }
 });
 
 
@@ -605,7 +585,7 @@ var Tab = new Class({
 	initialize: function(element){
 		this.tabhead = element;
 		this.name = this.tabhead.get('text');
-	  intf.debug("tab: " + this.name, 4)
+	  intf.debug("tab: " + this.name, 4);
     var parts = element.id.split('_');
 		this.tag = parts.pop();
 		this.settag = parts.pop();
@@ -656,7 +636,7 @@ var Tab = new Class({
     this.tabhead.remove(); 
     this.tabbody.dwindle(); 
     this.tabset.removeTab(this);
-	},
+	}
 });
 
 var TabSet = new Class({
@@ -759,7 +739,7 @@ var ScratchTab = new Class({
   		  url: url,
   			method: 'get',
   			update: stab.formholder,
-  		  onSuccess: function () { stab.bindForm() },
+  		  onSuccess: function () { stab.bindForm(); },
   		  onFailure: function () { stab.hideFormNicely(); }
   		}).send();
     }
@@ -794,7 +774,7 @@ var ScratchTab = new Class({
     var update = {
 		  '_method': this.padform.getElement('input[name=_method]') ? this.padform.getElement('input[name=_method]').get('value') : '',
 		  'scratchpad[name]': this.padform.getElement('#scratchpad_name').get('value'),
-		  'scratchpad[body]': this.padform.getElement('#scratchpad_body').get('value'),
+		  'scratchpad[body]': this.padform.getElement('#scratchpad_body').get('value')
 		};
 
 		new Request.JSON({
@@ -823,7 +803,7 @@ var ScratchTab = new Class({
           
         }
       },
-		  onFailure: function (response) { stab.hideForm(); intf.complain('remote call failed') }
+		  onFailure: function (response) { stab.hideForm(); intf.complain('remote call failed'); }
 		}).send();
 	},
 	createTab: function (e) {
@@ -946,7 +926,7 @@ var Preference = new Class({
     intf.debug('set preference ' + abbr + ' to ' + intf.preferences[abbr], 1);
     intf.enactPreferences();
   }
-})
+});
 
 var jsonForm = new Class ({
   initialize: function (element, e) {
@@ -1035,7 +1015,7 @@ var jsonForm = new Class ({
     intf.makeSuggester(this.form.getElements('input.tagbox'));
     var closer = this.hide.bind(this);
 		this.form.onsubmit = this.sendForm.bind(this);
-    this.form.getElements('a.cancelform').each(function (a) { a.onclick = closer })
+    this.form.getElements('a.cancelform').each(function (a) { a.onclick = closer; });
     this.form.getElement('input').focus();
   },
   
@@ -1047,7 +1027,7 @@ var jsonForm = new Class ({
       url: this.form.get('action'),
       onRequest: function () { mf.page_waiting(); },
       onSuccess: function (response) { mf.page_update(response); },
-      onFailure: function (response) { mf.hide(); intf.complain('remote call failed')}
+      onFailure: function (response) { mf.hide(); intf.complain('remote call failed'); }
     }).post(this.form);
   },
   
@@ -1151,7 +1131,7 @@ var Snipper = new Class ({
     this.position();
     this.form = this.formholder.getElement('form');
     var closer = this.hide.bind(this);
-    this.form.getElements('a.cancelform').each(function (a) { a.onclick = closer })
+    this.form.getElements('a.cancelform').each(function (a) { a.onclick = closer; } );
     intf.makeSuggester(this.form.getElements('input.tagbox'));
     this.form.getElement('#node_body').set('value', intf.getSelectedText());
     this.form.getElements('#node_playfrom').each( function (input) { input.set('value', intf.getPlayerIn()); });

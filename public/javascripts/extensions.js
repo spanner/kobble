@@ -35,7 +35,7 @@ Element.implement({
 	},
 	toBottom: function () {
 		this.setStyles({
-		  'top': window.getScrollTop() + window.getHeight() - parseInt(this.getStyle('height'))
+		  'top': window.getScrollTop() + window.getHeight() - parseInt(this.getStyle('height'), 10)
 		});
 	},
 	idparts: function () {
@@ -44,7 +44,7 @@ Element.implement({
       'id' : parts[parts.length-1],
       'type' : parts[parts.length-2],
       'context' : parts[parts.length-3]
-    }
+    };
   },
   spokeID: function () {
     return this.idparts().id;
@@ -82,8 +82,7 @@ Element.implement({
     obj.bottom = obj.top + obj.height;
     return obj;
   }
-  
-	
+
 });
 
 function $body(el){
