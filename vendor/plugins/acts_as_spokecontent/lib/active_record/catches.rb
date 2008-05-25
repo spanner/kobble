@@ -3,6 +3,10 @@ end
 
 class CatchResponse
   attr_accessor :consequence, :message, :outcome
+  
+  # consequence is the interface action to perform on the dragged item
+  # should be one of: move, insert, delete. The default is 'insert' 
+  # for eg duplicate representation of item on scratchpad
 
   def initialize(m=nil, c=nil, o=nil)
     @message = m
@@ -12,7 +16,7 @@ class CatchResponse
   
   def to_json 
     {
-      :message => self.message,
+      :message => self.message.formatted,
       :consequence => self.consequence || 'insert',
       :outcome => self.outcome || 'success',
     }.to_json
@@ -89,17 +93,20 @@ module ActiveRecord
         def can_drop?(klass)
           self.class.can_drop?(klass)
         end
-
-        def catch(thrown)
-          # sensible default?
-          raise CatchError "you need to define a catch method in class #{self.class.to_s}"
-        end
-    
-        def drop(dropped)
-          # sensible default?
-          raise CatchError "you need to define a drop method in class #{self.class.to_s}"
+        
+        unless self.respond_to?('catch_this')
+          def catch_this(thrown)
+            # sensible default?
+            raise CatchError, "you need to define a catch_this method in class #{self.class.to_s}"
+          end
         end
         
+        unless self.respond_to?('drop_this')
+          def drop_this(dropped)
+            # sensible default?
+            raise CatchError, "you need to define a drop_this method in class #{self.class.to_s}"
+          end
+        end
     
       }
 

@@ -109,7 +109,7 @@ class ApplicationController < ActionController::Base
   def catch
     @catcher = request.parameters[:controller].to_s._as_class.find( params[:id] )
     @caught = params[:caughtClass].to_s._as_class.find( params[:caughtID] )
-    @response = @catcher.catch(@caught) if @catcher and @caught                     
+    @response = @catcher.catch_this(@caught) if @catcher and @caught
     respond_to do |format|
       format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @catcher }
       format.json { render :json => @response.to_json }
@@ -142,7 +142,7 @@ class ApplicationController < ActionController::Base
   def drop
     @dropper = request.parameters[:controller].to_s._as_class.find( params[:id] )
     @dropped = params[:droppedClass]._as_class.find(params[:droppedID])
-    @response = @dropper.drop(@dropped) if @dropper and @dropped
+    @response = @dropper.drop_this(@dropped) if @dropper and @dropped
     respond_to do |format|
       format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @dropper }
       format.json { render :json => @response.to_json }

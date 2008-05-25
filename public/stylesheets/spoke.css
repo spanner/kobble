@@ -179,40 +179,26 @@ div#navigation a:hover { color: black; }
 div#navigation a.pale { color: #8c8d8e; }
 div#navigation a.fg:hover {}
 
+
+
 div#notification {
   position: fixed;
   left: 20px;
-	bottom: 10px;
-	width: 130px;
+	bottom: 20px;
+	width: 360px;
 	z-index: 13000;
   visibility: hidden;
-  background-color: white;
-}
-
-div#notification h4 {
-	font-weight: bold;
-	font-size: 11px;
-	margin: 0;
-	color: white;
-	padding: 8px 8px 4px 8px;
-	background: url(/images/furniture/spoke/tooltips/blue.png) top left;
+  background-color: #0c3;
+  border: 3px solid #7FE699;
+  color: white;
+  padding: .75em;
 }
  
-div#notification p {
-	font-size: 11px;
-	margin: 0;
-	color: white;
-	padding: 4px 8px 8px 8px;
-	background: url(/images/furniture/spoke/tooltips/blue.png) bottom right;
+div#notification.error {
+  background-color: #c00;
+  border: 3px solid #e67f00;
 }
 
-div#notification.error h4 {
-	background: url(/images/furniture/spoke/tooltips/red.png) top left;
-}
-
-div#notification.error p {
-	background: url(/images/furniture/spoke/tooltips/red.png) bottom right;
-}
 
 div#illustration {
   width: 135px;

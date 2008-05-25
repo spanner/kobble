@@ -1,10 +1,11 @@
 class Tag < ActiveRecord::Base
 
   acts_as_spoke :except => [:collection, :index, :description]
-  has_many :taggings, :dependent => :destroy
   belongs_to :account
   has_finder :in_account, lambda { |account| {:conditions => { :account_id => account.id }} }
-
+  has_many :taggings, :dependent => :destroy
+  can_catch :tags # in addition to all the catches set up by acts_as_spoke in other classes
+  
   def stem
     name.split.map{|w| w.stem}.join('_')
   end
@@ -27,10 +28,22 @@ class Tag < ActiveRecord::Base
     taglist.split(/[,;]\s*/).uniq.map { |t| Tag.find_or_create_by_name(t) }
   end
 
-  def tagged_items
+  def tagged
     taggings.map{|t| t.taggable }
   end
+  
+  def catch_this(object)
+    case object.class
+    when Tag
+      subsume(object)
+    else
+      self.taggings.create!(:taggable => object) if self.taggings.of(object).empty?
+    end
+  end
 
+  def drop_this(object)
+    self.taggings.delete(self.taggings.of(object))
+  end
 
 end
 

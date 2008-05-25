@@ -100,8 +100,8 @@ module ActiveRecord
             Scratchpad.can_catch(self)
             Scratchpad.can_drop(self)
             
-            has_many :bundlings, :as => :scrap, :dependent => :destroy
-            has_many :bundles, :through => :bundlings       
+            has_many :bundlings, :as => :member, :dependent => :destroy
+            has_many :bundles, :through => :bundlings, :source => :superbundle      
             Bundle.can_catch(self)
             Bundle.can_drop(self)
           end

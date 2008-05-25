@@ -29,15 +29,13 @@ var Interface = new Class({
 	},
   announce: function (message, title) {
     this.announcer.removeClass('error');
-    this.announcer.getElements('h4')[0].setText(title || 'Notice');
-    this.announcer.getElements('p')[0].setText(message);
+    this.announcer.set('html', message);
     this.fader.start(1);
     this.fader.start(0);
   },
   complain: function (message, title) {
     this.announcer.addClass('error');
-    this.announcer.getElements('h4')[0].setText(title || 'Error');
-    this.announcer.getElements('p')[0].setText(message);
+    this.announcer.set('html', message);
     this.fader.start(1);
     this.fader.start(0);
   },
@@ -272,7 +270,7 @@ var SpokeTips = new Class({
     onHide: function(tip) { tip.fade('out'); }
   },
   build: function(el){
-    el.$attributes.myTitle = el.title || el.getElement('div.tiptitle').getText();
+    el.$attributes.myTitle = el.title || el.getElement('a').title;
     el.$attributes.myText = el.getElement('div.tiptext').getText();
 		el.removeProperty('title');
 		if (el.$attributes.myTitle && el.$attributes.myTitle.length > this.options.maxTitleChars)
