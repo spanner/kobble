@@ -25,6 +25,7 @@ var Interface = new Class({
     this.clickthreshold = 6;
     this.announcer = $E('div#notification');
     this.admin = $E('div#admin');
+    this.squeezebox = null;
     this.fader = new Fx.Tween(this.announcer, 'opacity', {duration: 'long', link: 'chain'});
 	},
   announce: function (message, title) {
@@ -74,6 +75,10 @@ var Interface = new Class({
     if (element) return element.tab || this.lookForTab( element.getParent() );
     else return null;
   },
+  lookForSqueeze: function (element) {
+    if (element) return element.squeezed ? element : this.lookForSqueeze( element.getParent() );
+    else return null;
+  },
   
   // these are convenient shortcuts called by activate()
   
@@ -117,6 +122,7 @@ var Interface = new Class({
   makeInlineCreate: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new jsonForm(element, e); }) }); },
   makeSnipper: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new Snipper(element, e); }) }); },
   makePopup: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new Popup(element, e); }) }); },
+  makeSquash: function (handles, blocks) { this.squeezebox = new Squeezebox(handles, blocks); },
   
   // there will only be one of these really
 
@@ -136,12 +142,6 @@ var Interface = new Class({
         intf.tabsets['scratchpad'].select('collections');
       }
     });
-  },
-  
-  makeSquash: function (elements) {
-    elements.each(function (element) { 
-      console.log(element.id + ': height is ' + element.getHeight());
-      if (element.getHeight() > 200) new Squash(element) })
   },
   
   getPreferences: function () {
@@ -194,27 +194,7 @@ var Interface = new Class({
     this.makeFixed(scope.getElements('.fixed'));
     this.makePopup(scope.getElements('.popup'));
     this.makeCollectionsLinks(scope.getElements('a.choosecollections'));
-    this.makeSquash(scope.getElements('div.squashable'));
-    
-    this.accordion = new Accordion(
-      scope.getElements('a.squeezebox'), 
-      scope.getElements('div.squeezed'),
-      {
-        alwaysHide: true,
-        onActive: function (toggler, element) {
-          toggler.addClass('expanded');
-          toggler.removeClass('squeezed');
-        },
-        onBackground: function (toggler, element) {
-          toggler.blur();
-          toggler.removeClass('expanded');
-          toggler.addClass('squeezed');
-        }
-        
-      }
-      
-    );
-    
+    this.makeSquash(scope.getElements('a.squeezebox'), scope.getElements('div.squeezed'));
   },
   
   activateElement: function (element) {
@@ -559,10 +539,13 @@ var DragHelper = new Class({
 		this.offsetY = this.container.getCoordinates().height + 12;
 	  this.offsetX = Math.floor(this.container.getCoordinates().width / 2);
 		var droppables = intf.startDragging(this);
-		var dh = this;
-    this.dragmove = this.container.makeDraggable({ droppables: droppables });
+    this.dragmove = this.container.makeDraggable({ 
+      droppables: droppables,
+      snap: intf.clickthreshold
+    });
 		this.flybackto = this.original.getCoordinates();
 		this.flybackto['opacity'] = 0.4;
+		var dh = this;
 		this.flybackfx = new Fx.Morph(this.container, {
 		  duration: 'long', 
 		  transition: 'bounce:out',
@@ -576,9 +559,9 @@ var DragHelper = new Class({
 	  var dh = this;
 	  this.container.addEvent('emptydrop', function() { dh.emptydrop(); }) 		
 	  if (this.draggee.draggedfrom) this.draggee.draggedfrom.makeRegretful(this);
-		this.moveto(event.page);
-		this.dragmove.start(event);
-		this.show();
+		this.moveto(event.page);      // move dragbubble into (offset) position
+		this.dragmove.start(event);   // make dragbubble follow mouse
+    // this.show();                  // fade in dragbubble
 	},
 	emptydrop: function () {
 		intf.stopDragging();
@@ -980,7 +963,8 @@ var jsonForm = new Class ({
 		this.spinner = new Element('div', {'class': 'floatspinner'}).set('html', '&nbsp;').inject(this.floater).show();
 		this.formholder = new Element('div', {'class': 'modalform'}).inject(this.floater).hide();
 		this.destination = $E('#' + this.link.id.replace('extend_', ''));
-		this.tab = intf.lookForTab( this.destination );
+		this.destination_type = this.destination.tagName;
+		this.squeeze = intf.lookForSqueeze( this.destination );
 		this.overlay.onclick = this.hide.bind(this);
     this.formholder.set('load', {
       onRequest: function () { mf.waiting(); },
@@ -1071,12 +1055,12 @@ var jsonForm = new Class ({
   
   page_update: function (response) {
     // default is that we expect to add an option to a select box
-    // response should be the JSON representation of a spoke object
+    // response should be the JSON representation of a materialist object
     this.hide();
     var newitem = new Element('option', {'value': response.id}).set('text',response.name);
     newitem.inject( this.destination, 'top' );
-    this.destination.selectedIndex = 0;
     intf.announce('new item created');
+    this.showOnPage();
   },
   
   // really ought to do something constructive here
@@ -1102,6 +1086,12 @@ var jsonForm = new Class ({
     intf.debug('jsonForm.notWaiting', 5);
     this.spinner.hide();
     this.formholder.show();
+  },
+
+  showOnPage: function () {
+    if (this.squeeze) intf.squeezebox.display(this.squeeze);
+    if (this.destination_type == 'UL') this.destination.selectedIndex = 0;
+    new Fx.Scroll(window).toElement(this.destination);
   }
 	
 });
@@ -1132,8 +1122,7 @@ var htmlForm = new Class ({
     this.waiting();
     this.waiter = new Element('li', {'class': 'waiting'}).setText('please wait').inject(this.destination, 'top');
     this.hide();
-    if (this.tab) this.tab.select();
-    new Fx.Scroll(window).toElement(this.destination);
+    this.showOnPage();
   },
   
   // this is called upon final response to the form
@@ -1144,6 +1133,11 @@ var htmlForm = new Class ({
     var newitem = elements[0];
     newitem.inject(this.destination, 'top');
     intf.activateElement( newitem );
+  },
+  
+  showOnPage: function () {
+    
+    new Fx.Scroll(window).toElement(this.destination);
   }
 });
 
@@ -1320,49 +1314,31 @@ var ReplyForm = new Class ({
 	
 });
 
-var Squash = new Class ({
-  initialize: function (element) {
-    this.container = element;
-    this.description = element.id.split('_').pop();
-    this.foot = new Element('div', {'class': 'expander'}).inject(this.container, 'after');
-    this.expander = new Element('a', {'href': '#', 'class': 'expander'}).set('text','show ' + this.description).inject(this.foot, 'inside');
-    this.expander.onclick = this.toggle.bind(this);
-    this.openheight = this.container.getHeight();
-    this.closedheight = 110;
-    this.isopen = false;
-		this.fx = new Fx.Morph(this.container, {
-		  duration: 'long', 
-		  transition: Fx.Transitions.Cubic.easeOut
-		});
-		this.close();
-  },
-  open: function () {
-    this.fx.start({
-      height: this.openheight,
-      opacity: 1.0
-    });
-    this.expander.set('text','close ' + this.description);
-    this.container.removeClass('squashed');
-    this.container.addClass('expanded');
-    this.expander.addClass('closer');
-    this.isopen = true;
+var Squeezebox = new Class ({
+  Extends: Accordion,
+	options: {
+		display: 0,
+		show: false,
+		height: true,
+		width: false,
+		opacity: true,
+		fixedHeight: false,
+		fixedWidth: false,
+		wait: false,
+		alwaysHide: true,
+    onActive: function (toggler, element) {
+      toggler.addClass('expanded');
+      toggler.removeClass('squeezed');
+    },
+    onBackground: function (toggler, element) {
+      toggler.blur();
+      toggler.removeClass('expanded');
+      toggler.addClass('squeezed');
+    }
 	},
-	close: function (delay) {
-    this.fx.start({
-      height: this.closedheight,
-      opacity: 0.3
-    });
-    this.expander.set('text','show ' + this.description)
-    this.container.removeClass('expanded');
-    this.container.addClass('squashed');
-    this.expander.removeClass('closer');
-    this.isopen = false;
-	},
-	toggle: function (e) {
-	  var event = new Event(e).stop();
-	  event.preventDefault();
-	  event.target.blur();
-    this.isopen ? this.close() : this.open();
+	initialize: function (togglers, elements) {
+    arguments.callee.parent(togglers, elements);
+    elements.each(function (element) { element.squeezed = true; });
 	}
 });
 
