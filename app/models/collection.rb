@@ -16,5 +16,14 @@ class Collection < ActiveRecord::Base
   cattr_accessor :current_collections
 
   has_finder :in_account, lambda { |account| {:conditions => { :account_id => account.id }} }
- 
+
+  def catch_this(object)
+    if object.collection != self
+      object.collection = self
+      return CatchResponse.new("#{object.name} moved to #{self.name} collection", 'copy', 'success')
+    else
+      return CatchResponse.new("#{object.name} already in #{self.name} collection", 'copy', 'failure')
+    end
+  end
+
 end

@@ -45,6 +45,7 @@ module ActiveRecord
               belongs_to :collection
               has_finder :in_collection, lambda { |collection| {:conditions => { :collection_id => collection.id }} }
               has_finder :in_collections, lambda { |collections| {:conditions => ["#{table_name}.collection_id in (" + collections.map{'?'}.join(',') + ")"] + collections.map { |c| c.id }} }
+              Collection.can_catch(self)
             else
               logger.warn("!! #{self.to_s} should belong_to collection but has no collection_id column")
             end

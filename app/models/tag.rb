@@ -36,13 +36,20 @@ class Tag < ActiveRecord::Base
     case object.class
     when Tag
       subsume(object)
+      return CatchResponse.new("#{object.name} subsumed into #{self.name}", 'delete', 'success')
     else
-      self.taggings.create!(:taggable => object) if self.taggings.of(object).empty?
+      if self.taggings.of(object).empty?
+        self.taggings.create!(:taggable => object)
+        return CatchResponse.new("#{object.name} tagged with #{self.name}", 'copy', 'success')
+      else
+        return CatchResponse.new("#{self.name} already attached to #{object.name}", '', 'failure')
+      end
     end
   end
 
   def drop_this(object)
     self.taggings.delete(self.taggings.of(object))
+    return CatchResponse.new("#{self.name} tag removed from #{object.name}", 'delete', 'success')
   end
 
 end

@@ -7,11 +7,17 @@ class Flag < ActiveRecord::Base
   end
   
   def catch_this(object)
-    self.flaggings.create!(:flaggable => object) if self.flaggings.of(object).empty?
+    if self.flaggings.of(object).empty?
+      self.flaggings.create!(:taggable => object)
+      return CatchResponse.new("#{object.name} flagged with #{self.name}", 'copy', 'success')
+    else
+      return CatchResponse.new("#{self.name} already attached to #{object.name}", '', 'failure')
+    end
   end
 
   def drop_this(object)
     self.flaggings.delete(self.flaggings.of(object))
+    return CatchResponse.new("#{self.name} flag removed from #{object.name}", 'delete', 'success')
   end
 
 end
