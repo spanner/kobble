@@ -20,7 +20,7 @@ var Interface = new Class({
     this.fixedbottom = [];
     this.inlinelinks = [];
     this.replyform = null;
-    this.debug_level = 3;
+    this.debug_level = 0;
     this.clickthreshold = 20;
     this.announcer = $E('div#notification');
     this.admin = $E('div#admin');
@@ -242,7 +242,7 @@ var Interface = new Class({
   
   debug: function (message, level) {
     if (!level) level = 2;
-    if (this.debug_level >= level) console.log(message);
+    if (console && this.debug_level >= level) console.log(message);
   }
   	
 });
@@ -518,7 +518,11 @@ var Draggee = new Class({
 	},
   spokeID: function () { return this.original.spokeID(); },
   spokeType: function () { return this.original.spokeType(); },
-	doClick: function (e) { this.link.fireEvent('click'); },
+	doClick: function (e) { 
+	  var event = new Event(e).stop();
+    intf.removeHelper();
+	  this.link.fireEvent('click'); 
+	},
 	waiting: function () { this.original.addClass('waiting'); },
 	notWaiting: function () { this.original.removeClass('waiting'); },
 	remove: function () { this.original.remove(); },
@@ -551,8 +555,6 @@ var DragHelper = new Class({
       onSnap: function (element) { dh.reveal(); }
     });
 		this.dragmove.start(event);
-		console.log(dh);
-	  
 	},
 	reveal: function () {
     $$('.hideondrag').each(function (element) { element.setStyle('visibility', 'hidden'); });
@@ -563,7 +565,6 @@ var DragHelper = new Class({
 	emptydrop: function () {
 		intf.stopDragging();
 		if (!this.active) {
-		  this.remove();
 		  this.draggee.doClick();
     } else if (this.draggee.draggedfrom) {
       this.draggedOut();
@@ -572,7 +573,6 @@ var DragHelper = new Class({
 		}
 	},
 	draggedOut: function () {
-	  this.remove();
     if (this.draggee.draggedfrom) this.draggee.draggedfrom.removeDrop(this);
 	},
 	flyback: function () {
