@@ -11,7 +11,6 @@ window.addEvent('domready', function(){
 var Interface = new Class({
 	initialize: function(){
     this.tips = null;
-    this.dragging = null;
     this.draggables = [];
     this.droppers = [];
     this.tagboxes = [];
@@ -21,11 +20,12 @@ var Interface = new Class({
     this.fixedbottom = [];
     this.inlinelinks = [];
     this.replyform = null;
-    this.debug_level = 0;
+    this.debug_level = 3;
     this.clickthreshold = 20;
     this.announcer = $E('div#notification');
     this.admin = $E('div#admin');
     this.squeezebox = null;
+    this.draghelper = null;
     this.fader = new Fx.Tween(this.announcer, 'opacity', {duration: 'long', link: 'chain'});
 	},
   announce: function (message, title) {
@@ -50,20 +50,26 @@ var Interface = new Class({
     if (this.tips) this.tips.hide();
   },
   startDragging: function (helper) {
-    this.dragging = helper;
     var catchers = [];
   	if (this.preferences.tabs_responsive) this.tabs.each(function (t) { t.makeReceptiveTo(helper); });
   	this.droppers.each(function(d){ if (d.makeReceptiveTo(helper)) catchers.push(d.container); });
-  	intf.debug('catchers will be: ', 5);
-  	intf.debug(catchers, 5);
+  	intf.debug('catchers will be: ', 3);
+  	intf.debug(catchers, 3);
   	return catchers;
   },
   stopDragging: function (helper) {
-    this.dragging = null;
+  	intf.debug('stopdragging: ', 2);
     this.tabs.each(function (t) { t.makeUnreceptive(helper); });
     this.droppers.each(function (d) { d.makeUnreceptive(helper); });
     $$('.hideondrag').each(function (element) { element.setStyle('visibility', 'visible'); });
     $$('.showondrag').each(function (element) { element.setStyle('visibility', 'hidden'); });
+  },
+  removeHelper: function () {
+    if (this.draghelper) {
+      this.draghelper.remove();
+      delete this.draghelper;
+    }
+    this.draghelper = null;
   },
   lookForDropper: function (element) {
     if (element) return element.dropzone || this.lookForDropper( element.getParent() );
@@ -292,13 +298,19 @@ var Dropzone = new Class({
   spokeType: function () { return this.container.spokeType(); },
 	recipient: function () { return this.container; },
 	flasher: function () { return this.container; },
-	contents: function () { return this.container.getElements('.draggable').map(function(el){ return el.id; }); },
-	contains: function (draggee) { return this.contents().contains(draggee.tag); },
+	contents: function () { return this.container.getElements('.draggable').map(function(el){ return el.spokeTag(); }); },
+	contains: function (draggee) { 
+	  intf.debug('looking for ' + draggee.tag + ' in ', 5);
+	  intf.debug(this.contents(), 5);
+	  return this.contents().contains(draggee.tag); 
+	},
 	can_catch: function (type) { if (this.catches) return this.catches == 'all' || this.catches.split(',').contains(type); },
   
+  // makeReceptiveTo gets called on drag start to decide whether we're interested and if so prepare us to receive a drop
+  // we do as many tests as possible here to make the mouseover events lighter
+
   makeReceptiveTo: function (helper) {
-    // this gets called on drag start to decide whether we're interested and if so prepare us to receive a drop
-    if (this.can_catch(helper.draggee.spokeType())) {
+    if (this.can_catch(helper.draggee.spokeType()) && this.container != helper.draggee.original && this != helper.draggee.draggedfrom && !this.contains(helper.draggee)) {
       intf.debug('receptive: ' + this.name, 5);
       var dropzone = this;
       this.container.addEvents({
@@ -310,15 +322,21 @@ var Dropzone = new Class({
         'mouseout': function() { dropzone.loseInterest(helper); }
       });
       return this.isReceptive = true;
+      
     } else {
       return this.isReceptive = false;
     }
   },
+  
   makeUnreceptive: function (helper) {
-    // this gets called when a drag from elsewhere leaves this space
+    // this gets called when a drag from elsewhere leaves this space or a drag ends
     if (this.isReceptive) {
       intf.debug('unReceptive: ' + this.name, 5);
-      this.container.removeEvents('mouseover', 'mouseout', 'drop');
+      this.container.removeEvents('mouseenter');
+      this.container.removeEvents('mouseleave');
+      this.container.removeEvents('mouseover');
+      this.container.removeEvents('mouseout');
+      this.container.removeEvents('drop');
       this.isReceptive = false;
     }
   },
@@ -342,18 +360,18 @@ var Dropzone = new Class({
   makeUnregretful: function () {
     if (this.isRegretful) {
       intf.debug('unRegretful: ' + this.name, 4);
+      this.container.removeEvents('mouseover');
+      this.container.removeEvents('mouseout');
       this.container.removeEvents('mouseenter');
       this.container.removeEvents('mouseleave');
+      this.container.removeEvents('drop');
       this.isRegretful = false;
     }
   },
   showInterest: function (helper) {
-    intf.debug('possibly interested: ' + this.name, 5);
-    if (this.container != helper.draggee.original && this != helper.draggee.draggedfrom && !this.contains(helper.draggee)) {
-      intf.debug('definitely interested: ' + this.name, 4);
-      this.container.addClass('drophere');
-      if (this.tab) this.tab.tabhead.addClass('over');
-    }
+    intf.debug('interested: ' + this.name, 5);
+    this.container.addClass('drophere');
+    if (this.tab) this.tab.tabhead.addClass('over');
   },
   loseInterest: function (helper) {
     intf.debug('uninterested: ' + this.name, 4);
@@ -377,9 +395,9 @@ var Dropzone = new Class({
 			helper.flyback();
 			
 		} else {
-			helper.remove();
+      intf.removeHelper();
 			if (intf.preferences.confirmation == false || confirm('are you sure you wanted to drop that there?')) {
-
+        
   			var req = new Request.JSON( {
   			  url: this.addURL(draggee),
   				method: 'get',
@@ -390,9 +408,9 @@ var Dropzone = new Class({
           onSuccess: function(response){
             intf.debug('drop successful: ', 3);
             intf.debug('outcome = ' + response.outcome + ', message = ' + response.message + ', consequence = ' + response.consequence, 4);
+            dropzone.notWaiting();
+            draggee.notWaiting();
             if (response.outcome == 'success') {
-              dropzone.notWaiting();
-              draggee.notWaiting();
               switch (response.consequence) {
               case "move": 
                 dropzone.accept(draggee);
@@ -425,7 +443,7 @@ var Dropzone = new Class({
 	  intf.stopDragging();
 		var dropzone = this;
     var draggee = helper.draggee;
-		helper.remove();
+    intf.removeHelper();
 	  
 		var req = new Request.JSON( {
 		  url: this.removeURL(draggee),
@@ -487,34 +505,27 @@ var TrashDropzone = new Class({
 	can_catch: function (type) { return true; }
 });
 
-// now we always drag whole <li> elements. no more thumbnails.
-
 var Draggee = new Class({
 	initialize: function(element, e) {
 	  event = new Event(e).stop();
 	  event.preventDefault();
 		this.original = element;
-		this.tag = element.spokeType() + '_' + element.spokeID();   //omitting other id parts that only serve to avoid duplicate element ids
+		this.tag = element.spokeTag();
 		this.link = element.getElements('a')[0];
 		this.name = this.findTitle();
     this.draggedfrom = intf.lookForDropper(element.getParent());
-    this.helper = new DragHelper(this);
+    intf.draghelper = new DragHelper(this);
 	},
   spokeID: function () { return this.original.spokeID(); },
   spokeType: function () { return this.original.spokeType(); },
-	doClick: function (e) { 
-	  intf.debug('click!', 4);
-	  this.link.fireEvent('click');
-	},
+	doClick: function (e) { this.link.fireEvent('click'); },
 	waiting: function () { this.original.addClass('waiting'); },
 	notWaiting: function () { this.original.removeClass('waiting'); },
 	remove: function () { this.original.remove(); },
 	explode: function () { this.original.explode(); },
 	disappear: function () { this.original.dwindle(); },
 	clone: function () { return this.original.clone(); },
-	findTitle: function () { 
-	   return this.link.getText() || this.original.getElements('div.tiptitle').getText();
-	}
+	findTitle: function () { return this.link.getText() || this.original.getElements('div.tiptitle').getText(); }
 });
 
 // the dragged representation is a new DragHelper object with useful abilities
@@ -540,6 +551,8 @@ var DragHelper = new Class({
       onSnap: function (element) { dh.reveal(); }
     });
 		this.dragmove.start(event);
+		console.log(dh);
+	  
 	},
 	reveal: function () {
     $$('.hideondrag').each(function (element) { element.setStyle('visibility', 'hidden'); });
@@ -563,19 +576,20 @@ var DragHelper = new Class({
     if (this.draggee.draggedfrom) this.draggee.draggedfrom.removeDrop(this);
 	},
 	flyback: function () {
-		var dh = this;
-		var flybackto = $merge(this.original.getCoordinates(), {'opacity': 0.2});
 		new Fx.Morph(this.dragger, {
 		  duration: 'long', 
 		  transition: 'bounce:out',
-		  onComplete: function () { dh.remove(); }
-		}).start( flybackto );
+		  onComplete: function () { intf.removeHelper(); }
+		}).start( $merge(this.original.getCoordinates(), {'opacity': 0.2}) );
 	},
   show: function (event) { this.dragger.show(); },
   hide: function () { this.dragger.fade('out'); },
-	remove: function () { this.hide(); },
-	explode: function () { this.remove(); },  // something more explosive should happen here
-	disappear: function () { this.original.dwindle(); }
+	remove: function () { 
+	  this.hide();
+	  this.dragger.removeEvents('emptydrop');
+	  this.dragger.destroy();
+	},
+	explode: function () { this.remove(); }
 });
 
 

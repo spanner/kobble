@@ -52,6 +52,9 @@ Element.implement({
   spokeType: function () {
     return this.idparts().type;
   },
+  spokeTag: function () {
+    return this.spokeType() + '_' + this.spokeID();
+  },
   dwindle: function () {
     var element = this;
     new Fx.Morph(element, {
