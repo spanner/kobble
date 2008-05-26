@@ -10,6 +10,11 @@
 </h3>
 
 <div class="contentblock squeezed">
+
+  <ul class="minimal">
+    <%= render :partial => 'shared/listed', :locals => {:listed => @thing} %>
+  </ul>
+
   <% if item.has_description? %>
 	  <%= item.description.formatted %>
   <% else %>

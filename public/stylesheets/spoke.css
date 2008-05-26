@@ -473,7 +473,7 @@ div.mainlist ul.listcolumn {
   margin: 0 20px 20px 0;
 }
 
-div.mainlist ul {
+div.mainlist ul, ul.minimal {
   margin: 0;
 	padding: 0;
   list-style: none;
@@ -485,17 +485,25 @@ div.mainlist ul.listcolumn {
   overflow-x: hidden;
 }
 
-div.mainlist li, li.single {
-  margin: 0;
-  list-style-image: url(/images/furniture/spoke/blue/default.png);
-  margin: 0 10px 4px 22px;
+div.mainlist li, li.single, ul.minimal li {
+  margin: 0 10px 4px 25px;
   font-size: 16px;
   line-height: 20px;
+}
+
+ul.minimal div {
+  display: none;
+}
+
+ul.minimal li {
+  margin-bottom: 0;
 }
 
 li.single {
   display: inline;
 }
+
+
 
 div.mainlist a.listed {
   
