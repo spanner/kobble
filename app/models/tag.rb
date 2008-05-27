@@ -33,8 +33,8 @@ class Tag < ActiveRecord::Base
   end
   
   def catch_this(object)
-    case object.class
-    when Tag
+    case object.class.to_s
+    when 'Tag'
       subsume(object)
       return CatchResponse.new("#{object.name} subsumed into #{self.name}", 'delete', 'success')
     else

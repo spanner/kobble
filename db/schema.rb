@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 106) do
+ActiveRecord::Schema.define(:version => 107) do
 
   create_table "account_types", :force => true do |t|
     t.string   "name"
@@ -47,6 +47,26 @@ ActiveRecord::Schema.define(:version => 106) do
     t.integer "collection_id"
     t.integer "user_id"
     t.boolean "active",        :default => false
+  end
+
+  create_table "annotation_types", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.integer  "created_by"
+    t.integer  "updated_by"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "annotations", :force => true do |t|
+    t.integer  "annotated_id"
+    t.string   "annotated_type"
+    t.integer  "annotation_type_id"
+    t.text     "body"
+    t.integer  "created_by"
+    t.integer  "updated_by"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "bundles", :force => true do |t|
@@ -93,6 +113,8 @@ ActiveRecord::Schema.define(:version => 106) do
     t.integer  "account_id"
     t.datetime "last_active_at"
     t.datetime "deleted_at"
+    t.string   "image"
+    t.string   "clip"
   end
 
   create_table "events", :force => true do |t|
@@ -181,6 +203,7 @@ ActiveRecord::Schema.define(:version => 106) do
     t.text     "arising"
     t.text     "emotions"
     t.text     "body"
+    t.datetime "deleted_at"
   end
 
   create_table "paddings", :force => true do |t|
@@ -214,6 +237,7 @@ ActiveRecord::Schema.define(:version => 106) do
     t.string   "workplace"
     t.string   "role"
     t.datetime "deleted_at"
+    t.text     "circumstances"
   end
 
   create_table "permissions", :force => true do |t|
@@ -321,6 +345,8 @@ ActiveRecord::Schema.define(:version => 106) do
     t.text     "emotions"
     t.text     "arising"
     t.datetime "deleted_at"
+    t.text     "circumstances"
+    t.string   "clip"
   end
 
   create_table "topics", :force => true do |t|
@@ -385,6 +411,7 @@ ActiveRecord::Schema.define(:version => 106) do
     t.datetime "last_active_at"
     t.datetime "previously_logged_in_at"
     t.datetime "deleted_at"
+    t.string   "clip"
   end
 
   add_index "users", ["login"], :name => "index_users_on_login"

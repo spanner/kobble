@@ -29,7 +29,7 @@ module ActiveRecord
       module ClassMethods
 
         def acts_as_spoke(options={})
-          definitions = [:collection, :owners, :illustration, :organisation, :description, :discussion, :index, :log, :undelete]
+          definitions = [:collection, :owners, :illustration, :organisation, :description, :annotation, :discussion, :index, :log, :undelete]
           if options[:except]
             definitions = definitions - Array(options[:except]) 
           elsif options[:only]
@@ -38,6 +38,7 @@ module ActiveRecord
         
           if definitions.include?(:index)
             is_indexed :fields => self.index_fields, :concatenate => self.index_concatenation
+            Spoke::Associations.indexed_model(self)
           end
           
           if definitions.include?(:collection)
@@ -87,12 +88,12 @@ module ActiveRecord
             self.can_catch(Tag)
             self.can_drop(Tag)
             Tag.can_catch(self)
-            
             has_many :flaggings, :as => :flaggable, :dependent => :destroy
             has_many :flags, :through => :flaggings
             self.can_catch(Flag)
             self.can_drop(Flag)
             Flag.can_catch(self)
+            Spoke::Associations.described_model(self)
           end
 
           if definitions.include?(:organisation)
@@ -100,24 +101,26 @@ module ActiveRecord
             has_many :scratchpads, :through => :paddings       
             Scratchpad.can_catch(self)
             Scratchpad.can_drop(self)
-            
             has_many :bundlings, :as => :member, :dependent => :destroy
             has_many :bundles, :through => :bundlings, :source => :superbundle      
             Bundle.can_catch(self)
             Bundle.can_drop(self)
+            Spoke::Associations.organised_model(self)
           end
 
           if definitions.include?(:annnotation)
-            # has_many :annotations, :as => :notable, :dependent => :destroy
-            # has_many :notes, :through => :annotations
+            has_many :annotations, :as => :annotated, :dependent => :destroy
+            Spoke::Associations.annotated_model(self)
           end
 
           if definitions.include?(:discussion)
             has_many :topics, :as => :referent, :dependent => :destroy
+            Spoke::Associations.discussed_model(self)
           end
 
           if definitions.include?(:log)
             has_many :logged_events, :class_name => 'Event', :as => :affected, :order => 'at DESC'
+            Spoke::Associations.logged_model(self)
           end
           
           if definitions.include?(:undelete)

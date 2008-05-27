@@ -1,0 +1,12 @@
+<% @title = "start a conversation about <strong>#{@referent.name}</strong>" %>
+
+<div class="mainform">
+  
+  <%= error_messages_for :topic %>
+
+  <% form_for ([@referent, @topic]) do |f| %>
+    <%= render :partial => "form", :object => f %>
+    <%= submit_tag 'Start conversation' %> or <%= link_to 'go back', url_for(@referent) %>
+  <% end -%>
+
+</div>
