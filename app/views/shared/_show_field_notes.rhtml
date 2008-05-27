@@ -5,7 +5,7 @@
     field notes 
     <span class="headernote">
       <% if item.has_notes? %>
-        <%= truncate(item.field_notes, 100) %>
+        <%= truncate(item.annotations.first.body, 100) %>
       <% else %>
         Nope
       <% end%>
@@ -14,17 +14,8 @@
 </h3>
 
 <div id="source_field notes" class="squeezed contentblock">
-	<% unless item.circumstances.nil? || item.circumstances.size == 0 %>
-		<%= "*Circumstances*: #{item.circumstances}".formatted %>
-	<% end %>
-	<% unless item.observations.nil? || item.observations.size == 0 %>
-		<%= "*Observations*: #{item.observations}".formatted %>
-	<% end %>
-	<% unless item.emotions.nil? || item.emotions.size == 0 %>
-		<%= "*Emotions*: #{item.emotions}".formatted %>
-	<% end %>
-	<% unless item.arising.nil? || item.arising.size == 0 %>
-		<%= "*Connections*: #{item.arising}".formatted %>
-	<% end %>
-	<p><%= link_to "+ add a note", '#', {:id => "annotate_#{item.nice_title}_#{item.id}", :class => 'inlineannotate'} %></p>
+  <div class="mainlist" id="notelist">
+    <%= render :partial => 'annotations/note', :collection => item.annotations %>
+  	<p><%= link_to "+ add a note", '#', {:id => "annotate_#{item.nice_title}_#{item.id}", :class => 'inlineannotate'} %></p>
+  </div>
 </div>

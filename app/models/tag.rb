@@ -1,6 +1,6 @@
 class Tag < ActiveRecord::Base
 
-  acts_as_spoke :except => [:collection, :index, :description]
+  acts_as_spoke :except => [:collection, :index, :description, :annotation]
   belongs_to :account
   has_finder :in_account, lambda { |account| {:conditions => { :account_id => account.id }} }
   has_many :taggings, :dependent => :destroy

@@ -3,7 +3,7 @@ class Topic < ActiveRecord::Base
   # topics are just linking records: they connect a number of posts to an object
   # and hold administrative information like the latest poster and the initiator of the conversation
 
-  acts_as_spoke :except => [:illustration, :discussion, :index]
+  acts_as_spoke :except => [:illustration, :discussion, :index, :annotation]
   belongs_to :referent, :polymorphic => true
   has_many :monitorships, :dependent => :destroy
   has_many :monitors, :through => :monitorships, :conditions => ['monitorships.active = ?', true], :source => :user

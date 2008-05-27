@@ -1,0 +1,5 @@
+<% note ||= @note %>
+<div class="fieldnote">
+<h4 class="label"><%= note.annotation_type.name %></h4>
+<%= note.body.formatted %>
+</div>

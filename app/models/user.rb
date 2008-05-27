@@ -1,11 +1,12 @@
 require 'digest/sha1'
 
 class User < ActiveRecord::Base
+
   attr_protected :activated_at
   attr_accessor :password_confirmation
   attr_accessor :old_password
 
-  acts_as_spoke :except => [:collection, :index, :discussion]
+  acts_as_spoke :except => [:collection, :index, :discussion, :annotation]
   
   belongs_to :account, :dependent => :destroy
   belongs_to :person

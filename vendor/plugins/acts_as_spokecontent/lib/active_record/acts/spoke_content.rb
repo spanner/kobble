@@ -13,21 +13,19 @@ module ActiveRecord
       # It defines one class method:
       #
       # acts_as_spoke
-      #   which creates the standard ownership and collection relations
+      #   which creates a set of standard behaviours
       #
       # :only and :except parameters can be supplied, so eg:
       #
       # acts_as_spoke :except => :illustration
       #
       # the options are:
-      # :collection, :creator, :updater, :illustration, :discussion, :index
+      # :collection, :owners, :illustration, :organisation, :description, :annotation, :discussion, :index, :log, :undelete
       #
-      # by default all relations are created
-      #
-      # (which usually means that they're pushed onto class variable arrays that are used to define has_many_polymorphs relations after initialization)
+      # by default all behaviours are created.
       
       module ClassMethods
-
+ 
         def acts_as_spoke(options={})
           definitions = [:collection, :owners, :illustration, :organisation, :description, :annotation, :discussion, :index, :log, :undelete]
           if options[:except]
@@ -108,8 +106,9 @@ module ActiveRecord
             Spoke::Associations.organised_model(self)
           end
 
-          if definitions.include?(:annnotation)
+          if definitions.include?(:annotation)
             has_many :annotations, :as => :annotated, :dependent => :destroy
+            self.can_catch(Annotation)
             Spoke::Associations.annotated_model(self)
           end
 
@@ -167,7 +166,7 @@ module ActiveRecord
       end #classmethods
       
       module InstanceMethods
-        
+
         public
         
         def nice_title
@@ -209,21 +208,15 @@ module ActiveRecord
         end
 
         def has_members?
-          self.respond_to?('members') && self.members.count > 0
+          respond_to?('members') && members.count > 0
         end
-        
-        def has_circumstances?
-          self.respond_to?('circumstances') && !self.circumstances.nil? and self.circumstances.length != 0
-        end
-        
+                
         def is_notable?
-          respond_to?('observations') || respond_to?('emotions') || respond_to?('arising')
+          respond_to?('annotations')
         end
         
         def has_notes?
-          (self.respond_to?('observations') && (observations.nil? || observations.size == 0)) && 
-          (self.respond_to?('emotions') && (emotions.nil? || emotions.size == 0)) && 
-          (self.respond_to?('arising') && (arising.nil? || arising.size == 0)) ? false : true
+          is_notable? && !self.annotations.empty?
         end
 
         def has_origins?

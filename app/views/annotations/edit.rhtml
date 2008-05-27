@@ -1,8 +1,8 @@
-<h1>Edit Topic</h1>
+<h1>Edit Annotation</h1>
 
-<%= error_messages_for :topic %>
-<% form_for :topic,
-     :url  => topic_path(@forum, @topic),
+<%= error_messages_for :annotation %>
+<% form_for :annotation,
+     :url  => topic_path(@topic),
      :html => { :method => :put } do |f| -%>
 <%= render :partial => "form", :object => f %>
 <br />

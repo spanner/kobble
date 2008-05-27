@@ -16,4 +16,19 @@ module ApplicationHelper
     eval(url_method + '(item)')
   end
 
+  def item_new_note_url(item)    
+    url_method = 'new_' + item.class.to_s.underscore.downcase + '_annotation_url'
+    eval(url_method + '(item)')
+  end
+
+  def item_notes_path(item)    
+    url_method = item.class.to_s.underscore.downcase + '_annotations_path'
+    eval(url_method + '(item)')
+  end
+
+  def item_create_note_path(item)    
+    url_method = 'create_' + item.class.to_s.underscore.downcase + '_annotation_path'
+    eval(url_method + '(item)')
+  end
+
 end

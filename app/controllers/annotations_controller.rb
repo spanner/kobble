@@ -32,6 +32,7 @@ class AnnotationsController < ApplicationController
   end
   
   def update
+    @note = Annotation.find(params[:id])
     @note.attributes = params[:annotation]
     @note.save!
     respond_to do |format|

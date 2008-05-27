@@ -1,5 +1,6 @@
 class Flag < ActiveRecord::Base
-  acts_as_spoke :except => [:collection, :illustration, :index, :description]
+
+  acts_as_spoke :except => [:collection, :illustration, :index, :description, :annotation]
   has_many :flaggings, :dependent => :destroy
 
   def flagged
