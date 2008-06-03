@@ -2,76 +2,49 @@
 
 <div class="preamble">
   <p>
-	  A conversation about <%= link_to @topic.referent.name || "nameless #{@topic.referent.class.nice_title}", url_for(@topic.referent) %> started by <%= link_to @topic.creator.name, url_for(@topic.creator) %>
-	  <span class="when"><%= time_ago_in_words(@topic.created_at) %> ago</span>.
+	  A conversation started by <%= link_to @topic.creator.name, url_for(@topic.creator) %>
+	  <span class="when"><%= time_ago_in_words(@topic.created_at) %> ago</span>
+	  about this <%= @topic.referent.nice_title %>:
   </p>
 </div>
 
-<div class="boxtabs">
-  <a href="#" id="tab_content_conversation" class="tab">conversation</a>
-  <a href="#" id="tab_content_referent" class="tab">subject</a>
-  <a href="#" id="tab_content_tags" class="tab">tags</a>
+<ul class="mainlist">
+<%= render :partial => 'shared/listed', :locals => {:listed => @topic.referent} %>
+</ul>
+
+<div class="contentblock commentbody">
+  <%= @topic.body.formatted %>
 </div>
 
-<div class="boxed" id="box_content">
-  
-	<div id="content_conversation">
-    <div class="commentbody">
-      <%= @topic.body.formatted %>
-    </div>
+<%= render :partial => 'comments' %>
+
+<h3><%= link_to "add a reply", new_topic_post_url(@topic), :class => 'create inlinereply' %> <span class="headernote">select text to quote</span></h3>
+
+      
+<h3>
+  <%= 
+    monitorship = current_user.monitorship_of(@topic) 
+    linkclass =  monitorship.active? ? 'ticked' : 'crossed'
+    linktitle =  monitorship.active? ? 'click to switch off email subscription' : 'click to receive email notification of new posts'
+
+    link_to 'email notification', toggle_monitorship_url(monitorship), {
+		  :class => "toggle #{linkclass}",
+		  :title => linktitle
+	  } 
+	%>
+</h3>
 
 
-    <div id ="monitorform">
-      <h3>
-        <%= 
-          monitorship = current_user.monitorship_of(@topic) 
-          linkclass =  monitorship.active? ? 'ticked' : 'crossed'
-          linktitle =  monitorship.active? ? 'click to switch off email subscription' : 'click to receive email notification of new posts'
 
-          link_to 'email notification', toggle_monitorship_url(monitorship), {
-      		  :class => "toggle #{linkclass}",
-      		  :title => linktitle
-      	  } 
-      	%>
-    	</h3>
-    </div>
 
-    <%= render :partial => 'comments' %>
-    <%= render :partial => 'posts/form' %>
-        
-  </div>
 
-	<div id="content_referent">
-    <h2><%= link_to @topic.referent.name || "nameless #{@topic.referent.class.nice_title}", url_for(@topic.referent) %></h2>
 
-    <%= render :partial => 'shared/show_clip', :locals => {:item => @topic.referent} %>
 
-  	<p>
-  		<% if @topic.referent.respond_to?('speaker') %>
-  		  speaker: <% if @topic.referent.speaker %><%= link_to @topic.referent.speaker.name, url_for(@topic.referent.speaker) %><% else %>not known<% end %><br />
-  		<% end %>
-  		<% if @topic.referent.respond_to?('source') %>
-  		  source: <% if @topic.referent.source %><%= link_to @topic.referent.source.name, url_for(@topic.referent.source) %><% else %>not known<% end %><br />
-  		<% end %>
-  		<% if @topic.referent.creator %>
-  		  created by <%= link_to @topic.referent.creator.name, url_for(@topic.referent.creator) %>
-  		<% end %>
-		</p>
 
-    <% if @topic.referent.has_description? %>
-    	  <%= @topic.referent.description.formatted %>
-    <% else %>
-      <p>No summary given</p>
-    <% end %>
-  </div>
-  
-  <%= render :partial => 'shared/show_tags', :locals => {:item => @topic, :tabset => 'content'} %>
-  
-</div>
+
+
+
+
 
 <% content_for :admin do %>
-  <p>
-    conversation:<br />
-    <%= render :partial => 'shared/show_admin', :locals => {:item => @topic} %>
-  </p>
 <% end %>

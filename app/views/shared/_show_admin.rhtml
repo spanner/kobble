@@ -1,9 +1,9 @@
 <% if item.is_notable? %>
-  <%= link_to "add note", item_new_note_url(item), {:id => 'admin_extend_notelist', :class => 'annotate'} %><br />
+  <%= link_to "note", item_new_note_url(item), {:id => 'admin_extend_notelist', :class => 'annotate'} %><br />
 <% end %>
 <%= link_to "edit" , {:controller => item.class.to_s.pluralize.underscore, :action => 'edit', :id => item} %><br />
 <% if item.is_discussable? %>
-  <%= link_to "discuss", item_new_topic_url(item), {:id => 'extend_topiclist', :class => 'inlinediscuss'} %><br />
+  <%= link_to "discuss", item_new_topic_url(item), {:id => 'admin_extend_topiclist', :class => 'inlinediscuss'} %><br />
 <% end %>
 <%= link_to "delete", {:controller => item.class.to_s.pluralize.underscore, :action => 'destroy', :id => item}, {:class => 'warning', :method => :delete} %><br />
 <%= link_to "create", {:controller => item.class.to_s.pluralize.underscore, :action => 'new'}, {:class => 'create'} %><br />

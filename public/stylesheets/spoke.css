@@ -232,7 +232,6 @@ div#admin a { color: #559DC4; }
 div#admin a:hover, .pagination a:active { color: #d1005d; }
 div#admin a.warning { color: white; }
 div#admin a.create { color: #a0a500; }
-div#admin a.annotate { color: #CC6E1F; }
 
 div#trashholder {
   position: fixed;
@@ -868,6 +867,7 @@ div.overlay {
 
 div.floater {
 	position: absolute;
+	visibility: hidden;
   left: 150px;
   top: 70px;
   width: 510px;
@@ -875,7 +875,7 @@ div.floater {
   padding: 0 10px;
   overflow: hidden;
   background-color: white;
-  border: 1px solid #d1005d;
+  border: 4px solid #d1005d;
 	z-index: 21000;
 }
 
@@ -1359,6 +1359,15 @@ div.floatspinner {
  	height: 32px;
  	width: 32px;
  	margin: 10px;
+	display: none;
+}
+
+div.linkspinner {
+ 	background-image: url('/images/furniture/signals/wait_16_grey.gif');
+	width: 16px;
+	height: 16px;
+	position: absolute;
+	display: none;
 }
 
 li.waiter {
@@ -1570,7 +1579,7 @@ div.cloudsummary label {
 
 /* inline toggle links */
 
-a.ticked, a.crossed, a.waiting {
+a.ticked, a.crossed {
   display: block;
   height: 16px;
   font-size: 16px;
@@ -1592,8 +1601,11 @@ a.crossed {
   background-image: url('/images/furniture/buttons/cross/red.png');
 }
 a.waiting {
-  color: #4d4e53;
+  color: #4d4e53 !important;
   background-image: url('/images/furniture/signals/wait_16_grey.gif');
+  background-repeat: no-repeat;
+  background-position: top left;
+  padding-left: 22px;
 }
 
 div.scratchpage a.ticked {
@@ -1691,10 +1703,14 @@ a.inlinecreate, a.inlinecreate:visited. a.inlinediscuss, a.inlinediscuss:visited
   color: #a0a500;
 }
 
+a.activated {
+	background-color: #d1005d;
+	color: white !important;
+}
 
 
 div#replywrapper form {
-  margin-top: 50px;
+  margin: 10px 0 20px 0;
 }
 
 div.post h3 {
@@ -1718,3 +1734,11 @@ div.post blockquote {
   padding-left: 26px;
 	background: url(/images/furniture/spoke/grey/post.png) no-repeat top left;
 }
+
+div.commentbody {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 16px;
+  color: black;
+}
+
+

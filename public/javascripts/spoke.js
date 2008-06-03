@@ -19,7 +19,6 @@ var Interface = new Class({
     this.preferences = {};
     this.fixedbottom = [];
     this.inlinelinks = [];
-    this.replyform = null;
     this.debug_level = 0;
     this.clickthreshold = 20;
     this.announcer = $E('div#notification');
@@ -122,31 +121,25 @@ var Interface = new Class({
     });
   },
 
-  grabForm: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new htmlForm(element, e); }); }); },
   makeInlineCreate: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new jsonForm(element, e); }); }); },
+  makeInlineDiscuss: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new htmlForm(element, e); }); }); },
+  makeInlineReply: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new htmlForm(element, e); }); }); },
+  makeNoter: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new htmlForm(element, e); }); }); },
   makeSnipper: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new Snipper(element, e); }); }); },
-  makeNoter: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new Noter(element, e); }); }); },
   makePopup: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new Popup(element, e); }); }); },
+
   makeSquash: function (handles, blocks) { 
 	 	if (this.squeezebox) this.squeezebox.addSections(handles,blocks);
 		else this.squeezebox = new Squeezebox(handles, blocks);
 	},
-  
-  // there will only be one of these really
-
-  makeReplyForm: function (elements) {
-    elements.each(function (element) { 
-      this.replyform = new ReplyForm(element); 
-    }, this);
-  },
-  
+    
   makeFixed: function (elements) { elements.each(function (element) { element.pin(); }); },
 
   makeCollectionsLinks: function (elements) {
     elements.each(function (a) {
       a.onclick = function (e) { 
-        event = new Event(e).preventDefault();
-        event.target.blur();
+        event = intf.blocked_event(e);
+        if (event) event.target.blur();
         intf.tabsets['scratchpad'].select('collections');
       }
     });
@@ -196,10 +189,10 @@ var Interface = new Class({
     this.makePreference(scope.getElements('a.preference'));
     this.makeSuggester(scope.getElements('input.tagbox'));
     this.makeInlineCreate(scope.getElements('a.inlinecreate'));
-    this.grabForm(scope.getElements('a.inlinediscuss'));
+    this.makeInlineDiscuss(scope.getElements('a.inlinediscuss'));
+    this.makeInlineReply(scope.getElements('a.inlinereply'));
     this.makeSnipper(scope.getElements('a.snipper'));
     this.makeNoter(scope.getElements('a.annotate'));
-    this.makeReplyForm(scope.getElements('form#new_post'));
     this.makeFixed(scope.getElements('.fixed'));
     this.makePopup(scope.getElements('.popup'));
     this.makeCollectionsLinks(scope.getElements('a.choosecollections'));
@@ -244,7 +237,15 @@ var Interface = new Class({
   getPlayerOut: function () {
     var player = document.spannerplayer;
     if (player && player.playerOk() ) return player.playerOut();
-  }, 
+  },
+
+	blocked_event: function (e) {
+		if (e) {
+			var event = new Event(e);
+			event.preventDefault();
+			return event;
+		}
+	},
   
   debug: function (message, level) {
     if (!level) level = 2;
@@ -513,19 +514,18 @@ var TrashDropzone = new Class({
 
 var Draggee = new Class({
 	initialize: function(element, e) {
-	  event = new Event(e).stop();
-	  event.preventDefault();
+	  var event = intf.blocked_event(e);
 		this.original = element;
 		this.tag = element.spokeTag();
 		this.link = element.getElements('a')[0];
 		this.name = this.findTitle();
     this.draggedfrom = intf.lookForDropper(element.getParent());
-    intf.draghelper = new DragHelper(this);
+    intf.draghelper = new DragHelper(this, event);
 	},
   spokeID: function () { return this.original.spokeID(); },
   spokeType: function () { return this.original.spokeType(); },
 	doClick: function (e) { 
-	  var event = new Event(e).stop();
+	  var event = intf.blocked_event(e);
     intf.removeHelper();
 	  this.link.fireEvent('click'); 
 	},
@@ -542,7 +542,7 @@ var Draggee = new Class({
 // and a tooltip-like label
 
 var DragHelper = new Class({
-	initialize: function(draggee){
+	initialize: function(draggee, event){
 	  this.draggee = draggee;
 		this.original = this.draggee.original;
 		this.name = this.draggee.name;
@@ -620,10 +620,7 @@ var Tab = new Class({
     this.tabset.addTab(this);
 	},
 	select: function (e) {
-	  if (e) {
-	    e = new Event(e).stop();
-	    e.preventDefault();
-	  }
+		intf.blocked_event(e);
 	  this.tabhead.blur();
     this.tabset.select(this.tag);
 	},
@@ -744,9 +741,8 @@ var ScratchTab = new Class({
 	  // ...and let nature take its course
 	},
 	getForm: function (e) {
-	  e = new Event(e).stop();
-    e.preventDefault();
-    this.showForm(e.target.getProperty('href'));
+	  var event = intf.blocked_event(e);
+    this.showForm(event.target.getProperty('href'));
   },
   showForm: function (url) {
     if (!url) url = '/scratchpads/new';
@@ -765,13 +761,13 @@ var ScratchTab = new Class({
     }
 	},
 	hideFormNicely: function (e) {
-    if (e) e = new Event(e).stop();
+    intf.blocked_event(e);
     this.hideForm();
     //     var stab = this;
     // this.hideformfx.start(0);
 	},
 	hideForm: function (e) {
-    if (e) e = new Event(e).stop();
+    intf.blocked_event(e);
     this.formholder.hide();
     this.tabhead.removeClass('editing');
 	},
@@ -785,8 +781,7 @@ var ScratchTab = new Class({
 		this.padform.getElement('input.titular').focus();
 	},
 	doForm: function (e) {
-	  e = new Event(e).stop();
-	  e.preventDefault();
+	  var event = intf.blocked_event(e);
 	  var stab = this;
     this.padform.hide();
     this.formholder.addClass('bigspinner');
@@ -860,8 +855,7 @@ var ScratchSet = new Class({
     this.foreground.getForm(url);
 	},
 	createTab: function (e) {
-	  e = new Event(e).stop();
-	  e.preventDefault();
+	  var event = intf.blocked_event(e);
     var tabs = this;
     var newhead = new Element('a', {
       'id': 'tab_scratchpad_new',
@@ -873,7 +867,7 @@ var ScratchSet = new Class({
       'class': 'scratchpage'
     }).injectInside(this.pagescontainer);
     this.newtab = new ScratchTab(newhead);
-    this.newtab.select(e);
+    this.newtab.select(event);
     this.newtab.showForm('/scratchpads/new');
 	}
 });
@@ -887,8 +881,7 @@ var AutoLink = new Class({
     return 'GET';
   },
   send: function (e) {
-    e = new Event(e).stop();
-    e.preventDefault();
+    var event = intf.blocked_event(e);
     this.link.blur();
     al = this;
 		new Request.JSON({
@@ -948,213 +941,260 @@ var Preference = new Class({
   }
 });
 
+
+
+
+
 var jsonForm = new Class ({
   initialize: function (element, e) {
-    event = new Event(e);
-    event.preventDefault();
-    var mf = this;
-    element.blur();
+		var event = intf.blocked_event(e);
+    event.target.blur();
 		this.link = element;
+		intf.debug('jsonForm.initialize', 5);
 		this.form = null;
+		this.at = event.client;
     this.waiter = null;
-		this.eventPosition = this.position.bind(this);
-		this.overlay = new Element('div', {'class': 'overlay'}).inject(document.body);
 		this.floater = new Element('div', {'class': 'floater'}).inject(document.body);
-		this.spinner = new Element('div', {'class': 'floatspinner'}).set('html', '&nbsp;').inject(this.floater).show();
-		this.formholder = new Element('div', {'class': 'modalform'}).inject(this.floater).hide();
+		this.formholder = new Element('div', {'class': 'modalform'}).inject(this.floater);
+		this.formWaiter = new Element('div', {'class': 'floatspinner'}).inject(this.floater);
+		this.fx = new Fx.Morph(this.floater, {duration: 'long', transition: Fx.Transitions.Back.easeOut});
+		this.expandTo = {};
+		this.shrinkTo = {};
 		this.destination = $E('#' + this.link.id.replace(/[\w_]*extend_/, ''));
 		this.destination_type = this.destination.get('tag');
-		this.squeeze = intf.lookForSqueeze( this.destination );
-		this.overlay.onclick = this.hide.bind(this);
+		this.destination_squeeze = intf.lookForSqueeze( this.destination );			// this is going to be a memory leak in IE when we get there
+    var mf = this;
     this.formholder.set('load', {
-      onRequest: function () { mf.waiting(); },
+      onRequest: function () { mf.linkWaiting(); },
       onSuccess: function () { mf.prepForm(); },
       onFailure: function () { mf.failed(); }
     });
-    this.show();
-  },
-  
-  url: function () { return this.link.getProperty('href'); },
- 
-  show: function () {
-    this.position();
     this.getForm();
-		this.setup(true);
-    // this.top = window.getScrollTop() + (window.getHeight() / 15);
-    // this.floater.setStyles({top: this.top, display: ''});
-		this.overlay.fade(0.6);
-    this.floater.show();
   },
+      	
+  // initialize calls getForm() directly
+	// it's only separated to be overridable
 
-  hide: function (e) {
-    event = new Event(e);
-    event.preventDefault();
-    this.floater.fade('out');
-		this.overlay.fade('out');
-		this.setup(false);
-  },
-  
-  // overridable close-form link suitable for insertion into the dialog somewhere
-  canceller: function () {
-    var a = new Element('a', {'class': 'canceller', 'href': '#'}).setText('cancel [x]');
-    a.onclick = this.hide.bind(this);
-    return a;
-  },
-  
-  // hide embeds and objects to prevent display glitches
-	setup: function(opening){
-		var fn = opening ? 'addEvent' : 'removeEvent';
-		window[fn]('scroll', this.eventPosition)[fn]('resize', this.eventPosition);
-  },
-  
-  //position whiteout overlay
-	position: function(){
-		dimensions = this.floater.getCoordinates();
-		this.floater.setStyles({
-		  'top': window.getScrollTop() + Math.floor(window.getHeight() - dimensions.height) / 2, 
-		  'left': window.getScrollLeft() + Math.floor((window.getWidth() - dimensions.width) / 2) 
-		});
-		this.overlay.setStyles({
-		  'top': window.getScrollTop(), 
-		  'height': window.getHeight()
-		});
-	},
-	
   getForm: function () {
+		intf.debug('jsonForm.getForm', 5);
     this.canceller().inject(this.floater, 'top');
-    this.waiting();
     this.formholder.load(this.url());
   },
   
   // onSuccess trigger in formholder.load calls prepForm()
+	// which locates and displays the form and activates any useful elements within it
+	// may be called again by processResponse if response contains another form
 
   prepForm: function () {
-    this.notWaiting();
-    this.position();
+		this.linkNotWaiting();
     this.form = this.formholder.getElement('form');
-    intf.makeSuggester(this.form.getElements('input.tagbox'));
-    var closer = this.hide.bind(this);
 		this.form.onsubmit = this.sendForm.bind(this);
-    this.form.getElements('a.cancelform').each(function (a) { a.onclick = closer; });
+    this.form.getElements('a.cancelform').each(function (a) { a.onclick = this.hide.bind(this); }, this);
+    this.show();
     this.form.getElement('input').focus();
   },
+
+  // captured form.onsubmit calls sendForm()
+	// which initiates the JSON request and binds its outcomes
   
   sendForm: function (e) {
-    var event = new Event(e).stop();
-    event.preventDefault();
+		intf.debug('jsonForm.sendForm', 5);
+    var event = intf.blocked_event(e);
     var mf = this;
     var req = new Request.JSON({
       url: this.form.get('action'),
-      onRequest: function () { mf.page_waiting(); },
-      onSuccess: function (response) { mf.page_update(response); },
+      onRequest: function () { mf.waiting(); },
+      onSuccess: function (response) { mf.processResponse(response); },
       onFailure: function (response) { mf.hide(); intf.complain('remote call failed'); }
     }).post(this.form);
   },
+
+	// sendform sets onSuccess to processResponse
+	// processResponse looks for an error in the response
+	// calls updatePage if none found
+	// in subclasses this is usually a previewing or validation mechanism
+
+	processResponse: function (response) {
+		intf.debug('jsonForm.processResponse', 5);
+		this.notWaiting();
+		if (response.errors) {
+			console.log(response.errors);
+		} else {
+			this.updatePage(response);
+		}
+	},
   
-  page_waiting: function () { this.waiting(); },
-  
-  page_update: function (response) {
-    // default is that we expect to add an option to a select box
-    // response should be the JSON representation of a materialist object
+	// updatePage called by processResponse if no more user input is expected
+	// and inserts response html into destination element
+  // default is that we expect to add an option to a select box
+  // created from the JSON representation of a materialist object
+	// subclasses have other ideas mostly to do with extending lists
+
+  updatePage: function (response) {
+		intf.debug('jsonForm.updatePage', 5);
     this.hide();
     var newitem = new Element('option', {'value': response.id}).set('text',response.name);
     newitem.inject( this.destination, 'top' );
+		// and i still can't work out how to select the new option
     this.showOnPage();
   },
+
+	// rest is normal utility stuff
   
-  // really ought to do something constructive here
-  // like show the form again with error messages. genius.
   failed: function () {
     this.hide();
     intf.complain("oh no.");
   },
   
-  // just in case it's needed
+	show: function () {
+		intf.debug('jsonForm.show', 5);
+    this.position();		// while it is invisible but has the right size
+		var coord = this.floater.getCoordinates();
+		var scroll = document.getScroll();
+		var boundary = document.getSize();
+		var room = {
+			'left': coord.left - coord.width - scroll.x > 0,
+			'right': coord.left + coord.width + scroll.x < boundary.x,
+			'up': coord.top - coord.height - scroll.y > 0,
+			'down': coord.top + coord.height + scroll.y < boundary.y
+		};
+		this.floater.setStyles({
+	    'height': 10,
+	    'width': 10,
+			'visibility': 'visible',
+			'opacity': 0
+		});
+		this.shrinkTo = this.floater.getCoordinates();
+		
+		// these double ternaries are ugly, but.
+		// logic goes: 
+		//	if room on both sides or neither, expand symmetrically
+		//  if room on right, go right
+		/// else go left
+		
+		this.expandTo = {
+			opacity: 1,
+			height: coord.height,
+			width: coord.width,
+			left: (room['right'] == room['left']) ? Math.floor(coord.left - coord.width / 2) : room['right'] ? coord.left - 20 : coord.left - coord.width + 20,
+			top: (room['up'] == room['down']) ? Math.floor(coord.top - coord.height / 2) : room['down'] ? coord.top - 20 : coord.top - coord.height + 20
+		};
+		this.fx.start(this.expandTo);
+		this.link.addClass('activated');
+	},
+
+	hide: function (e) {
+		intf.blocked_event(e);
+		this.shrinkTo['opacity'] = 0;
+		this.fx.start(this.shrinkTo);
+		this.link.removeClass('activated');
+	},
+
+	position: function () {
+		intf.debug('jsonForm.position', 5);
+		this.floater.setStyles({
+		  'top': this.at.y, 
+		  'left': this.at.x
+		});
+	},
+
   destroy: function () {
     this.floater.remove();
-    this.overlay.remove();
   },
   
   waiting: function () {
-    intf.debug('jsonForm.waiting', 5);
     this.formholder.hide();
     this.spinner.show();
   },
 
   notWaiting: function () {
-    intf.debug('jsonForm.notWaiting', 5);
     this.spinner.hide();
     this.formholder.show();
   },
 
+	linkWaiting: function (argument) {
+		this.link.addClass('waiting');
+	},
+	
+	linkNotWaiting: function (argument) {
+		this.link.removeClass('waiting');
+	},
+
   showOnPage: function () {
-    if (this.squeeze) intf.squeezebox.display(this.squeeze);
+    if (this.destination_squeeze) intf.squeezebox.display(this.destination_squeeze);
     if (this.destination_type == 'UL') this.destination.selectedIndex = 0;
     new Fx.Scroll(window).toElement(this.destination);
   },
 
 	announceSuccess: function () {
     intf.announce('done');
-	}
+	},
+
+  url: function () { 
+		return this.link.getProperty('href'); 			// needs to be overridable
+  },
+
+  canceller: function () {
+    var a = new Element('a', {'class': 'canceller', 'href': '#'}).setText('[x]');
+    a.onclick = this.hide.bind(this);
+    return a;
+  }
 	
 });
 
-// htmlForm inherits from modalform but expects to get html back at the end of the process: 
+// htmlForm inherits from jsonForm but expects to get html back at the end of the process instead: 
 // usually a list item but could be anything.
 
 var htmlForm = new Class ({
 	Extends: jsonForm,
 	  
   sendForm: function (e) {
-    var event = new Event(e).stop();
-    event.preventDefault();
+    var event = intf.blocked_event(e);
     this.responseholder = new Element(this.destination_type);
     var mf = this;
     var req = new Request.HTML({
       url: this.form.get('action'),
       update: this.responseholder,
-      onRequest: function () { mf.page_waiting(); },
-      onSuccess: function (response) { mf.page_update(response); }
+      onRequest: function () { mf.waiting(); },
+      onSuccess: function (response) { mf.processResponse(response); },
+      onFailure: function (response) { mf.hide(); intf.complain('remote call failed'); }
     }).post(this.form);
   },
 
-  // this is called when the form is submitted
-  // we disappear the form, stick a waiter in the destination list
-  // make the list visible and scroll to it
-  page_waiting: function (argument) {
-    this.waiting();
-    this.waiter = new Element('li', {'class': 'waiting'}).setText('please wait').inject(this.destination, 'top');
-    this.hide();
+  processResponse: function () {
+		this.notWaiting();
+    if (this.responseholder.getElement('form')) {
+			this.formholder.empty().adopt(this.responseholder.getChildren());
+			this.prepForm();			// loop back and prepare form for submission again
+    } else {
+			this.updatePage(response);
+    }
   },
-  
-  // this is called upon final response to the form
-  // we remove the waiter, insert into the node list and make the new insertion draggable
-  page_update: function () {
-		console.log('htmlForm.page_update');
-    this.waiter.remove();
+
+
+  updatePage: function () {
     var elements = this.responseholder.getChildren(); 
     var newitem = elements[0];
     newitem.inject(this.destination, 'top');
     this.showOnPage();
     intf.activateElement( newitem );
 		this.announceSuccess();
-		newitem.highlight('#d1005d');
+		newitem.highlight();
   },
   
   showOnPage: function () {
-    if (this.squeeze) intf.squeezebox.display(this.squeeze);
+    if (this.destination_squeeze) intf.squeezebox.display(this.destination_squeeze);
     new Fx.Scroll(window).toElement(this.destination);
   }
 });
 
-// snipper is a special case of htmlForm that does more work to populate the form
+
+// snipper is a special case of htmlForm that does more work to prepare the form
 
 var Snipper = new Class ({
 	Extends: htmlForm,
 	
   prepForm: function () {
-    this.notWaiting();
-    this.position();
     this.form = this.formholder.getElement('form');
     var closer = this.hide.bind(this);
     this.form.getElements('a.cancelform').each(function (a) { a.onclick = closer; } );
@@ -1170,25 +1210,9 @@ var Snipper = new Class ({
     intf.announce('fragment created');
 	}
 
-  
 });
 
-// noter is a special case of htmlForm that does different work to display waitingness
 
-var Noter = new Class ({
-	Extends: htmlForm,
-	
-  page_waiting: function (argument) {
-    this.waiting();
-    this.waiter = new Element('ul').inject(this.destination, 'top');
-    new Element('li', {'class': 'waiting'}).setText('please wait').inject(this.waiter);
-    this.hide();
-  },
-
-	announceSuccess: function () {
-    intf.announce('annotation created');
-	}
-});
 
 // popup is a simple case of htmlForm that doesn't expect any form submission and appears just over the triggering link
 
@@ -1196,8 +1220,7 @@ var Popup = new Class ({
 	Extends: htmlForm,
 	
   initialize: function (element, e) {
-    event = new Event(e);
-    event.preventDefault();
+    var event = intf.blocked_event(e);
     var popup = this;
     element.blur();
 		this.link = element;
@@ -1239,108 +1262,10 @@ var Popup = new Class ({
 
 
 
-// separate inline form mechanism for discussion replies
-// and anything else that previews iteratively before 
-// returning html
-// unlike most interface elements this is initialized on load, not on click
-// but there will only be one on the page
 
-var ReplyForm = new Class ({
-  initialize: function (element) {
-    this.form = element;
-    this.wrapper = element.getParent();
-    this.previewform = null;
-    this.messagebox = this.form.getElement('textarea');
-		this.responseholder = new Element('div', {'class': 'previewform'}).inject(this.form, 'after').hide();
-		this.form.onsubmit = this.sendForm.bind(this);
-		$$('a.quoteme').each( function (a) {
-		  a.onclick = this.quote.bind(this);
-		}, this);  
-  },
-  
-  quote: function (e) {
-    event = new Event(e).stop();
-    event.preventDefault();
-		var source = $E('#' + event.target.id.replace('quote_', ''));
-    if (source) {
-  		var quote = "bq. " + source.getText().replace(/[\r\n]+\s*/g, "")  + "\n\n";
-      this.messagebox.set('value', quote);
-      new Fx.Scroll(window).toElement(this.messagebox);
-      this.messagebox.focus();
-    }
-  },
-  
-  sendForm: function (e) {
-    event = new Event(e).stop();
-    event.preventDefault();
-    var rf = this;
-    var req = new Request.HTML({
-      url: this.form.get('action'),
-      update: this.responseholder,
-      onRequest: function () { rf.waiting(); },
-      onSuccess: function (response) { rf.processResponse(response); }
-    }).get(this.form);    // get because this is really the new action. the preview form points to the create action.
-  },
 
-  // if the returned html contains a form, we'll assume that further confirmation is required
-  // if not, we assume job is done, display it and call finish.
-  
-  processResponse: function () {
-		this.notWaiting();
-    if (this.responseholder.getElement('.preview')) {
-      this.previewform = this.responseholder.getElement('form');
-      this.wrapper.addClass('previewing');
-      this.previewform.onsubmit = this.confirm.bind(this);
-      this.responseholder.getElement('a.revise').onclick = this.revise.bind(this);
-      this.form.hide();
-      this.responseholder.show();
-    } else {
-      this.form.hide();
-      this.responseholder.show();
-      this.finished();
-    }
-  },
-	
-	confirm: function (e) {
-    event = new Event(e).stop();
-    event.preventDefault();
-    this.wrapper.removeClass('previewing');
-    var rf = this;
-    var req = new Request.HTML({
-      url: this.previewform.get('action'),
-      update: this.responseholder,
-      onRequest: function () { rf.waiting(); },
-      onSuccess: function (response) { rf.processResponse(response); }
-    }).post(this.previewform);
-	},
 
-	revise: function (e) {
-    event = new Event(e).stop();
-    event.preventDefault();
-    this.wrapper.removeClass('previewing');
-    this.responseholder.hide();
-    this.form.show();
-	},
 
-  waiting: function () {
-    this.wrapper.getElements('div.waitme').each(function (element) {
-      element.addClass('waiting');
-    });
-  },
-  
-  notWaiting: function () {
-    this.wrapper.getElements('div.waitme').each(function (element) {
-      element.removeClass('waiting');
-    });
-  },
-
-	finished: function () {
-    intf.flash(this.responseholder);
-    this.form.remove();
-    intf.makeReplyForm(this.responseholder.getElements('form#new_post'));
-	}
-	
-});
 
 var Squeezebox = new Class ({
   Extends: Accordion,

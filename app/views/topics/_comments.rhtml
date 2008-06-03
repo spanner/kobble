@@ -1,11 +1,9 @@
-<h2>
-	<% if @topic.posts_count == 0 %>
-		No responses yet
-	<% else %>
+<% if @topic.posts_count > 0 %>
+  <h2>
 		Responses
-	<% end %>
-</h2>
+  </h2>
+<% end %>
 
-<%= render :partial => 'posts/single', :collection => @posts.reject {|p| p.id == @topic.posts.first.id} %>
+<%= render :partial => 'posts/single', :collection => @topic.posts %>
 
 

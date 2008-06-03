@@ -15,4 +15,5 @@
 
 <div id="notelist" class="squeezed contentblock">
   <%= render :partial => 'annotations/note', :collection => item.annotations %>
+	<p><%= link_to "add a note", item_new_note_url(item), {:id => 'notes_extend_notelist', :class => 'annotate'} %></p>
 </div>
