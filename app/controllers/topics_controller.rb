@@ -46,7 +46,6 @@ class TopicsController < ApplicationController
     @topic.collection = @topic.referent.collection if @topic.referent.has_collection?
     if @topic.save
       @topic.add_monitors(User.find_by_id(params[:monitors])) if params[:monitors]
-      @topic.tags << Tag.from_list(params[:tag_list])
       respond_to do |format|
         format.html { redirect_to :action => 'show', :id => @topic }
         format.js { render :layout => false } # topics/create.rhtml is a bare list item

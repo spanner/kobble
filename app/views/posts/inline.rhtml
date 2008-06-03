@@ -4,7 +4,7 @@
 		<span class="when">now</span>		
 	</h3>
 	<div class="commentbody">
-    <%= f.text_area :body, :rows => 14 %><br />
+    <%= f.text_area :body, :rows => 14, :class => 'standard fillWithSelection pickme' %><br />
 	</div>
 	<div class="waitme">
 	 	<%= submit_tag "Preview Comment" %> <span class="button_or">or <%= link_to 'cancel', '#', :class => 'cancel' %></span>

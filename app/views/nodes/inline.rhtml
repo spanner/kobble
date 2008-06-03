@@ -10,7 +10,7 @@
   <%= f.hidden_field 'collection_id' %>
 
 	<p><label for="node_name">Fragment name</label><br/>
- 	<%= f.text_field 'name', :class => "titular" %>
+ 	<%= f.text_field 'name', :class => "titular pickme" %>
 	</p>
 
 	<p><label for="node_description">Synopsis</label><br />
@@ -22,7 +22,7 @@
 	</p>
 
 	<p><label for="node_body">Text or transcript</label><br/>
-	<%= f.text_area 'body', 'rows' => 6, :class => "standard" %>
+	<%= f.text_area 'body', 'rows' => 6, :class => "standard fillWithSelection" %>
 	</p>
 
 	<% unless @node.source.nil? || @node.source.clip.nil? %>

@@ -6,11 +6,11 @@
   <%= hidden_field_tag "#{@referent.class.to_s.underscore}_id", @referent.id %>
 
 	<p><label for="topic_name">Topic heading</label><br/>
- 	  <%= f.text_field 'name', :class => "titular" %>
+ 	  <%= f.text_field 'name', :class => "titular pickme" %>
 	</p>
 
 	<p><label for="topic_body">Opening remarks</label><br/>
-	  <%= f.text_area 'body', 'rows' => 6, :class => "standard" %>
+	  <%= f.text_area 'body', 'rows' => 6, :class => "standard fillWithSelection" %>
 	</p>
 	
   <%= render :partial => 'notify' %>

@@ -19,6 +19,7 @@ var Interface = new Class({
     this.preferences = {};
     this.fixedbottom = [];
     this.inlinelinks = [];
+    this.floaters = [];
     this.debug_level = 0;
     this.clickthreshold = 20;
     this.announcer = $E('div#notification');
@@ -82,6 +83,16 @@ var Interface = new Class({
     if (element) return element.squeezed ? element : this.lookForSqueeze( element.getParent() );
     else return null;
   },
+
+	rememberFloater: function (floater) {
+		this.floaters.push(floater);
+	},
+	clearFloaters: function () {
+		this.floaters.each(function (floater) { 
+			floater.hide(); 
+			delete floater;
+		});
+	},
   
   // these are convenient shortcuts called by activate()
   
@@ -227,6 +238,14 @@ var Interface = new Class({
   		txt = document.selection.createRange().text;
   	}
     return '' + txt;
+  },
+
+  quoteSelectedText: function () {
+  	var txt = this.getSelectedText();
+		if (txt && txt != 'undefined') {
+			txt.replace(/[\n\r]+/g, " ");
+			return "bq. " + txt;
+		}
   },
   
   getPlayerIn: function () {
@@ -712,9 +731,9 @@ var ScratchTab = new Class({
 		this.dropzone = this.tabbody.getElement('.catcher');
   	this.padform = null;
     var stab = this;
-    this.formholder = new Element('div', {'class': 'padform bigspinner'}).inject(this.tabbody, 'top').set('html', '&nbsp;').hide();
-    this.showformfx = new Fx.Tween(this.formholder, 'width', {duration: 'long', transition: 'cubic:out'});
-    this.hideformfx = new Fx.Tween(this.formholder, 'width', {duration: 'medium', transition: 'cubic:out', onComplete: function () { stab.hideForm(); }});
+    this.formHolder = new Element('div', {'class': 'padform bigspinner'}).inject(this.tabbody, 'top').set('html', '&nbsp;').hide();
+    this.showformfx = new Fx.Tween(this.formHolder, 'width', {duration: 'long', transition: 'cubic:out'});
+    this.hideformfx = new Fx.Tween(this.formHolder, 'width', {duration: 'medium', transition: 'cubic:out', onComplete: function () { stab.hideForm(); }});
     this.tabbody.getElements('a.renamepad').each(function (a) { a.onclick = stab.getForm.bind(stab); });
     this.tabbody.getElements('a.setfrompad').each(function (a) { a.onclick = stab.toSet.bind(stab); });
     this.tabbody.getElements('a.createpad').each(function (a) { a.onclick = stab.createTab.bind(stab); });
@@ -747,14 +766,14 @@ var ScratchTab = new Class({
   showForm: function (url) {
     if (!url) url = '/scratchpads/new';
     this.tabhead.addClass('editing');
-    this.formholder.show();
+    this.formHolder.show();
     if (! this.padform) {
   	  this.showformfx.start(440);
   	  var stab = this;
   		new Request.HTML({
   		  url: url,
   			method: 'get',
-  			update: stab.formholder,
+  			update: stab.formHolder,
   		  onSuccess: function () { stab.bindForm(); },
   		  onFailure: function () { stab.hideFormNicely(); }
   		}).send();
@@ -768,13 +787,13 @@ var ScratchTab = new Class({
 	},
 	hideForm: function (e) {
     intf.blocked_event(e);
-    this.formholder.hide();
+    this.formHolder.hide();
     this.tabhead.removeClass('editing');
 	},
 	bindForm: function () {
 		var stab = this;
-    this.formholder.removeClass('bigspinner');
-    this.padform = this.formholder.getElement('form');
+    this.formHolder.removeClass('bigspinner');
+    this.padform = this.formHolder.getElement('form');
 		this.padform.onsubmit = this.doForm.bind(this);
 		this.padform.getElements('a.cancel_form').each(function (a) { a.onclick = stab.hideFormNicely.bind(stab); });
 		this.padform.getElements('a.remove_tab').each(function (a) { a.onclick = stab.erase.bind(stab); });
@@ -784,7 +803,7 @@ var ScratchTab = new Class({
 	  var event = intf.blocked_event(e);
 	  var stab = this;
     this.padform.hide();
-    this.formholder.addClass('bigspinner');
+    this.formHolder.addClass('bigspinner');
         
     var update = {
 		  '_method': this.padform.getElement('input[name=_method]') ? this.padform.getElement('input[name=_method]').get('value') : '',
@@ -949,13 +968,14 @@ var jsonForm = new Class ({
   initialize: function (element, e) {
 		var event = intf.blocked_event(e);
     event.target.blur();
+		intf.clearFloaters();
 		this.link = element;
 		intf.debug('jsonForm.initialize', 5);
 		this.form = null;
-		this.at = event.client;
+		this.at = event.page;
     this.waiter = null;
 		this.floater = new Element('div', {'class': 'floater'}).inject(document.body);
-		this.formholder = new Element('div', {'class': 'modalform'}).inject(this.floater);
+		this.formHolder = new Element('div', {'class': 'modalform'}).inject(this.floater);
 		this.formWaiter = new Element('div', {'class': 'floatspinner'}).inject(this.floater);
 		this.fx = new Fx.Morph(this.floater, {duration: 'long', transition: Fx.Transitions.Back.easeOut});
 		this.expandTo = {};
@@ -964,11 +984,12 @@ var jsonForm = new Class ({
 		this.destination_type = this.destination.get('tag');
 		this.destination_squeeze = intf.lookForSqueeze( this.destination );			// this is going to be a memory leak in IE when we get there
     var mf = this;
-    this.formholder.set('load', {
+    this.formHolder.set('load', {
       onRequest: function () { mf.linkWaiting(); },
       onSuccess: function () { mf.prepForm(); },
       onFailure: function () { mf.failed(); }
     });
+		intf.rememberFloater(this);
     this.getForm();
   },
       	
@@ -978,20 +999,22 @@ var jsonForm = new Class ({
   getForm: function () {
 		intf.debug('jsonForm.getForm', 5);
     this.canceller().inject(this.floater, 'top');
-    this.formholder.load(this.url());
+    this.formHolder.load(this.url());
   },
   
-  // onSuccess trigger in formholder.load calls prepForm()
+  // onSuccess trigger in formHolder.load calls prepForm()
 	// which locates and displays the form and activates any useful elements within it
 	// may be called again by processResponse if response contains another form
 
   prepForm: function () {
 		this.linkNotWaiting();
-    this.form = this.formholder.getElement('form');
+    this.form = this.formHolder.getElement('form');
 		this.form.onsubmit = this.sendForm.bind(this);
     this.form.getElements('a.cancelform').each(function (a) { a.onclick = this.hide.bind(this); }, this);
+    this.form.getElements('.fillWithSelection').each(function (input) { if (input.get('value') == '') input.set('value', intf.quoteSelectedText() + "\n\n"); });
+    intf.makeSuggester(this.form.getElements('input.tagbox'));
     this.show();
-    this.form.getElement('input').focus();
+    this.form.getElement('.pickme').focus();
   },
 
   // captured form.onsubmit calls sendForm()
@@ -1103,13 +1126,13 @@ var jsonForm = new Class ({
   },
   
   waiting: function () {
-    this.formholder.hide();
-    this.spinner.show();
+    this.formHolder.hide();
+    this.formWaiter.show();
   },
 
   notWaiting: function () {
-    this.spinner.hide();
-    this.formholder.show();
+    this.formWaiter.hide();
+    this.formHolder.show();
   },
 
 	linkWaiting: function (argument) {
@@ -1161,16 +1184,16 @@ var htmlForm = new Class ({
     }).post(this.form);
   },
 
-  processResponse: function () {
+  processResponse: function (response) {
 		this.notWaiting();
     if (this.responseholder.getElement('form')) {
-			this.formholder.empty().adopt(this.responseholder.getChildren());
+			this.formHolder.empty().adopt(this.responseholder.getChildren());
 			this.prepForm();			// loop back and prepare form for submission again
     } else {
+			this.hide();
 			this.updatePage(response);
     }
   },
-
 
   updatePage: function () {
     var elements = this.responseholder.getChildren(); 
@@ -1195,73 +1218,17 @@ var Snipper = new Class ({
 	Extends: htmlForm,
 	
   prepForm: function () {
-    this.form = this.formholder.getElement('form');
-    var closer = this.hide.bind(this);
-    this.form.getElements('a.cancelform').each(function (a) { a.onclick = closer; } );
-    intf.makeSuggester(this.form.getElements('input.tagbox'));
-    this.form.getElement('#node_body').set('value', intf.getSelectedText());
+		arguments.callee.parent();
     this.form.getElements('#node_playfrom').each( function (input) { input.set('value', intf.getPlayerIn()); });
     this.form.getElements('#node_playto').each( function (input) { input.set('value', intf.getPlayerOut()); });
-    this.form.getElement('.titular').focus();
-		this.form.onsubmit = this.sendForm.bind(this);
   },
 
 	announceSuccess: function () {
     intf.announce('fragment created');
 	}
-
 });
 
-
-
-// popup is a simple case of htmlForm that doesn't expect any form submission and appears just over the triggering link
-
-var Popup = new Class ({
-	Extends: htmlForm,
-	
-  initialize: function (element, e) {
-    var event = intf.blocked_event(e);
-    var popup = this;
-    element.blur();
-		this.link = element;
-		this.at = event.client;
-		this.overlay = new Element('div', {'class': 'overlay'}).inject(document.body);
-		this.floater = new Element('div', {'class': 'floater popup'}).inject(document.body);
-		this.spinner = new Element('div', {'class': 'floatspinner'}).set('html', '&nbsp;').inject(this.floater).show();
-		this.formholder = new Element('div', {'class': 'popupform'}).inject(this.floater).hide();
-		this.overlay.onclick = this.hide.bind(this);
-    this.formholder.set('load', {
-      onRequest: function () { popup.waiting(); },
-      onSuccess: function () { popup.prepForm(); },
-      onFailure: function () { popup.failed(); }
-    });
-    this.show();
-  },
-
-  show: function () {
-    this.position();
-    this.getForm();
-		this.setup(true);
-		this.overlay.fade(0.6);
-    this.floater.show();
-  },
-
-	position: function(){
-		this.floater.setStyles({
-		  'top': this.at.y, 
-		  'left': this.at.x
-		});
-	},
-	
-  prepForm: function () {
-    this.notWaiting();
-    this.position();
-    intf.activate(this.formholder);
-  }
-});
-
-
-
+// snipper is another htmlForm with a few extra preparations
 
 
 
