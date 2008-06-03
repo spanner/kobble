@@ -1,12 +1,9 @@
-
 <p>
-  <label for="topic_title">Title</label><br />
-  <%= form.text_field :name, :class => "titular", :tabindex => 10 %>
+  <label for="annotation_annotation_type_id">Note type</label><br />
+  <%= f.select("annotation_type_id", @note_types, {}, {:class => 'standard'}) %>
 </p>
 
-<% if @topic.new_record? %>
-	<p>
-	  <label for="topic_body">Your opening remarks</label><br />
-	  <%= form.text_area :body, :rows => 12, :tabindex => 20, :class => 'standard' %>
-	</p>
-<% end %>
+<p>
+  <label for="topic_body">Your note</label><br />
+  <%= f.text_area :body, :rows => 8, :class => 'standard' %>
+</p>

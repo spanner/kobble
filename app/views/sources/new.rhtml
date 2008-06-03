@@ -1,7 +1,12 @@
 <% @title = 'create source' %>
 
 <div class="mainform">
-<% form_for :source, :url => source_path(@source) do |f| %>
+<% form_for :source,
+            :url => source_path(@source),
+            :html => { 
+              :multipart => true
+            } do |f| 
+%>
 
   <%= render :partial => 'form' %>
 

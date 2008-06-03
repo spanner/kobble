@@ -1,5 +1,5 @@
 class EditObserver < ActiveRecord::Observer
-  observe Collection, Source, Node, Bundle, Tag, Occasion, Flag, Topic, Post
+  observe Collection, Source, Node, Bundle, Tag, Occasion, Flag, Topic, Post, Annotation
   
   cattr_accessor :current_user
   
@@ -12,11 +12,19 @@ class EditObserver < ActiveRecord::Observer
   end
  
   def after_create(model)
-    record_event(model, 'created')
+    if model.class == Annotation
+      record_event(model.annotated, 'annotated')
+    else
+      record_event(model, 'created')
+    end
   end
 
   def after_update(model)
-    record_event(model, 'updated') if model.record_timestamps
+    if model.undeleted?
+      record_event(model, 'restored') if model.record_timestamps
+    else
+      record_event(model, 'updated') if model.record_timestamps
+    end
   end
 
   def after_destroy(model)

@@ -125,8 +125,12 @@ var Interface = new Class({
   grabForm: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new htmlForm(element, e); }); }); },
   makeInlineCreate: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new jsonForm(element, e); }); }); },
   makeSnipper: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new Snipper(element, e); }); }); },
+  makeNoter: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new Noter(element, e); }); }); },
   makePopup: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new Popup(element, e); }); }); },
-  makeSquash: function (handles, blocks) { this.squeezebox = new Squeezebox(handles, blocks); },
+  makeSquash: function (handles, blocks) { 
+	 	if (this.squeezebox) this.squeezebox.addSections(handles,blocks);
+		else this.squeezebox = new Squeezebox(handles, blocks);
+	},
   
   // there will only be one of these really
 
@@ -194,6 +198,7 @@ var Interface = new Class({
     this.makeInlineCreate(scope.getElements('a.inlinecreate'));
     this.grabForm(scope.getElements('a.inlinediscuss'));
     this.makeSnipper(scope.getElements('a.snipper'));
+    this.makeNoter(scope.getElements('a.annotate'));
     this.makeReplyForm(scope.getElements('form#new_post'));
     this.makeFixed(scope.getElements('.fixed'));
     this.makePopup(scope.getElements('.popup'));
@@ -215,6 +220,7 @@ var Interface = new Class({
 	  if (element.hasClass('fixedbottom')) this.makeFixed( [element] );
     if (element.hasClass('toggle')) this.makeToggle( [element] );
     if (element.hasClass('snipper')) this.makeSnipper( [element] );
+    if (element.hasClass('noter')) this.makeNoter( [element] );
     if (element.hasClass('popup')) this.makePopup( [element] );
   },
   
@@ -956,8 +962,8 @@ var jsonForm = new Class ({
 		this.floater = new Element('div', {'class': 'floater'}).inject(document.body);
 		this.spinner = new Element('div', {'class': 'floatspinner'}).set('html', '&nbsp;').inject(this.floater).show();
 		this.formholder = new Element('div', {'class': 'modalform'}).inject(this.floater).hide();
-		this.destination = $E('#' + this.link.id.replace('extend_', ''));
-		this.destination_type = this.destination.tagName;
+		this.destination = $E('#' + this.link.id.replace(/[\w_]*extend_/, ''));
+		this.destination_type = this.destination.get('tag');
 		this.squeeze = intf.lookForSqueeze( this.destination );
 		this.overlay.onclick = this.hide.bind(this);
     this.formholder.set('load', {
@@ -1053,7 +1059,6 @@ var jsonForm = new Class ({
     this.hide();
     var newitem = new Element('option', {'value': response.id}).set('text',response.name);
     newitem.inject( this.destination, 'top' );
-    intf.announce('new item created');
     this.showOnPage();
   },
   
@@ -1086,7 +1091,11 @@ var jsonForm = new Class ({
     if (this.squeeze) intf.squeezebox.display(this.squeeze);
     if (this.destination_type == 'UL') this.destination.selectedIndex = 0;
     new Fx.Scroll(window).toElement(this.destination);
-  }
+  },
+
+	announceSuccess: function () {
+    intf.announce('done');
+	}
 	
 });
 
@@ -1099,7 +1108,7 @@ var htmlForm = new Class ({
   sendForm: function (e) {
     var event = new Event(e).stop();
     event.preventDefault();
-    this.responseholder = new Element(this.destination.get('tag'));
+    this.responseholder = new Element(this.destination_type);
     var mf = this;
     var req = new Request.HTML({
       url: this.form.get('action'),
@@ -1116,21 +1125,24 @@ var htmlForm = new Class ({
     this.waiting();
     this.waiter = new Element('li', {'class': 'waiting'}).setText('please wait').inject(this.destination, 'top');
     this.hide();
-    this.showOnPage();
   },
   
   // this is called upon final response to the form
   // we remove the waiter, insert into the node list and make the new insertion draggable
   page_update: function () {
+		console.log('htmlForm.page_update');
     this.waiter.remove();
-    var elements = this.responseholder.getChildren();    
+    var elements = this.responseholder.getChildren(); 
     var newitem = elements[0];
     newitem.inject(this.destination, 'top');
+    this.showOnPage();
     intf.activateElement( newitem );
+		this.announceSuccess();
+		newitem.highlight('#d1005d');
   },
   
   showOnPage: function () {
-    
+    if (this.squeeze) intf.squeezebox.display(this.squeeze);
     new Fx.Scroll(window).toElement(this.destination);
   }
 });
@@ -1152,8 +1164,30 @@ var Snipper = new Class ({
     this.form.getElements('#node_playto').each( function (input) { input.set('value', intf.getPlayerOut()); });
     this.form.getElement('.titular').focus();
 		this.form.onsubmit = this.sendForm.bind(this);
-  }
+  },
+
+	announceSuccess: function () {
+    intf.announce('fragment created');
+	}
+
   
+});
+
+// noter is a special case of htmlForm that does different work to display waitingness
+
+var Noter = new Class ({
+	Extends: htmlForm,
+	
+  page_waiting: function (argument) {
+    this.waiting();
+    this.waiter = new Element('ul').inject(this.destination, 'top');
+    new Element('li', {'class': 'waiting'}).setText('please wait').inject(this.waiter);
+    this.hide();
+  },
+
+	announceSuccess: function () {
+    intf.announce('annotation created');
+	}
 });
 
 // popup is a simple case of htmlForm that doesn't expect any form submission and appears just over the triggering link
@@ -1332,7 +1366,14 @@ var Squeezebox = new Class ({
 	},
 	initialize: function (togglers, elements) {
     arguments.callee.parent(togglers, elements);
-    elements.each(function (element) { element.squeezed = true; });
+    if (elements) elements.each(function (element) { element.squeezed = true; });
+	},
+	addSections: function (togglers, elements) {
+		togglers.each(function (toggler) {
+			element = elements[togglers.indexOf(toggler)];
+			this.addSection(toggler, element);
+			element.squeezed = true; 
+		}, this);
 	}
 });
 

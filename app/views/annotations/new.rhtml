@@ -1,12 +1,28 @@
-<% @title = "start a conversation about <strong>#{@referent.name}</strong>" %>
+<% @title = "add a note to #{@annotated.name}" %>
 
 <div class="mainform">
-  
-  <%= error_messages_for :topic %>
 
-  <% form_for ([@referent, @topic]) do |f| %>
-    <%= render :partial => "form", :object => f %>
-    <%= submit_tag 'Start conversation' %> or <%= link_to 'go back', url_for(@referent) %>
-  <% end -%>
+  <% form_for :note,
+              :url => annotation_url(@note),
+              :html => { 
+                :multipart => true,
+                :id => 'noteform'
+              } do |f| 
+  %>
+
+    <%= render :partial => 'form', :locals => {:f => f} %>
+
+    <div class="formbuttons">
+      <%= submit_tag "Add note" %> or
+      <%= link_to 'cancel', {:action => 'index'} %>
+    </div>
+
+  <% end %>
 
 </div>
+
+<% content_for :admin do %>
+  <p>
+    back to <%= link_to @annotated.name, url_for(@annotated) %>
+  </p>
+<% end %>

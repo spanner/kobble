@@ -2,7 +2,7 @@
 
 <h3 class="pagesection">
   <a href="#" class="squeezebox">
-    field notes 
+    notes 
     <span class="headernote">
       <% if item.has_notes? %>
         <%= truncate(item.annotations.first.body, 100) %>
@@ -13,9 +13,6 @@
   </a>
 </h3>
 
-<div id="source_field notes" class="squeezed contentblock">
-  <div class="mainlist" id="notelist">
-    <%= render :partial => 'annotations/note', :collection => item.annotations %>
-  	<p><%= link_to "+ add a note", '#', {:id => "annotate_#{item.nice_title}_#{item.id}", :class => 'inlineannotate'} %></p>
-  </div>
+<div id="notelist" class="squeezed contentblock">
+  <%= render :partial => 'annotations/note', :collection => item.annotations %>
 </div>

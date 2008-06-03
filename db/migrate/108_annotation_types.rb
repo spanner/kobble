@@ -8,24 +8,37 @@ class AnnotationTypes < ActiveRecord::Migration
       :description => "Contextual information useful for understanding."
     })
     circ.save!
+    
     emo = AnnotationType.new({
       :name => 'emotion',
       :description => "Emotions observed in the subject or felt by the observer, or just around."
     })
     emo.save!
+    
     obs = AnnotationType.new({
       :name => 'observation',
       :description => "Details, noticings, clues and miscellaneous useful facts."
     })
     obs.save!
+    
     cont = AnnotationType.new({
       :name => 'continuation',
-      :description => "Matters arising, things to do, connections to follow up, parallels to explore."
+      :description => "Matters arising, ideas, contacts, connections to follow up, parallels to explore."
     })
     cont.save!
     
+    AnnotationType.new({
+      :name => 'clarification',
+      :description => "An elucidation that is possible at the time but which may be lost if not recorded."
+    }).save!
+
+    AnnotationType.new({
+      :name => 'action',
+      :description => "Something must be done. Differs from continuation by being practical and tickable."
+    }).save!
+
+    
     [Node, Source, Bundle, Person].each do |klass|
-      
       puts "Extracting field notes from #{klass.to_s}"
       klass.find(:all).each do |thing|
         unless thing.circumstances.nil? || thing.circumstances == ''

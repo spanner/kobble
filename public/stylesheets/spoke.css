@@ -232,7 +232,7 @@ div#admin a { color: #559DC4; }
 div#admin a:hover, .pagination a:active { color: #d1005d; }
 div#admin a.warning { color: white; }
 div#admin a.create { color: #a0a500; }
-div#admin a.annotate { text-decoration: line-through; color: #8c8d8e;}
+div#admin a.annotate { color: #CC6E1F; }
 
 div#trashholder {
   position: fixed;
@@ -772,9 +772,13 @@ div.fieldnote h4 {
 }
 
 div.fieldnote p {
+/*  font-size: 80%;*/
+  color: #4d4e53;
   margin-top: 0;
   clear: left;
 }
+
+a.annotate { color: #CC6E1F; }
 
 /* big friendly buttons */
 
@@ -864,7 +868,7 @@ div.floater {
 }
 
 div.floater h1 {
-  max-height: 56px;
+  height: 32px;
   overflow: hidden;
   margin: 20px 10px 6px 20px;
   color: #d1005d;

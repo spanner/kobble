@@ -1,0 +1,16 @@
+<h1>Add a note <span class="headernote">to <%= truncate(@annotated.name, 36) %></span></h1>
+
+<div class="mainform">
+  
+  <%= error_messages_for :note %>
+
+  <% form_for ([@annotated, @note]) do |f| %>
+    <%= render :partial => "form", :locals => {:f => f} %>
+ 
+    <div class="formbuttons clear">
+      <%= submit_tag 'annotate' %> 
+      or <%= link_to 'cancel', url_for(@annotated), {:class => 'cancelform'} %>
+    </div>
+  <% end %>
+
+</div>

@@ -1,6 +1,6 @@
 <h1>
 	<% if @node.source %>
-		Excerpt from <%= @node.source.name %>
+		Excerpt <span class="headernote"><%= truncate(@node.source.name, 36) %></span>
 	<% else %>
 		Create a new fragment
 	<% end %>

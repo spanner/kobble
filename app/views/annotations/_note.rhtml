@@ -1,5 +1,5 @@
 <% note ||= @note %>
 <div class="fieldnote">
-<h4 class="label"><%= note.annotation_type.name %></h4>
+<h4><%= note.annotation_type.name %> <span class="headernote">added by <%= note.creator.name %></span></h4>
 <%= note.body.formatted %>
 </div>
