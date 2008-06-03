@@ -1,6 +1,6 @@
 class Collection < ActiveRecord::Base
 
-  acts_as_spoke :only => [:owners, :illustration, :discussion, :log, :undelete]
+  acts_as_spoke :only => [:owners, :illustration, :discussion, :annotation, :log, :undelete]
   belongs_to :account, :dependent => :destroy
   
   has_many :activations, :dependent => :destroy
