@@ -1,14 +1,13 @@
 <% unless @omit_first && @omit_first.id == single.id %>
-	<div class="post" id="postholder_<%= single.id %>">
+	<div class="post contentblock" id="postholder_<%= single.id %>">
 		<h3 class="postheader">
 	    <a href="<%= url_for(single.creator) %>" name="<%= single.dom_id %>">
 	    	<img src="/images/furniture/spoke/blue/user.png" width="16" height="16" alt="Post">
 			  <%= h(single.creator.name) %>
   	  </a>
 			<span class="when"><%= time_ago_in_words(single.created_at) %> ago</span>
-			<a href="#" class="quoteme" id="quote_post_<%= single.id %>">quote</a>
 		</h3>
-		<div class="commentbody" id="post_<%= single.id %>">
+		<div class="replybody" id="post_<%= single.id %>">
 		  <%= single.body.formatted %>
 		</div>
 	</div>

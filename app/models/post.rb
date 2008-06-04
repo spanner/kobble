@@ -17,7 +17,7 @@ class Post < ActiveRecord::Base
   end
   
   def name
-    "response to #{self.topic.title}"
+    "response to #{self.topic.name}"
   end
   
   def referent_path 
