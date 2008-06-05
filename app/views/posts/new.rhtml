@@ -5,15 +5,16 @@
             } do |f| 
 %>
   <%= hidden_field_tag :dispatch, 'preview', :class => 'routing' %>
-
-	<h3 class="commentheader">
-		<%= current_user.name %>
-		<span class="headernote"><%= Time.now %></span>		
-	</h3>
-	<div class="commentbody">
-    <%= f.text_area :body, :rows => 14, :class => 'standard fillWithSelection pickme' %><br />
-	</div>
-	<div class="waitme formbuttons">
-	 	<%= submit_tag "Preview Comment" %> <span class="button_or">or <%= link_to 'cancel', '#', :class => 'cancelform' %></span>
-  </div>
+	<p>
+	  <% if @post.errors.on(:body) %>
+      <label for="post_body" class="formerror">Your message</label>
+      <span class="errordetail"><%= @post.errors.on(:body) %></span><br />
+	  <% else %>
+	    <label for="post_body">Your message</label><br />
+    <% end %>
+    <%= f.text_area :body, :rows => 14, :class => "standard fillWithSelection pickme #{'witherror' if @post.errors.on(:body)}" %><br />
+	</p>
+	
+	<%= submit_tag "Preview Comment" %> <span class="button_or">or <%= link_to 'cancel', '#', :class => 'cancelform' %></span>
+  
 <% end -%>

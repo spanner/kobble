@@ -879,6 +879,11 @@ div.floater {
 	z-index: 21000;
 }
 
+div.modalform {
+	overflow: hidden;
+  max-height: 600px;
+}
+
 div.floater h1 {
   height: 32px;
   overflow: hidden;
@@ -1755,3 +1760,32 @@ div.topicbody, div.postbody {
 	border-bottom: 1px dotted #4d4e53;
 }
 
+
+
+/* errors and validation */
+
+label.formerror {
+	background-image: url(/images/furniture/signals/warning.png);
+	background-position: top left;
+	background-repeat: no-repeat;
+	padding-left: 20px;
+	color: #ff3e15 !important;
+}
+
+input.witherrors, textarea.witherrors {
+	background-image: url(/images/furniture/signals/warning.png);
+	background-position: top right;
+	background-repeat: no-repeat;
+}
+
+p.haserror {
+	background-image: url(/images/furniture/signals/warning.png);
+	background-position: top left;
+	background-repeat: no-repeat;
+	padding-left: 20px;
+	color: #ff3e15;
+}
+
+span.errordetail {
+	color: #8c8d8e;
+}

@@ -36,11 +36,9 @@ class PostsController < ApplicationController
   end
 
   def create
-    if (params[:dispatch] == 'revise')
-      logger.warn("!!! revising")
+    if (params[:dispatch] == 'revise' || !@post.valid?)
       new
     elsif (params[:dispatch] == 'preview')
-      logger.warn("!!! previewing")
       preview
     else
       @post.save!
