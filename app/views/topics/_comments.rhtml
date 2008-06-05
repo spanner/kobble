@@ -1,9 +1,9 @@
 <% if @topic.posts_count > 0 %>
-  <h2>
-		Responses
-  </h2>
+
+  <div id="postlist" class="addToBottom">
+    <%= render :partial => 'posts/single', :collection => @topic.posts %>
+  </div>
+
+  <h3><%= link_to "add a reply", new_topic_post_url(@topic), :id => 'extend_postlist', :class => 'create inlinereply' %> <span class="headernote">select text to quote</span></h3>
+
 <% end %>
-
-<%= render :partial => 'posts/single', :collection => @topic.posts %>
-
-

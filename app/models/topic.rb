@@ -7,7 +7,7 @@ class Topic < ActiveRecord::Base
   belongs_to :referent, :polymorphic => true
   has_many :monitorships, :dependent => :destroy
   has_many :monitors, :through => :monitorships, :conditions => ['monitorships.active = ?', true], :source => :user
-  has_many :posts, :order => 'posts.created_at', :dependent => :destroy
+  has_many :posts, :order => 'posts.created_at asc', :dependent => :destroy
 
   validates_presence_of :name, :referent
   before_create :set_default_replied_at

@@ -242,9 +242,11 @@ var Interface = new Class({
 
   quoteSelectedText: function () {
   	var txt = this.getSelectedText();
-		if (txt && txt != 'undefined') {
+		if (txt) {
 			txt.replace(/[\n\r]+/g, " ");
 			return "bq. " + txt;
+		} else {
+			return '';
 		}
   },
   
@@ -977,13 +979,22 @@ var jsonForm = new Class ({
 		this.floater = new Element('div', {'class': 'floater'}).inject(document.body);
 		this.formHolder = new Element('div', {'class': 'modalform'}).inject(this.floater);
 		this.formWaiter = new Element('div', {'class': 'floatspinner'}).inject(this.floater);
-		this.fx = new Fx.Morph(this.floater, {duration: 'long', transition: Fx.Transitions.Back.easeOut});
 		this.expandTo = {};
 		this.shrinkTo = {};
 		this.destination = $E('#' + this.link.id.replace(/[\w_]*extend_/, ''));
 		this.destination_type = this.destination.get('tag');
+		this.created_item = null;
 		this.destination_squeeze = intf.lookForSqueeze( this.destination );			// this is going to be a memory leak in IE when we get there
     var mf = this;
+		this.openfx = new Fx.Morph(this.floater, {
+			duration: 'long', 
+			transition: Fx.Transitions.Back.easeOut
+		});
+		this.closefx = new Fx.Morph(this.floater, {
+			duration: 'medium', 
+			transition: Fx.Transitions.Back.easeOut, 
+			onComplete: function (argument) { mf.floater.hide(); }
+		});
     this.formHolder.set('load', {
       onRequest: function () { mf.linkWaiting(); },
       onSuccess: function () { mf.prepForm(); },
@@ -1014,7 +1025,8 @@ var jsonForm = new Class ({
     this.form.getElements('.fillWithSelection').each(function (input) { if (input.get('value') == '') input.set('value', intf.quoteSelectedText() + "\n\n"); });
     intf.makeSuggester(this.form.getElements('input.tagbox'));
     this.show();
-    this.form.getElement('.pickme').focus();
+		var first = this.form.getElement('.pickme');
+		if (first) first.focus();
   },
 
   // captured form.onsubmit calls sendForm()
@@ -1056,9 +1068,8 @@ var jsonForm = new Class ({
   updatePage: function (response) {
 		intf.debug('jsonForm.updatePage', 5);
     this.hide();
-    var newitem = new Element('option', {'value': response.id}).set('text',response.name);
-    newitem.inject( this.destination, 'top' );
-		// and i still can't work out how to select the new option
+    this.created_item = new Element('option', {'value': response.id}).set('text',response.name);
+    this.created_item.inject( this.destination, 'top' );
     this.showOnPage();
   },
 
@@ -1072,6 +1083,24 @@ var jsonForm = new Class ({
 	show: function () {
 		intf.debug('jsonForm.show', 5);
     this.position();		// while it is invisible but has the right size
+		this.openfx.start(this.expandTo);
+		this.link.addClass('activated');
+	},
+
+	hide: function (e) {
+		console.log('hide!');
+		intf.blocked_event(e);
+		this.shrinkTo['opacity'] = 0;
+		this.closefx.start(this.shrinkTo);
+		this.link.removeClass('activated');
+	},
+
+	position: function () {
+		intf.debug('jsonForm.position', 5);
+		this.floater.setStyles({
+		  'top': this.at.y, 
+		  'left': this.at.x
+		});
 		var coord = this.floater.getCoordinates();
 		var scroll = document.getScroll();
 		var boundary = document.getSize();
@@ -1088,9 +1117,9 @@ var jsonForm = new Class ({
 			'opacity': 0
 		});
 		this.shrinkTo = this.floater.getCoordinates();
-		
-		// these double ternaries are ugly, but.
-		// logic goes: 
+
+		// these double ternaries are ugly.
+		// logic goes
 		//	if room on both sides or neither, expand symmetrically
 		//  if room on right, go right
 		/// else go left
@@ -1102,23 +1131,6 @@ var jsonForm = new Class ({
 			left: (room['right'] == room['left']) ? Math.floor(coord.left - coord.width / 2) : room['right'] ? coord.left - 20 : coord.left - coord.width + 20,
 			top: (room['up'] == room['down']) ? Math.floor(coord.top - coord.height / 2) : room['down'] ? coord.top - 20 : coord.top - coord.height + 20
 		};
-		this.fx.start(this.expandTo);
-		this.link.addClass('activated');
-	},
-
-	hide: function (e) {
-		intf.blocked_event(e);
-		this.shrinkTo['opacity'] = 0;
-		this.fx.start(this.shrinkTo);
-		this.link.removeClass('activated');
-	},
-
-	position: function () {
-		intf.debug('jsonForm.position', 5);
-		this.floater.setStyles({
-		  'top': this.at.y, 
-		  'left': this.at.x
-		});
 	},
 
   destroy: function () {
@@ -1145,8 +1157,12 @@ var jsonForm = new Class ({
 
   showOnPage: function () {
     if (this.destination_squeeze) intf.squeezebox.display(this.destination_squeeze);
-    if (this.destination_type == 'UL') this.destination.selectedIndex = 0;
-    new Fx.Scroll(window).toElement(this.destination);
+    if (this.destination_type == 'UL') {
+			this.destination.selectedIndex = 0;
+	    new Fx.Scroll(window).toElement(this.destination);
+		} else {
+	    new Fx.Scroll(window).toElement(this.created_item);
+		}
   },
 
 	announceSuccess: function () {
@@ -1158,7 +1174,7 @@ var jsonForm = new Class ({
   },
 
   canceller: function () {
-    var a = new Element('a', {'class': 'canceller', 'href': '#'}).setText('[x]');
+    var a = new Element('a', {'class': 'canceller', 'href': '#'}).setText('X');
     a.onclick = this.hide.bind(this);
     return a;
   }
@@ -1170,7 +1186,14 @@ var jsonForm = new Class ({
 
 var htmlForm = new Class ({
 	Extends: jsonForm,
-	  
+	
+	prepForm: function () {
+		arguments.callee.parent();
+		this.form.getElements('#revise').each( function (input) { input.onclick = this.revise.bind(this); }, this);
+		this.form.getElements('#confirm').each( function (input) { input.onclick = this.confirm.bind(this); }, this);
+		console.log('bound buttons, maybe');
+	},
+	
   sendForm: function (e) {
     var event = intf.blocked_event(e);
     this.responseholder = new Element(this.destination_type);
@@ -1184,10 +1207,23 @@ var htmlForm = new Class ({
     }).post(this.form);
   },
 
+	confirm: function (e) {
+		console.log('confirming');
+		this.form.getElements('input.routing').each(function (input) { input.set('value', 'confirm'); });
+		return true;
+	},
+
+	revise: function (e) {
+		console.log('revising');
+		this.form.getElements('input.routing').each(function (input) { input.set('value', 'revise'); });
+		return true;
+	},
+
   processResponse: function (response) {
 		this.notWaiting();
     if (this.responseholder.getElement('form')) {
-			this.formHolder.empty().adopt(this.responseholder.getChildren());
+			this.formHolder.empty();
+			this.formHolder.adopt(this.responseholder.getChildren());
 			this.prepForm();			// loop back and prepare form for submission again
     } else {
 			this.hide();
@@ -1197,17 +1233,17 @@ var htmlForm = new Class ({
 
   updatePage: function () {
     var elements = this.responseholder.getChildren(); 
-    var newitem = elements[0];
-    newitem.inject(this.destination, 'top');
+    this.created_item = elements[0];
+		var addwhere = this.destination.hasClass('addToBottom') ? 'bottom' : 'top';
+    this.created_item.inject(this.destination, addwhere);
     this.showOnPage();
-    intf.activateElement( newitem );
+    intf.activateElement( this.created_item );
 		this.announceSuccess();
-		newitem.highlight();
   },
   
   showOnPage: function () {
     if (this.destination_squeeze) intf.squeezebox.display(this.destination_squeeze);
-    new Fx.Scroll(window).toElement(this.destination);
+    new Fx.Scroll(window).toElement(this.created_item).chain(function(){ this.created_item.highlight() });
   }
 });
 

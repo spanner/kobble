@@ -12,39 +12,30 @@
 <%= render :partial => 'shared/listed', :locals => {:listed => @topic.referent} %>
 </ul>
 
-<div class="contentblock commentbody">
+<div class="contentblock topicbody">
   <%= @topic.body.formatted %>
+  <h3><%= link_to "add a reply", new_topic_post_url(@topic), :id => 'extend_postlist', :class => 'create inlinereply' %> <span class="headernote">select text to quote</span></h3>
 </div>
 
+
+
+
 <%= render :partial => 'comments' %>
-
-<h3><%= link_to "add a reply", new_topic_post_url(@topic), :class => 'create inlinereply' %> <span class="headernote">select text to quote</span></h3>
-
-      
-<h3>
-  <%= 
-    monitorship = current_user.monitorship_of(@topic) 
-    linkclass =  monitorship.active? ? 'ticked' : 'crossed'
-    linktitle =  monitorship.active? ? 'click to switch off email subscription' : 'click to receive email notification of new posts'
-
-    link_to 'email notification', toggle_monitorship_url(monitorship), {
-		  :class => "toggle #{linkclass}",
-		  :title => linktitle
-	  } 
-	%>
-</h3>
-
-
-
-
-
-
-
-
-
 
 
 
 
 <% content_for :admin do %>
+  <h3>
+    <%= 
+      monitorship = current_user.monitorship_of(@topic) 
+      linkclass =  monitorship.active? ? 'ticked' : 'crossed'
+      linktitle =  monitorship.active? ? 'click to switch off email subscription' : 'click to receive email notification of new posts'
+
+      link_to 'subscribe', toggle_monitorship_url(monitorship), {
+  		  :class => "toggle #{linkclass}",
+  		  :title => linktitle
+  	  } 
+  	%>
+  </h3>
 <% end %>

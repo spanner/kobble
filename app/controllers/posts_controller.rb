@@ -1,8 +1,8 @@
 class PostsController < ApplicationController
 
   before_filter :find_topic
-  before_filter :find_post :only => [:edit, :update, :destroy]
-  before_filter :build_post :only => [:new, :create]
+  before_filter :find_post, :only => [:edit, :update, :destroy]
+  before_filter :build_post, :only => [:new, :preview, :create]
 
   def show
     respond_to do |format|
@@ -18,20 +18,37 @@ class PostsController < ApplicationController
   def new
     @post.creator = current_user
     @post.created_at = Time.now()
-    template = params[:preview] ? 'preview' : 'new'
     respond_to do |format|
-      format.html { render :action => template }
-      format.js { render :action => template, :layout => false }
+      format.html  { render :template => 'posts/new' }
+      format.js { render :template => 'posts/new', :layout => false }
       format.json { render :json => @post.to_json }
     end
   end
-      
-  def create
-    @post.save!
+
+  def preview
+    @post.creator = current_user
+    @post.created_at = Time.now()
     respond_to do |format|
-      format.html { redirect_to topic_path(:id => params[:topic_id], :anchor => @post.dom_id, :page => params[:page] || '1') }
-      format.js { render :layout => false }
+      format.html { render :template => 'posts/preview' }
+      format.js { render :layout => false, :template => 'posts/preview' }
       format.json { render :json => @post.to_json }
+    end
+  end
+
+  def create
+    if (params[:dispatch] == 'revise')
+      logger.warn("!!! revising")
+      new
+    elsif (params[:dispatch] == 'preview')
+      logger.warn("!!! previewing")
+      preview
+    else
+      @post.save!
+      respond_to do |format|
+        format.html { redirect_to topic_path(:id => params[:topic_id], :anchor => @post.dom_id, :page => params[:page] || '1') }
+        format.js { render :layout => false }
+        format.json { render :json => @post.to_json }
+      end
     end
   rescue ActiveRecord::RecordInvalid
     flash[:error] = 'Please post something!'

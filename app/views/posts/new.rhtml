@@ -1,19 +1,19 @@
-<div class="post preview">
-	<h3 class="postheader">
-  	<img src="/images/furniture/spoke/pink/user.png" width="16" height="15" alt="Post">
-		<%= h(@post.creator.name) %>
-		<span class="when">preview</span>
+<% form_for :post,
+            :url => topic_posts_path(@topic),
+            :html => { 
+              :multipart => true
+            } do |f| 
+%>
+  <%= hidden_field_tag :dispatch, 'preview', :class => 'routing' %>
+
+	<h3 class="commentheader">
+		<%= current_user.name %>
+		<span class="headernote"><%= Time.now %></span>		
 	</h3>
-
-	<%= @post.body.formatted %>
-
-	<% form_for([@topic, @post]) do |f| -%>
-
-		<%= f.hidden_field :body %>
-
-		<div class="waitme">
-	    <%= submit_tag 'confirm' %> or <%= link_to "revise message", '#', :class => 'revise message' %>
-	  </div>
-
-	<% end -%>
-</div>
+	<div class="commentbody">
+    <%= f.text_area :body, :rows => 14, :class => 'standard fillWithSelection pickme' %><br />
+	</div>
+	<div class="waitme formbuttons">
+	 	<%= submit_tag "Preview Comment" %> <span class="button_or">or <%= link_to 'cancel', '#', :class => 'cancelform' %></span>
+  </div>
+<% end -%>

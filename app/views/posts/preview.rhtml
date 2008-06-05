@@ -1,0 +1,27 @@
+<div class="post preview">
+	<h3 class="postheader">
+  	<img src="/images/furniture/spoke/pink/user.png" width="16" height="15" alt="Post">
+		<%= h(@post.creator.name) %>
+		<span class="when">preview</span>
+	</h3>
+
+	<%= @post.body.formatted %>
+
+  <% form_for :post,
+              :url => topic_posts_path(@topic),
+              :html => { 
+                :multipart => true
+              } do |f| 
+  %>
+
+		<%= f.hidden_field :body %>
+		
+		<%= hidden_field_tag :dispatch, 'revise', :class => 'routing' %>
+
+		<div class="waitme formbuttons">
+	    <%= submit_tag 'confirm', :class => 'confirm', :id => 'confirm' %> or 
+	    <%= submit_tag 'revise', :class => 'revise', :id => 'revise' %>
+	  </div>
+
+	<% end -%>
+</div>
