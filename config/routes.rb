@@ -11,7 +11,7 @@ ActionController::Routing::Routes.draw do |map|
   
   map.resources :accounts, :has_many => [:users, :collections, :events, :deletions, :tags, :permissions], :collection => { :home => :any }
   map.resources :collections, :has_many => [:events, :topics, :annotations], :member => {:recover => :post}, :collection => { :gallery => :get }
-  map.resources :users, :has_many => [:activations, :user_preferences, :permissions, :scratchpads, :events, :sources, :nodes, :bundles, :people, :topics, :posts], :collection => { :gallery => :get }, :member => { :home => :get, :recover => :post }
+  map.resources :users, :has_many => [:activations, :user_preferences, :permissions, :scratchpads, :events, :sources, :nodes, :bundles, :people, :topics, :posts], :collection => { :gallery => :get }, :member => { :home => :get, :recover => :post, :reinvite => :any }
   map.resources :annotations
   map.resources :preferences
 

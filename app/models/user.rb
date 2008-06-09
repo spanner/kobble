@@ -1,4 +1,5 @@
 require 'digest/sha1'
+include EmailColumn
 
 class User < ActiveRecord::Base
 
@@ -28,18 +29,17 @@ class User < ActiveRecord::Base
   has_many :created_posts, :class_name => 'Post', :foreign_key => 'created_by', :dependent => :destroy  
   has_many :created_scratchpads, :class_name => 'Scratchpad', :foreign_key => 'created_by', :dependent => :destroy
   has_many :created_tags, :class_name => 'Tag', :foreign_key => 'created_by', :dependent => :destroy
-
   has_many :events, :order => 'at DESC'
 
   named_scope :in_account, lambda { |account| {:conditions => { :account_id => account.id }} }
 
-  validates_presence_of     :login,                      :if => :login_required?
-  validates_presence_of     :password,                   :if => :password_required?
-  validates_length_of       :password, :within => 4..40, :if => :password_required?
-  validates_confirmation_of :password,                   :if => :password_required?
-  validates_length_of       :login,    :within => 3..40
-  validates_length_of       :email,    :within => 3..100
+  email_column :email
+
+  validates_presence_of     :name
   validates_uniqueness_of   :login, :email, :case_sensitive => false
+  validates_presence_of     :password, :if => :password_required?
+  validates_length_of       :password, :within => 4..40, :if => :password_required?
+  validates_confirmation_of :password,  :if => :password_required?
   
   before_create :make_activation_code
   before_save :encrypt_password
@@ -101,7 +101,7 @@ class User < ActiveRecord::Base
     self.status = 0
     self.save!
   end
-
+  
   # did they activate in this request?
   def justnow_activated?
     @activated
@@ -115,6 +115,20 @@ class User < ActiveRecord::Base
 
   def activated?
     activated_at != nil
+  end
+
+  def inactive?
+    activated_at == nil
+  end
+  
+  def status_in_words
+    return "not yet activated" if inactive?
+    return "deleted" if deleted?
+    return "site developer" if is_developer?
+    return "site admin" if is_developer?
+    return "account holder" if account_holder?
+    return "account administrator" if account_admin?
+    return "normal user"
   end
   
   # Encrypts some data with the salt.

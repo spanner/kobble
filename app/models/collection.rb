@@ -12,6 +12,10 @@ class Collection < ActiveRecord::Base
   has_many :occasions, :order => 'name', :dependent => :destroy, :conditions => "deleted_at IS NULL"
   has_many :topics, :order => 'name', :dependent => :destroy, :conditions => "deleted_at IS NULL"
   has_many :events, :order => 'at DESC'
+  
+  validates_presence_of :name
+  validates_presence_of :description
+  validates_length_of :abbreviation, :maximum => 10
 
   # this is a shortcut to allow collection tag clouds:
   # when item in colleciton is tagged, tagging is given collection link

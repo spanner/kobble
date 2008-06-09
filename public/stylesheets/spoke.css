@@ -1250,7 +1250,6 @@ div.mainform h2 {
 
 div.mainform label {
   font-size: 18px;
-  font-weight: lighter;
   font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
   letter-spacing: -0.05em;
   line-height: 20px;
@@ -1261,6 +1260,10 @@ div.mainform label {
 div.mainform label a {
   color: #559DC4;
   text-decoration: none;
+}
+
+label.required {
+	font-weight: bold;
 }
 
 div.mainform input.titular {
@@ -1772,28 +1775,52 @@ div.topicbody, div.postbody {
 
 /* errors and validation */
 
-label.formerror {
-	background-image: url(/images/furniture/signals/warning.png);
-	background-position: top left;
-	background-repeat: no-repeat;
-	padding-left: 20px;
-	color: #ff3e15 !important;
+div.formpart {
+	margin: 0 0 16px 0;
+	color: #cacac8;
 }
 
-input.witherrors, textarea.witherrors {
-	background-image: url(/images/furniture/signals/warning.png);
-	background-position: top right;
-	background-repeat: no-repeat;
+div.formpart input, div.formpart textarea {
+	border: 1px solid #cacac8;
+	padding: 4px;
+}
+
+div.witherrors input, div.witherrors textarea {
+	border: 1px solid #d1005d;
+}
+
+div.witherrors {
+	border-left: 4px solid #d1005d;
+	margin-left: -14px;
+	padding-left: 10px;
+	color: #d1005d !important;
+}
+
+div.witherrors label {
+	color: #d1005d !important;
 }
 
 p.haserror {
-	background-image: url(/images/furniture/signals/warning.png);
+/*	background-image: url(/images/furniture/signals/warning.png);
 	background-position: top left;
 	background-repeat: no-repeat;
 	padding-left: 20px;
-	color: #ff3e15;
+*/	color: #d1005d !important;
 }
 
 span.errordetail {
 	color: #8c8d8e;
 }
+
+div.errorExplanation {
+	color: #d1005d !important;
+}
+
+div.fieldWithErrors, div.fieldWithErrors p {
+	display: inline;
+}
+
+
+
+
+

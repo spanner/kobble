@@ -5,8 +5,20 @@
 %>
 
 <div class="preamble">
-	last here: <%= @thing.logged_in_at.nil? ? 'never' : time_ago_in_words(@thing.logged_in_at) %>. 
-  contact: <%= link_to @thing.email, "mailto:#{@thing.email}" %></a>
+  <p>
+  <strong>Status:</strong> <%= @thing.status_in_words %>.
+	<strong>Last here:</strong> <%= @thing.logged_in_at.nil? ? 'never' : time_ago_in_words(@thing.logged_in_at) %>. 
+  <strong>Contact:</strong> <%= link_to @thing.email, "mailto:#{@thing.email}" %></a>
+  </p>
+  
+  <% if @thing.inactive? %>
+    <div class="witherrors">
+      <p>
+        <strong>This user has not activated his or her account.</strong><br />
+        You may want to <%= link_to "revise the user", edit_user_url(@thing) %> and/or <%= link_to "resend the invitation message", reinvite_user_url(@thing) %>.
+      </p>
+    </div>
+  <% end %>
 </div>
 
 <%= render :partial => 'shared/show_summary' %>

@@ -1,9 +1,9 @@
-<%= error_messages_for 'user' %>
-
 <div class="preamble">
   <p>
     <%= link_to "Users", users_url %> here are people who can log into and act within the system.
-    People who are referred to, eg as speakers or authors, are <%= link_to 'listed separately', people_url %> but can be promoted to login users.
+    People who are referred to, eg as speakers or authors, are <%= link_to 'listed separately', people_url %>.
+    The permissions given to each user can be set on the <%= link_to "access control page", account_permissions_url(current_account) %>.
+    By default new users are given access to all collections not marked private.
   </p>
 
   <% if current_account.account_type.users_limit > 0 %>
@@ -11,28 +11,60 @@
   <% end %>
 </div>
 
-<div class="mainform contentblock">
-  <p><label for="user_firstname">Name</label><br/>
-  <%= text_field 'user', 'name', 'class' => "titular" %></p>
+<div class="contentblock mainform">
 
-  <p><label for="user_login">Email address</label><br/>
-  <%= text_field 'user', 'email', 'class' => "standard" %></p>
+  <% unless @user.errors.empty? %>
+    <p class="haserror"><strong>Sorry: there were problems.</strong> Please check the form. The affected fields will be highlighted in pink.</p>
+  <% end %>
 
-  <p><label for="user_login"<%= ' class="formError"' if @user.errors.on(:login) %>>Login</label><br />
-  <%= f.text_field :login, :class => 'standard' %>
-  <% if @user.errors.on(:login) %><div class="formError">warning: this username <%= @user.errors.on(:login).to_a.last %></div><% end %>
-  </p>
+  <div class="formpart<%= ' witherrors' if @user.errors.on(:name) %>">
+    <label for="user_name" class="required">Name</label><br/>
+    <%= text_field 'user', 'name', 'class' => "titular" %>
+    <% if @user.errors.on(:name) %><br />
+      This <%= @user.errors.on(:name).to_a.to_sentence %>
+    <% end %>
+  </div>
 
-  <p><label for="user_password"<%= ' class="formError"' if @user.errors.on(:password) %>>Password</label><br />
-  <%= password_field_tag 'user[password]', '', :class => "standard" %></p>
-  <% if @user.errors.on(:password) %><div class="formError">warning: <%= @user.errors.on(:password).to_a.last %></div><% end %>
-  </p>
+  <div class="formpart<%= ' witherrors' if @user.errors.on(:email) %>">
+    <label for="user_email" class="required">Email address</label><br/>
+    <%= f.text_field 'email', 'class' => "standard" %>
+    <% if @user.errors.on(:email) %><br />
+      This <%= @user.errors.on(:email).to_a.to_sentence %>
+    <% end %>
+  </div>
 
-  <p><label for="password_confirmation"<%= ' class="formError"' if @user.errors.on(:password_confirmation) %>>Confirm password</label><br />
-  <%= password_field_tag 'user[password_confirmation]', '', :class => "standard" %></p>
-  <% if @user.errors.on(:password_confirmation) %><div class="formError">warning: <%= @user.errors.on(:password_confirmation).to_a.last %></div><% end %>
-  </p>
+  <div class="formpart<%= ' witherrors' if @user.errors.on(:login) %>">
+    <label for="user_login" class="optional">Login</label> defaults to email<br/>
+    <%= f.text_field :login, :class => 'standard' %>
+    <% if @user.errors.on(:login) %><br />
+      This <%= @user.errors.on(:login).to_a.to_sentence %>
+    <% end %>
+  </div>
 
-  <%= render :partial => 'shared/edit_image', :locals => {:item => @user} %>
+  <div class="formpart<%= ' witherrors' if @user.errors.on(:password) %>">
+    <label for="user_password" class="required">Password</label><br/>
+    <%= password_field_tag :password, '', :class => 'standard' %>
+    <% if @user.errors.on(:password) %><br />
+      This <%= @user.errors.on(:password).to_a.to_sentence %>
+    <% end %>
+  </div>
+
+  <div class="formpart<%= ' witherrors' if @user.errors.on(:password_confirmation) %>">
+    <label for="user_password_confirmation" class="required">Confirm password</label><br/>
+    <%= password_field_tag :password_confirmation, '', :class => 'standard' %>
+    <% if @user.errors.on(:password_confirmation) %><br />
+      This <%= @user.errors.on(:password_confirmation).to_a.to_sentence %>
+    <% end %>
+  </div>
+
+  <div class="formpart<%= ' witherrors' if @user.errors.on(:description) %>">
+    <label for="user_description" class="optional">Description</label><br />
+    <%= f.text_area 'description', 'rows' => 4, 'class' => "standard" %>
+    <% if @user.errors.on(:description) %><br />
+      This <%= @user.errors.on(:description).to_a.to_sentence %>
+    <% end %>
+  </div>
+
+  <%= render :partial => 'shared/edit_image', :locals => {:item => @user, :heading => "Mugshot"} %>
 
 </div>

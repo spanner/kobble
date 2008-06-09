@@ -32,6 +32,7 @@ class ApplicationController < ActionController::Base
     if logged_in?
       current_user.account.last_active_at = Time.now
       EditObserver.current_user = current_user
+      UserObserver.current_user = current_user
     end
   end
   

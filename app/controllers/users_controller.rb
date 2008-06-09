@@ -37,10 +37,11 @@ class UsersController < ApplicationController
 
   def create
     @user = @account.users.build(params[:user])
+    @user.login ||= @user.email
     if @user.save
       flash[:notice] = 'User created.'
       respond_to do |format|
-        format.html { render :action => 'show' }
+        format.html { redirect_to :action => 'index' }
         format.json { render :json => @user.to_json }
       end
     else

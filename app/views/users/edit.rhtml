@@ -8,15 +8,19 @@
             } do |f| 
 %>
 
-	<% if account_admin? && @user != current_user %>
-	
-		<h1 class="pagetitle">Edit <%= link_to @user.name, :action => 'show', :id => @user %></h1>
+	<% if @user != current_user %>
+    <% @title = "Edit User" %>
 	  <%= render :partial => 'form', :locals => {:f => f} %>
+
+    <div class="formbuttons">
+      <%= submit_tag "Update User" %> or
+      <%= link_to 'cancel', url_for(@user) %>
+    </div>
 		
 	<% else %>
 
-    <% @user = current_user %>
-		<h1 class="pagetitle">About yourself</h1>
+    <% @title = "About yourself" %>
+
 	  <%= render :partial => 'self_form', :locals => {:f => f} %>
 
 	<% end %>

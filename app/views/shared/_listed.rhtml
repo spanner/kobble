@@ -2,7 +2,7 @@
   addendum ||= ''
   colourclass ||= nil
   single ||= false
-  inactive ||= listed.deleted?
+  inactive ||= listed.deleted? || listed.inactive?
   catch ||= false
   catch = false if inactive
   aclass = inactive ? "listed inactive" : "listed"
