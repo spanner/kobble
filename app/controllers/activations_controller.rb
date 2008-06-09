@@ -14,6 +14,7 @@ class ActivationsController < ApplicationController
   def activate
     @activation = Activation.find(params[:id])
     @collection = @activation.collection
+    # raise "you don't have permission to access that collection" unless current_user.has_permission?(@collection)
     @activation.update_attribute :active, true
     @message = "#{@collection.name} activated"
     respond_to do |format| 

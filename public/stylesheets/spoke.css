@@ -1566,6 +1566,7 @@ a.cloud2, label.cloud2 {font-size: 1.5em; color: #a0c8de;}
 a.cloud3, label.cloud3 {font-size: 1.8em; color: #85b8d5;}
 a.cloud4, label.cloud4 {font-size: 2.1em; color: #71adce;}
 a.cloud5, label.cloud5 {font-size: 2.4em; color: #559DC4;}
+a.unpopular {  display: none; }
 
 div.cloudsummary {
   float: right;

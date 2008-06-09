@@ -1,15 +1,24 @@
 class Tag < ActiveRecord::Base
 
+  attr_accessor :used
   acts_as_spoke :except => [:collection, :index, :description, :annotation]
   belongs_to :account
-  named_scope :in_account, lambda { |account| {:conditions => { :account_id => account.id }} }
   has_many :taggings, :dependent => :destroy
   can_catch :tags # in addition to all the catches set up by acts_as_spoke in other classes
-  
-  def stem
-    name.split.map{|w| w.stem}.join('_')
-  end
-  
+
+  named_scope :with_popularity, {
+    :select => "tags.*, count(taggings.id) as use_count", 
+    :joins => "INNER JOIN taggings on taggings.tag_id = tags.id", 
+    :group => "taggings.tag_id", 
+    :order => 'name ASC'
+  }
+  named_scope :in_account, lambda { |account| {
+    :conditions => { :account_id => account.id }} 
+  }
+  named_scope :matching, lambda { |stem| {
+    :conditions => "name like '#{stem}%'"} 
+  }
+    
   def subsume(subsumed)
     self.taggings += subsumed.taggings
     self.flags += subsumed.flags
@@ -51,6 +60,12 @@ class Tag < ActiveRecord::Base
     self.taggings.delete(self.taggings.of(object))
     return CatchResponse.new("#{self.name} tag removed from #{object.name}", 'delete', 'success')
   end
-
+  
+  def self.all_with_popularity(account)
+    tags = self.in_account(account).with_popularity
+    tags.each {|t| t.used = t.use_count }
+    tags
+  end
+  
 end
 

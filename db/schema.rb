@@ -1,5 +1,5 @@
 # This file is auto-generated from the current state of the database. Instead of editing this file, 
-# please use the migrations feature of ActiveRecord to incrementally modify your database, and
+# please use the migrations feature of Active Record to incrementally modify your database, and
 # then regenerate this schema definition.
 #
 # Note that this schema.rb definition is the authoritative source for your database schema. If you need
@@ -9,73 +9,73 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 108) do
+ActiveRecord::Schema.define(:version => 20080609075644) do
 
   create_table "account_types", :force => true do |t|
     t.string   "name"
     t.string   "description"
     t.float    "price_monthly"
     t.float    "price_yearly"
-    t.integer  "collections_limit"
-    t.integer  "users_limit"
-    t.integer  "sources_limit"
+    t.integer  "collections_limit", :limit => 11
+    t.integer  "users_limit",       :limit => 11
+    t.integer  "sources_limit",     :limit => 11
     t.boolean  "can_audio"
     t.boolean  "can_video"
     t.boolean  "can_rss"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "created_by"
-    t.integer  "updated_by"
-    t.integer  "space_limit",       :default => 0
+    t.integer  "created_by",        :limit => 11
+    t.integer  "updated_by",        :limit => 11
+    t.integer  "space_limit",       :limit => 11, :default => 0
   end
 
   create_table "accounts", :force => true do |t|
-    t.integer  "user_id"
+    t.integer  "user_id",         :limit => 11
     t.string   "name"
     t.string   "image"
     t.string   "status"
-    t.integer  "account_type_id"
+    t.integer  "account_type_id", :limit => 11
     t.datetime "last_active_at"
-    t.integer  "created_by"
-    t.integer  "updated_by"
+    t.integer  "created_by",      :limit => 11
+    t.integer  "updated_by",      :limit => 11
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "clip"
   end
 
   create_table "activations", :force => true do |t|
-    t.integer "collection_id"
-    t.integer "user_id"
-    t.boolean "active",        :default => false
+    t.integer "collection_id", :limit => 11
+    t.integer "user_id",       :limit => 11
+    t.boolean "active",                      :default => false
   end
 
   create_table "annotation_types", :force => true do |t|
     t.string   "name"
     t.text     "description"
-    t.integer  "created_by"
-    t.integer  "updated_by"
+    t.integer  "created_by",  :limit => 11
+    t.integer  "updated_by",  :limit => 11
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "annotations", :force => true do |t|
-    t.integer  "annotated_id"
+    t.integer  "annotated_id",       :limit => 11
     t.string   "annotated_type"
-    t.integer  "annotation_type_id"
+    t.integer  "annotation_type_id", :limit => 11
     t.text     "body"
-    t.integer  "created_by"
-    t.integer  "updated_by"
+    t.integer  "created_by",         :limit => 11
+    t.integer  "updated_by",         :limit => 11
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "bundles", :force => true do |t|
     t.string   "name"
-    t.integer  "user_id"
+    t.integer  "user_id",       :limit => 11
     t.text     "body"
-    t.integer  "collection_id"
-    t.integer  "created_by"
-    t.integer  "updated_by"
+    t.integer  "collection_id", :limit => 11
+    t.integer  "created_by",    :limit => 11
+    t.integer  "updated_by",    :limit => 11
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "observations"
@@ -91,10 +91,10 @@ ActiveRecord::Schema.define(:version => 108) do
   add_index "bundles", ["collection_id"], :name => "index_bundles_on_collection"
 
   create_table "bundlings", :force => true do |t|
-    t.integer  "superbundle_id"
-    t.integer  "member_id"
+    t.integer  "superbundle_id", :limit => 11
+    t.integer  "member_id",      :limit => 11
     t.string   "member_type",    :limit => 20
-    t.integer  "position"
+    t.integer  "position",       :limit => 11
     t.datetime "deleted_at"
   end
 
@@ -103,14 +103,14 @@ ActiveRecord::Schema.define(:version => 108) do
   create_table "collections", :force => true do |t|
     t.string   "name"
     t.text     "description"
-    t.integer  "created_by"
-    t.integer  "updated_by"
+    t.integer  "created_by",     :limit => 11
+    t.integer  "updated_by",     :limit => 11
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "abbreviation"
     t.string   "url"
     t.string   "email_from"
-    t.integer  "account_id"
+    t.integer  "account_id",     :limit => 11
     t.datetime "last_active_at"
     t.datetime "deleted_at"
     t.string   "image"
@@ -118,42 +118,42 @@ ActiveRecord::Schema.define(:version => 108) do
   end
 
   create_table "events", :force => true do |t|
-    t.integer  "affected_id"
+    t.integer  "affected_id",   :limit => 11
     t.string   "affected_type"
     t.string   "affected_name"
     t.string   "event_type"
-    t.integer  "account_id"
-    t.integer  "collection_id"
-    t.integer  "user_id"
+    t.integer  "account_id",    :limit => 11
+    t.integer  "collection_id", :limit => 11
+    t.integer  "user_id",       :limit => 11
     t.text     "notes"
     t.datetime "at"
   end
 
   create_table "flaggings", :force => true do |t|
-    t.integer  "flag_id"
+    t.integer  "flag_id",        :limit => 11
     t.string   "flaggable_type"
-    t.integer  "flaggable_id"
+    t.integer  "flaggable_id",   :limit => 11
     t.datetime "deleted_at"
   end
 
   create_table "flags", :force => true do |t|
     t.text     "body"
     t.string   "offender_type",  :limit => 20
-    t.integer  "offender_id"
-    t.integer  "user_id"
+    t.integer  "offender_id",    :limit => 11
+    t.integer  "user_id",        :limit => 11
     t.string   "warningtype_id"
-    t.integer  "created_by"
-    t.integer  "updated_by"
+    t.integer  "created_by",     :limit => 11
+    t.integer  "updated_by",     :limit => 11
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "severity",                     :default => 0
+    t.integer  "severity",       :limit => 11, :default => 0
     t.datetime "deleted_at"
   end
 
   create_table "monitorships", :force => true do |t|
-    t.integer  "topic_id"
-    t.integer  "user_id"
-    t.boolean  "active",     :default => false
+    t.integer  "topic_id",   :limit => 11
+    t.integer  "user_id",    :limit => 11
+    t.boolean  "active",                   :default => false
     t.datetime "deleted_at"
   end
 
@@ -162,18 +162,18 @@ ActiveRecord::Schema.define(:version => 108) do
     t.text     "description"
     t.text     "notes"
     t.text     "body"
-    t.integer  "speaker_id"
-    t.integer  "source_id"
+    t.integer  "speaker_id",     :limit => 11
+    t.integer  "source_id",      :limit => 11
     t.string   "status"
-    t.integer  "rating"
+    t.integer  "rating",         :limit => 11
     t.string   "image"
     t.string   "clip"
     t.integer  "playfrom",       :limit => 10, :precision => 10, :scale => 0
     t.integer  "playto",         :limit => 10, :precision => 10, :scale => 0
-    t.integer  "keywords_count"
-    t.integer  "collection_id"
-    t.integer  "created_by"
-    t.integer  "updated_by"
+    t.integer  "keywords_count", :limit => 11
+    t.integer  "collection_id",  :limit => 11
+    t.integer  "created_by",     :limit => 11
+    t.integer  "updated_by",     :limit => 11
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "observations"
@@ -190,15 +190,15 @@ ActiveRecord::Schema.define(:version => 108) do
   add_index "nodes", ["source_id"], :name => "index_nodes_on_source"
 
   create_table "occasions", :force => true do |t|
-    t.integer  "created_by"
-    t.integer  "updated_by"
+    t.integer  "created_by",    :limit => 11
+    t.integer  "updated_by",    :limit => 11
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "name"
     t.text     "description"
     t.string   "image"
     t.string   "clip"
-    t.integer  "collection_id"
+    t.integer  "collection_id", :limit => 11
     t.text     "observations"
     t.text     "arising"
     t.text     "emotions"
@@ -207,10 +207,10 @@ ActiveRecord::Schema.define(:version => 108) do
   end
 
   create_table "paddings", :force => true do |t|
-    t.integer "scratchpad_id"
+    t.integer "scratchpad_id", :limit => 11
     t.string  "scrap_type",    :limit => 20
-    t.integer "scrap_id"
-    t.integer "position"
+    t.integer "scrap_id",      :limit => 11
+    t.integer "position",      :limit => 11
   end
 
   add_index "paddings", ["scrap_type", "scrap_id"], :name => "index_scratchpad_scraps"
@@ -224,9 +224,9 @@ ActiveRecord::Schema.define(:version => 108) do
     t.text     "emotions"
     t.text     "observations"
     t.text     "arising"
-    t.integer  "collection_id"
-    t.integer  "created_by"
-    t.integer  "updated_by"
+    t.integer  "collection_id", :limit => 11
+    t.integer  "created_by",    :limit => 11
+    t.integer  "updated_by",    :limit => 11
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "email"
@@ -241,24 +241,24 @@ ActiveRecord::Schema.define(:version => 108) do
   end
 
   create_table "permissions", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "collection_id"
-    t.boolean  "admin",         :default => false
-    t.boolean  "active",        :default => false
+    t.integer  "user_id",       :limit => 11
+    t.integer  "collection_id", :limit => 11
+    t.boolean  "admin",                       :default => false
+    t.boolean  "active",                      :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "created_by"
-    t.integer  "updated_by"
+    t.integer  "created_by",    :limit => 11
+    t.integer  "updated_by",    :limit => 11
   end
 
   create_table "posts", :force => true do |t|
-    t.integer  "topic_id"
+    t.integer  "topic_id",      :limit => 11
     t.text     "body"
-    t.integer  "collection_id"
+    t.integer  "collection_id", :limit => 11
     t.datetime "created_at"
-    t.integer  "created_by"
+    t.integer  "created_by",    :limit => 11
     t.datetime "updated_at"
-    t.integer  "updated_by"
+    t.integer  "updated_by",    :limit => 11
     t.datetime "deleted_at"
   end
 
@@ -269,26 +269,26 @@ ActiveRecord::Schema.define(:version => 108) do
     t.string   "name"
     t.string   "abbr"
     t.text     "description"
-    t.integer  "created_by"
-    t.integer  "updated_by"
+    t.integer  "created_by",  :limit => 11
+    t.integer  "updated_by",  :limit => 11
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "scratchpads", :force => true do |t|
     t.string   "name"
-    t.integer  "created_by"
+    t.integer  "created_by",    :limit => 11
     t.datetime "created_at"
-    t.integer  "updated_by"
+    t.integer  "updated_by",    :limit => 11
     t.datetime "updated_at"
-    t.integer  "collection_id"
+    t.integer  "collection_id", :limit => 11
     t.text     "body"
     t.string   "color"
   end
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id"
-    t.text     "data"
+    t.text     "data",       :limit => 16777215
     t.datetime "updated_at"
   end
 
@@ -298,14 +298,14 @@ ActiveRecord::Schema.define(:version => 108) do
     t.string   "name"
     t.text     "notes"
     t.text     "description"
-    t.integer  "speaker_id"
-    t.text     "body"
+    t.integer  "speaker_id",     :limit => 11
+    t.text     "body",           :limit => 2147483647
     t.string   "clip"
-    t.integer  "duration",       :limit => 10,  :precision => 10, :scale => 0
-    t.integer  "rating"
-    t.integer  "collection_id"
-    t.integer  "created_by"
-    t.integer  "updated_by"
+    t.integer  "duration",       :limit => 10,         :precision => 10, :scale => 0
+    t.integer  "rating",         :limit => 11
+    t.integer  "collection_id",  :limit => 11
+    t.integer  "created_by",     :limit => 11
+    t.integer  "updated_by",     :limit => 11
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "observations"
@@ -313,7 +313,7 @@ ActiveRecord::Schema.define(:version => 108) do
     t.text     "arising"
     t.string   "image"
     t.text     "circumstances"
-    t.integer  "occasion_id"
+    t.integer  "occasion_id",    :limit => 11
     t.string   "file",           :limit => 355
     t.text     "extracted_text"
     t.datetime "deleted_at"
@@ -322,24 +322,26 @@ ActiveRecord::Schema.define(:version => 108) do
   add_index "sources", ["collection_id"], :name => "index_sources_on_collection"
 
   create_table "taggings", :force => true do |t|
-    t.integer  "tag_id"
+    t.integer  "tag_id",        :limit => 11
     t.string   "taggable_type", :limit => 20
-    t.integer  "taggable_id"
+    t.integer  "taggable_id",   :limit => 11
     t.datetime "deleted_at"
+    t.integer  "collection_id", :limit => 11
   end
 
-  add_index "taggings", ["taggable_type", "taggable_id"], :name => "index_tag_marks"
+  add_index "taggings", ["tag_id"], :name => "by_tag"
+  add_index "taggings", ["collection_id"], :name => "by_collection"
 
   create_table "tags", :force => true do |t|
     t.string   "name"
     t.text     "description"
-    t.integer  "user_id"
-    t.integer  "created_by"
-    t.integer  "updated_by"
+    t.integer  "user_id",       :limit => 11
+    t.integer  "created_by",    :limit => 11
+    t.integer  "updated_by",    :limit => 11
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "image"
-    t.integer  "account_id"
+    t.integer  "account_id",    :limit => 11
     t.text     "body"
     t.text     "observations"
     t.text     "emotions"
@@ -351,18 +353,18 @@ ActiveRecord::Schema.define(:version => 108) do
 
   create_table "topics", :force => true do |t|
     t.string   "name"
-    t.integer  "posts_count",   :default => 0
+    t.integer  "posts_count",   :limit => 11, :default => 0
     t.datetime "replied_at"
-    t.integer  "replied_by"
-    t.integer  "last_post_id"
-    t.integer  "collection_id"
-    t.integer  "speaker_id"
+    t.integer  "replied_by",    :limit => 11
+    t.integer  "last_post_id",  :limit => 11
+    t.integer  "collection_id", :limit => 11
+    t.integer  "speaker_id",    :limit => 11
     t.datetime "created_at"
-    t.integer  "created_by"
+    t.integer  "created_by",    :limit => 11
     t.datetime "updated_at"
-    t.integer  "updated_by"
+    t.integer  "updated_by",    :limit => 11
     t.string   "referent_type"
-    t.integer  "referent_id"
+    t.integer  "referent_id",   :limit => 11
     t.text     "body"
     t.datetime "deleted_at"
   end
@@ -371,42 +373,42 @@ ActiveRecord::Schema.define(:version => 108) do
   add_index "topics", ["replied_at"], :name => "index_topics_on_forum_id_and_replied_at"
 
   create_table "user_preferences", :force => true do |t|
-    t.integer "user_id"
-    t.integer "preference_id"
-    t.boolean "active",        :default => false
+    t.integer "user_id",       :limit => 11
+    t.integer "preference_id", :limit => 11
+    t.boolean "active",                      :default => false
   end
 
   create_table "users", :force => true do |t|
-    t.string   "login",                     :limit => 80, :default => "", :null => false
+    t.string   "login",                     :limit => 80,                 :null => false
     t.string   "crypted_password",          :limit => 40, :default => "", :null => false
-    t.string   "email",                     :limit => 60, :default => "", :null => false
+    t.string   "email",                     :limit => 60,                 :null => false
     t.string   "diminutive",                :limit => 40
     t.string   "honorific"
-    t.string   "salt",                      :limit => 40, :default => "", :null => false
-    t.integer  "verified",                                :default => 0
+    t.string   "salt",                      :limit => 40,                 :null => false
+    t.integer  "verified",                  :limit => 11, :default => 0
     t.string   "remember_token",            :limit => 40
     t.datetime "remember_token_expires_at"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "logged_in_at"
-    t.integer  "deleted",                                 :default => 0
+    t.integer  "deleted",                   :limit => 11, :default => 0
     t.datetime "delete_after"
-    t.integer  "status",                                  :default => 10
+    t.integer  "status",                    :limit => 11, :default => 10
     t.string   "image"
     t.text     "description"
-    t.integer  "created_by"
-    t.integer  "updated_by"
+    t.integer  "created_by",                :limit => 11
+    t.integer  "updated_by",                :limit => 11
     t.datetime "activated_at"
     t.string   "activation_code",           :limit => 40
     t.datetime "last_seen_at"
     t.string   "postcode"
     t.string   "new_password"
     t.string   "password"
-    t.integer  "receive_news_email",                      :default => 1
-    t.integer  "receive_html_email"
-    t.integer  "subscribe_everything"
-    t.integer  "account_id"
-    t.integer  "person_id"
+    t.integer  "receive_news_email",        :limit => 11, :default => 1
+    t.integer  "receive_html_email",        :limit => 11
+    t.integer  "subscribe_everything",      :limit => 11
+    t.integer  "account_id",                :limit => 11
+    t.integer  "person_id",                 :limit => 11
     t.string   "name"
     t.datetime "last_active_at"
     t.datetime "previously_logged_in_at"

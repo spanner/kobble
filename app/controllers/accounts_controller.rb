@@ -7,6 +7,11 @@ class AccountsController < ApplicationController
     render :action => 'home'
   end
 
+  def show
+    home
+    render :action => 'home'
+  end
+
   def home
     @account = current_user.account
     @collections = current_account.collections_by_activity

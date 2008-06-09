@@ -16,23 +16,22 @@ class TagsController < ApplicationController
     'account'
   end
 
-  # this is a dirty dirty shortcut.
-  # loading tags properly for this is very slow because of all the HMP preloaders
-  # and since this is always an ajax call we need quick
-  # so we just pull out the names directly
-
   def matching
-    @tagnames = Tag.connection.select_values("SELECT name FROM #{Tag.table_name} where account_id = #{current_account.id} and name like '#{params[:stem]}%'").uniq
+    @tags = Tag.in_account(current_account).matching(params[:stem])
+    @tagnames = @tags.map{|t| t.name}.uniq
     respond_to do |format|
-      format.html {  }
-      format.json { 
-        render :json => @tagnames.to_json
-      }
+      format.json { render :json => @tagnames.to_json }
     end
   end
   
   def cloud
-    @list = Tag.weighted
+    if params[:show] == 'all'
+      @list = Tag.all_with_popularity(current_account)
+    else
+      taggings = Tagging.in_collections(current_collections).grouped_with_popularity
+      taggings.each {|t| t.tag.used = t.use_count }
+      @list = taggings.map {|t| t.tag }.uniq.sort{|a,b| a.name <=> b.name}
+    end
   end
   
   def new
@@ -75,24 +74,7 @@ class TagsController < ApplicationController
       format.xml { head 200 }
     end
   end
-  
-  def consolidate
-    tags = Tag.find(:all)
-    seen = {}
-    @removed = {}
-    tags.each do |tag|
-      if seen[tag.stem] 
-        seen[tag.stem].subsume(tag)
-        @removed[tag.name] = seen[tag.stem]
-      else 
-        seen[tag.stem] = tag
-      end
-    end
-    cloud
-    flas[:notice] = 'tags stemmed and consolidated'
-    render :action => 'index'
-  end
-  
+    
   def destroy
     Tag.find(params[:id]).destroy
     redirect_to :action => 'index'

@@ -12,6 +12,13 @@ class Collection < ActiveRecord::Base
   has_many :occasions, :order => 'name', :dependent => :destroy, :conditions => "deleted_at IS NULL"
   has_many :topics, :order => 'name', :dependent => :destroy, :conditions => "deleted_at IS NULL"
   has_many :events, :order => 'at DESC'
+
+  # this is a shortcut to allow collection tag clouds:
+  # when item in colleciton is tagged, tagging is given collection link
+  # otherwise polymorphism makes gathering collected-and-tagged objects too inefficient
+  
+  has_many :taggings  
+  has_many :tags, :through => :taggings  
   
   cattr_accessor :current_collections
 
@@ -25,5 +32,11 @@ class Collection < ActiveRecord::Base
       return CatchResponse.new("#{object.name} already in #{self.name} collection", 'copy', 'failure')
     end
   end
-
+  
+  def tags_with_popularity
+    taggings = self.taggings.grouped_with_popularity
+    taggings.each {|t| t.tag.used = t.use_count }
+    taggings.map {|t| t.tag }.uniq.sort{|a,b| a.name <=> b.name}
+  end
+  
 end
