@@ -29,14 +29,7 @@ class User < ActiveRecord::Base
   has_many :created_scratchpads, :class_name => 'Scratchpad', :foreign_key => 'created_by', :dependent => :destroy
   has_many :created_tags, :class_name => 'Tag', :foreign_key => 'created_by', :dependent => :destroy
 
-  has_many :events do
-    def recent
-      find(:all, :limit => 10, :order => 'at DESC')
-    end
-    def latest
-      find(:first, :order => 'at DESC')
-    end
-  end
+  has_many :events, :order => 'at DESC'
 
   named_scope :in_account, lambda { |account| {:conditions => { :account_id => account.id }} }
 

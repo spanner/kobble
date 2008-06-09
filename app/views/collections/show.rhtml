@@ -4,7 +4,7 @@
 
 <%= render :partial => 'shared/show_summary' %>
 <%= render :partial => 'shared/show_field_notes' %>
-<%= render :partial => 'shared/show_topics' %>
+<%= render :partial => 'shared/show_topics', :locals => {:hide_new_discussion_link => true, :blocktitle => 'discussions in this collection'} %>
 <%= render :partial => 'shared/show_history' %>
 <%= render :partial => 'shared/show_tag_cloud' %>
 

@@ -1,9 +1,30 @@
+<% @title = "Add a new user to your account" %>
+
 <div id="inputform">
 
-	<h1 class="pagetitle">Create a new person</h1>
+  <% form_for :user,
+              :url => user_path(@user),
+              :html => { 
+                :multipart => true
+              } do |f| 
+  %>
 
-	<% form_tag( {:action => 'create'}, :multipart => true) do %>
-	  <%= render :partial => 'form' %>
+	  <%= render :partial => 'form', :locals => {:f => f} %>
+
+
+  <div class="preamble">
+    <p>
+      When you press 'invite user' an invitation message will be sent to the email address you have entered 
+      - so please make sure it's right - 
+      containing instructions and a link that will activate the new user and log that person into your account.
+    </p>
+  </div>
+      
+  <div class="formbuttons">
+    <%= submit_tag "Invite User" %> or
+    <%= link_to 'cancel', users_url %>
+  </div>
+
 	<% end %>
 
 </div>

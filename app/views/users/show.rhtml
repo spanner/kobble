@@ -4,90 +4,15 @@
   @title = @thing.name 
 %>
 
-<% if @thing.has_description? %>
-	  <%= @thing.description.formatted %>
-<% else %>
-  <p>No biography given</p>
-<% end %>
-
-<div class="boxtabs">
-  <a href="#" id="tab_content_details" class="tab">summary</a>
-  <a href="#" id="tab_content_subscriptions" class="tab">subscriptions</a>
-  <% if @thing.has_image? %><a href="#" id="tab_content_image" class="tab">image</a><% end %>
-  <% if @thing.has_posts? %><a href="#" id="tab_content_posts" class="tab">comments</a><% end %>
-  <% if @thing.has_sources? %><a href="#" id="tab_content_sources" class="tab">sources</a><% end %>
-  <% if @thing.has_nodes? %><a href="#" id="tab_content_nodes" class="tab">fragments</a><% end %>
+<div class="preamble">
+	last here: <%= @thing.logged_in_at.nil? ? 'never' : time_ago_in_words(@thing.logged_in_at) %>. 
+  contact: <%= link_to @thing.email, "mailto:#{@thing.email}" %></a>
 </div>
 
-<div class="boxed" id="box_content">
-  <div id="content_details">
-    <p>
-    <% if @thing.can_login? %>
-    	last here: <%= @thing.logged_in_at.nil? ? 'never' : time_ago_in_words(@thing.logged_in_at) %><br />
-    <% else %>
-    	<em>non-login user</em><br />
-    <% end %>
-    email address: <%= link_to @thing.email, "mailto:#{@thing.email}" %></a><br />
-    workplace: <%= @thing.workplace %><br />
-    role: <%= @thing.role  %><br />
-    phone: <%= @thing.phone %>
-    </p>
-  </div>
-  
-
-  <div id="content_subscriptions">
-  <% if @thing.has_monitorships? %>
-    <ul>
-      <% @thing.monitorships.each do |monitorship| %>
-        <li>
-        <%= 
-          linkclass =  monitorship.active? ? 'ticked' : 'crossed'
-          linktitle =  monitorship.active? ? 'click to switch off email subscription' : 'click to receive email notification of new posts'
-
-          link_to monitorship.topic.name, toggle_monitorship_url(monitorship), {
-      		  :class => "toggle #{linkclass}",
-      		  :title => linktitle
-      	  } 
-      	%>
-    	  </li>
-      <% end %>
-  	</ul>
-  <% else %>
-    <p>No subscriptions.</p>
-  <% end %>
-  </div>
-
-  
-  <%= render :partial => 'shared/show_image', :locals => {:item => @thing, :tabset => 'content'} %>
-
-  <% if @thing.has_posts? %>
-    <div id="content_posts">
-      <h2 class="boxhead">has made <%= pluralize(@thing.posts.count, "Comment") %></h2>
-    	<ul class="starry">
-    		<%= render :partial => "posts/minilist", :collection => @thing.posts %>
-      </ul>
-    </div>
-  <% end %>
-
-  <% if @thing.has_sources? %>
-    <div id="content_sources">
-      <h2 class="boxhead">speaks in <%= pluralize(@thing.sources.count, "source document") %></h2>
-    	<ul class="starry">
-    		<%= render :partial => "sources/minilist", :collection => @thing.sources %>
-      </ul>
-    </div>
-  <% end %>
-
-  <% if @thing.has_nodes? %>
-    <div id="content_nodes">
-      <h2 class="boxhead">speaks in <%= pluralize(@thing.nodes.count, "Fragment") %></h2>
-    	<ul class="starry">
-    		<%= render :partial => "nodes/minilist", :collection => @thing.nodes %>
-      </ul>
-    </div>
-  <% end %>
-
-</div>
+<%= render :partial => 'shared/show_summary' %>
+<%= render :partial => 'shared/show_subscriptions' if itsme || account_admin? %>
+<%= render :partial => 'shared/show_contributions' %>
+<%= render :partial => 'shared/show_history' %>
 
 <% content_for :admin do %>
   <p>

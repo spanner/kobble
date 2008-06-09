@@ -1,21 +1,22 @@
 <%
   cloud ||= @list
-  counts = cloud.map{|t| t.used.to_i }
-  max_use = counts.max
-  min_use = counts.min
-  cssbands = 6
-  divisor = ((max_use - min_use) / cssbands) + 1
-  bandlabels = (0...cssbands).map { |i| "#{((i) * divisor) + min_use} - #{((i+1) * divisor) + min_use - 1}"}
-  bandlabels.push "#{((cssbands * divisor) + min_use)}+"
-  bands = {}
-  cssclass = {}
-  incidence = (0...cssbands).map{0}
-  cloud.each do |tag|
-    band = (tag.used.to_i - min_use) / divisor
-    bands[tag.id] = band
-    cssclass[tag.id] = "cloud#{band}"
-    incidence[band] += 1
-  end
+  if cloud && !cloud.empty?
+    counts = cloud.map{|t| t.used.to_i }
+    max_use = counts.max
+    min_use = counts.min
+    cssbands = 6
+    divisor = ((max_use - min_use) / cssbands) + 1
+    bandlabels = (0...cssbands).map { |i| "#{((i) * divisor) + min_use} - #{((i+1) * divisor) + min_use - 1}"}
+    bandlabels.push "#{((cssbands * divisor) + min_use)}+"
+    bands = {}
+    cssclass = {}
+    incidence = (0...cssbands).map{0}
+    cloud.each do |tag|
+      band = (tag.used.to_i - min_use) / divisor
+      bands[tag.id] = band
+      cssclass[tag.id] = "cloud#{band}"
+      incidence[band] += 1
+    end
 %>
 
 <ul class="cloud">
@@ -31,3 +32,7 @@
 
 	<% end %>
 </ul>
+
+<% 
+    end 
+%>

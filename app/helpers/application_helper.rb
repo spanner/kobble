@@ -31,4 +31,9 @@ module ApplicationHelper
     eval(url_method + '(item)')
   end
 
+  def item_history_url(item)
+    url_method = item.class.to_s.underscore.downcase + '_events_url'
+    eval(url_method + '(item)')
+  end
+
 end

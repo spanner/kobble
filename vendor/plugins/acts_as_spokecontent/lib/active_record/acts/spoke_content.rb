@@ -27,7 +27,7 @@ module ActiveRecord
       module ClassMethods
  
         def acts_as_spoke(options={})
-          definitions = [:collection, :owners, :illustration, :organisation, :description, :annotation, :discussion, :index, :log, :undelete]
+          definitions = [:collection, :owners, :illustration, :organisation, :description, :annotation, :discussion, :index, :log, :undelete, :selection]
           if options[:except]
             definitions = definitions - Array(options[:except]) 
           elsif options[:only]
@@ -128,6 +128,12 @@ module ActiveRecord
             else
               logger.warn("!! #{self.to_s} should be paranoid but has no deleted_at column")
             end
+          end
+
+          if definitions.include?(:selection)
+            named_scope :latest, lambda {|count| { :limit => (count || 5), :order => 'created_at DESC' } }
+            named_scope :changed_since, lambda {|start| { :conditions => ['created_at > ? or updated_at > ?', start, start] } }
+            named_scope :created_by, lambda {|user| { :conditions => ['created_by = ?', user.id] } }
           end
           
           self.module_eval("include InstanceMethods")

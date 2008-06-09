@@ -1,5 +1,8 @@
 <% 
-  @title = @collection ? "#{@collection.abbreviation} history" : 'Account history' 
+  @title = 'Account history' 
+  @title = "#{@collection.abbreviation} history" if @collection
+  @title = "#{@user.name} history" if @user
+
   case params[:type]
   when 'deleted'
     @title += ": deletions"
@@ -15,7 +18,9 @@
 <div class="preamble">
   <p>
     <% if @collection %>
-      This is a log of activity in the <strong><%= @collection.name %></strong> collection. 
+      This is a log of activity in the <strong><%= link_to @collection.name, url_for(@collection) %></strong> collection. 
+    <% elsif @user %>
+      This is a log of activity by <%= link_to @user.name, url_for(@user) %>
     <% else %>
       This is a log of activity in this account. 
     <% end %>
@@ -24,6 +29,7 @@
     <%= link_to 'updates', {:type => 'updated'}, {:class => 'updated'} %> or
     <%= link_to 'deletions', {:type => 'deleted'}, {:class => 'deleted'} %>. 
     Any item that has since been deleted will be displayed <span class="deleted">struck through</span> even if the listed event is an update or creation. To recover a deleted object, click through to the object page and press 'recover'.
+    The relations between objects (eg fragments taken from sources) may mean that you are prompted to recover other objects too.
   </p>
 </div>
 

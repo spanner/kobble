@@ -104,7 +104,7 @@ class UsersController < ApplicationController
   private
   
   def find_account
-    @account = Account.find(params[:account_id])
+    @account = params[:account_id] ? Account.find(params[:account_id]) : current_account
   end
   
   def account_admin_or_self_required

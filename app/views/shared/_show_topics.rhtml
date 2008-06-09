@@ -1,11 +1,13 @@
 <% 
   item ||= @thing 
   topics ||= item.topics
+  hide_new_discussion_link ||= false
+  blocktitle ||= 'discussion'
 %>
 
 <h3 class="pagesection">
   <a href="#" class="squeezebox">
-    discussion 
+    <%= blocktitle %> 
     <span class="headernote">
       <%= pluralize(topics.length, 'conversation') %>
     </span>
@@ -18,6 +20,8 @@
       <%= render :partial => 'shared/listed', :collection => topics %>
   	</ul>
   </div>
-	<p><%= link_to "start a conversation", item_new_topic_url(item), {:id => 'discussion_extend_topiclist', :class => 'inlinediscuss'} %></p>
+	<% unless hide_new_discussion_link %>
+	  <p><%= link_to "start a conversation", item_new_topic_url(item), {:id => 'discussion_extend_topiclist', :class => 'inlinediscuss'} %></p>
+  <% end %>
 </div>
 

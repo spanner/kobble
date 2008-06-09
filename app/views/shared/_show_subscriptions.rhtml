@@ -1,0 +1,33 @@
+<% item ||= @thing %>
+
+<h3 class="pagesection">
+  <a href="#" class="squeezebox">
+    subscriptions 
+    <span class="headernote">
+      <%= pluralize(item.monitorships.count, 'topic') %>
+    </span>
+  </a>
+</h3>
+
+<div id="source_monitorships" class="squeezed">
+  <% if item.has_monitorships? %>
+    <div class="mainlist">
+      <ul>
+        <% item.monitorships.each do |monitorship| %>
+          <li>
+          <%= 
+            linkclass =  monitorship.active? ? 'ticked' : 'crossed'
+            linktitle =  monitorship.active? ? 'click to switch off email subscription' : 'click to receive email notification of new posts'
+            link_to monitorship.topic.name, toggle_monitorship_url(monitorship), {
+        		  :class => "toggle #{linkclass}",
+        		  :title => linktitle
+        	  } 
+        	%>
+      	  </li>
+        <% end %>
+      </ul>
+    </div>
+  <% else %>
+    <p>No subscriptions.</p>
+  <% end %>
+</div>

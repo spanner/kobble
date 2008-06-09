@@ -1,12 +1,12 @@
 <% 
   item ||= @thing
-  count ||= 100
+  count ||= 20
   events ||= @since ? item.events.since(@since) : item.events.latest(count)
 %>
 
 <h3 class="pagesection">
   <a href="#" class="squeezebox">
-    event log 
+    recent event log 
     <span class="headernote">
       <% if events.count > 0 %>
         <%
@@ -21,23 +21,31 @@
   </a>
 </h3>
 
-<div class="squeezed">
-  <div class="mainlist">
-    <% if events.empty? %>
-      <p>No activity recorded<% unless @since.nil? %> in this period<% end %>.</p>
-    <% else %>    
-      <ul>
-        <% events.each do |event| %>
-          <% who = event.user == current_user ? 'you' : event.user.name %>
-          <%= render :partial => "shared/listed", :locals => {
-            :listed => event.affected,
-            :name => event.affected_name || event.affected.name,
-            :colourclass => event.event_type, 
-            :addendum => "#{event.event_type} by #{who} #{time_ago_in_words(event.at)} ago"
-          } %>
-        <% end %>
-      </ul>
-    <% end %>
+<div class="squeezed mainlist">
 
-  </div>
+  <% if events.empty? %>
+    <p>No activity recorded<% unless @since.nil? %> in this period<% end %>.</p>
+  <% else %>  
+
+    <h4 class="listheader">
+      <%= count %> of <%= pluralize(events.count, "Event") %>
+      <% unless @since.nil? %> in this period<% end %>
+      <span class="headernote">
+        <%= link_to "show full history", item_history_url(item) %>
+      </span>
+    </h4>
+    
+    <ul>
+      <% events.each do |event| %>
+        <% who = event.user == current_user ? 'you' : event.user.name %>
+        <%= render :partial => "shared/listed", :locals => {
+          :listed => event.affected,
+          :name => event.affected_name || event.affected.name,
+          :colourclass => event.event_type, 
+          :addendum => "#{event.event_type} by #{who} #{time_ago_in_words(event.at)} ago"
+        } %>
+      <% end %>
+    </ul>
+  <% end %>
+
 </div>

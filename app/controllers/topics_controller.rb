@@ -30,7 +30,6 @@ class TopicsController < ApplicationController
   def new
     @topic = Topic.new
     @topic.referent = find_referent
-    @topic.collection = @topic.referent.collection if @topic.referent.has_collection?
     respond_to do |format|
       format.html { }
       format.js { render :action => 'inline', :layout => false }
@@ -43,7 +42,6 @@ class TopicsController < ApplicationController
   def create
     @topic = Topic.new(params[:topic])
     @topic.referent = find_referent
-    @topic.collection = @topic.referent.collection if @topic.referent.has_collection?
     if @topic.save
       @topic.add_monitors(User.find_by_id(params[:monitors])) if params[:monitors]
       respond_to do |format|

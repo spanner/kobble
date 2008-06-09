@@ -1,5 +1,6 @@
 <p>
-  <label for="<%= item.class.to_s.downcase %>_image">Upload an image: <%= file_column_field item.class.to_s.downcase, "image" %></label>
+  <label for="<%= item.class.to_s.downcase %>_image">Upload an image:<br />
+  <%= file_column_field item.class.to_s.downcase, "image" %></label>
   <% if item.has_image? %><br /><a class="pale" href="<%= url_for_file_column(item.class.to_s.downcase, "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column(item.class.to_s.downcase, "image", "thumb"), :size => "18x18", :alt => '') %>
   current image is <%= item.image_relative_path %></a><% end %>
 </p>

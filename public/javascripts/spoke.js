@@ -1205,6 +1205,11 @@ var htmlForm = new Class ({
 	
 	prepForm: function () {
 		arguments.callee.parent();
+		if (this.form.hasClass('confirming')) {
+			this.floater.addClass('confirming');
+		} else {
+			this.floater.removeClass('confirming');
+		}
 		this.form.getElements('#revise').each( function (input) { input.onclick = this.revise.bind(this); }, this);
 		this.form.getElements('#confirm').each( function (input) { input.onclick = this.confirm.bind(this); }, this);
 	},
@@ -1258,7 +1263,8 @@ var htmlForm = new Class ({
   
   showOnPage: function () {
     if (this.destination_squeeze) intf.squeezebox.display(this.destination_squeeze);
-    new Fx.Scroll(window).toElement(this.created_item).chain(function(){ this.created_item.highlight(); });
+		var mf = this;
+    new Fx.Scroll(window).toElement(mf.created_item).chain(function(){ mf.created_item.highlight(); });
   }
 });
 
@@ -1296,7 +1302,7 @@ var Squeezebox = new Class ({
 		fixedHeight: false,
 		fixedWidth: false,
 		wait: false,
-		alwaysHide: true,
+		alwaysHide: false,
     onActive: function (toggler, element) {
       toggler.addClass('expanded');
       toggler.removeClass('squeezed');

@@ -10,7 +10,8 @@
   <% form_for :post,
               :url => topic_posts_path(@topic),
               :html => { 
-                :multipart => true
+                :multipart => true,
+                :class => 'confirming'
               } do |f| 
   %>
 

@@ -6,7 +6,8 @@
   catch ||= false
   catch = false if inactive
   aclass = inactive ? "listed inactive" : "listed"
-  name ||= listed.name.nil? || listed.name.size == 0 ? "nameless #{listed.class.nice_title}" : listed.name 
+  name ||= listed.name
+  name = "nameless #{listed.nice_title}" if name.nil? || name == ''
   collection_name = listed.has_collection? ? "#{listed.collection.abbreviation}: " : ''
 %>
 

@@ -1,8 +1,8 @@
 class EventsController < ApplicationController
-  before_filter :find_account_or_collection
+  before_filter :find_account_or_collection_or_user
 
   def index
-    @thing = @collection || @account
+    @thing = @collection || @user || @account
     if params[:type] && ['created', 'updated', 'deleted'].include?(params[:type])
       @events = @thing.events.of_type(params[:type]).paginate(self.paging)
     else
@@ -20,7 +20,7 @@ class EventsController < ApplicationController
 
   private
   
-  def find_account_or_collection
+  def find_account_or_collection_or_user
     if params[:account_id]
       access_insufficient unless admin?
       @account = Account.find(params[:account_id])
@@ -29,6 +29,9 @@ class EventsController < ApplicationController
     end
     if params[:collection_id]
       @collection = @account.collections.find(params[:collection_id])
+    end
+    if params[:user_id]
+      @user = @account.users.find(params[:user_id])
     end
   end
   
