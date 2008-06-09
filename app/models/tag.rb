@@ -1,7 +1,7 @@
 class Tag < ActiveRecord::Base
 
   attr_accessor :used
-  acts_as_spoke :except => [:collection, :index, :description, :annotation]
+  acts_as_spoke :except => [:collection, :index, :description]
   belongs_to :account
   has_many :taggings, :dependent => :destroy
   can_catch :tags # in addition to all the catches set up by acts_as_spoke in other classes

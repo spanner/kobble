@@ -9,7 +9,7 @@
 <h3><%= link_to "admin: collections", account_collections_url(current_account) %></h3>
 <ul class="padded">
   <% current_account.collections.each do |collection| %>
-    <li class="collection"><%= link_to collection.name, edit_collection_url(collection), :class => 'listed' %></li>
+    <li class="collection"><%= link_to collection.name, collection_url(collection), :class => 'listed' %></li>
   <% end %>
   <li class="create create_collection"><%= link_to "create a new collection", new_account_collection_url(current_account) %></li>
 </ul>

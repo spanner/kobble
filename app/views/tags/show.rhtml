@@ -8,7 +8,7 @@
   <a href="#" class="squeezebox">
     tagged items 
     <span class="headernote">
-      <%= pluralize(@thing.taggables.count, 'uses') %>
+      <%= pluralize(@thing.tagged.size, 'uses') %>
     </span>
   </a>
 </h3>
@@ -20,7 +20,7 @@
   	  class="catcher"
   	  catches="<%= @thing.catchlist %>"
   	>
-	    <%= render :partial => 'shared/listed', :collection => @thing.taggables.uniq, :locals => {:catch => false} %>
+	    <%= render :partial => 'shared/listed', :collection => @thing.tagged.uniq, :locals => {:catch => false} %>
     </ul>
   </div>
   <p>Drag items into the list (or space) above to apply this tag to them.</p>
