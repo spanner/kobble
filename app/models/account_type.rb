@@ -15,4 +15,8 @@ class AccountType < ActiveRecord::Base
       "unlimited"
     end
   end
+  
+  
+  
+  
 end

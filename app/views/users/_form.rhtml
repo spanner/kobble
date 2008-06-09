@@ -4,10 +4,12 @@
   <p>
     <%= link_to "Users", users_url %> here are people who can log into and act within the system.
     People who are referred to, eg as speakers or authors, are <%= link_to 'listed separately', people_url %> but can be promoted to login users.
-    Your account is limited to x users.
   </p>
-</div>
 
+  <% if current_account.account_type.users_limit > 0 %>
+    <p>Your account has <strong><%= current_account.users.count %></strong> of the <strong><%= current_account.account_type.users_limit %> users</strong> it is allowed.</p>
+  <% end %>
+</div>
 
 <div class="mainform contentblock">
   <p><label for="user_firstname">Name</label><br/>
@@ -30,7 +32,7 @@
   <%= password_field_tag 'user[password_confirmation]', '', :class => "standard" %></p>
   <% if @user.errors.on(:password_confirmation) %><div class="formError">warning: <%= @user.errors.on(:password_confirmation).to_a.last %></div><% end %>
   </p>
-  
+
   <%= render :partial => 'shared/edit_image', :locals => {:item => @user} %>
 
 </div>

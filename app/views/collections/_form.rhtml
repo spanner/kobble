@@ -6,8 +6,13 @@
     It is possible, but unusual, to move materials from one collection to another.
     It is easy, and common, to combine materials from various collections in the same set.
   </p>
-  
-  <p>Tags and users are shared among your collections, and if you have a team account you can control who has what level of access to each collection.</p>
+
+  <p>Tags and users are shared among your collections, and if you have a team account you can control <%= link_to "who has what level of access", account_permissions_url(current_account) %> to each collection.</p>
+
+  <% if current_account.account_type.collections_limit > 0 %>
+    <p>Your account has <strong><%= current_account.collections.count %></strong> of the <strong><%= current_account.account_type.collections_limit %> collections</strong> it is allowed.</p>
+  <% end %>
+
 </div>
 
 <div class="boxed" id="box_editing">

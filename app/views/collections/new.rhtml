@@ -1,20 +1,27 @@
 <% @title = "start a new collection" %>
 
-<div class="mainform">
+<% if current_account.can_add_collection? %>
+  <div class="mainform">
 
-  <% form_for :collection,
-              :url => account_collections_url(@account),
-              :html => { 
-                :multipart => true,
-                :id => 'collectionform'
-              } do |f| 
-  %>
-    <%= render :partial => 'form', :locals => {:f => f} %>
+    <% form_for :collection,
+                :url => account_collections_url(@account),
+                :html => { 
+                  :multipart => true,
+                  :id => 'collectionform'
+                } do |f| 
+    %>
+      <%= render :partial => 'form', :locals => {:f => f} %>
     
-    <div class="formbuttons">
-      <%= submit_tag "create collection" %> or
-      <%= link_to 'cancel', home_accounts_url %>
-    </div>
+      <div class="formbuttons">
+        <%= submit_tag "create collection" %> or
+        <%= link_to 'cancel', home_accounts_url %>
+      </div>
   
-  <% end %>
-</div>
+    <% end %>
+  </div>
+  
+<% else %>
+
+  <p>Sorry: your account has all of the <%= current_account.account_type.collections_limit %> collections it is allowed. To add more collections, please either remove an existing one or upgrade your account.</p>
+
+<% end %>
