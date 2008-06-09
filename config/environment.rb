@@ -46,6 +46,8 @@ Rails::Initializer.run do |config|
   
 end
 
+require 'will_paginate'
+
 WhiteListHelper.tags.merge(%w(object param embed))
 
 ExceptionNotifier.sender_address = "sysadmin@spanner.org"

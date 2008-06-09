@@ -42,8 +42,8 @@ module ActiveRecord
           if definitions.include?(:collection)
             if self.column_names.include?('collection_id')
               belongs_to :collection
-              has_finder :in_collection, lambda { |collection| {:conditions => { :collection_id => collection.id }} }
-              has_finder :in_collections, lambda { |collections| {:conditions => ["#{table_name}.collection_id in (" + collections.map{'?'}.join(',') + ")"] + collections.map { |c| c.id }} }
+              named_scope :in_collection, lambda { |collection| {:conditions => { :collection_id => collection.id }} }
+              named_scope :in_collections, lambda { |collections| {:conditions => ["#{table_name}.collection_id in (" + collections.map{'?'}.join(',') + ")"] + collections.map { |c| c.id }} }
               Collection.can_catch(self)
             else
               logger.warn("!! #{self.to_s} should belong_to collection but has no collection_id column")
@@ -53,10 +53,10 @@ module ActiveRecord
           if definitions.include?(:owners)
             belongs_to :creator, :class_name => 'User', :foreign_key => 'created_by'
             belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
-            has_finder :created_by_user, lambda { |user| {:conditions => { :created_by => user.id }} }
+            named_scope :created_by_user, lambda { |user| {:conditions => { :created_by => user.id }} }
             if column_names.include?('speaker_id')
               belongs_to :speaker, :class_name => 'Person', :foreign_key => 'speaker_id'
-              has_finder :spoken_by_person, lambda { |person| {:conditions => { :speaker_id => person.id }} }
+              named_scope :spoken_by_person, lambda { |person| {:conditions => { :speaker_id => person.id }} }
             end
           end
           

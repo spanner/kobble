@@ -2,7 +2,7 @@ class Tag < ActiveRecord::Base
 
   acts_as_spoke :except => [:collection, :index, :description, :annotation]
   belongs_to :account
-  has_finder :in_account, lambda { |account| {:conditions => { :account_id => account.id }} }
+  named_scope :in_account, lambda { |account| {:conditions => { :account_id => account.id }} }
   has_many :taggings, :dependent => :destroy
   can_catch :tags # in addition to all the catches set up by acts_as_spoke in other classes
   

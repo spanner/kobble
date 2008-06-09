@@ -38,7 +38,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  has_finder :in_account, lambda { |account| {:conditions => { :account_id => account.id }} }
+  named_scope :in_account, lambda { |account| {:conditions => { :account_id => account.id }} }
 
   validates_presence_of     :login,                      :if => :login_required?
   validates_presence_of     :password,                   :if => :password_required?

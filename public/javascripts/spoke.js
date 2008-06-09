@@ -1107,7 +1107,7 @@ var jsonForm = new Class ({
 		
 	resize: function (width, height) {
 		var at = this.floater.getCoordinates();
-		var towidth = width || 540;
+		var towidth = width || 520;
 		var toheight = height || this.formHolder.getHeight() + 10;
 		var scroll = document.getScroll();
 		var boundary = document.getSize();
