@@ -1,0 +1,20 @@
+<% 
+  item ||= @thing 
+  weighted_tags ||= item.tags_with_popularity
+  popular_tags = weighted_tags.select{|t| t.used.to_i > 1 }
+%>
+
+<h3 class="pagesection">
+  <a href="#" class="squeezebox">
+    popular tag cloud 
+    <span class="headernote">
+      <%= pluralize(popular_tags.size, 'tag') %> used more than once
+    </span>
+  </a>
+</h3>
+
+<div id="tag_cloud" class="cloud squeezed">
+
+  <%= render :partial => 'shared/tag_cloud', :locals => { :cloud => popular_tags } %>
+
+</div>
