@@ -1,0 +1,12 @@
+<% 
+  item ||= @thing
+  heading ||= "#{item.class.nice_title.titlecase} name"
+%>
+
+<div class="formpart<%= ' witherrors' if item.errors.on(:name) %>">
+  <label for="source_name" class="required"><%= heading %></label><br/>
+  <%= f.text_field 'name', 'class' => "titular" %>
+  <% if item.errors.on(:name) %><br />
+    This <%= item.errors.on(:name).to_a.to_sentence %>
+  <% end %>
+</div>

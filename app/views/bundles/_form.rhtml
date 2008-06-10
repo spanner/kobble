@@ -1,7 +1,3 @@
-<%= error_messages_for 'bundle' %>
-
-<!--[form:bundle]-->
-
 <div class="preamble">
   <p>
   	'Sets' are gatherings of material. They can include almost anything: sources, fragments, people, tags, other sets, conversations, etc. 
@@ -9,45 +5,40 @@
   </p>
 </div>
 
-<div class="boxtabs">
-  <a href="#" id="tab_editing_summary" class="tab">summary</a>
-  <a href="#" id="tab_editing_members" class="tab">members</a>
-  <a href="#" id="tab_editing_notes" class="tab">field notes</a>
-</div>
+<div class="mainform contentblock">
 
-<div class="boxed" id="box_editing">
-	<div id="editing_summary">
-    <p style="clear: both;"><label for="bundle_name">Set name</label><br/>
-      <%= f.text_field 'name', :class => "titular" %>
-    </p>
+  <fieldset>
+    <legend>Description</legend>
 
-    <%= render :partial => 'shared/edit_collection', :locals => {:item => @bundle} %>
-    <%= render :partial => 'shared/edit_tags', :locals => {:item => @bundle} %>
-
-    <p style="clear: both;"><label for="bundle_description">Synopsis or summary</label><br/>
-      <%= f.text_area 'description', 'rows' => 5, :class => "standard" %>
-    </p>
+    <%= render :partial => 'shared/edit_name', :locals => {:item => @bundle, :f => f, :required => true} %>
+    <%= render :partial => 'shared/edit_tags', :locals => {:item => @bundle, :f => f} %>
+    <%= render :partial => 'shared/edit_description', :locals => {:item => @bundle, :f => f, :heading => 'Synopsis or summary', :required => true} %>
 
     <p class="formnote">
       Conventionally, the synopsis is a brief aid to memory and recognition that will appear in lists and summaries. 
       The body text of a set is typically a draft chapter or other work in progress, but could be notes or to-do items or anything else you'd like to attach.
     </p>
     
-    <%= render :partial => 'shared/edit_body', :locals => {:item => @bundle} %>
-
-    <%= render :partial => 'shared/edit_image', :locals => {:item => @bundle} %>
+    <%= render :partial => 'shared/edit_image', :locals => {:item => @bundle, :f => f} %>
 
     <p class="formnote">
       We normally look within the set for an image, but you can choose one here if you prefer.
     </p>
 
-  </div>
+  </fieldset>
 
-	<div id="editing_members">
+  <%= yield :buttons %>
+
+  <fieldset>
+    <legend>Contents</legend>
+    
+    <%= render :partial => 'shared/edit_body', :locals => {:item => @bundle, :f => f, :heading => 'Main set text (optional)'} %>
+
 	  <% if @bundle.new_record? %>
 	  
 	    <% if @members %>
-        <%= render :partial => 'members', :locals => {:members => @members, :inactive => true} %>
+        <%= hidden_field_tag 'scratchpad_id', params[:scratchpad_id] %>
+        <%= render :partial => 'members', :locals => {:item => @bundle, :members => @members, :inactive => true} %>
 	    <% else %>
 	      <p>Once the set has been created you will be able to manage its population by dragging items into and out of this space (and the similar space on the main set page).</p>
       <% end %>
@@ -57,11 +48,20 @@
       <%= render :partial => 'members' %>
 	  
 	  <% end %>
-    
-  </div>
 
-	<div id="editing_notes">
-    <%= render :partial => 'shared/edit_fieldnotes', :locals => {:item => @bundle} %>
-  </div>
+  </fieldset>
+
+  <%= yield :buttons %>
+
+  <fieldset>
+    <legend>Filing</legend>
+
+    <%= render :partial => 'shared/edit_collection', :locals => {:item => @bundle, :f => f, :required => true} %>
+    
+  </fieldset>
+
+  <%= yield :buttons %>
 
 </div>
+
+

@@ -2,6 +2,8 @@ class Bundle < ActiveRecord::Base
 
   acts_as_spoke
   has_many :contained_bundlings, :dependent => :destroy, :class_name => 'Bundling', :foreign_key => 'superbundle_id'
+
+  validates_presence_of :name, :description, :collection
   
   def self.nice_title
     "set"

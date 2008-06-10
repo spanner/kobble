@@ -1,0 +1,13 @@
+<% 
+  item ||= @thing
+  heading ||= 'Description'
+  required ||= false
+%>
+
+<div class="formpart<%= ' witherrors' if item.errors.on(:description) %>">
+  <label for="<%= item.class.to_s.downcase %>_description"<% if required %> class="required"<% end %>><%= heading %></label><br />
+  <%= f.text_area 'description', 'rows' => 4, 'class' => "standard" %>
+  <% if item.errors.on(:description) %><br />
+    This <%= item.errors.on(:description).to_a.to_sentence %>
+  <% end %>
+</div>

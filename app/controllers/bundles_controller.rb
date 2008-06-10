@@ -3,22 +3,15 @@ class BundlesController < ApplicationController
   def new
     @bundle = Bundle.new
     @bundle.tags << Tag.from_list(params[:tag_list]) if params[:tag_list]
-    if params[:scratchpad_id]
-      @expad = Scratchpad.find(params[:scratchpad_id])
-      if @expad
-        @members = @expad.scraps.uniq
-        @bundle.name = @expad.name
-        @bundle.body = @expad.body
-      end
-    end
+    @expad = Scratchpad.find(params[:scratchpad_id]) if params[:scratchpad_id]
   end
 
   def create
     @bundle = Bundle.new(params[:bundle])
+    @expad = Scratchpad.find(params[:scratchpad_id]) if params[:scratchpad_id]
     if @bundle.save
       @bundle.tags << Tag.from_list(params[:tag_list]) if params[:tag_list]
-      if params[:scratchpad_id]
-        @expad = Scratchpad.find(params[:scratchpad_id])
+      if @expad
         @expad.scraps.uniq.each { |m| @bundle.members << m }
         @expad.destroy
         flash[:notice] = "Bundle created from scratchpad #{@expad.name}"

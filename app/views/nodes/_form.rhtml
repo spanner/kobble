@@ -17,24 +17,9 @@
     <fieldset>
       <legend>Description</legend>
 
-      <div class="formpart<%= ' witherrors' if @node.errors.on(:name) %>">
-        <label for="node_name" class="required">Fragment Name</label><br/>
-        <%= f.text_field 'name', 'class' => "titular" %>
-        <% if @node.errors.on(:name) %><br />
-          This <%= @node.errors.on(:name).to_a.to_sentence %>
-        <% end %>
-      </div>
-
+      <%= render :partial => 'shared/edit_name', :locals => {:item => @bundle, :f => f, :required => true} %>
       <%= render :partial => 'shared/edit_tags', :locals => {:item => @node, :f => f} %>
-
-      <div class="formpart<%= ' witherrors' if @node.errors.on(:description) %>">
-        <label for="node_description" class="required">Description</label><br />
-        <%= f.text_area 'description', 'rows' => 4, 'class' => "standard" %>
-        <% if @node.errors.on(:description) %><br />
-          This <%= @node.errors.on(:description).to_a.to_sentence %>
-        <% end %>
-      </div>
-
+      <%= render :partial => 'shared/edit_description', :locals => {:item => @node, :f => f, :required => true} %>
       <%= render :partial => 'shared/edit_image', :locals => {:item => @node, :f => f} %>
 
     </fieldset>
@@ -88,7 +73,7 @@
     <fieldset>
       <legend>Filing</legend>
 
-      <%= render :partial => 'shared/edit_collection', :locals => {:item => @node, :f => f} %>
+      <%= render :partial => 'shared/edit_collection', :locals => {:item => @node, :f => f, :required => true} %>
       <%= render :partial => 'shared/edit_source', :locals => {:item => @node, :f => f} %>
       <%= render :partial => 'shared/edit_speaker', :locals => {:item => @node, :f => f} %>
 

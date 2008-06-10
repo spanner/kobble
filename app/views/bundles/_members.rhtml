@@ -1,5 +1,6 @@
 <%
-  members ||= @thing.members
+  item ||= @thing
+  members ||= item.members
   inactive ||= false
 %>
 
@@ -15,9 +16,9 @@
 <div id="bundle_members" class="squeezed">
   <div class="mainlist">
     <ul 
-      id="members_bundle_<%= @thing.id %>" 
+      id="members_bundle_<%= item.id %>" 
       class="<%= inactive ? 'inactive' : 'catcher' %>"
-      <% unless inactive %> catches="<%= @thing.catchlist %>"<% end %>
+      <% unless inactive %> catches="<%= item.catchlist %>"<% end %>
     >
       <%= render :partial => 'shared/listed', :collection => members, :locals => {:inactive => inactive} %>
     </ul>
