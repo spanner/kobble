@@ -7,6 +7,10 @@
 
 <div class="mainform contentblock">
 
+  <% unless @bundle.errors.empty? %>
+    <p class="haserror"><strong>Sorry: there were problems.</strong> Please check the form. The affected fields will be highlighted in pink.</p>
+  <% end %>
+
   <fieldset>
     <legend>Description</legend>
 
