@@ -23,7 +23,10 @@ class CollectionsController < ApplicationController
   def create
     @collection = @account.collections.build(params[:collection])
     @collection.last_active_at = Time.now
+    @collection.abbreviation = @collection.name.initials_or_beginning if @collection.abbreviation.nil? || @collection.abbreviation == ""  #defined in spoke_content plugin's StringExtensions
     if @collection.save
+      current_user.permission_for(@collection).activate
+      current_user.activation_of(@collection).activate
       flash[:notice] = 'Collection was created.'
       respond_to do |format| 
         format.html { redirect_to url_for(@collection) }
@@ -56,21 +59,6 @@ class CollectionsController < ApplicationController
     else
       render :action => 'edit'
     end
-  end
-
-  def destroy
-    @collection = @account.collections.find(params[:id])
-    respond_to do |format| 
-      format.html
-      format.json { render :json => @collection.to_json }
-      format.js { render :layout => false }
-    end
-  end
-
-  def reallydestroy
-    @collection = @account.collections.delete(params[:id])
-    flash[:notice] = "'#{@collection.name}' removed"
-    redirect_to :action => 'list'
   end
 
   private

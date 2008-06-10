@@ -125,6 +125,7 @@ module ActiveRecord
           if definitions.include?(:undelete)
             if self.column_names.include?('deleted_at')
               acts_as_paranoid
+              attr_accessor :newly_undeleted
             else
               logger.warn("!! #{self.to_s} should be paranoid but has no deleted_at column")
             end

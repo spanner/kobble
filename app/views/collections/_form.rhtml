@@ -26,7 +26,7 @@
   </div>
 
   <div class="formpart<%= ' witherrors' if @collection.errors.on(:abbreviation) %>">
-    <label for="collection_abbreviation" class="optional">Abbreviation</label> defaults to initials or (if one word) first four letters of collection name<br />
+    <label for="collection_abbreviation" class="optional">Abbreviation</label> defaults to initials or (if one word) first 5 letters of collection name<br />
     <%= f.text_field 'abbreviation', 'class' => "standard" %>
     <% if @collection.errors.on(:abbreviation) %><br />
       This <%= @collection.errors.on(:abbreviation).to_a.to_sentence %>

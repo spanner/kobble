@@ -20,8 +20,6 @@ class SourcesController < ApplicationController
 
   def edit
     @source = Source.find(params[:id])
-    @people = Person.in_collections(current_collections)
-    @occasions = Occasion.in_collections(current_collections)
   end
 
   def update

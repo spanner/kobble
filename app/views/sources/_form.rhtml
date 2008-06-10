@@ -1,5 +1,3 @@
-<%= error_messages_for 'source' %>
-
 <div class="preamble">
   <p>
     'Source documents' are whole texts or recordings, uploaded intact and suitable for segmenting. 
@@ -7,40 +5,55 @@
   </p>
 </div>
 
-<div class="boxtabs">
-  <a href="#" id="tab_editing_body" class="tab">source document</a>
-  <a href="#" id="tab_editing_notes" class="tab">field notes</a>
-</div>
-
-<div class="boxed" id="box_editing">
-	<div id="editing_body">
-
-    <p><label for="source_name">Document name</label><br />
-    <%= text_field 'source', 'name', 'class' => "titular" %>
-    </p>
-
-    <%= render :partial => 'shared/edit_collection', :locals => {:item => @source} %>
-    <%= render :partial => 'shared/edit_tags', :locals => {:item => @source} %>
-
-    <p><label for="source_description">Synopsis or description</label><br />
-    <%= text_area 'source', 'description', 'rows' => 4, 'class' => "standard" %>
-    </p>
-
-    <%= render :partial => 'shared/edit_clip', :locals => {:item => @source} %>
-    <%= render :partial => 'shared/edit_body', :locals => {:item => @source} %>
-    <%= render :partial => 'shared/edit_file', :locals => {:item => @source} %>
-    <%= render :partial => 'shared/edit_image', :locals => {:item => @source} %>
-
-    <p class="formnote">If you want to associated several images with a source document, the best way is to illustrate its fragments.</p>
-
-    <%= render :partial => 'shared/edit_speaker', :locals => {:item => @source} %>
-
-  </div>
+<div class="mainform contentblock">
   
-  <div id="editing_notes">
-    <%= render :partial => 'shared/edit_occasion', :locals => {:item => @source} %>
-    <%= render :partial => 'shared/edit_fieldnotes', :locals => {:item => @source} %>
-  </div>
+  <% unless @source.errors.empty? %>
+    <p class="haserror"><strong>Sorry: there were problems.</strong> Please check the form. The affected fields will be highlighted in pink.</p>
+  <% end %>
+
+  <fieldset>
+    <legend>Description</legend>
+
+    <div class="formpart<%= ' witherrors' if @source.errors.on(:name) %>">
+      <label for="source_name" class="required">Document Name</label><br/>
+      <%= f.text_field 'name', 'class' => "titular" %>
+      <% if @source.errors.on(:name) %><br />
+        This <%= @source.errors.on(:name).to_a.to_sentence %>
+      <% end %>
+    </div>
+
+    <%= render :partial => 'shared/edit_tags', :locals => {:item => @source, :f => f} %>
+
+    <div class="formpart<%= ' witherrors' if @source.errors.on(:description) %>">
+      <label for="source_description" class="required">Description</label><br />
+      <%= f.text_area 'description', 'rows' => 4, 'class' => "standard" %>
+      <% if @source.errors.on(:description) %><br />
+        This <%= @source.errors.on(:description).to_a.to_sentence %>
+      <% end %>
+    </div>
+
+    <%= render :partial => 'shared/edit_image', :locals => {:item => @source, :f => f} %>
+
+  </fieldset>
+  
+  <fieldset>
+    <legend>Contents</legend>
+
+    <%= render :partial => 'shared/edit_clip', :locals => {:item => @source, :f => f} %>
+    <%= render :partial => 'shared/edit_body', :locals => {:item => @source, :f => f} %>
+    <%= render :partial => 'shared/edit_file', :locals => {:item => @source, :f => f} %>
+
+  </fieldset>
+
+  <fieldset>
+    <legend>Filing</legend>
+
+    <%= render :partial => 'shared/edit_collection', :locals => {:item => @source, :f => f} %>
+    <%= render :partial => 'shared/edit_speaker', :locals => {:item => @source, :f => f} %>
+    <%= render :partial => 'shared/edit_occasion', :locals => {:item => @source, :f => f} %>
+
+  </fieldset>
+
 </div>
 
 

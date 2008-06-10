@@ -52,6 +52,15 @@ Element.implement({
   spokeType: function () {
     return this.idparts().type;
   },
+  pluralSpokeType: function () {
+		var type = this.idparts().type;
+    switch (type ) {
+      case 'person':
+        return 'people';
+      default:
+        return type + 's';
+    }
+  },
   spokeTag: function () {
     return this.spokeType() + '_' + this.spokeID();
   },

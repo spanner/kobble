@@ -1,6 +1,6 @@
 class Annotation < ActiveRecord::Base
 
-  acts_as_spoke :only => [:owners, :index]
+  acts_as_spoke :only => [:owners, :index, :log, :undelete]
   
   belongs_to :annotation_type
   belongs_to :annotated, :polymorphic => true

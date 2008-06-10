@@ -1,13 +1,16 @@
 ActionController::Routing::Routes.draw do |map|
                                 
+  # restful login might be possible I suppose but I dislike having to suppose a login object
+  
   map.home '', :controller => 'login', :action => 'index'
   map.login '/login', :controller => 'login', :action => 'login'
   map.logout '/logout', :controller => 'login', :action => 'logout'
   map.repassword '/repassword', :controller => 'login', :action => 'repassword'
   
+  # catch and drop are dispatched by controllers and can't be restful
+  
   map.catch '/:controller/catch/:id/:caughtClass/:caughtID', :action => 'catch'
   map.drop '/:controller/drop/:id/:droppedClass/:droppedID', :action => 'drop'
-  map.trash '/:controller/trash/:id', :action => 'trash'
   
   map.resources :accounts, :has_many => [:users, :collections, :events, :deletions, :tags, :permissions], :collection => { :home => :any }
   map.resources :collections, :has_many => [:events, :topics, :annotations], :member => {:recover => :post}, :collection => { :gallery => :get }

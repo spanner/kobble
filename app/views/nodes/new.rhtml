@@ -1,4 +1,4 @@
-<% @title = "Create a new fragment" %>
+<% @title = "Create loose fragment" %>
 
 <div class="mainform">
 
@@ -9,12 +9,13 @@
                 :id => 'nodeform'
               } do |f| 
   %>
-  <%= render :partial => 'form' %>
 
-  <div class="formbuttons">
-    <%= submit_tag "Create Fragment" %> or
-    <%= link_to 'cancel', :action => 'index' %>
-  </div>
+    <%= render :partial => 'form', :locals => {:f => f} %>
+
+    <div class="formbuttons">
+      <%= submit_tag "Create Fragment" %> or
+      <%= link_to 'cancel', :action => 'index' %>
+    </div>
 
   <% end %>
 </div>

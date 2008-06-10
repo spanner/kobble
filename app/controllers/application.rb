@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
   
   def set_context
     if logged_in?
-      current_user.account.last_active_at = Time.now
+      # current_user.account.last_active_at = Time.now
       EditObserver.current_user = current_user
       UserObserver.current_user = current_user
     end
@@ -131,15 +131,7 @@ class ApplicationController < ActionController::Base
       format.xml { head 200 }
     end
   end
-  
-  def amend
-    # single field update
-  end
-
-  def trash
-    destroy
-  end
-  
+    
   def drop
     @dropper = request.parameters[:controller].to_s._as_class.find( params[:id] )
     @dropped = params[:droppedClass]._as_class.find(params[:droppedID])
@@ -150,12 +142,10 @@ class ApplicationController < ActionController::Base
       format.xml { head 200 }
     end
   rescue => e
+    flash[:error] = e.message
     @response = CatchResponse.new(e.message, '', 'failure')
     respond_to do |format|
-      format.html { 
-        flash[:error] = e.message
-        redirect_to :controller => params[:controller], :action => 'show', :id => @catcher 
-      }
+      format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @catcher }
       format.json { render :json => @response.to_json }
     end
   end
@@ -164,30 +154,20 @@ class ApplicationController < ActionController::Base
     render :layout => false
   end
   
-  # most models are paranoid
+  # most models, including linkers, are paranoid
   
   def destroy
     @deleted = request.parameters[:controller].to_s._as_class.find( params[:id] )
     @deleted.destroy
     respond_to do |format|
-      format.html { 
-        redirect_to :controller => params[:controller], :action => 'show', :id => @deleted
-      }
-      format.json { 
-        @response = CatchResponse.new("#{@deleted.name} deleted", 'delete')
-        render :json => @response.to_json 
-      }
+      format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @deleted }
+      format.json { render :json => CatchResponse.new("#{@deleted.name} deleted", 'delete').to_json }
     end
   rescue => e
+    flash[:error] = e.message
     respond_to do |format|
-      format.html { 
-        flash[:error] = e.message
-        redirect_to :controller => params[:controller], :action => 'show', :id => @deleted 
-      }
-      format.json { 
-        @response = CatchResponse.new(e.message, '', 'failure')
-        render :json => @response.to_json 
-      }
+      format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @deleted }
+      format.json { render :json => CatchResponse.new(e.message, '', 'failure').to_json }
     end
   end
 

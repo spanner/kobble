@@ -20,7 +20,7 @@ var Interface = new Class({
     this.fixedbottom = [];
     this.inlinelinks = [];
     this.floaters = [];
-    this.debug_level = 0;
+    this.debug_level = 4;
     this.clickthreshold = 20;
     this.announcer = $E('div#notification');
     this.admin = $E('div#admin');
@@ -368,6 +368,7 @@ var Dropzone = new Class({
       this.isReceptive = false;
     }
   },
+
   makeRegretful: function (helper) {
     // this gets called when we drag something out of this space that began here
     intf.debug('regretful: ' + this.name, 4);
@@ -385,6 +386,7 @@ var Dropzone = new Class({
     });
     this.isRegretful = true;
   },
+
   makeUnregretful: function () {
     if (this.isRegretful) {
       intf.debug('unRegretful: ' + this.name, 4);
@@ -396,11 +398,13 @@ var Dropzone = new Class({
       this.isRegretful = false;
     }
   },
+
   showInterest: function (helper) {
     intf.debug('interested: ' + this.name, 5);
     this.container.addClass('drophere');
     if (this.tab) this.tab.tabhead.addClass('over');
   },
+
   loseInterest: function (helper) {
     intf.debug('uninterested: ' + this.name, 4);
     this.container.removeClass('drophere');
@@ -428,7 +432,7 @@ var Dropzone = new Class({
         
   			var req = new Request.JSON( {
   			  url: this.addURL(draggee),
-  				method: 'get',
+  				method: this.http_method(),
   			  onRequest: function () { 
   			    dropzone.waiting();
   			    draggee.waiting();
@@ -466,6 +470,7 @@ var Dropzone = new Class({
 			}
 		}
   },
+
 	removeDrop: function (helper) {
     intf.debug('removeDrop: ' + this.name, 3);
 	  intf.stopDragging();
@@ -492,12 +497,19 @@ var Dropzone = new Class({
 		  }
 		}).send();
 	},
+	
 	addURL: function (draggee) { 
 		return '/' + this.spokeType() + 's/' + this.receiptAction + '/' + this.spokeID() + '/' + draggee.spokeType() + '/' + draggee.spokeID();  
 	},
+	
 	removeURL: function (draggee) { 
 		return '/' + this.spokeType() + 's/' + this.removeAction + '/' + this.spokeID() + '/' + draggee.spokeType() + '/' + draggee.spokeID(); 
 	},
+	
+	http_method: function () {
+		return 'get';
+	},
+	
 	waiting: function () {
 	  if (this.zoneType() == 'list') {
       this.waitSignal = new Element('li', { 'id': 'waiter', 'class': 'draggable waiting' });
@@ -508,6 +520,7 @@ var Dropzone = new Class({
 	    this.container.addClass('waiting');
 	  }
 	},
+	
 	notWaiting: function () { 
 	  if (this.zoneType() == 'list') {
       if (this.waitSignal) {
@@ -518,6 +531,7 @@ var Dropzone = new Class({
 	    this.container.removeClass('waiting');
 	  }
 	},
+	
 	accept: function (draggee) {
     if (this.zoneType() == 'list') {
       var element = draggee.clone().inject(this.container, 'inside');
@@ -529,8 +543,48 @@ var Dropzone = new Class({
 
 var TrashDropzone = new Class({
   Extends: Dropzone,
-	addURL: function (draggee) { return draggee.spokeType() +'s/trash/' + draggee.spokeID(); },
-	can_catch: function (type) { return true; }
+	can_catch: function (type) { return true; },
+	receiveDrop: function (helper) {
+    intf.debug('trash.receiveDrop: ' + this.name, 2);
+	  intf.stopDragging();
+		var trash = this;
+		var draggee = helper.draggee;
+		trash.loseInterest(helper);
+    intf.debug('trash catching ' + draggee.name, 2);
+		var deleteform = new Element('form', {
+			'style': 'display: none'
+		});
+		var deletemethod = new Element('input', {
+			'type': 'hidden',
+			'name': '_method',
+			'value': 'delete'
+		}).inject(deleteform);
+    intf.debug('deleteform:', 3);
+    intf.debug(deleteform, 3);
+
+    var req = new Request.JSON({
+      url: draggee.pluralSpokeType() + '/' + draggee.spokeID(),
+      onRequest: function () { draggee.waiting(); trash.waiting(); },
+      onSuccess: function (response) { 
+				draggee.disappear(); 
+				trash.notWaiting(); 
+				intf.announce(response.message); 
+			},
+      onFailure: function (response) { 
+	      intf.debug('drop failed!', 2);
+        intf.debug('outcome = ' + response.outcome + ', message = ' + response.message + ', consequence = ' + response.consequence, 4);
+		    draggee.notWaiting(); 
+		    trash.notWaiting(); 
+		    intf.complain('remote call failed');
+   		}
+    }).post(deleteform);
+	},
+	waiting: function () {
+
+	},
+	notWaiting: function () {
+
+	}
 });
 
 var Draggee = new Class({
@@ -545,6 +599,7 @@ var Draggee = new Class({
 	},
   spokeID: function () { return this.original.spokeID(); },
   spokeType: function () { return this.original.spokeType(); },
+	pluralSpokeType: function () { return this.original.pluralSpokeType(); },
 	doClick: function (e) { 
 	  var event = intf.blocked_event(e);
     intf.removeHelper();

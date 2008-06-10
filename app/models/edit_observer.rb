@@ -20,7 +20,7 @@ class EditObserver < ActiveRecord::Observer
   end
 
   def after_update(model)
-    if model.undeleted?
+    if model.newly_undeleted
       record_event(model, 'restored') if model.record_timestamps
     else
       record_event(model, 'updated') if model.record_timestamps

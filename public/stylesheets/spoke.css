@@ -1267,7 +1267,7 @@ label.required {
 }
 
 div.mainform input.titular {
-  width: 90%;
+  width: 97%;
   height: 28px;
   font-family: Georgia, "Times New Roman", serif;
   font-size: 22px;
@@ -1296,7 +1296,7 @@ div.mainform input.standard, div.mainform select.standard, div.mainform textarea
   font-family: Georgia, "Times New Roman", serif;
   font-size: 14px;
   line-height: 18px;
-  width: 90%;
+  width: 97%;
   color: black;
 }
 
@@ -1305,7 +1305,7 @@ div.mainform input.tagbox {
   font-size: 22px;
   font-weight: lighter;
   line-height: 22px;
-  width: 90%;
+  width: 97%;
   color: #559DC4;
 }
 
@@ -1313,6 +1313,18 @@ div.mainform input.gobutton {
   height: 28px;
   font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
   font-size: 22px;
+}
+
+div.mainform fieldset {
+	border: 1px dotted #cacac8;
+	padding: 0 16px 0 16px;
+	margin-bottom: 10px;
+}
+
+div.mainform legend {
+  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
+  font-size: 22px;
+	color: #cacac8;
 }
 
 div.formbuttons {
@@ -1691,6 +1703,7 @@ ul.autocompleter-choices
   line-height: 14px;
   color: #4d4e53;
 	z-index:				50;
+	margin-left: 16px;
 }
 
 ul.autocompleter-choices li
@@ -1785,14 +1798,18 @@ div.formpart input, div.formpart textarea {
 	padding: 4px;
 }
 
+div.formpart input.noborder {
+	border: 0;
+}
+
 div.witherrors input, div.witherrors textarea {
 	border: 1px solid #d1005d;
 }
 
 div.witherrors {
 	border-left: 4px solid #d1005d;
-	margin-left: -14px;
-	padding-left: 10px;
+	margin-left: -16px;
+	padding-left: 12px;
 	color: #d1005d !important;
 }
 

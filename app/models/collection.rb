@@ -1,7 +1,7 @@
 class Collection < ActiveRecord::Base
 
   acts_as_spoke :only => [:owners, :illustration, :discussion, :annotation, :log, :undelete]
-  belongs_to :account, :dependent => :destroy
+  belongs_to :account
   
   has_many :activations, :dependent => :destroy
   has_many :permissions, :dependent => :destroy

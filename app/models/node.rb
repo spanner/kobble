@@ -8,6 +8,9 @@ class Node < ActiveRecord::Base
   file_column :file
   before_save FileCallbacks.new
 
+  validates_presence_of :name, :description, :collection
+  validate :must_have_body_clip_or_file
+
   def self.nice_title
     "fragment"
   end
@@ -107,6 +110,14 @@ class Node < ActiveRecord::Base
     m = ((s % 3600)/60).floor;
     s = s % 60;
     sprintf("%02d:%02d:%02d:00", h, m, s)
+  end
+
+  def must_have_body_clip_or_file
+    if body.blank? and clip.blank? and file.blank?
+      errors.add(:body, "source must have at least one of body, clip or file") 
+      errors.add(:clip, "source must have at least one of body, clip or file") 
+      errors.add(:file, "source must have at least one of body, clip or file") 
+    end
   end
     
 end

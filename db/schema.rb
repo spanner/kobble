@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20080609075644) do
+ActiveRecord::Schema.define(:version => 20080609194758) do
 
   create_table "account_types", :force => true do |t|
     t.string   "name"
@@ -67,6 +67,7 @@ ActiveRecord::Schema.define(:version => 20080609075644) do
     t.integer  "updated_by",         :limit => 11
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "deleted_at"
   end
 
   create_table "bundles", :force => true do |t|

@@ -1,4 +1,9 @@
-<p>
-  <label for="<%= item.class.to_s.underscore %>_collection_id">Collection:</label><br />
-  <%= select(item.class.to_s.underscore, "collection_id", current_account.collections.collect{|s| [s.name, s.id] }, {}, {:class => 'standard'}) %>
-</p>
+<% item ||= @thing %>
+
+<div class="formpart<%= ' witherrors' if item.errors.on(:collection) %>">
+  <label for="<%= item.class.to_s.underscore %>_collection_id" class="required">Collection:</label><br />
+  <%= select(item.class.to_s.underscore, "collection_id", current_account.collections.collect{|s| [s.name, s.id] }, {:include_blank => true}, {:class => 'standard'}) %>
+  <% if item.errors.on(:collection) %><br />
+    This <%= item.errors.on(:collection).to_a.to_sentence %>
+  <% end %>
+</div>

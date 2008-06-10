@@ -1,21 +1,23 @@
-<% @title = 'create source' %>
+<% @title = 'Create source' %>
 
 <div class="mainform">
-<% form_for :source,
-            :url => source_path(@source),
-            :html => { 
-              :multipart => true
-            } do |f| 
-%>
+  
+  <% form_for :source,
+              :url => source_path(@source),
+              :html => { 
+                :multipart => true,
+                :id => 'sourceform'
+              } do |f| 
+  %>
 
-  <%= render :partial => 'form' %>
+    <%= render :partial => 'form', :locals => {:f => f} %>
 
-  <div class="formbuttons">
-    <%= submit_tag "Create Document" %> or
-    <%= link_to 'cancel', :action => 'index' %>
-  </div>
+    <div class="formbuttons">
+      <%= submit_tag "Create Document" %> or
+      <%= link_to 'cancel', :action => 'index' %>
+    </div>
 
-<% end %>
+  <% end %>
 </div>
 
 <% content_for :admin do %>

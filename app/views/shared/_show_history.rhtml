@@ -6,7 +6,7 @@
 
 <h3 class="pagesection">
   <a href="#" class="squeezebox">
-    recent event log 
+    <% if events.count > count %>recent <% end %>event log 
     <span class="headernote">
       <% if events.count > 0 %>
         <%
@@ -28,11 +28,11 @@
   <% else %>  
 
     <h4 class="listheader">
-      <%= count %> of <%= pluralize(events.count, "Event") %>
+      <% if events.count > count %><%= count %> of <% end %><%= pluralize(events.count, "Event") %>
       <% unless @since.nil? %> in this period<% end %>
-      <span class="headernote">
-        <%= link_to "show full history", item_history_url(item) %>
-      </span>
+      <% if [User, Collection, Account].include?(item.class) %>
+        <span class="headernote"><%= link_to "show full history", item_history_url(item) %></span>
+      <% end %>
     </h4>
     
     <ul>

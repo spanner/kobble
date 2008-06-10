@@ -4,9 +4,9 @@ class Account < ActiveRecord::Base
   
   belongs_to :user
   belongs_to :account_type
-  has_many :users, :order => 'name'
-  has_many :collections, :order => 'name'
-  has_many :tags
+  has_many :users, :order => 'name', :dependent => :destroy
+  has_many :collections, :order => 'name', :dependent => :destroy
+  has_many :tags, :dependent => :destroy
   has_many :events, :order => 'at DESC'
   
   def self.nice_title

@@ -156,6 +156,7 @@ module Caboose #:nodoc:
         def recover!
           transaction do
             self.deleted_at = nil
+            self.newly_undeleted = true
             self.retrievable_associates.each { |other| other.recover! }
             save!
           end
