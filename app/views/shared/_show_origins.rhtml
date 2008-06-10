@@ -10,6 +10,9 @@
 	<% if item.respond_to?('source') %>
 	  Source: <% if item.source %><%= link_to item.source.name, url_for(item.source) %><% else %>not known<% end %>.
 	<% end %>
+	<% if item.respond_to?('occasion') %>
+	  Occasion: <% if item.occasion %><%= link_to item.occasion.name, url_for(item.occasion) %><% else %>not known<% end %>.
+	<% end %>
 	<% if item.creator %>
 	  Added by: <%= link_to item.creator.name, url_for(item.creator) %>.
 	<% end %>

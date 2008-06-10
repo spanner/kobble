@@ -25,8 +25,7 @@
         <% end %>
       </div>
 
-      <%= render :partial => 'shared/edit_collection', :locals => {:item => @node} %>
-      <%= render :partial => 'shared/edit_tags', :locals => {:item => @node} %>
+      <%= render :partial => 'shared/edit_tags', :locals => {:item => @node, :f => f} %>
 
       <div class="formpart<%= ' witherrors' if @node.errors.on(:description) %>">
         <label for="node_description" class="required">Description</label><br />
@@ -36,8 +35,12 @@
         <% end %>
       </div>
 
+      <%= render :partial => 'shared/edit_image', :locals => {:item => @node, :f => f} %>
+
     </fieldset>
     
+    <%= yield :buttons %>
+
     <fieldset>
       <legend>Contents</legend>
       
@@ -72,24 +75,26 @@
 
     	<% end %>
 	
-      <%= render :partial => 'shared/edit_clip', :locals => {:item => @node} %>
+      <%= render :partial => 'shared/edit_clip', :locals => {:item => @node, :f => f} %>
 
-      <%= render :partial => 'shared/edit_body', :locals => {:item => @node} %>
+      <%= render :partial => 'shared/edit_body', :locals => {:item => @node, :f => f} %>
 
-      <%= render :partial => 'shared/edit_file', :locals => {:item => @node} %>
+      <%= render :partial => 'shared/edit_file', :locals => {:item => @node, :f => f} %>
       
     </fieldset>
+
+    <%= yield :buttons %>
 
     <fieldset>
       <legend>Filing</legend>
 
-      <%= render :partial => 'shared/edit_source', :locals => {:item => @node} %>
-      <%= render :partial => 'shared/edit_speaker', :locals => {:item => @node} %>
-      <%= render :partial => 'shared/edit_image', :locals => {:item => @node} %>
+      <%= render :partial => 'shared/edit_collection', :locals => {:item => @node, :f => f} %>
+      <%= render :partial => 'shared/edit_source', :locals => {:item => @node, :f => f} %>
+      <%= render :partial => 'shared/edit_speaker', :locals => {:item => @node, :f => f} %>
 
     </fieldset>
     
-    <p class="clear">&nbsp</p>
+    <%= yield :buttons %>
 
   </div>
 

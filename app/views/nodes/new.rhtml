@@ -1,5 +1,18 @@
 <% @title = "Create loose fragment" %>
 
+<% content_for :buttons do %>
+  <div class="formbuttons">
+    <%= submit_tag "Create Fragment" %> or
+    <%= link_to 'cancel', :action => 'index' %>
+  </div>
+<% end %>
+
+<% content_for :admin do %>
+  <p>
+    back to <%= link_to 'fragments list', nodes_url %>
+  </p>
+<% end %>
+
 <div class="mainform">
 
   <% form_for :node,
@@ -12,16 +25,8 @@
 
     <%= render :partial => 'form', :locals => {:f => f} %>
 
-    <div class="formbuttons">
-      <%= submit_tag "Create Fragment" %> or
-      <%= link_to 'cancel', :action => 'index' %>
-    </div>
+
 
   <% end %>
 </div>
 
-<% content_for :admin do %>
-  <p>
-    back to <%= link_to 'fragments list', nodes_url %>
-  </p>
-<% end %>

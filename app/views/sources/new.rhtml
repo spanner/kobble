@@ -1,3 +1,16 @@
+<% content_for :admin do %>
+  <p>
+    back to <%= link_to 'sources list', sources_url %>
+  </p>
+<% end %>
+
+<% content_for :buttons do %>
+  <div class="formbuttons">
+    <%= submit_tag "Create Document" %> or
+    <%= link_to 'cancel', :action => 'index' %>
+  </div>
+<% end %>
+
 <% @title = 'Create source' %>
 
 <div class="mainform">
@@ -12,16 +25,7 @@
 
     <%= render :partial => 'form', :locals => {:f => f} %>
 
-    <div class="formbuttons">
-      <%= submit_tag "Create Document" %> or
-      <%= link_to 'cancel', :action => 'index' %>
-    </div>
-
   <% end %>
 </div>
 
-<% content_for :admin do %>
-  <p>
-    back to <%= link_to 'sources list', sources_url %>
-  </p>
-<% end %>
+

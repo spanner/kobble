@@ -456,7 +456,7 @@ div.scratchpage .drophere {
 div.preamble {
   max-width: 640px;
   clear: left;
-/*  font-size: 80%;*/
+  font-size: 80%;
 }
 
 div.contentblock {
@@ -1328,7 +1328,9 @@ div.mainform legend {
 }
 
 div.formbuttons {
+  max-width: 640px;
   clear: both;
+	text-align: right;
 }
 
 div.padform label {
