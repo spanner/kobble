@@ -890,6 +890,10 @@ div.floater {
 	z-index: 21000;
 }
 
+div.floater div.preamble, div.floater .notinline {
+	display: none;
+}
+
 div.modalform {
 	overflow: hidden;
   max-height: 600px;
@@ -908,7 +912,6 @@ div.floater form {
 
 div.floater label {
   font-size: 18px;
-  font-weight: lighter;
   font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
   letter-spacing: -0.05em;
   line-height: 20px;

@@ -1,4 +1,15 @@
-<% @title = "Create a new person" %>
+<% @title = "Create person" %>
+
+<% content_for :buttons do %>
+  <div class="formbuttons">
+    <%= submit_tag "Create Person" %> or
+    <%= link_to 'cancel', {:action => 'index'}, {:class => 'cancelform'} %>
+  </div>
+<% end %>
+
+<% content_for :admin do %>
+  <p>back to <%= link_to 'people list', people_url %></p>
+<% end %>
 
 <div class="mainform">
 
@@ -12,17 +23,7 @@
 
     <%= render :partial => 'form', :locals => {:f => f} %>
 
-    <div class="formbuttons">
-      <%= submit_tag "Create Person" %> or
-      <%= link_to 'cancel', {:action => 'index'} %>
-    </div>
-
   <% end %>
 
 </div>
 
-<% content_for :admin do %>
-  <p>
-    back to <%= link_to 'people list', people_url %>
-  </p>
-<% end %>

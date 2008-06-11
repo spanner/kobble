@@ -1,10 +1,9 @@
 class SourcesController < ApplicationController
 
   def new
-    @occasions = Occasion.in_collections(current_collections)
-    @people = Person.in_collections(current_collections)
     @source = Source.new
     @source.tags << Tag.from_list(params[:tag_list]) if params[:tag_list]
+    @source.collection = Collection.find(params[:collection_id]) if params[:collection_id]
   end
 
   def create

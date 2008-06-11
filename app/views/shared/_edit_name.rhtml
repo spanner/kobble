@@ -4,7 +4,7 @@
 %>
 
 <div class="formpart<%= ' witherrors' if item.errors.on(:name) %>">
-  <label for="source_name" class="required"><%= heading %></label><br/>
+  <label for="<%= item.class.to_s.downcase %>_name"<% if required %> class="required"<% end %>><%= heading %></label><br/>
   <%= f.text_field 'name', 'class' => "titular" %>
   <% if item.errors.on(:name) %><br />
     This <%= item.errors.on(:name).to_a.to_sentence %>

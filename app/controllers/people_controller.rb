@@ -1,34 +1,18 @@
 class PeopleController < ApplicationController
 
-  # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
-  verify :method => :post, :only => [ :destroy, :create, :update ],
-         :redirect_to => { :action => :list }
-
-  def list_columns
-    4
-  end
-
-  def list_length
-    80
-  end
-
   def new
     @person = Person.new
-    @person.collection = Collection.find(params[:collection_id])
+    @person.tags << Tag.from_list(params[:tag_list]) if params[:tag_list]
+    @person.collection = Collection.find(params[:collection_id]) if params[:collection_id]
     respond_to do |format|
-      format.html { }
-      format.js { render :action => 'inline', :layout => false }
-      format.xml { }
+      format.html
+      format.js { render :layout => 'inline' }
     end
   end
   
-  def inline
-    
-  end
-
   def create
     @person = Person.new(params[:person])
-    @person.collection ||= Collection.find(params[:collection_id])
+    @person.collection ||= Collection.find(params[:collection_id]) if params[:collection_id]
     if @person.save
       @person.tags << Tag.from_list(params[:tag_list]) if params[:tag_list]
       respond_to do |format|
@@ -37,12 +21,13 @@ class PeopleController < ApplicationController
           redirect_to :action => 'show', :id => @person 
         }
         format.js { render :layout => false }
-        format.json { render :json => @person.to_json }
-        format.xml { }
       end
-      
     else
-      render :action => 'new'
+      respond_to do |format|
+        format.html { render :action => 'new' }
+        format.js { render :action => 'new', :layout => 'inline' }
+        format.json { render :json => @person.to_json }
+      end
     end
   end
 

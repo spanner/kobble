@@ -1,30 +1,25 @@
-<%= error_messages_for 'source' %>
+<div class="preamble">
+  <p>
+  	'Occasions' here are events, dates, conversations or other well-defined places in time that 
+  	naturally serve to gather up a set of source documents. 
+  </p>
+</div>
 
-<p>'Source documents' are whole texts or recordings, uploaded intact and suitable for segmenting. At the moment we can accept text, mp3 audio and mpeg video. Pdfs will be edible soon, and other media formats will follow as they are needed.</p>
+<div class="mainform contentblock">
 
-<p><label for="source_name">Document name</label><br />
-<%= text_field 'source', 'name', 'class' => "standard" %>
-</p>
+  <% unless @occasion.errors.empty? %>
+    <p class="haserror"><strong>Sorry: there were problems.</strong> Please check the form. The affected fields will be highlighted in pink.</p>
+  <% end %>
 
-<%= render :partial => 'shared/edit_tags', :locals => {:item => @source} %>
+  <%= render :partial => 'shared/edit_name', :locals => {:item => @occasion, :f => f, :required => true} %>
+  <%= render :partial => 'shared/edit_tags', :locals => {:item => @occasion, :f => f} %>
+  <%= render :partial => 'shared/edit_description', :locals => {:item => @occasion, :f => f} %>
 
-<p><label for="source_description">Synopsis or description</label><br />
-<%= text_area 'source', 'description', 'rows' => 6, 'class' => "standard" %>
-</p>
+  <%= yield :buttons %>
 
-<%= render :partial => 'shared/edit_body', :locals => {:item => @source} %>
+  <fieldset class="notinline">
+    <legend>Filing</legend>
+    <%= render :partial => 'shared/edit_collection', :locals => {:item => @occasion, :f => f, :required => true} %>
+  </fieldset>
 
-<%= render :partial => 'shared/edit_image', :locals => {:item => @source} %>
-
-<%= render :partial => 'shared/edit_clip', :locals => {:item => @source} %>
-
-<%= render :partial => 'shared/edit_speaker', :locals => {:item => @source} %>
-
-<%= render :partial => 'shared/edit_fieldnotes', :locals => {:item => @source} %>
-
-<%= render :partial => 'shared/edit_occasion', :locals => {:item => @source} %>
-	
-<div class="formbuttons">
-  <%= submit_tag "Store Document" %> or
-  <%= link_to 'cancel', :action => 'list' %>
 </div>

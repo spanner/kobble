@@ -8,7 +8,14 @@
             } do |f| 
 %>
 
-  <%= render :partial => 'summary' %>
+  <% unless @person.errors.empty? %>
+    <p class="haserror"><strong>Sorry: there were problems.</strong> Please check the form. The affected fields will be highlighted in pink.</p>
+  <% end %>
+
+  <%= render :partial => 'shared/edit_name', :locals => {:item => @person, :f => f, :required => true} %>
+  <%= render :partial => 'shared/edit_email', :locals => {:item => @person, :f => f, :required => true} %>
+  <%= render :partial => 'shared/edit_tags', :locals => {:item => @person, :f => f} %>
+  <%= render :partial => 'shared/edit_description', :locals => {:item => @person, :f => f} %>
 
   <div class="formbuttons clear">
     <%= submit_tag "Create Person" %> or

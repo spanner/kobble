@@ -1,10 +1,11 @@
 <% 
   item ||= @thing 
   heading ||= "Upload an illustration"
+  addendum ||= "image will be resized for you"
 %>
 
 <div class="formpart<%= ' witherrors' if item.errors.on(:image) %>">
-  <label for="<%= item.class.to_s.downcase %>_image"><%= heading %></label><br />
+  <label for="<%= item.class.to_s.downcase %>_image"><%= heading %></label> <%= addendum %><br />
   <%= file_column_field item.class.to_s.downcase, "image", :class => 'noborder' %>
   <% if item.errors.on(:image) %><br />
     This <%= item.errors.on(:image).to_a.join(', ')%>

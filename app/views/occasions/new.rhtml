@@ -1,9 +1,29 @@
-<div id="inputform">
+<% @title = "Create occasion" %>
 
-<h1 class="pagetitle">Upload a new source document</h1>
-
-<% form_tag({:action => 'create'}, :multipart => true) do %>
-  <%= render :partial => 'form' %>
+<% content_for :buttons do %>
+  <div class="formbuttons">
+    <%= submit_tag "Create Occasion" %> or
+    <%= link_to 'cancel', {:action => 'index'}, {:class => 'cancelform'} %>
+  </div>
 <% end %>
 
+<% content_for :admin do %>
+  <p>back to <%= link_to 'occasion list', occasions_url %></p>
+<% end %>
+
+<div class="mainform">
+
+  <% form_for :person,
+              :url => occasion_url(@occasion),
+              :html => { 
+                :multipart => true,
+                :id => 'occasionform'
+              } do |f| 
+  %>
+
+    <%= render :partial => 'form', :locals => {:f => f} %>
+
+  <% end %>
+
 </div>
+

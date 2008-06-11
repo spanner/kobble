@@ -17,17 +17,7 @@
     <%= render :partial => 'shared/edit_name', :locals => {:item => @bundle, :f => f, :required => true} %>
     <%= render :partial => 'shared/edit_tags', :locals => {:item => @bundle, :f => f} %>
     <%= render :partial => 'shared/edit_description', :locals => {:item => @bundle, :f => f, :heading => 'Synopsis or summary', :required => true} %>
-
-    <p class="formnote">
-      Conventionally, the synopsis is a brief aid to memory and recognition that will appear in lists and summaries. 
-      The body text of a set is typically a draft chapter or other work in progress, but could be notes or to-do items or anything else you'd like to attach.
-    </p>
-    
-    <%= render :partial => 'shared/edit_image', :locals => {:item => @bundle, :f => f} %>
-
-    <p class="formnote">
-      We normally look within the set for an image, but you can choose one here if you prefer.
-    </p>
+    <%= render :partial => 'shared/edit_image', :locals => {:item => @bundle, :f => f, :addendum => "by default we'll find one in the set"} %>
 
   </fieldset>
 

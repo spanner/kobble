@@ -6,9 +6,8 @@ class OccasionsController < ApplicationController
   def new
     @occasion = Occasion.new
     respond_to do |format|
-      format.html { }
-      format.js { render :action => 'inline', :layout => false }
-      format.xml { }
+      format.html
+      format.js { render :layout => 'inline' }
     end
   end
 
@@ -23,10 +22,11 @@ class OccasionsController < ApplicationController
         }
         format.js { render :layout => false }
         format.json { render :json => @occasion.to_json }
-        format.xml { }
       end
     else
       render :action => 'new'
+      
+      # or js, json: do what?
     end
   end
 

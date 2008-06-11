@@ -1,30 +1,28 @@
 <div class="preamble">
   <p>
   	'People' here are speakers, writers and actors to whom we refer. 
-  	It is possible to promote a 'person' to a user of this system, or rather it will be when the account admin tools are ready, but usually they remain objects rather than subjects.
+  	It is possible to promote a 'person' to a user of this system, 
+  	or rather it will be when the account admin tools are ready, 
+  	but usually they remain objects rather than subjects.
   </p>
 </div>
 
-<div class="boxtabs">
-  <a href="#" id="tab_editing_summary" class="tab">summary</a>
-  <a href="#" id="tab_editing_contact" class="tab">contact</a>
-  <a href="#" id="tab_editing_notes" class="tab">field notes</a>
-</div>
+<div class="mainform contentblock">
 
-<div class="boxed" id="box_editing">
-	<div id="editing_summary">
+  <% unless @person.errors.empty? %>
+    <p class="haserror"><strong>Sorry: there were problems.</strong> Please check the form. The affected fields will be highlighted in pink.</p>
+  <% end %>
 
-	  <%= render :partial => 'summary' %>
+  <%= render :partial => 'shared/edit_name', :locals => {:item => @person, :f => f, :required => true} %>
+  <%= render :partial => 'shared/edit_email', :locals => {:item => @person, :f => f} %>
+  <%= render :partial => 'shared/edit_tags', :locals => {:item => @person, :f => f} %>
+  <%= render :partial => 'shared/edit_description', :locals => {:item => @person, :f => f} %>
 
-  </div>
-  <div id="editing_contact">
-	
-	  <%= render :partial => 'shared/edit_contact', :locals => {:item => @person} %>
-  
-  </div>
-  <div id="editing_notes">
-	
-	  <%= render :partial => 'shared/edit_fieldnotes', :locals => {:item => @person} %>
-  
-  </div>
+  <%= yield :buttons %>
+
+  <fieldset class="notinline">
+    <legend>Filing</legend>
+    <%= render :partial => 'shared/edit_collection', :locals => {:item => @person, :f => f, :required => true} %>
+  </fieldset>
+
 </div>
