@@ -13,16 +13,29 @@
     <p class="haserror"><strong>Sorry: there were problems.</strong> Please check the form. The affected fields will be highlighted in pink.</p>
   <% end %>
 
-  <%= render :partial => 'shared/edit_name', :locals => {:item => @person, :f => f, :required => true} %>
-  <%= render :partial => 'shared/edit_email', :locals => {:item => @person, :f => f} %>
-  <%= render :partial => 'shared/edit_tags', :locals => {:item => @person, :f => f} %>
-  <%= render :partial => 'shared/edit_description', :locals => {:item => @person, :f => f} %>
+  <fieldset>
+    <legend>Description</legend>
+    <%= render :partial => 'shared/edit_name', :locals => {:item => @person, :f => f, :required => true} %>
+    <%= render :partial => 'shared/edit_tags', :locals => {:item => @person, :f => f} %>
+    <%= render :partial => 'shared/edit_description', :locals => {:item => @person, :f => f} %>
+    <%= render :partial => 'shared/edit_image', :locals => {:item => @person, :f => f, :heading => "Mugshot"} %>
+  </fieldset>
 
   <%= yield :buttons %>
+
+  <fieldset class="notinline">
+    <legend>Contact</legend>
+    <%= render :partial => 'shared/edit_email', :locals => {:item => @person, :f => f} %>
+    <%= render :partial => 'shared/edit_contact', :locals => {:item => @person, :f => f} %>
+  </fieldset>
 
   <fieldset class="notinline">
     <legend>Filing</legend>
     <%= render :partial => 'shared/edit_collection', :locals => {:item => @person, :f => f, :required => true} %>
   </fieldset>
+
+  <div class="notinline">
+    <%= yield :buttons %>
+  </div>
 
 </div>

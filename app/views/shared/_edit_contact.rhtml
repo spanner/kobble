@@ -1,0 +1,29 @@
+<% 
+  item ||= @thing
+  heading ||= "Postal address"
+  required ||= false
+%>
+
+<div class="formpart<%= ' witherrors' if item.errors.on(:address) %>">
+  <label for="<%= item.class.to_s.downcase %>_address"<% if required %> class="required"<% end %>>Postal address</label><br/>
+  <%= f.text_area 'address', 'rows' => 4, 'class' => "standard" %>
+  <% if item.errors.on(:address) %><br />
+    This <%= item.errors.on(:address).to_a.to_sentence %>
+  <% end %>
+</div>
+
+<div class="formpart<%= ' witherrors' if item.errors.on(:postcode) %>">
+  <label for="<%= item.class.to_s.downcase %>_postcode"<% if required %> class="required"<% end %>>Postcode</label><br/>
+  <%= f.text_field 'postcode', 'class' => "standard" %>
+  <% if item.errors.on(:postcode) %><br />
+    This <%= item.errors.on(:postcode).to_a.to_sentence %>
+  <% end %>
+</div>
+
+<div class="formpart<%= ' witherrors' if item.errors.on(:phone) %>">
+  <label for="<%= item.class.to_s.downcase %>_phone"<% if required %> class="required"<% end %>>Phone</label><br/>
+  <%= f.text_field 'phone', 'class' => "standard" %>
+  <% if item.errors.on(:phone) %><br />
+    This <%= item.errors.on(:phone).to_a.to_sentence %>
+  <% end %>
+</div>

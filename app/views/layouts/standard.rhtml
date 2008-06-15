@@ -4,7 +4,7 @@
 <html>
 <head>
   <title>materiali.st<% if @title %> - <%= @title %><% end%></title>
-  <%= javascript_include_tag 'mootools', 'extensions', 'autocomplete', 'spoke', :cache => "cache/materialist" %>
+  <%= javascript_include_tag 'mootools', 'mootools-more', 'extensions', 'autocomplete', 'spoke', :cache => "cache/materialist" %>
   <%= stylesheet_link_tag 'spoke', :cache => "cache/materialist" %>
 </head>
 <body>
@@ -31,8 +31,7 @@
         <%= link_to klass.nice_title.pluralize, {:controller => klass.to_s.underscore.pluralize}, {:class => (request.parameters[:controller] == klass.to_s.underscore.pluralize ? "fg" : '')} %>
       <% end %>
       <%= link_to 'search', search_url, {:class => request.parameters[:controller] == 'searches' ? " fg" : ''} %>
-      <%= link_to 'discussion', {:controller => 'topics', :action => 'index'}, {:class => request.parameters[:controller] == 'topics' ? " fg" : ''} %>
-      <%#= link_to 'preferences', {:controller => 'login', :action => 'preferences'} %>
+      <%= link_to 'discussion', {:controller => 'topics', :action => 'index'}, {:class => request.parameters[:controller] == 'topics' ? " fg" : ''} if current_account.can_have_discussion? %>
     </div>
   </div> 
 

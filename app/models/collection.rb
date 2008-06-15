@@ -19,7 +19,7 @@ class Collection < ActiveRecord::Base
 
   # this is a shortcut to allow collection tag clouds:
   # when item in colleciton is tagged, tagging is given collection link
-  # otherwise polymorphism makes gathering collected-and-tagged objects too inefficient
+  # otherwise polymorphism makes gathering collected-and-tagged objects horribly inefficient
   
   has_many :taggings  
   has_many :tags, :through => :taggings  

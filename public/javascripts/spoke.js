@@ -23,6 +23,7 @@ var Interface = new Class({
     this.debug_level = 4;
     this.clickthreshold = 20;
     this.announcer = $E('div#notification');
+		console.log(this.announcer);
     this.admin = $E('div#admin');
     this.squeezebox = null;
     this.draghelper = null;
@@ -127,12 +128,12 @@ var Interface = new Class({
   },
   makeSuggester: function (elements) {
     elements.each(function (element) {
-      var waiter = new Element('div', {'class': 'autocompleter-loading'}).setHTML('&nbsp;').inject(element, 'after');
+      var waiter = new Element('div', {'class': 'autocompleter-loading'}).set('html','&nbsp;').inject(element, 'after');
       intf.tagboxes.push(new Autocompleter.Ajax.Json(element, '/tags/matching', { 'indicator': waiter, 'postVar': 'stem', 'multiple': true }));
     });
   },
 
-  makeInlineCreate: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new jsonForm(element, e); }); }); },
+  makeInlineCreate: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new htmlForm(element, e); }); }); },
   makeInlineDiscuss: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new htmlForm(element, e); }); }); },
   makeInlineReply: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new htmlForm(element, e); }); }); },
   makeNoter: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new htmlForm(element, e); }); }); },
@@ -513,7 +514,7 @@ var Dropzone = new Class({
 	waiting: function () {
 	  if (this.zoneType() == 'list') {
       this.waitSignal = new Element('li', { 'id': 'waiter', 'class': 'draggable waiting' });
-      this.waitSignal.setText('working...');
+      this.waitSignal.set('text','working...');
       this.waitSignal.injectInside(this.container);
       return this.waitSignal;
 	  } else {
@@ -937,7 +938,7 @@ var ScratchSet = new Class({
       'id': 'tab_scratchpad_new',
       'class': 'padtab', 
       'href': "#"
-    }).setText('new scratchpad').injectInside(this.tabscontainer);
+    }).set('text','new scratchpad').injectInside(this.tabscontainer);
     var newbody = new Element('div', {
       'id': 'scratchpad_new',
       'class': 'scratchpage'
@@ -1009,7 +1010,7 @@ var Toggle = new Class({
 var Preference = new Class({
   Extends: Toggle,
   finished: function (response) {
-    arguments.callee.parent(response);
+    this.parent(response);
     var abbr = this.link.id.replace('prefs_', '');
     intf.preferences[abbr] = response.outcome == 'active';
     intf.debug('set preference ' + abbr + ' to ' + intf.preferences[abbr], 1);
@@ -1118,8 +1119,12 @@ var jsonForm = new Class ({
 		this.notWaiting();
 		if (response.errors) {
 			console.log(response.errors);
+			
+			// it's too awkward rebuilding or marking the form
+			// so potentially-iterative or validated forms should use htmlForm
+			
 		} else {
-			this.updatePage(response);
+			this.updatePage(response.created);
 		}
 	},
   
@@ -1245,7 +1250,7 @@ var jsonForm = new Class ({
   },
 
   canceller: function () {
-    var a = new Element('a', {'class': 'canceller', 'href': '#'}).setText('X');
+    var a = new Element('a', {'class': 'canceller', 'href': '#'}).set('text','X');
     a.onclick = this.hide.bind(this);
     return a;
   }
@@ -1259,7 +1264,7 @@ var htmlForm = new Class ({
 	Extends: jsonForm,
 	
 	prepForm: function () {
-		arguments.callee.parent();
+		this.parent();
 		if (this.form.hasClass('confirming')) {
 			this.floater.addClass('confirming');
 		} else {
@@ -1330,7 +1335,7 @@ var Snipper = new Class ({
 	Extends: htmlForm,
 	
   prepForm: function () {
-		arguments.callee.parent();
+		this.parent();
     this.form.getElements('#node_playfrom').each( function (input) { input.set('value', intf.getPlayerIn()); });
     this.form.getElements('#node_playto').each( function (input) { input.set('value', intf.getPlayerOut()); });
   },
@@ -1339,11 +1344,6 @@ var Snipper = new Class ({
     intf.announce('fragment created');
 	}
 });
-
-// snipper is another htmlForm with a few extra preparations
-
-
-
 
 
 var Squeezebox = new Class ({
@@ -1369,7 +1369,7 @@ var Squeezebox = new Class ({
     }
 	},
 	initialize: function (togglers, elements) {
-    arguments.callee.parent(togglers, elements);
+    this.parent(togglers, elements);
     if (elements) elements.each(function (element) { element.squeezed = true; });
 	},
 	addSections: function (togglers, elements) {

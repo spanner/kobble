@@ -1,4 +1,4 @@
-<div class="formpart<%= ' witherrors' if item.errors.on(:clip) %>">
+<div class="formpart<%= ' witherrors' if item.errors.on(:clip) %> notinline">
   <label for="<% item.class.to_s.downcase %>_clip">Audio or video file</label><br />
   <%= file_column_field item.class.to_s.downcase, "clip", :class => 'noborder' %>
   <% if item.errors.on(:clip) %><br />

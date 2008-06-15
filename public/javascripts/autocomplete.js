@@ -54,11 +54,10 @@ var $equals = function(obj1, obj2) {
 	return (obj1 == obj2 || JSON.encode(obj1) == JSON.encode(obj2));
 };
 
-
 /**
  * Autocompleter
  *
- * @version		1.1rc1
+ * @version		1.1.1
  *
  * @todo: Caching, no-result handling!
  *
@@ -74,7 +73,7 @@ Autocompleter.Base = new Class({
 	options: {
 		minLength: 1,
 		markQuery: true,
-		choicesWidth: 'inherit',
+		width: 'inherit',
 		maxChoices: 10,
 		injectChoice: null,
 		customChoices: null,
@@ -94,7 +93,7 @@ Autocompleter.Base = new Class({
 		autoSubmit: false,
 		overflow: false,
 		overflowMargin: 25,
-		selectFirst: true,
+		selectFirst: false,
 		filter: null,
 		filterCase: false,
 		filterSubset: false,
@@ -108,12 +107,13 @@ Autocompleter.Base = new Class({
 		autoTrim: true,
 		allowDupes: false,
 
-		cache: true
+		cache: true,
+		relative: false
 	},
 
-	initialize: function(el, options) {
+	initialize: function(element, options) {
+		this.element = $(element);
 		this.setOptions(options);
-		this.element = $(el);
 		this.build();
 		this.observer = new Observer(this.element, this.prefetch.bind(this), $merge({
 			'delay': this.options.delay
@@ -141,14 +141,19 @@ Autocompleter.Base = new Class({
 				'styles': {
 					'zIndex': this.options.zIndex
 				}
-			}).inject(this.element, 'after');
+			}).inject(document.body);
+			this.relative = false;
+			if (this.options.relative) {
+				this.choices.inject(this.element, 'after');
+				this.relative = this.element.getOffsetParent();
+			}
 			this.fix = new OverlayFix(this.choices);
-			this.relative = this.choices.getOffsetParent();
 		}
 		if (!this.options.separator.test(this.options.separatorSplit)) {
 			this.options.separatorSplit = this.options.separator;
 		}
-		this.fx = (!this.options.fxOptions) ? null : new Fx.Tween(this.choices, 'opacity', $merge({
+		this.fx = (!this.options.fxOptions) ? null : new Fx.Tween(this.choices, $merge({
+			'property': 'opacity',
 			'link': 'cancel',
 			'duration': 200
 		}, this.options.fxOptions)).addEvent('onStart', Chain.prototype.clearChain).set(0);
@@ -156,11 +161,11 @@ Autocompleter.Base = new Class({
 			.addEvent((Browser.Engine.trident || Browser.Engine.webkit) ? 'keydown' : 'keypress', this.onCommand.bind(this))
 			.addEvent('click', this.onCommand.bind(this, [false]))
 			.addEvent('focus', this.toggleFocus.create({bind: this, arguments: true, delay: 100}))
-			.addEvent('blur', this.toggleFocus.create({bind: this, arguments: false, delay: 100}))
-			.addEvent('trash', this.destroy.bind(this));
+			.addEvent('blur', this.toggleFocus.create({bind: this, arguments: false, delay: 100}));
 	},
 
 	destroy: function() {
+		if (this.fix) this.fix.destroy();
 		this.choices = this.selected = this.choices.destroy();
 	},
 
@@ -202,14 +207,16 @@ Autocompleter.Base = new Class({
 		var start = this.queryValue.length, end = input.length;
 		if (input.substr(0, start).toLowerCase() != this.queryValue.toLowerCase()) start = 0;
 		if (this.options.multiple) {
-			value = this.element.value, split = this.options.separatorSplit;
+			var split = this.options.separatorSplit;
+			value = this.element.value;
 			start += this.queryIndex;
 			end += this.queryIndex;
 			var old = value.substr(this.queryIndex).split(split, 1)[0];
 			value = value.substr(0, this.queryIndex) + input + value.substr(this.queryIndex + old.length);
 			if (finish) {
-				var tokens = value.split(this.options.separatorSplit).clean();
-				if (!this.options.allowDupes) tokens = [].merge(tokens);
+				var space = /[^\s,]+/;
+				var tokens = value.split(this.options.separatorSplit).filter(space.test, space);
+				if (!this.options.allowDupes) tokens = [].combine(tokens);
 				var sep = this.options.separator;
 				value = tokens.join(sep) + sep;
 				end = value.length;
@@ -225,10 +232,10 @@ Autocompleter.Base = new Class({
 	showChoices: function() {
 		var match = this.options.choicesMatch, first = this.choices.getFirst(match);
 		this.selected = this.selectedValue = null;
-		if (this.relative) {
-			var pos = this.element.getCoordinates(this.relative), width = this.options.choicesWidth || 'auto';
+		if (this.fix) {
+			var pos = this.element.getCoordinates(this.relative), width = this.options.width || 'auto';
 			this.choices.setStyles({
-        'left': 0,
+				'left': pos.left,
 				'top': pos.bottom,
 				'width': (width === true || width == 'inherit') ? pos.width : width
 			});
@@ -236,33 +243,35 @@ Autocompleter.Base = new Class({
 		if (!first) return;
 		if (!this.visible) {
 			this.visible = true;
-			if (this.fx) this.fx.start(1);
 			this.choices.setStyle('display', '');
-			this.fix.show();
+			if (this.fx) this.fx.start(1);
 			this.fireEvent('onShow', [this.element, this.choices]);
 		}
 		if (this.options.selectFirst || this.typeAhead || first.inputValue == this.queryValue) this.choiceOver(first, this.typeAhead);
 		var items = this.choices.getChildren(match), max = this.options.maxChoices;
 		var styles = {'overflowY': 'hidden', 'height': ''};
+		this.overflown = false;
 		if (items.length > max) {
 			var item = items[max - 1];
 			styles.overflowY = 'scroll';
 			styles.height = item.getCoordinates(this.choices).bottom;
+			this.overflown = true;
 		};
 		this.choices.setStyles(styles);
+		this.fix.show();
 	},
 
 	hideChoices: function(clear) {
-		if (!this.visible) return;
-		this.visible = false;
 		if (clear) {
 			var value = this.element.value;
 			if (this.options.forceSelect) value = this.opted;
 			if (this.options.autoTrim) {
-				value = value.split(this.options.separatorSplit).clean().join(this.options.separator);
+				value = value.split(this.options.separatorSplit).filter($arguments(0)).join(this.options.separator);
 			}
 			this.observer.setValue(value);
 		}
+		if (!this.visible) return;
+		this.visible = false;
 		this.observer.clear();
 		var hide = function(){
 			this.choices.setStyle('display', 'none');
@@ -333,7 +342,7 @@ Autocompleter.Base = new Class({
 		this.fireEvent('onSelect', [this.element, this.selected, selection]);
 		if (!selection) return;
 		this.selectedValue = this.selected.inputValue;
-		if (this.options.overflow) {
+		if (this.overflown) {
 			var coords = this.selected.getCoordinates(this.choices), margin = this.options.overflowMargin,
 				top = this.choices.scrollTop, height = this.choices.offsetHeight, bottom = top + height;
 			if (coords.top - margin < top && top) this.choices.scrollTop = Math.max(coords.top - margin, 0);
@@ -396,8 +405,8 @@ Autocompleter.Local = new Class({
 		delay: 200
 	},
 
-	initialize: function(el, tokens, options) {
-		arguments.callee.parent(el, options);
+	initialize: function(element, tokens, options) {
+		this.parent(element, options);
 		this.tokens = tokens;
 	},
 
@@ -421,13 +430,15 @@ Autocompleter.Ajax.Base = new Class({
 		onComplete: $empty
 	},
 
-	initialize: function(el, options) {
-		arguments.callee.parent(el, options);
+	initialize: function(element, options) {
+		this.parent(element, options);
 		var indicator = $(this.options.indicator);
-		this.addEvents({
-			'onRequest': indicator.setStyle.bind(indicator, ['display', '']),
-			'onComplete': indicator.setStyle.bind(indicator, ['display', 'none'])
-		}, true);
+		if (indicator) {
+			this.addEvents({
+				'onRequest': indicator.show.bind(indicator),
+				'onComplete': indicator.hide.bind(indicator)
+			}, true);
+		}
 	},
 
 	query: function(){
@@ -440,7 +451,7 @@ Autocompleter.Ajax.Base = new Class({
 	/**
 	 * queryResponse - abstract
 	 *
-	 * Inherated classes have to extend this function and use arguments.callee.parent(resp)
+	 * Inherated classes have to extend this function and use this.parent(resp)
 	 *
 	 * @param		{String} Response
 	 */
@@ -455,7 +466,7 @@ Autocompleter.Ajax.Json = new Class({
 	Extends: Autocompleter.Ajax.Base,
 
 	initialize: function(el, url, options) {
-		arguments.callee.parent(el, options);
+		this.parent(el, options);
 		this.request = new Request.JSON($merge({
 			'url': url,
 			'link': 'cancel'
@@ -463,7 +474,7 @@ Autocompleter.Ajax.Json = new Class({
 	},
 
 	queryResponse: function(response) {
-		arguments.callee.parent();
+		this.parent();
 		this.update(response);
 	}
 
@@ -474,7 +485,7 @@ Autocompleter.Ajax.Xhtml = new Class({
 	Extends: Autocompleter.Ajax.Base,
 
 	initialize: function(el, url, options) {
-		arguments.callee.parent(el, options);
+		this.parent(el, options);
 		this.request = new Request.HTML($merge({
 			'url': url,
 			'link': 'cancel',
@@ -482,15 +493,15 @@ Autocompleter.Ajax.Xhtml = new Class({
 		}, this.options.ajaxOptions)).addEvent('onComplete', this.queryResponse.bind(this));
 	},
 
-	queryResponse: function(response) {
-		arguments.callee.parent();
-		if (!response || !response.length) {
+	queryResponse: function(tree, elements) {
+		this.parent();
+		if (!elements || !elements.length) {
 			this.hideChoices();
 		} else {
 			this.choices.getChildren(this.options.choicesMatch).each(this.options.injectChoice || function(choice) {
 				var value = choice.innerHTML;
 				choice.inputValue = value;
-				choice.set('html', this.markQueryValue(value));
+				this.addChoiceEvents(choice.set('html', this.markQueryValue(value)));
 			}, this);
 			this.showChoices();
 		}
@@ -504,7 +515,7 @@ var OverlayFix = new Class({
 
 	initialize: function(el) {
 		if (Browser.Engine.trident) {
-			this.element = $(el).addEvent('trash', this.destroy.bind(this));
+			this.element = $(el);
 			this.relative = this.element.getOffsetParent();
 			this.fix = new Element('iframe', {
 				'frameborder': '0',
@@ -522,7 +533,10 @@ var OverlayFix = new Class({
 
 	show: function() {
 		if (this.fix) {
-			this.fix.setStyles($extend(this.element.getCoordinates(this.relative), {
+			var coords = this.element.getCoordinates(this.relative);
+			delete coords.right;
+			delete coords.bottom;
+			this.fix.setStyles($extend(coords, {
 				'display': '',
 				'zIndex': (this.element.getStyle('zIndex') || 1) - 1
 			}));
@@ -541,7 +555,21 @@ var OverlayFix = new Class({
 
 });
 
+/**
+ * @todo Clean that up or check if they exist already
+ */
 Element.implement({
+
+	getOffsetParent: function() {
+		var body = this.getDocument().body;
+		if (this == body) return null;
+		if (!Browser.Engine.trident) return $(this.offsetParent);
+		var el = this;
+		while ((el = el.parentNode)){
+			if (el == body || Element.getComputedStyle(el, 'position') != 'static') return $(el);
+		}
+		return null;
+	},
 
 	getCaretPosition: function() {
 		if (!Browser.Engine.trident) return this.selectionStart;
@@ -567,3 +595,4 @@ Element.implement({
 	}
 
 });
+

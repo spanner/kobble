@@ -1,6 +1,7 @@
 <% 
   item ||= @thing
   heading ||= "Email address"
+  required ||= false
 %>
 
 <div class="formpart<%= ' witherrors' if item.errors.on(:email) %>">

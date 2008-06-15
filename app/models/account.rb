@@ -25,6 +25,10 @@ class Account < ActiveRecord::Base
     self.account_type.users_limit > 1
   end
 
+  def can_have_discussion?
+    can_have_users?
+  end
+
   def can_have_audio?
     self.account_type.can_audio
   end

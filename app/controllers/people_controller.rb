@@ -7,6 +7,7 @@ class PeopleController < ApplicationController
     respond_to do |format|
       format.html
       format.js { render :layout => 'inline' }
+      format.json { render :json => @person.to_json }
     end
   end
   
@@ -20,13 +21,14 @@ class PeopleController < ApplicationController
           flash[:notice] = 'Person object successfully created.'
           redirect_to :action => 'show', :id => @person 
         }
-        format.js { render :layout => false }
+        format.js { render :layout => false }     # create.rhtml is a bare <option>
+        format.json { render :json => {:created => @person.errors}.to_json }
       end
     else
       respond_to do |format|
         format.html { render :action => 'new' }
         format.js { render :action => 'new', :layout => 'inline' }
-        format.json { render :json => @person.to_json }
+        format.json { render :json => {:errors => @person.errors}.to_json }
       end
     end
   end
@@ -40,7 +42,6 @@ class PeopleController < ApplicationController
     if @person.update_attributes(params[:person])
       @person.tags.clear
       @person.tags << Tag.from_list(params[:tag_list])
-      
       flash[:notice] = 'Person object successfully updated.'
       redirect_to :action => 'show', :id => @person
     else

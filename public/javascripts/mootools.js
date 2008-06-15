@@ -1,1 +1,1 @@
-mootools-beta-1.2b2.js
+mootools-1.2.js
