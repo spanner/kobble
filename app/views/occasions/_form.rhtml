@@ -13,7 +13,7 @@
 
   <%= render :partial => 'shared/edit_name', :locals => {:item => @occasion, :f => f, :required => true} %>
   <%= render :partial => 'shared/edit_tags', :locals => {:item => @occasion, :f => f} %>
-  <%= render :partial => 'shared/edit_description', :locals => {:item => @occasion, :f => f} %>
+  <%= render :partial => 'shared/edit_description', :locals => {:item => @occasion, :f => f, :required => true} %>
 
   <%= yield :buttons %>
 

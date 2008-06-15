@@ -17,7 +17,7 @@
     <legend>Description</legend>
     <%= render :partial => 'shared/edit_name', :locals => {:item => @person, :f => f, :required => true} %>
     <%= render :partial => 'shared/edit_tags', :locals => {:item => @person, :f => f} %>
-    <%= render :partial => 'shared/edit_description', :locals => {:item => @person, :f => f} %>
+    <%= render :partial => 'shared/edit_description', :locals => {:item => @person, :f => f, :required => true} %>
     <%= render :partial => 'shared/edit_image', :locals => {:item => @person, :f => f, :heading => "Mugshot"} %>
   </fieldset>
 

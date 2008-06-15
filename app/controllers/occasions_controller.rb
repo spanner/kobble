@@ -8,6 +8,7 @@ class OccasionsController < ApplicationController
     respond_to do |format|
       format.html
       format.js { render :layout => 'inline' }
+      format.json { render :json => @occasion.to_json }
     end
   end
 
@@ -21,12 +22,14 @@ class OccasionsController < ApplicationController
           redirect_to :action => 'show', :id => @occasion 
         }
         format.js { render :layout => false }
-        format.json { render :json => @occasion.to_json }
+        format.json { render :json => {:created => @occasion}.to_json }
       end
     else
-      render :action => 'new'
-      
-      # or js, json: do what?
+      respond_to do |format|
+        format.html { render :action => 'new' }
+        format.js { render :action => 'new', :layout => 'inline' }
+        format.json { render :json => {:errors => @occasion.errors}.to_json }
+      end
     end
   end
 

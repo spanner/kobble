@@ -1318,7 +1318,6 @@ var htmlForm = new Class ({
     this.created_item.inject(this.destination, addwhere);
     this.showOnPage();
     intf.activateElement( this.created_item );
-		this.announceSuccess();
   },
   
   showOnPage: function () {
@@ -1344,7 +1343,6 @@ var Snipper = new Class ({
     intf.announce('fragment created');
 	}
 });
-
 
 var Squeezebox = new Class ({
   Extends: Accordion,
