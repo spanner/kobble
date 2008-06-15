@@ -2,6 +2,8 @@
   item ||= @thing
   heading ||= 'Text or transcript'
   required ||= false
+  short ||= false
+  rows = short ? 5 : 12
   if item.body.blank? && item.respond_to?('extracted_text') && !item.extracted_text.blank?
     item.body = item.extracted_text
     note = "extracted from file and will need formatting"
@@ -12,7 +14,7 @@
 
 <div class="formpart<%= ' witherrors' if item.errors.on(:body) %>">
   <label for="<%= item.class.to_s.downcase %>_body"<% if required %> class="required"<% end %>><%= heading %></label> <%= note %><br />
-  <%= f.text_area 'body', {'rows' => 12, 'class' => "standard"} %>
+  <%= f.text_area 'body', {'rows' => rows, 'class' => "standard fillWithSelection"} %>
   <% if item.errors.on(:body) %><br />
     This <%= item.errors.on(:body).to_a.to_sentence %>
   <% end %>

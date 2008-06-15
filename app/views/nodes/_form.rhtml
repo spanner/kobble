@@ -14,21 +14,24 @@
 
 	<div id="editing_summary">
     
-    <fieldset>
-      <legend>Description</legend>
+    <% unless @inline %>
+      <fieldset>
+        <legend>Description</legend>
+    <% end %>
 
-      <%= render :partial => 'shared/edit_name', :locals => {:item => @node, :f => f, :required => true} %>
-      <%= render :partial => 'shared/edit_tags', :locals => {:item => @node, :f => f} %>
-      <%= render :partial => 'shared/edit_description', :locals => {:item => @node, :f => f, :required => true} %>
-      <%= render :partial => 'shared/edit_image', :locals => {:item => @node, :f => f} %>
+    <%= render :partial => 'shared/edit_name', :locals => {:item => @node, :f => f, :required => true} %>
+    <%= render :partial => 'shared/edit_description', :locals => {:item => @node, :f => f, :required => true, :heading => 'Synopsis', :short => @inline} %>
+    <%= render :partial => 'shared/edit_tags', :locals => {:item => @node, :f => f} %>
+    <%= render :partial => 'shared/edit_image', :locals => {:item => @node, :f => f} %>
 
-    </fieldset>
-    
-    <%= yield :buttons %>
+    <% unless @inline %>
+      </fieldset>
+  
+      <%= yield :buttons %>
 
-    <fieldset>
+      <fieldset>
       <legend>Contents</legend>
-      
+    
   	  <% if @node.has_source? and @node.source.has_clip? %>
     		<% @source = @node.source %>
     	  <%= render :partial => 'shared/player', :locals => {
@@ -36,47 +39,58 @@
     	    :mp3in => @node.playfrom_seconds,
     	    :mp3out => @node.playto_seconds
     	  } %>
+      	<p class="formnote">Grab times from player.</p>
+      <% end %>
+    <% end %>
 
-      	<p class="formnote">To snip a segment of the source clip, choose your in and out times in the player and enter them in the boxes below it.</p>
+    <div class="formpart<%= ' witherrors' if @node.errors.on(:playfrom) || @node.errors.on(:playto) %>">
+  		<div style="float: left; width: 180px;">
+  			<p><label for="node_playfrom">Start (timecode):</label><br />
+  			<%= f.text_field 'playfrom', :style =>  "width: 180px;" %></p>
+  		</div>
+  		<div style="float: left; width: 180px; margin-left: 10px">
+  			<p><label for="node_playto">Stop (timecode):</label><br />
+  			<%= f.text_field 'playto', :style =>  "width: 180px;" %></p>
+  		</div>
+		</div>
 
-        <table border="0" style="clear: left;">
-          <tr>
-            <td>
-              <label for="node_playfrom">Start (timecode):</label><br />
-      		    <%= text_field_tag 'node[playfrom]', @node.playfrom, :class => "standard" %>
-      	    </td>
-      	    <td>
-      		    <label for="node_playto">Stop (timecode):</label><br />
-      		    <%= text_field_tag 'node[playto]', @node.playto, :class => "standard" %>
-            </td
-          </tr>
-        </table>
-
-      	<p>Or you can give this fragment a clip of its own:</p>
-
+    <% unless @inline %>
+  	  <% if @node.has_source? and @node.source.has_clip? %>
+      	<p class="clear">Or you can give this fragment a clip of its own:</p>
       <% else %>
-
     	  <p class="clear">There is no source clip to cut up, but you can add a new clip to this fragment:</p>
-
     	<% end %>
-	
+
       <%= render :partial => 'shared/edit_clip', :locals => {:item => @node, :f => f} %>
-      <%= render :partial => 'shared/edit_body', :locals => {:item => @node, :f => f} %>
-      <%= render :partial => 'shared/edit_file', :locals => {:item => @node, :f => f} %>
+    <% end %>  
       
-    </fieldset>
+    <%= render :partial => 'shared/edit_body', :locals => {:item => @node, :f => f, :short => @inline} %>
 
-    <%= yield :buttons %>
+    <% unless @inline %>
+      <%= render :partial => 'shared/edit_file', :locals => {:item => @node, :f => f} %>
+    <% end %>
 
-    <fieldset>
-      <legend>Filing</legend>
+    <% if @inline %>
+      <%= f.hidden_field 'collection_id' %>
+      <%= f.hidden_field 'source_id' %>
+      <%= f.hidden_field 'speaker_id' %>
+  
+    <% else %>
+      </fieldset>
+      
+      <%= yield :buttons %>
 
-      <%= render :partial => 'shared/edit_collection', :locals => {:item => @node, :f => f, :required => true} %>
-      <%= render :partial => 'shared/edit_source', :locals => {:item => @node, :f => f} %>
-      <%= render :partial => 'shared/edit_speaker', :locals => {:item => @node, :f => f} %>
+      <fieldset>
+        <legend>Filing</legend>
 
-    </fieldset>
-    
+        <%= render :partial => 'shared/edit_collection', :locals => {:item => @node, :f => f, :required => true} %>
+        <%= render :partial => 'shared/edit_source', :locals => {:item => @node, :f => f} %>
+        <%= render :partial => 'shared/edit_speaker', :locals => {:item => @node, :f => f} %>
+
+      </fieldset>
+  
+    <% end %>
+
     <%= yield :buttons %>
 
   </div>

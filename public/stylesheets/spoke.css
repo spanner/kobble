@@ -882,7 +882,6 @@ div.floater {
   left: 150px;
   top: 70px;
   width: 510px;
-  max-height: 600px;
   padding: 0 10px;
   overflow: auto;
   background-color: white;
@@ -896,7 +895,6 @@ div.floater div.preamble, div.floater .notinline {
 
 div.modalform {
 	overflow: hidden;
-  max-height: 600px;
 }
 
 div.floater h1 {
@@ -1707,7 +1705,7 @@ ul.autocompleter-choices
   font-weight: lighter;
   line-height: 14px;
   color: #4d4e53;
-	z-index:				50;
+	z-index: 15000;
 	margin-left: 16px;
 }
 
@@ -1794,6 +1792,7 @@ div.topicbody, div.postbody {
 /* errors and validation */
 
 div.formpart {
+	clear: both;
 	margin: 0 0 16px 0;
 	color: #cacac8;
 }

@@ -16,11 +16,9 @@ class OccasionsController < ApplicationController
     @occasion = Occasion.new(params[:occasion])
     if @occasion.save
       @occasion.tags << Tag.from_list(params[:tag_list]) if params[:tag_list]
+      flash[:notice] = 'Occasion object successfully created.'
       respond_to do |format|
-        format.html { 
-          flash[:notice] = 'Occasion object successfully created.'
-          redirect_to :action => 'show', :id => @occasion 
-        }
+        format.html { redirect_to :action => 'show', :id => @occasion }
         format.js { render :layout => false }
         format.json { render :json => {:created => @occasion}.to_json }
       end

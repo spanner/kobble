@@ -27,7 +27,7 @@ var Interface = new Class({
     this.admin = $E('div#admin');
     this.squeezebox = null;
     this.draghelper = null;
-    this.fader = new Fx.Tween(this.announcer, 'opacity', {duration: 'long', link: 'chain'});
+    this.fader = new Fx.Tween(this.announcer, {property: 'opacity', duration: 'long', link: 'chain'});
 	},
   announce: function (message, title) {
     this.announcer.removeClass('error');
@@ -911,8 +911,8 @@ var ScratchSet = new Class({
 	  this.tabscontainer = $E('#scratchpad_tabs');
 	  this.pagescontainer = $E('#scratchpad_pages');
 		this.isopen = false;
-		this.openFX = new Fx.Tween(this.container, 'width', {duration: 400, transition: Fx.Transitions.Cubic.easeOut});
-		this.closeFX = new Fx.Tween(this.container, 'width', {duration: 1000, transition: Fx.Transitions.Cubic.easeOut});
+		this.openFX = new Fx.Tween(this.container, {duration: 'normal', property: 'width', transition: Fx.Transitions.Cubic.easeOut});
+		this.closeFX = new Fx.Tween(this.container, {duration: 'long', property: 'width', transition: Fx.Transitions.Bounce.easeOut});
 	},
   postselect: function () {
     if (!this.isopen) this.open();
@@ -1085,17 +1085,13 @@ var jsonForm = new Class ({
     this.form.getElements('a.cancelform').each(function (a) { a.onclick = this.hide.bind(this); }, this);
     this.form.getElements('.fillWithSelection').each(function (input) { if (input.get('value') == '') input.set('value', intf.quoteSelectedText()); });
     intf.makeSuggester(this.form.getElements('input.tagbox'));
-
-		// this.resize();
-
 		var first = this.form.getElement('.pickme');
 		if (first) first.focus();
-		
 		this.resize();
   },
 
   // captured form.onsubmit calls sendForm()
-	// which initiates the JSON request and binds its outcomes
+	// which initiates the JSON request and binds its outcome
   
   sendForm: function (e) {
 		intf.debug('jsonForm.sendForm', 5);
