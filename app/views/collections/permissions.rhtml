@@ -1,0 +1,18 @@
+<% @title = @thing.name %>
+
+<div class="preamble"><%= render :partial => 'shared/show_origins' %></div>
+
+
+
+
+
+
+
+
+
+
+<% content_for :admin do %>
+  <p>
+    <%= render :partial => 'shared/show_admin', :locals => {:item => @thing} %>
+  </p>
+<% end %>

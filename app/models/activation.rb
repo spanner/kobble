@@ -11,7 +11,7 @@ class Activation < ActiveRecord::Base
   end
   
   def is_active?
-    self.active > 0
+    self.active
   end
 end
 

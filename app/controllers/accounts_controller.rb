@@ -73,6 +73,11 @@ class AccountsController < ApplicationController
       render :action => 'edit'
     end
   end
+  
+  def permissions
+    @account = Account.find(params[:id]) if admin?
+    @account ||= current_account
+  end
 
   private
   

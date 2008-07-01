@@ -1634,6 +1634,14 @@ a.ticked, a.crossed {
   background-position: top left;
   margin-bottom: 3px;
 }
+
+a.toggle {
+	
+}
+
+a.untoggle {
+	font-weight: bold;
+}
        
 a.ticked {
   color: #5da454;

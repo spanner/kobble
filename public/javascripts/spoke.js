@@ -1334,7 +1334,7 @@ var Squeezebox = new Class ({
 		fixedHeight: false,
 		fixedWidth: false,
 		wait: false,
-		alwaysHide: false,
+		alwaysHide: true,
     onActive: function (toggler, element) {
       toggler.addClass('expanded');
       toggler.removeClass('squeezed');

@@ -1,0 +1,37 @@
+<% item ||= @thing %>
+
+<h3 class="pagesection">
+  <a href="#" class="squeezebox">
+    access control 
+    <span class="headernote">
+      <%= pluralize(item.permitted_users.count, 'user') %> allowed
+    </span>
+  </a>
+</h3>
+
+<div id="item_permissions" class="squeezed">
+  <div class="mainlist">
+    <ul class="minimal">
+      <% item.account.users.each do |user| %>
+        <li>
+        <%= 
+          permission = user.permission_for(item)
+          linkclass =  permission.active? ? 'toggle ticked' : 'toggle crossed'
+          linktitle =  permission.active? ? 'click to forbid access' : 'click to permit access'
+          linkhref = toggle_permission_url(permission)
+          if (user.account_admin?)
+            linkclass =  'untoggle ticked'
+            linktitle =  'administrator'
+            linkhref = '#'
+          end
+          link_to user.name, linkhref, {
+      		  :class => linkclass,
+      		  :title => linktitle
+      	  } 
+      	%>
+    	  </li>
+      <% end %>
+    </ul>
+    <p>You can edit all the collections at once on the <%= link_to "account permissions summary", permissions_account_url(current_account) %> page.</p>
+  </div>
+</div>

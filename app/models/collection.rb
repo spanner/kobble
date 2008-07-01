@@ -5,7 +5,7 @@ class Collection < ActiveRecord::Base
   
   has_many :activations, :dependent => :destroy
   has_many :permissions, :dependent => :destroy
-  has_many :users, :through => :permissions, :source => :user, :conditions => ['permissions.active = ?', true]
+  has_many :permitted_users, :through => :permissions, :conditions => ['permissions.active = ? or users.status > ?', true, 100], :source => :user
   has_many :sources, :order => 'name', :dependent => :destroy, :conditions => "deleted_at IS NULL"
   has_many :nodes, :order => 'name', :dependent => :destroy, :conditions => "deleted_at IS NULL"
   has_many :bundles, :order => 'name', :dependent => :destroy, :conditions => "deleted_at IS NULL"
@@ -17,8 +17,8 @@ class Collection < ActiveRecord::Base
   validates_presence_of :description
   validates_length_of :abbreviation, :maximum => 10
 
-  # this is a shortcut to allow collection tag clouds:
-  # when item in colleciton is tagged, tagging is given collection link
+  # this is a nasty shortcut to allow collection tag clouds:
+  # when item in collection is tagged, tagging is given collection link
   # otherwise polymorphism makes gathering collected-and-tagged objects horribly inefficient
   
   has_many :taggings  
