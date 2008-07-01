@@ -33,3 +33,9 @@
   <p>Sorry: your account has all of the <%= current_account.account_type.users_limit %> users it is allowed. To add new people, please either remove an existing user or upgrade your account.</p>
 
 <% end %>
+
+<% content_for :admin do %>
+  <p>
+    <%= render :partial => 'shared/show_admin', :locals => {:item => current_account} %>
+  </p>
+<% end %>

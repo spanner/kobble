@@ -509,8 +509,6 @@ li.single {
   display: inline;
 }
 
-
-
 div.mainlist a.listed {
   
 }
@@ -633,6 +631,37 @@ li.drophere a {
 li.deleted a, span.deleted {
   color: #8c8d8e;
   text-decoration: line-through;
+}
+
+/* table formatting */
+
+table.spacy {
+	margin: 0;
+	border: 0;
+	border-collapse: collapse;
+/*	width: 100%;*/
+}
+
+table.spacy td, table.spacy th {
+  font-family: HelveticaNeue-Roman, helvetica, arial, sans-serif;
+	padding: 4px;
+/*	width: 30px;*/
+	overflow: hidden;
+	vertical-align: center;
+}
+
+table.spacy td.emphatic a {
+	font-weight: bold;
+	color: #5da454;
+}
+
+table.spacy tr.odd td {
+/*	background-color: #e2e1dd;*/
+}
+
+table.spacy tr {
+/*	background-color: #e2e1dd;*/
+	border-bottom: 1px solid #e2e1dd;
 }
 
 /* hidden divs that provide tooltip content */

@@ -77,6 +77,10 @@ class User < ActiveRecord::Base
     account.user == self
   end
   
+  def is_trusted?
+    account_admin? || account_holder? || trusted
+  end
+  
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
 
   def self.authenticate(login, password)
@@ -197,8 +201,11 @@ class User < ActiveRecord::Base
       permitted_collections.include?(collection)
     end
     
+    # the permission_observer sets default activation of permissions according to status of user and collection
+    # in an after_create trigger so that defaults both positive and negative can be overridden
+    
     def permission_for (collection)
-      Permission.find_or_create_by_user_id_and_collection_id(self.id, collection.id)
+      permission = Permission.find_or_create_by_user_id_and_collection_id(self.id, collection.id)
     end
     
     def all_permissions

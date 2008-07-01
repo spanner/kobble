@@ -2,7 +2,7 @@
   <p>
     <%= link_to "Users", users_url %> here are people who can log into and act within the system.
     People who are referred to, eg as speakers or authors, are <%= link_to 'listed separately', people_url %>.
-    The permissions given to each user can be set on the <%= link_to "access control page", account_permissions_url(current_account) %>.
+    The permissions given to each user can be set on the <%= link_to "access control page", permissions_account_url(current_account) %>.
     By default new users are given access to all collections not marked private.
   </p>
 
@@ -38,6 +38,13 @@
     <%= f.text_field :login, :class => 'standard' %>
     <% if @user.errors.on(:login) %><br />
       This <%= @user.errors.on(:login).to_a.to_sentence %>
+    <% end %>
+  </div>
+
+  <div class="formpart<%= ' witherrors' if @user.errors.on(:trusted) %>">
+    <%= f.check_box 'trusted' %><label for="user_trusted">this is a trusted user</label> and by default has access to all collections
+    <% if @user.errors.on(:trusted) %><br />
+      <br />This <%= @user.errors.on(:trusted).to_a.to_sentence %>
     <% end %>
   </div>
 

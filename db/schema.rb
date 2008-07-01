@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20080609194758) do
+ActiveRecord::Schema.define(:version => 20080701123627) do
 
   create_table "account_types", :force => true do |t|
     t.string   "name"
@@ -116,6 +116,7 @@ ActiveRecord::Schema.define(:version => 20080609194758) do
     t.datetime "deleted_at"
     t.string   "image"
     t.string   "clip"
+    t.boolean  "private"
   end
 
   create_table "events", :force => true do |t|
@@ -415,6 +416,7 @@ ActiveRecord::Schema.define(:version => 20080609194758) do
     t.datetime "previously_logged_in_at"
     t.datetime "deleted_at"
     t.string   "clip"
+    t.boolean  "trusted"
   end
 
   add_index "users", ["login"], :name => "index_users_on_login"

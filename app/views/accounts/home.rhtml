@@ -38,3 +38,9 @@
       <% end %>
   </div>
 <% end %>
+
+<% content_for :admin do %>
+  <p>
+    <%= render :partial => 'shared/show_admin', :locals => {:item => current_account} %>
+  </p>
+<% end %>

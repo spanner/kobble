@@ -1,0 +1,56 @@
+<% 
+  @title = 'Account permissions' 
+  @users = current_account.users
+  @collections = current_account.collections
+%>
+
+<div class="preamble">
+  <p>This is a summary of permissions across all the collections and users in your account.</p>
+</div>
+
+<div class="contentblock">
+
+  <table class="spacy">
+    <thead>
+      <tr>
+        <td></td>
+        <% @collections.each do |collection| %>
+          <th><%= link_to collection.abbreviation, url_for(collection), :title => collection.name %></th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% @users.each do |user| %>
+        <tr class="<%= cycle("even", "odd") %>">
+          <td<% if user.account_admin? %> class="emphatic"<% end %>><%= link_to user.name, url_for(user) %></td>
+          <% @collections.each do |collection| %>
+            <td>
+              <%= 
+                permission = user.permission_for(collection)
+                linkclass =  permission.active? ? 'toggle ticked' : 'toggle crossed'
+                linktitle =  permission.active? ? 'click to forbid access' : 'click to permit access'
+                linkhref = toggle_permission_url(permission)
+                if (user.account_admin?)
+                  linkclass =  'untoggle ticked'
+                  linktitle =  'administrator'
+                  linkhref = '#'
+                end
+                link_to "&nbsp;", linkhref, {
+            		  :class => linkclass,
+            		  :title => linktitle
+            	  } 
+            	%>
+            </td>
+          <% end %>
+          </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+</div>
+
+<% content_for :admin do %>
+  <p>
+    <%= render :partial => 'shared/show_admin', :locals => {:item => current_account} %>
+  </p>
+<% end %>

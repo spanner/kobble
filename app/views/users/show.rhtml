@@ -23,7 +23,7 @@
 
 <%= render :partial => 'shared/show_summary' %>
 <%= render :partial => 'shared/show_subscriptions' if itsme || account_admin? %>
-<%= render :partial => 'shared/show_access' if account_admin? %>
+<%= render :partial => 'shared/show_permissions' if account_admin? %>
 <%= render :partial => 'shared/show_contributions' %>
 <%= render :partial => 'shared/show_history' %>
 

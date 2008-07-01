@@ -43,4 +43,8 @@ class Collection < ActiveRecord::Base
     taggings.map {|t| t.tag }.uniq.sort{|a,b| a.name <=> b.name}
   end
   
+  def public?
+    !private?
+  end
+  
 end

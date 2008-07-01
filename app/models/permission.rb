@@ -10,9 +10,16 @@ class Permission < ActiveRecord::Base
   def deactivate
     self.active = false
   end
-  
-  def is_active?
-    self.active
+
+  def activate!
+    active = true
+    save!
   end
+  
+  def deactivate!
+    active = false
+    save!
+  end
+
 end
 

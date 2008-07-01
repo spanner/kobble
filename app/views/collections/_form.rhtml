@@ -25,8 +25,15 @@
     <% end %>
   </div>
 
+  <div class="formpart<%= ' witherrors' if @collection.errors.on(:private) %>">
+    <%= f.check_box 'private' %><label for="collection_private">this is a restricted collection</label> only visible to chosen (or trusted) users
+    <% if @collection.errors.on(:private) %><br />
+      <br />This <%= @collection.errors.on(:private).to_a.to_sentence %>
+    <% end %>
+  </div>
+
   <div class="formpart<%= ' witherrors' if @collection.errors.on(:abbreviation) %>">
-    <label for="collection_abbreviation" class="optional">Abbreviation</label> defaults to initials or (if one word) first 5 letters of collection name<br />
+    <label for="collection_abbreviation" class="optional">Abbreviation</label> defaults to initials or (if one word) first letters of collection name<br />
     <%= f.text_field 'abbreviation', 'class' => "standard" %>
     <% if @collection.errors.on(:abbreviation) %><br />
       This <%= @collection.errors.on(:abbreviation).to_a.to_sentence %>
