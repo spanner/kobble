@@ -37,7 +37,7 @@
     
     <ul>
       <% events.each do |event| %>
-        <% who = event.user == current_user ? 'you' : event.user.name %>
+        <% who = event.user == current_user ? 'you' : event.user ? event.user.name : 'someone' %>
         <%= render :partial => "shared/listed", :locals => {
           :listed => event.affected,
           :name => event.affected_name || event.affected.name,

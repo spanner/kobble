@@ -12,8 +12,8 @@ ActionController::Routing::Routes.draw do |map|
   map.catch '/:controller/catch/:id/:caughtClass/:caughtID', :action => 'catch'
   map.drop '/:controller/drop/:id/:droppedClass/:droppedID', :action => 'drop'
   
-  map.resources :accounts, :has_many => [:users, :collections, :events, :deletions, :tags, :permissions], :collection => { :home => :any }
-  map.resources :collections, :has_many => [:events, :topics, :annotations], :member => {:recover => :post}, :collection => { :gallery => :get }
+  map.resources :accounts, :has_many => [:users, :collections, :events, :deletions, :tags], :collection => { :home => :any }, :member => { :permissions => :any }
+  map.resources :collections, :has_many => [:events, :topics, :annotations, :permissions], :member => {:recover => :post}, :collection => { :gallery => :get }
   map.resources :users, :has_many => [:activations, :user_preferences, :permissions, :scratchpads, :events, :sources, :nodes, :bundles, :people, :topics, :posts], :collection => { :gallery => :get }, :member => { :home => :get, :recover => :post, :reinvite => :any }
   map.resources :annotations
   map.resources :preferences
@@ -32,6 +32,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :user_preferences, :member => { :activate => :any, :deactivate => :any, :toggle => :any }
   map.resources :activations, :member => { :activate => :any, :deactivate => :any, :toggle => :any }
+  map.resources :permissions, :member => { :activate => :any, :deactivate => :any, :toggle => :any }
   map.resources :monitorships, :member => { :activate => :any, :deactivate => :any, :toggle => :any }
   map.resources :annotation_types, :has_many => [:annotations]
   

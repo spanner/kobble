@@ -490,7 +490,11 @@ div.mainlist ul.listcolumn {
 div.mainlist li, li.single, ul.minimal li {
   margin: 0 10px 4px 25px;
   font-size: 16px;
-  line-height: 20px;
+  line-height: 24px;
+}
+
+ul.minimal li {
+	margin: 0 0 6px 0;
 }
 
 ul.minimal div {
@@ -1632,7 +1636,7 @@ a.ticked, a.crossed {
 }
        
 a.ticked {
-  color: #a0a500;
+  color: #5da454;
   background-image: url('/images/furniture/buttons/tick/green.png');
 }
 a.crossed {
