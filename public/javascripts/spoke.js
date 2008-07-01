@@ -13,14 +13,13 @@ var Interface = new Class({
     this.tips = null;
     this.draggables = [];
     this.droppers = [];
-    this.tagboxes = [];
     this.tabs = [];
     this.tabsets = {};
     this.preferences = {};
     this.fixedbottom = [];
     this.inlinelinks = [];
     this.floaters = [];
-    this.debug_level = 4;
+    this.debug_level = 1;
     this.clickthreshold = 20;
     this.announcer = $E('div#notification');
 		console.log(this.announcer);
@@ -97,56 +96,27 @@ var Interface = new Class({
   
   // these are convenient shortcuts called by activate()
   
-  addTabs: function (elements) {  
-    elements.each(function (element) { intf.tabs.push(new Tab(element)); });
-  },
-  addScratchTabs: function (elements) {
-    elements.each(function (element) { intf.tabs.push(new ScratchTab(element)); });
-  },
-  addDropzones: function (elements) {
-    elements.each(function (element) { intf.droppers.push(new Dropzone(element)); });
-  },
-  addTrashDropzones: function (elements) {
-    elements.each(function (element) { intf.droppers.push(new TrashDropzone(element)); });
-  },
-  makeDraggables: function (elements) {
-    elements.each(function (element) { 
-      element.addEvent('mousedown', function(event) { new Draggee(element, event); }); 
-    });
-  },
-  makeFixed: function (elements) {
-    elements.each(function (element) { intf.fixedbottom.push(element); });
-  },
-  makeTippable: function (elements) {
-    this.tips = new SpokeTips(elements);
-  },
-  makeToggle: function (elements) {
-    elements.each(function (element) { intf.inlinelinks.push(new Toggle(element)); });
-  },
-  makePreference: function (elements) {
-    elements.each(function (element) { intf.inlinelinks.push(new Preference(element)); });
-  },
-  makeSuggester: function (elements) {
-    elements.each(function (element) {
-      var waiter = new Element('div', {'class': 'autocompleter-loading'}).set('html','&nbsp;').inject(element, 'after');
-      intf.tagboxes.push(new Autocompleter.Ajax.Json(element, '/tags/matching', { 'indicator': waiter, 'postVar': 'stem', 'multiple': true }));
-    });
-  },
-
+  addTabs: function (elements) { elements.each(function (element) { intf.tabs.push(new Tab(element)); }); },
+  addScratchTabs: function (elements) { elements.each(function (element) { intf.tabs.push(new ScratchTab(element)); }); },
+  addDropzones: function (elements) { elements.each(function (element) { intf.droppers.push(new Dropzone(element)); }); },
+  addTrashDropzones: function (elements) { elements.each(function (element) { intf.droppers.push(new TrashDropzone(element)); }); },
+  makeDraggables: function (elements) { elements.each(function (element) { element.addEvent('mousedown', function(event) { new Draggee(element, event); }); }); },
+  makeFixed: function (elements) { elements.each(function (element) { intf.fixedbottom.push(element); }); },
+  makeTippable: function (elements) { this.tips = new SpokeTips(elements); },
+  makeToggle: function (elements) { elements.each(function (element) { intf.inlinelinks.push(new Toggle(element)); }); },
+  makePreference: function (elements) { elements.each(function (element) { intf.inlinelinks.push(new Preference(element)); }); },
+  makeSuggester: function (elements) { elements.each(function (element) { new TagSuggester(element); }); },
   makeInlineCreate: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new htmlForm(element, e); }); }); },
   makeInlineDiscuss: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new htmlForm(element, e); }); }); },
   makeInlineReply: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new htmlForm(element, e); }); }); },
   makeNoter: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new htmlForm(element, e); }); }); },
   makeSnipper: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new Snipper(element, e); }); }); },
-  makePopup: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new Popup(element, e); }); }); },
-
+  makeFixed: function (elements) { elements.each(function (element) { element.pin(); }); },
   makeSquash: function (handles, blocks) { 
 	 	if (this.squeezebox) this.squeezebox.addSections(handles,blocks);
 		else this.squeezebox = new Squeezebox(handles, blocks);
 	},
     
-  makeFixed: function (elements) { elements.each(function (element) { element.pin(); }); },
-
   makeCollectionsLinks: function (elements) {
     elements.each(function (a) {
       a.onclick = function (e) { 
@@ -206,7 +176,6 @@ var Interface = new Class({
     this.makeSnipper(scope.getElements('a.snipper'));
     this.makeNoter(scope.getElements('a.annotate'));
     this.makeFixed(scope.getElements('.fixed'));
-    this.makePopup(scope.getElements('.popup'));
     this.makeCollectionsLinks(scope.getElements('a.choosecollections'));
     this.makeSquash(scope.getElements('a.squeezebox'), scope.getElements('div.squeezed'));
   },
@@ -226,7 +195,6 @@ var Interface = new Class({
     if (element.hasClass('toggle')) this.makeToggle( [element] );
     if (element.hasClass('snipper')) this.makeSnipper( [element] );
     if (element.hasClass('noter')) this.makeNoter( [element] );
-    if (element.hasClass('popup')) this.makePopup( [element] );
   },
   
   getSelectedText: function () {
@@ -284,7 +252,7 @@ var SpokeTips = new Class({
   },
   build: function(el){
     el.$attributes.myTitle = el.title || el.getElement('a').title;
-    el.$attributes.myText = el.getElement('div.tiptext').getText();
+    el.$attributes.myText = el.getElement('div.tiptext').get('text');
 		el.removeProperty('title');
 		if (el.$attributes.myTitle && el.$attributes.myTitle.length > this.options.maxTitleChars)
 			el.$attributes.myTitle = el.$attributes.myTitle.substr(0, this.options.maxTitleChars - 1) + "&hellip;";
@@ -347,8 +315,8 @@ var Dropzone = new Class({
           intf.debug('hit drop event: ' + dropzone.name, 4);
           dropzone.receiveDrop(helper); 
         },
-        'mouseover': function() { dropzone.showInterest(helper); },   // don't use mouseenter in case dragged item occludes dropzone
-        'mouseout': function() { dropzone.loseInterest(helper); }
+        'enter': function() { dropzone.showInterest(helper); },   // don't use mouseenter in case dragged item occludes dropzone
+        'leave': function() { dropzone.loseInterest(helper); }
       });
       return this.isReceptive = true;
       
@@ -361,10 +329,8 @@ var Dropzone = new Class({
     // this gets called when a drag from elsewhere leaves this space or a drag ends
     if (this.isReceptive) {
       intf.debug('unReceptive: ' + this.name, 5);
-      this.container.removeEvents('mouseenter');
-      this.container.removeEvents('mouseleave');
-      this.container.removeEvents('mouseover');
-      this.container.removeEvents('mouseout');
+      this.container.removeEvents('enter');
+      this.container.removeEvents('leave');
       this.container.removeEvents('drop');
       this.isReceptive = false;
     }
@@ -413,7 +379,7 @@ var Dropzone = new Class({
   },
 	        
 	receiveDrop: function (helper) {
-    intf.debug('receiveDrop: ' + this.name, 3);
+    intf.debug('receiveDrop: ' + this.name, 1);
 	  intf.stopDragging();
 		var dropzone = this;
 		var draggee = helper.draggee;
@@ -525,7 +491,7 @@ var Dropzone = new Class({
 	notWaiting: function () { 
 	  if (this.zoneType() == 'list') {
       if (this.waitSignal) {
-        this.waitSignal.remove();
+        this.waitSignal.destroy();
         this.waitSignal = null;
       } 
 	  } else {
@@ -612,7 +578,7 @@ var Draggee = new Class({
 	explode: function () { this.original.explode(); },
 	disappear: function () { this.original.dwindle(); },
 	clone: function () { return this.original.clone(); },
-	findTitle: function () { return this.link.getText() || this.original.getElements('div.tiptitle').getText(); }
+	findTitle: function () { return this.link.get('text') || this.original.getElements('div.tiptitle').get('text'); }
 });
 
 // the dragged representation is a new DragHelper object with useful abilities
@@ -635,7 +601,10 @@ var DragHelper = new Class({
     this.dragmove = this.dragger.makeDraggable({ 
       droppables: intf.startDragging(this),
       snap: intf.clickthreshold,
-      onSnap: function (element) { dh.reveal(); }
+      onSnap: function (element) { dh.reveal(); },
+	    onDrop: function(element, droppable){ droppable ? droppable.fireEvent('drop') : dh.emptydrop(); },
+	    onEnter: function(element, droppable){ droppable.fireEvent('enter'); },
+	    onLeave: function(element, droppable){ droppable.fireEvent('leave'); }
     });
 		this.dragmove.start(event);
 	},
@@ -1328,16 +1297,30 @@ var htmlForm = new Class ({
 
 var Snipper = new Class ({
 	Extends: htmlForm,
-	
   prepForm: function () {
 		this.parent();
     this.form.getElements('#node_playfrom').each( function (input) { input.set('value', intf.getPlayerIn()); });
     this.form.getElements('#node_playto').each( function (input) { input.set('value', intf.getPlayerOut()); });
   },
-
 	announceSuccess: function () {
     intf.announce('fragment created');
 	}
+});
+
+// TagSuggester is just an autocompleter with some options set
+
+var TagSuggester = new Class ({
+  Extends: Autocompleter.Ajax.Json,
+	initialize: function(element) {
+		this.parent(element, '/tags/matching', { 
+			'indicator': new Element('div', {'class': 'autocompleter-loading'}).set('html','&nbsp;').inject(element, 'after'),
+			'postVar': 'stem', 
+			'multiple': true 
+		});
+	}
+	
+	
+	
 });
 
 var Squeezebox = new Class ({
