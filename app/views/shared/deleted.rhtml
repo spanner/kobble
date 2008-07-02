@@ -10,16 +10,18 @@
     </p>
   </div>
   
-  <% form_for :thing, :url => {:action => 'recover', :id => @thing} do |f| %>
-    <%= submit_tag "recover", :class => 'bigbutton' %>
-  <% end %>
+  <div class="contentblock">
+
+    <% form_for :thing, :url => {:action => 'recover', :id => @thing} do |f| %>
+      <%= submit_tag "recover", :class => 'bigbutton' %>
+    <% end %>
   
-  <p>These are the immediate children that would be recovered with this object:</p>
-  
-  <div class="mainlist">
-    <%= render :partial => 'shared/listed', :collection => @thing.retrievable_associates, :locals => {:colourclass => 'deleted'} %>
+    <p>
+      These are the immediate children that would be recovered with this object: <%= @thing.retrievable_associates_summary %>
+    </p>
+    
   </div>
-  
+
 <% else %>
   <% 
     @title = "not found"

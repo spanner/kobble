@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   before_filter :login_from_cookie
   before_filter :login_required
   before_filter :set_context
-  before_filter :check_activations  
+  before_filter :check_activations
     
   layout 'standard'
   exception_data :exception_report_data
@@ -158,12 +158,17 @@ class ApplicationController < ActionController::Base
   
   def destroy
     @deleted = request.parameters[:controller].to_s._as_class.find( params[:id] )
-    @deleted.destroy
+    @deleted.reassign_to = request.parameters[:controller].to_s._as_class.find(params[:reassign_to]) if params[:reassign_to] && @deleted.respond_to?('reassign_to')
+    logger.warn("@@@ @deleted.reassign_to is #{@deleted.reassign_to}")
+
+    request.parameters[:controller].to_s._as_class.transaction { @deleted.destroy }
+    
     respond_to do |format|
       format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @deleted }
       format.json { render :json => CatchResponse.new("#{@deleted.name} deleted", 'delete').to_json }
     end
   rescue => e
+    logger.warn("@@@ #{e.message}")
     flash[:error] = e.message
     respond_to do |format|
       format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @deleted }
@@ -180,6 +185,10 @@ class ApplicationController < ActionController::Base
       format.json { render :json => @recovered.to_json }
     end
   end
+  
+  def reallydestroy
+    
+  end
 
   def tags_from_list (taglist)
     Tag.from_list(taglist)
@@ -188,14 +197,6 @@ class ApplicationController < ActionController::Base
   protected
     def last_active
       session[:last_active] ||= Time.now.utc
-    end
-    
-    def rescue_action(exception)
-      exception.is_a?(ActiveRecord::RecordInvalid) ? render_invalid_record(exception.record) : super
-    end
-
-    def render_invalid_record(record)
-      render :action => (record.new_record? ? 'new' : 'edit')
     end
     
     def exception_report_data

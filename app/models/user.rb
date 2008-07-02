@@ -6,10 +6,15 @@ class User < ActiveRecord::Base
   attr_protected :activated_at
   attr_accessor :password_confirmation
   attr_accessor :old_password
+  attr_accessor :reassign_to
 
-  acts_as_spoke :except => [:collection, :index, :discussion, :annotation]
+  before_create :make_activation_code
+  before_save :encrypt_password
+  before_destroy :reassign_associates
+
+  acts_as_spoke :except => [:collection, :index, :discussion, :annotation, :selection]
   
-  belongs_to :account, :dependent => :destroy
+  belongs_to :account
   belongs_to :person
   
   has_many :permissions, :dependent => :destroy
@@ -21,15 +26,15 @@ class User < ActiveRecord::Base
   has_many :user_preferences, :dependent => :destroy
   has_many :preferences, :through => :user_preferences, :conditions => ['user_preferences.active = ?', true], :source => :preference
 
-  has_many :created_collections, :class_name => 'Collection', :foreign_key => 'created_by', :dependent => :nullify
-  has_many :created_sources, :class_name => 'Source', :foreign_key => 'created_by', :dependent => :nullify
-  has_many :created_nodes, :class_name => 'Node', :foreign_key => 'created_by', :dependent => :nullify
+  has_many :created_collections, :class_name => 'Collection', :foreign_key => 'created_by', :dependent => :destroy
+  has_many :created_sources, :class_name => 'Source', :foreign_key => 'created_by', :dependent => :destroy
+  has_many :created_nodes, :class_name => 'Node', :foreign_key => 'created_by', :dependent => :destroy
   has_many :created_bundles, :class_name => 'Bundle', :foreign_key => 'created_by', :dependent => :destroy
   has_many :created_topics, :class_name => 'Topic', :foreign_key => 'created_by', :dependent => :destroy
   has_many :created_posts, :class_name => 'Post', :foreign_key => 'created_by', :dependent => :destroy  
   has_many :created_scratchpads, :class_name => 'Scratchpad', :foreign_key => 'created_by', :dependent => :destroy
   has_many :created_tags, :class_name => 'Tag', :foreign_key => 'created_by', :dependent => :destroy
-  has_many :events, :order => 'at DESC'
+  has_many :events, :order => 'at DESC', :dependent => :nullify
 
   named_scope :in_account, lambda { |account| {:conditions => { :account_id => account.id }} }
 
@@ -40,10 +45,7 @@ class User < ActiveRecord::Base
   validates_presence_of     :password, :if => :password_required?
   validates_length_of       :password, :within => 4..40, :if => :password_required?
   validates_confirmation_of :password,  :if => :password_required?
-  
-  before_create :make_activation_code
-  before_save :encrypt_password
-    
+      
   def self.nice_title
     "user"
   end
@@ -263,4 +265,24 @@ class User < ActiveRecord::Base
       chars = ("a".."z").to_a + ("A".."Z").to_a + ("1".."9").to_a
       Array.new(length, '').collect{chars[rand(chars.size)]}.join
     end
+
+    def reassign_associates
+      logger.warn("@@@ User.reassign_associates")
+      
+      if self.reassign_to && self.reassign_to.is_a?(User)
+        logger.warn("@@@ reassigning from #{self.name} to #{self.reassign_to.name}")
+        counter = 0
+        [:created_collections, :created_sources, :created_nodes, :created_bundles, :created_tags].each do |association|
+          self.send(association.to_s).each { |associate| 
+            associate.created_by = self.reassign_to
+            associate.save
+            counter = counter + 1
+          }
+          logger.warn("#{counter} objects reassigned to #{self.reassign_to.name}")
+        end
+      else
+        logger.warn("@@@ no reassignment target for #{self.name}. reassign_to is #{self.reassign_to}")
+      end
+    end
+
 end

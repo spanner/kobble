@@ -8,7 +8,6 @@
   rubine red: #d1005d
   cool grey 1: #e2e1dd
   cool grey 3: #cacac8
-  cool grey 6: #8c8d8e
   cool grey 8: #8c8d8e
   cool grey 11: #4d4e53
 */
@@ -99,11 +98,6 @@ h1 a, h2 a, h3 a, h4 a {
 blockquote {
   color: #4d4e53;
   margin: 10px;
-}
-
-.warning {
-  color: white;
-  background-color: #d1005d !important;
 }
 
 /* layout and special formatting */
@@ -229,9 +223,13 @@ div#admin p {
 }
 
 div#admin a { color: #559DC4; }
-div#admin a:hover, .pagination a:active { color: #d1005d; }
-div#admin a.warning { color: white; }
-div#admin a.create { color: #a0a500; }
+div#admin a:hover, .pagination a:active { color: #d1005d; background-color: #d1005d; }
+
+a.warning, div#admin a.warning { color: white; }
+a.create, div#admin a.create { color: #a0a500; }
+a.edit, div#admin a.edit { color: #559DC4; }
+a.mildwarning, div#admin a.mildwarning { color: #d1005d; }
+
 
 div#trashholder {
   position: fixed;
@@ -450,6 +448,12 @@ div.scratchpage li.create_topic { list-style-image: url(/images/furniture/spoke/
 div.scratchpage .drophere {
 	background-color: #d1005d;
 }
+
+div.scratchpage a.edit, div.scratchpage a.delete {
+	font-size: 11px;
+	color: #8c8d8e;
+}
+
 
 /* main content list */
 
@@ -979,6 +983,8 @@ div.floater input.standard, div.floater select.standard, div.floater textarea.st
 
 div.floater input.tagbox {
  	width: 460px;
+	border: 1px solid #cacac8;
+	padding: 4px;
   font-family: Georgia, "Times New Roman", serif;
   font-size: 22px;
   font-weight: lighter;
@@ -1838,7 +1844,7 @@ div.formpart {
 	color: #cacac8;
 }
 
-div.formpart input, div.formpart textarea {
+div.formpart input.standard, div.formpart input.titular, div.formpart textarea.standard {
 	border: 1px solid #cacac8;
 	padding: 4px;
 }

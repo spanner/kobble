@@ -1,6 +1,6 @@
 class Scratchpad < ActiveRecord::Base
 
-  acts_as_spoke :only => [:owners]
+  acts_as_spoke :only => [:owners, :undelete]
   has_many :paddings, :dependent => :destroy
 
   def scraps

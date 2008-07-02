@@ -75,6 +75,13 @@
       //]]>
     </script>
   <% end %>
+  <% if flash[:error] %>
+    <script type="text/javascript">
+      //<![CDATA[
+        window.addEvent('load', function(){ intf.complain('<%= flash[:error] %>'); });
+      //]]>
+    </script>
+  <% end %>
 
 </body>
 </html>

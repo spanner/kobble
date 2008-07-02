@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20080701123627) do
+ActiveRecord::Schema.define(:version => 20080702123148) do
 
   create_table "account_types", :force => true do |t|
     t.string   "name"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(:version => 20080701123627) do
     t.integer  "created_by",        :limit => 11
     t.integer  "updated_by",        :limit => 11
     t.integer  "space_limit",       :limit => 11, :default => 0
+    t.datetime "deleted_at"
   end
 
   create_table "accounts", :force => true do |t|
@@ -44,9 +45,10 @@ ActiveRecord::Schema.define(:version => 20080701123627) do
   end
 
   create_table "activations", :force => true do |t|
-    t.integer "collection_id", :limit => 11
-    t.integer "user_id",       :limit => 11
-    t.boolean "active",                      :default => false
+    t.integer  "collection_id", :limit => 11
+    t.integer  "user_id",       :limit => 11
+    t.boolean  "active",                      :default => false
+    t.datetime "deleted_at"
   end
 
   create_table "annotation_types", :force => true do |t|
@@ -56,6 +58,7 @@ ActiveRecord::Schema.define(:version => 20080701123627) do
     t.integer  "updated_by",  :limit => 11
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "deleted_at"
   end
 
   create_table "annotations", :force => true do |t|
@@ -209,10 +212,11 @@ ActiveRecord::Schema.define(:version => 20080701123627) do
   end
 
   create_table "paddings", :force => true do |t|
-    t.integer "scratchpad_id", :limit => 11
-    t.string  "scrap_type",    :limit => 20
-    t.integer "scrap_id",      :limit => 11
-    t.integer "position",      :limit => 11
+    t.integer  "scratchpad_id", :limit => 11
+    t.string   "scrap_type",    :limit => 20
+    t.integer  "scrap_id",      :limit => 11
+    t.integer  "position",      :limit => 11
+    t.datetime "deleted_at"
   end
 
   add_index "paddings", ["scrap_type", "scrap_id"], :name => "index_scratchpad_scraps"
@@ -251,6 +255,7 @@ ActiveRecord::Schema.define(:version => 20080701123627) do
     t.datetime "updated_at"
     t.integer  "created_by",    :limit => 11
     t.integer  "updated_by",    :limit => 11
+    t.datetime "deleted_at"
   end
 
   create_table "posts", :force => true do |t|

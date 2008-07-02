@@ -10,5 +10,9 @@ class Annotation < ActiveRecord::Base
   def self.nice_title
     "annotation"
   end
-
+  
+  def name
+    self.annotated ? "annotation of #{self.annotated.name}" : 'loose annotation'
+  end
+  
 end

@@ -1,10 +1,11 @@
 <div class="mainform">
 
 <% form_for :user,
-            :url => user_url(@user),
+            :url => account_user_url(@account, @user),
             :html => { 
               :method => "put",
-              :multipart => true
+              :multipart => true,
+              :id => 'userform'
             } do |f| 
 %>
 

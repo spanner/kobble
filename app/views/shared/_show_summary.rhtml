@@ -11,8 +11,8 @@
 
 <div class="contentblock squeezed">
 
-  <ul class="minimal">
-    <%= render :partial => 'shared/listed', :locals => {:listed => @thing} %>
+  <ul class="mainlist">
+    <%= render :partial => 'shared/listed', :locals => {:listed => item} %>
   </ul>
 
   <% if item.has_description? %>

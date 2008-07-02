@@ -1,6 +1,6 @@
 class AccountType < ActiveRecord::Base
 
-  acts_as_spoke :only => [:owners]
+  acts_as_spoke :only => [:owners, :undelete]
   has_many :accounts, :order => 'name'
   
   def readable_space_limit

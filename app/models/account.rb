@@ -7,7 +7,7 @@ class Account < ActiveRecord::Base
   has_many :users, :order => 'name', :dependent => :destroy
   has_many :collections, :order => 'name', :dependent => :destroy
   has_many :tags, :dependent => :destroy
-  has_many :events, :order => 'at DESC'
+  has_many :events, :order => 'at DESC', :dependent => :destroy
   
   def self.nice_title
     "account"

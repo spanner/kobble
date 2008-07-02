@@ -49,7 +49,7 @@
   </div>
 
   <div class="formpart<%= ' witherrors' if @user.errors.on(:password) %>">
-    <label for="user_password" class="required">Password</label><br/>
+    <label for="user_password"<% if @user.new_record? %> class="required"<% end %>><% unless @user.new_record? %>New password<% else %>Password<% end %></label><br/>
     <%= password_field_tag :password, '', :class => 'standard' %>
     <% if @user.errors.on(:password) %><br />
       This <%= @user.errors.on(:password).to_a.to_sentence %>
@@ -57,7 +57,7 @@
   </div>
 
   <div class="formpart<%= ' witherrors' if @user.errors.on(:password_confirmation) %>">
-    <label for="user_password_confirmation" class="required">Confirm password</label><br/>
+    <label for="user_password_confirmation"<% if @user.new_record? %> class="required"<% end %>>Confirm <% unless @user.new_record? %>new <% end %>password</label><br/>
     <%= password_field_tag :password_confirmation, '', :class => 'standard' %>
     <% if @user.errors.on(:password_confirmation) %><br />
       This <%= @user.errors.on(:password_confirmation).to_a.to_sentence %>

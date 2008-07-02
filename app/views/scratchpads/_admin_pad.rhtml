@@ -9,7 +9,11 @@
 <h3><%= link_to "admin: collections", account_collections_url(current_account) %></h3>
 <ul class="padded">
   <% current_account.collections.each do |collection| %>
-    <li class="collection"><%= link_to collection.name, collection_url(collection), :class => 'listed' %></li>
+    <li class="collection">
+      <%= link_to collection.name, collection_url(collection), :class => 'listed' %>
+      <%= link_to "edit", edit_collection_url(collection), :class => 'edit' %>
+      <%= link_to "delete", predelete_collection_url(collection), :class => 'delete' %>
+    </li>
   <% end %>
   <li class="create create_collection"><%= link_to "create a new collection", new_account_collection_url(current_account) %></li>
 </ul>
@@ -17,7 +21,11 @@
 <h3><%= link_to "admin: users", account_users_url(current_account) %></h3>
 <ul class="padded">
   <% current_account.users.each do |user| %>
-    <li class="user"><%= link_to user.name, user_url(user), :class => 'listed' %></li>
+    <li class="user">
+      <%= link_to user.name, user_url(user), :class => 'listed' %>
+      <%= link_to "edit", edit_user_url(user), :class => 'edit' %>
+      <%= link_to "delete", predelete_user_url(user), :class => 'delete' %>
+    </li>
   <% end %>
   <li class="create create_user"><%= link_to "invite a new user", new_account_user_url(current_account) %></li>
 </ul>

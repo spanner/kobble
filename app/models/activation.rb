@@ -1,4 +1,6 @@
 class Activation < ActiveRecord::Base
+
+  acts_as_spoke :only => :undelete
   belongs_to :user
   belongs_to :collection
 
@@ -10,8 +12,5 @@ class Activation < ActiveRecord::Base
     update_attribute :active, false
   end
   
-  def is_active?
-    self.active
-  end
 end
 

@@ -23,7 +23,15 @@
 
 <% @collections.each do |collection| %>
   <div class="mainlist">
-    <h3 class="listheader"><%= link_to collection.name, url_for(collection) %></h3>
+    <h3 class="listheader">
+      <%= link_to collection.name, url_for(collection) %>
+      <% if account_admin? %>
+        <span class="headernote">
+          <%= link_to "edit", edit_collection_url(collection), :class => 'edit' %>
+          <%= link_to "delete", predelete_collection_url(collection), :class => 'delete' %>
+        </span>
+      <% end %>
+    </h3>
       <% if collection.last_active_at %>
         <p class="subhead">
           last activity <%= time_ago_in_words(collection.last_active_at) %> ago: 

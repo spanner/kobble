@@ -132,7 +132,7 @@ module ActiveRecord
           end
 
           if definitions.include?(:selection)
-            named_scope :latest, lambda {|count| { :limit => (count || 5), :order => 'created_at DESC' } }
+            named_scope :latest, { :limit => 20, :order => 'created_at DESC' }
             named_scope :changed_since, lambda {|start| { :conditions => ['created_at > ? or updated_at > ?', start, start] } }
             named_scope :created_by, lambda {|user| { :conditions => ['created_by = ?', user.id] } }
           end

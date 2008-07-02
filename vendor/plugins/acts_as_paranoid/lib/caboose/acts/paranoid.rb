@@ -158,7 +158,7 @@ module Caboose #:nodoc:
             self.deleted_at = nil
             self.newly_undeleted = true
             self.retrievable_associates.each { |other| other.recover! }
-            save!
+            save_with_validation(false)
           end
         end
                 
@@ -171,6 +171,16 @@ module Caboose #:nodoc:
           end
           associates
         end
+
+        def retrievable_associates_summary
+          totals = []
+          self.class.retrievable_associations.each do |association| 
+            total = association.class_name._as_class.count_with_deleted(:conditions => { association.primary_key_name => self.id })
+            totals.push(pluralize( total, association.class_name._as_class.nice_title )) if total && total > 0
+          end
+          totals.empty? ? 'none' : totals.to_sentence
+        end
+
       end
 
     end

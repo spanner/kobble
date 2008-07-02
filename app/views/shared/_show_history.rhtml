@@ -1,7 +1,7 @@
 <% 
   item ||= @thing
   count ||= 20
-  events ||= @since ? item.events.since(@since) : item.events.latest(count)
+  events ||= @since ? item.events.since(@since) : item.events.latest
 %>
 
 <h3 class="pagesection">

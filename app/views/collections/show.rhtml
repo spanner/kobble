@@ -1,6 +1,8 @@
 <% @title = @thing.name %>
 
-<div class="preamble"><%= render :partial => 'shared/show_origins' %></div>
+<div class="preamble">
+  <%= render :partial => 'shared/show_origins' %>
+</div>
 
 <%= render :partial => 'shared/show_summary' %>
 <%= render :partial => 'shared/show_permitted' if account_admin? %>

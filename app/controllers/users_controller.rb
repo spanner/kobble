@@ -17,14 +17,8 @@ class UsersController < ApplicationController
   # only accessible as nested resource of account
   # logging in and registration are in account_controller
 
-
   def view_scope
     'account'
-  end
-
-  def show
-    userid = params[:id] || current_user.id
-    @thing = @account.users.find(userid)
   end
 
   def new
@@ -58,25 +52,11 @@ class UsersController < ApplicationController
     if @user.update_attributes(params[:user])
       flash[:notice] = 'User was updated.'
       respond_to do |format|
-        format.html { render :action => 'show' }
+        format.html { redirect_to :action => 'show' }
         format.json { render :json => @user.to_json }
       end
     else
-      flash[:notice] = 'failed to update.'
       render :action => 'edit'
-    end
-  end
-
-  def destroy
-    @user = @account.users.delete(params[:id])
-    respond_to do |format|
-      format.html do
-        flash[:notice] = 'User was removed'
-        redirect_to :action => 'list'
-      end
-      format.js { render :nothing => true }
-      format.json { render :json => @user.to_json }
-      format.xml { head 200 }
     end
   end
   
@@ -87,7 +67,6 @@ class UsersController < ApplicationController
       format.html { redirect_to :action => 'show', :id => @user }
       format.js { render :layout => false }
       format.json { render :json => @user.to_json }
-      format.xml { head 200 }
     end
   end
 
@@ -98,14 +77,18 @@ class UsersController < ApplicationController
       format.html { redirect_to :action => 'show', :id => @user }
       format.js { render :layout => false }
       format.json { render :json => @user.to_json }
-      format.xml { head 200 }
     end
+  end
+  
+  def predelete
+    @user = @account.users.find(params[:id])
+    @other_users = @account.users.select{|u| u != @user}
   end
   
   private
   
   def find_account
-    @account = params[:account_id] ? Account.find(params[:account_id]) : current_account
+    @account = admin? && params[:account_id] ? Account.find(params[:account_id]) : current_account
   end
   
   def account_admin_or_self_required

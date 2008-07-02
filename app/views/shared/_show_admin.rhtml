@@ -12,7 +12,11 @@
   <% if item.is_discussable? %>
     <%= link_to "discuss", item_new_topic_url(item), {:id => 'admin_extend_topiclist', :class => 'inlinediscuss'} %><br />
   <% end %>
-  <%= link_to "delete", {:controller => item.class.to_s.pluralize.underscore, :action => 'destroy', :id => item}, {:class => 'warning', :method => :delete} %><br />
+  <% if item.is_a?(User) || item.is_a?(Collection) %>
+    <%= link_to "delete", {:controller => item.class.to_s.pluralize.underscore, :action => 'predelete', :id => item}, {:class => 'mildwarning'} %><br />
+  <% else %>
+    <%= link_to "delete", {:controller => item.class.to_s.pluralize.underscore, :action => 'destroy', :id => item}, {:class => 'warning', :method => :delete} %><br />
+  <% end %>
   <%= link_to "create", {:controller => item.class.to_s.pluralize.underscore, :action => 'new'}, {:class => 'create'} %><br />
 
 <% end %>

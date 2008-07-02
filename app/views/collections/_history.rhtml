@@ -1,6 +1,6 @@
 <% 
   count ||= 100
-  events = @since ? collection.events.since(@since) : collection.events.latest(count)
+  events = @since ? collection.events.since(@since) : collection.events.latest
   if events.empty?
 %>
   <p>No activity recorded<% unless @since.nil? %> in this period<% end %>.</p>

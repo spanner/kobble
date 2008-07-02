@@ -32,13 +32,16 @@ class EditObserver < ActiveRecord::Observer
   end
 
   def record_event(model, type)
-    model.collection.last_active_at = Time.now if model.has_collection?
+    collection = model if model.class == Collection
+    collection ||= model.has_collection? ? model.collection : nil
+    collection.last_active_at = Time.now if collection
     @@current_user.last_active_at = Time.now unless @@current_user.nil?
+
     Event.create({
       :affected => model,
       :user => (@@current_user unless @@current_user.nil?),
       :account => (@@current_user.account unless @@current_user.nil?),
-      :collection => model.class == Collection ? model : model.collection,
+      :collection => collection,
       :affected_name => model.name,
       :event_type => type,
       :at => Time.now
