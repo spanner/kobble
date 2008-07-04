@@ -126,9 +126,11 @@ module ActiveRecord
             if self.column_names.include?('deleted_at')
               acts_as_paranoid
               attr_accessor :newly_undeleted
+              attr_accessor :reassign_to
             else
               logger.warn("!! #{self.to_s} should be paranoid but has no deleted_at column")
             end
+            
           end
 
           if definitions.include?(:selection)
@@ -316,8 +318,22 @@ module ActiveRecord
           return creator
         end
         
-        def field_notes
-          ['circumstances', 'observations', 'emotions', 'arising'].map { |col| self.send(col) || ''}.join("\n\n")
+        def reassign_associates
+          logger.warn("@@@@ reassign_to is #{self.reassign_to} and it's a #{self.reassign_to.class}")
+          if self.reassign_to && self.reassign_to.is_a?(User)
+            logger.warn("@@@@ reassigning")
+            counter = 0
+            self.class.reassignable_associations.each do |a|
+              association = self.class.reflect_on_association(a)
+              association.class_name._as_class.find_with_deleted(:all, :conditions => ["#{association.primary_key_name} = ?", self.id]).each do |associate|
+                associate.write_attribute(association.primary_key_name, self.reassign_to.id)
+                associate.save_with_validation(false)
+                counter = counter + 1
+              end
+              logger.warn("@@@@ #{counter} items reassigned")
+
+            end
+          end
         end
         
       end #instancemethods

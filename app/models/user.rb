@@ -6,7 +6,6 @@ class User < ActiveRecord::Base
   attr_protected :activated_at
   attr_accessor :password_confirmation
   attr_accessor :old_password
-  attr_accessor :reassign_to
 
   before_create :make_activation_code
   before_save :encrypt_password
@@ -36,6 +35,7 @@ class User < ActiveRecord::Base
   has_many :created_tags, :class_name => 'Tag', :foreign_key => 'created_by', :dependent => :destroy
   has_many :events, :order => 'at DESC', :dependent => :nullify
 
+
   named_scope :in_account, lambda { |account| {:conditions => { :account_id => account.id }} }
 
   email_column :email
@@ -45,7 +45,7 @@ class User < ActiveRecord::Base
   validates_presence_of     :password, :if => :password_required?
   validates_length_of       :password, :within => 4..40, :if => :password_required?
   validates_confirmation_of :password,  :if => :password_required?
-      
+
   def self.nice_title
     "user"
   end
@@ -266,23 +266,9 @@ class User < ActiveRecord::Base
       Array.new(length, '').collect{chars[rand(chars.size)]}.join
     end
 
-    def reassign_associates
-      logger.warn("@@@ User.reassign_associates")
-      
-      if self.reassign_to && self.reassign_to.is_a?(User)
-        logger.warn("@@@ reassigning from #{self.name} to #{self.reassign_to.name}")
-        counter = 0
-        [:created_collections, :created_sources, :created_nodes, :created_bundles, :created_tags].each do |association|
-          self.send(association.to_s).each { |associate| 
-            associate.created_by = self.reassign_to
-            associate.save
-            counter = counter + 1
-          }
-          logger.warn("#{counter} objects reassigned to #{self.reassign_to.name}")
-        end
-      else
-        logger.warn("@@@ no reassignment target for #{self.name}. reassign_to is #{self.reassign_to}")
-      end
+    def self.reassignable_associations
+      [:created_collections, :created_sources, :created_nodes, :created_bundles, :created_tags]
     end
+
 
 end

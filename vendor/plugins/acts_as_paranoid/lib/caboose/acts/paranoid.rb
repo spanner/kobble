@@ -167,7 +167,7 @@ module Caboose #:nodoc:
         def retrievable_associates
           associates = []
           self.class.retrievable_associations.each do |association| 
-            associates += association.class_name._as_class.find_with_deleted(:all, :conditions => { association.primary_key_name => self.id })
+            associates += association.class_name._as_class.find_with_deleted(:all, :conditions => conditions_for(association))
           end
           associates
         end
@@ -175,14 +175,23 @@ module Caboose #:nodoc:
         def retrievable_associates_summary
           totals = []
           self.class.retrievable_associations.each do |association| 
-            total = association.class_name._as_class.count_with_deleted(:conditions => { association.primary_key_name => self.id })
+            total = association.class_name._as_class.count_with_deleted(:conditions => conditions_for(association))
             totals.push(pluralize( total, association.class_name._as_class.nice_title )) if total && total > 0
           end
           totals.empty? ? 'none' : totals.to_sentence
         end
+        
+        # polymorphic associations need more conditions
+        
+        def conditions_for(association)
+          if association.options[:as]
+            { association.primary_key_name => self.id, association.primary_key_name.gsub('_id', '_type') => self.class.to_s }
+          else
+            { association.primary_key_name => self.id }
+          end
+        end
 
       end
-
     end
   end
 end

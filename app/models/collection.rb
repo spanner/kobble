@@ -1,5 +1,6 @@
 class Collection < ActiveRecord::Base
 
+  before_destroy :reassign_associates
   acts_as_spoke :only => [:owners, :illustration, :discussion, :annotation, :log, :undelete]
   belongs_to :account
   
