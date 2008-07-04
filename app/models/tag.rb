@@ -21,7 +21,6 @@ class Tag < ActiveRecord::Base
     
   def subsume(subsumed)
     self.taggings += subsumed.taggings
-    self.flags += subsumed.flags
     self.description = subsumed.description if self.description.nil? or self.description.size == 0
     self.body = subsumed.body if self.body.nil? or self.body.size == 0
     self.image = subsumed.image if self.image.nil? or self.image.size == 0

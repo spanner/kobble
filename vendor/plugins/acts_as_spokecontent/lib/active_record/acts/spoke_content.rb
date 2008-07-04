@@ -86,11 +86,6 @@ module ActiveRecord
             self.can_catch(Tag)
             self.can_drop(Tag)
             Tag.can_catch(self)
-            has_many :flaggings, :as => :flaggable, :dependent => :destroy
-            has_many :flags, :through => :flaggings
-            self.can_catch(Flag)
-            self.can_drop(Flag)
-            Flag.can_catch(self)
             Spoke::Associations.described_model(self)
           end
 

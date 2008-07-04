@@ -25,7 +25,6 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :occasions, :has_many => [:topics, :annotations], :collection => { :gallery => :get }, :member => {:annotate => :post, :recover => :post}
   
   map.resources :tags, :has_many => [:taggings, :topics, :annotations], :collection => { :gallery => :get, :cloud => :get, :tree => :get, :treemap => :get, :matching => :any }, :member => {:recover => :post}
-  map.resources :flags, :has_many => :flaggings, :member => {:recover => :post}
   map.resources :topics, :has_many => :posts, :collection => { :latest => :get }, :member => {:recover => :post}
   map.resources :scratchpads, :has_many => :scraps
   map.resources :posts, :member => {:recover => :post}
