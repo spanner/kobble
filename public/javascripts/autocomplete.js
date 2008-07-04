@@ -54,6 +54,7 @@ var $equals = function(obj1, obj2) {
 	return (obj1 == obj2 || JSON.encode(obj1) == JSON.encode(obj2));
 };
 
+
 /**
  * Autocompleter
  *
@@ -77,7 +78,7 @@ Autocompleter.Base = new Class({
 		maxChoices: 10,
 		injectChoice: null,
 		customChoices: null,
-		className: 'autocompleter-choices',
+		className: 'tagsuggestions',
 		zIndex: 42,
 		delay: 400,
 		observerOptions: {},
@@ -595,4 +596,3 @@ Element.implement({
 	}
 
 });
-

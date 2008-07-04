@@ -26,6 +26,7 @@ var Interface = new Class({
     this.admin = $E('div#admin');
     this.squeezebox = null;
     this.draghelper = null;
+		this.tagsuggester = null;
     this.fader = new Fx.Tween(this.announcer, {property: 'opacity', duration: 'long', link: 'chain'});
 	},
   announce: function (message, title) {
@@ -1315,12 +1316,13 @@ var TagSuggester = new Class ({
 		this.parent(element, '/tags/matching', { 
 			'indicator': new Element('div', {'class': 'autocompleter-loading'}).set('html','&nbsp;').inject(element, 'after'),
 			'postVar': 'stem', 
-			'multiple': true 
+			'multiple': true,
+			'zIndex': 30000,
+			'overflow': 'scroll',
+			'forceSelect': true,
+			'typeAhead': true
 		});
 	}
-	
-	
-	
 });
 
 var Squeezebox = new Class ({

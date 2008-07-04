@@ -1764,6 +1764,7 @@ h2.invitation a {
 }
 
 
+/* tagbox suggestions */
 
 
 
@@ -1777,7 +1778,7 @@ div.autocompleter-loading
 	display: none;
 }
 
-ul.autocompleter-choices
+ul.tagsuggestions
 {
 	position:				absolute;
 	margin:					0;
@@ -1793,11 +1794,10 @@ ul.autocompleter-choices
   font-weight: lighter;
   line-height: 14px;
   color: #4d4e53;
-	z-index: 15000;
-	margin-left: 16px;
+	margin-left: 5px;
 }
 
-ul.autocompleter-choices li
+ul.tagsuggestions li
 {
 	position:				relative;
 	padding:				0.2em 1.5em 0.2em 1em;
@@ -1809,21 +1809,30 @@ ul.autocompleter-choices li
 	line-height:			1.5em;
 }
 
-ul.autocompleter-choices li.autocompleter-selected
+ul.tagsuggestions li.autocompleter-selected
 {
-	background-color:		#d1005d;
+	background-color:		#559DC4;
 	color:					white;
 }
 
-ul.autocompleter-choices span.autocompleter-queried
+ul.tagsuggestions span.autocompleter-queried
 {
 	font-weight:			bold;
 }
 
-ul.autocompleter-choices li.autocompleter-selected span.autocompleter-queried
+ul.tagsuggestions li.autocompleter-selected span.autocompleter-queried
 {
 /*  color:          #d1005d;*/
 }
+
+
+
+
+
+
+
+
+
 
 
 
