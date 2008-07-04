@@ -7,6 +7,10 @@
       created by <%= link_to @user.name, url_for(@user) %> 
       <span class="modifier"><%= link_to 'show all', :controller => request.parameters[:controller], :action => @view, :page => params[:page], :user_id => nil %></span>
       <br />
+    <% elsif @scope == 'collection' %>
+      in the collection <%= link_to @collection.name, url_for(@collection) %>
+      <span class="modifier"><%= link_to 'show all', :controller => request.parameters[:controller], :action => @view, :page => params[:page], :collection_id => nil %></span>
+      <br />
     <% else %>
       in <%= link_to pluralize(current_collections.count, 'collection'), {:controller => 'accounts', :action => 'home'}, {:class => 'choosecollections'} %> 
       <span class="modifier"><%= link_to 'show only yours', :action => @view, :page => params[:page], :user_id => current_user.id %></span>

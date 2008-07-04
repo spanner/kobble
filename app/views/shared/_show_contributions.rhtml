@@ -23,7 +23,7 @@
   </h4>
   <div class="mainlist">
   	<ul>
-  		<%= render :partial => "shared/listed", :collection => item.created_sources.latest %>
+  		<%= render :partial => "shared/listed", :collection => item.created_sources.latest_few %>
     </ul>
   </div>
 
@@ -37,7 +37,7 @@
   </h4>
   <div class="mainlist">
   	<ul>
-  		<%= render :partial => "shared/listed", :collection => item.created_nodes.latest %>
+  		<%= render :partial => "shared/listed", :collection => item.created_nodes.latest_few %>
     </ul>
   </div>
 
@@ -51,7 +51,7 @@
   </h4>
   <div class="mainlist">
   	<ul>
-  		<%= render :partial => "shared/listed", :collection => item.created_bundles.latest %>
+  		<%= render :partial => "shared/listed", :collection => item.created_bundles.latest_few %>
     </ul>
   </div>
 
@@ -65,7 +65,7 @@
   </h4>
   <div class="mainlist">
   	<ul>
-  		<%= render :partial => "shared/listed", :collection => item.created_topics.latest %>
+  		<%= render :partial => "shared/listed", :collection => item.created_topics.latest_few %>
     </ul>
   </div>
 

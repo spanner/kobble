@@ -4,7 +4,7 @@
   
   <%= error_messages_for :note %>
 
-  <% form_for ([@annotated, @note]) do |f| %>
+  <% form_for ([@annotated, @annotation]) do |f| %>
     <%= render :partial => "form", :locals => {:f => f} %>
  
     <div class="formbuttons clear">

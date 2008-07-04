@@ -1,0 +1,58 @@
+<% item ||= @thing %>
+
+<h3 class="pagesection">
+  <a href="#" class="squeezebox">
+    contents 
+    <span class="headernote">
+      <%= pluralize(item.sources.count, 'source') %>,
+      <%= pluralize(item.nodes.count, 'fragment') %>,
+      <%= pluralize(item.bundles.count, 'set') %>...
+    </span>
+  </a>
+</h3>
+
+<div id="source_contributions" class="squeezed">
+
+  <h4 class="listheader">
+    <%= pluralize(item.sources.count, "Source document") %>
+    <% if item.sources.count > 5 %>
+      <span class="headernote">
+        <%= link_to "show all", collection_sources_url(item) %>
+      </span>
+    <% end %>
+  </h4>
+  <div class="mainlist">
+  	<ul>
+  		<%= render :partial => "shared/listed", :collection => item.sources.latest_few %>
+    </ul>
+  </div>
+
+  <h4 class="listheader">
+    <%= pluralize(item.nodes.count, "Fragment") %>
+    <% if item.nodes.count > 5 %>
+      <span class="headernote">
+        <%= link_to "show all", collection_nodes_url(item) %>
+      </span>
+    <% end %>
+  </h4>
+  <div class="mainlist">
+  	<ul>
+  		<%= render :partial => "shared/listed", :collection => item.nodes.latest_few %>
+    </ul>
+  </div>
+
+  <h4 class="listheader">
+    <%= pluralize(item.bundles.count, "Set") %>
+    <% if item.bundles.count > 5 %>
+      <span class="headernote">
+        <%= link_to "show all", collection_bundles_url(item) %>
+      </span>
+    <% end %>
+  </h4>
+  <div class="mainlist">
+  	<ul>
+  		<%= render :partial => "shared/listed", :collection => item.bundles.latest_few %>
+    </ul>
+  </div>
+
+</div>

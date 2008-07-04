@@ -21,7 +21,9 @@ class ApplicationController < ActionController::Base
   end
 
   def view_scope
-    params[:user_id] ? 'user' : 'collections'
+    return 'user' if params[:user_id] 
+    return 'collection' if params[:collection_id] 
+    'default'
   end
   
   def index
@@ -30,7 +32,7 @@ class ApplicationController < ActionController::Base
   
   def set_context
     if logged_in?
-      # current_user.account.last_active_at = Time.now
+      current_user.account.last_active_at = Time.now
       EditObserver.current_user = current_user
       UserObserver.current_user = current_user
     end
@@ -93,6 +95,9 @@ class ApplicationController < ActionController::Base
     when 'user'
       @user = User.find(params[:user_id]) || current_user
       @list = @klass.created_by_user(@user).paginate(self.paging)
+    when 'collection'
+      @collection = Collection.find(params[:collection_id])
+      @list = @klass.in_collection(@collection).paginate(self.paging)
     else
       @list = @klass.in_collections(current_collections).paginate(self.paging)
     end
@@ -186,10 +191,6 @@ class ApplicationController < ActionController::Base
     end
   end
   
-  def reallydestroy
-    
-  end
-
   def tags_from_list (taglist)
     Tag.from_list(taglist)
   end

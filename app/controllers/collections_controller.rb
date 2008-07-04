@@ -61,6 +61,11 @@ class CollectionsController < ApplicationController
     end
   end
 
+  def predelete
+    @collection = @account.collections.find(params[:id])
+    @other_collections = @account.collections.select{|c| c != @collection}
+  end
+  
   private
   
   def find_account

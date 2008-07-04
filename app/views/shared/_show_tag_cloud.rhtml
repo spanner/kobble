@@ -3,14 +3,14 @@
   weighted_tags ||= item.tags_with_popularity
   popular_tags = weighted_tags.select{|t| t.used.to_i > 1 }
   tags = popular_tags.size < 50 ? weighted_tags : popular_tags
-    
+  heading ||= ''
 %>
 
 <h3 class="pagesection">
   <a href="#" class="squeezebox">
-    <% if popular_tags.size >= 60 %>popular <% end %>tag cloud 
+    <% if popular_tags.size >= 50 %><% if @thing.class == User %>favourite<% else %>popular<% end %> <% end %>tag cloud 
     <span class="headernote">
-      <%= pluralize(tags.size, 'tag') %> <% if popular_tags.size >= 60 %>used more than once<% end %>
+      <%= pluralize(tags.size, 'tag') %> <% if popular_tags.size >= 50 %>used more than once<% end %>
     </span>
   </a>
 </h3>

@@ -1,0 +1,21 @@
+<%
+  item ||= @thing 
+  warnings = item.annotations.bad.important
+%>
+
+<% unless warnings.empty? %>
+
+  <h3 class="pagesection">
+    <a href="#" class="squeezebox">
+      important warnings 
+      <span class="headernote">
+        <%= pluralize(warnings.size, 'message') %>
+      </span>
+    </a>
+  </h3>
+
+  <div class="warnings contentblock squeezed">
+    <%= render :partial => 'annotations/note', :collection => warnings %>
+  </div>
+
+<% end %>

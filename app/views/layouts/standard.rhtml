@@ -1,6 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
         "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 
+<% @inline = false %>
+
 <html>
 <head>
   <title>materiali.st<% if @title %> - <%= @title %><% end%></title>
@@ -43,8 +45,8 @@
     </div>
     
     <div id="admin_tabs">
-      <%= link_to "preferences", edit_user_url(current_user), {:id => 'tab_scratchpad_preferences', :class => 'padtab admintab'} %>
-      <%= link_to "collections", collections_url, {:id => 'tab_scratchpad_collections', :class => 'padtab admintab'} %>
+      <%= link_to "your preferences", edit_user_url(current_user), {:id => 'tab_scratchpad_preferences', :class => 'padtab admintab'} %>
+      <%= link_to "active collections", collections_url, {:id => 'tab_scratchpad_collections', :class => 'padtab admintab'} %>
       <%= link_to "account admin", edit_account_url(current_account), {:id => 'tab_scratchpad_admin', :class => 'padtab admintab'} %>
     </div>
 

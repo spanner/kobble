@@ -1,5 +1,5 @@
 <% 
-  @title = "delete #{@user.name}"
+  @title = "delete #{@collection.name}"
 %>
 
 <div class="preamble">
@@ -22,37 +22,38 @@
   </a>
 </h3>
 
-<div id="user_deletion" class="squeezed contentblock">
+<div id="collection_deletion" class="squeezed contentblock">
   
   <div class="mainform">
 
-    <p>If you want to keep using this person's materials, you can transfer them to another user. Please be aware that this is not undoable: if you later restore the user account, the materials will not be returned to that person. If you leave the drop-down field blank then the materials will be deleted with the user and so restorable with the user.</p>
+    <p>If you want to keep using the materials in this collection, you can transfer them to one of your other collections. 
+      Please be aware that this is not undoable: if you later restore the collection, the materials will not return to it. 
+      If you leave the drop-down field blank then the materials will be deleted with the collection and so restorable with it.</p>
 
-    <% form_for :user, :url => account_user_url(@account, @user) do |f| %>
+    <% form_for :user, :url => account_collection_url(@account, @collection) do |f| %>
       <input type="hidden" name="_method" value="delete">
   
       <div class="formpart">
         <label for="reassign_to">transfer materials to:</label><br/>
         <select name="reassign_to" id="reassign_to">
           <option value="" selected="selected"></option>
-          <%= options_from_collection_for_select(@other_users, 'id', 'name') %>
+          <%= options_from_collection_for_select(@other_collections, 'id', 'name') %>
         </select>
-        <input type="submit" value="delete user and reassign materials" class="warningbutton">
+        <input type="submit" value="delete collection" class="warningbutton">
       </div>
       
     <% end %>
 
-    <p>See below for the materials and work history that will be lost.</p>
   </div>
 </div>
 
-<%= render :partial => 'shared/show_summary', :locals => {:item => @user} %>
-<%= render :partial => 'shared/show_contributions', :locals => {:item => @user} %>
-<%= render :partial => 'shared/show_history', :locals => {:item => @user}  %>
+<%= render :partial => 'shared/show_summary', :locals => {:item => @collection} %>
+<%= render :partial => 'shared/show_contents', :locals => {:item => @collection} %>
+<%= render :partial => 'shared/show_history', :locals => {:item => @collection}  %>
 
 <% content_for :admin do %>
   <p>
     user:<br />
-    <%= render :partial => 'shared/show_admin', :locals => {:item => @user} %>
+    <%= render :partial => 'shared/show_admin', :locals => {:item => @collection} %>
   </p>
 <% end %>

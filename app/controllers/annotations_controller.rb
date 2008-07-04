@@ -9,38 +9,42 @@ class AnnotationsController < ApplicationController
   before_filter :find_note_types, :only => [:new, :edit]
   
   def new
-    @note = Annotation.new
-    @note.annotated = @annotated
+    @annotation = Annotation.new
+    @annotation.annotated = @annotated
     respond_to do |format|
       format.html { }
-      format.js { render :action => 'inline', :layout => false }
-      format.json { render :json => @note.to_json }
+      format.js { render :layout => 'inline' }
+      format.json { render :json => @annotation.to_json }
     end
   end
   
   def create
-    @note = Annotation.new(params[:annotation])
-    @note.annotated = @annotated
-    if @note.save
+    @annotation = Annotation.new(params[:annotation])
+    @annotation.annotated = @annotated
+    if @annotation.save
       respond_to do |format|
         format.html { redirect_to url_for(@annotated) }
         format.js { render :layout => false }             # annotations/create.rhtml is a bare note div
-        format.json { render :json => @note.to_json }
+        format.json { render :json => @annotation.to_json }
       end
     else
-      # or what?
-      render :action => 'new'
+      find_note_types
+      respond_to do |format|
+        format.html { render :action => 'new' }
+        format.js { render :action => 'new', :layout => 'inline' }
+        format.json { render :json => {:errors => @node.errors}.to_json }
+      end
     end
   end
   
   def update
-    @note = Annotation.find(params[:id])
-    @note.attributes = params[:annotation]
-    @note.save!
+    @annotation = Annotation.find(params[:id])
+    @annotation.attributes = params[:annotation]
+    @annotation.save!
     respond_to do |format|
-      format.html { redirect_to url_for(@note) }
+      format.html { redirect_to url_for(@annotation) }
       format.js { render :layout => false }             # annotations/update.rhtml is also a bare note div
-      format.json { render :json => @note.to_json }
+      format.json { render :json => @annotation.to_json }
     end
   end
   
@@ -52,7 +56,7 @@ class AnnotationsController < ApplicationController
     end
     
     def find_note_types
-      @note_types = AnnotationType.find(:all, :order => 'name').collect{|at| [at.name, at.id] }
+      @annotation_types = AnnotationType.find(:all, :order => 'name').collect{|at| [at.name, at.id] }
     end
 
 end

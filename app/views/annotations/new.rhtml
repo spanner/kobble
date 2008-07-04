@@ -1,28 +1,24 @@
-<% @title = "add a note to #{@annotated.name}" %>
+<% @title = "add a note to #{truncate(@annotated.name, 36)}" %>
 
-<div class="mainform">
-
-  <% form_for :note,
-              :url => annotation_url(@note),
-              :html => { 
-                :multipart => true,
-                :id => 'noteform'
-              } do |f| 
-  %>
-
-    <%= render :partial => 'form', :locals => {:f => f} %>
-
-    <div class="formbuttons">
-      <%= submit_tag "Add note" %> or
-      <%= link_to 'cancel', {:action => 'index'} %>
-    </div>
-
-  <% end %>
-
-</div>
+<% content_for :buttons do %>
+  <div class="formbuttons">
+    <%= submit_tag 'annotate' %> 
+    or <%= link_to 'cancel', url_for(@annotated), {:class => 'cancelform'} %>
+  </div>
+<% end %>
 
 <% content_for :admin do %>
   <p>
     back to <%= link_to @annotated.name, url_for(@annotated) %>
   </p>
 <% end %>
+
+<div class="mainform">
+  
+  <%= error_messages_for :note %>
+
+  <% form_for ([@annotated, @annotation]) do |f| %>
+    <%= render :partial => "form", :locals => {:f => f} %>
+  <% end %>
+
+</div>

@@ -33,6 +33,7 @@ class User < ActiveRecord::Base
   has_many :created_posts, :class_name => 'Post', :foreign_key => 'created_by', :dependent => :destroy  
   has_many :created_scratchpads, :class_name => 'Scratchpad', :foreign_key => 'created_by', :dependent => :destroy
   has_many :created_tags, :class_name => 'Tag', :foreign_key => 'created_by', :dependent => :destroy
+  has_many :created_taggings, :class_name => 'Tagging', :foreign_key => 'created_by', :dependent => :nullify
   has_many :events, :order => 'at DESC', :dependent => :nullify
 
 
@@ -187,6 +188,16 @@ class User < ActiveRecord::Base
     self.activation_code = nil
     self.last_login = Time.now.utc
     self.save!
+  end
+  
+  def tags_with_popularity
+    taggings = self.created_taggings.grouped_with_popularity
+    taggings.each {|t| t.tag.used = t.use_count }
+    taggings.map {|t| t.tag }.uniq.sort{|a,b| a.name <=> b.name}
+  end
+  
+  def collections_available
+    account_admin? ? self.account.collections : self.permitted_collections
   end
   
   public

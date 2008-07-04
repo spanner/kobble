@@ -7,6 +7,10 @@
   catch ||= false
   catch = false if inactive
   aclass = inactive ? "listed inactive" : "listed"
+  aclass += " warnings" if listed.has_warnings?
+  aclass += " greenlit" if listed.has_goodnews?
+  colourclass = "warned" if listed.has_warnings?
+  colourclass = "greenlit" if listed.has_goodnews?
   name ||= listed.name
   name = "nameless #{listed.nice_title}" if name.nil? || name == ''
   collection_name = listed.has_collection? ? "#{listed.collection.abbreviation}: " : ''

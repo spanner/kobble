@@ -491,7 +491,7 @@ div.mainlist ul.listcolumn {
   overflow-x: hidden;
 }
 
-div.mainlist li, li.single, ul.minimal li {
+.mainlist li, li.single, ul.minimal li {
   margin: 0 10px 4px 25px;
   font-size: 16px;
   line-height: 24px;
@@ -513,24 +513,32 @@ li.single {
   display: inline;
 }
 
-div.mainlist a.listed {
+.mainlist a.listed {
   
 }
 
-div.mainlist a.inactive {
+.mainlist a.inactive {
   color: #8c8d8e;
 }
 
-div.mainlist a.inactive:hover {
+.mainlist a.inactive:hover {
   color: #d1005d;
 }
 
-div.mainlist li a img {
+.mainlist a.warnings {
+  color: #CC6E1F;
+}
+
+.mainlist a.greenlit {
+  color: #a0a500;
+}
+
+.mainlist li a img {
   margin: 0 8px 0 0;
   float: left;
 }
 
-div.mainlist li a img {
+.mainlist li a img {
   margin: 0 8px 0 0;
   float: left;
 }
@@ -588,6 +596,26 @@ li.annotated_person { list-style-image: url(/images/furniture/spoke/grey/user.pn
 li.annotated_tag { list-style-image: url(/images/furniture/spoke/grey/tag.png); }
 li.annotated_flag { list-style-image: url(/images/furniture/spoke/grey/flag.png); }
 li.annotated_topic { list-style-image: url(/images/furniture/spoke/grey/post.png); }
+
+li.warned_collection { list-style-image: url(/images/furniture/spoke/orange/collection.png); }
+li.warned_node { list-style-image: url(/images/furniture/spoke/orange/node.png); }
+li.warned_source { list-style-image: url(/images/furniture/spoke/orange/source.png); }
+li.warned_bundle { list-style-image: url(/images/furniture/spoke/orange/bundle.png); }
+li.warned_user { list-style-image: url(/images/furniture/spoke/orange/user.png); }
+li.warned_person { list-style-image: url(/images/furniture/spoke/orange/user.png); }
+li.warned_tag { list-style-image: url(/images/furniture/spoke/orange/tag.png); }
+li.warned_flag { list-style-image: url(/images/furniture/spoke/orange/flag.png); }
+li.warned_topic { list-style-image: url(/images/furniture/spoke/orange/post.png); }
+
+li.greenlit_collection { list-style-image: url(/images/furniture/spoke/green/collection.png); }
+li.greenlit_node { list-style-image: url(/images/furniture/spoke/green/node.png); }
+li.greenlit_source { list-style-image: url(/images/furniture/spoke/green/source.png); }
+li.greenlit_bundle { list-style-image: url(/images/furniture/spoke/green/bundle.png); }
+li.greenlit_user { list-style-image: url(/images/furniture/spoke/green/user.png); }
+li.greenlit_person { list-style-image: url(/images/furniture/spoke/green/user.png); }
+li.greenlit_tag { list-style-image: url(/images/furniture/spoke/green/tag.png); }
+li.greenlit_flag { list-style-image: url(/images/furniture/spoke/green/flag.png); }
+li.greenlit_topic { list-style-image: url(/images/furniture/spoke/green/post.png); }
 
 li.created, li.created a, a.created { color: #a0a500; }
 li.updated, li.updated a, a.updated { color: #CC6E1F; }
@@ -832,6 +860,19 @@ div.fieldnote p {
 
 a.annotate { color: #CC6E1F; }
 
+/*
+div.importantnote {
+	font-weight: bold;
+}
+
+div.badnote h4, div.badnote p {
+	color: #d1005d;
+}
+
+div.goodnote h4, div.goodnote p {
+	color: #a0a500 !important;
+}
+*/
 /* big friendly buttons */
 
 input.bigbutton {

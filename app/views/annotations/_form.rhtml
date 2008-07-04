@@ -1,9 +1,16 @@
-<p>
-  <label for="annotation_annotation_type_id">Note type</label><br />
-  <%= f.select("annotation_type_id", @note_types, {}, {:class => 'standard'}) %>
-</p>
+<% unless @annotation.errors.empty? %>
+  <p class="haserror"><strong>Sorry: there were problems.</strong> Please check the form. The affected fields will be highlighted in pink.</p>
+<% end %>
 
-<p>
-  <label for="topic_body">Your note</label><br />
-  <%= f.text_area :body, :rows => 8, :class => 'standard fillWithSelection pickme' %>
-</p>
+<div class="formpart<%= ' witherrors' if @annotation.errors.on(:annotation_type) %>">
+  <label for="annotation_annotation_type_id" class="required">Note type</label><br />
+  <%= f.select("annotation_type_id", @annotation_types, { :include_blank => true}, {:class => 'standard'}) %>
+  <% if @annotation.errors.on(:annotation_type) %><br />
+    This <%= @annotation.errors.on(:annotation_type).to_a.to_sentence %>
+  <% end %>
+</div>
+
+<%= render :partial => 'shared/edit_body', :locals => {:item => @annotation, :f => f, :short => @inline, :heading => 'Note text (optional)'} %>
+<%= f.check_box :important %> <label for="annotation_important">this is important</label>
+
+<%= yield :buttons %>

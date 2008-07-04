@@ -135,6 +135,8 @@ module ActiveRecord
 
           if definitions.include?(:selection)
             named_scope :latest, { :limit => 20, :order => 'created_at DESC' }
+            named_scope :latest_few, { :limit => 5, :order => 'created_at DESC' }
+            named_scope :latest_many, { :limit => 100, :order => 'created_at DESC' }
             named_scope :changed_since, lambda {|start| { :conditions => ['created_at > ? or updated_at > ?', start, start] } }
             named_scope :created_by, lambda {|user| { :conditions => ['created_by = ?', user.id] } }
           end
@@ -226,6 +228,14 @@ module ActiveRecord
         
         def has_notes?
           is_notable? && !self.annotations.empty?
+        end
+        
+        def has_warnings?
+          is_notable? && !self.annotations.bad.empty?
+        end
+
+        def has_goodnews?
+          is_notable? && !self.annotations.good.empty?
         end
 
         def has_origins?

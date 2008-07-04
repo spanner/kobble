@@ -1,6 +1,6 @@
-<h3>activate collections</h3>
+<h3> currently active collections</h3>
 <ul class="choicelist">
-  <% current_account.collections.each do |c| %>
+  <% current_user.collections_available.each do |c| %>
     <li>
       <%= 
         activation = current_user.activation_of(c) 

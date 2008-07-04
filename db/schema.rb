@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20080702123148) do
+ActiveRecord::Schema.define(:version => 20080704091616) do
 
   create_table "account_types", :force => true do |t|
     t.string   "name"
@@ -59,6 +59,8 @@ ActiveRecord::Schema.define(:version => 20080702123148) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "deleted_at"
+    t.boolean  "badnews",                   :default => false
+    t.boolean  "goodnews",                  :default => false
   end
 
   create_table "annotations", :force => true do |t|
@@ -71,6 +73,7 @@ ActiveRecord::Schema.define(:version => 20080702123148) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "deleted_at"
+    t.boolean  "important",                        :default => false
   end
 
   create_table "bundles", :force => true do |t|
@@ -334,6 +337,10 @@ ActiveRecord::Schema.define(:version => 20080702123148) do
     t.integer  "taggable_id",   :limit => 11
     t.datetime "deleted_at"
     t.integer  "collection_id", :limit => 11
+    t.integer  "created_by",    :limit => 11
+    t.integer  "updated_by",    :limit => 11
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "taggings", ["tag_id"], :name => "by_tag"
