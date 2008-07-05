@@ -5,6 +5,7 @@ class MoreUndelete < ActiveRecord::Migration
     add_column :permissions, :deleted_at, :datetime
     add_column :account_types, :deleted_at, :datetime
     add_column :annotation_types, :deleted_at, :datetime
+    add_column :scratchpads, :deleted_at, :datetime
   end
 
   def self.down
@@ -13,5 +14,6 @@ class MoreUndelete < ActiveRecord::Migration
     remove_column :permissions, :deleted_at
     remove_column :account_types, :deleted_at
     remove_column :annotation_types, :deleted_at
+    remove_column :scratchpads, :deleted_at
   end
 end

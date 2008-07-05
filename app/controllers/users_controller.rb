@@ -43,6 +43,10 @@ class UsersController < ApplicationController
     end
   end
 
+  def reinvite
+    
+  end
+
   def edit
     @user = @account.users.find(params[:id])
   end

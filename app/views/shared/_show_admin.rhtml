@@ -6,12 +6,12 @@
 
 <% else %>
   <% if item.is_notable? %>
-    <%= link_to "add note", item_new_note_url(item), {:id => 'admin_extend_notelist', :class => 'annotate'} %><br />
+    <%= link_to "add note*", item_new_note_url(item), {:id => 'admin_extend_notelist', :class => 'annotate'} %><br />
+  <% end %>
+  <% if item.is_discussable? %>
+    <%= link_to "discuss*", item_new_topic_url(item), {:id => 'admin_extend_topiclist', :class => 'inlinediscuss'} %><br />
   <% end %>
   <%= link_to "edit" , {:controller => item.class.to_s.pluralize.underscore, :action => 'edit', :id => item} %><br />
-  <% if item.is_discussable? %>
-    <%= link_to "discuss", item_new_topic_url(item), {:id => 'admin_extend_topiclist', :class => 'inlinediscuss'} %><br />
-  <% end %>
   <% if item.is_a?(User) || item.is_a?(Collection) %>
     <%= link_to "delete", {:controller => item.class.to_s.pluralize.underscore, :action => 'predelete', :id => item}, {:class => 'mildwarning'} %><br />
   <% else %>

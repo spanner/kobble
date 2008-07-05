@@ -228,9 +228,17 @@ module ActiveRecord
         def has_warnings?
           is_notable? && !self.annotations.bad.empty?
         end
+        
+        def warnings
+          self.annotations.bad
+        end
 
         def has_goodnews?
           is_notable? && !self.annotations.good.empty?
+        end
+        
+        def approvals
+          self.annotations.good
         end
 
         def has_origins?

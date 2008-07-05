@@ -225,7 +225,7 @@ div#admin p {
 div#admin a { color: #559DC4; }
 div#admin a:hover, .pagination a:active { color: #d1005d; background-color: #d1005d; }
 
-a.warning, div#admin a.warning { color: white; }
+a.warning, div#admin a.warning { color: white; background-color: #d1005d; }
 a.create, div#admin a.create { color: #a0a500; }
 a.edit, div#admin a.edit { color: #559DC4; }
 a.mildwarning, div#admin a.mildwarning { color: #d1005d; }
@@ -967,11 +967,16 @@ div.floater {
 	z-index: 21000;
 }
 
+div.floater_waiting {
+  overflow: hidden;
+}
+
 div.floater div.preamble, div.floater .notinline {
 	display: none;
 }
 
 div.modalform {
+	width: 500px;
 	overflow: hidden;
 }
 
@@ -1022,7 +1027,7 @@ div.floater input.standard, div.floater select.standard, div.floater textarea.st
   color: black;
 }
 
-div.floater input.tagbox {
+input.tagbox {
  	width: 460px;
 	border: 1px solid #cacac8;
 	padding: 4px;
@@ -1055,6 +1060,11 @@ div.confirming {
 div.confirming a.canceller, div.confirming a.canceller:visited {
 	background-color: #a0a500;
 }
+
+input.waiting {
+	background: white url(/images/furniture/signals/wait_32_blue.gif) no-repeat center right;
+}
+
 
 /* search box */
 
@@ -1763,6 +1773,9 @@ h2.invitation a {
   color: #d1005d;
 }
 
+img.flag {
+	margin-right: 1px;
+}
 
 /* tagbox suggestions */
 

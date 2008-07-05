@@ -435,10 +435,15 @@ Autocompleter.Ajax.Base = new Class({
 		this.parent(element, options);
 		var indicator = $(this.options.indicator);
 		if (indicator) {
+			// this.addEvents({
+			// 	'onRequest': indicator.show.bind(indicator),
+			// 	'onComplete': indicator.hide.bind(indicator)
+			// }, true);
 			this.addEvents({
-				'onRequest': indicator.show.bind(indicator),
-				'onComplete': indicator.hide.bind(indicator)
+				'onRequest': function () { indicator.addClass('waiting'); },
+				'onComplete': function () { indicator.removeClass('waiting'); }
 			}, true);
+			
 		}
 	},
 

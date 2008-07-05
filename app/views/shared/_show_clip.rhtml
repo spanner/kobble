@@ -8,7 +8,7 @@
     } %>
     <% @tempitem = nil %>
     <% if item.class == Source %>
-      <%= link_to '[snip]', new_source_node_path(item), {:id => 'player_extend_nodelist', :class => 'snipper', :title => "first choose start and end times and highlight corresponding text"} %>
+      <%= link_to 'snip*', new_source_node_path(item), {:id => 'player_extend_nodelist', :class => 'snipper', :title => "first choose start and end times and highlight corresponding text"} %>
     <% end %>
   <% end %>
 </div>

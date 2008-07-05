@@ -26,7 +26,7 @@ var Interface = new Class({
     this.admin = $E('div#admin');
     this.squeezebox = null;
     this.draghelper = null;
-		this.tagsuggester = null;
+		this.floater = null;
     this.fader = new Fx.Tween(this.announcer, {property: 'opacity', duration: 'long', link: 'chain'});
 	},
   announce: function (message, title) {
@@ -1002,6 +1002,7 @@ var jsonForm = new Class ({
 		this.form = null;
 		this.is_open = false;
 		this.at = event.page;
+		this.anchored_at = null;
     this.waiter = null;
 		this.form = null;
 		this.floater = new Element('div', {'class': 'floater'}).inject(document.body);
@@ -1024,14 +1025,14 @@ var jsonForm = new Class ({
 			onComplete: function () { mf.floater.hide(); }
 		});
     this.formHolder.set('load', {
-      onRequest: function () { mf.linkWaiting(); },
+      onRequest: function () { mf.show(); },
       onSuccess: function () { mf.prepForm(); },
       onFailure: function () { mf.failed(); }
     });
 		intf.rememberFloater(this);
 		this.waiting();
-		this.show();
     this.getForm();
+		intf.floater = this;
   },
 
   // initialize calls getForm() directly
@@ -1049,16 +1050,16 @@ var jsonForm = new Class ({
 
   prepForm: function () {
 		this.notWaiting();
-		this.linkNotWaiting();
+		// this.linkNotWaiting();
+		this.resize();
     this.form = this.formHolder.getElement('form');
 		this.form.onsubmit = this.sendForm.bind(this);
     this.form.getElements('a.cancelform').each(function (a) { a.onclick = this.hide.bind(this); }, this);
     this.form.getElements('.fillWithSelection').each(function (input) { if (input.get('value') == '') input.set('value', intf.quoteSelectedText()); });
     intf.makeSuggester(this.form.getElements('input.tagbox'));
-		var first = this.form.getElement('.pickme');
+ 		var first = this.form.getElement('.pickme');
 		if (first) first.focus();
-		this.resize();
-  },
+ },
 
   // captured form.onsubmit calls sendForm()
 	// which initiates the JSON request and binds its outcome
@@ -1118,7 +1119,7 @@ var jsonForm = new Class ({
 	show: function (origin) {
 		intf.debug('jsonForm.show', 5);
 		if (!origin) origin = this.link;
-		this.expandFrom(origin);
+		this.startAt(origin);
 		this.link.addClass('activated');
 		this.is_open = true;
 	},
@@ -1130,42 +1131,69 @@ var jsonForm = new Class ({
 		this.link.removeClass('activated');
 		this.is_open = false;
 	},
+	
+	choose_anchor: function (at, towidth, toheight) {
+		console.log('existing anchor is ' + this.anchored_at);
+		if (this.anchored_at) return this.anchored_at;
 		
-	resize: function (width, height) {
-		var at = this.floater.getCoordinates();
-		var towidth = width || 520;
-		var toheight = height || this.formHolder.getHeight() + 10;
 		var scroll = document.getScroll();
 		var boundary = document.getSize();
+		var anchored = { x: null, y: null };
+
+		var cangoleft = at.left - towidth - scroll.x > 0;
+		var cangoright = at.left + towidth + scroll.x < boundary.x;
+		if (cangoleft == cangoright) anchored.x = 'center';
+		else if (cangoright) anchored.x = 'left';
+		else anchored.x = 'right';
 		
+		var cangoup = at.top - toheight - scroll.y > 0;
+		var cangodown = at.top + toheight + scroll.y < boundary.y;
+		if (cangoup == cangodown) anchored.y = 'center';
+		else if (cangodown) totop = anchored.y = 'top';
+		else totop = anchored.y = 'bottom';
+
+		this.anchored_at = anchored;
+		return anchored;
+	},
+	
+	resize: function (width, height) {
+		var at = this.floater.getCoordinates();
+		var towidth = width || 510;
+		var toheight = height || this.formHolder.getHeight() + 10;
+		var anchor = this.choose_anchor(at, towidth, toheight);
 		var toleft, totop;
+		intf.debug('floater anchored at ' + anchor.y + ' ' + anchor.x, 2);
 		
-		if (towidth < at.width) {
-			toleft = at.left;
-		} else {
-			var cangoleft = at.left - towidth - scroll.x > 0;
-			var cangoright = at.left + towidth + scroll.x < boundary.x;
-			if (cangoleft == cangoright) toleft = Math.floor(at.left - towidth / 2);
-			else if (cangoright) toleft = at.left;
-			else toleft = at.left - at.width + towidth;
+		switch (anchor.x) {
+			case "right": toleft = (at.left - towidth) + at.width; break;
+			case "center": toleft = Math.floor(at.left - towidth / 2); break;
+			default: toleft = at.left;
+		}
+			
+		switch (anchor.y) {
+			case "bottom": totop = (at.top - toheight) + at.height; break;
+			case "center": totop = Math.floor(at.top - toheight / 2); break;
+			default: totop = at.top;
 		}
 		
-		if (toheight < at.height) {
-			totop = at.top;
-		} else {
-			var cangoup = at.top - toheight - scroll.y > 0;
-			var cangodown = at.top + toheight + scroll.y < boundary.y;
-			if (cangoup == cangodown) totop = Math.floor(at.top - toheight / 2);
-			else if (cangodown) totop = at.top;
-			else totop = at.top + at.height - toheight;
-		}
 		this.openfx.start({'opacity': 1, 'left': toleft, 'top': totop, 'width': towidth, 'height': toheight});
 	},
 	
 	shrinkTowards: function (element) {
+		this.floater.addClass('floater_waiting');		// no scroll bars
 		var downto = element.getCoordinates();
-		downto.opacity = 0;
+		// downto.opacity = 0;
 		this.closefx.start(downto);
+	},
+	
+	startAt: function (element) {
+		if (!element) element = this.link;
+		var upfrom = element.getCoordinates();
+		upfrom.opacity = 1;
+		upfrom.left = upfrom.left + 20;
+		upfrom.height = 62;
+		upfrom.width = 62;
+		this.floater.setStyles(upfrom);
 	},
 	
 	expandFrom: function (element) {
@@ -1183,10 +1211,12 @@ var jsonForm = new Class ({
   
   waiting: function () {
     this.formWaiter.show();
+		this.floater.addClass('floater_waiting');
   },
 
   notWaiting: function () {
     this.formWaiter.hide();
+		this.floater.removeClass('floater_waiting');
   },
 
 	linkWaiting: function (argument) {
@@ -1314,7 +1344,7 @@ var TagSuggester = new Class ({
   Extends: Autocompleter.Ajax.Json,
 	initialize: function(element) {
 		this.parent(element, '/tags/matching', { 
-			'indicator': new Element('div', {'class': 'autocompleter-loading'}).set('html','&nbsp;').inject(element, 'after'),
+			'indicator': element,			// autocompleter edited to add 'waiting' class rather than showing indicator
 			'postVar': 'stem', 
 			'multiple': true,
 			'zIndex': 30000,

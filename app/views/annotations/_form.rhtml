@@ -10,7 +10,8 @@
   <% end %>
 </div>
 
-<%= render :partial => 'shared/edit_body', :locals => {:item => @annotation, :f => f, :short => @inline, :heading => 'Note text (optional)'} %>
-<%= f.check_box :important %> <label for="annotation_important">this is important</label>
+<%= render :partial => 'shared/edit_body', :locals => {:item => @annotation, :f => f, :short => @inline, :heading => 'Note text'} %>
+
+<p style="float: left;"><%= f.check_box :important %> <label for="annotation_important">this is important</label></p>
 
 <%= yield :buttons %>

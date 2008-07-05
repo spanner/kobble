@@ -24,7 +24,7 @@
 
 <% content_for :admin do %>
   <p>
-    <%= link_to "[snip]", new_source_node_path(@thing), {:id => 'admin_extend_nodelist', :class => 'snipper create'} %><br />
+    <%= link_to "snip*", new_source_node_path(@thing), {:id => 'admin_extend_nodelist', :class => 'snipper create'} %><br />
     <%= render :partial => 'shared/show_admin', :locals => {:item => @thing} %>
   </p>
 <% end %>
