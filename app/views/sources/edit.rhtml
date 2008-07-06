@@ -1,4 +1,17 @@
-<% @title = "Edit: #{@source.name}" %>
+<% @title = "Edit #{@source.name}" %>
+
+<% content_for :admin do %>
+  <p>
+    back to <%= link_to 'source page', url_for(@source) %>
+  </p>
+<% end %>
+
+<% content_for :buttons do %>
+  <div class="formbuttons">
+    <%= submit_tag "Update Document" %> or
+    <%= link_to 'cancel', url_for(@source) %>
+  </div>
+<% end %>
 
 <div class="mainform">
 
@@ -10,18 +23,8 @@
               } do |f| 
   %>
 
-  <%= render :partial => 'form', :locals => {:f => f} %>
-
-  <div class="formbuttons">
-    <%= submit_tag "Update Document" %> or
-    <%= link_to 'cancel', url_for(@source) %>
-  </div>
+    <%= render :partial => 'form', :locals => {:f => f} %>
 
   <% end %>
 </div>
 
-<% content_for :admin do %>
-  <p>
-    back to <%= link_to 'source page', url_for(@source) %>
-  </p>
-<% end %>

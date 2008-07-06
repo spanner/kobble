@@ -1,19 +1,14 @@
+<% content_for :buttons do %>
+  <%= submit_tag "Preview Comment" %> <span class="button_or">or <%= link_to 'cancel', url_for(@topic), {:class => 'cancelform'} %></span>
+<% end %>
+
 <% form_for :post,
             :url => topic_posts_path(@topic),
             :html => { 
               :multipart => true
             } do |f| 
 %>
-  <%= hidden_field_tag :dispatch, 'preview', :class => 'routing' %>
-	<p>
-	  <% if @post.errors.on(:body) %>
-      <label for="post_body" class="formerror">Your message</label> <span class="errordetail"><%= @post.errors.on(:body) %></span><br />
-	  <% else %>
-	    <label for="post_body">Your message</label><br />
-    <% end %>
-    <%= f.text_area :body, :rows => 14, :class => "standard fillWithSelection pickme #{'witherror' if @post.errors.on(:body)}" %><br />
-	</p>
+
+  <% render :partial => 'form', :locals => {:f => f} %>
 	
-	<%= submit_tag "Preview Comment" %> <span class="button_or">or <%= link_to 'cancel', url_for(@topic), :class => 'cancelform' %></span>
-  
 <% end -%>

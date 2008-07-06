@@ -1,8 +1,14 @@
+<%= hidden_field_tag :dispatch, 'preview', :class => 'routing' %>
+
 <% unless @topic.errors.empty? %>
   <p class="haserror"><strong>Sorry: there were problems.</strong> Please check the form. The affected fields will be highlighted in pink.</p>
 <% end %>
 
-<%= render :partial => 'shared/edit_name', :locals => {:item => @topic, :f => f, :required => true, :heading => 'Topic heading' } %>
-<%= render :partial => 'shared/edit_body', :locals => {:item => @topic, :f => f, :required => true, :heading => 'Opening remarks' } %>
-<%= render :partial => 'notify' %>
+<div class="formpart">
+  <%= render :partial => 'shared/edit_name', :locals => {:item => @topic, :f => f, :required => true, :heading => 'Topic heading' } %>
+  <%= render :partial => 'shared/edit_body', :locals => {:item => @topic, :f => f, :required => true, :heading => 'Opening remarks' } %>
+</div>
 <%= yield :buttons %>
+<div class="formpart">
+  <%= render :partial => 'notify' %>
+</div>

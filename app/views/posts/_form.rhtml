@@ -1,18 +1,12 @@
-<div id="replywrapper" class="mainform">
+<%= hidden_field_tag :dispatch, 'preview', :class => 'routing' %>
 
-	<% form_for([@topic, @reply], :url => new_topic_post_path(@topic)) do |f| -%>
+<p>
+  <% if @post.errors.on(:body) %>
+    <label for="post_body" class="formerror">Your message</label> <span class="errordetail"><%= @post.errors.on(:body) %></span><br />
+  <% else %>
+    <label for="post_body">Your message</label><br />
+  <% end %>
+  <%= f.text_area :body, :rows => 14, :class => "standard fillWithSelection pickme #{'witherror' if @post.errors.on(:body)}" %><br />
+</p>
 
-    <h2>Add a reply</h2>
-    
-    <%= f.text_area :body, :rows => 6, :class => 'standard' %><br />
-
-		<div class="formbuttons waitme">
-		 	<p class="formnote">
-		 	  <%= f.submit "preview message" %>
-		 	  your message will not be saved until you click on the 'confirm' link
-	 	  </p>
-    </div>
-	<% end %>
-	
-
-</div>
+<%= yield :buttons %>

@@ -1,11 +1,10 @@
 class TopicsController < ApplicationController
 
-  def views
-    ['latest']
-  end
-  
+  before_filter :find_referent
+  before_filter :find_topic, :except => [:new, :preview, :create]
+  before_filter :build_topic, :only => [:new, :preview, :create]
+
   def show
-    @topic = Topic.find(params[:id])
     page = params[:page] || 1
     perpage = params[:perpage] || 25
     respond_to do |format|
@@ -28,38 +27,65 @@ class TopicsController < ApplicationController
   end
   
   def new
-    @topic = Topic.new
     @topic.referent = find_referent
     respond_to do |format|
-      format.html { }
-      format.js { render :layout => 'inline' }
+      format.html { render :action => 'new' }
+      format.js { render :action => 'new', :layout => 'inline' }
     end
   end
     
-  def create
-    @topic = Topic.new(params[:topic])
-    @topic.referent = find_referent
-    if @topic.save
-      @topic.add_monitors(User.find_by_id(params[:monitors])) if params[:monitors]
+  def preview
+    logger.warn('@@@@ topic preview!')
+    @topic.creator = current_user
+    @topic.created_at = Time.now()
+    if (@topic.valid?)
       respond_to do |format|
-        format.html { redirect_to :action => 'show', :id => @topic }
-        format.js { render :layout => false } # topics/create.rhtml is a bare list item
+        format.html { render :action => 'preview' }
+        format.js { render :action => 'preview', :layout => 'inline' }
         format.json { render :json => @topic.to_json }
       end
     else
       respond_to do |format|
         format.html { render :action => 'new' }
         format.js { render :action => 'new', :layout => 'inline' }
-        format.json { render :json => {:errors => @node.errors}.to_json }
+        format.json { render :json => {:errors => @topic.errors}.to_json }
       end
     end
   end
-  
+
+  def create
+    if (params[:dispatch] == 'revise' || !@topic.valid?)
+      new
+    elsif (params[:dispatch] == 'preview')
+      preview
+    else
+      @topic.save!
+      @topic.add_monitors(User.find_by_id(params[:monitors])) if params[:monitors]
+      respond_to do |format|
+        format.html { redirect_to :action => 'show', :id => @topic }
+        format.js { render :layout => false } # topics/create.rhtml is a bare list item
+        format.json { render :json => @topic.to_json }
+      end
+    end
+  rescue ActiveRecord::RecordInvalid
+    respond_to do |format|
+      format.html { render :action => 'new' }
+      format.js { render :action => 'new', :layout => 'inline' }
+      format.json { render :json => {:errors => @topic.errors}.to_json }
+    end
+  end
+
   def update
     @topic.attributes = params[:topic]
     @topic.save!
     respond_to do |format|
       format.html { redirect_to url_for(@topic) }
+    end
+  rescue ActiveRecord::RecordInvalid
+    respond_to do |format|
+      format.html { render :action => 'edit' }
+      format.js { render :action => 'edit', :layout => 'inline' }
+      format.json { render :json => {:errors => @topic.errors}.to_json }
     end
   end
   
@@ -70,4 +96,12 @@ class TopicsController < ApplicationController
       @referent = ref ? ref.to_s._as_class.find(params[(ref.to_s.underscore + "_id").intern]) : nil
     end
 
+    def find_topic
+      @topic = @referent.topics.find(params[:id])
+    end
+
+    def build_topic
+      @topic = @referent.topics.build(params[:topic])
+    end
+  
 end

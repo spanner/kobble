@@ -2,8 +2,8 @@
 
 <% content_for :buttons do %>
   <div class="formbuttons">
-    <%= submit_tag 'Start conversation' %> or 
-    <%= link_to 'go back', url_for(@referent) %>
+    <%= submit_tag 'Preview topic' %> or 
+    <%= link_to 'cancel', url_for(@referent), {:class => 'cancelform'} %>
   </div>
 <% end %>
 

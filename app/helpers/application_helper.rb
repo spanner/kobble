@@ -15,6 +15,11 @@ module ApplicationHelper
     url_method = 'create_' + item.class.to_s.underscore.downcase + '_topic_path'
     eval(url_method + '(item)')
   end
+  
+  def item_topic_url(item, topic)
+    url_method = item.class.to_s.underscore.downcase + '_topic_url'
+    eval(url_method + '(item, topic)')
+  end
 
   def item_new_note_url(item)    
     url_method = 'new_' + item.class.to_s.underscore.downcase + '_annotation_url'

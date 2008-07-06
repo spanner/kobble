@@ -10,10 +10,6 @@ class PostsController < ApplicationController
       format.xml  { render :xml => @post.to_xml }
     end
   end
-
-  # topic page includes empty post form
-  # so 'new' here == 'preview' there
-  # and returns create form with hidden fields
   
   def new
     @post.creator = current_user

@@ -1,0 +1,25 @@
+<div class="topic preview">
+
+  <%= render :partial => 'topics/single', :locals => {:single => @topic} %>
+
+  <% form_for ([@referent, @topic]), :html => {:class => 'confirming'} do |f| %>
+
+    <div class="hidden">
+		  <%= f.text_field :name %>
+		  <%= f.text_area :body %>
+	  </div>
+		
+		<%= hidden_field_tag :dispatch, 'revise', :class => 'routing' %>
+
+		<div class="waitme formbuttons">
+	    <%= submit_tag 'confirm', :class => 'confirm', :id => 'confirm' %> or 
+	    <%= submit_tag 'revise', :class => 'revise', :id => 'revise' %> or
+	    <%= link_to 'cancel', url_for(@referent), :class => 'cancelform' %>
+	  </div>
+
+    <div class="formpart">
+      <%= render :partial => 'notify' %>
+    </div>
+	<% end -%>
+
+</div>

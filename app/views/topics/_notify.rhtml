@@ -7,7 +7,7 @@
   <thead>
     <tr>
       <td colspan="3">
-        <label for="monitors">Notify</label>
+        <label for="monitors">Notify</label> of this message and any replies
       </td>
     </tr>
   </thead>
@@ -16,7 +16,14 @@
       <td>
         <p class="minorfield">
     	    <% current_account.users.each do |user| %>
-    	      <%= check_box_tag 'monitors[]', user.id, user == current_user, {:id => "monitor_#{user.id}"} %> <%= user == current_user ? "<strong>you</strong>" : user.name %><br />
+    	      <% 
+    	        if params[:monitors]
+  	            checked = params[:monitors].include?(user.id.to_s)
+  	          else
+    	          checked = user == current_user
+	            end
+            %>
+    	      <%= check_box_tag 'monitors[]', user.id, checked, {:id => "monitor_#{user.id}"} %> <%= user == current_user ? "<strong>you</strong>" : user.name %><br />
     	      <%
     	        counter += 1
     	        if counter % column == 0

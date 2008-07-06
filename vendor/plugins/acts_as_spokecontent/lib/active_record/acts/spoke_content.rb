@@ -108,7 +108,7 @@ module ActiveRecord
           end
 
           if definitions.include?(:discussion)
-            has_many :topics, :as => :referent, :dependent => :destroy
+            has_many :topics, :as => :referent, :dependent => :destroy, :order => 'topics.created_at DESC'
             Spoke::Associations.discussed_model(self)
           end
 

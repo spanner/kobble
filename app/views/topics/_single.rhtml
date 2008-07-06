@@ -1,7 +1,7 @@
-<div class="post contentblock" id="topicholder_<%= single.id %>">
-  <%= render :partial => 'shared/show_mugshot', :locals => {:item => @topic} %>
+<div class="topic contentblock" id="topicholder_<%= single.id %>">
+  <%= render :partial => 'shared/show_mugshot', :locals => {:item => single} %>
 	<h3 class="postheader">
-    <strong><%= link_to single.name, url_for(single) %></strong>
+    <strong><%= link_to single.name, item_topic_url(single.referent, single) %></strong>
 	  <br />
 	  <span class="headernote">
       <%= link_to single.creator.name, url_for(single.creator) %>,
@@ -11,7 +11,7 @@
 	<div class="postbody" id="post_<%= single.id %>">
 	  <%= single.body.formatted %>
   	<p class="paranthetical">
-  	  <%= link_to pluralize(single.posts.count, 'reply'), url_for(single) %>
+  	  <%= link_to pluralize(single.posts.count, 'reply'), item_topic_url(single.referent, single) %>
   	  <% if single.posts.count > 1 %>from <%= pluralize(single.voices.size, 'person') %> <% end %>
 	  </p>
 	</div>

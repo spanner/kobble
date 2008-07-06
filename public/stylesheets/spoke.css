@@ -201,12 +201,6 @@ div#notification.error {
 }
 
 
-div#illustration {
-  width: 135px;
-  float: right;
-  margin: 0 0 20px 40px;
-}
-
 /* admin controls */
 
 div#admin {
@@ -469,6 +463,21 @@ div.preamble {
 div.contentblock {
   max-width: 640px;
   clear: left;
+}
+
+div.contentblock div.illustration {
+  width: 240px;
+  float: right;
+  margin: 0 0 20px 40px;
+}
+
+div.contentblock img.thumbnail {
+  float: left;
+  margin: 0 10px 6px 0;
+}
+
+div.contentblock p {
+	margin-top: 0;
 }
 
 div.mainlist {
