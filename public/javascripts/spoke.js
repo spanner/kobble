@@ -1261,11 +1261,8 @@ var htmlForm = new Class ({
 	
 	prepForm: function () {
 		this.parent();
-		if (this.form.hasClass('confirming')) {
-			this.floater.addClass('confirming');
-		} else {
-			this.floater.removeClass('confirming');
-		}
+		if (this.form.hasClass('confirming')) this.floater.addClass('confirming');
+		else this.floater.removeClass('confirming');
 		this.form.getElements('#revise').each( function (input) { input.onclick = this.revise.bind(this); }, this);
 		this.form.getElements('#confirm').each( function (input) { input.onclick = this.confirm.bind(this); }, this);
 	},
@@ -1283,16 +1280,16 @@ var htmlForm = new Class ({
     }).post(this.form);
   },
 
+	// confirm and revise set the hidden 'dispatch' parameter to control wehether we save or re-edit after a preview
+
 	confirm: function (e) {
-		console.log('confirming');
 		this.form.getElements('input.routing').each(function (input) { input.set('value', 'confirm'); });
-		return true;
+		return true;	// and submit form
 	},
 
 	revise: function (e) {
-		console.log('revising');
 		this.form.getElements('input.routing').each(function (input) { input.set('value', 'revise'); });
-		return true;
+		return true;	// and submit form
 	},
 
   processResponse: function (response) {
@@ -1310,14 +1307,13 @@ var htmlForm = new Class ({
   updatePage: function () {
     var elements = this.responseholder.getChildren(); 
     this.created_item = elements[0];
-		var addwhere = this.destination.hasClass('addToBottom') ? 'bottom' : 'top';
-    this.created_item.inject(this.destination, addwhere);
+    this.created_item.inject(this.destination, this.destination.hasClass('addToBottom') ? 'bottom' : 'top');
     this.showOnPage();
     intf.activateElement( this.created_item );
   },
   
   showOnPage: function () {
-    if (this.destination_squeeze) intf.squeezebox.display(this.destination_squeeze);
+    if (this.destination_squeeze && this.destination_squeeze.offsetHeight == 0) intf.squeezebox.display(this.destination_squeeze);
 		var mf = this;
     new Fx.Scroll(window).toElement(mf.created_item).chain(function(){ mf.created_item.highlight(); });
   }
@@ -1344,7 +1340,7 @@ var TagSuggester = new Class ({
   Extends: Autocompleter.Ajax.Json,
 	initialize: function(element) {
 		this.parent(element, '/tags/matching', { 
-			'indicator': element,			// autocompleter edited to add 'waiting' class rather than showing indicator
+			'indicator': element,			// autocompleter should be edited to add 'waiting' class rather than showing indicator
 			'postVar': 'stem', 
 			'multiple': true,
 			'zIndex': 30000,

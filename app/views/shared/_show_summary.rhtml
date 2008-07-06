@@ -17,4 +17,11 @@
   <% else %>
     <p>No summary given.</p>
   <% end %>
+  
+  <h4>Draggable:</h4>
+  
+  <div class="mainlist">
+    <%= render :partial => 'shared/listed', :locals => {:listed => @thing} %>
+  </div>
+  
 </div>
