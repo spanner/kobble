@@ -6,6 +6,7 @@ class Event < ActiveRecord::Base
   belongs_to :affected, :polymorphic => true
 
   named_scope :latest, { :limit => 20, :order => 'at DESC' }
+  named_scope :latest_few, { :limit => 5, :order => 'at DESC' }
   named_scope :since, lambda {|start| { :conditions => ['at > ?', start] } }
   named_scope :of_type, lambda {|type| { :conditions => {:event_type => type}, :order => 'at DESC' } }
   

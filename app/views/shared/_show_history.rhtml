@@ -11,7 +11,11 @@
       <% if events.count > 0 %>
         <%
           latest = events.first
-          who = latest.user == current_user ? 'you' : latest.user.name
+          if latest.user
+            who = latest.user == current_user ? 'you' : latest.user.name
+          else
+            who = 'someone'
+          end
         %>
         <strong><%= latest.affected.name %></strong> <%= latest.event_type %> by <%= who %> <%= time_ago_in_words(latest.at) %> ago
         <% else %>
@@ -37,7 +41,13 @@
     
     <ul>
       <% events.each do |event| %>
-        <% who = event.user == current_user ? 'you' : event.user ? event.user.name : 'someone' %>
+        <% 
+          if event.user
+            who = event.user == current_user ? 'you' : event.user.name
+          else
+            who = 'someone'
+          end
+        %>
         <%= render :partial => "shared/listed", :locals => {
           :listed => event.affected,
           :name => event.affected_name || event.affected.name,

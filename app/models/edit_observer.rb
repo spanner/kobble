@@ -12,18 +12,22 @@ class EditObserver < ActiveRecord::Observer
   end
  
   def after_create(model)
-    if model.class == Annotation
-      record_event(model.annotated, 'annotated')
-    else
-      record_event(model, 'created')
+    if model.record_timestamps
+      if model.class == Annotation
+        record_event(model.annotated, 'annotated')
+      else
+        record_event(model, 'created')
+      end
     end
   end
 
   def after_update(model)
-    if model.newly_undeleted
-      record_event(model, 'restored') if model.record_timestamps
-    else
-      record_event(model, 'updated') if model.record_timestamps
+    if model.record_timestamps
+      if model.newly_undeleted
+        record_event(model, 'restored')
+      else
+        record_event(model, 'updated')
+      end
     end
   end
 

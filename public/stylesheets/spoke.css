@@ -90,6 +90,7 @@ h4 {
   line-height: 1.2;
   margin-bottom: 0;
   color: #4d4e53;
+	clear: left;
 }
 
 h1 a, h2 a, h3 a, h4 a {

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20080704091616) do
+ActiveRecord::Schema.define(:version => 20080704113136) do
 
   create_table "account_types", :force => true do |t|
     t.string   "name"
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(:version => 20080704091616) do
     t.integer  "collections_limit", :limit => 11
     t.integer  "users_limit",       :limit => 11
     t.integer  "sources_limit",     :limit => 11
+    t.integer  "space_limit",       :limit => 11, :default => 0
     t.boolean  "can_audio"
     t.boolean  "can_video"
     t.boolean  "can_rss"
@@ -26,7 +27,6 @@ ActiveRecord::Schema.define(:version => 20080704091616) do
     t.datetime "updated_at"
     t.integer  "created_by",        :limit => 11
     t.integer  "updated_by",        :limit => 11
-    t.integer  "space_limit",       :limit => 11, :default => 0
     t.datetime "deleted_at"
   end
 
@@ -37,10 +37,10 @@ ActiveRecord::Schema.define(:version => 20080704091616) do
     t.string   "status"
     t.integer  "account_type_id", :limit => 11
     t.datetime "last_active_at"
-    t.integer  "created_by",      :limit => 11
-    t.integer  "updated_by",      :limit => 11
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "created_by",      :limit => 11
+    t.integer  "updated_by",      :limit => 11
     t.string   "clip"
   end
 
@@ -118,8 +118,8 @@ ActiveRecord::Schema.define(:version => 20080704091616) do
     t.string   "url"
     t.string   "email_from"
     t.integer  "account_id",     :limit => 11
-    t.datetime "last_active_at"
     t.datetime "deleted_at"
+    t.datetime "last_active_at"
     t.string   "image"
     t.string   "clip"
     t.boolean  "private"
@@ -135,27 +135,6 @@ ActiveRecord::Schema.define(:version => 20080704091616) do
     t.integer  "user_id",       :limit => 11
     t.text     "notes"
     t.datetime "at"
-  end
-
-  create_table "flaggings", :force => true do |t|
-    t.integer  "flag_id",        :limit => 11
-    t.string   "flaggable_type"
-    t.integer  "flaggable_id",   :limit => 11
-    t.datetime "deleted_at"
-  end
-
-  create_table "flags", :force => true do |t|
-    t.text     "body"
-    t.string   "offender_type",  :limit => 20
-    t.integer  "offender_id",    :limit => 11
-    t.integer  "user_id",        :limit => 11
-    t.string   "warningtype_id"
-    t.integer  "created_by",     :limit => 11
-    t.integer  "updated_by",     :limit => 11
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "severity",       :limit => 11, :default => 0
-    t.datetime "deleted_at"
   end
 
   create_table "monitorships", :force => true do |t|
@@ -294,6 +273,7 @@ ActiveRecord::Schema.define(:version => 20080704091616) do
     t.integer  "collection_id", :limit => 11
     t.text     "body"
     t.string   "color"
+    t.datetime "deleted_at"
   end
 
   create_table "sessions", :force => true do |t|
@@ -424,9 +404,9 @@ ActiveRecord::Schema.define(:version => 20080704091616) do
     t.integer  "account_id",                :limit => 11
     t.integer  "person_id",                 :limit => 11
     t.string   "name"
+    t.datetime "deleted_at"
     t.datetime "last_active_at"
     t.datetime "previously_logged_in_at"
-    t.datetime "deleted_at"
     t.string   "clip"
     t.boolean  "trusted"
   end

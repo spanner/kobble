@@ -1,23 +1,6 @@
 class AccountParameters < ActiveRecord::Migration
 
   def self.up
-    create_table :account_types do |table|
-      table.column :name, :string
-      table.column :description, :string
-      table.column :price_monthly, :float
-      table.column :price_yearly, :float
-      table.column :collections_limit, :integer
-      table.column :users_limit, :integer
-      table.column :sources_limit, :integer
-      table.column :space_limit, :integer, :default => 0
-      table.column :can_audio, :boolean
-      table.column :can_video, :boolean
-      table.column :can_rss, :boolean
-      table.column :created_at, :datetime
-      table.column :updated_at, :datetime
-      table.column :created_by, :integer
-      table.column :updated_by, :integer
-    end
     add_column :accounts, :account_type_id, :integer
     add_column :accounts, :last_active_at, :datetime, :default => 0
     add_column :accounts, :created_at, :datetime
@@ -46,7 +29,6 @@ class AccountParameters < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :account_types
     remove_column :collections, :last_active_at
     remove_column :accounts, :account_type_id
     remove_column :accounts, :account_type_id
