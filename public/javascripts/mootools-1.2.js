@@ -2346,14 +2346,6 @@ Native.implement([Document, Element], {
 	
 });
 
-Window.implement({
-
-	$E: function(selector){
-		return this.document.getElement(selector);
-	}
-
-});
-
 Element.implement({
 	
 	match: function(selector){

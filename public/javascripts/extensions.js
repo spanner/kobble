@@ -97,6 +97,12 @@ Element.implement({
 
 });
 
+Window.implement({
+	$E: function(selector){
+		return this.document.getElement(selector);
+	}
+});
+
 function $body(el){
 	return el.tagName.toLowerCase() == 'body';
 };

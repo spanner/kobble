@@ -1,1 +1,1 @@
-mootools-1.2.js
+mootools-1.2-core-compressed.js
