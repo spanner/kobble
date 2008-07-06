@@ -1,0 +1,19 @@
+<div class="post contentblock" id="topicholder_<%= single.id %>">
+  <%= render :partial => 'shared/show_mugshot', :locals => {:item => @topic} %>
+	<h3 class="postheader">
+    <strong><%= link_to single.name, url_for(single) %></strong>
+	  <br />
+	  <span class="headernote">
+      <%= link_to single.creator.name, url_for(single.creator) %>,
+  		<%= friendly_date(single.created_at) %>.
+		</span>
+	</h3>
+	<div class="postbody" id="post_<%= single.id %>">
+	  <%= single.body.formatted %>
+  	<p class="paranthetical">
+  	  <%= link_to pluralize(single.posts.count, 'reply'), url_for(single) %>
+  	  <% if single.posts.count > 1 %>from <%= pluralize(single.voices.size, 'person') %> <% end %>
+	  </p>
+	</div>
+	
+</div>

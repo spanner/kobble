@@ -32,7 +32,6 @@ class UserNotifier < ActionMailer::Base
     setup_email(user)
     @subject += "You have been invited to materiali.st"
     @body[:url]  = "http://materiali.st/login/activate/#{user.activation_code}"
-    @body[:account] = user.account
     @body[:inviter] = inviter
   end
 
@@ -40,13 +39,11 @@ class UserNotifier < ActionMailer::Base
     setup_email(user)
     @subject += "Welcome to materiali.st"
     @body[:url]  = "http://materiali.st/login/activate/#{user.activation_code}"
-    @body[:account] = user.account
   end
 
   def account_details(user)
     setup_email(user)
     @subject += "Your account at materiali.st"
-    @body[:account] = user.account
   end
 
   protected

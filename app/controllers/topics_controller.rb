@@ -32,13 +32,10 @@ class TopicsController < ApplicationController
     @topic.referent = find_referent
     respond_to do |format|
       format.html { }
-      format.js { render :action => 'inline', :layout => false }
+      format.js { render :layout => 'inline' }
     end
   end
-  
-  def inline
-  end
-  
+    
   def create
     @topic = Topic.new(params[:topic])
     @topic.referent = find_referent
@@ -50,8 +47,11 @@ class TopicsController < ApplicationController
         format.json { render :json => @topic.to_json }
       end
     else
-      # or what?
-      render :action => 'new'
+      respond_to do |format|
+        format.html { render :action => 'new' }
+        format.js { render :action => 'new', :layout => 'inline' }
+        format.json { render :json => {:errors => @node.errors}.to_json }
+      end
     end
   end
   

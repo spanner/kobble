@@ -4,28 +4,40 @@
   <a href="#" class="squeezebox">
     permissions 
     <span class="headernote">
-      <%= pluralize(item.permitted_collections.count, 'collection') %>
+      <% if item.account_admin? %>
+        <% unless item.admin? %>Account <% end %>Administrator
+      <% else %>
+        <%= pluralize(item.permitted_collections.count, 'collection') %>
+      <% end %>
     </span>
+      
   </a>
 </h3>
 
-<div id="item_permissions" class="squeezed">
-  <div class="mainlist">
-    <ul class="minimal">
-      <% item.account.collections.each do |collection| %>
-        <li>
-        <%= 
-          permission = item.permission_for(collection)
-          linkclass =  permission.active? ? 'ticked' : 'crossed'
-          linktitle =  permission.active? ? 'click to forbid access' : 'click to permit access'
-          link_to permission.collection.name, toggle_permission_url(permission), {
-      		  :class => "toggle #{linkclass}",
-      		  :title => linktitle
-      	  } 
-      	%>
-    	  </li>
-      <% end %>
-    </ul>
-    <p>You can edit everyone at once on the <%= link_to "account permissions summary", permissions_account_url(current_account) %> page.</p>
-  </div>
+<div id="item_permissions" class="squeezed contentblock">
+  
+  <% if item.account_admin? %>
+    <p>Account (and site) administrators are able to see all collections.</h3>
+      
+  <% else %>
+  
+    <div class="mainlist">
+      <ul class="minimal">
+        <% item.account.collections.each do |collection| %>
+          <li>
+          <%= 
+            permission = item.permission_for(collection)
+            linkclass =  permission.active? ? 'ticked' : 'crossed'
+            linktitle =  permission.active? ? 'click to forbid access' : 'click to permit access'
+            link_to permission.collection.name, toggle_permission_url(permission), {
+        		  :class => "toggle #{linkclass}",
+        		  :title => linktitle
+        	  } 
+        	%>
+      	  </li>
+        <% end %>
+      </ul>
+      <p>You can edit everyone at once on the <%= link_to "account permissions summary", permissions_account_url(current_account) %> page.</p>
+    </div>
+  <% end %>
 </div>

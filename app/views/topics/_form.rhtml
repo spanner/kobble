@@ -1,12 +1,8 @@
-
-<p>
-  <label for="topic_title">Title</label><br />
-  <%= form.text_field :name, :class => "titular", :tabindex => 10 %>
-</p>
-
-<% if @topic.new_record? %>
-	<p>
-	  <label for="topic_body">Your opening remarks</label><br />
-	  <%= form.text_area :body, :rows => 12, :tabindex => 20, :class => 'standard' %>
-	</p>
+<% unless @topic.errors.empty? %>
+  <p class="haserror"><strong>Sorry: there were problems.</strong> Please check the form. The affected fields will be highlighted in pink.</p>
 <% end %>
+
+<%= render :partial => 'shared/edit_name', :locals => {:item => @topic, :f => f, :required => true, :heading => 'Topic heading' } %>
+<%= render :partial => 'shared/edit_body', :locals => {:item => @topic, :f => f, :required => true, :heading => 'Opening remarks' } %>
+<%= render :partial => 'notify' %>
+<%= yield :buttons %>

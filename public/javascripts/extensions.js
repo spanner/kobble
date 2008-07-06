@@ -68,7 +68,7 @@ Element.implement({
     var element = this;
     new Fx.Morph(element, {
   		duration: 600,
-  		onComplete: function () { element.remove(); }
+  		onComplete: function () { element.destroy(); }
   	}).start({ 
   	  'opacity': 0,
   	  'width': 0,

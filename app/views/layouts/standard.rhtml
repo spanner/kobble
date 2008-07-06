@@ -6,8 +6,8 @@
 <html>
 <head>
   <title>materiali.st<% if @title %> - <%= @title %><% end%></title>
-  <%= javascript_include_tag 'mootools', 'mootools-more', 'extensions', 'autocomplete', 'spoke', :cache => "cache/materialist" %>
-  <%= stylesheet_link_tag 'spoke', :cache => "cache/materialist" %>
+  <%= javascript_include_tag 'mootools', 'mootools-more', 'extensions', 'autocomplete', 'spoke', 'slimbox', :cache => "cache/materialist" %>
+  <%= stylesheet_link_tag 'spoke', 'slimbox', :cache => "cache/materialist" %>
 </head>
 <body>
 
@@ -19,7 +19,8 @@
   </div>
     
   <div id="pagetitle">
-    <h1<% if @title && @title.size > 50 %> class="longtitle"<% end %>><%= @title || 'welcome' %></h1>
+    <h1<% if @title && @title.size > 50 %> class="longtitle"<% end %>>
+      <%= @title || 'welcome' %></h1>
   </div>
 
   <div id="canvas">
@@ -73,14 +74,14 @@
   <% if flash[:notice] %>
     <script type="text/javascript">
       //<![CDATA[
-        window.addEvent('load', function(){ intf.announce('<%= flash[:notice] %>'); });
+        window.addEvent('load', function(){ intf.announce('<%= escape_javascript(flash[:notice]) %>'); });
       //]]>
     </script>
   <% end %>
   <% if flash[:error] %>
     <script type="text/javascript">
       //<![CDATA[
-        window.addEvent('load', function(){ intf.complain('<%= flash[:error] %>'); });
+        window.addEvent('load', function(){ intf.complain('<%= escape_javascript(flash[:error]) %>'); });
       //]]>
     </script>
   <% end %>

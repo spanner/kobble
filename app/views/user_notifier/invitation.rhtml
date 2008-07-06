@@ -1,15 +1,17 @@
 Hello <%= @user.name %>,
 
-You are invited by <%= @inviter.name %> to join the <%= @user.account.name %> at materiali.st, where you will experience a joyful and life-transforming assembly of materials.
+You are invited by <%= @inviter.name %> to join the <%= @user.account.name %> at materiali.st, where you will experience a joyful and life-transforming chopping and blending of materials that used to just sit there and stare at you accusingly.
 
-(This is the message that gets sent out when someone adds you to an existing account.)
-
-To activate your login, go to
+To activate your login, please go to:
 
   <%= @url %>
   
-To find out more...
+To find out more about materiali.st, please visit our nascent but very jolly tour at http://materiali.st/what/
 
-To contact your inviter...
+To contact your inviter, please write to <%= @inviter.email %>.
 
-If you think there has been a mistake...
+If you think there has been a mistake, we apologise and please ignore this message. We won't trouble you again.
+
+best,
+
+will

@@ -14,14 +14,12 @@
   </a>
 </h3>
 
-<div id="source_discussions" class="squeezed">
-  <div class="mainlist">
-  	<ul id="topiclist">
-      <%= render :partial => 'shared/listed', :collection => topics %>
-  	</ul>
-  </div>
+<div id="topiclist" class="squeezed contentblock">
+
+  <%= render :partial => 'topics/single', :collection => topics %>
+
 	<% unless hide_new_discussion_link %>
-	  <p><%= link_to "start a conversation", item_new_topic_url(item), {:id => 'discussion_extend_topiclist', :class => 'inlinediscuss'} %></p>
+	  <p><%= link_to "discuss*", item_new_topic_url(item), {:id => 'discussion_extend_topiclist', :class => 'inlinediscuss create'} %></p>
   <% end %>
 </div>
 

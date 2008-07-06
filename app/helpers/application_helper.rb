@@ -36,4 +36,19 @@ module ApplicationHelper
     eval(url_method + '(item)')
   end
 
+  def friendly_date(datetime)
+    today = Date.today
+    date = datetime.to_date
+    if (date == Date.today)
+      format = "Today at %l:%M%p"
+    elsif (date == Date.yesterday)
+      format = "Yesterday at %l:%M%p"
+    elsif (date.year == Date.today.year)
+      format = "%B %e at %l:%M%p"
+    else
+      format = "%B %e %Y at %l:%M%p"
+    end
+    datetime.strftime(format)
+  end
+
 end

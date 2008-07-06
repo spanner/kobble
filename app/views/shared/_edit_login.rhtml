@@ -1,0 +1,12 @@
+<% 
+  item ||= @thing
+  required ||= false
+%>
+
+<div class="formpart<%= ' witherrors' if item.errors.on(:login) %>">
+  <label for="user_login" class="optional">Login</label> defaults to email<br/>
+  <%= f.text_field :login, :class => 'standard' %>
+  <% if item.errors.on(:login) %><br />
+    This <%= item.errors.on(:login).to_a.to_sentence %>
+  <% end %>
+</div>

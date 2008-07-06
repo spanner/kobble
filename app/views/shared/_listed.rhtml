@@ -26,8 +26,12 @@
     :class => aclass,
     :title => "#{collection_name}#{name}"
   }) %>
-  <% listed.warnings.each do |warning| %><img class="flag" src="/images/furniture/spoke/pink/flag.png" width="7" height="13" alt="flag" title="<%= warning.annotation_type.name %>: <%= warning.body %>"><% end %>
-  <% listed.approvals.each do |approval| %><img class="flag" src="/images/furniture/spoke/green/flag.png" width="7" height="13" alt="flag" title="<%= approval.annotation_type.name %>: <%= approval.body %>"><% end %>
+
+  <% if listed.is_notable? %>
+    <% listed.warnings.each do |warning| %><img class="flag" src="/images/furniture/spoke/pink/flag.png" width="7" height="13" alt="flag" title="<%= warning.annotation_type.name %>: <%= warning.body %>"><% end %>
+    <% listed.approvals.each do |approval| %><img class="flag" src="/images/furniture/spoke/green/flag.png" width="7" height="13" alt="flag" title="<%= approval.annotation_type.name %>: <%= approval.body %>"><% end %>
+  <% end %>
+    
   <% unless addendum.nil? %>
     <span class="listnote"><%= addendum %></span>
   <% end %>

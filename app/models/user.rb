@@ -40,12 +40,11 @@ class User < ActiveRecord::Base
   named_scope :in_account, lambda { |account| {:conditions => { :account_id => account.id }} }
 
   email_column :email
-
   validates_presence_of     :name
   validates_uniqueness_of   :login, :email, :case_sensitive => false
   validates_presence_of     :password, :if => :password_required?
-  validates_length_of       :password, :within => 4..40, :if => :password_required?
-  validates_confirmation_of :password,  :if => :password_required?
+  validates_confirmation_of :password,  :if => :password_supplied?
+  validates_length_of       :password, :within => 4..40, :if => :password_supplied?
 
   def self.nice_title
     "user"
@@ -100,6 +99,7 @@ class User < ActiveRecord::Base
     self.status = 10
     self.logged_in_at = self.activated_at = Time.now.utc
     self.activation_code = nil
+    self.password = nil
     self.save!
   end
 
@@ -261,11 +261,11 @@ class User < ActiveRecord::Base
     end
     
     def password_required?
-      !login.blank? && (crypted_password.blank? || !password.blank?)
+      crypted_password.blank?
     end
-
-    def login_required?
-      !password.blank? || !crypted_password.blank?
+    
+    def password_supplied?
+      !password.blank?
     end
 
     def make_activation_code
@@ -280,6 +280,5 @@ class User < ActiveRecord::Base
     def self.reassignable_associations
       [:created_collections, :created_sources, :created_nodes, :created_bundles, :created_tags]
     end
-
 
 end

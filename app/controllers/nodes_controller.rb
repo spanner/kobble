@@ -24,9 +24,6 @@ class NodesController < ApplicationController
     end
   end
   
-  def inline
-  end
-
   def create
     @node = Node.new(params[:node])
     @node.source = Source.find(params[:source_id]) if params[:source_id] and @node.source.nil?

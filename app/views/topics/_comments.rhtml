@@ -3,5 +3,5 @@
 </div>
 
 <% if @topic.posts_count > 0 %>
-  <h3><%= link_to "add a reply", new_topic_post_url(@topic), :id => 'extend_postlist', :class => 'create inlinereply' %> <span class="headernote">select text to quote</span></h3>
+  <h3><%= link_to "add a reply*", new_topic_post_url(@topic), :id => 'extend_postlist', :class => 'create inlinereply' %> <span class="headernote">select text to quote</span></h3>
 <% end %>

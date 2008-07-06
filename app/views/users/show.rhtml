@@ -7,7 +7,7 @@
 <div class="preamble">
   <p>
   <strong>Status:</strong> <%= @thing.status_in_words %>.
-	<strong>Last here:</strong> <%= @thing.logged_in_at.nil? ? 'never' : time_ago_in_words(@thing.logged_in_at) %>. 
+	<strong>Last here:</strong> <%= @thing.logged_in_at.nil? ? 'never' : time_ago_in_words(@thing.logged_in_at) %> ago. 
   <strong>Contact:</strong> <%= link_to @thing.email, "mailto:#{@thing.email}" %></a>
   </p>
   

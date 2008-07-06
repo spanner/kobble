@@ -1,12 +1,25 @@
-<% @title = "start a conversation about <strong>#{@referent.name}</strong>" %>
+<% @title = "Start a conversation <span class=\"headernote\">about #{@referent.name}</span>" %>
+
+<% content_for :buttons do %>
+  <div class="formbuttons">
+    <%= submit_tag 'Start conversation' %> or 
+    <%= link_to 'go back', url_for(@referent) %>
+  </div>
+<% end %>
+
+<% content_for :admin do %>
+  <p>
+    back to <%= link_to 'fragments list', nodes_url %>
+  </p>
+<% end %>
 
 <div class="mainform">
-  
-  <%= error_messages_for :topic %>
 
   <% form_for ([@referent, @topic]) do |f| %>
-    <%= render :partial => "form", :object => f %>
-    <%= submit_tag 'Start conversation' %> or <%= link_to 'go back', url_for(@referent) %>
-  <% end -%>
+
+    <%= render :partial => 'form', :locals => {:f => f} %>
+
+  <% end %>
 
 </div>
+

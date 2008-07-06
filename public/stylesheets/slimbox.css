@@ -2,14 +2,16 @@
 
 #lbOverlay {
 	position: absolute;
+	z-index: 9999;
 	left: 0;
 	width: 100%;
-	background-color: #000;
+	background-color: #4d4e53;
 	cursor: pointer;
 }
 
 #lbCenter, #lbBottomContainer {
 	position: absolute;
+	z-index: 9999;
 	left: 50%;
 	overflow: hidden;
 	background-color: #fff;
@@ -68,6 +70,7 @@
 	height: 22px;
 	background: transparent url(/images/slimbox/closelabel.gif) no-repeat center;
 	margin: 5px 0;
+	outline: none;
 }
 
 #lbCaption, #lbNumber {

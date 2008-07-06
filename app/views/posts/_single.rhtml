@@ -1,11 +1,12 @@
 <% unless @omit_first && @omit_first.id == single.id %>
 	<div class="post contentblock" id="postholder_<%= single.id %>">
+    <%= render :partial => 'shared/show_mugshot', :locals => {:item => @topic} %>
 		<h3 class="postheader">
 	    <a href="<%= url_for(single.creator) %>" name="<%= single.dom_id %>">
-	    	<img src="/images/furniture/spoke/blue/user.png" width="16" height="16" alt="Post">
-			  <%= h(single.creator.name) %>
-  	  </a>
-			<span class="when"><%= time_ago_in_words(single.created_at) %> ago</span>
+			  <strong><%= h(single.creator.name) %></strong>
+  	  </a><br />
+  	  <span class="headernote"><%= friendly_date(single.created_at) %></span>
+  	    
 		</h3>
 		<div class="postbody" id="post_<%= single.id %>">
 		  <%= single.body.formatted %>

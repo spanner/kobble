@@ -1,7 +1,7 @@
 <% 
   item ||= @thing 
   heading ||= "Upload an illustration"
-  addendum ||= "image will be resized for you"
+  addendum ||= "the image will be resized for you"
 %>
 
 <div class="formpart<%= ' witherrors' if item.errors.on(:image) %> notinline">
@@ -10,6 +10,6 @@
   <% if item.errors.on(:image) %><br />
     This <%= item.errors.on(:image).to_a.join(', ')%>
   <% end %>
-  <% if item.has_image? %><br /><a class="pale" href="<%= url_for_file_column(item.class.to_s.downcase, "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column(item.class.to_s.downcase, "image", "thumb"), :size => "18x18", :alt => '') %>
+  <% if item.has_image? %> <a class="formnote" href="<%= url_for_file_column(item.class.to_s.downcase, "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column(item.class.to_s.downcase, "image", "thumb"), :size => "28x20", :alt => '') %>
   current image is <%= item.image_relative_path %></a><% end %>
 </div>

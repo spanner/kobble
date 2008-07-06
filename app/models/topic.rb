@@ -10,7 +10,7 @@ class Topic < ActiveRecord::Base
   has_many :monitors, :through => :monitorships, :conditions => ['monitorships.active = ?', true], :source => :user
   has_many :posts, :order => 'posts.created_at asc', :dependent => :destroy
 
-  validates_presence_of :name, :referent
+  validates_presence_of :name, :referent, :body
   before_create :set_default_replied_at
   
   def add_monitors(users)
@@ -25,6 +25,10 @@ class Topic < ActiveRecord::Base
   
   def self.nice_title
     "conversation"
+  end
+  
+  def voices
+    @voices ||= posts.map{|p| p.creator}.uniq
   end
   
   protected

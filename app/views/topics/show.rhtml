@@ -3,27 +3,24 @@
 <div class="preamble">
   <p>
 	  A conversation started by <%= link_to @topic.creator.name, url_for(@topic.creator) %>
-	  <span class="when"><%= time_ago_in_words(@topic.created_at) %> ago</span>
-	  about this <%= @topic.referent.nice_title %>:
+    <%= time_ago_in_words(@topic.created_at) %> ago
+	  about the <%= @topic.referent.nice_title %> <%= link_to @topic.referent.name, url_for(@topic.referent) %>.
   </p>
 </div>
 
-<ul class="mainlist">
-<%= render :partial => 'shared/listed', :locals => {:listed => @topic.referent} %>
-</ul>
-
 <div class="contentblock topicbody">
+  <%= render :partial => 'shared/show_mugshot', :locals => {:item => @topic} %>
+	<h3 class="postheader">
+    <a href="<%= url_for(@topic.creator) %>" name="<%= @topic.dom_id %>">
+		  <strong><%= h(@topic.creator.name) %></strong>
+	  </a><br />
+	  <span class="headernote"><%= friendly_date(@topic.created_at) %></span>
+	</h3>
   <%= @topic.body.formatted %>
-  <h3><%= link_to "add a reply", new_topic_post_url(@topic), :id => 'extend_postlist', :class => 'create inlinereply' %> <span class="headernote">select text to quote</span></h3>
+  <h3><%= link_to "add a reply*", new_topic_post_url(@topic), :id => 'extend_postlist', :class => 'create inlinereply' %> <span class="headernote">select text to quote</span></h3>
 </div>
 
-
-
-
 <%= render :partial => 'comments' %>
-
-
-
 
 <% content_for :admin do %>
   <h3>

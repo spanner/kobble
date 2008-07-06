@@ -10,17 +10,28 @@
 %>
 
 	<% if @user != current_user %>
+	
     <% @title = "Edit User" %>
+
+    <% content_for :buttons do %>
+      <div class="formbuttons">
+        <%= submit_tag "Update User" %> or
+        <%= link_to 'cancel', url_for(@user) %>
+      </div>
+    <% end %>
+		
 	  <%= render :partial => 'form', :locals => {:f => f} %>
 
-    <div class="formbuttons">
-      <%= submit_tag "Update User" %> or
-      <%= link_to 'cancel', url_for(@user) %>
-    </div>
-		
 	<% else %>
 
     <% @title = "About yourself" %>
+
+    <% content_for :buttons do %>
+      <div class="formbuttons">
+        <%= submit_tag "Save changes" %> or
+        <%= link_to 'cancel', url_for(@user) %>
+      </div>
+    <% end %>
 
 	  <%= render :partial => 'self_form', :locals => {:f => f} %>
 

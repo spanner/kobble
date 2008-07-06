@@ -17,61 +17,39 @@
     <p class="haserror"><strong>Sorry: there were problems.</strong> Please check the form. The affected fields will be highlighted in pink.</p>
   <% end %>
 
-  <div class="formpart<%= ' witherrors' if @user.errors.on(:name) %>">
-    <label for="user_name" class="required">Name</label><br/>
-    <%= text_field 'user', 'name', 'class' => "titular" %>
-    <% if @user.errors.on(:name) %><br />
-      This <%= @user.errors.on(:name).to_a.to_sentence %>
-    <% end %>
-  </div>
+  <fieldset>
+    <legend>Person</legend>
 
-  <div class="formpart<%= ' witherrors' if @user.errors.on(:email) %>">
-    <label for="user_email" class="required">Email address</label><br/>
-    <%= f.text_field 'email', 'class' => "standard" %>
-    <% if @user.errors.on(:email) %><br />
-      This <%= @user.errors.on(:email).to_a.to_sentence %>
-    <% end %>
-  </div>
+    <%= render :partial => 'shared/edit_name', :locals => {:item => @user, :f => f, :required => true} %>
+    <%= render :partial => 'shared/edit_email', :locals => {:item => @user, :f => f, :required => true} %>
 
-  <div class="formpart<%= ' witherrors' if @user.errors.on(:login) %>">
-    <label for="user_login" class="optional">Login</label> defaults to email<br/>
-    <%= f.text_field :login, :class => 'standard' %>
-    <% if @user.errors.on(:login) %><br />
-      This <%= @user.errors.on(:login).to_a.to_sentence %>
-    <% end %>
-  </div>
+    <div class="formpart<%= ' witherrors' if @user.errors.on(:trusted) %>">
+      <%= f.check_box 'trusted' %><label for="user_trusted">this is a trusted user</label> and by default has access to all collections
+      <% if @user.errors.on(:trusted) %><br />
+        <br />This <%= @user.errors.on(:trusted).to_a.to_sentence %>
+      <% end %>
+    </div>
 
-  <div class="formpart<%= ' witherrors' if @user.errors.on(:trusted) %>">
-    <%= f.check_box 'trusted' %><label for="user_trusted">this is a trusted user</label> and by default has access to all collections
-    <% if @user.errors.on(:trusted) %><br />
-      <br />This <%= @user.errors.on(:trusted).to_a.to_sentence %>
-    <% end %>
-  </div>
+  </fieldset>
+  
+  <fieldset>
+    <legend>Description</legend>
 
-  <div class="formpart<%= ' witherrors' if @user.errors.on(:password) %>">
-    <label for="user_password"<% if @user.new_record? %> class="required"<% end %>><% unless @user.new_record? %>New password<% else %>Password<% end %></label><br/>
-    <%= password_field_tag :password, '', :class => 'standard' %>
-    <% if @user.errors.on(:password) %><br />
-      This <%= @user.errors.on(:password).to_a.to_sentence %>
-    <% end %>
-  </div>
+    <%= render :partial => 'shared/edit_description', :locals => {:item => @user, :f => f} %>
+    <%= render :partial => 'shared/edit_image', :locals => {:item => @user, :heading => "Mugshot"} %>
 
-  <div class="formpart<%= ' witherrors' if @user.errors.on(:password_confirmation) %>">
-    <label for="user_password_confirmation"<% if @user.new_record? %> class="required"<% end %>>Confirm <% unless @user.new_record? %>new <% end %>password</label><br/>
-    <%= password_field_tag :password_confirmation, '', :class => 'standard' %>
-    <% if @user.errors.on(:password_confirmation) %><br />
-      This <%= @user.errors.on(:password_confirmation).to_a.to_sentence %>
-    <% end %>
-  </div>
+  </fieldset>
 
-  <div class="formpart<%= ' witherrors' if @user.errors.on(:description) %>">
-    <label for="user_description" class="optional">Description</label><br />
-    <%= f.text_area 'description', 'rows' => 4, 'class' => "standard" %>
-    <% if @user.errors.on(:description) %><br />
-      This <%= @user.errors.on(:description).to_a.to_sentence %>
-    <% end %>
-  </div>
+  <%= yield :buttons %>
 
-  <%= render :partial => 'shared/edit_image', :locals => {:item => @user, :heading => "Mugshot"} %>
+  <fieldset>
+  <legend>Login</legend>
+
+    <%= render :partial => 'shared/edit_login', :locals => {:item => @user, :f => f} %>
+    <%= render :partial => 'shared/edit_password', :locals => {:item => @user, :f => f} %>
+
+  </fieldset>
+
+  <%= yield :buttons %>
 
 </div>
