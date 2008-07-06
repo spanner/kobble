@@ -19,10 +19,9 @@ var Interface = new Class({
     this.fixedbottom = [];
     this.inlinelinks = [];
     this.floaters = [];
-    this.debug_level = 1;
+    this.debug_level = 0;
     this.clickthreshold = 20;
     this.announcer = $E('div#notification');
-		console.log(this.announcer);
     this.admin = $E('div#admin');
     this.squeezebox = null;
     this.draghelper = null;
@@ -1085,9 +1084,8 @@ var jsonForm = new Class ({
 		intf.debug('jsonForm.processResponse', 5);
 		this.notWaiting();
 		if (response.errors) {
-			console.log(response.errors);
 			
-			// it's too awkward rebuilding or marking the form
+			// it's too dull and fiddly rebuilding or marking the form
 			// so potentially-iterative or validated forms should use htmlForm
 			
 		} else {
@@ -1133,7 +1131,6 @@ var jsonForm = new Class ({
 	},
 	
 	choose_anchor: function (at, towidth, toheight) {
-		console.log('existing anchor is ' + this.anchored_at);
 		if (this.anchored_at) return this.anchored_at;
 		
 		var scroll = document.getScroll();
