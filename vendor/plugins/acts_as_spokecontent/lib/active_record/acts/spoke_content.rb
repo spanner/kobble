@@ -260,31 +260,31 @@ module ActiveRecord
         end
 
         def has_image?
-          respond_to?('image') && !self.image.nil?
+          self.respond_to?('image') && !self.image.nil?
         end
 
         def image_exists?
-          has_image? && File.file? self.image
+          self.has_image? and File.file? self.image
         end
 
         def has_clip?
-          respond_to?('clip') && !self.clip.nil?
+          self.respond_to?('clip') && !self.clip.nil?
         end
         
         def clip_exists?
-          has_clip? && File.file? self.clip
+          self.has_clip? and File.file? self.clip
         end
 
         def has_file?
-          respond_to?('file') && !self.file.nil?
+          self.respond_to?('file') && !self.file.nil?
         end
         
         def file_exists?
-          has_file? && File.file? self.file
+          self.has_file? and File.file? self.file
         end
 
         def filetype
-          file_exists? ? file_relative_path.split('.').last : nil
+          self.has_file? ? self.file_relative_path.split('.').last : nil
         end
 
         def has_topics?
