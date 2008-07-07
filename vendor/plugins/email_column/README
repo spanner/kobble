@@ -1,0 +1,16 @@
+EmailColumn
+===========
+
+This simple plugin does one thing, and tries to do it well - it validates emails. To use it, just:
+
+  include EmailColumn
+
+in a model class, and then you can say:
+
+  email_column :email
+
+to get spiffy validation on your email-toting column. The validation can also be used stand-alone:
+
+  EmailColumn.valid?('asdf@example.com')
+
+Enjoy!

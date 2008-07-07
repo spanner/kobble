@@ -373,12 +373,12 @@ ActiveRecord::Schema.define(:version => 20080704113136) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "login",                     :limit => 80,                 :null => false
+    t.string   "login",                     :limit => 80, :default => "", :null => false
     t.string   "crypted_password",          :limit => 40, :default => "", :null => false
-    t.string   "email",                     :limit => 60,                 :null => false
+    t.string   "email",                     :limit => 60, :default => "", :null => false
     t.string   "diminutive",                :limit => 40
     t.string   "honorific"
-    t.string   "salt",                      :limit => 40,                 :null => false
+    t.string   "salt",                      :limit => 40, :default => "", :null => false
     t.integer  "verified",                  :limit => 11, :default => 0
     t.string   "remember_token",            :limit => 40
     t.datetime "remember_token_expires_at"
