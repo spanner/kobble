@@ -14,7 +14,7 @@ class AccountsController < ApplicationController
 
   def home
     @account = current_user.account
-    @collections = current_account.collections_by_activity
+    @collections = current_user.collections_available
     case params[:since]
     when 'today'
       @since = Time.now.beginning_of_day
