@@ -14,7 +14,7 @@ class AccountsController < ApplicationController
 
   def home
     @account = current_user.account
-    @collections = current_user.collections_available
+    @collections = current_user.collections_available.sort_by{ |collection| collection.last_event_at }.reverse
     case params[:since]
     when 'today'
       @since = Time.now.beginning_of_day

@@ -335,6 +335,10 @@ module ActiveRecord
           return creator
         end
         
+        def last_event_at
+          self.events.most_recent.empty? ? DateTime.new(0) : self.events.most_recent.first.at
+        end
+        
         def reassign_associates
           logger.warn("@@@@ reassign_to is #{self.reassign_to} and it's a #{self.reassign_to.class}")
           if self.reassign_to && self.reassign_to.is_a?(User)

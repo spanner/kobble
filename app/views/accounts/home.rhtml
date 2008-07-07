@@ -34,7 +34,7 @@
     </h3>
       <% if collection.events.count %>
         <p class="subhead">
-          last activity <%= time_ago_in_words(collection.last_active_at) %> ago: 
+          last activity <%= time_ago_in_words(collection.last_event_at) %> ago: 
         </p>
         
         <div id="history_<%= collection.id %>">
