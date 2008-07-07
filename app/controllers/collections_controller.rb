@@ -1,7 +1,7 @@
 class CollectionsController < ApplicationController
   
   before_filter :find_account
-  before_filter :account_admin_required, :except => [:index, :show]
+  # before_filter :account_admin_required, :except => [:index, :show]
   before_filter :admin_or_same_account_required
   
   # only accessible as nested resource of account

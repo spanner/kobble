@@ -64,7 +64,7 @@
       <%= render :partial => 'shared/edit_clip', :locals => {:item => @node, :f => f} %>
     <% end %>  
       
-    <%= render :partial => 'shared/edit_body', :locals => {:item => @node, :f => f, :short => @inline} %>
+    <%= render :partial => 'shared/edit_body', :locals => {:item => @node, :f => f, :short => @inline, :required => true} %>
 
     <% unless @inline %>
       <%= render :partial => 'shared/edit_file', :locals => {:item => @node, :f => f} %>
