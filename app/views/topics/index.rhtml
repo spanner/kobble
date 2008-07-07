@@ -1,2 +1,17 @@
-<h1>Post#index</h1>
-<p>Find me in app/views/posts/index.rhtml</p>
+<% @title = 'Discussion' %>
+
+<% if @topics && @topics.total_entries > 0 %>
+  
+  <div class="mainlist">
+    <%= render :partial => 'shared/pagination', :locals => {:list => @topics} %>
+    
+    <%= render :partial => 'topics/single', :collection => @topics, :locals => {:show_referent => true} %>
+    
+    <%= render :partial => 'shared/pagination', :locals => {:list => @topics} %>
+  </div>
+
+  <%= render :partial => 'searches/form' %>
+
+<% else %>
+	<p>You have no conversations yet. Click on 'discuss*' next to any item to start talking about it.</p>
+<% end %>

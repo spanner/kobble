@@ -1,6 +1,6 @@
 <% item ||= @thing %>
 
-<p>
+<div class="summary">
 	<% if item.respond_to?('collection') %>
 	  Collection: <% if item.collection %><%= link_to item.collection.name, url_for(item.collection) %><% else %>none<% end %>. 
 	<% end %>
@@ -19,4 +19,5 @@
 	<% if item.updater %>
 	  Last updated by: <%= link_to item.updater.name, url_for(item.updater) %>.
 	<% end %>
-</p>
+	Draggable: <%= render :partial => 'shared/listed', :locals => {:listed => item} %>
+</div>

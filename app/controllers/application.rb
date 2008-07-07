@@ -73,7 +73,7 @@ class ApplicationController < ActionController::Base
     @view = 'index'
     respond_to do |format|
       format.html { render :template => 'shared/list' }
-      format.js { render :template => 'shared/list', :layout => false }
+      format.js { render :template => 'shared/list', :layout => 'inline' }
     end
   end
 
@@ -82,7 +82,7 @@ class ApplicationController < ActionController::Base
     @view = 'gallery'
     respond_to do |format|
       format.html { render :template => 'shared/gallery' }
-      format.js { render :template => 'shared/gallery', :layout => false }
+      format.js { render :template => 'shared/gallery', :layout => 'inline' }
     end
   end
   

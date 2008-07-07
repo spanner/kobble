@@ -23,8 +23,8 @@
   <% current_account.users.each do |user| %>
     <li class="user">
       <%= link_to user.name, user_url(user), :class => 'listed' %>
-      <%= link_to "edit", edit_user_url(user), :class => 'edit' %>
-      <%= link_to "delete", predelete_user_url(user), :class => 'delete' %>
+      <%= link_to "edit", edit_user_url(user), :class => 'edit' if account_admin? || user == current_user %>
+      <%= link_to "delete", predelete_user_url(user), :class => 'delete' if account_admin? %>
     </li>
   <% end %>
   <li class="create create_user"><%= link_to "invite a new user", new_account_user_url(current_account) %></li>

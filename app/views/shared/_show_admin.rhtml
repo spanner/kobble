@@ -1,8 +1,19 @@
-<% if item.is_a?(Account) && account_admin? %>
-  <%= link_to "+user", new_account_user_url(item), {:class => 'create'} %><br />
-  <%= link_to "+collection", new_account_collection_url(item), {:class => 'create'} %><br />
-  <%= link_to_unless_current "permissions", permissions_account_url(item) %>
-  <%= link_to_unless_current "settings", edit_account_url(item) %><br />
+<% if item.is_a?(Account) %>
+  <% if account_admin? %>
+    <%= link_to "+collection", new_account_collection_url(item), {:class => 'create'} %><br />
+    <%= link_to "+user", new_account_user_url(item), {:class => 'create'} %><br />
+    <%= link_to_unless_current "permissions", permissions_account_url(item) %><br />
+    <%= link_to_unless_current "settings", edit_account_url(item) %>
+  <% end %>
+
+<% elsif item.is_a?(User) %>
+  <% if account_admin? %>
+    <%= link_to "edit" , {:controller => item.class.to_s.pluralize.underscore, :action => 'edit', :id => item} %><br />
+    <%= link_to "delete", {:controller => item.class.to_s.pluralize.underscore, :action => 'predelete', :id => item}, {:class => 'mildwarning'} unless item == current_user %><br />
+    <%= link_to "create", {:controller => item.class.to_s.pluralize.underscore, :action => 'new'}, {:class => 'create'} %><br />
+  <% else %>
+    <%= link_to "your settings" , {:controller => 'users', :action => 'edit', :id => current_user} %><br />
+  <% end %>
 
 <% else %>
   <% if item.is_notable? %>
@@ -12,8 +23,8 @@
     <%= link_to "discuss*", item_new_topic_url(item), {:id => 'admin_extend_topiclist', :class => 'inlinediscuss'} %><br />
   <% end %>
   <%= link_to "edit" , {:controller => item.class.to_s.pluralize.underscore, :action => 'edit', :id => item} %><br />
-  <% if item.is_a?(User) || item.is_a?(Collection) %>
-    <%= link_to "delete", {:controller => item.class.to_s.pluralize.underscore, :action => 'predelete', :id => item}, {:class => 'mildwarning'} %><br />
+  <% if item.is_a?(Collection) %>
+    <% if account_admin? %><%= link_to "delete", {:controller => item.class.to_s.pluralize.underscore, :action => 'predelete', :id => item}, {:class => 'mildwarning'} %><br /><% end %>
   <% else %>
     <%= link_to "delete", {:controller => item.class.to_s.pluralize.underscore, :action => 'destroy', :id => item}, {:class => 'warning', :method => :delete} %><br />
   <% end %>

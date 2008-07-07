@@ -6,6 +6,7 @@ ActionController::Routing::Routes.draw do |map|
   map.login '/login', :controller => 'login', :action => 'login'
   map.logout '/logout', :controller => 'login', :action => 'logout'
   map.repassword '/repassword', :controller => 'login', :action => 'repassword'
+  map.forbidden '/forbidden', :controller => 'login', :action => 'forbidden'
   
   # catch and drop are dispatched by controllers and can't be restful
   
@@ -17,6 +18,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :users, :has_many => [:activations, :user_preferences, :permissions, :scratchpads, :events, :sources, :nodes, :bundles, :people, :topics, :posts], :collection => { :gallery => :get }, :member => { :home => :get, :recover => :post, :reinvite => :any, :predelete => :get }
   map.resources :annotations
   map.resources :preferences
+  map.resources :events
 
   map.resources :sources, :has_many => [:topics, :nodes, :annotations], :collection => { :gallery => :get }, :member => {:annotate => :post, :recover => :post}
   map.resources :nodes, :has_many => [:topics, :annotations], :collection => { :gallery => :get }, :member => {:annotate => :post, :recover => :post}

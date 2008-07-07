@@ -71,7 +71,7 @@ class User < ActiveRecord::Base
     status >= 200
   end
   
-  def is_developer?
+  def developer?
     status >= 300
   end
   
@@ -131,8 +131,8 @@ class User < ActiveRecord::Base
   def status_in_words
     return "not yet activated" if inactive?
     return "deleted" if deleted?
-    return "site developer" if is_developer?
-    return "site admin" if is_developer?
+    return "site developer" if developer?
+    return "site admin" if admin?
     return "account holder" if account_holder?
     return "account administrator" if account_admin?
     return "normal user"
@@ -149,6 +149,7 @@ class User < ActiveRecord::Base
   end
 
   def authenticated?(password)
+    logger.warn("!!!! testing password #{password} for user #{name}")
     crypted_password == encrypt(password)
   end
 
@@ -171,7 +172,7 @@ class User < ActiveRecord::Base
   end
     
   def best_name
-    self.diminutive.nil? ? self.name : self.diminutive
+    self.diminutive.blank? ? self.name : self.diminutive
   end
   
   def provisional_new_password

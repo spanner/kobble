@@ -70,6 +70,7 @@ h1 {
   line-height:  1.2;
   color: #4d4e53;
 	margin-bottom: 0;
+	width: 500px;
 }
 
 h2, h3 {
@@ -180,8 +181,7 @@ div#navigation a.louder { color: #559DC4; }
 div#navigation a:hover { color: black; }
 div#navigation a.pale { color: #8c8d8e; }
 div#navigation a.fg:hover {}
-
-
+div#navigation a.administrative { color: #4d4e53;}
 
 div#notification {
   position: fixed;
@@ -201,6 +201,14 @@ div#notification.error {
   border: 3px solid #e67f00;
 }
 
+div#dragme {
+  position: fixed;
+	top: 30px;
+	left: 640px;
+	width: 220px;
+	margin: 0 0 6px 12px;
+	padding: 4px;
+}
 
 /* admin controls */
 
@@ -458,7 +466,7 @@ div.scratchpage a.edit, div.scratchpage a.delete {
 div.preamble {
   max-width: 640px;
 /*  clear: left;*/
-  font-size: 80%;
+/*  font-size: 85%;*/
 }
 
 div.contentblock {
@@ -505,9 +513,10 @@ div.mainlist ul.listcolumn {
 }
 
 .mainlist li, li.single, ul.minimal li {
-  margin: 0 10px 4px 25px;
+  margin: 0 10px 4px 0;
   font-size: 16px;
   line-height: 24px;
+	list-style-position: inside;
 }
 
 ul.minimal li {
@@ -610,26 +619,6 @@ li.annotated_tag { list-style-image: url(/images/furniture/spoke/grey/tag.png); 
 li.annotated_flag { list-style-image: url(/images/furniture/spoke/grey/flag.png); }
 li.annotated_topic { list-style-image: url(/images/furniture/spoke/grey/post.png); }
 
-li.warned_collection { list-style-image: url(/images/furniture/spoke/orange/collection.png); }
-li.warned_node { list-style-image: url(/images/furniture/spoke/orange/node.png); }
-li.warned_source { list-style-image: url(/images/furniture/spoke/orange/source.png); }
-li.warned_bundle { list-style-image: url(/images/furniture/spoke/orange/bundle.png); }
-li.warned_user { list-style-image: url(/images/furniture/spoke/orange/user.png); }
-li.warned_person { list-style-image: url(/images/furniture/spoke/orange/user.png); }
-li.warned_tag { list-style-image: url(/images/furniture/spoke/orange/tag.png); }
-li.warned_flag { list-style-image: url(/images/furniture/spoke/orange/flag.png); }
-li.warned_topic { list-style-image: url(/images/furniture/spoke/orange/post.png); }
-
-li.greenlit_collection { list-style-image: url(/images/furniture/spoke/green/collection.png); }
-li.greenlit_node { list-style-image: url(/images/furniture/spoke/green/node.png); }
-li.greenlit_source { list-style-image: url(/images/furniture/spoke/green/source.png); }
-li.greenlit_bundle { list-style-image: url(/images/furniture/spoke/green/bundle.png); }
-li.greenlit_user { list-style-image: url(/images/furniture/spoke/green/user.png); }
-li.greenlit_person { list-style-image: url(/images/furniture/spoke/green/user.png); }
-li.greenlit_tag { list-style-image: url(/images/furniture/spoke/green/tag.png); }
-li.greenlit_flag { list-style-image: url(/images/furniture/spoke/green/flag.png); }
-li.greenlit_topic { list-style-image: url(/images/furniture/spoke/green/post.png); }
-
 li.created, li.created a, a.created { color: #5da454; }
 li.updated, li.updated a, a.updated { color: #CC6E1F; }
 li.deleted, li.deleted a, a.deleted { color: #8c8d8e; }
@@ -676,6 +665,28 @@ li.drophere a {
 li.deleted a, span.deleted {
   color: #8c8d8e;
   text-decoration: line-through;
+}
+
+div.summary {
+	clear: left;
+	margin-bottom: 16px;
+}
+
+div.summary div.mainlist, div.summary ul {
+	display: inline;
+}
+
+div.summary li {
+	display: inline;
+}
+
+div.summary a.listed {
+	font-weight: bold;
+	border-bottom: 1px dotted #559DC4;
+}
+
+div.summary div.tiptext {
+	display: none;
 }
 
 /* table formatting */

@@ -1,5 +1,8 @@
 <div class="preamble">
-  <p>First, please enter your existing password. This is just to make sure that you're you and not a passer-by. If you can't remember your present password, please see the welcome message we sent out (on <%= @user.created_at.strftime("%A %B %d %Y at %I:%M%p") %>) or use the <%= link_to "reset my password", :controller => 'login', :action => 'repassword' %> option to create a new random password.</p>
+  <p>
+    Hello <%= @user.best_name %>.
+    Before you change anything here, please enter your existing password. This is just to make sure that you're you and not a passer-by. 
+  </p>
 </div>
 
 <% unless @user.errors.empty? %>
@@ -8,18 +11,17 @@
 
 <div class="mainform contentblock">
 
-    <div class="formpart<%= ' witherrors' if @user.errors.on(:old_password) %>">
-      <label for="user_old_password" class="required">Your (present) password</label><br/>
-      <%= password_field_tag 'user_old_password', '', {:class => "standard", :name => 'user[old_password]'} %></p>
-      <% if @user.errors.on(:old_password) %><br />
-        This <%= @user.errors.on(:old_password).to_a.to_sentence %>
-      <% end %>
-    </div>
+  <div class="formpart<%= ' witherrors' if @user.errors.on(:old_password) %>">
+    <label for="user_old_password" class="required">Your (present) password</label><br/>
+    <%= f.password_field :old_password, {:class => "standard"} %></p>
+    <% if @user.errors.on(:old_password) %><br />
+      This <%= @user.errors.on(:old_password).to_a.to_sentence %>
+    <% end %>
+  </div>
 
   <div class="preamble">
     <p>
-    	You can use the rest of this form to change your password, add a bit more information about yourself and upload a picture. 
-    	Everything is optional apart from the first two questions, which you have already answered:
+      If you can't remember your present password, please see the welcome message we sent out (on <%= @user.activated_at.strftime("%A %B %d %Y at %I:%M%p") %>) or use the <%= link_to "reset my password", :controller => 'login', :action => 'repassword' %> option to create a new random password.
     </p>
   </div>
 

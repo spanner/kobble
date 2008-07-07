@@ -24,14 +24,17 @@ class EventsController < ApplicationController
     if params[:account_id]
       access_insufficient unless admin?
       @account = Account.find(params[:account_id])
+      @scope = 'account'
     else
       @account = current_account
     end
     if params[:collection_id]
       @collection = @account.collections.find(params[:collection_id])
+      @scope = 'collection'
     end
     if params[:user_id]
       @user = @account.users.find(params[:user_id])
+      @scope = 'user'
     end
   end
   

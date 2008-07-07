@@ -32,13 +32,13 @@
         </span>
       <% end %>
     </h3>
-      <% if collection.last_active_at %>
+      <% if collection.events.count %>
         <p class="subhead">
           last activity <%= time_ago_in_words(collection.last_active_at) %> ago: 
         </p>
         
         <div id="history_<%= collection.id %>">
-          <%= render :partial => 'collections/history', :locals => {:collection => collection, :count => 4} %>
+          <%= render :partial => 'collections/history', :locals => {:collection => collection} %>
         </div>
         
       <% else %>

@@ -11,7 +11,6 @@
   when 'created'
     @title += ": creations"
   end
-  @scope = 'account'
   @klass = Event
 %>
 
@@ -42,7 +41,13 @@
 
     <ul>
       <% @events.each do |event| %>
-        <% who = event.user == current_user ? 'you' : event.user.name %>
+        <%
+          if event.user
+            who = event.user == current_user ? 'you' : event.user.name
+          else
+            who = 'someone'
+          end
+        %>
         <%= render :partial => "shared/listed", :locals => {
           :listed => event.affected, 
           :colourclass => event.event_type, 

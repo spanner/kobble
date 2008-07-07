@@ -35,6 +35,7 @@
       <% end %>
       <%= link_to 'search', search_url, {:class => request.parameters[:controller] == 'searches' ? " fg" : ''} %>
       <%= link_to 'discussion', {:controller => 'topics', :action => 'index'}, {:class => request.parameters[:controller] == 'topics' ? " fg" : ''} if current_account.can_have_discussion? %>
+      <%= link_to 'log out', {:controller => 'login', :action => 'logout'}, {:class => 'administrative'} %>
     </div>
   </div> 
 

@@ -6,6 +6,7 @@ class UsersController < ApplicationController
   before_filter :build_user, :only => [:new, :create]
   before_filter :account_admin_required, :except => [:edit, :update, :show]
   before_filter :account_admin_or_self_required, :only => [:edit, :update]
+  before_filter :account_admin_or_password_given, :only => [:update]
   before_filter :admin_or_same_account_required
   
   def list_columns
@@ -36,7 +37,7 @@ class UsersController < ApplicationController
     if @user.save
       flash[:notice] = 'User created.'
       respond_to do |format|
-        format.html { redirect_to :action => 'index' }
+        format.html { redirect_to :action => 'show', :id => @user }
         format.json { render :json => @user.to_json }
       end
     else
@@ -49,9 +50,6 @@ class UsersController < ApplicationController
   end
 
   def update
-    if (@user == current_user)
-      # check old password supplied
-    end
     if @user.update_attributes(params[:user])
       flash[:notice] = 'User was updated.'
       respond_to do |format|
@@ -59,6 +57,7 @@ class UsersController < ApplicationController
         format.json { render :json => @user.to_json }
       end
     else
+      flash[:error] = 'Validation problems.'
       render :action => 'edit'
     end
   end
@@ -109,7 +108,20 @@ class UsersController < ApplicationController
 
   def account_admin_or_self_required
     return true if current_user.account_admin?
-    params[:id] == current_user.id ? true : access_insufficient
+    return true if @user == current_user
+    access_insufficient
+  end
+  
+  def account_admin_or_password_given
+    return true if current_user.account_admin?
+    @user.attributes = params[:user]
+    return true if @user.authenticated?(@user.old_password)
+    logger.warn("!!!! password not good")
+    flash[:error] = 'Wrong password.'
+    @user.valid?    # might as well display the other validation messages while we're there
+    @user.errors.add(:old_password, "was not correct")
+    render :action => 'edit'
+    false
   end
   
   def admin_or_same_account_required

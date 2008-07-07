@@ -1,3 +1,8 @@
+<% 
+  show_referent ||= false
+  limit ||= 400
+%>
+
 <div class="topic contentblock" id="topicholder_<%= single.id %>">
   <%= render :partial => 'shared/show_mugshot', :locals => {:item => single} %>
 	<h3 class="postheader">
@@ -9,8 +14,11 @@
 		</span>
 	</h3>
 	<div class="postbody" id="post_<%= single.id %>">
-	  <%= single.body.formatted %>
+	  <%= truncate(single.body.formatted, limit) %>
   	<p class="paranthetical">
+  	  <% if show_referent %>
+  	    conversation about the <%= single.referent.nice_title %> <%= link_to single.referent.name, url_for(single.referent) %> with
+  	  <% end %>
   	  <%= link_to pluralize(single.posts.count, 'reply'), item_topic_url(single.referent, single) %>
   	  <% if single.posts.count > 1 %>from <%= pluralize(single.voices.size, 'person') %> <% end %>
 	  </p>
