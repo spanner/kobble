@@ -9,7 +9,7 @@
 <% elsif item.is_a?(User) %>
   <% if account_admin? %>
     <%= link_to "edit" , {:controller => item.class.to_s.pluralize.underscore, :action => 'edit', :id => item} %><br />
-    <%= link_to "delete", {:controller => item.class.to_s.pluralize.underscore, :action => 'predelete', :id => item}, {:class => 'mildwarning'} unless item == current_user %><br />
+    <% if item == current_user %><%= link_to "delete", {:controller => item.class.to_s.pluralize.underscore, :action => 'predelete', :id => item}, {:class => 'mildwarning'} %><br /><% end %>
     <%= link_to "create", {:controller => item.class.to_s.pluralize.underscore, :action => 'new'}, {:class => 'create'} %><br />
   <% else %>
     <%= link_to "your settings" , {:controller => 'users', :action => 'edit', :id => current_user} %><br />
