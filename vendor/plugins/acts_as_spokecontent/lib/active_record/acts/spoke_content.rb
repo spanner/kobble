@@ -25,20 +25,23 @@ module ActiveRecord
       # by default all behaviours are created.
       
       module ClassMethods
- 
+        
         def acts_as_spoke(options={})
-          definitions = [:collection, :owners, :illustration, :organisation, :description, :annotation, :discussion, :index, :log, :undelete, :selection]
+          possible_definitions = [:collection, :owners, :illustration, :organisation, :description, :annotation, :discussion, :index, :log, :undelete, :selection]
+          cattr_accessor possible_definitions.map{|d| "_has_#{d.to_s}".intern }
+          
           if options[:except]
-            definitions = definitions - Array(options[:except]) 
+            definitions = possible_definitions - Array(options[:except]) 
           elsif options[:only]
-            definitions = definitions & Array(options[:only]) 
+            definitions = possible_definitions & Array(options[:only])
+          else
+            definitions = possible_definitions
           end
         
-          if definitions.include?(:index)
-            is_indexed :fields => self.index_fields, :concatenate => self.index_concatenation
-            Spoke::Associations.indexed_model(self)
+          possible_definitions.each do |d|
+            send( "_has_#{d.to_s}=".intern, definitions.include?(d))      # note that _has_x doesn't mean that the necesary columns are there, just that they ought to be
           end
-          
+        
           if definitions.include?(:collection)
             if self.column_names.include?('collection_id')
               belongs_to :collection
@@ -136,18 +139,24 @@ module ActiveRecord
             named_scope :created_by, lambda {|user| { :conditions => ['created_by = ?', user.id] } }
           end
           
+          if definitions.include?(:index)
+            is_indexed :fields => self.index_fields, :concatenate => self.index_concatenation, :conditions => "deleted_at IS NULL or deleted_at > NOW()"
+            Spoke::Associations.indexed_model(self)
+          end
+          
           self.module_eval("include InstanceMethods")
         end
                 
         def index_fields
-          [
-            'name', 'description', 'body', 
-            'created_at', 'collection_id', 'created_by'   # these are faceted
-          ]
+          ['name', 'description', 'body','created_at', 'collection_id', 'created_by'].select{ |m| column_names.include?(m) }
         end
-
+        
         def index_concatenation
-          [{:fields => ['observations', 'arising', 'emotions'], :as => 'field_notes'}]
+          sets = []
+          sets.push({:association_name => 'annotations', :field => 'body', :as => 'annotations'}) if self._has_annotation
+          sets.push({:association_name => 'topics', :field => 'body', :as => 'topics'}) if self._has_discussion
+          sets.push({:association_name => 'posts', :field => 'body', :as => 'topics'}) if self._has_discussion
+          sets
         end
         
         def sort_options
@@ -167,7 +176,7 @@ module ActiveRecord
         
         def nice_title
           self.to_s.downcase
-        end        
+        end
          
       end #classmethods
       

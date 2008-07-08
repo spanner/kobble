@@ -17,7 +17,7 @@
 # .conf files. Do not symlink the .conf file to the .base file; it's wrong.
 #
 
-<% path = "/opt/local/var/data/sphinx/" %>
+<% path = "/var/www/materialist/shared/sphinx/" %>
 
 # Indexing options
 indexer
@@ -47,7 +47,7 @@ searchd
 client
 {
   # Name of the Aspell dictionary (two letters max)
-  dictionary_name = ap
+  dictionary_name = en
   
   # How your application connects to the search daemon (not necessarily the same as above)
   server_host = localhost

@@ -4,7 +4,7 @@ class Topic < ActiveRecord::Base
   # and hold administrative information like the latest poster and the initiator of the conversation
   # topic_observer sets topic.collection (to facilitate retrieval, only) and sends out email to topic monitors
   
-  acts_as_spoke :except => [:illustration, :discussion, :index, :annotation]
+  acts_as_spoke :except => [:illustration, :discussion, :annotation]
   belongs_to :referent, :polymorphic => true
   has_many :monitorships, :dependent => :destroy
   has_many :monitors, :through => :monitorships, :conditions => ['monitorships.active = ?', true], :source => :user
@@ -29,6 +29,10 @@ class Topic < ActiveRecord::Base
   
   def voices
     @voices ||= posts.map{|p| p.creator}.uniq
+  end
+
+  def index_concatenation
+    [{:association_name => 'posts', :field => 'body', :as => 'posts'}]
   end
   
   protected

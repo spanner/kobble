@@ -1,3 +1,5 @@
+<%= link_to "+source", new_source_url(), {:class => 'create'} %><br />
+
 <% if item.is_a?(Account) %>
   <% if account_admin? %>
     <%= link_to "+collection", new_account_collection_url(item), {:class => 'create'} %><br />
