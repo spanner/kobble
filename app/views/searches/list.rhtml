@@ -6,8 +6,8 @@
   
   <div class="mainlist">
     <% counter = 0 %>
-    <% column_length = @search.per_page / controller.list_columns %>
-    <% column_width = 800 / controller.list_columns %>
+    <% column_length = @search.per_page / 3 %>
+    <% column_width = 260 %>
 
     <ul class="listcolumn" style="width: <%= column_width.to_i %>px;">
       <% @search.results.each do |listed| %>

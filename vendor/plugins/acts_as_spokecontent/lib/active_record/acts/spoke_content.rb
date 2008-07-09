@@ -128,7 +128,6 @@ module ActiveRecord
             else
               logger.warn("!! #{self.to_s} should be paranoid but has no deleted_at column")
             end
-            
           end
 
           if definitions.include?(:selection)
@@ -140,7 +139,11 @@ module ActiveRecord
           end
           
           if definitions.include?(:index)
-            is_indexed :fields => self.index_fields, :concatenate => self.index_concatenation, :conditions => "#{self.table_name}.deleted_at IS NULL or #{self.table_name}.deleted_at > NOW()"
+            self.is_indexed(
+              :fields => self.index_fields, 
+              :concatenate => self.index_concatenation, 
+              :conditions => "#{self.table_name}.deleted_at IS NULL or #{self.table_name}.deleted_at > NOW()"
+            )
             Spoke::Associations.indexed_model(self)
           end
           

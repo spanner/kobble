@@ -38,7 +38,7 @@ class SearchesController < ApplicationController
     @search = Ultrasphinx::Search.new(
       :query => params[:q],
       :page => params[:page] || 1, 
-      :per_page => 20,
+      :per_page => 30,
       :weights => {'name' => 4, 'description' => 3, 'body' => 2},
       :facets => ['collection_id', 'created_by'],
       :class_names => params[:among],
