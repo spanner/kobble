@@ -140,7 +140,7 @@ module ActiveRecord
           end
           
           if definitions.include?(:index)
-            is_indexed :fields => self.index_fields, :concatenate => self.index_concatenation, :conditions => "deleted_at IS NULL or deleted_at > NOW()"
+            is_indexed :fields => self.index_fields, :concatenate => self.index_concatenation, :conditions => "#{self.table_name}.deleted_at IS NULL or #{self.table_name}.deleted_at > NOW()"
             Spoke::Associations.indexed_model(self)
           end
           
@@ -148,14 +148,13 @@ module ActiveRecord
         end
                 
         def index_fields
-          ['name', 'description', 'body','created_at', 'collection_id', 'created_by'].select{ |m| column_names.include?(m) }
+          ['name', 'description', 'body', 'created_at', 'collection_id', 'created_by'].select{ |m| column_names.include?(m) }
         end
         
         def index_concatenation
           sets = []
-          sets.push({:association_name => 'annotations', :field => 'body', :as => 'annotations'}) if self._has_annotation
-          sets.push({:association_name => 'topics', :field => 'body', :as => 'topics'}) if self._has_discussion
-          sets.push({:association_name => 'posts', :field => 'body', :as => 'topics'}) if self._has_discussion
+          sets.push({:association_name => 'annotations', :field => 'body', :as => 'annotations', :conditions => "annotations.deleted_at IS NULL or annotations.deleted_at > NOW()"}) if self._has_annotation
+          sets.push({:association_name => 'topics', :field => 'body', :as => 'topics', :conditions => "topics.deleted_at IS NULL or topics.deleted_at > NOW()"}) if self._has_discussion
           sets
         end
         
