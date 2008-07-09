@@ -140,6 +140,7 @@ module ActiveRecord
           
           if definitions.include?(:index)
             self.is_indexed(
+              :delta => true,
               :fields => self.index_fields, 
               :concatenate => self.index_concatenation, 
               :conditions => "#{self.table_name}.deleted_at IS NULL or #{self.table_name}.deleted_at > NOW()"
