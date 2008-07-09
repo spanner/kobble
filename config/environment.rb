@@ -64,5 +64,6 @@ Ultrasphinx::Search.excerpting_options = HashWithIndifferentAccess.new({
 })
 
 Ultrasphinx::Search.client_options[:with_subtotals] = true
+Ultrasphinx::Search.client_options[:with_global_rank] = true
 
 

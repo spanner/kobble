@@ -253,6 +253,12 @@ module ActiveRecord
           self.annotations.good
         end
 
+        # for indexing and excerpting purposes:
+
+        def field_notes
+          self.has_notes? ? self.annotations.map {|n| n.body }.join(' ') : ''     
+        end
+        
         def has_origins?
           (self.respond_to?('source') && source.nil?) && 
           (self.respond_to?('speaker') && speaker.nil?) && 
