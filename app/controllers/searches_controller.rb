@@ -33,7 +33,8 @@ class SearchesController < ApplicationController
     @fullsearch = Ultrasphinx::Search.new(
       :query => params[:q],
       :weights => {'name' => 4, 'description' => 3, 'body' => 2},
-      :facets => ['collection_id', 'created_by']
+      :facets => ['collection_id', 'created_by'],
+      :ignore_missing_records => true
     )
     @search = Ultrasphinx::Search.new(
       :query => params[:q],
@@ -42,7 +43,8 @@ class SearchesController < ApplicationController
       :weights => {'name' => 4, 'description' => 3, 'body' => 2},
       :facets => ['collection_id', 'created_by'],
       :class_names => params[:among],
-      :filters => filters
+      :filters => filters,
+      :ignore_missing_records => true
     )
     @fullsearch.run
     @search.excerpt
