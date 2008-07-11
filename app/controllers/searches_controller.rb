@@ -32,14 +32,14 @@ class SearchesController < ApplicationController
     filters['created_by'] = params[:creator] if params[:creator]
     @fullsearch = Ultrasphinx::Search.new(
       :query => params[:q],
-      :weights => {'name' => 4, 'description' => 3, 'body' => 2},
+      :weights => {'tags' => 6, 'name' => 6, 'description' => 3, 'body' => 2},
       :facets => ['collection_id', 'created_by']
     )
     @search = Ultrasphinx::Search.new(
       :query => params[:q],
       :page => params[:page] || 1, 
       :per_page => 30,
-      :weights => {'name' => 4, 'description' => 3, 'body' => 2},
+      :weights => {'tags' => 6, 'name' => 6, 'description' => 3, 'body' => 2},
       :facets => ['collection_id', 'created_by'],
       :class_names => params[:among],
       :filters => filters

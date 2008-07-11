@@ -36,7 +36,6 @@ class User < ActiveRecord::Base
   has_many :created_taggings, :class_name => 'Tagging', :foreign_key => 'created_by', :dependent => :nullify
   has_many :events, :order => 'at DESC', :dependent => :nullify
 
-
   named_scope :in_account, lambda { |account| {:conditions => { :account_id => account.id }} }
 
   email_column :email

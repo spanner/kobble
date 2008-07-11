@@ -36,28 +36,22 @@ class AccountsController < ApplicationController
   def new
     @account = Account.new(params[:account])
     @user = User.new(params[:user])
-    if request.post?
-      @user.status = 0
-      @user.save!
-      session[:user] = @user.id
-      self.current_user = @user
-      flash[:notice] = "Registration processed."
-      redirect_to :controller => '/login', :action => 'index'
-    end
     render :layout => 'login'
-  rescue ActiveRecord::RecordInvalid
-    @known_user = User.find_by_email(@user.email)
-    render :action => 'new', :layout => 'login'
   end
 
   def create
     @account = Account.new(params[:account])
-    if @account.save
-      flash[:notice] = 'Account was successfully created.'
-      redirect_to :action => 'show', :id => @account
-    else
-      render :action => 'new'
+    @user = User.new(params[:user])
+    if request.post?
+      @user.save!
+      session[:user] = @user.id
+      self.current_user = @user
+      flash[:notice] = "Registration processed."
+      redirect_to :action => 'home'
     end
+  rescue ActiveRecord::RecordInvalid
+    @known_user = User.find_by_email(@user.email)
+    render :action => 'new', :layout => 'login'
   end
 
   def edit
