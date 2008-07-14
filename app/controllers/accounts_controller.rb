@@ -1,4 +1,5 @@
 class AccountsController < ApplicationController
+  skip_before_filter :login_required, :only => [:new, :create]  
   skip_before_filter :check_activations  
   before_filter :admin_or_owner_required, :except => [:create, :new, :home]
 
@@ -35,6 +36,7 @@ class AccountsController < ApplicationController
 
   def new
     @account = Account.new(params[:account])
+    @account.account_type = AccountType.find_by_name('personal')
     @user = User.new(params[:user])
     render :layout => 'login'
   end

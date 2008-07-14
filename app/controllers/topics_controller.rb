@@ -106,11 +106,17 @@ class TopicsController < ApplicationController
     end
 
     def find_topic
-      @topic = @referent.topics.find(params[:id])
+      if (@referent)
+        @topic = @referent.topics.find(params[:id])
+      else
+        @topic = Topic.find(params[:id])
+        @referent = @topic.referent           #naughty
+      end
     end
 
     def build_topic
       @topic = @referent.topics.build(params[:topic])
+      @topic.collection = @referent.collection if @referent.has_collection?
     end
   
 end

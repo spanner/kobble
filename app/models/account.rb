@@ -9,6 +9,8 @@ class Account < ActiveRecord::Base
   has_many :tags, :dependent => :destroy
   has_many :events, :order => 'at DESC', :dependent => :destroy
   
+  validates_presence_of :name, :user, :account_type
+  
   def self.nice_title
     "account"
   end

@@ -1998,7 +1998,9 @@ div.fieldWithErrors, div.fieldWithErrors p {
 	display: inline;
 }
 
-
+.emphatic {
+	color: #d1005d;
+}
 
 
 

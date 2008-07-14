@@ -1,77 +1,72 @@
-<% @title = 'sign up' %>
+<% @title = 'free personal account' %>
 
+  
 <% if logged_in? %>
 
-  <p>
-    You are currently logged in as <strong><%= current_user.name %></strong>.<br />
-    If that's not you, or you want to log in with another account, please <%= link_to "log out", :controller => 'login', :action => 'logout' %> first.
-  </p>
-  
-  <p>If you want to add more people to your account, you need the users page in the account management tools, which won't exist until version 1.6 in April. It says here. Please ask <%= link_to "will", "mailto:will@materiali.st" %> to add people for you.</p>
+  <div class="preamble">
+    <p>
+      You are currently logged in as <strong><%= current_user.name %></strong>.<br />
+      If that's not you, or you want to log in to another account, please <%= link_to "log out", :controller => 'login', :action => 'logout' %> first.
+    </p>
+    <% if account_admin? %>
+      <p>If you want to add more people to your account, you can <% link_to 'do that here', new_account_user_url(current_account) %> (or by opening the admin tab at any time).</p>
+    <% end %>
+  </div>
 
 <% else %>
 
-  <% if @known_user %>
+  <div class="preamble">
 
-    <p class="haserror">
-      <img src="/images/furniture/signals/warning.png" width="20" height="20" alt="Warning" style="float: left; margin-right: 3px;">
-      We already have an account in the database with that email address. Perhaps you just need to <%= link_to "log in", '/login' %>? If you've forgotten your password or username we can also <%= link_to "send new login instructions", :action => 'repassword' %> to your email address.
-    </p>
-   
-    <p>If you've never signed up here before, please check the email address below. Feel free to <a href="mailto:&#x77;&#x69;&#x6C;&#x6C;&#x69;&#x61;&#x6D;&#x2E;&#x72;&#x6F;&#x73;&#x73;&#x40;&#x73;&#x70;&#x61;&#x72;&#x6B;&#x6E;&#x6F;&#x77;&#x2E;&#x6E;&#x65;&#x74;">write to will</a> if there is any doubt.</p>
-     
-  <% elsif @user.errors && !@user.errors.empty? %>
+    <% if @known_user %>
 
       <p class="haserror">
         <img src="/images/furniture/signals/warning.png" width="20" height="20" alt="Warning" style="float: left; margin-right: 3px;">
-        Sorry: there were some problems. Please check the highlighted fields and try again.</p>
+        We already have an account in the database with that email address. Perhaps you just need to <%= link_to "log in", '/login' %>? 
+        If you've forgotten your password or username we can also <%= link_to "send new login instructions", :action => 'repassword' %> to your email address.
+      </p>
+   
+      <p>If you've never signed up here before, please check the email address below. Feel free to <a href="mailto:&#x77;&#x69;&#x6C;&#x6C;&#x69;&#x61;&#x6D;&#x2E;&#x72;&#x6F;&#x73;&#x73;&#x40;&#x73;&#x70;&#x61;&#x72;&#x6B;&#x6E;&#x6F;&#x77;&#x2E;&#x6E;&#x65;&#x74;">write to will</a> if there is any doubt.</p>
+     
+    <% elsif !@user.errors.empty? %>
 
-  <% else  %>
+      <p class="haserror"><strong>Sorry: there were problems.</strong> Please check the form. The affected fields will be highlighted in pink.</p>
 
-      <p>If you've already registered, you need only <%= link_to 'log in', :controller => 'login', :action => 'login' %>.</p>
+    <% else  %>
 
-  <% end %>
-
-  <div class="mainform" id="signupform">
+        <p>
+          The only way to understand how easy and useful materialist can be is to try it, so please fill in this form to start a free personal account. We will drop in some sample data that you can easily delete later.
+          You can carry on using this free account for as long as you like. It will hold up to 10 separate collections, which as you will see can be an awful lot of material, and it will work with audio and (soon) video material as well as pictures and text.
+          For an author, student or solitary researcher that's probably all you'll ever need.
+        </p>
+      
+    <% end %>
+  </div>
+  
+  <div class="mainform contentblock" id="signupform">
 
     <% form_for :account do |f| -%>
 
-      <p><label for="account_name">Account name</label> (usually a company or project name)<br />
-      <%= f.text_field :name, :class => 'friendly' %>
+      <%= render :partial => 'shared/edit_name', :locals => {:item => @account, :f => f, :required => true, :heading => 'Account name', :addendum => 'you can change this any time'} %>
+      <%= f.hidden_field :account_type_id %>
+
+      <p>
+        Materialist really comes into its own when you want to share the work and the material with other people: your team, your clients or just your family. 
+        In that case you will want to upgrade your personal account to one of our excitingly (for us) non-free team accounts. 
+        That's very easy to do but we're not going to pester you about it.
       </p>
 
       <% fields_for :user do |u| %>
-        <p><label for="user_name"<%= ' class="formError"' if @user.errors.on(:name) %>>Your name</label><br />
-        <%= u.text_field :firstname, :class => 'friendly' %>
-        <% if @user.errors.on(:firstname) %><div class="formError">warning: <%= @user.errors.on(:firstname).to_a.last %></div><% end %>
-        </p>
-
-        <p><label for="user_email"<%= ' class="formError"' if @user.errors.on(:email) %>>Email address</label> (a confirmation will be required)<br />
-        <%= u.text_field :email, :class => 'friendly' %>
-        <% if @user.errors.on(:email) %><div class="formError">warning: <%= @user.errors.on(:email).to_a.last %></div><% end %>
-        </p>
-
-        <p><label for="user_login"<%= ' class="formError"' if @user.errors.on(:login) %>>Preferred login username</label><br />
-        <%= u.text_field :login, :class => 'friendly' %>
-        <% if @user.errors.on(:login) %><div class="formError">warning: this username <%= @user.errors.on(:login).to_a.last %></div><% end %>
-        </p>
-    
-        <p><label for="user_password"<%= ' class="formError"' if @user.errors.on(:password) %>>Password</label><br />
-        <%= u.password_field :password, :class => 'friendly' %>
-        <% if @user.errors.on(:password) %><div class="formError">warning: <%= @user.errors.on(:password).to_a.last %></div><% end %>
-        </p>
-    
-        <p><label for="user_password_confirmation"<%= ' class="formError"' if @user.errors.on(:password_confirmation) %>>Confirm password</label><br />
-        <%= u.password_field :password_confirmation, :class => 'friendly' %>
-        <% if @user.errors.on(:password_confirmation) %><div class="formError">warning: <%= @user.errors.on(:password_confirmation).to_a.last %></div><% end %>
-        </p>
+        <%= render :partial => 'shared/edit_name', :locals => {:item => @user, :f => u, :required => true, :heading => 'Your name', :cssclass => 'standard'} %>
+        <%= render :partial => 'shared/edit_email', :locals => {:item => @user, :f => u, :required => true, :heading => 'Email address', :addendum => 'we will send a confirmation message'} %>
+        <%= render :partial => 'shared/edit_login', :locals => {:item => @user, :f => u, :heading => 'Preferred login username'} %>
+        <%= render :partial => 'shared/edit_password', :locals => {:item => @user, :f => u} %>
         
       <% end %>
       <p><%= submit_tag 'sign up' %></p>
     <% end %>
   </div>
 
-  <div id="privacystatement">
+  <div id="privacystatement" class="contentblock">
 
     <h2>privacy statement</h2>
     <p>We will never share your details with anyone else. We will take every possible precaution to protect your data. We will never send you unsolicited mail. Unless you sign up for the mailing list, you will never hear from us at all except for informative messages generated by your use of materialist.</p>

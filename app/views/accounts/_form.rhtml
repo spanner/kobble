@@ -21,23 +21,22 @@
   
   <% end %>
 
-  <ul class="optionslist">
-  <% 
-    types = AccountType.find(:all, :order => 'name')
-    types.each do |type| 
-  %>
-    <li>
+  <p>
+    <label for="account_type_id" class="required">Account type</label><br />
+    <% 
+      types = AccountType.find(:all, :order => 'name')
+      types.each do |type| 
+    %>
       <%= f.radio_button("account_type_id", type.id) %>
-      <%= type.name %><br />
+      <%= type.name %> <% if type.name == 'personal' %><span class="emphatic">free!</span><% end %><br />
       <span class="listnote">
         <%= pluralize(type.users_limit, 'user') %>, 
         <%= pluralize(type.collections_limit, 'collection') %>, 
         <%= 'audio, ' if type.can_audio %>
         <%= 'video, ' if type.can_video %>
         <%= type.readable_space_limit %> storage.
-      </span>
-    </li>
-  <% end %>
-  </ul>
+      </span><br />
+    <% end %>
+  </p>
 
 </div>

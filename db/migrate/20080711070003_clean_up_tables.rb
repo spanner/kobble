@@ -4,7 +4,7 @@ class CleanUpTables < ActiveRecord::Migration
     # strange old clutter from past digressions
 
     remove_columns :users, :postcode, :delete_after, :deleted, :verified, :honorific, :receive_news_email, :receive_html_email, :subscribe_everything
-    remove_column :nodes, :status, :rating, :keyword_count
+    remove_column :nodes, :status, :rating, :keywords_count, :notes
     remove_column :sources, :rating, :notes
     remove_column :topics, :speaker_id
     remove_column :tags, :user_id
@@ -13,6 +13,7 @@ class CleanUpTables < ActiveRecord::Migration
 
     # field notes now in annotations table
     
+    add_column :occasions, :circumstances, :text  #lazy!
     [:nodes, :sources, :occasions, :bundles, :tags, :people].each do |table|
       remove_columns table, :emotions, :circumstances, :observations, :arising
     end
@@ -29,7 +30,7 @@ class CleanUpTables < ActiveRecord::Migration
     add_column :users, :subscribe_everything, :integer
     add_column :nodes, :status, :integer
     add_column :nodes, :rating, :integer
-    add_column :nodes, :keyword_count, :integer
+    add_column :nodes, :keywords_count, :integer
     add_column :sources, :rating, :integer
     add_column :sources, :notes, :text
     add_column :topics, :speaker_id, :integer

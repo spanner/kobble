@@ -14,7 +14,7 @@
 		</span>
 	</h3>
 	<div class="postbody" id="post_<%= single.id %>">
-	  <%= truncate(single.body.formatted, limit) %>
+	  <%= single.new_record? ? truncate(single.body, limit).formatted : single.body.formatted %>
   	<p class="paranthetical">
   	  <% if show_referent %>
   	    conversation about the <%= single.referent.nice_title %> <%= link_to single.referent.name, url_for(single.referent) %> with

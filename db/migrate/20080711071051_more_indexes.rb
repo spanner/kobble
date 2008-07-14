@@ -25,7 +25,7 @@ class MoreIndexes < ActiveRecord::Migration
     # for the display of user pages
     # and the .latest named_scope
     
-    [:nodes, :sources, :bundles, :people, :tags, :topics, :occasions].each do |table|
+    [:nodes, :sources, :bundles, :people, :tags, :topics, :occasions, :scratchpads].each do |table|
       add_index table, :created_by
       add_index table, :created_at
     end
