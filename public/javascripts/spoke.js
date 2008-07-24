@@ -759,8 +759,17 @@ var ScratchTab = new Class({
   	this.padform = null;
     var stab = this;
     this.formHolder = new Element('div', {'class': 'padform bigspinner'}).inject(this.tabbody, 'top').set('html', '&nbsp;').hide();
-    this.showformfx = new Fx.Tween(this.formHolder, 'width', {duration: 'long', transition: 'cubic:out'});
-    this.hideformfx = new Fx.Tween(this.formHolder, 'width', {duration: 'medium', transition: 'cubic:out', onComplete: function () { stab.hideForm(); }});
+    this.showformfx = new Fx.Tween(this.formHolder, {
+      property: 'width',
+      duration: 'long', 
+      transition: 'cubic:out'
+    });
+    this.hideformfx = new Fx.Tween(this.formHolder, {
+      property: 'width',
+      duration: 'medium', 
+      transition: 'cubic:out', 
+      onComplete: function () { stab.hideForm(); }
+    });
     this.tabbody.getElements('a.renamepad').each(function (a) { a.onclick = stab.getForm.bind(stab); });
     this.tabbody.getElements('a.setfrompad').each(function (a) { a.onclick = stab.toSet.bind(stab); });
     this.tabbody.getElements('a.createpad').each(function (a) { a.onclick = stab.createTab.bind(stab); });
@@ -848,20 +857,19 @@ var ScratchTab = new Class({
         stab.tabhead.set('title', response.body);
         intf.debug(response, 3);
         if (response.updated_by == null) {
-          var tabs = stab.tabset;
-          tabs.removeTab(stab);
+          var tempholder = new Element('div');
           stab.tabhead.set('id', 'tab_scratchpad_' + response.id);
       		new Request.HTML({
       		  url: '/scratchpads/' + response.id,
       			method: 'get',
-      			update: stab.tabbody,
+      			update: tempholder,
       		  onSuccess: function (request) { 
+              stab.tabset.pagescontainer.adopt(tempholder.getElement('div'));
       		    var st = intf.addScratchTabs([stab.tabhead]);
-      		    intf.addDropzones(stab.tabbody.getElements('.catcher'));
+      		    intf.addDropzones(st.tabbody.getElements('.catcher'));
       		  },
       		  onFailure: function () { intf.complain('no way'); }
       		}).send();
-          
         }
       },
 		  onFailure: function (response) { stab.hideForm(); intf.complain('remote call failed'); }

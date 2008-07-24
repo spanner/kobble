@@ -1,7 +1,16 @@
 class ScratchpadsController < ApplicationController
 
+  def show
+    @scratchpad = Scratchpad.find(params[:id])
+    respond_to do |format|
+      format.html {  }
+      format.js { render :layout => false, :template => 'shared/_scratchpad' }
+    end
+  end
+
   def new
     @scratchpad = Scratchpad.new
+    @scratchpad.creator = current_user
     respond_to do |format|
       format.html {  }
       format.js { render :layout => false }
@@ -11,6 +20,7 @@ class ScratchpadsController < ApplicationController
   def create
     @scratchpad = Scratchpad.new(params[:scratchpad])
     @scratchpad.name ||= 'new pad'
+    @scratchpad.creator = current_user
     if @scratchpad.save!
       render :json => @scratchpad.to_json
     end

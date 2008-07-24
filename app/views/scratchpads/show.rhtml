@@ -3,7 +3,7 @@
 <p>A scratchpad belonging to <%= @thing.creator.name %></p>
 
 <div class="mainlist">
-<%= render :partial => "scrap", :collection => @thing.scraps %>
+  <%= render :partial => "scrap", :collection => @thing.scraps %>
 </div>
 
 <%= link_to "delete this pad", scratchpad_path(@thing), :method => :delete %>
