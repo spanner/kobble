@@ -40,7 +40,7 @@ class Collection < ActiveRecord::Base
   
   def tags_with_popularity
     taggings = self.taggings.grouped_with_popularity
-    taggings.each {|t| t.tag.used = t.use_count }
+    taggings.each {|t| t.tag.used = t.use_count}
     taggings.map {|t| t.tag }.uniq.sort{|a,b| a.name <=> b.name}
   end
   

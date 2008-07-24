@@ -1,4 +1,13 @@
-<%= link_to "+source", new_source_url(), {:class => 'create'} %><br />
+<%
+ collection = item if item.is_a?(Collection)
+ collection ||= item.collection if item.has_collection?
+%>
+
+<% if collection %>
+  <%= link_to "+source", new_collection_source_url(collection), {:class => 'create'} %><br />
+<% else %>
+  <%= link_to "+source", new_source_url(), {:class => 'create'} %><br />
+<% end %>
 
 <% if item.is_a?(Account) %>
   <% if account_admin? %>
