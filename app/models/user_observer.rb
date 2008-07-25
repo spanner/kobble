@@ -2,10 +2,6 @@ class UserObserver < ActiveRecord::Observer
 
   cattr_accessor :current_user
 
-  def before_create
-    
-  end
-  
   def before_update(user)
     if user.activated_at_changed?
       user.newly_activated = true

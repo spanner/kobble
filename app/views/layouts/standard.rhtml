@@ -49,14 +49,14 @@
     <div id="admin_tabs">
       <%= link_to "your preferences", edit_user_url(current_user), {:id => 'tab_scratchpad_preferences', :class => 'padtab admintab'} %>
       <%= link_to "active collections", collections_url, {:id => 'tab_scratchpad_collections', :class => 'padtab admintab'} %>
-      <%= link_to "account admin", edit_account_url(current_account), {:id => 'tab_scratchpad_admin', :class => 'padtab admintab'} %>
+      <% if account_admin? %><%= link_to "account admin", edit_account_url(current_account), {:id => 'tab_scratchpad_admin', :class => 'padtab admintab'} %><% end %>
     </div>
 
     <div id="scratchpad_pages">
       <%= render :partial => 'shared/scratchpad', :collection => current_user.scratchpads %>
       <div id="scratchpad_preferences" class="scratchpage"><%= render :partial => 'scratchpads/preferences_pad' %></div>
       <div id="scratchpad_collections" class="scratchpage"><%= render :partial => 'scratchpads/collections_pad' %></div>
-      <div id="scratchpad_admin" class="scratchpage"><%= render :partial => 'scratchpads/admin_pad' %></div>
+      <% if account_admin? %><div id="scratchpad_admin" class="scratchpage"><%= render :partial => 'scratchpads/admin_pad' %></div><% end %>
     </div>
   </div>
   

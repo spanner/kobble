@@ -405,11 +405,12 @@ div.scratchpage li a:hover {
 
 div.scratchpage li.padcontrol {
   list-style: none;
-  font-size: 11px;
+  font-size: 13px;
 }
 
 div.scratchpage li.padcontrol a, div.scratchpage li.padcontrol a:visited {
-  color: #8c8d8e;
+  padding: 6px;
+  color: #d1005d;
 }
 
 div.scratchpage li.padcontrol a:hover {
@@ -1825,6 +1826,10 @@ h2.invitation a {
 
 img.flag {
 	margin-right: 1px;
+}
+
+li.inactive a {
+  text-decoration: line-through;
 }
 
 /* tagbox suggestions */

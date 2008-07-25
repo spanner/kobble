@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
   end
   
   def check_activations
-    redirect_to :controller => 'accounts', :action => 'home' if current_collections.empty?
+    current_user.activate_available_collections if current_collections.empty?
     Collection.current_collections = current_collections
   end
   

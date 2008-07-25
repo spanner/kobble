@@ -53,8 +53,8 @@ class User < ActiveRecord::Base
 
   def scratchpads
     if self.created_scratchpads.empty?
-      (1..4).each do |i|
-        self.created_scratchpads.create({:name => "pad #{i}"})
+      ['a scratchpad', 'another scratchpad', 'miscellaneous', 'other'].each do |name|
+        self.created_scratchpads.create({:name => name})
       end
     end
     self.created_scratchpads
@@ -89,6 +89,7 @@ class User < ActiveRecord::Base
   def self.authenticate(login, password)
     u = find :first, :conditions => ['login = ? and activated_at IS NOT NULL', login]
     return nil unless u && u.authenticated?(password)
+    u.password = nil if u.previously_logged_in_at   # once they've logged in twice we forget it
     u.previously_logged_in_at = u.logged_in_at
     u.logged_in_at = Time.now.utc
     u.save!
@@ -99,7 +100,7 @@ class User < ActiveRecord::Base
     self.status = 10
     self.logged_in_at = self.activated_at = Time.now.utc
     self.activation_code = nil
-    self.password = nil
+    # self.password = nil
     self.save!
   end
 
@@ -194,6 +195,10 @@ class User < ActiveRecord::Base
   
   def collections_available
     account_admin? ? self.account.collections : self.permitted_collections
+  end
+  
+  def activate_available_collections
+    self.permitted_collections.each { |collection| activation_of(collection).activate }
   end
   
   public

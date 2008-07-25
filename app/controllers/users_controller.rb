@@ -85,7 +85,14 @@ class UsersController < ApplicationController
   end
   
   def reinvite
-    @user = @account.users.find(params[:id])
+    if request.post?
+      @user.update_attributes(params[:user])
+      @user.save
+      UserNotifier.deliver_invitation(@user, current_user)
+      flash[:notice] = 'Invitation message was sent.'
+      @thing = @user
+      render :action => 'show'
+    end
   end
 
   private

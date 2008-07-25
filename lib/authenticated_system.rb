@@ -37,13 +37,12 @@ module AuthenticatedSystem
       session[:user] = (new_user.nil? || new_user.is_a?(Symbol)) ? nil : new_user.id
       @current_user = EditObserver.current_user = new_user
       Collection.current_collections = current_collections
-      session[:topics] = session[:forums] = {}
       update_last_seen_at
     end
 
     # handy access to the foreground collection
     def current_collections
-      logged_in? && @current_collections ||= current_user.collections
+      logged_in? && current_user.collections
     end
     
     def update_last_seen_at

@@ -3,7 +3,10 @@
 %>
 
 <div class="preamble">
-  <p>This is a summary of recent activity across the collections to which you have access.</p>
+  <p>
+    Hello <%= link_to(current_user.best_name, account_user_url(current_account,current_user)) %>.
+    This is a summary of recent activity across the collections to which you have access.
+  </p>
 </div>
 
 <div class="mainform">

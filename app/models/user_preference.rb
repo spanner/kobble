@@ -3,6 +3,8 @@ class UserPreference < ActiveRecord::Base
   belongs_to :user
   belongs_to :preference
 
+  after_create :obey_default
+
   def activate
     self.active = true
   end
@@ -13,6 +15,10 @@ class UserPreference < ActiveRecord::Base
   
   def is_active?
     self.active
+  end
+  
+  def obey_default
+    activate if preference.default_true?
   end
 end
 

@@ -18,9 +18,9 @@
 <div class="mainform contentblock">
 
 <% form_for :user,
-            :url => account_user_url(@account, @user),
+            :url => reinvite_user_url(@user),
             :html => { 
-              :method => "put",
+              :method => "post",
               :multipart => true,
               :id => 'userform'
             } do |f| 

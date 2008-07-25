@@ -9,15 +9,13 @@ class LoginController < ApplicationController
   end
   
   def activate
-    flash.clear 
-    if params[:id].nil? && params[:activation_code].nil? then
+    if params[:id].nil? || params[:activation_code].nil? then
       render :action => 'activate'
     end
-    activator = params[:id] || params[:activation_code]
-    @user = User.find_by_activation_code(activator)
+    @user = User.find_by_id_and_activation_code(params[:id], params[:activation_code])
     if @user and @user.activate
-      current_user = @user
-      redirect_to :controller => '/login', :action => 'index'
+      session[:user] = @user.id
+      redirect_to :controller => 'accounts', :action => 'home'
       flash[:notice] = "Your login has been activated."
     else
       flash[:error] = "Unable to activate your account. Please check activation code."
@@ -47,6 +45,7 @@ class LoginController < ApplicationController
     redirect_to :action => 'repassword' if activator.nil?
     @user = User.find_by_activation_code(activator)
     if @user and @user.accept_new_password
+      current_user = @user
       self.current_user = @user
       redirect_to :controller => '/login', :action => 'index'
       flash[:notice] = "Your password has been reset. Click on the 'you' tab to change it to something more memorable." 
