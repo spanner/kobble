@@ -6,6 +6,8 @@ class User < ActiveRecord::Base
   attr_protected :activated_at
   attr_accessor :password_confirmation
   attr_accessor :old_password
+  attr_accessor :notify_of_login
+  attr_accessor :newly_activated
 
   before_create :make_activation_code
   before_save :encrypt_password
@@ -94,7 +96,6 @@ class User < ActiveRecord::Base
   end
 
   def activate
-    @activated = true
     self.status = 10
     self.logged_in_at = self.activated_at = Time.now.utc
     self.activation_code = nil
@@ -108,11 +109,6 @@ class User < ActiveRecord::Base
     self.save!
   end
   
-  # did they activate in this request?
-  def justnow_activated?
-    @activated
-  end
-
   # did they activate within the last five minutes?
   def recently_activated?
     return false unless activated?
@@ -158,7 +154,7 @@ class User < ActiveRecord::Base
 
   # These create and unset the fields required for remembering users between browser closes
   def remember_me
-    self.remember_token_expires_at = 2.weeks.from_now.utc
+    self.remember_token_expires_at = 4.weeks.from_now.utc
     self.remember_token = encrypt("#{login}--#{remember_token_expires_at}")
     save(false)
     { :value => self.remember_token, :expires => self.remember_token_expires_at }

@@ -116,7 +116,6 @@ class UsersController < ApplicationController
     return true if current_user.account_admin?
     @user.attributes = params[:user]
     return true if @user.authenticated?(@user.old_password)
-    logger.warn("!!!! password not good")
     flash[:error] = 'Wrong password.'
     @user.valid?    # might as well display the other validation messages while we're there
     @user.errors.add(:old_password, "was not correct")

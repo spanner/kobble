@@ -1,6 +1,6 @@
 Hello <%= @user.name %>.
 
-<% if @user == @topic.referent.creator %>A new conversation has been started by <%= @topic.creator.name %> about your <%= @topic.referent.class.nice_name %> <%= @topic.referent.name %>.<% else%>A new conversation has been started by <%= @topic.creator.name %> about the <%= @topic.referent.class.nice_name %> ''<%= @topic.referent.name %>' and the creator has chosen to notify you.<% end %>
+<% if @user == @topic.referent.creator %>A new conversation has been started by <%= @topic.creator.name %> about your <%= @topic.referent.class.nice_name %> <%= @topic.referent.name %>.<% else%>A new conversation has been started by <%= @topic.creator.name %> about the <%= @topic.referent.class.nice_name %> '<%= @topic.referent.name %>' and the creator has chosen to notify you.<% end %>
 
 _______________________________________________________________________
 
@@ -11,4 +11,4 @@ _______________________________________________________________________
 _______________________________________________________________________
 
 
-To see the full discussion and to receive notice of any comments in it, please visit the topic page at <%= @url %>
+To see the full discussion, please visit the topic page at <%= @url %>
