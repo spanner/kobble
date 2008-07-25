@@ -48,9 +48,10 @@ class UserNotifier < ActionMailer::Base
 
   protected
   def setup_email(user)
+    @from = "William Ross <will@materiali.st>"
     @content_type = 'text/plain'
     @recipients  = "#{user.email}"
-    @subject     = ""
+    @subject     = "[m.st] "
     @sent_on     = Time.now
     @body[:user] = user
     @body[:prefsurl] = "http://materiali.st/accounts/me"
