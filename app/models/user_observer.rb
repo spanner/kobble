@@ -20,14 +20,14 @@ class UserObserver < ActiveRecord::Observer
     end
   end
   
-  def after_update(user)
-    if user.record_timestamps
-      if user.notify_of_login
-        UserNotifier.deliver_account_details(user)
-      elsif user.newly_activated
-        UserNotifier.deliver_activation(user)
-      end
-    end
-  end
+  # def after_update(user)
+  #   if user.record_timestamps
+  #     if user.notify_of_login
+  #       UserNotifier.deliver_account_details(user)
+  #     elsif user.newly_activated
+  #       UserNotifier.deliver_activation(user)
+  #     end
+  #   end
+  # end
 
 end
