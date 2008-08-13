@@ -48,11 +48,9 @@ end
 
 require 'will_paginate'
 
-WhiteListHelper.tags.merge(%w(object param embed))
-
 ExceptionNotifier.sender_address = "sysadmin@spanner.org"
 ExceptionNotifier.exception_recipients = "will@spanner.org"
-ExceptionNotifier.email_prefix = "[spoke] "
+ExceptionNotifier.email_prefix = "[mst] "
 
 Ultrasphinx::Search.excerpting_options = HashWithIndifferentAccess.new({
   :before_match => '<strong>',
