@@ -22,7 +22,7 @@ config.action_mailer.smtp_settings = {
     :address        => 'mail.spanner.org',
     :domain         => 'spanner.org',
     :authentication => :login,
-    :user_name      => 'sender@sparknow.net',
+    :user_name      => 'sender@spanner.org',
     :password       => 'sender'
 }
 
