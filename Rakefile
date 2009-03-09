@@ -4,7 +4,12 @@
 require(File.join(File.dirname(__FILE__), 'config', 'boot'))
 
 require 'rake'
+require 'spec/rake/spectask'
 require 'rake/testtask'
 require 'rake/rdoctask'
-
 require 'tasks/rails'
+
+desc "Run all examples"
+Spec::Rake::SpecTask.new('spec') do |t|
+  t.spec_files = FileList['examples/**/*.rb']
+end
