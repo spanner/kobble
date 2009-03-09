@@ -1,0 +1,16 @@
+.DS_Store
+config/database.yml
+cache/
+tmp/
+log/
+data/
+shared/
+public/account 
+public/bundle 
+public/collection
+public/node
+public/occasion
+public/person
+public/source
+public/tag 
+public/user

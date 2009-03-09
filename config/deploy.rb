@@ -19,6 +19,7 @@ role :db,  "eccles.spanner.org", :primary => true
 set :deploy_to, "/var/www/#{application}"
 set :deploy_via, :remote_cache
 set :mongrel_conf, "/etc/mongrel_cluster/#{application}.yml" 
+set :asset_classes, %w{account bundle collection node occasion person source tag user}
 
 default_run_options[:pty] = true
 
@@ -28,14 +29,14 @@ after "deploy:setup" do
   sudo "chown -R #{user}:#{group} #{shared_path}"
   sudo "chown #{user}:#{group} /var/www/#{application}/releases"
   sudo "ln -s #{deploy_to}/current/config/mongrel_cluster.yml #{mongrel_conf}"
-  ['collection', 'user', 'person', 'source', 'node', 'bundle', 'occasion', 'tag'].each do |directory|
+  asset_classes.each do |directory|
     run "mkdir #{shared_path}/assets/#{directory}" 
   end
 end
 
 after "deploy:update" do
   run "ln -s #{shared_path}/config/database.yml #{current_release}/config/database.yml" 
-  ['collection', 'user', 'person', 'source', 'node', 'bundle', 'occasion', 'tag'].each do |directory|
+  asset_classes.each do |directory|
     run "ln -s #{shared_path}/assets/#{directory} #{current_release}/public/#{directory}" 
   end
 end

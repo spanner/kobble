@@ -1,0 +1,15 @@
+[submodule "vendor/plugins/ultrasphinx"]
+	path = vendor/plugins/ultrasphinx
+	url = git://github.com/fauna/ultrasphinx.git
+[submodule "vendor/plugins/acts_as_list"]
+	path = vendor/plugins/acts_as_list
+	url = git://github.com/rails/acts_as_list.git
+[submodule "vendor/plugins/exception_notification"]
+	path = vendor/plugins/exception_notification
+	url = git://github.com/rails/exception_notification.git
+[submodule "vendor/plugins/dataset"]
+	path = vendor/plugins/dataset
+	url = git://github.com/aiwilliams/dataset.git
+[submodule "vendor/plugins/paperclip"]
+	path = vendor/plugins/paperclip
+	url = git://github.com/thoughtbot/paperclip.git
