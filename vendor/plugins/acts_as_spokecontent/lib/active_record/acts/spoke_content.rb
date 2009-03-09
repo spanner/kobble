@@ -122,7 +122,7 @@ module ActiveRecord
           
           if definitions.include?(:undelete)
             if self.column_names.include?('deleted_at')
-              acts_as_paranoid
+              # acts_as_paranoid
               attr_accessor :newly_undeleted
               attr_accessor :reassign_to
             else

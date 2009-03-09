@@ -5,12 +5,12 @@ tmp/
 log/
 data/
 shared/
-public/account 
-public/bundle 
+public/account
+public/bundle
 public/collection
 public/node
 public/occasion
 public/person
 public/source
-public/tag 
+public/tag
 public/user

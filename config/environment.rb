@@ -5,7 +5,7 @@
 # ENV['RAILS_ENV'] ||= 'production'
 
 # Specifies gem version of Rails to use when vendor/rails is not present
-RAILS_GEM_VERSION = '2.1.1'
+# RAILS_GEM_VERSION = '2.1.1'
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
@@ -47,6 +47,7 @@ Rails::Initializer.run do |config|
 end
 
 require 'will_paginate'
+require 'acts_as_paranoid'
 
 ExceptionNotifier.sender_address = "sysadmin@spanner.org"
 ExceptionNotifier.exception_recipients = "will@spanner.org"

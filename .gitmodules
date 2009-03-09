@@ -16,9 +16,6 @@
 [submodule "vendor/plugins/spec_integration"]
 	path = vendor/plugins/spec_integration
 	url = git://github.com/aiwilliams/spec_integration.git
-[submodule "vendor/plugins/rspec"]
-	path = vendor/plugins/rspec
-	url = git://github.com/dchelimsky/rspec.git
-[submodule "vendor/plugins/rspec-rails"]
-	path = vendor/plugins/rspec-rails
-	url = git://github.com/dchelimsky/rspec-rails.git
+[submodule "vendor/plugins/permanent_records"]
+	path = vendor/plugins/permanent_records
+	url = git://github.com/JackDanger/permanent_records.git
