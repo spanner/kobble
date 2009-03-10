@@ -2,18 +2,19 @@ require File.dirname(__FILE__) + '/../spec_helper'
 
 describe Source do
   dataset :sources
-  test_helper :validations
   
   describe 'validations' do
     before :each do
-      @model = Page.new(page_params)
+      @source = sources(:testing)
     end
 
-    it 'should require a'
+    it 'should require a name' do
       [:name, :description, :collection].each do |field|
-        assert_invalid field, 'required', '', ' ', nil
+        @source.send("#{field.to_s}=".intern, nil)
+        @source.should_not be_valid
       end
     end
+    
   end
   
 end
