@@ -106,3 +106,5 @@ Window.implement({
 function $body(el){
 	return el.tagName.toLowerCase() == 'body';
 };
+
+window.console = {log: function(){}, warn: function(){}, error: function(){}, info: function(){}};

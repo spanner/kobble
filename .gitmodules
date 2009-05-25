@@ -16,6 +16,6 @@
 [submodule "vendor/plugins/spec_integration"]
 	path = vendor/plugins/spec_integration
 	url = git://github.com/aiwilliams/spec_integration.git
-[submodule "vendor/plugins/permanent_records"]
-	path = vendor/plugins/permanent_records
-	url = git://github.com/JackDanger/permanent_records.git
+[submodule "vendor/plugins/acts_as_paranoid"]
+	path = vendor/plugins/acts_as_paranoid
+	url = git://github.com/technoweenie/acts_as_paranoid.git

@@ -239,7 +239,7 @@ var Interface = new Class({
   
   debug: function (message, level) {
     if (!level) level = 2;
-    if (console && this.debug_level >= level) console.log(message);
+    if (window['console'] && this.debug_level >= level) console.log(message);
   }
   	
 });

@@ -1,4 +1,4 @@
-# most of these are lifted from has_many_polymorphs 
+# most of these were originally lifted from has_many_polymorphs 
 
 module StringExtensions
   require 'redcloth'

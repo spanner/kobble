@@ -26,13 +26,13 @@ class LoginController < ApplicationController
   def repassword
     @pagetitle = 'reset'
     return unless request.post?
-    return @error = "Please enter an email address." unless params[:email] && !params[:email].nil? 
-    @user = User.find_by_email(params[:email])
-    unless @user
-      flash[:error] = "Sorry: The email address <strong>#{params[:email]}</strong> is not known here."
+    email = params[:email]
+    return @error = "Please enter an email address." if email.nil?
+    unless @user = User.find_by_email(email)
+      flash[:error] = "Sorry: The email address <strong>#{email}</strong> is not known here."
       render :action => 'repassword'
     end
-    unless (@user.activated?)
+    unless @user.activated?
       UserNotifier.deliver_welcome(@user)
       return @error = "Sorry: You can't change the password for an account that hasn't been activated. We have resent the activation message instead. Clicking the activation link will log you in and allow you to change your password." 
     end

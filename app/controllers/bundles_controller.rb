@@ -29,7 +29,7 @@ class BundlesController < ApplicationController
   end
 
   def update
-    @bundle = Bundle.find(params[:id])
+    @bundle = @thing = Bundle.find(params[:id])
     if @bundle.update_attributes(params[:bundle])
       @bundle.taggings.clear
       @bundle.tags << Tag.from_list(params[:tag_list])

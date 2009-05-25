@@ -31,7 +31,7 @@ class AccountsController < ApplicationController
   end
 
   def show
-    @thing = admin? ? Account.find(params[:id]) : current_user.account
+    @account = admin? ? Account.find(params[:id]) : current_user.account
   end
 
   def new

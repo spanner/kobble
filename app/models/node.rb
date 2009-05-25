@@ -28,12 +28,18 @@ class Node < ActiveRecord::Base
           clipfile = sourcefile
         end
       end
+      "/#{self.source.clip_options[:base_url]}/#{self.source.clip_relative_dir}/#{clipfile}"
     end
-    "/#{self.source.clip_options[:base_url]}/#{self.source.clip_relative_dir}/#{clipfile}"
+  end
+  
+  def has_clip?
+    return false if self.clip.nil? && self.source.clip.nil?
+    return false if self.playfrom_seconds == self.playto_seconds
+    return true
   end
   
   def duration
-    if (self.clip || self.source && xself.source.clip)
+    if (self.clip || self.source && self.source.clip)
       read_attribute(:playto) - read_attribute(:playfrom)
     else
       0
