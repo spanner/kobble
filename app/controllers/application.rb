@@ -1,7 +1,6 @@
 class ApplicationController < ActionController::Base
 
   include AuthenticatedSystem
-  include StringExtensions
   include ExceptionNotifiable
 
   helper_method :current_user, :current_account, :current_collections, :logged_in?, :activated?, :admin?, :account_admin?, :account_holder?, :last_active
@@ -145,7 +144,7 @@ class ApplicationController < ActionController::Base
     end
   rescue => e
     flash[:error] = e.message
-    @response = CatchResponse.new(e.message, '', 'failure')
+    @response = Material::CatchResponse.new(e.message, '', 'failure')
     respond_to do |format|
       format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @catcher }
       format.json { render :json => @response.to_json }
@@ -167,14 +166,14 @@ class ApplicationController < ActionController::Base
     
     respond_to do |format|
       format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @deleted }
-      format.json { render :json => CatchResponse.new("#{@deleted.name} deleted", 'delete').to_json }
+      format.json { render :json => Material::CatchResponse.new("#{@deleted.name} deleted", 'delete').to_json }
     end
   rescue => e
     logger.warn("@@@ #{e.message}")
     flash[:error] = e.message
     respond_to do |format|
       format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @deleted }
-      format.json { render :json => CatchResponse.new(e.message, '', 'failure').to_json }
+      format.json { render :json => Material::CatchResponse.new(e.message, '', 'failure').to_json }
     end
   end
 

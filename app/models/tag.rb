@@ -1,10 +1,10 @@
 class Tag < ActiveRecord::Base
 
   attr_accessor :used
-  acts_as_spoke :except => [:collection, :index, :description]
+  is_material :except => [:collection, :index, :description]
   belongs_to :account
   has_many :taggings, :dependent => :destroy
-  can_catch :tags # in addition to all the catches set up by acts_as_spoke in other classes
+  can_catch :tags # in addition to all the catches set up by is_material in other classes
 
   named_scope :with_popularity, {
     :select => "tags.*, count(taggings.id) as use_count", 
@@ -29,7 +29,7 @@ class Tag < ActiveRecord::Base
     self.arising = subsumed.clip if self.arising.nil? or self.arising.size == 0
     self.observations = subsumed.observations if self.observations.nil? or self.observations.size == 0
     subsumed.destroy
-    CatchResponse.new("#{subsumed.name} merged into #{self.name}", "delete")
+    Material::CatchResponse.new("#{subsumed.name} merged into #{self.name}", "delete")
   end
     
   def self.from_list(taglist)
@@ -44,20 +44,20 @@ class Tag < ActiveRecord::Base
     case object.class.to_s
     when 'Tag'
       subsume(object)
-      return CatchResponse.new("#{object.name} subsumed into #{self.name}", 'delete', 'success')
+      return Material::CatchResponse.new("#{object.name} subsumed into #{self.name}", 'delete', 'success')
     else
       if self.taggings.of(object).empty?
         self.taggings.create!(:taggable => object)
-        return CatchResponse.new("#{object.name} tagged with #{self.name}", 'copy', 'success')
+        return Material::CatchResponse.new("#{object.name} tagged with #{self.name}", 'copy', 'success')
       else
-        return CatchResponse.new("#{self.name} already attached to #{object.name}", '', 'failure')
+        return Material::CatchResponse.new("#{self.name} already attached to #{object.name}", '', 'failure')
       end
     end
   end
 
   def drop_this(object)
     self.taggings.delete(self.taggings.of(object))
-    return CatchResponse.new("#{self.name} tag removed from #{object.name}", 'delete', 'success')
+    return Material::CatchResponse.new("#{self.name} tag removed from #{object.name}", 'delete', 'success')
   end
   
   def self.all_with_popularity(account)

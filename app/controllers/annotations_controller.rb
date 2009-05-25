@@ -51,7 +51,7 @@ class AnnotationsController < ApplicationController
   protected
   
     def find_annotated
-      ref = Spoke::Associations.annotated_models.find{ |k| !params[("#{k.to_s}_id").intern].nil? }
+      ref = Material::Polymorphs.annotated_models.find{ |k| !params[("#{k.to_s}_id").intern].nil? }
       @annotated = ref ? ref.to_s._as_class.find(params[(ref.to_s.underscore + "_id").intern]) : nil
     end
     

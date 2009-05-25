@@ -1,6 +1,6 @@
 class Tagging < ActiveRecord::Base
 
-  acts_as_spoke :only => [:undelete, :owners]
+  is_material :only => [:undelete, :owners]
 
   belongs_to :tag
   belongs_to :collection  # shortcut for collection cloud. collection link is set by tagging_observer

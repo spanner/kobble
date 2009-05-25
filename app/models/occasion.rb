@@ -1,6 +1,6 @@
 class Occasion < ActiveRecord::Base
 
-  acts_as_spoke
+  is_material
   has_many :sources, :dependent => :nullify
 
   validates_presence_of :name, :description, :collection

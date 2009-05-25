@@ -1,7 +1,9 @@
-module Spoke
-  module Associations
+require 'active_support'
+
+module Material
+  class Polymorphs
     
-    mattr_accessor :indexed_models, :discussed_models, :described_models, :organised_models, :annotated_models, :logged_models
+    cattr_accessor :indexed_models, :discussed_models, :described_models, :organised_models, :annotated_models, :logged_models
     
     # all of these methods keep the model name as a (singular) symbol
     # holding classes in plugin causes staleness in dev mode

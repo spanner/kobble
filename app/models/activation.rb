@@ -1,6 +1,6 @@
 class Activation < ActiveRecord::Base
 
-  acts_as_spoke :only => :undelete
+  is_material :only => :undelete
   belongs_to :user
   belongs_to :collection
 

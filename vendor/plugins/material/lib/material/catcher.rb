@@ -1,38 +1,11 @@
-class CatchError < ActionController::MethodNotAllowed 
-end
-
-class CatchResponse
-  attr_accessor :consequence, :message, :outcome
-  
-  # consequence is the interface action to perform on the dragged item
-  # should be one of: move, insert, delete. The default is 'insert' 
-  # for eg duplicate representation of item on scratchpad
-
-  def initialize(m=nil, c=nil, o=nil)
-    @message = m
-    @consequence = c
-    @outcome = o
-  end  
-  
-  def to_json 
-    {
-      :message => self.message.formatted,
-      :consequence => self.consequence || 'insert',
-      :outcome => self.outcome || 'success',
-    }.to_json
-  end
-end
-
-module ActiveRecord
-  module Catches #:nodoc:
+module Material
+  module Catcher #:nodoc:
     def self.included(base)
       base.class_eval {
                       
         class << self; 
           attr_accessor :catchable, :droppable
         end
-              
-        public 
           
         # class names stored as singular symbol to uncouple from particular Class object
         # storing classes causes stale object problems in dev mode because class 
@@ -97,14 +70,14 @@ module ActiveRecord
         unless self.respond_to?('catch_this')
           def catch_this(thrown)
             # sensible default?
-            raise CatchError, "you need to define a catch_this method in class #{self.class.to_s}"
+            raise Material::CatchError, "you need to define a catch_this method in class #{self.class.to_s}"
           end
         end
         
         unless self.respond_to?('drop_this')
           def drop_this(dropped)
             # sensible default?
-            raise CatchError, "you need to define a drop_this method in class #{self.class.to_s}"
+            raise Material::CatchError, "you need to define a drop_this method in class #{self.class.to_s}"
           end
         end
     

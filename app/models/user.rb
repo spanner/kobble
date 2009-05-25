@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
   before_save :encrypt_password
   before_destroy :reassign_associates
 
-  acts_as_spoke :except => [:collection, :index, :discussion, :annotation, :selection]
+  is_material :except => [:collection, :index, :discussion, :annotation, :selection]
   
   belongs_to :account
   belongs_to :person

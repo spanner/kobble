@@ -1,6 +1,6 @@
 class Annotation < ActiveRecord::Base
 
-  acts_as_spoke :only => [:owners, :log, :undelete]
+  is_material :only => [:owners, :log, :undelete]
   
   belongs_to :annotation_type
   belongs_to :annotated, :polymorphic => true

@@ -1,6 +1,6 @@
 class Account < ActiveRecord::Base
 
-  acts_as_spoke :only => [:illustration, :discussion, :owners]
+  is_material :only => [:illustration, :discussion, :owners]
   
   belongs_to :user
   belongs_to :account_type

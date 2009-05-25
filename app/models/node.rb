@@ -3,7 +3,7 @@ class Node < ActiveRecord::Base
   belongs_to :source
   belongs_to :collection
 
-  acts_as_spoke
+  is_material
 
   file_column :file
   before_save FileCallbacks.new

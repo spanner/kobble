@@ -1,6 +1,6 @@
 class Bundling < ActiveRecord::Base
   
-  acts_as_spoke :only => :undelete
+  is_material :only => :undelete
   
   belongs_to :superbundle, :class_name => 'Bundle', :foreign_key => 'superbundle_id'
   belongs_to :member, :polymorphic => true

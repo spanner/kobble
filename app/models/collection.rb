@@ -1,7 +1,7 @@
 class Collection < ActiveRecord::Base
 
   before_destroy :reassign_associates
-  acts_as_spoke :only => [:owners, :illustration, :discussion, :annotation, :log, :undelete]
+  is_material :only => [:owners, :illustration, :discussion, :annotation, :log, :undelete]
   belongs_to :account
   
   has_many :activations, :dependent => :destroy
@@ -32,9 +32,9 @@ class Collection < ActiveRecord::Base
   def catch_this(object)
     if object.collection != self
       object.collection = self
-      return CatchResponse.new("#{object.name} moved to #{self.name} collection", 'copy', 'success')
+      return Material::CatchResponse.new("#{object.name} moved to #{self.name} collection", 'copy', 'success')
     else
-      return CatchResponse.new("#{object.name} already in #{self.name} collection", 'copy', 'failure')
+      return Material::CatchResponse.new("#{object.name} already in #{self.name} collection", 'copy', 'failure')
     end
   end
   

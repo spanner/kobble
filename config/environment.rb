@@ -9,7 +9,6 @@
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
-#require 'spoke_config'
 
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence those specified here
@@ -48,22 +47,20 @@ Rails::Initializer.run do |config|
   
 end
 
-require 'will_paginate'
-
 ExceptionNotifier.sender_address = "sysadmin@spanner.org"
 ExceptionNotifier.exception_recipients = "will@spanner.org"
 ExceptionNotifier.email_prefix = "[m.st] "
 
-Ultrasphinx::Search.excerpting_options = HashWithIndifferentAccess.new({
-  :before_match => '<strong>',
-  :after_match => '</strong>',
-  :chunk_separator => "...",
-  :limit => 256,
-  :around => 3,
-  :content_methods => [['name'], ['body', 'description', 'extracted_text'], ['field_notes']]
-})
-
-Ultrasphinx::Search.client_options[:with_subtotals] = true
-Ultrasphinx::Search.client_options[:with_global_rank] = true
+# Ultrasphinx::Search.excerpting_options = HashWithIndifferentAccess.new({
+#   :before_match => '<strong>',
+#   :after_match => '</strong>',
+#   :chunk_separator => "...",
+#   :limit => 256,
+#   :around => 3,
+#   :content_methods => [['name'], ['body', 'description', 'extracted_text'], ['field_notes']]
+# })
+# 
+# Ultrasphinx::Search.client_options[:with_subtotals] = true
+# Ultrasphinx::Search.client_options[:with_global_rank] = true
 
 
