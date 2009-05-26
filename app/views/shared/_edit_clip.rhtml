@@ -1,10 +1,10 @@
 <div class="formpart<%= ' witherrors' if item.errors.on(:clip) %> notinline">
   <label for="<% item.class.to_s.downcase %>_clip">Audio or video file</label><br />
-  <%= file_column_field item.class.to_s.downcase, "clip", :class => 'noborder' %>
+  <%= f.file_field :clip, :class => 'noborder' %>
   <% if item.errors.on(:clip) %><br />
     This <%= item.errors.on(:clip).to_a.to_sentence %>
   <% end %>
-  <% if item.clip %><br />
-	  <span class="pale">current clip is <%= item.clip_relative_path %></span>
+  <% if item.has_clip? %><br />
+	  <span class="formnote">current clip is <%= item.clip_file_name %>, uploaded <%= item.clip_updated_at.to_date %></span>
   <% end %>
 </div>

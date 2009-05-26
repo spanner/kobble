@@ -4,6 +4,7 @@
 
 <div class="mainform">
   <% form_for :account,
+              :url => account_url(@account),
               :html => { 
                 :method => "put",
                 :multipart => true

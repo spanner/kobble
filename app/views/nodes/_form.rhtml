@@ -35,7 +35,7 @@
   	  <% if @node.has_source? and @node.source.has_clip? %>
     		<% @source = @node.source %>
     	  <%= render :partial => 'shared/player', :locals => {
-    	    :mp3url => url_for_file_column("source", "clip"),
+    	    :mp3url => @source.clip.url,
     	    :mp3in => @node.playfrom_seconds,
     	    :mp3out => @node.playto_seconds
     	  } %>

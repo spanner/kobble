@@ -3,6 +3,7 @@
 <div class="mainform">
 
   <% form_for :node,
+              :url => node_url(@node),
               :html => { 
                 :method => "put",
                 :multipart => true

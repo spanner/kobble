@@ -5,9 +5,6 @@ class Source < ActiveRecord::Base
   belongs_to :occasion
   has_many :nodes, :dependent => :destroy
 
-  file_column :file
-  before_save FileCallbacks.new  
-
   validates_presence_of :name, :description, :collection
   validate :must_have_body_clip_or_file
 

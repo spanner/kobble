@@ -1968,7 +1968,7 @@ div.formpart input.noborder {
 	border: 0;
 }
 
-div.witherrors input, div.witherrors textarea {
+div.fieldWithErrors input, div.fieldWithErrors textarea {
 	border: 1px solid #d1005d;
 }
 
@@ -1984,11 +1984,9 @@ div.witherrors label {
 }
 
 p.haserror {
-/*	background-image: url(/images/furniture/signals/warning.png);
-	background-position: top left;
-	background-repeat: no-repeat;
-	padding-left: 20px;
-*/	color: #d1005d !important;
+	border-left: 4px solid #d1005d;
+	padding-left: 12px;
+  color: #d1005d !important;
 }
 
 span.errordetail {

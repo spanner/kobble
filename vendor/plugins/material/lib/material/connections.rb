@@ -1,7 +1,7 @@
 require 'active_support'
 
 module Material #:nodoc:
-  module Construction
+  module Connections
 
     def self.included(base)
       base.class_eval {
@@ -53,7 +53,7 @@ module Material #:nodoc:
       # the main business of the module is to apply to each class the common machinery of materialist
 
       def is_material(options={})
-        possible_definitions = [:collection, :owners, :illustration, :organisation, :description, :annotation, :discussion, :index, :log, :undelete, :selection]
+        possible_definitions = [:collection, :owners, :illustration, :file, :organisation, :description, :annotation, :discussion, :index, :log, :undelete, :selection]
         cattr_accessor possible_definitions.map{|d| "_has_#{d.to_s}".intern }
             
         if options[:except]
@@ -93,25 +93,36 @@ module Material #:nodoc:
         end
       
         if definitions.include?(:illustration)
-          if self.column_names.include?('clip')
-            file_column :clip
+          if self.column_names.include?('clip_file_name')
+            has_attached_file :clip, 
+              :path => ":rails_root/public/:class/:attachment/:id/:style/:basename.:extension", 
+              :url => "/:class/:attachment/:id/:style/:basename.:extension" 
           else
             logger.warn("!! #{self.to_s} should be illustrated but has no clip column")
           end
-          if self.column_names.include?('image')
-             file_column :image, :magick => { 
-               :versions => { 
-                "thumb" => "56x56!", 
-                "slide" => "135x135!", 
-                "illustration" => "240>", 
-                "preview" => "750x540>" 
+          if self.column_names.include?('image_file_name')
+            has_attached_file :image, 
+              :path => ":rails_root/public/:class/:attachment/:id/:style/:basename.:extension", 
+              :url => "/:class/:attachment/:id/:style/:basename.:extension",
+              :styles => { 
+                "thumb" => "56x56#",
+                "slide" => "135x135#",
+                "illustration" => "240x240>",
+                "preview" => "750x540>"
               }
-            }
           else
             logger.warn("!! #{self.to_s} should be illustrated but has no image column")
           end
         end
-      
+
+        if definitions.include?(:file)
+          if self.column_names.include?('file_file_name')
+            has_attached_file :file, 
+              :path => ":rails_root/public/:class/:attachment/:id/:style/:basename.:extension",
+              :url => "/:class/:attachment/:id/:style/:basename.:extension"
+          end
+        end
+
         if definitions.include?(:description)
           has_many :taggings, :as => :taggable, :dependent => :destroy
           has_many :tags, :through => :taggings
@@ -178,8 +189,8 @@ module Material #:nodoc:
         end
 
         class_eval {
-          extend Material::Construction::MaterialClassMethods
-          include Material::Construction::MaterialInstanceMethods
+          extend Material::Connections::MaterialClassMethods
+          include Material::Connections::MaterialInstanceMethods
         }
 
       end
@@ -298,7 +309,7 @@ module Material #:nodoc:
       end
 
       def has_image?
-        self.respond_to?('image') && !self.image.nil?
+        self.respond_to?('image') && !self.image_file_name.blank?
       end
 
       def image_exists?
@@ -306,7 +317,7 @@ module Material #:nodoc:
       end
 
       def has_clip?
-        self.respond_to?('clip') && !self.clip.nil?
+        self.respond_to?('clip') && !self.clip_file_name.blank?
       end
     
       def clip_exists?
@@ -314,7 +325,7 @@ module Material #:nodoc:
       end
 
       def has_file?
-        self.respond_to?('file') && !self.file.nil?
+        self.respond_to?('file') && !self.file_file_name.blank?
       end
     
       def file_exists?
@@ -322,7 +333,7 @@ module Material #:nodoc:
       end
 
       def filetype
-        self.has_file? ? self.file_relative_path.split('.').last : nil
+        self.has_file? ? self.file_file_name.split('.').last : nil
       end
 
       def has_topics?

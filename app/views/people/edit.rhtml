@@ -3,6 +3,7 @@
 <div class="mainform">
 
   <% form_for :person,
+              :url => person_url(@person),
               :html => { 
                 :method => "put",
                 :multipart => true

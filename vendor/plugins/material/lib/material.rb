@@ -6,10 +6,10 @@ module Material
   require 'material/catch_response'
   require 'material/catch_error'
   require 'material/catcher'
-  require 'material/construction'
+  require 'material/connections'
   
   String.send :include, Material::StringExtensions
   ActiveRecord::Base.send :include, Material::Catcher
-  ActiveRecord::Base.send :include, Material::Construction
+  ActiveRecord::Base.send :include, Material::Connections
   
 end #material

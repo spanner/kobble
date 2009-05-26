@@ -2,14 +2,10 @@
 
 <% if item.has_clip? %>
   <div class="mainclip">
-    <% @tempitem = item %>
-    <%= render :partial => 'shared/player', :locals => { 
-      :mp3url => url_for_file_column('tempitem', "clip")
-    } %>
+    <%= render :partial => 'shared/player', :locals => { :mp3url => item.clip.url } %>
     <% if item.class == Source %>
       <%= link_to 'snip*', new_source_node_path(item), {:id => 'player_extend_nodelist', :class => 'snipper', :title => "first choose start and end times and highlight corresponding text"} %>
     <% end %>
   </div>
-  <p class="small"><a href="<%= url_for_file_column('tempitem', "clip") %>">Download audio file</a></p>
-  <% @tempitem = nil %>
+  <p class="small"><a href="<%= item.clip.url %>">Download audio file</a></p>
 <% end %>

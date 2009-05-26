@@ -6,10 +6,15 @@
 
 <div class="formpart<%= ' witherrors' if item.errors.on(:image) %> notinline">
   <label for="<%= item.class.to_s.downcase %>_image"><%= heading %></label> <%= addendum %><br />
-  <%= file_column_field item.class.to_s.downcase, "image", :class => 'noborder' %>
+  <%= f.file_field :image, :class => 'noborder' %>
   <% if item.errors.on(:image) %><br />
     This <%= item.errors.on(:image).to_a.join(', ')%>
   <% end %>
-  <% if item.has_image? %> <a class="formnote" href="<%= url_for_file_column(item.class.to_s.downcase, "image", "preview") %>" rel="lightbox"><%= image_tag(url_for_file_column(item.class.to_s.downcase, "image", "thumb"), :size => "28x20", :alt => '') %>
-  current image is <%= item.image_relative_path %></a><% end %>
+  <% if item.has_image? %> 
+    <br />
+    <a class="formnote" href="<%= item.image.url(:preview) %>" rel="lightbox">
+      <%= image_tag(item.image.url(:thumb), :size => "28x20", :alt => '') %>
+      current image is <%= item.image_file_name %>, uploaded <%= item.image_updated_at.to_date %>
+    </a>
+  <% end %>
 </div>

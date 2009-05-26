@@ -4,6 +4,7 @@
 
 <div class="mainform">
   <% form_for :tag,
+              :url => tag_url(@tag),
               :html => { 
                 :method => "put",
                 :multipart => true

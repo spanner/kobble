@@ -20,10 +20,6 @@
 <%= render :partial => 'shared/show_topics' %>
 <%= render :partial => 'shared/show_history', :locals => {:events => @thing.logged_events} %>
 
-<% content_for :illustration do %>
-  <%= render :partial => 'shared/illustration' %>
-<% end %>
-
 <% content_for :admin do %>
   <p>
     <%= link_to "snip*", new_source_node_path(@thing), {:id => 'admin_extend_nodelist', :class => 'snipper create'} %><br />

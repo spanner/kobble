@@ -16,6 +16,7 @@
 <div class="mainform">
 
   <% form_for :source,
+              :url => source_url(@source),
               :html => { 
                 :method => "put",
                 :multipart => true

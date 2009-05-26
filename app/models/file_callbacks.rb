@@ -1,12 +1,5 @@
 class FileCallbacks
 
-  def before_validation(model)
-    if model.file_just_uploaded?
-      extension = filepath.split(/\./).last
-      
-    end
-  end
-
   def before_save(model)
     if model.file_just_uploaded?
       model.extracted_text = extract_text_from(model.file)

@@ -1,9 +1,6 @@
 <%
   item ||= @thing
-  @mugshottee = item.class == User ? item : item.creator
-  src = @mugshottee.has_image? ? url_for_file_column('mugshottee', "image", "thumb") : '/images/furniture/icons/nomugshot.jpg'
+  pictured = item.class == User ? item : item.creator
+  src = pictured.has_image? ? pictured.image.url(:thumb) : '/images/furniture/icons/nomugshot.jpg'
 %>
-<%= link_to image_tag(src, {:alt => @mugshottee.name, :class => 'mugshot', :size => '42x42'}), url_for(@mugshottee) %>
-<%
-  mugshottee = nil
-%>
+<%= link_to image_tag(src, {:alt => pictured.name, :class => 'mugshot', :size => '42x42'}), url_for(pictured) %>

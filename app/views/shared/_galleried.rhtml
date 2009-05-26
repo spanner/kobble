@@ -11,7 +11,7 @@
 >
 
   <% if galleried.has_image? %>
-    <%= link_to(image_tag(url_for_file_column("galleried", "image", "slide"), :size => "135x135", :alt => name), {:controller => galleried.class.to_s.underscore.pluralize, :action => 'show', :id => galleried}) %>
+    <%= link_to(image_tag(galleried.image.url(:slide)), :size => "135x135", :alt => name), {:controller => galleried.class.to_s.underscore.pluralize, :action => 'show', :id => galleried}) %>
   <% else %>
     <%= link_to(image_tag("/images/furniture/layout/defaultimage.png", :size => "135x135", :alt => name), {:controller => galleried.class.to_s.underscore.pluralize, :action => 'show', :id => galleried}) %>
   <% end %>
