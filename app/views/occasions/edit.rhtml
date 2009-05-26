@@ -1,5 +1,10 @@
-<h1 class="pagetitle">Edit source document <%= link_to @source.name, :action => 'show', :id => @source %></h1>
+<h1 class="pagetitle">Edit occasion <%= link_to @occasion.name, :action => 'show', :id => @occasion %></h1>
 
-<% form_tag ({:action => 'update', :id => @source}, :multipart => true) do %>
+<% form_for :occasion,
+            :html => { 
+              :method => "put",
+              :multipart => true
+            } do |f| 
+%>
   <%= render :partial => 'form' %>
 <% end %>

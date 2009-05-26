@@ -9,6 +9,8 @@
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
+require 'rubygems'
+gem 'mislav-will_paginate'
 
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence those specified here

@@ -1,4 +1,6 @@
 module Material
+  require 'rubygems'
+  gem 'mislav-will_paginate'
   require 'material/polymorphs'
   require 'material/string_extensions'
   require 'material/catch_response'
