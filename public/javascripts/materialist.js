@@ -1626,11 +1626,8 @@ var Upload = new Class ({
     this.setWidth(100);
     this.form_holder = new Element('div', {'class' : "fileform"});
     this.form_holder.inject(this.progress);
-    
-    console.log("ready to call for description");
-
-//    new Ajax.Updater(this.form_holder, '/admin/assets/describe', { method: 'get', parameters: {filename: this.file_name} });
-
+    this.form_holder.set('load', {onComplete: this.grabDescriptionForm.bind(this)});
+    this.form_holder.load('/describer?upload=' + this.file_name);
   },
   setError: function (percentage) {
     this.setColor("red");
@@ -1647,6 +1644,23 @@ var Upload = new Class ({
   cancel: function (e, but_stay) {
     this.uploader.swfu.cancelUpload(this.file_id);
     this.setCancelled();
+  },
+  grabDescriptionForm: function () {
+    console.log('grabDescriptionForm');
+    this.description_form = this.form_holder.getElement('form');
+    this.description_form.addEvent('submit', this.sendDescriptionForm.bind(this));
+  },
+  sendDescriptionForm: function (e) {
+    console.log('sendDescriptionForm');
+    event = intf.blocked_event(e);
+    var button = this.description_form.getElement('input.submit');
+    var spinner = new Element('img', {src: '/images/furniture/signals/wait_32_on_pink.gif', 'class': 'waiter'});
+    spinner.replaces(button);
+    this.progress.set('load', {method : 'post', url : this.description_form.action, onComplete : this.finished.bind(this)});
+    this.progress.get('load').post(this.description_form);
+  },
+  finished: function () {
+    this.wrapper.addClass('progressFinished');
   }
   
 });

@@ -1,0 +1,7 @@
+%p.file_uploaded
+  %span.title
+    = link_to @source.name, url_for(@source), :target => '_blank'
+  %span.tags
+    = @source.tag_list
+  %br
+  = @source.description

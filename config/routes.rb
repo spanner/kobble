@@ -9,6 +9,7 @@ ActionController::Routing::Routes.draw do |map|
   map.forbidden '/forbidden', :controller => 'login', :action => 'forbidden'
   map.activate '/activate/:id/:activation_code', :controller => 'login', :action => 'activate'
   map.uploader '/uploader', :controller => 'sources', :action => 'upload'
+  map.describer '/describer', :controller => 'sources', :action => 'describe'
   
   # catch and drop are dispatched by controllers and can't be restful
   
@@ -22,7 +23,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :preferences
   map.resources :events
 
-  map.resources :sources, :has_many => [:topics, :nodes, :annotations], :collection => { :gallery => :get }, :member => {:annotate => :post, :recover => :post}
+  map.resources :sources, :has_many => [:topics, :nodes, :annotations], :collection => { :gallery => :get }, :member => {:annotate => :post, :recover => :post, :describe => :put}
   map.resources :nodes, :has_many => [:topics, :annotations], :collection => { :gallery => :get }, :member => {:annotate => :post, :recover => :post}
   map.resources :bundles, :has_many => [:topics, :members, :annotations], :collection => { :gallery => :get }, :member => {:annotate => :post, :recover => :post}
   map.resources :people, :has_many => [:topics, :annotations], :collection => { :gallery => :get }, :member => {:annotate => :post, :recover => :post}

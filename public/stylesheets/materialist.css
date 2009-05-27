@@ -2020,6 +2020,10 @@ div.fieldWithErrors, div.fieldWithErrors p {
 	color: white;
 }
 
+.progressFinished {
+  background-color: #5da454;
+}
+
 .progressContainer {
   position: relative;
 	padding: 0;
@@ -2045,7 +2049,7 @@ div.fieldWithErrors, div.fieldWithErrors p {
   left: 6px;
   font-family: HelveticaNeue-Bold, helvetica, arial, sans-serif;
   font-weight: bold;
-	font-size: 0.9em;
+	font-size: 1.1em;
 	line-height: 1;
 	text-align: left;
 	white-space: nowrap;
@@ -2087,6 +2091,7 @@ a.progressCancel:hover {
 .progressWrapper .fileform {
   z-index: 1010;
 	position: absolute;
+	background-color: #d1005d;
 	left: 120px;
   height: 46px;
   overflow: hidden;
@@ -2095,9 +2100,9 @@ a.progressCancel:hover {
 
 .progressWrapper form label {
   display: block;
-	margin: 2px 0 0 0;
+	margin: 0;
   font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
-	color: #988A50;
+	color: white;
 	font-size: 75%;
 	font-weight: bold;
 }
@@ -2116,13 +2121,24 @@ a.progressCancel:hover {
 
 .progressWrapper p {
   margin: 0;
-	padding: 6px;
-	font-family: "Lucida Grande","Bitstream Vera Sans",Helvetica,Verdana,Arial,sans-serif;
+	padding: 4px;
+  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
+  font-size: 0.8em;
   width: 100%;
+  line-height: 1.1;
 }
 
-.progressWrapper p span.copyright{
-	color: #988A50;
+.progressWrapper p.file_uploaded {
+  font-size: 1.1em;
+}
+
+.progressWrapper p.file_uploaded a {
+  font-weight: bold;
+  color: white;
+}
+
+.progressWrapper p span.tags {
+	color: #95e38b;
   font-size: 80%;
 }
 

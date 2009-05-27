@@ -4,7 +4,7 @@ class Source < ActiveRecord::Base
   belongs_to :occasion
   has_many :nodes, :dependent => :destroy
 
-  validates_presence_of :name, :description, :collection
+  validates_presence_of :name, :collection
   validate :must_have_body_clip_or_file
 
   def uploaded_file=(upload)

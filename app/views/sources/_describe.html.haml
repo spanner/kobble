@@ -1,0 +1,17 @@
+%div{:id => "holder_#{@source.id}"}
+  - form_for @source, :url => describe_source_path(@source), :html => {:id => "file_form_#{@source.id}"} do |f|
+    = hidden_field_tag :id, @source.id
+    %table{:style => 'width: 100%'}
+      %tbody
+        %tr
+          %td
+            %label{ :for => "source_name" } Name
+            = f.text_field :name, :class => 'textbox'
+          %td{:style => 'width: 50%'}
+            %label{ :for => "source_description" } Description
+            = f.text_field :description, :class => 'textbox'
+          %td
+            %label{ :for => "tag_list" } Tags
+            = text_field_tag :tag_list, '', :class => 'textbox'
+          %td{:style => 'vertical-align: bottom; padding: 4px;'}
+            = f.submit "save", :class => 'submit'
