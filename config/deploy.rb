@@ -1,4 +1,4 @@
-set :application, "materialist"
+set :application, "analyst"
 set :scm, :git
 set :repository, "git@github.com:spanner/materialist.git"
 set :git_enable_submodules, 1
@@ -18,11 +18,10 @@ set :classes_with_assets, %w{account bundle collection node occasion person sour
 default_run_options[:pty] = true
 
 after "deploy:setup" do
-  sudo "mkdir -p #{shared_path}/assets" 
-  classes_with_assets.each { |directory| run "mkdir #{shared_path}/assets/#{directory}" }
-  sudo "mkdir -p #{shared_path}/config"
+  sudo "mkdir -p #{shared_path}/assets #{shared_path}/config"
+  classes_with_assets.each { |directory| sudo "mkdir #{shared_path}/assets/#{directory}" }
   sudo "chown -R #{user}:#{group} #{shared_path}"
-  sudo "chown #{user}:#{group} /var/www/#{application}/releases"
+  sudo "chown #{user}:#{group} #{deploy_to}/releases"
   sudo "ln -s #{shared_path}/config/nginx.conf /etc/nginx/sites-available/#{application}"
 end
 
