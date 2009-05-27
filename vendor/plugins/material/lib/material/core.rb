@@ -12,7 +12,7 @@ module Material #:nodoc:
       }
     end
 
-    # This is much like an +acts_as+ extension: it consolidates all the shared materialist functionality behind a single (parameterised) call to is_material.
+    # This is much like an +acts_as+ extension: it consolidates all the shared kobble functionality behind a single (parameterised) call to is_material.
     #
     # :only and :except parameters can be supplied, so eg:
     #

@@ -1112,7 +1112,7 @@ var jsonForm = new Class ({
   // updatePage called by processResponse if no more user input is expected
   // and inserts response html into destination element
   // default is that we expect to add an option to a select box
-  // created from the JSON representation of a materialist object
+  // created from the JSON representation of a kobble object
   // subclasses have other ideas mostly to do with extending lists
 
   updatePage: function (response) {
