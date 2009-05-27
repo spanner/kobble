@@ -44,7 +44,7 @@
   
   <div class="mainform contentblock" id="signupform">
 
-    <% form_for :account do |f| -%>
+    <% form_for :account, :url => accounts_url do |f| -%>
 
       <%= render :partial => 'shared/edit_name', :locals => {:item => @account, :f => f, :required => true, :heading => 'Account name', :addendum => 'you can change this any time'} %>
       <%= f.hidden_field :account_type_id %>
