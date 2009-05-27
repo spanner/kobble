@@ -18,7 +18,7 @@ set :classes_with_assets, %w{account bundle collection node occasion person sour
 default_run_options[:pty] = true
 
 after "deploy:setup" do
-  sudo "mkdir -p #{shared_path}/assets #{shared_path}/config"
+  sudo "mkdir -p #{shared_path}/assets #{shared_path}/config #{deploy_to}/logs"
   classes_with_assets.each { |directory| sudo "mkdir #{shared_path}/assets/#{directory}" }
   sudo "chown -R #{user}:#{group} #{shared_path}"
   sudo "chown #{user}:#{group} #{deploy_to}/releases"
@@ -37,7 +37,7 @@ namespace :deploy do
     run "touch #{current_release}/tmp/restart.txt"
   end
   task :stop, :roles => :app do
-    # Do nothing.
+
   end
   task :restart, :roles => :app do
     run "touch #{current_release}/tmp/restart.txt"
