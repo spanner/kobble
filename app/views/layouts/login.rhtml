@@ -8,7 +8,7 @@
 <body>
   <div id="masthead">
     <p>
-      <%= link_to "an.aly.st/", "/" %><% if logged_in? %><br />
+      <%= link_to "kobble/", "/" %><% if logged_in? %><br />
       <%= link_to "#{current_user.account.name}/", {:controller => 'accounts', :action => 'home'}, {:class => 'account'} %><% end %><br />
     </p>
   </div>
@@ -24,11 +24,11 @@
   <div id="mastfoot">
     <div id="navigation">
       <%= link_to 'welcome', '/', {:class => (request.parameters[:action] == 'index' ? "fg" : '')} %>
-      <%= link_to 'background', 'http://about.an.aly.st/' %>
-      <%= link_to 'how it works', 'http://about.an.aly.st/how/' %>
-      <%= link_to 'faq', 'http://about.an.aly.st/faq/' %>
-      <%= link_to 'examples',  'http://about.an.aly.st/examples/' %>
-      <%= link_to 'forum', 'http://discuss.an.aly.st/' %>
+      <%= link_to 'background', 'http://about.kobble.net/' %>
+      <%= link_to 'how it works', 'http://about.kobble.net/how/' %>
+      <%= link_to 'faq', 'http://about.kobble.net/faq/' %>
+      <%= link_to 'examples',  'http://about.kobble.net/examples/' %>
+      <%= link_to 'forum', 'http://discuss.kobble.net/' %>
       <%= link_to 'sign up', {:controller => 'accounts', :action => 'new'}, {:class => (request.parameters[:action] == 'signup' ? "fg" : '')} %>
       <%= link_to 'log in', {:controller => 'login', :action => 'login'}, {:class => (request.parameters[:action] == 'login' ? "fg" : '')} %>
       <%= link_to 'spanner', 'http://spanner.org/', {:class => 'pale'} %> 

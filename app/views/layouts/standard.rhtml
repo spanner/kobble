@@ -5,7 +5,7 @@
 
 <html>
 <head>
-  <title>an.aly.st<% if @title %> - <%= @title %><% end%></title>
+  <title>kobble<% if @title %> - <%= @title %><% end%></title>
   <%= javascript_include_tag 'mootools', 'mootools-more', 'extensions', 'autocomplete', 'materialist', 'slimbox', 'swfupload/swfupload', 'swfupload/swfupload.cookies', 'swfupload/swfupload.queue', 'swfupload/swfupload.speed', :cache => "cache/materialist" %>
   <%= yield :extra_js %>
   <%= stylesheet_link_tag 'materialist', 'slimbox', :cache => "cache/materialist" %>
@@ -15,7 +15,7 @@
 
   <div id="masthead">
     <p>
-      <%= link_to "an.aly.st/", "/" %><br />
+      <%= link_to "kobble/", "/" %><br />
       <%= link_to "#{current_user.account.name}/", {:controller => 'accounts', :action => 'home'}, {:class => 'account'} %><br />
     </p>
   </div>
