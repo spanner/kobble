@@ -15,7 +15,11 @@
     <% form_for :thing, :url => {:action => 'recover', :id => @thing} do |f| %>
       <%= submit_tag "recover", :class => 'bigbutton' %>
     <% end %>
-      
+  
+    <p>
+      These are the immediate children that would be recovered with this object: <strong><%= @thing.retrievable_associates_summary %></strong>.
+    </p>
+    
   </div>
 
 <% else %>
