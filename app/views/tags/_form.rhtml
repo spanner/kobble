@@ -24,7 +24,7 @@
     <%= text_area 'tag', 'description', :rows => 4, :class => 'standard'  %>
     </p>
 
-    <%= render :partial => 'shared/edit_image', :locals => {:item => @tag} %>
+    <%= render :partial => 'shared/edit_image', :locals => {:item => @tag, :f => f} %>
 
   </div>
 

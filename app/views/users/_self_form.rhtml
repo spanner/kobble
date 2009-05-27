@@ -31,7 +31,7 @@
     <%= render :partial => 'shared/edit_name', :locals => {:item => @user, :f => f, :heading => 'Your name', :required => true} %>
     <%= render :partial => 'shared/edit_email', :locals => {:item => @user, :f => f, :required => true} %>
     <%= render :partial => 'shared/edit_description', :locals => {:item => @user, :f => f, :heading => "A bit of information about yourself"} %>
-    <%= render :partial => 'shared/edit_image', :locals => {:item => @user, :heading => "A picture"} %>
+    <%= render :partial => 'shared/edit_image', :locals => {:item => @user, :heading => "A picture", :f => f} %>
 
     <div class="formpart<%= ' witherrors' if @user.errors.on(:diminutive) %>">
       <label for="user_diminutive">How shall we refer to (and address) you?</label> instead of your full name<br/>
