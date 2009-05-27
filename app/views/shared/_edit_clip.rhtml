@@ -5,6 +5,6 @@
     This <%= item.errors.on(:clip).to_a.to_sentence %>
   <% end %>
   <% if item.has_clip? %><br />
-	  <span class="formnote">current clip is <%= item.clip_file_name %>, uploaded <%= item.clip_updated_at.to_date %></span>
+	  <span class="formnote">current clip is <%= item.clip_file_name %>
   <% end %>
 </div>

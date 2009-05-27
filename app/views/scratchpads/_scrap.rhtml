@@ -8,5 +8,5 @@
   class="<%= scrap.class.to_s.downcase %> draggable tippable"
 >
   <%= link_to( scrap.name, {:controller => scrap.class.to_s.downcase.pluralize, :action => 'show', :id => scrap}, {:class => 'listed'}) %>
-  <div class="tiptext"><%= truncate( scrap.find_some_text, 300 ) %></div>
+  <div class="tiptext"><%= truncate( scrap.find_some_text, :length => 300 ) %></div>
 </li>

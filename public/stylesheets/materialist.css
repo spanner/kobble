@@ -108,7 +108,7 @@ blockquote {
 /* layout and special formatting */
 
 div#masthead {
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 42px;
   width: 122px;
@@ -481,7 +481,7 @@ div.contentblock div.illustration {
   margin: 0 0 20px 40px;
 }
 
-div.contentblock img.thumbnail {
+div.summary img.thumbnail {
   float: left;
   margin: 0 10px 6px 0;
 }
@@ -2004,6 +2004,138 @@ div.fieldWithErrors, div.fieldWithErrors p {
 .emphatic {
 	color: #d1005d;
 }
+
+/* batch uploader */
+
+.upload_controls {
+  clear: both;
+  margin-top: 32px;
+}
+
+.progressWrapper {
+	width: 100%;
+	margin: 2px 0;
+	overflow: hidden;
+	background-color: #4d4e53;
+	color: white;
+}
+
+.progressContainer {
+  position: relative;
+	padding: 0;
+	height: 46px;
+	overflow: hidden;
+}
+
+.message {
+	margin: 1em 0;
+	padding: 10px 20px;
+	border: solid 1px #FFDD99;
+	background-color: #FFFFCC;
+	overflow: hidden;
+}
+
+.red {
+	background-color: #c00;
+}
+
+.progressName {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  font-family: HelveticaNeue-Bold, helvetica, arial, sans-serif;
+  font-weight: bold;
+	font-size: 0.9em;
+	line-height: 1;
+	text-align: left;
+	white-space: nowrap;
+	overflow: hidden;
+	z-index: 1000;
+}
+
+.progressBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+	width: 0;
+	background-color: #d1005d;
+	z-index: 990;
+}
+
+.progressBarStatus {
+  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
+/*  font-size: 0.7em;*/
+  font-weight: lighter;
+  color: #cacac8;
+	text-align: left;
+	white-space: nowrap;
+}
+
+a.progressCancel {
+	font-size: 0;
+	display: block;
+	height: 14px;
+	width: 14px;
+	float: right;
+}
+
+a.progressCancel:hover {
+	background-position: 0px 0px;
+}
+
+.progressWrapper .fileform {
+  z-index: 1010;
+	position: absolute;
+	left: 120px;
+  height: 46px;
+  overflow: hidden;
+  min-width: 400px;
+}
+
+.progressWrapper form label {
+  display: block;
+	margin: 2px 0 0 0;
+  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
+	color: #988A50;
+	font-size: 75%;
+	font-weight: bold;
+}
+
+.progressWrapper form input.textbox {
+	font-family: "Lucida Grande","Bitstream Vera Sans",Helvetica,Verdana,Arial,sans-serif;
+	width: 100%;
+	padding: 3px;
+	border: 1px solid #988A50;
+}
+
+.progressWrapper td {
+  padding: 2px 10px;
+  overflow: hidden;
+}
+
+.progressWrapper p {
+  margin: 0;
+	padding: 6px;
+	font-family: "Lucida Grande","Bitstream Vera Sans",Helvetica,Verdana,Arial,sans-serif;
+  width: 100%;
+}
+
+.progressWrapper p span.copyright{
+	color: #988A50;
+  font-size: 80%;
+}
+
+.progressWrapper p img {
+  float: left;
+  margin: -4px 20px 0 4px;
+}
+
+/* -- SWFUpload Object Styles ------------------------------- */
+.swfupload {
+	vertical-align: top;
+}
+
 
 
 

@@ -1,12 +1,33 @@
 class Source < ActiveRecord::Base
 
   is_material
-
   belongs_to :occasion
   has_many :nodes, :dependent => :destroy
 
   validates_presence_of :name, :description, :collection
   validate :must_have_body_clip_or_file
+
+  def uploaded_file=(upload)
+    
+    logger.warn "!!! setting uploaded_file type"
+    
+    upload.content_type = MIME::Types.type_for(upload.original_filename).to_s
+    
+    logger.warn "    gives #{upload.content_type}"
+    
+    case upload.content_type
+    when /^video/
+      self.clip = upload
+    when /^video/
+      self.clip = upload
+    when /^audio/
+      self.clip = upload
+    when /^image/
+      self.image = upload
+    else
+      self.file = upload
+    end
+  end
 
   def self.nice_title
     "source"

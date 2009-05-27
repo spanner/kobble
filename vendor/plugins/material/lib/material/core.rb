@@ -1,7 +1,7 @@
 require 'active_support'
 
 module Material #:nodoc:
-  module Connections
+  module Core
 
     def self.included(base)
       base.class_eval {
@@ -95,10 +95,10 @@ module Material #:nodoc:
         if definitions.include?(:illustration)
           if self.column_names.include?('clip_file_name')
             has_attached_file :clip, 
-              :path => ":rails_root/public/:class/:attachment/:id/:style/:basename.:extension", 
-              :url => "/:class/:attachment/:id/:style/:basename.:extension" 
+              :path => ":rails_root/public/:class/:attachment/:id/:basename.:extension", 
+              :url => "/:class/:attachment/:id/:basename.:extension" 
           else
-            logger.warn("!! #{self.to_s} should be illustrated but has no clip column")
+            logger.warn("!! #{self.to_s} should be illustrated but has no clip columns")
           end
           if self.column_names.include?('image_file_name')
             has_attached_file :image, 
@@ -111,15 +111,15 @@ module Material #:nodoc:
                 "preview" => "750x540>"
               }
           else
-            logger.warn("!! #{self.to_s} should be illustrated but has no image column")
+            logger.warn("!! #{self.to_s} should be illustrated but has no image columns")
           end
         end
 
         if definitions.include?(:file)
           if self.column_names.include?('file_file_name')
             has_attached_file :file, 
-              :path => ":rails_root/public/:class/:attachment/:id/:style/:basename.:extension",
-              :url => "/:class/:attachment/:id/:style/:basename.:extension"
+              :path => ":rails_root/public/:class/:attachment/:id/:basename.:extension",
+              :url => "/:class/:attachment/:id/:basename.:extension"
           end
         end
 
@@ -189,8 +189,8 @@ module Material #:nodoc:
         end
 
         class_eval {
-          extend Material::Connections::MaterialClassMethods
-          include Material::Connections::MaterialInstanceMethods
+          extend Material::Core::MaterialClassMethods
+          include Material::Core::MaterialInstanceMethods
         }
 
       end

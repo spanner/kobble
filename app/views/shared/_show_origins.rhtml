@@ -1,6 +1,8 @@
 <% item ||= @thing %>
 
 <div class="summary">
+  <%= render :partial => 'shared/illustration' %>
+
 	<% if item.respond_to?('collection') %>
 	  Collection: <% if item.collection %><%= link_to item.collection.name, url_for(item.collection) %><% else %>none<% end %>. 
 	<% end %>

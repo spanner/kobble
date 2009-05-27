@@ -9,7 +9,7 @@ window.addEvent('domready', function(){
 });
 
 var Interface = new Class({
-	initialize: function(){
+  initialize: function(){
     this.tips = null;
     this.draggables = [];
     this.droppers = [];
@@ -25,9 +25,9 @@ var Interface = new Class({
     this.admin = $E('div#admin');
     this.squeezebox = null;
     this.draghelper = null;
-		this.floater = null;
+    this.floater = null;
     this.fader = new Fx.Tween(this.announcer, {property: 'opacity', duration: 'long', link: 'chain'});
-	},
+  },
   announce: function (message, title) {
     this.announcer.removeClass('error');
     this.announcer.set('html', message);
@@ -51,14 +51,14 @@ var Interface = new Class({
   },
   startDragging: function (helper) {
     var catchers = [];
-  	if (this.preferences.tabs_responsive) this.tabs.each(function (t) { t.makeReceptiveTo(helper); });
-  	this.droppers.each(function(d){ if (d.makeReceptiveTo(helper)) catchers.push(d.container); });
-  	intf.debug('catchers will be: ', 3);
-  	intf.debug(catchers, 3);
-  	return catchers;
+    if (this.preferences.tabs_responsive) this.tabs.each(function (t) { t.makeReceptiveTo(helper); });
+    this.droppers.each(function(d){ if (d.makeReceptiveTo(helper)) catchers.push(d.container); });
+    intf.debug('catchers will be: ', 3);
+    intf.debug(catchers, 3);
+    return catchers;
   },
   stopDragging: function (helper) {
-  	intf.debug('stopdragging: ', 2);
+    intf.debug('stopdragging: ', 2);
     this.tabs.each(function (t) { t.makeUnreceptive(helper); });
     this.droppers.each(function (d) { d.makeUnreceptive(helper); });
     $$('.hideondrag').each(function (element) { element.setStyle('visibility', 'visible'); });
@@ -84,15 +84,15 @@ var Interface = new Class({
     else return null;
   },
 
-	rememberFloater: function (floater) {
-		this.floaters.push(floater);
-	},
-	clearFloaters: function () {
-		this.floaters.each(function (floater) { 
-			floater.hide(); 
-			delete floater;
-		});
-	},
+  rememberFloater: function (floater) {
+    this.floaters.push(floater);
+  },
+  clearFloaters: function () {
+    this.floaters.each(function (floater) { 
+      floater.hide(); 
+      delete floater;
+    });
+  },
   
   // these are convenient shortcuts called by activate()
   
@@ -112,10 +112,17 @@ var Interface = new Class({
   makeNoter: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new htmlForm(element, e); }); }); },
   makeSnipper: function (elements) { elements.each(function (element) { element.addEvent('click', function (e) { new Snipper(element, e); }); }); },
   makeFixed: function (elements) { elements.each(function (element) { element.pin(); }); },
+  makeUploader: function (elements) { 
+    elements.each(
+      function (element) { 
+        new Uploader(element); 
+      }
+    );
+  },
   makeSquash: function (handles, blocks) { 
-	 	if (this.squeezebox) this.squeezebox.addSections(handles,blocks);
-		else this.squeezebox = new Squeezebox(handles, blocks);
-	},
+    if (this.squeezebox) this.squeezebox.addSections(handles,blocks);
+    else this.squeezebox = new Squeezebox(handles, blocks);
+  },
     
   makeCollectionsLinks: function (elements) {
     elements.each(function (a) {
@@ -128,18 +135,18 @@ var Interface = new Class({
   },
   
   getPreferences: function () {
-		var req = new Request.JSON({
-		  url: "/user_preferences",
-			method: 'get',
+    var req = new Request.JSON({
+      url: "/user_preferences",
+      method: 'get',
       onSuccess: function(response) { 
         intf.preferences = response;
         intf.debug("preferences object retrieved", 2);
         intf.enactPreferences();
       },
-		  onFailure: function (response) { 
-		    intf.complain("preferences call failed");
-		  }
-		}).send();
+      onFailure: function (response) { 
+        intf.complain("preferences call failed");
+      }
+    }).send();
   },
   
   enactPreferences: function (argument) {
@@ -160,13 +167,13 @@ var Interface = new Class({
   
   activate: function (element) {
     var scope = element || document;
-	  this.addDropzones( scope.getElements('.catcher') );
-	  this.addTrashDropzones( scope.getElements('.trashdrop') );
-	  this.makeDraggables( scope.getElements('.draggable') );
+    this.addDropzones( scope.getElements('.catcher') );
+    this.addTrashDropzones( scope.getElements('.trashdrop') );
+    this.makeDraggables( scope.getElements('.draggable') );
     this.makeTippable( scope.getElements('.tippable') );
-	  this.addTabs(scope.getElements('a.tab'));
-	  this.addScratchTabs(scope.getElements('a.padtab'));
-	  this.makeFixed(scope.getElements('div.fixedbottom'));
+    this.addTabs(scope.getElements('a.tab'));
+    this.addScratchTabs(scope.getElements('a.padtab'));
+    this.makeFixed(scope.getElements('div.fixedbottom'));
     this.makeToggle(scope.getElements('a.toggle'));
     this.makePreference(scope.getElements('a.preference'));
     this.makeSuggester(scope.getElements('input.tagbox'));
@@ -177,6 +184,7 @@ var Interface = new Class({
     this.makeNoter(scope.getElements('a.annotate'));
     this.makeFixed(scope.getElements('.fixed'));
     this.makeCollectionsLinks(scope.getElements('a.choosecollections'));
+    this.makeUploader(scope.getElements('div.uploader'));
     this.makeSquash(scope.getElements('a.squeezebox'), scope.getElements('div.squeezed'));
   },
   
@@ -185,38 +193,38 @@ var Interface = new Class({
     
     //and the thing itself. there doesn't seem to be a cleaner way to work with thing-and-children
     
-	  if (element.hasClass('catcher')) this.addDropzones( [element] );
-	  if (element.hasClass('trashdrop')) this.addTrashDropzones( [element] );
-	  if (element.hasClass('draggable')) this.makeDraggables( [element] );
+    if (element.hasClass('catcher')) this.addDropzones( [element] );
+    if (element.hasClass('trashdrop')) this.addTrashDropzones( [element] );
+    if (element.hasClass('draggable')) this.makeDraggables( [element] );
     if (element.hasClass('tippable')) this.makeTippable( [element] );
-	  if (element.hasClass('tab')) this.addTabs( [element] );
-	  if (element.hasClass('padtab')) this.addScratchTabs( [element] );
-	  if (element.hasClass('fixedbottom')) this.makeFixed( [element] );
+    if (element.hasClass('tab')) this.addTabs( [element] );
+    if (element.hasClass('padtab')) this.addScratchTabs( [element] );
+    if (element.hasClass('fixedbottom')) this.makeFixed( [element] );
     if (element.hasClass('toggle')) this.makeToggle( [element] );
     if (element.hasClass('snipper')) this.makeSnipper( [element] );
     if (element.hasClass('noter')) this.makeNoter( [element] );
   },
   
   getSelectedText: function () {
-  	var txt = '';
-  	if (window.getSelection) {
-  		txt = window.getSelection();
-  	} else if (document.getSelection) {
-  		txt = document.getSelection();
-  	} else if (document.selection) {
-  		txt = document.selection.createRange().text;
-  	}
+    var txt = '';
+    if (window.getSelection) {
+      txt = window.getSelection();
+    } else if (document.getSelection) {
+      txt = document.getSelection();
+    } else if (document.selection) {
+      txt = document.selection.createRange().text;
+    }
     return '' + txt;
   },
 
   quoteSelectedText: function () {
-  	var txt = this.getSelectedText();
-		if (txt) {
-			txt.replace(/[\n\r]+/g, " ");
-			return "bq. " + txt + "\n\n";
-		} else {
-			return '';
-		}
+    var txt = this.getSelectedText();
+    if (txt) {
+      txt.replace(/[\n\r]+/g, " ");
+      return "bq. " + txt + "\n\n";
+    } else {
+      return '';
+    }
   },
   
   getPlayerIn: function () {
@@ -229,19 +237,19 @@ var Interface = new Class({
     if (player && player.playerOk() ) return player.playerOut();
   },
 
-	blocked_event: function (e) {
-		if (e) {
-			var event = new Event(e);
-			event.preventDefault();
-			return event;
-		}
-	},
+  blocked_event: function (e) {
+    if (e) {
+      var event = new Event(e);
+      event.preventDefault();
+      return event;
+    }
+  },
   
   debug: function (message, level) {
     if (!level) level = 2;
     if (window['console'] && this.debug_level >= level) console.log(message);
   }
-  	
+    
 });
 
 var SpokeTips = new Class({
@@ -253,35 +261,35 @@ var SpokeTips = new Class({
   build: function(el){
     el.$attributes.myTitle = el.title || el.getElement('a').title;
     el.$attributes.myText = el.getElement('div.tiptext').get('text');
-		el.removeProperty('title');
-		if (el.$attributes.myTitle && el.$attributes.myTitle.length > this.options.maxTitleChars)
-			el.$attributes.myTitle = el.$attributes.myTitle.substr(0, this.options.maxTitleChars - 1) + "&hellip;";
-		el.addEvent('mouseenter', function(event){
-		  if (intf.preferences.tooltips) {
-  			this.start(el);
-  			if (!this.options.fixed) this.locate(event);
-  			else this.position(el);
-		  }
-		}.bind(this));
-		if (!this.options.fixed) el.addEvent('mousemove', this.locate.bind(this));
-		var end = this.end.bind(this);
-		el.addEvent('mouseleave', end);
+    el.removeProperty('title');
+    if (el.$attributes.myTitle && el.$attributes.myTitle.length > this.options.maxTitleChars)
+      el.$attributes.myTitle = el.$attributes.myTitle.substr(0, this.options.maxTitleChars - 1) + "&hellip;";
+    el.addEvent('mouseenter', function(event){
+      if (intf.preferences.tooltips) {
+        this.start(el);
+        if (!this.options.fixed) this.locate(event);
+        else this.position(el);
+      }
+    }.bind(this));
+    if (!this.options.fixed) el.addEvent('mousemove', this.locate.bind(this));
+    var end = this.end.bind(this);
+    el.addEvent('mouseleave', end);
  }
 });
 
 var Dropzone = new Class({
-	initialize: function (element) {
+  initialize: function (element) {
     intf.debug('new dropzone: ' + element.id, 3);
-		this.container = element;
-	  this.tag = element.id;
-	  this.name = element.getProperty('title') || element.getElement('a').get('text');
-		this.container.dropzone = this;   // when a draggee is picked up we climb the tree to see if it is being dragged from somewhere
-		this.isReceptive = false;
-		this.isRegretful = false;
-		this.receiptAction = 'catch';
-		this.removeAction = 'drop';
-		this.waitSignal = null;
-		this.catches = this.container.getProperty('catches');
+    this.container = element;
+    this.tag = element.id;
+    this.name = element.getProperty('title') || element.getElement('a').get('text');
+    this.container.dropzone = this;   // when a draggee is picked up we climb the tree to see if it is being dragged from somewhere
+    this.isReceptive = false;
+    this.isRegretful = false;
+    this.receiptAction = 'catch';
+    this.removeAction = 'drop';
+    this.waitSignal = null;
+    this.catches = this.container.getProperty('catches');
   },
   zoneType: function () {
     switch (this.container.tagName ) {
@@ -293,15 +301,15 @@ var Dropzone = new Class({
   },
   spokeID: function () { return this.container.spokeID(); },
   spokeType: function () { return this.container.spokeType(); },
-	recipient: function () { return this.container; },
-	flasher: function () { return this.container; },
-	contents: function () { return this.container.getElements('.draggable').map(function(el){ return el.spokeTag(); }); },
-	contains: function (draggee) { 
-	  intf.debug('looking for ' + draggee.tag + ' in ', 5);
-	  intf.debug(this.contents(), 5);
-	  return this.contents().contains(draggee.tag); 
-	},
-	can_catch: function (type) { if (this.catches) return this.catches == 'all' || this.catches.split(',').contains(type); },
+  recipient: function () { return this.container; },
+  flasher: function () { return this.container; },
+  contents: function () { return this.container.getElements('.draggable').map(function(el){ return el.spokeTag(); }); },
+  contains: function (draggee) { 
+    intf.debug('looking for ' + draggee.tag + ' in ', 5);
+    intf.debug(this.contents(), 5);
+    return this.contents().contains(draggee.tag); 
+  },
+  can_catch: function (type) { if (this.catches) return this.catches == 'all' || this.catches.split(',').contains(type); },
   
   // makeReceptiveTo gets called on drag start to decide whether we're interested and if so prepare us to receive a drop
   // we do as many tests as possible here to make the mouseover events lighter
@@ -377,33 +385,33 @@ var Dropzone = new Class({
     this.container.removeClass('drophere');
     if(this.tab) this.tab.tabhead.removeClass('over');
   },
-	        
-	receiveDrop: function (helper) {
+          
+  receiveDrop: function (helper) {
     intf.debug('receiveDrop: ' + this.name, 1);
-	  intf.stopDragging();
-		var dropzone = this;
-		var draggee = helper.draggee;
-		dropzone.loseInterest(helper);
+    intf.stopDragging();
+    var dropzone = this;
+    var draggee = helper.draggee;
+    dropzone.loseInterest(helper);
     intf.debug(dropzone.name + ' catching ' + draggee.name, 2);
 
-		if (dropzone == draggee.draggedfrom) {
-			helper.flyback();
-			
-		} else if (dropzone.contains(draggee)) {
-			intf.complain(draggee.name + ' is already in' + dropzone.name);
-			helper.flyback();
-			
-		} else {
+    if (dropzone == draggee.draggedfrom) {
+      helper.flyback();
+      
+    } else if (dropzone.contains(draggee)) {
+      intf.complain(draggee.name + ' is already in' + dropzone.name);
+      helper.flyback();
+      
+    } else {
       intf.removeHelper();
-			if (intf.preferences.confirmation == false || confirm('are you sure you wanted to drop that there?')) {
+      if (intf.preferences.confirmation == false || confirm('are you sure you wanted to drop that there?')) {
         
-  			var req = new Request.JSON( {
-  			  url: this.addURL(draggee),
-  				method: this.http_method(),
-  			  onRequest: function () { 
-  			    dropzone.waiting();
-  			    draggee.waiting();
-  			  },
+        var req = new Request.JSON( {
+          url: this.addURL(draggee),
+          method: this.http_method(),
+          onRequest: function () { 
+            dropzone.waiting();
+            draggee.waiting();
+          },
           onSuccess: function(response){
             intf.debug('drop successful: ', 3);
             intf.debug('outcome = ' + response.outcome + ', message = ' + response.message + ', consequence = ' + response.consequence, 4);
@@ -426,106 +434,106 @@ var Dropzone = new Class({
               intf.complain(response.message);
             }
           },
-  			  onFailure: function (response) { 
+          onFailure: function (response) { 
             intf.debug('drop failed!', 2);
             intf.debug('outcome = ' + response.outcome + ', message = ' + response.message + ', consequence = ' + response.consequence, 4);
-  			    dropzone.notWaiting(); 
-  			    draggee.notWaiting(); 
-  			    intf.complain('remote call failed');
-  			  }
-  			}).send();
-			}
-		}
+            dropzone.notWaiting(); 
+            draggee.notWaiting(); 
+            intf.complain('remote call failed');
+          }
+        }).send();
+      }
+    }
   },
 
-	removeDrop: function (helper) {
+  removeDrop: function (helper) {
     intf.debug('removeDrop: ' + this.name, 3);
-	  intf.stopDragging();
-		var dropzone = this;
+    intf.stopDragging();
+    var dropzone = this;
     var draggee = helper.draggee;
     intf.removeHelper();
-	  
-		var req = new Request.JSON( {
-		  url: this.removeURL(draggee),
-			method: 'delete',
-		  onRequest: function () { draggee.waiting(); },
-		  onSuccess: function (response) { 
+    
+    var req = new Request.JSON( {
+      url: this.removeURL(draggee),
+      method: 'delete',
+      onRequest: function () { draggee.waiting(); },
+      onSuccess: function (response) { 
         if (response.outcome == 'success') {
           intf.debug('drop successful: ', 3);
           intf.debug('outcome = ' + response.outcome + ', message = ' + response.message + ', consequence = ' + response.consequence, 4);
-		      intf.announce(response.message); 
+          intf.announce(response.message); 
           draggee.disappear();
-		    } else {
+        } else {
           intf.complain(response.message);
-		    }
-		  },
-		  onFailure: function (response) {
-		    intf.complain('remote call failed');
-		  }
-		}).send();
-	},
-	
-	addURL: function (draggee) { 
-		return '/' + this.spokeType() + 's/' + this.receiptAction + '/' + this.spokeID() + '/' + draggee.spokeType() + '/' + draggee.spokeID();  
-	},
-	
-	removeURL: function (draggee) { 
-		return '/' + this.spokeType() + 's/' + this.removeAction + '/' + this.spokeID() + '/' + draggee.spokeType() + '/' + draggee.spokeID(); 
-	},
-	
-	http_method: function () {
-		return 'get';
-	},
-	
-	waiting: function () {
-	  if (this.zoneType() == 'list') {
+        }
+      },
+      onFailure: function (response) {
+        intf.complain('remote call failed');
+      }
+    }).send();
+  },
+  
+  addURL: function (draggee) { 
+    return '/' + this.spokeType() + 's/' + this.receiptAction + '/' + this.spokeID() + '/' + draggee.spokeType() + '/' + draggee.spokeID();  
+  },
+  
+  removeURL: function (draggee) { 
+    return '/' + this.spokeType() + 's/' + this.removeAction + '/' + this.spokeID() + '/' + draggee.spokeType() + '/' + draggee.spokeID(); 
+  },
+  
+  http_method: function () {
+    return 'get';
+  },
+  
+  waiting: function () {
+    if (this.zoneType() == 'list') {
       this.waitSignal = new Element('li', { 'id': 'waiter', 'class': 'draggable waiting' });
       this.waitSignal.set('text','working...');
       this.waitSignal.injectInside(this.container);
       return this.waitSignal;
-	  } else {
-	    this.container.addClass('waiting');
-	  }
-	},
-	
-	notWaiting: function () { 
-	  if (this.zoneType() == 'list') {
+    } else {
+      this.container.addClass('waiting');
+    }
+  },
+  
+  notWaiting: function () { 
+    if (this.zoneType() == 'list') {
       if (this.waitSignal) {
         this.waitSignal.destroy();
         this.waitSignal = null;
       } 
-	  } else {
-	    this.container.removeClass('waiting');
-	  }
-	},
-	
-	accept: function (draggee) {
+    } else {
+      this.container.removeClass('waiting');
+    }
+  },
+  
+  accept: function (draggee) {
     if (this.zoneType() == 'list') {
       var element = draggee.clone().inject(this.container, 'inside');
       element.set('id', this.tag + '_' + draggee.tag);
       intf.activateElement(element);
     }
-	}
+  }
 });
 
 var TrashDropzone = new Class({
   Extends: Dropzone,
-	can_catch: function (type) { return true; },
-	receiveDrop: function (helper) {
+  can_catch: function (type) { return true; },
+  receiveDrop: function (helper) {
     intf.debug('trash.receiveDrop: ' + this.name, 2);
-	  intf.stopDragging();
-		var trash = this;
-		var draggee = helper.draggee;
-		trash.loseInterest(helper);
+    intf.stopDragging();
+    var trash = this;
+    var draggee = helper.draggee;
+    trash.loseInterest(helper);
     intf.debug('trash catching ' + draggee.name, 2);
-		var deleteform = new Element('form', {
-			'style': 'display: none'
-		});
-		var deletemethod = new Element('input', {
-			'type': 'hidden',
-			'name': '_method',
-			'value': 'delete'
-		}).inject(deleteform);
+    var deleteform = new Element('form', {
+      'style': 'display: none'
+    });
+    var deletemethod = new Element('input', {
+      'type': 'hidden',
+      'name': '_method',
+      'value': 'delete'
+    }).inject(deleteform);
     intf.debug('deleteform:', 3);
     intf.debug(deleteform, 3);
 
@@ -533,62 +541,62 @@ var TrashDropzone = new Class({
       url: draggee.pluralSpokeType() + '/' + draggee.spokeID(),
       onRequest: function () { draggee.waiting(); trash.waiting(); },
       onSuccess: function (response) { 
-				draggee.disappear(); 
-				trash.notWaiting(); 
-				intf.announce(response.message); 
-			},
+        draggee.disappear(); 
+        trash.notWaiting(); 
+        intf.announce(response.message); 
+      },
       onFailure: function (response) { 
-	      intf.debug('drop failed!', 2);
+        intf.debug('drop failed!', 2);
         intf.debug('outcome = ' + response.outcome + ', message = ' + response.message + ', consequence = ' + response.consequence, 4);
-		    draggee.notWaiting(); 
-		    trash.notWaiting(); 
-		    intf.complain('remote call failed');
-   		}
+        draggee.notWaiting(); 
+        trash.notWaiting(); 
+        intf.complain('remote call failed');
+      }
     }).post(deleteform);
-	},
-	waiting: function () {
+  },
+  waiting: function () {
 
-	},
-	notWaiting: function () {
+  },
+  notWaiting: function () {
 
-	}
+  }
 });
 
 var Draggee = new Class({
-	initialize: function(element, e) {
-	  var event = intf.blocked_event(e);
-		this.original = element;
-		this.tag = element.spokeTag();
-		this.link = element.getElements('a')[0];
-		this.name = this.findTitle();
+  initialize: function(element, e) {
+    var event = intf.blocked_event(e);
+    this.original = element;
+    this.tag = element.spokeTag();
+    this.link = element.getElements('a')[0];
+    this.name = this.findTitle();
     this.draggedfrom = intf.lookForDropper(element.getParent());
     intf.draghelper = new DragHelper(this, event);
-	},
+  },
   spokeID: function () { return this.original.spokeID(); },
   spokeType: function () { return this.original.spokeType(); },
-	pluralSpokeType: function () { return this.original.pluralSpokeType(); },
-	doClick: function (e) { 
-	  var event = intf.blocked_event(e);
+  pluralSpokeType: function () { return this.original.pluralSpokeType(); },
+  doClick: function (e) { 
+    var event = intf.blocked_event(e);
     intf.removeHelper();
-	  this.link.fireEvent('click'); 
-	},
-	waiting: function () { this.original.addClass('waiting'); },
-	notWaiting: function () { this.original.removeClass('waiting'); },
-	remove: function () { this.original.remove(); },
-	explode: function () { this.original.explode(); },
-	disappear: function () { this.original.dwindle(); },
-	clone: function () { return this.original.clone(); },
-	findTitle: function () { return this.link.get('text') || this.original.getElements('div.tiptitle').get('text'); }
+    this.link.fireEvent('click'); 
+  },
+  waiting: function () { this.original.addClass('waiting'); },
+  notWaiting: function () { this.original.removeClass('waiting'); },
+  remove: function () { this.original.remove(); },
+  explode: function () { this.original.explode(); },
+  disappear: function () { this.original.dwindle(); },
+  clone: function () { return this.original.clone(); },
+  findTitle: function () { return this.link.get('text') || this.original.getElements('div.tiptitle').get('text'); }
 });
 
 // the dragged representation is a new DragHelper object with useful abilities
 // and a tooltip-like label
 
 var DragHelper = new Class({
-	initialize: function(draggee, event){
-	  this.draggee = draggee;
-		this.original = this.draggee.original;
-		this.name = this.draggee.name;
+  initialize: function(draggee, event){
+    this.draggee = draggee;
+    this.original = this.draggee.original;
+    this.name = this.draggee.name;
     this.active = false;
     
     this.dragger = new Element('ul', {'class': 'dragging'});
@@ -596,82 +604,82 @@ var DragHelper = new Class({
     this.dragger.inject(document.body, 'inside');
     this.dragger.setStyles(this.original.getCoordinates());
     
-	  var dh = this;
-	  this.dragger.addEvent('emptydrop', function() { dh.emptydrop(); });	
+    var dh = this;
+    this.dragger.addEvent('emptydrop', function() { dh.emptydrop(); }); 
     this.dragmove = this.dragger.makeDraggable({ 
       droppables: intf.startDragging(this),
       snap: intf.clickthreshold,
       onSnap: function (element) { dh.reveal(); },
-	    onDrop: function(element, droppable){ droppable ? droppable.fireEvent('drop') : dh.emptydrop(); },
-	    onEnter: function(element, droppable){ droppable.fireEvent('enter'); },
-	    onLeave: function(element, droppable){ droppable.fireEvent('leave'); }
+      onDrop: function(element, droppable){ droppable ? droppable.fireEvent('drop') : dh.emptydrop(); },
+      onEnter: function(element, droppable){ droppable.fireEvent('enter'); },
+      onLeave: function(element, droppable){ droppable.fireEvent('leave'); }
     });
-		this.dragmove.start(event);
-	},
-	reveal: function () {
+    this.dragmove.start(event);
+  },
+  reveal: function () {
     $$('.hideondrag').each(function (element) { element.setStyle('visibility', 'hidden'); });
     $$('.showondrag').each(function (element) { element.setStyle('visibility', 'visible'); });
-		this.dragger.setStyle('visibility', 'visible');
+    this.dragger.setStyle('visibility', 'visible');
     this.active = true;
-	},
-	emptydrop: function () {
-		intf.stopDragging();
-		if (!this.active) {
-		  this.draggee.doClick();
+  },
+  emptydrop: function () {
+    intf.stopDragging();
+    if (!this.active) {
+      this.draggee.doClick();
     } else if (this.draggee.draggedfrom) {
       this.draggedOut();
-		} else {
-		  this.flyback();
-		}
-	},
-	draggedOut: function () {
+    } else {
+      this.flyback();
+    }
+  },
+  draggedOut: function () {
     if (this.draggee.draggedfrom) this.draggee.draggedfrom.removeDrop(this);
-	},
-	flyback: function () {
-		new Fx.Morph(this.dragger, {
-		  duration: 'long', 
-		  transition: 'bounce:out',
-		  onComplete: function () { intf.removeHelper(); }
-		}).start( $merge(this.original.getCoordinates(), {'opacity': 0.2}) );
-	},
+  },
+  flyback: function () {
+    new Fx.Morph(this.dragger, {
+      duration: 'long', 
+      transition: 'bounce:out',
+      onComplete: function () { intf.removeHelper(); }
+    }).start( $merge(this.original.getCoordinates(), {'opacity': 0.2}) );
+  },
   show: function (event) { this.dragger.show(); },
   hide: function () { this.dragger.fade('out'); },
-	remove: function () { 
-	  this.hide();
-	  this.dragger.removeEvents('emptydrop');
-	  this.dragger.destroy();
-	},
-	explode: function () { this.remove(); }
+  remove: function () { 
+    this.hide();
+    this.dragger.removeEvents('emptydrop');
+    this.dragger.destroy();
+  },
+  explode: function () { this.remove(); }
 });
 
 
 
 
 var Tab = new Class({
-	initialize: function(element){
-		this.tabhead = element;
-		this.name = this.tabhead.get('text');
-	  intf.debug("tab: " + this.name, 4);
+  initialize: function(element){
+    this.tabhead = element;
+    this.name = this.tabhead.get('text');
+    intf.debug("tab: " + this.name, 4);
     var parts = element.id.split('_');
-		this.tag = parts.pop();
-		this.settag = parts.pop();
-		this.tabbody = $E('#' + this.settag + '_' + this.tag);
-		this.tabbody.tab = this;
-		this.tabset = null;
+    this.tag = parts.pop();
+    this.settag = parts.pop();
+    this.tabbody = $E('#' + this.settag + '_' + this.tag);
+    this.tabbody.tab = this;
+    this.tabset = null;
     this.addToSet();
- 		this.tabhead.onclick = this.select.bind(this);
-	},
-	addToSet: function () {
+    this.tabhead.onclick = this.select.bind(this);
+  },
+  addToSet: function () {
     this.tabset = intf.tabsets[this.settag] || new TabSet(this.settag);
     this.tabset.addTab(this);
-	},
-	select: function (e) {
-		intf.blocked_event(e);
-	  this.tabhead.blur();
+  },
+  select: function (e) {
+    intf.blocked_event(e);
+    this.tabhead.blur();
     this.tabset.select(this.tag);
-	},
-	reselect: function (e) {},
-	deselect: function (e) {},
+  },
+  reselect: function (e) {},
+  deselect: function (e) {},
   showBody: function(){
     this.tabbody.show();
     this.tabhead.addClass('fg');
@@ -680,38 +688,38 @@ var Tab = new Class({
     this.tabbody.hide();
     this.tabhead.removeClass('fg');
   },
-	respond: function (helper) {
-	  this.select();
-	},
-	receiveDrop: function (helper) {
+  respond: function (helper) {
+    this.select();
+  },
+  receiveDrop: function (helper) {
     return false;
-	},
-	makeReceptiveTo: function (draggee) {
-	  var stab = this;
-	  this.tabset.holdopen = true;
- 		this.tabhead.addEvent('mouseenter', function (e) { stab.select(e); });
-	},
-	makeUnreceptive: function () {
-	  this.tabset.holdopen = false;
+  },
+  makeReceptiveTo: function (draggee) {
+    var stab = this;
+    this.tabset.holdopen = true;
+    this.tabhead.addEvent('mouseenter', function (e) { stab.select(e); });
+  },
+  makeUnreceptive: function () {
+    this.tabset.holdopen = false;
     this.tabhead.removeEvents('mouseenter');
-	},
-	erase: function (argument) {
+  },
+  erase: function (argument) {
     this.tabhead.remove(); 
     this.tabbody.dwindle(); 
     this.tabset.removeTab(this);
-	}
+  }
 });
 
 var TabSet = new Class({
-	initialize: function(tag){
-	  this.tabs = [];
+  initialize: function(tag){
+    this.tabs = [];
     this.tag = tag;
     this.headcontainer = $E('#headbox_' + this.tag);
-	  this.container = $E('#box_' + this.tag);
+    this.container = $E('#box_' + this.tag);
     this.foreground = null;
-	  intf.tabsets[this.tag] = this;
-	},
-	addTab: function (tab) {
+    intf.tabsets[this.tag] = this;
+  },
+  addTab: function (tab) {
     this.tabs.push(tab);
     if (this.tabs.length == 1) {
       tab.showBody();
@@ -719,44 +727,44 @@ var TabSet = new Class({
     } else {
       tab.hideBody();
     }
-	},
-	removeTab: function (tab) {
+  },
+  removeTab: function (tab) {
     this.tabs.remove(tab);
     if (this.foreground == tab) this.select();
-	},
-	select: function (tag) {
-	  if (tag == this.foreground.tag) {
-  	  this.reselect();
-	  } else {
-	    this.foreground.deselect();
-  	  tabset = this;
-  	  this.tabs.each(function (tab) { 
-  	    if (!tag) tag = tab.tag;
-  	    if (tag == tab.tag) {
-  	      tab.showBody();
-  	      tabset.foreground = tab;
-  	    } else {
+  },
+  select: function (tag) {
+    if (tag == this.foreground.tag) {
+      this.reselect();
+    } else {
+      this.foreground.deselect();
+      tabset = this;
+      this.tabs.each(function (tab) { 
+        if (!tag) tag = tab.tag;
+        if (tag == tab.tag) {
+          tab.showBody();
+          tabset.foreground = tab;
+        } else {
           tab.hideBody();
-  	    }
-  	  });
+        }
+      });
       this.postselect();
-	  }
-	},
-	reselect: function (tag) {
-	  this.foreground.reselect();
-	},
-	postselect: function (tag) { 
-	  // used in subclasses to eg open scratchpad
-	}
+    }
+  },
+  reselect: function (tag) {
+    this.foreground.reselect();
+  },
+  postselect: function (tag) { 
+    // used in subclasses to eg open scratchpad
+  }
 });
 
 var ScratchTab = new Class({
   Extends: Tab,
-	initialize: function(element){
-		this.parent(element);
- 		this.holdopen = false;
-		this.dropzone = this.tabbody.getElement('.catcher');
-  	this.padform = null;
+  initialize: function(element){
+    this.parent(element);
+    this.holdopen = false;
+    this.dropzone = this.tabbody.getElement('.catcher');
+    this.padform = null;
     var stab = this;
     this.formHolder = new Element('div', {'class': 'padform bigspinner'}).inject(this.tabbody, 'top').set('html', '&nbsp;').hide();
     this.showformfx = new Fx.Tween(this.formHolder, {
@@ -777,26 +785,26 @@ var ScratchTab = new Class({
   open: function () { 
     this.tabset.open(); 
   },
-	close: function () { 
+  close: function () { 
     this.hideForm();
-	  this.tabset.close(); 
-	},
-	addToSet: function () {
+    this.tabset.close(); 
+  },
+  addToSet: function () {
     this.tabset = intf.tabsets[this.settag] || new ScratchSet(this.settag);
     this.tabset.addTab(this);
-	},
-	reselect: function (tag) {
+  },
+  reselect: function (tag) {
     this.tabset.toggle();
-	},
-	deselect: function () {
+  },
+  deselect: function () {
     this.hideForm();
-	},
-	toSet: function (e) {
-	  this.tabbody.getElements('li').addClass('waiting');
-	  // ...and let nature take its course
-	},
-	getForm: function (e) {
-	  var event = intf.blocked_event(e);
+  },
+  toSet: function (e) {
+    this.tabbody.getElements('li').addClass('waiting');
+    // ...and let nature take its course
+  },
+  getForm: function (e) {
+    var event = intf.blocked_event(e);
     this.showForm(event.target.getProperty('href'));
   },
   showForm: function (url) {
@@ -804,54 +812,54 @@ var ScratchTab = new Class({
     this.tabhead.addClass('editing');
     this.formHolder.show();
     if (! this.padform) {
-  	  this.showformfx.start(440);
-  	  var stab = this;
-  		new Request.HTML({
-  		  url: url,
-  			method: 'get',
-  			update: stab.formHolder,
-  		  onSuccess: function () { stab.bindForm(); },
-  		  onFailure: function () { stab.hideFormNicely(); }
-  		}).send();
+      this.showformfx.start(440);
+      var stab = this;
+      new Request.HTML({
+        url: url,
+        method: 'get',
+        update: stab.formHolder,
+        onSuccess: function () { stab.bindForm(); },
+        onFailure: function () { stab.hideFormNicely(); }
+      }).send();
     }
-	},
-	hideFormNicely: function (e) {
+  },
+  hideFormNicely: function (e) {
     intf.blocked_event(e);
     this.hideForm();
     //     var stab = this;
     // this.hideformfx.start(0);
-	},
-	hideForm: function (e) {
+  },
+  hideForm: function (e) {
     intf.blocked_event(e);
     this.formHolder.hide();
     this.tabhead.removeClass('editing');
-	},
-	bindForm: function () {
-		var stab = this;
+  },
+  bindForm: function () {
+    var stab = this;
     this.formHolder.removeClass('bigspinner');
     this.padform = this.formHolder.getElement('form');
-		this.padform.onsubmit = this.doForm.bind(this);
-		this.padform.getElements('a.cancel_form').each(function (a) { a.onclick = stab.hideFormNicely.bind(stab); });
-		this.padform.getElements('a.remove_tab').each(function (a) { a.onclick = stab.erase.bind(stab); });
-		this.padform.getElement('input.titular').focus();
-	},
-	doForm: function (e) {
-	  var event = intf.blocked_event(e);
-	  var stab = this;
+    this.padform.onsubmit = this.doForm.bind(this);
+    this.padform.getElements('a.cancel_form').each(function (a) { a.onclick = stab.hideFormNicely.bind(stab); });
+    this.padform.getElements('a.remove_tab').each(function (a) { a.onclick = stab.erase.bind(stab); });
+    this.padform.getElement('input.titular').focus();
+  },
+  doForm: function (e) {
+    var event = intf.blocked_event(e);
+    var stab = this;
     this.padform.hide();
     this.formHolder.addClass('bigspinner');
         
     var update = {
-		  '_method': this.padform.getElement('input[name=_method]') ? this.padform.getElement('input[name=_method]').get('value') : '',
-		  'scratchpad[name]': this.padform.getElement('#scratchpad_name').get('value'),
-		  'scratchpad[body]': this.padform.getElement('#scratchpad_body').get('value')
-		};
+      '_method': this.padform.getElement('input[name=_method]') ? this.padform.getElement('input[name=_method]').get('value') : '',
+      'scratchpad[name]': this.padform.getElement('#scratchpad_name').get('value'),
+      'scratchpad[body]': this.padform.getElement('#scratchpad_body').get('value')
+    };
 
-		new Request.JSON({
-		  url: this.padform.get('action'),
-			method: 'post',
-			data: update,
-		  onSuccess: function (response) {
+    new Request.JSON({
+      url: this.padform.get('action'),
+      method: 'post',
+      data: update,
+      onSuccess: function (response) {
         stab.hideFormNicely();
         stab.tabhead.set('text', response.name);
         stab.tabhead.set('title', response.body);
@@ -859,57 +867,57 @@ var ScratchTab = new Class({
         if (response.updated_by == null) {
           var tempholder = new Element('div');
           stab.tabhead.set('id', 'tab_scratchpad_' + response.id);
-      		new Request.HTML({
-      		  url: '/scratchpads/' + response.id,
-      			method: 'get',
-      			update: tempholder,
-      		  onSuccess: function (request) { 
+          new Request.HTML({
+            url: '/scratchpads/' + response.id,
+            method: 'get',
+            update: tempholder,
+            onSuccess: function (request) { 
               stab.tabset.pagescontainer.adopt(tempholder.getElement('div'));
-      		    var st = intf.addScratchTabs([stab.tabhead]);
-      		    intf.addDropzones(st.tabbody.getElements('.catcher'));
-      		  },
-      		  onFailure: function () { intf.complain('no way'); }
-      		}).send();
+              var st = intf.addScratchTabs([stab.tabhead]);
+              intf.addDropzones(st.tabbody.getElements('.catcher'));
+            },
+            onFailure: function () { intf.complain('no way'); }
+          }).send();
         }
       },
-		  onFailure: function (response) { stab.hideForm(); intf.complain('remote call failed'); }
-		}).send();
-	},
-	createTab: function (e) {
+      onFailure: function (response) { stab.hideForm(); intf.complain('remote call failed'); }
+    }).send();
+  },
+  createTab: function (e) {
     this.tabset.createTab(e);
-	}
+  }
 });
 
 var ScratchSet = new Class({
   Extends: TabSet,
-	initialize: function(tag){
-		this.parent(tag);
-	  this.container = $E('#scratchpad');
-	  this.tabscontainer = $E('#scratchpad_tabs');
-	  this.pagescontainer = $E('#scratchpad_pages');
-		this.isopen = false;
-		this.openFX = new Fx.Tween(this.container, {duration: 'normal', property: 'width', transition: Fx.Transitions.Cubic.easeOut});
-		this.closeFX = new Fx.Tween(this.container, {duration: 'long', property: 'width', transition: Fx.Transitions.Bounce.easeOut});
-	},
+  initialize: function(tag){
+    this.parent(tag);
+    this.container = $E('#scratchpad');
+    this.tabscontainer = $E('#scratchpad_tabs');
+    this.pagescontainer = $E('#scratchpad_pages');
+    this.isopen = false;
+    this.openFX = new Fx.Tween(this.container, {duration: 'normal', property: 'width', transition: Fx.Transitions.Cubic.easeOut});
+    this.closeFX = new Fx.Tween(this.container, {duration: 'long', property: 'width', transition: Fx.Transitions.Bounce.easeOut});
+  },
   postselect: function () {
     if (!this.isopen) this.open();
   },
   open: function () {
     this.openFX.start( 560 );
     this.isopen = true;
-	},
-	close: function (delay) {
+  },
+  close: function (delay) {
     this.closeFX.start( 130 ); 
     this.isopen = false;
-	},
-	toggle: function (delay) {
+  },
+  toggle: function (delay) {
     this.isopen && !this.holdopen ? this.close(delay) : this.open(delay);
-	},
-	getForm: function (url) {
+  },
+  getForm: function (url) {
     this.foreground.getForm(url);
-	},
-	createTab: function (e) {
-	  var event = intf.blocked_event(e);
+  },
+  createTab: function (e) {
+    var event = intf.blocked_event(e);
     var tabs = this;
     var newhead = new Element('a', {
       'id': 'tab_scratchpad_new',
@@ -923,7 +931,7 @@ var ScratchSet = new Class({
     this.newtab = new ScratchTab(newhead);
     this.newtab.select(event);
     this.newtab.showForm('/scratchpads/new');
-	}
+  }
 });
 
 var AutoLink = new Class({
@@ -938,13 +946,13 @@ var AutoLink = new Class({
     var event = intf.blocked_event(e);
     this.link.blur();
     al = this;
-		new Request.JSON({
-		  url: al.link.getProperty('href'),
-			method: this.method(),
-		  onRequest: function () {al.waiting();},
-		  onComplete: function (response) {al.finished(response);},
-		  onFailure: function (response) {al.failed(response);}
-		}).send();
+    new Request.JSON({
+      url: al.link.getProperty('href'),
+      method: this.method(),
+      onRequest: function () {al.waiting();},
+      onComplete: function (response) {al.finished(response);},
+      onFailure: function (response) {al.failed(response);}
+    }).send();
   },
   waiting: function () { this.link.addClass('waiting'); },
   notWaiting: function () { this.link.removeClass('waiting'); },
@@ -1001,78 +1009,78 @@ var Preference = new Class({
 
 var jsonForm = new Class ({
   initialize: function (element, e) {
-		var event = intf.blocked_event(e);
+    var event = intf.blocked_event(e);
     event.target.blur();
-		intf.clearFloaters();
-		this.link = element;
-		intf.debug('jsonForm.initialize', 5);
-		this.form = null;
-		this.is_open = false;
-		this.at = event.page;
-		this.anchored_at = null;
+    intf.clearFloaters();
+    this.link = element;
+    intf.debug('jsonForm.initialize', 5);
+    this.form = null;
+    this.is_open = false;
+    this.at = event.page;
+    this.anchored_at = null;
     this.waiter = null;
-		this.form = null;
-		this.floater = new Element('div', {'class': 'floater'}).inject(document.body);
-		this.formHolder = new Element('div', {'class': 'modalform'}).inject(this.floater);
-		this.formWaiter = new Element('div', {'class': 'floatspinner'}).inject(this.formHolder);
-		this.destination = $E('#' + this.link.id.replace(/[\w_]*extend_/, ''));
-		this.destination_type = this.destination.get('tag');
-		this.created_item = null;
-		this.destination_squeeze = intf.lookForSqueeze( this.destination );			// this is going to be a memory leak in IE when we get there
+    this.form = null;
+    this.floater = new Element('div', {'class': 'floater'}).inject(document.body);
+    this.formHolder = new Element('div', {'class': 'modalform'}).inject(this.floater);
+    this.formWaiter = new Element('div', {'class': 'floatspinner'}).inject(this.formHolder);
+    this.destination = $E('#' + this.link.id.replace(/[\w_]*extend_/, ''));
+    this.destination_type = this.destination.get('tag');
+    this.created_item = null;
+    this.destination_squeeze = intf.lookForSqueeze( this.destination );     // this is going to be a memory leak in IE when we get there
     var mf = this;
-		this.openfx = new Fx.Morph(this.floater, {
-			duration: 'long', 
-			transition: Fx.Transitions.Back.easeOut,
-			link: 'cancel'
-		});
-		this.closefx = new Fx.Morph(this.floater, {
-			duration: 'normal', 
-			transition: Fx.Transitions.Cubic.easeOut, 
-			link: 'cancel',
-			onComplete: function () { mf.floater.hide(); }
-		});
+    this.openfx = new Fx.Morph(this.floater, {
+      duration: 'long', 
+      transition: Fx.Transitions.Back.easeOut,
+      link: 'cancel'
+    });
+    this.closefx = new Fx.Morph(this.floater, {
+      duration: 'normal', 
+      transition: Fx.Transitions.Cubic.easeOut, 
+      link: 'cancel',
+      onComplete: function () { mf.floater.hide(); }
+    });
     this.formHolder.set('load', {
       onRequest: function () { mf.show(); },
       onSuccess: function () { mf.prepForm(); },
       onFailure: function () { mf.failed(); }
     });
-		intf.rememberFloater(this);
-		this.waiting();
+    intf.rememberFloater(this);
+    this.waiting();
     this.getForm();
-		intf.floater = this;
+    intf.floater = this;
   },
 
   // initialize calls getForm() directly
-	// it's only separated to be overridable
+  // it's only separated to be overridable
 
   getForm: function () {
-		intf.debug('jsonForm.getForm', 5);
+    intf.debug('jsonForm.getForm', 5);
     this.canceller().inject(this.floater, 'top');
     this.formHolder.load(this.url());
   },
   
   // onSuccess trigger in formHolder.load calls prepForm()
-	// which locates and displays the form and activates any useful elements within it
-	// may be called again by processResponse if response contains another form
+  // which locates and displays the form and activates any useful elements within it
+  // may be called again by processResponse if response contains another form
 
   prepForm: function () {
-		this.notWaiting();
-		// this.linkNotWaiting();
-		this.resize();
+    this.notWaiting();
+    // this.linkNotWaiting();
+    this.resize();
     this.form = this.formHolder.getElement('form');
-		this.form.onsubmit = this.sendForm.bind(this);
+    this.form.onsubmit = this.sendForm.bind(this);
     this.form.getElements('a.cancelform').each(function (a) { a.onclick = this.hide.bind(this); }, this);
     this.form.getElements('.fillWithSelection').each(function (input) { if (input.get('value') == '') input.set('value', intf.quoteSelectedText()); });
     intf.makeSuggester(this.form.getElements('input.tagbox'));
- 		var first = this.form.getElement('.pickme');
-		if (first) first.focus();
+    var first = this.form.getElement('.pickme');
+    if (first) first.focus();
  },
 
   // captured form.onsubmit calls sendForm()
-	// which initiates the JSON request and binds its outcome
+  // which initiates the JSON request and binds its outcome
   
   sendForm: function (e) {
-		intf.debug('jsonForm.sendForm', 5);
+    intf.debug('jsonForm.sendForm', 5);
     var event = intf.blocked_event(e);
     var mf = this;
     var req = new Request.JSON({
@@ -1083,132 +1091,132 @@ var jsonForm = new Class ({
     }).post(this.form);
   },
 
-	// sendform sets onSuccess to processResponse
-	// processResponse looks for an error in the response
-	// calls updatePage if none found
-	// in subclasses this is usually a previewing or validation mechanism
+  // sendform sets onSuccess to processResponse
+  // processResponse looks for an error in the response
+  // calls updatePage if none found
+  // in subclasses this is usually a previewing or validation mechanism
 
-	processResponse: function (response) {
-		intf.debug('jsonForm.processResponse', 5);
-		this.notWaiting();
-		if (response.errors) {
-			
-			// it's too dull and fiddly rebuilding or marking the form
-			// so potentially-iterative or validated forms should use htmlForm
-			
-		} else {
-			this.updatePage(response.created);
-		}
-	},
+  processResponse: function (response) {
+    intf.debug('jsonForm.processResponse', 5);
+    this.notWaiting();
+    if (response.errors) {
+      
+      // it's too dull and fiddly rebuilding or marking the form
+      // so potentially-iterative or validated forms should use htmlForm
+      
+    } else {
+      this.updatePage(response.created);
+    }
+  },
   
-	// updatePage called by processResponse if no more user input is expected
-	// and inserts response html into destination element
+  // updatePage called by processResponse if no more user input is expected
+  // and inserts response html into destination element
   // default is that we expect to add an option to a select box
   // created from the JSON representation of a materialist object
-	// subclasses have other ideas mostly to do with extending lists
+  // subclasses have other ideas mostly to do with extending lists
 
   updatePage: function (response) {
-		intf.debug('jsonForm.updatePage', 5);
+    intf.debug('jsonForm.updatePage', 5);
     this.created_item = new Element('option', {'value': response.id}).set('text',response.name);
     this.created_item.inject( this.destination, 'top' );
     this.hide(this.created_item);
     this.showOnPage();
   },
 
-	// rest is just display control
+  // rest is just display control
   
   failed: function () {
     this.hide();
     intf.complain("oh no.");
   },
   
-	show: function (origin) {
-		intf.debug('jsonForm.show', 5);
-		if (!origin) origin = this.link;
-		this.startAt(origin);
-		this.link.addClass('activated');
-		this.is_open = true;
-	},
+  show: function (origin) {
+    intf.debug('jsonForm.show', 5);
+    if (!origin) origin = this.link;
+    this.startAt(origin);
+    this.link.addClass('activated');
+    this.is_open = true;
+  },
 
-	hide: function (e, destination) {
-		intf.blocked_event(e);
-		if (!destination) destination = this.link;
-		this.shrinkTowards(destination);
-		this.link.removeClass('activated');
-		this.is_open = false;
-	},
-	
-	choose_anchor: function (at, towidth, toheight) {
-		if (this.anchored_at) return this.anchored_at;
-		
-		var scroll = document.getScroll();
-		var boundary = document.getSize();
-		var anchored = { x: null, y: null };
+  hide: function (e, destination) {
+    intf.blocked_event(e);
+    if (!destination) destination = this.link;
+    this.shrinkTowards(destination);
+    this.link.removeClass('activated');
+    this.is_open = false;
+  },
+  
+  choose_anchor: function (at, towidth, toheight) {
+    if (this.anchored_at) return this.anchored_at;
+    
+    var scroll = document.getScroll();
+    var boundary = document.getSize();
+    var anchored = { x: null, y: null };
 
-		var cangoleft = at.left - towidth - scroll.x > 0;
-		var cangoright = at.left + towidth + scroll.x < boundary.x;
-		if (cangoleft == cangoright) anchored.x = 'center';
-		else if (cangoright) anchored.x = 'left';
-		else anchored.x = 'right';
-		
-		var cangoup = at.top - toheight - scroll.y > 0;
-		var cangodown = at.top + toheight + scroll.y < boundary.y;
-		if (cangoup == cangodown) anchored.y = 'center';
-		else if (cangodown) totop = anchored.y = 'top';
-		else totop = anchored.y = 'bottom';
+    var cangoleft = at.left - towidth - scroll.x > 0;
+    var cangoright = at.left + towidth + scroll.x < boundary.x;
+    if (cangoleft == cangoright) anchored.x = 'center';
+    else if (cangoright) anchored.x = 'left';
+    else anchored.x = 'right';
+    
+    var cangoup = at.top - toheight - scroll.y > 0;
+    var cangodown = at.top + toheight + scroll.y < boundary.y;
+    if (cangoup == cangodown) anchored.y = 'center';
+    else if (cangodown) totop = anchored.y = 'top';
+    else totop = anchored.y = 'bottom';
 
-		this.anchored_at = anchored;
-		return anchored;
-	},
-	
-	resize: function (width, height) {
-		var at = this.floater.getCoordinates();
-		var towidth = width || 510;
-		var toheight = height || this.formHolder.getHeight() + 10;
-		var anchor = this.choose_anchor(at, towidth, toheight);
-		var toleft, totop;
-		intf.debug('floater anchored at ' + anchor.y + ' ' + anchor.x, 2);
-		
-		switch (anchor.x) {
-			case "right": toleft = (at.left - towidth) + at.width; break;
-			case "center": toleft = Math.floor(at.left - towidth / 2); break;
-			default: toleft = at.left;
-		}
-			
-		switch (anchor.y) {
-			case "bottom": totop = (at.top - toheight) + at.height; break;
-			case "center": totop = Math.floor(at.top - toheight / 2); break;
-			default: totop = at.top;
-		}
-		
-		this.openfx.start({'opacity': 1, 'left': toleft, 'top': totop, 'width': towidth, 'height': toheight});
-	},
-	
-	shrinkTowards: function (element) {
-		this.floater.addClass('floater_waiting');		// no scroll bars
-		var downto = element.getCoordinates();
-		// downto.opacity = 0;
-		this.closefx.start(downto);
-	},
-	
-	startAt: function (element) {
-		if (!element) element = this.link;
-		var upfrom = element.getCoordinates();
-		upfrom.opacity = 1;
-		upfrom.left = upfrom.left + 20;
-		upfrom.height = 62;
-		upfrom.width = 62;
-		this.floater.setStyles(upfrom);
-	},
-	
-	expandFrom: function (element) {
-		if (!element) element = this.link;
-		var upfrom = element.getCoordinates();
-		upfrom.opacity = 1;
-		upfrom.left = upfrom.left + 20;
-		this.floater.setStyles(upfrom);
-		this.resize();
-	},
+    this.anchored_at = anchored;
+    return anchored;
+  },
+  
+  resize: function (width, height) {
+    var at = this.floater.getCoordinates();
+    var towidth = width || 510;
+    var toheight = height || this.formHolder.getHeight() + 10;
+    var anchor = this.choose_anchor(at, towidth, toheight);
+    var toleft, totop;
+    intf.debug('floater anchored at ' + anchor.y + ' ' + anchor.x, 2);
+    
+    switch (anchor.x) {
+      case "right": toleft = (at.left - towidth) + at.width; break;
+      case "center": toleft = Math.floor(at.left - towidth / 2); break;
+      default: toleft = at.left;
+    }
+      
+    switch (anchor.y) {
+      case "bottom": totop = (at.top - toheight) + at.height; break;
+      case "center": totop = Math.floor(at.top - toheight / 2); break;
+      default: totop = at.top;
+    }
+    
+    this.openfx.start({'opacity': 1, 'left': toleft, 'top': totop, 'width': towidth, 'height': toheight});
+  },
+  
+  shrinkTowards: function (element) {
+    this.floater.addClass('floater_waiting');   // no scroll bars
+    var downto = element.getCoordinates();
+    // downto.opacity = 0;
+    this.closefx.start(downto);
+  },
+  
+  startAt: function (element) {
+    if (!element) element = this.link;
+    var upfrom = element.getCoordinates();
+    upfrom.opacity = 1;
+    upfrom.left = upfrom.left + 20;
+    upfrom.height = 62;
+    upfrom.width = 62;
+    this.floater.setStyles(upfrom);
+  },
+  
+  expandFrom: function (element) {
+    if (!element) element = this.link;
+    var upfrom = element.getCoordinates();
+    upfrom.opacity = 1;
+    upfrom.left = upfrom.left + 20;
+    this.floater.setStyles(upfrom);
+    this.resize();
+  },
 
   destroy: function () {
     this.floater.remove();
@@ -1216,38 +1224,38 @@ var jsonForm = new Class ({
   
   waiting: function () {
     this.formWaiter.show();
-		this.floater.addClass('floater_waiting');
+    this.floater.addClass('floater_waiting');
   },
 
   notWaiting: function () {
     this.formWaiter.hide();
-		this.floater.removeClass('floater_waiting');
+    this.floater.removeClass('floater_waiting');
   },
 
-	linkWaiting: function (argument) {
-		this.link.addClass('waiting');
-	},
-	
-	linkNotWaiting: function (argument) {
-		this.link.removeClass('waiting');
-	},
+  linkWaiting: function (argument) {
+    this.link.addClass('waiting');
+  },
+  
+  linkNotWaiting: function (argument) {
+    this.link.removeClass('waiting');
+  },
 
   showOnPage: function () {
     if (this.destination_squeeze) intf.squeezebox.display(this.destination_squeeze);
     if (this.destination_type == 'UL') {
-			this.destination.selectedIndex = 0;
-	    new Fx.Scroll(window).toElement(this.destination);
-		} else {
-	    new Fx.Scroll(window).toElement(this.created_item);
-		}
+      this.destination.selectedIndex = 0;
+      new Fx.Scroll(window).toElement(this.destination);
+    } else {
+      new Fx.Scroll(window).toElement(this.created_item);
+    }
   },
 
-	announceSuccess: function () {
+  announceSuccess: function () {
     intf.announce('done');
-	},
+  },
 
   url: function () { 
-		return this.link.getProperty('href'); 			// needs to be overridable
+    return this.link.getProperty('href');       // needs to be overridable
   },
 
   canceller: function () {
@@ -1255,23 +1263,23 @@ var jsonForm = new Class ({
     a.onclick = this.hide.bind(this);
     return a;
   }
-	
+  
 });
 
 // htmlForm inherits from jsonForm but expects to get html back at the end of the process instead: 
 // usually a list item but could be anything.
 
 var htmlForm = new Class ({
-	Extends: jsonForm,
-	
-	prepForm: function () {
-		this.parent();
-		if (this.form.hasClass('confirming')) this.floater.addClass('confirming');
-		else this.floater.removeClass('confirming');
-		this.form.getElements('#revise').each( function (input) { input.onclick = this.revise.bind(this); }, this);
-		this.form.getElements('#confirm').each( function (input) { input.onclick = this.confirm.bind(this); }, this);
-	},
-	
+  Extends: jsonForm,
+  
+  prepForm: function () {
+    this.parent();
+    if (this.form.hasClass('confirming')) this.floater.addClass('confirming');
+    else this.floater.removeClass('confirming');
+    this.form.getElements('#revise').each( function (input) { input.onclick = this.revise.bind(this); }, this);
+    this.form.getElements('#confirm').each( function (input) { input.onclick = this.confirm.bind(this); }, this);
+  },
+  
   sendForm: function (e) {
     var event = intf.blocked_event(e);
     this.responseholder = new Element(this.destination_type);
@@ -1285,27 +1293,27 @@ var htmlForm = new Class ({
     }).post(this.form);
   },
 
-	// confirm and revise set the hidden 'dispatch' parameter to control wehether we save or re-edit after a preview
+  // confirm and revise set the hidden 'dispatch' parameter to control wehether we save or re-edit after a preview
 
-	confirm: function (e) {
-		this.form.getElements('input.routing').each(function (input) { input.set('value', 'confirm'); });
-		return true;	// and submit form
-	},
+  confirm: function (e) {
+    this.form.getElements('input.routing').each(function (input) { input.set('value', 'confirm'); });
+    return true;  // and submit form
+  },
 
-	revise: function (e) {
-		this.form.getElements('input.routing').each(function (input) { input.set('value', 'revise'); });
-		return true;	// and submit form
-	},
+  revise: function (e) {
+    this.form.getElements('input.routing').each(function (input) { input.set('value', 'revise'); });
+    return true;  // and submit form
+  },
 
   processResponse: function (response) {
-		this.notWaiting();
+    this.notWaiting();
     if (this.responseholder.getElement('form')) {
-			this.formHolder.empty();
-			this.formHolder.adopt(this.responseholder.getChildren());
-			this.prepForm();			// loop back and prepare form for submission again
+      this.formHolder.empty();
+      this.formHolder.adopt(this.responseholder.getChildren());
+      this.prepForm();      // loop back and prepare form for submission again
     } else {
-			this.hide();
-			this.updatePage(response);
+      this.hide();
+      this.updatePage(response);
     }
   },
 
@@ -1319,7 +1327,7 @@ var htmlForm = new Class ({
   
   showOnPage: function () {
     if (this.destination_squeeze && this.destination_squeeze.offsetHeight == 0) intf.squeezebox.display(this.destination_squeeze);
-		var mf = this;
+    var mf = this;
     new Fx.Scroll(window).toElement(mf.created_item).chain(function(){ mf.created_item.highlight(); });
   }
 });
@@ -1328,46 +1336,46 @@ var htmlForm = new Class ({
 // snipper is a special case of htmlForm that does more work to prepare the form
 
 var Snipper = new Class ({
-	Extends: htmlForm,
+  Extends: htmlForm,
   prepForm: function () {
-		this.parent();
+    this.parent();
     this.form.getElements('#node_playfrom').each( function (input) { input.set('value', intf.getPlayerIn()); });
     this.form.getElements('#node_playto').each( function (input) { input.set('value', intf.getPlayerOut()); });
   },
-	announceSuccess: function () {
+  announceSuccess: function () {
     intf.announce('fragment created');
-	}
+  }
 });
 
 // TagSuggester is just an autocompleter with some options set
 
 var TagSuggester = new Class ({
   Extends: Autocompleter.Ajax.Json,
-	initialize: function(element) {
-		this.parent(element, '/tags/matching', { 
-			'indicator': element,			// autocompleter should be edited to add 'waiting' class rather than showing indicator
-			'postVar': 'stem', 
-			'multiple': true,
-			'zIndex': 30000,
-			'overflow': 'scroll',
-			'forceSelect': true,
-			'typeAhead': true
-		});
-	}
+  initialize: function(element) {
+    this.parent(element, '/tags/matching', { 
+      'indicator': element,     // autocompleter should be edited to add 'waiting' class rather than showing indicator
+      'postVar': 'stem', 
+      'multiple': true,
+      'zIndex': 30000,
+      'overflow': 'scroll',
+      'forceSelect': true,
+      'typeAhead': true
+    });
+  }
 });
 
 var Squeezebox = new Class ({
   Extends: Accordion,
-	options: {
-		display: 0,
-		show: false,
-		height: true,
-		width: false,
-		opacity: true,
-		fixedHeight: false,
-		fixedWidth: false,
-		wait: false,
-		alwaysHide: true,
+  options: {
+    display: 0,
+    show: false,
+    height: true,
+    width: false,
+    opacity: true,
+    fixedHeight: false,
+    fixedWidth: false,
+    wait: false,
+    alwaysHide: true,
     onActive: function (toggler, element) {
       toggler.addClass('expanded');
       toggler.removeClass('squeezed');
@@ -1377,21 +1385,270 @@ var Squeezebox = new Class ({
       toggler.removeClass('expanded');
       toggler.addClass('squeezed');
     }
-	},
-	initialize: function (togglers, elements) {
+  },
+  initialize: function (togglers, elements) {
     this.parent(togglers, elements);
     if (elements) elements.each(function (element) { element.squeezed = true; });
-	},
-	addSections: function (togglers, elements) {
-		togglers.each(function (toggler) {
-			element = elements[togglers.indexOf(toggler)];
-			this.addSection(toggler, element);
-			element.squeezed = true; 
-		}, this);
-	}
+  },
+  addSections: function (togglers, elements) {
+    togglers.each(function (toggler) {
+      element = elements[togglers.indexOf(toggler)];
+      this.addSection(toggler, element);
+      element.squeezed = true; 
+    }, this);
+  }
 });
 
 
 
+
+
+
+
+
+
+
+var Uploader = new Class ({
+  initialize: function(container) {
+    this.container = container;
+    this.upload_list = container.getElement('div.file_list');
+    this.queue = container.getElement('div.upload_queue');
+    this.form = container.getElement('form');
+    this.collection_select = this.form.getElement('select');
+    this.uploads = {};
+    
+    this.settings = {
+      flash_url : "/flash/swfupload.swf",
+      upload_url: this.form.get('action'),
+      file_size_limit : "150 MB",
+      file_types : "*.*",
+      file_types_description : "All Files",
+      file_upload_limit : 100,
+      file_queue_limit : 0,
+      debug: false,
+      
+      button_width: "500",
+      button_height: "29",
+      button_placeholder_id: 'swf_placeholder',
+      button_text: '<span class="biggish">add files to upload queue...</span>',
+      button_text_style: ".biggish { font-size: 22px; font-weight: lighter; font-family: HelveticaNeue-Bold, Helvetica, Arial, sans-serif; letter-spacing: -0.05em; color: #d1005d; cursor: pointer;}",
+      
+      // The event handler functions
+      file_dialog_complete_handler : this.fileDialogComplete.bind(this),
+      file_queued_handler : this.fileQueued.bind(this),
+      upload_start_handler : this.uploadStart.bind(this),
+      queue_complete_handler : this.queueComplete.bind(this),
+      upload_progress_handler : this.uploadProgress.bind(this),
+      upload_success_handler : this.uploadSuccess.bind(this),
+      upload_error_handler: this.uploadError.bind(this),
+      
+      // SWFObject settings
+      minimum_flash_version : "9.0.28",
+      swfupload_pre_load_handler : this.swfUploadPreLoad.bind(this),
+      swfupload_load_failed_handler : this.swfUploadLoadFailed.bind(this)
+    };
+    console.log(this.settings['post_params']);
+    this.swfu = new SWFUpload(this.settings);
+  },
+  fileDialogComplete : function (selected, queued, total) {
+    this.swfu.addPostParam('collection_id', this.collection_select.value);
+    this.swfu.startUpload();
+  },
+  fileQueued : function (file) {
+    try {
+      this.uploads[file.id] = new Upload(file, this);
+    } catch (ex) {
+      this.swfu.debug(ex);
+    }
+  },
+  uploadStart : function (file) {
+    if (!this.uploads[file.id]) this.uploads[file.id] = new Upload(file, this);
+    this.uploads[file.id].setUploading();
+  },
+  uploadProgress : function (file, bytesLoaded, bytesTotal) {
+    var percent = Math.ceil((bytesLoaded / bytesTotal) * 100);
+    this.uploads[file.id].setProgress(percent);
+    if (percent == 100) this.uploads[file.id].setProcessing();
+    else this.uploads[file.id].setUploading();
+  },
+  uploadSuccess : function (file) {
+    this.uploads[file.id].setStatus("Uploaded");
+    this.uploads[file.id].toggleCancel(false);
+    this.uploads[file.id].setComplete();
+  },
+  queueError : function (file, errorCode, message) {
+    if (errorCode === SWFUpload.QUEUE_ERROR.QUEUE_LIMIT_EXCEEDED) {
+      alert("You have attempted to queue too many files.\n" + (message === 0 ? "You have reached the upload limit." : "You may select " + (message > 1 ? "up to " + message + " files." : "one file.")));
+      return;
+    }
+
+    var progress = this.uploads[file.id];
+    progress.setError();
+    progress.toggleCancel(false);
+
+    switch (errorCode) {
+    case SWFUpload.QUEUE_ERROR.FILE_EXCEEDS_SIZE_LIMIT:
+      progress.setStatus("File is too big.");
+      this.debug("Error Code: File too big, File name: " + file.name + ", File size: " + file.size + ", Message: " + message);
+      break;
+    case SWFUpload.QUEUE_ERROR.ZERO_BYTE_FILE:
+      progress.setStatus("Cannot upload Zero Byte files.");
+      this.debug("Error Code: Zero byte file, File name: " + file.name + ", File size: " + file.size + ", Message: " + message);
+      break;
+    case SWFUpload.QUEUE_ERROR.INVALID_FILETYPE:
+      progress.setStatus("Invalid File Type.");
+      this.debug("Error Code: Invalid File Type, File name: " + file.name + ", File size: " + file.size + ", Message: " + message);
+      break;
+    default:
+      if (file !== null) {
+        progress.setStatus("Unhandled Error");
+      }
+      this.debug("Error Code: " + errorCode + ", File name: " + file.name + ", File size: " + file.size + ", Message: " + message);
+      break;
+    }
+  },
+  uploadError : function (file, errorCode, message) {
+    var progress = this.uploads[file.id];
+    progress.setError();
+    progress.toggleCancel(false);
+
+    switch (errorCode) {
+    case SWFUpload.UPLOAD_ERROR.HTTP_ERROR:
+      progress.setStatus("Upload Error: " + message);
+      this.debug("Error Code: HTTP Error, File name: " + file.name + ", Message: " + message);
+      break;
+    case SWFUpload.UPLOAD_ERROR.UPLOAD_FAILED:
+      progress.setStatus("Upload Failed.");
+      this.debug("Error Code: Upload Failed, File name: " + file.name + ", File size: " + file.size + ", Message: " + message);
+      break;
+    case SWFUpload.UPLOAD_ERROR.IO_ERROR:
+      progress.setStatus("Server (IO) Error");
+      this.debug("Error Code: IO Error, File name: " + file.name + ", Message: " + message);
+      break;
+    case SWFUpload.UPLOAD_ERROR.SECURITY_ERROR:
+      progress.setStatus("Security Error");
+      this.debug("Error Code: Security Error, File name: " + file.name + ", Message: " + message);
+      break;
+    case SWFUpload.UPLOAD_ERROR.UPLOAD_LIMIT_EXCEEDED:
+      progress.setStatus("Upload limit exceeded.");
+      this.debug("Error Code: Upload Limit Exceeded, File name: " + file.name + ", File size: " + file.size + ", Message: " + message);
+      break;
+    case SWFUpload.UPLOAD_ERROR.FILE_VALIDATION_FAILED:
+      progress.setStatus("Failed Validation.  Upload skipped.");
+      this.debug("Error Code: File Validation Failed, File name: " + file.name + ", File size: " + file.size + ", Message: " + message);
+      break;
+    case SWFUpload.UPLOAD_ERROR.FILE_CANCELLED:
+      progress.cancel();
+      break;
+    case SWFUpload.UPLOAD_ERROR.UPLOAD_STOPPED:
+      progress.setStatus("Stopped");
+      break;
+    default:
+      progress.setStatus("Unknown Error: " + errorCode);
+      this.debug("Error Code: " + errorCode + ", File name: " + file.name + ", File size: " + file.size + ", Message: " + message);
+      break;
+    }
+  },
+  queueComplete : function () {
+
+  },
+  swfUploadPreLoad : function () { },
+  swfUploadLoadFailed : function () { },
+  
+  debug: function (argument) {
+    this.swfu.debug(argument);
+  }
+});
+
+var Upload = new Class ({
+  initialize: function(file, uploader) {
+    this.file_id = file.id;
+    this.file_name = file.name;
+    this.uploader = uploader;
+    this.queue = uploader.queue;
+    this.wrapper = new Element('div', {'class' : "progressWrapper", 'id' : this.file_id});
+    this.progress = new Element('div', {'class' : "progressContainer"});
+    this.bar = new Element('div', {'class' : "progressBar"});
+    this.canceller = new Element('a', {'href' : '#', 'class' : "progressCancel", 'style' : 'visibility: hidden;'}).set('text',"x");
+    this.file_label = new Element('div', {'class' : "progressName"}).set('text', file.name);
+    this.message = new Element('div', {'class' : "progressBarStatus"});
+    this.message.innerHTML = "&nbsp;";
+
+    this.canceller.inject(this.progress);
+    this.message.inject(this.file_label);
+    this.file_label.inject(this.progress);
+    this.bar.inject(this.progress);
+    this.progress.inject(this.wrapper);
+    this.wrapper.inject(this.queue);
+
+    this.canceller.addEvent('click', this.cancel.bindWithEvent(this));
+    this.height = this.wrapper.getHeight();
+    this.setStatus("Queueing...");
+    this.toggleCancel(true);
+  },
+  
+  setStatus: function (status) {
+    this.message.set('html', status);
+  },
+  setColor: function (tocolor) {
+    ['green', 'blue', 'red', 'white'].each(function (color) {
+      if (color == tocolor) this.progress.addClass(color);
+      else this.progress.removeClass(color);
+    }.bind(this));
+  },
+  setWidth: function (width) {
+    if (width) this.bar.setStyle('width', width + "%");
+    else this.bar.setStyle('width', "");
+  },
+  setProgress: function (percentage) {
+    this.setWidth(percentage);
+  },
+  setWaiting: function () {
+    if (this.waiter) {
+      this.waiter.show();
+    } else {
+      this.waiter = new Element('img', {src: '/images/furniture/signals/wait_16_on_pink.gif', "class": 'waiter'});
+      this.waiter.inject(this.message);
+    }
+  },
+  setNotWaiting: function () {
+    if (this.waiter) this.waiter.hide();
+  },
+  setUploading: function () {
+    this.setStatus("Uploading");
+  },
+  setProcessing: function () {
+    this.setStatus("Processing: please wait ");
+    this.setWaiting();
+  },
+  setComplete: function (percentage) {
+    this.setNotWaiting();
+    this.setWidth(100);
+    this.form_holder = new Element('div', {'class' : "fileform"});
+    this.form_holder.inject(this.progress);
+    
+    console.log("ready to call for description");
+
+//    new Ajax.Updater(this.form_holder, '/admin/assets/describe', { method: 'get', parameters: {filename: this.file_name} });
+
+  },
+  setError: function (percentage) {
+    this.setColor("red");
+    this.setWidth(0);
+  },
+  setCancelled: function (percentage) {
+    this.setColor('white');
+    this.setWidth(0);
+  },
+  
+  toggleCancel: function (show, swfUploadInstance) {
+    this.canceller.setStyle('visibility', show ? "visible" : "hidden");
+  },
+  cancel: function (e, but_stay) {
+    this.uploader.swfu.cancelUpload(this.file_id);
+    this.setCancelled();
+  }
+  
+});
 
 

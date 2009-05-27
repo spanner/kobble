@@ -1,0 +1,26 @@
+- content_for :admin do
+  %p
+    = link_to 'sources list', sources_url
+
+- @title = 'Upload material'
+
+.preamble
+  %p
+    Each file you select - you can pick as many as you like in the file dialog - will begin to upload immediately. To add more to the queue, just click 'add files to upload queue' again.
+    When each upload is complete, you'll see a compact description form for that file: fill in a better title and short description so that you don't forget which is which.
+    You can queue files and submit the description forms without interrupting the other uploads.
+
+  
+#source_uploader.uploader
+  .upload_queue
+  .upload_controls
+    .mainform
+      %form.instructions{:action => uploader_path_with_session}
+        %p
+          %label{:for => 'collection_id'}
+            Upload into collection:
+          %br
+          = select_tag "collection_id", options_for_select(current_user.collections_available.collect{|s| [s.name, s.id] })
+      
+        %button#swf_placeholder.chooser
+

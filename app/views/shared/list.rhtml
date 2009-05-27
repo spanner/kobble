@@ -31,6 +31,9 @@
 
 <% content_for :admin do %>
   <p>
-    <%= link_to "create <br />#{@klass.nice_title}", {:action => 'new'}, {:class => 'create'} %>
+    <% unless @klass == Source %>
+      <%= link_to "create <br />#{@klass.nice_title}", {:action => 'new'}, {:class => 'create'} %>
+    <% end %>
+    <%= link_to "add new<br />material", uploader_url, {:class => 'create'} %>
   </p>
 <% end %>

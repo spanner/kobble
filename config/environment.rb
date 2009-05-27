@@ -9,6 +9,7 @@
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
+require 'mime/types'
 require 'rubygems'
 gem 'mislav-will_paginate'
 
@@ -20,7 +21,9 @@ Rails::Initializer.run do |config|
 
   # Add additional load paths for your own custom dirs
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
-
+  config.load_paths += %W( #{RAILS_ROOT}/app/middleware )
+  # config.middleware.use FlashSession, '_materialist'
+  
   # Force all environments to use the same logger level 
   # (by default production uses :info, the others :debug)
   # config.log_level = :debug
@@ -30,7 +33,7 @@ Rails::Initializer.run do |config|
   
   # config.action_controller.session_store = :active_record_store
 
-  config.action_controller.session = { :session_key => "_materialist", :secret => "That of which we cannot speak we must pass over in silence." }
+  # config.action_controller.session = { :session_key => "_materialist", :secret => "That of which we cannot speak we must pass over in silence." }
 
   # Use SQL instead of Active Record's schema dumper when creating the test database.
   # This is necessary if your schema can't be completely dumped by the schema dumper, 

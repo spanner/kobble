@@ -8,6 +8,7 @@ ActionController::Routing::Routes.draw do |map|
   map.repassword '/repassword', :controller => 'login', :action => 'repassword'
   map.forbidden '/forbidden', :controller => 'login', :action => 'forbidden'
   map.activate '/activate/:id/:activation_code', :controller => 'login', :action => 'activate'
+  map.uploader '/uploader', :controller => 'sources', :action => 'upload'
   
   # catch and drop are dispatched by controllers and can't be restful
   

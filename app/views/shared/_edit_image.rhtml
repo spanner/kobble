@@ -14,7 +14,7 @@
     <br />
     <a class="formnote" href="<%= item.image.url(:preview) %>" rel="lightbox">
       <%= image_tag(item.image.url(:thumb), :size => "28x20", :alt => '') %>
-      current image is <%= item.image_file_name %>, uploaded <%= item.image_updated_at.to_date %>
+      current image is <%= item.image_file_name %>
     </a>
   <% end %>
 </div>
