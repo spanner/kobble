@@ -22,10 +22,10 @@
       <p class="haserror">
         <img src="/images/furniture/signals/warning.png" width="20" height="20" alt="Warning" style="float: left; margin-right: 3px;">
         We already have an account in the database with that email address. Perhaps you just need to <%= link_to "log in", '/login' %>? 
-        If you've forgotten your password or username we can also <%= link_to "send new login instructions", :action => 'repassword' %> to your email address.
+        If you've forgotten your password or username we can also <%= link_to "send new login instructions", repassword_url %> to your email address.
       </p>
    
-      <p>If you've never signed up here before, please check the email address below. Feel free to <a href="mailto:&#x77;&#x69;&#x6C;&#x6C;&#x69;&#x61;&#x6D;&#x2E;&#x72;&#x6F;&#x73;&#x73;&#x40;&#x73;&#x70;&#x61;&#x72;&#x6B;&#x6E;&#x6F;&#x77;&#x2E;&#x6E;&#x65;&#x74;">write to will</a> if there is any doubt.</p>
+      <p>If you've never signed up here before, please check the email address below, and feel free to <a href="mailto:&#x77;&#x69;&#x6C;&#x6C;&#x69;&#x61;&#x6D;&#x2E;&#x72;&#x6F;&#x73;&#x73;&#x40;&#x73;&#x70;&#x61;&#x72;&#x6B;&#x6E;&#x6F;&#x77;&#x2E;&#x6E;&#x65;&#x74;">write to will</a> if something seems wrong.</p>
      
     <% elsif !@user.errors.empty? %>
 
