@@ -18,11 +18,7 @@
   <% if catch && listed.catcher? %>catches="<%= listed.catchlist %>"<% end %>
 >
 
-  <%= link_to( name, {
-    :controller => listed.class.to_s.underscore.pluralize, 
-    :action => 'show', 
-    :id => listed
-  }, {
+  <%= link_to( name, url_for(listed), {
     :class => aclass,
     :title => "#{collection_name}#{name}"
   }) %>

@@ -1,0 +1,15 @@
+- search_path ||= list_search_path
+
+.searchform
+  -form_tag search_path, :method => :get do
+    %label{:for => 'q', :class => 'required'}
+      search for:
+    %br
+    = text_field_tag :q, params[:q], :class => 'search'
+    = submit_tag 'go', :name => nil, :class => 'gobutton'
+    - if @klass
+      %br
+      = check_box_tag 'only', @klass.to_s, true, :id => "only_#{@klass.to_s}"
+      %label{:for => "only_#{@klass.to_s}"}
+        only among
+        = @klass.nice_title.pluralize

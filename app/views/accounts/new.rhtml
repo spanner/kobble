@@ -20,7 +20,6 @@
     <% if @known_user %>
 
       <p class="haserror">
-        <img src="/images/furniture/signals/warning.png" width="20" height="20" alt="Warning" style="float: left; margin-right: 3px;">
         We already have an account in the database with that email address. Perhaps you just need to <%= link_to "log in", '/login' %>? 
         If you've forgotten your password or username we can also <%= link_to "send new login instructions", repassword_url %> to your email address.
       </p>

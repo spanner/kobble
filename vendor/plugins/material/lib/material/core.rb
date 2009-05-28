@@ -179,34 +179,15 @@ module Material #:nodoc:
         end
       
         if definitions.include?(:index)
-          # self.is_indexed(
-          #   :delta => true,
-          #   :fields => self.index_fields, 
-          #   :concatenate => self.index_concatenation, 
-          #   :conditions => "#{self.table_name}.deleted_at IS NULL or #{self.table_name}.deleted_at > NOW()"
-          # )
-          # Material::Polymorphs.indexed_model(self)
+          acts_as_xapian :texts => [:name, :description, :body].select{ |m| column_names.include?(m.to_s) }
+          Material::Polymorphs.indexed_model(self)
         end
 
         class_eval {
           extend Material::Core::MaterialClassMethods
           include Material::Core::MaterialInstanceMethods
         }
-
       end
-
-                  
-      # def index_fields
-      #   ['name', 'description', 'body', 'created_at', 'collection_id', 'created_by'].select{ |m| column_names.include?(m) }
-      # end
-      #     
-      # def index_concatenation
-      #   sets = []
-      #   sets.push({:association_name => 'annotations', :field => 'body', :as => 'annotations', :conditions => "annotations.deleted_at IS NULL or annotations.deleted_at > NOW()"}) if self._has_annotation
-      #   sets.push({:association_name => 'topics', :field => 'body', :as => 'topics', :conditions => "topics.deleted_at IS NULL or topics.deleted_at > NOW()"}) if self._has_discussion
-      #   sets
-      # end
-    
      
     end #classmethods
 
@@ -239,7 +220,7 @@ module Material #:nodoc:
       def is_discussable?
         true if self.class.reflect_on_association(:topics)
       end
-
+      
       def has_topics?
         is_discussable? && topics.count > 0
       end
@@ -286,10 +267,18 @@ module Material #:nodoc:
 
       # for indexing and excerpting purposes:
 
-      def field_notes
+      def all_notes
         self.has_notes? ? self.annotations.map {|n| n.body }.join(' ') : ''     
       end
+
+      def all_comments
+
+      end
     
+      def is_searchable?
+        self.respond_to? :xapian_document_term
+      end
+
       def has_origins?
         (self.respond_to?('source') && source.nil?) && 
         (self.respond_to?('speaker') && speaker.nil?) && 

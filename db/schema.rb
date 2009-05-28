@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090526080823) do
+ActiveRecord::Schema.define(:version => 20090528090354) do
 
   create_table "account_types", :force => true do |t|
     t.string   "name"
@@ -60,6 +60,14 @@ ActiveRecord::Schema.define(:version => 20090526080823) do
   add_index "activations", ["collection_id"], :name => "index_activations_on_collection_id"
   add_index "activations", ["deleted_at"], :name => "index_activations_on_deleted_at"
   add_index "activations", ["user_id", "active"], :name => "index_activations_on_user_id_and_active"
+
+  create_table "acts_as_xapian_jobs", :force => true do |t|
+    t.string  "model",    :null => false
+    t.integer "model_id", :null => false
+    t.string  "action",   :null => false
+  end
+
+  add_index "acts_as_xapian_jobs", ["model", "model_id"], :name => "index_acts_as_xapian_jobs_on_model_and_model_id", :unique => true
 
   create_table "annotation_types", :force => true do |t|
     t.string   "name"

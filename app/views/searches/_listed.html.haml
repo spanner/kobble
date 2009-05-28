@@ -1,0 +1,18 @@
+- item = listed[:model]
+- sizeclass = 'significant' if listed[:percent] > 25
+
+%li{:id => "#{item.class.to_s.downcase}_#{item.id}", :class => "draggable #{item.class.to_s.downcase}", :style => "margin-bottom: 10px;"}
+  - name = item.name.blank? ? "nameless #{item.class.nice_title}" : item.name 
+  = link_to name, url_for(item), :id => item.id, :style => "font-size: #{80 + (2.5 * listed[:percent])}%;"
+  - if item.is_notable?
+    - item.warnings.each do |warning|
+      %img{:class => "flag", :src => "/images/furniture/spoke/pink/flag.png", :size => "7x13", alt => "warning", :title => "#{warning.annotation_type.name}: #{warning.body}"}
+    - item.approvals.each do |approval|
+      %img{:class => "flag", :src => "/images/furniture/spoke/green/flag.png", :size => "7x13", alt => "approval", :title => "#{approval.annotation_type.name}: #{approval.body}"}
+  %span.rating
+    match:
+    = "#{listed[:percent]}%"
+    = link_to "find similar", list_search_url(:like => "#{item.class.to_s.downcase}_#{item.id}")
+          
+  %div.tiptext
+    = truncate( item.find_some_text, 100 )

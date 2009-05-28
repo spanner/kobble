@@ -2155,3 +2155,66 @@ a.progressCancel:hover {
 
 
 
+/* searches */
+
+div.searchform {
+  clear: both;
+  padding-top: 50px;
+}
+
+div.searchform label {
+  font-size: 18px;
+  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
+  letter-spacing: -0.05em;
+  line-height: 20px;
+  color: #4d4e53;
+  clear: both;
+}
+
+div.searchform label.required {
+	font-weight: bold;
+  font-size: 30px;
+}
+
+div.searchform input.search {
+  width: 77%;
+  height: 28px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 22px;
+  font-weight: bold;
+  line-height: 22px;
+  color: black;
+}
+
+div.searchform input.submit {
+  height: 28px;
+}
+
+li.significant a {
+  font-weight: bold;
+  font-size: 130%;
+}
+
+div.rating_holder {
+  width: 50px;
+  height: 10px;
+  position: relative;
+  float: left;
+  background: transparent url(/images/furniture/kobble/rating_bg.png) no-repeat top left;
+  overflow: hidden;
+}
+
+div.rating_holder div.rating {
+  height: 10px;
+  width: 50px;
+  background: transparent url(/images/furniture/kobble/rating_fg.png) no-repeat top left;
+}
+
+li.draggable a {
+  font-weight: bold;
+}
+
+span.rating {
+  font-size: 10px;
+  color: #8c8d8e;
+}
