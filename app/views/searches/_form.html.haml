@@ -13,3 +13,36 @@
       %label{:for => "only_#{@klass.to_s}"}
         only among
         = @klass.nice_title.pluralize
+
+  %h3
+    fun with search
+  %p
+    Search queries can be quite elaborate. Here are some things that work:
+  %ul
+    %li 
+      tea and cake
+      %span.explanatory will find anything containing both
+    %li
+      cake or buns  
+      %span.explanatory will find anything containing either
+    %li
+      tea and (cake or buns)  
+      %span.explanatory works too
+    %li
+      tea not cold  
+      %span.explanatory will exclude the latter
+    %li
+      tea not "rich tea"  
+      %span.explanatory will exclude nasty biscuits
+    %li 
+      tea +milk -sugar   
+      %span.explanatoryis a useful shorthand
+    %li 
+      tea and "revolution of the proletariat"  
+      %span.explanatory will look for the whole phrase
+    %li 
+      tea and misc*  
+      %span.explanatory will find anything with that stem
+    %li 
+      (picnic near river) and "boiled eggs"  
+      %span.explanatory will look for the words picnic and river within 10 words of each other in documents also containing the phrase 'boiled egg'
