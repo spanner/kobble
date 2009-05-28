@@ -1,7 +1,7 @@
 class SearchesController < ApplicationController
 
   def show
-    if params.include?(:q)
+    if params.any?
       list
       render :action => "list"
     else

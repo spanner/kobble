@@ -492,6 +492,7 @@ div.contentblock p {
 
 div.mainlist {
   clear: left;
+  width: 85%;
 }
 
 div.mainlist ul.listcolumn {
@@ -2190,6 +2191,28 @@ div.searchform input.submit {
   height: 28px;
 }
 
+div.searchform h3, div.searchform p {
+  margin-bottom: 0;
+  color: #4d4e53;
+}
+
+div.searchform ul {
+  margin: 0;
+  padding: 0;
+  font-size: 90%;
+  color: #4d4e53;
+}
+
+div.searchform ul li {
+  list-style: square inside;
+}
+
+div.searchform span.explanatory {
+  color: #8c8d8e;
+}
+
+
+
 li.significant a {
   font-weight: bold;
   font-size: 130%;
@@ -2218,3 +2241,5 @@ span.rating {
   font-size: 10px;
   color: #8c8d8e;
 }
+
+

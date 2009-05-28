@@ -27,6 +27,9 @@
   <% end %>
 
 <% else %>
+  <% if item.is_searchable? %>
+  <%= link_to "find similar", search_url(:like => "#{item.class.to_s.downcase}_#{item.id}") %><br />
+  <% end %>
   <% if item.is_notable? %>
     <%= link_to "add note*", item_new_note_url(item), {:id => 'admin_extend_notelist', :class => 'annotate'} %><br />
   <% end %>
