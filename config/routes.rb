@@ -8,6 +8,7 @@ ActionController::Routing::Routes.draw do |map|
   map.repassword '/repassword', :controller => 'login', :action => 'repassword'
   map.forbidden '/forbidden', :controller => 'login', :action => 'forbidden'
   map.activate '/activate/:id/:activation_code', :controller => 'login', :action => 'activate'
+  map.collection_upload '/collection/:collection_id/upload', :controller => 'sources', :action => 'upload'
   map.uploader '/uploader', :controller => 'sources', :action => 'upload'
   map.describer '/describer', :controller => 'sources', :action => 'describe'
   

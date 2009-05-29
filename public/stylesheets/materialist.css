@@ -685,8 +685,9 @@ div.summary a.listed {
 	border-bottom: 1px dotted #559DC4;
 }
 
-div.summary div.tiptext {
+div.summary div.tiptext, div.summary div.tiptitle {
 	display: none;
+	width: 200px;
 }
 
 /* table formatting */
@@ -1049,7 +1050,6 @@ div.floater input.titular, div.floater select.standard {
   height: 28px;
   font-family: Georgia, "Times New Roman", serif;
   font-size: 22px;
-  font-weight: bold;
   line-height: 22px;
   color: black;
 	clear: both; 
