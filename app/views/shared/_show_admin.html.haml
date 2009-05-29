@@ -1,0 +1,39 @@
+- if item
+  - collection = item if item.is_a?(Collection)
+  - collection ||= item.collection if item.has_collection?
+
+%ul
+  - if collection
+    %li
+      = link_to "add material", collection_upload_url(collection), {:class => 'create'}
+  - else
+    %li
+      = link_to "add material", uploader_url, {:class => 'create'}
+
+  - if item
+    %li
+      %strong
+      = link_to "edit #{item.nice_title}" , {:controller => item.class.to_s.pluralize.underscore, :action => 'edit', :id => item}
+    - if item.is_searchable?
+      %li
+        = link_to "find similar", search_url(:like => "#{item.class.to_s.downcase}_#{item.id}")
+    - if item.is_notable?
+      %li
+        = link_to "add note*", item_new_note_url(item), {:id => 'admin_extend_notelist', :class => 'annotate'}
+    - if item.is_discussable?
+      %li
+        = link_to "discuss*", item_new_topic_url(item), {:id => 'admin_extend_topiclist', :class => 'inlinediscuss'}
+    - if item.is_a?(Collection)
+      - if account_admin?
+        %li
+          = link_to "delete", {:controller => item.class.to_s.pluralize.underscore, :action => 'predelete', :id => item}, {:class => 'mildwarning'}
+      - else
+        %li
+          = link_to "delete", {:controller => item.class.to_s.pluralize.underscore, :action => 'destroy', :id => item}, {:class => 'warning', :method => :delete}
+
+  - else
+    %li
+      = link_to_unless_current "preferences", edit_user_url(current_user)
+    - if account_admin?
+      %li
+        = link_to_unless_current "account settings", edit_account_url(current_account), {:class => 'admin'}

@@ -5,4 +5,4 @@ test:
     base_db_path: 'shared/indexes/test'
 
 production:
-    base_db_path: 'shared/indexes'
+    base_db_path: '../../shared/indexes'

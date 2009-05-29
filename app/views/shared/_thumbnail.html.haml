@@ -1,0 +1,11 @@
+- item ||= @thing
+- url = item.has_image? ? item.image.url(:thumb) : "/images/furniture/layout/defaultimage.png"
+%li{:id => "#{item.class.to_s.downcase}_#{item.id}", :class => "single draggable tippable #{item.class.to_s.downcase}"}
+  = link_to image_tag(url, :alt => item.name, :class => 'thumbnail', :size => "56x56"), url_for(item)
+  .tiptitle
+    - if item.has_collection? 
+      = item.collection.abbreviation
+      \:
+    = item.name
+  .tiptext
+    = truncate( item.find_some_text, 100 )

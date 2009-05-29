@@ -62,9 +62,9 @@ ActiveRecord::Schema.define(:version => 20090528090354) do
   add_index "activations", ["user_id", "active"], :name => "index_activations_on_user_id_and_active"
 
   create_table "acts_as_xapian_jobs", :force => true do |t|
-    t.string  "model",    :null => false
-    t.integer "model_id", :null => false
-    t.string  "action",   :null => false
+    t.string  "model",    :default => "", :null => false
+    t.integer "model_id",                 :null => false
+    t.string  "action",   :default => "", :null => false
   end
 
   add_index "acts_as_xapian_jobs", ["model", "model_id"], :name => "index_acts_as_xapian_jobs_on_model_and_model_id", :unique => true
@@ -464,11 +464,11 @@ ActiveRecord::Schema.define(:version => 20090528090354) do
   add_index "user_preferences", ["user_id"], :name => "index_user_preferences_on_user_id"
 
   create_table "users", :force => true do |t|
-    t.string   "login",                     :limit => 80,                 :null => false
+    t.string   "login",                     :limit => 80, :default => "", :null => false
     t.string   "crypted_password",          :limit => 40, :default => "", :null => false
-    t.string   "email",                     :limit => 60,                 :null => false
+    t.string   "email",                     :limit => 60, :default => "", :null => false
     t.string   "diminutive",                :limit => 40
-    t.string   "salt",                      :limit => 40,                 :null => false
+    t.string   "salt",                      :limit => 40, :default => "", :null => false
     t.string   "remember_token",            :limit => 40
     t.datetime "remember_token_expires_at"
     t.datetime "created_at"

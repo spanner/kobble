@@ -1,0 +1,20 @@
+- @title = @klass.nice_title.pluralize.capitalize
+
+- if @list && @list.total_entries > 0
+  = render :partial => 'shared/pagination', :locals => {:list => @list}
+  .mainlist  
+    %ul
+      - @list.each do |listed|
+        = render :partial => 'shared/listed', :locals => {:listed => listed, :catch => true}
+
+  = render :partial => 'shared/pagination', :locals => {:list => @list}
+  = render :partial => 'searches/form'
+
+- else
+  %p
+    We have no 
+    = @klass.nice_title.pluralize
+
+- content_for :admin do
+  = render :partial => 'shared/show_admin', :locals => {:item => nil}
+

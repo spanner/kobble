@@ -1,0 +1,17 @@
+- catch ||= false 
+- name = galleried.name.blank? ? "nameless #{galleried.class.nice_title}" : galleried.name
+- catch_class = 'catcher' if catch && galleried.catcher?
+
+%li{:id => "#{galleried.class.to_s.downcase}_#{galleried.id}", :class => "#{galleried.class.to_s.downcase} draggable tippable #{catch_class}"}
+  - if galleried.has_image?
+    = link_to image_tag(galleried.image.url(:slide), :size => "135x135", :alt => name), url_for(galleried)
+  - else
+    = link_to image_tag("/images/furniture/layout/defaultimage.png", :size => "135x135", :alt => name), url_for(galleried)
+
+.tiptitle
+  - if galleried.has_collection? 
+    = galleried.collection.abbreviation
+    \:
+  = name
+.tiptext
+  = truncate( galleried.find_some_text, 300 )

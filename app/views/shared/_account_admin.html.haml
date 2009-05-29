@@ -1,0 +1,10 @@
+- if account_admin?
+  %ul.admin
+    %li
+      = link_to "add material", uploader_url, {:class => 'create'}
+    %li
+      = link_to_unless_current "collections", account_collections_url(current_account), :class => 'admin'
+    %li
+      = link_to_unless_current "permissions", permissions_account_url(current_account), :class => 'admin'
+    %li
+      = link_to_unless_current "account settings", edit_account_url(current_account), :class => 'admin'

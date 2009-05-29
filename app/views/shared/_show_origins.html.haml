@@ -1,0 +1,22 @@
+- item ||= @thing
+
+.summary
+  = render :partial => 'shared/thumbnail', :locals => {:draggable => true}
+  - if item.respond_to?('collection') && item.collection
+    Collection: 
+    = link_to item.collection.name, url_for(item.collection)
+  - if item.respond_to?('speaker') && item.speaker
+    Speaker: 
+    = link_to item.speaker.name, url_for(item.speaker)
+  - if item.respond_to?('source') && item.source
+    Source: 
+    = link_to item.source.name, url_for(item.source)
+  - if item.respond_to?('occasion') && item.occasion
+    Occasion:
+    = link_to item.occasion.name, url_for(item.occasion)
+  - if item.creator
+    Added by:
+    = link_to item.creator.name, url_for(item.creator)
+  - if item.updater
+    Last updated by:
+    = link_to item.updater.name, url_for(item.updater)

@@ -1,0 +1,17 @@
+- @title = @klass.nice_title.pluralize.capitalize
+
+- if @list && @list.total_entries > 0
+  = render :partial => 'shared/pagination', :locals => {:list => @list}
+  .gallery
+    %ul
+      = render :partial => 'shared/galleried', :collection => @list, :locals => {:catch => true}
+
+  = render :partial => 'shared/pagination', :locals => {:list => @list}
+
+- else
+  %p
+    There are no <%= @klass.nice_title.pluralize %> to display in this collection</p>
+
+- content_for :admin do
+  = render :partial => 'shared/show_admin', :locals => {:item => nil}
+
