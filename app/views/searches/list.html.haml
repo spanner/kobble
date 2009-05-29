@@ -1,0 +1,21 @@
+- @title = @cue ? "search for similar items" : "search for &lsquo;#{params[:q]}&rsquo;"
+
+- if @search && @search.results.any?
+
+  = render :partial => 'summary'
+  
+  .mainlist
+    %ul
+      = render :partial => 'listed', :collection => @search.results, :locals => {:catch => true}
+
+- else
+
+  %p
+    Sorry: we found nothing matching 
+    %strong
+      = params[:q]
+
+= render :partial => 'form', :locals => {:search_url => list_search_path}
+
+- content_for :admin do
+  = render :partial => 'shared/show_admin', :locals => {:item => nil}

@@ -103,8 +103,8 @@ class ApplicationController < ActionController::Base
     sort_options = request.parameters[:controller].to_s._as_class.sort_options
     default_sort = request.parameters[:controller].to_s._as_class.default_sort
     {
-      :page => (params[:page] || 1),
-      :per_page => params[:per_page],   # specify defaults in model but 30 is usually fine
+      :page => params[:page] || 1,
+      :per_page => params[:per_page] || 100,
     }
   end
 

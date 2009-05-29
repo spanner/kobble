@@ -21,7 +21,5 @@
 </div>
 
 <% content_for :admin do %>
-  <p>
-    back to <%= link_to 'account home', home_accounts_url %>
-  </p>
+  <%= render :partial => 'shared/account_admin' %>
 <% end %>

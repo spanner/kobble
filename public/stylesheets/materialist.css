@@ -216,8 +216,17 @@ div#admin {
   position: fixed;
   left: 20px;
 	bottom: 12px;
-	width: 90px;
+	width: 100px;
 	z-index: 12000;
+}
+
+div#admin ul {
+  margin: 0;
+  padding-left: 10px;
+  font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
+	line-height: 1.1;
+	color: #8c8d8e;
+	list-style: square;
 }
 
 div#admin p {
@@ -228,13 +237,15 @@ div#admin p {
 	color: #8c8d8e;
 }
 
-div#admin a { color: #559DC4; }
-div#admin a:hover, .pagination a:active { color: #d1005d; background-color: #d1005d; }
+a.warning { color: white; background-color: #d1005d; }
+a.create { color: #5da454; }
+a.edit { color: #559DC4; }
+a.mildwarning { color: #d1005d; }
+a.admin { color: #4d4e53; }
 
-a.warning, div#admin a.warning { color: white; background-color: #d1005d; }
-a.create, div#admin a.create { color: #5da454; }
-a.edit, div#admin a.edit { color: #559DC4; }
-a.mildwarning, div#admin a.mildwarning { color: #d1005d; }
+a.warning:hover, a.create:hover, a.edit:hover, a.mildwarning:hover, a.admin:hover {
+  color: #d1005d;
+}
 
 
 div#trashholder {
@@ -493,28 +504,15 @@ div.contentblock p {
 div.mainlist {
   clear: left;
   width: 85%;
-}
-
-div.mainlist ul.listcolumn {
-  display: block;
-  float: left;
-  width: 220px;
   margin: 0 20px 20px 0;
 }
 
-div.mainlist ul, ul.minimal {
-  margin: 0;
-	padding: 0 0 0 20px;
-  list-style: none;
+div.mainlist ul {
+  padding-left: 20px;
+  color: #8c8d8e;
 }
 
-div.mainlist ul.listcolumn {
-  width: 250px;
-  float: left;
-  overflow-x: hidden;
-}
-
-.mainlist li, li.single, ul.minimal li {
+div.mainlist ul li, li.single, ul.minimal li {
   margin: 0 10px 4px 0;
   font-size: 16px;
   line-height: 24px;

@@ -55,7 +55,5 @@
 </div>
 
 <% content_for :admin do %>
-  <p>
-    <%= render :partial => 'shared/show_admin', :locals => {:item => current_account} %>
-  </p>
+  <%= render :partial => 'shared/account_admin' %>
 <% end %>

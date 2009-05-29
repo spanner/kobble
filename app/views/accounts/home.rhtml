@@ -51,10 +51,5 @@
 <% end %>
 
 <% content_for :admin do %>
-  <p>
-    <%= link_to "add material", uploader_url, {:class => 'create'} %><br />
-    <%= link_to "add user", new_account_user_url(current_account), {:class => 'create'} %><br />
-    <%= link_to_unless_current "permissions", permissions_account_url(current_account) %><br />
-    <%= link_to_unless_current "settings", edit_account_url(current_account) %>
-  </p>
+  <%= render :partial => 'shared/account_admin' %>
 <% end %>

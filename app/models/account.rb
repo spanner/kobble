@@ -1,6 +1,6 @@
 class Account < ActiveRecord::Base
 
-  is_material :only => [:illustration, :discussion, :owners]
+  is_material :only => [:illustration, :owners]
   
   belongs_to :user
   belongs_to :account_type
