@@ -8,7 +8,8 @@ class ApplicationController < ActionController::Base
   before_filter :login_required
   before_filter :set_context
   before_filter :check_activations
-    
+  after_filter :update_index, :only => [:create, :update, :destroy, :describe]
+   
   layout 'standard'
   exception_data :exception_report_data
   
@@ -205,4 +206,16 @@ class ApplicationController < ActionController::Base
         :collections => current_collections
       }
     end
+    
+
+  private
+  
+    def update_index
+      if ActsAsXapian::ActsAsXapianJob.count > 0
+        spawn(:nice => 7) do
+          %x(rake xapian:update_index) 
+        end
+      end
+    end
+
 end

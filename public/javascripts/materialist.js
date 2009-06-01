@@ -1420,7 +1420,7 @@ var Uploader = new Class ({
     this.settings = {
       flash_url : "/flash/swfupload.swf",
       upload_url: this.form.get('action'),
-      file_size_limit : "150 MB",
+      file_size_limit : "200 MB",
       file_types : "*.*",
       file_types_description : "All Files",
       file_upload_limit : 100,
