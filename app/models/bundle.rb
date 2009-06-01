@@ -12,7 +12,20 @@ class Bundle < ActiveRecord::Base
   def members
     contained_bundlings.map { |b| b.member }
   end
-    
+  
+  def members=(members)
+    transaction {
+      contained_bundlings.clear
+      add(members)
+    }
+  end
+  
+  def add(members)
+    members.to_a.each do |member|
+      contained_bundlings.create! :member => member
+    end
+  end
+
   def catch_this(object)
     if self.contained_bundlings.of(object).empty?
       contained_bundlings.create!(:member => object)

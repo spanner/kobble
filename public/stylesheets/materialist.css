@@ -247,6 +247,9 @@ a.warning:hover, a.create:hover, a.edit:hover, a.mildwarning:hover, a.admin:hove
   color: #d1005d;
 }
 
+div.warning {
+  color: #d1005d;
+}
 
 div#trashholder {
   position: fixed;
@@ -540,7 +543,7 @@ li.single {
 }
 
 .mainlist a.inactive {
-  color: #8c8d8e;
+  color: #4d4e53;
 }
 
 .mainlist a.inactive:hover {
@@ -598,16 +601,16 @@ li.updated_flag { list-style-image: url(/images/furniture/spoke/orange/flag.png)
 li.updated_topic { list-style-image: url(/images/furniture/spoke/orange/post.png); }
 li.updated_post { list-style-image: url(/images/furniture/spoke/orange/post.png); }
 
-li.deleted_collection { list-style-image: url(/images/furniture/spoke/mid/collection.png); }
-li.deleted_node { list-style-image: url(/images/furniture/spoke/mid/node.png); }
-li.deleted_source { list-style-image: url(/images/furniture/spoke/mid/source.png); }
-li.deleted_bundle { list-style-image: url(/images/furniture/spoke/mid/bundle.png); }
-li.deleted_user { list-style-image: url(/images/furniture/spoke/mid/user.png); }
-li.deleted_person { list-style-image: url(/images/furniture/spoke/mid/user.png); }
-li.deleted_tag { list-style-image: url(/images/furniture/spoke/mid/tag.png); }
-li.deleted_flag { list-style-image: url(/images/furniture/spoke/mid/flag.png); }
-li.deleted_topic { list-style-image: url(/images/furniture/spoke/mid/post.png); }
-li.deleted_post { list-style-image: url(/images/furniture/spoke/mid/post.png); }
+li.deleted_collection { list-style-image: url(/images/furniture/spoke/grey/collection.png); }
+li.deleted_node { list-style-image: url(/images/furniture/spoke/grey/node.png); }
+li.deleted_source { list-style-image: url(/images/furniture/spoke/grey/source.png); }
+li.deleted_bundle { list-style-image: url(/images/furniture/spoke/grey/bundle.png); }
+li.deleted_user { list-style-image: url(/images/furniture/spoke/grey/user.png); }
+li.deleted_person { list-style-image: url(/images/furniture/spoke/grey/user.png); }
+li.deleted_tag { list-style-image: url(/images/furniture/spoke/grey/tag.png); }
+li.deleted_flag { list-style-image: url(/images/furniture/spoke/grey/flag.png); }
+li.deleted_topic { list-style-image: url(/images/furniture/spoke/grey/post.png); }
+li.deleted_post { list-style-image: url(/images/furniture/spoke/grey/post.png); }
 
 li.annotated_collection { list-style-image: url(/images/furniture/spoke/grey/collection.png); }
 li.annotated_node { list-style-image: url(/images/furniture/spoke/grey/node.png); }
@@ -909,7 +912,13 @@ input.bigbutton {
   font-size: 32px;
   font-family: 'HelveticaNeue-Light', helvetica, arial, sans-serif;
   line-height: 44px;
+  margin: 10px 20px;
+  padding: 10px;
   color: #5da454;
+}
+
+div.warning input.bigbutton {
+  color: #d1005d;
 }
 
 /* standard content formatting */

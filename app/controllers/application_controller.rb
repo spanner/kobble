@@ -12,6 +12,10 @@ class ApplicationController < ActionController::Base
   layout 'standard'
   exception_data :exception_report_data
   
+  def model_class
+    request.parameters[:controller].to_s._as_class
+  end
+  
   def views
     ['gallery', 'list']
   end
@@ -46,22 +50,10 @@ class ApplicationController < ActionController::Base
   # shared retrieval mechanisms
 
   def show
-    @thing = request.parameters[:controller].to_s._as_class.find(params[:id])
+    @thing = model_class.find(params[:id])
   rescue ActiveRecord::RecordNotFound
-    @thing = request.parameters[:controller].to_s._as_class.find_with_deleted(params[:id])
+    @thing = model_class.find_only_deleted(params[:id])
     render :template => 'shared/deleted'
-  end
-
-  def search
-    @klass = request.parameters[:controller].to_s._as_class
-    @search = Ultrasphinx::Search.new(
-      :query => params[:q],
-      :page => params[:page] || 1, 
-      :per_page => 20,
-      :class_names => @klass
-    )
-    @search.run
-    render :template => 'search/results'
   end
   
   def list
@@ -83,7 +75,7 @@ class ApplicationController < ActionController::Base
   end
   
   def paged_list
-    @klass = request.parameters[:controller].to_s._as_class
+    @klass = model_class
     @scope = view_scope
     case @scope
     when 'account'
@@ -100,8 +92,8 @@ class ApplicationController < ActionController::Base
   end
   
   def paging
-    sort_options = request.parameters[:controller].to_s._as_class.sort_options
-    default_sort = request.parameters[:controller].to_s._as_class.default_sort
+    sort_options = model_class.sort_options
+    default_sort = model_class.default_sort
     {
       :page => params[:page] || 1,
       :per_page => params[:per_page] || 100,
@@ -109,7 +101,7 @@ class ApplicationController < ActionController::Base
   end
 
   def catch
-    @catcher = request.parameters[:controller].to_s._as_class.find( params[:id] )
+    @catcher = model_class.find( params[:id] )
     @caught = params[:caughtClass].to_s._as_class.find( params[:caughtID] )
     @response = @catcher.catch_this(@caught) if @catcher and @caught
     respond_to do |format|
@@ -134,11 +126,11 @@ class ApplicationController < ActionController::Base
   end
     
   def drop
-    @dropper = request.parameters[:controller].to_s._as_class.find( params[:id] )
+    @dropper = model_class.find( params[:id] )
     @dropped = params[:droppedClass]._as_class.find(params[:droppedID])
     @response = @dropper.drop_this(@dropped) if @dropper and @dropped
     respond_to do |format|
-      format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @dropper }
+      format.html { redirect_to url_for(@dropper) }
       format.json { render :json => @response.to_json }
       format.xml { head 200 }
     end
@@ -146,7 +138,7 @@ class ApplicationController < ActionController::Base
     flash[:error] = e.message
     @response = Material::CatchResponse.new(e.message, '', 'failure')
     respond_to do |format|
-      format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @catcher }
+      format.html { redirect_to url_for(@catcher) }
       format.json { render :json => @response.to_json }
     end
   end
@@ -158,31 +150,42 @@ class ApplicationController < ActionController::Base
   # most models, including linkers, are paranoid
   
   def destroy
-    @deleted = request.parameters[:controller].to_s._as_class.find( params[:id] )
-    @deleted.reassign_to = request.parameters[:controller].to_s._as_class.find(params[:reassign_to]) if params[:reassign_to] && @deleted.respond_to?('reassign_to')
-    logger.warn("@@@ @deleted.reassign_to is #{@deleted.reassign_to}")
-
-    request.parameters[:controller].to_s._as_class.transaction { @deleted.destroy }
-    
+    @deleted = model_class.find( params[:id] )
+    @deleted.reassign_to = model_class.find(params[:reassign_to]) if params[:reassign_to] && @deleted.respond_to?('reassign_to')
+    model_class.transaction { @deleted.destroy }
+    flash[:notice] = "#{@deleted.name} has been deleted"
+    @newly_deleted = @deleted
     respond_to do |format|
-      format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @deleted }
+      format.html { redirect_to url_for(@deleted) }
       format.json { render :json => Material::CatchResponse.new("#{@deleted.name} deleted", 'delete').to_json }
     end
   rescue => e
     logger.warn("@@@ #{e.message}")
     flash[:error] = e.message
     respond_to do |format|
-      format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @deleted }
+      format.html { redirect_to url_for(@deleted) }
       format.json { render :json => Material::CatchResponse.new(e.message, '', 'failure').to_json }
     end
   end
 
   def recover
-    @recovered = request.parameters[:controller].to_s._as_class.find_with_deleted( params[:id] )
+    @recovered = model_class.find_with_deleted( params[:id] )
     @recovered.recover!
     flash[:notice] = "#{@recovered.name} recovered"
     respond_to do |format|
-      format.html { redirect_to :controller => params[:controller], :action => 'show', :id => @recovered }
+      format.html { redirect_to url_for(@recovered) }
+      format.json { render :json => @recovered.to_json }
+    end
+  end
+  
+  def eliminate
+    @thing = model_class.find_with_deleted(params[:id])
+    model_class.transaction {
+      @thing.logged_events.each { |e| e.destroy }
+      @thing.destroy_without_callbacks!
+    }
+    respond_to do |format|
+      format.html { render :template => 'shared/eliminated' }
       format.json { render :json => @recovered.to_json }
     end
   end

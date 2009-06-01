@@ -1,6 +1,5 @@
 - addendum ||= ''
 - colourclass ||= nil
-- colourclass = "#{colourclass}_" if colourclass
 - single ||= false
 - inactive ||= listed.deleted?
 - inactive ||= listed.inactive? if listed.respond_to?('inactive?')
@@ -13,7 +12,7 @@
 - collection_name = listed.has_collection? ? "#{listed.collection.abbreviation}: " : ''
 - catch_list = listed.catchlist if catch && listed.catcher?
 
-%li{:id => "#{listed.class.to_s.downcase}_#{listed.id}", :class => "#{colourclass}#{listed.class.to_s.downcase} colourclass #{'single' if single} #{'draggable tippable' unless inactive} #{catch_class}", :catches => catch_list}
+%li{:id => "#{listed.class.to_s.downcase}_#{listed.id}", :class => "#{colourclass}#{"_" if colourclass}#{listed.class.to_s.downcase} #{colourclass} #{'single' if single} #{'draggable tippable' unless inactive} #{catch_class}", :catches => catch_list}
   = link_to name, url_for(listed), :class => aclass, :title => "#{collection_name} : #{name}"
   = render :partial => 'shared/note_flags', :locals => {:item => listed}
   - unless addendum.nil?

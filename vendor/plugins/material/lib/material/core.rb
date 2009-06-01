@@ -156,7 +156,7 @@ module Material #:nodoc:
         end
 
         if definitions.include?(:log)
-          has_many :logged_events, :class_name => 'Event', :as => :affected, :order => 'at DESC'
+          has_many :logged_events, :class_name => 'Event', :as => :affected, :dependent => :destroy, :order => 'at DESC'
           Material::Polymorphs.logged_model(self)
         end
       

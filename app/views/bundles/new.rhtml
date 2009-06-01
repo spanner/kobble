@@ -1,10 +1,5 @@
 <% 
   @title = @expad ? 'create set from scratchpad' : 'create set' 
-  if @expad
-    @members = @expad.scraps.uniq
-    @bundle.name = @expad.name if @bundle.name.blank?
-    @bundle.body = @expad.body if @bundle.body.blank?
-  end
 %>
 
 <% content_for :buttons do %>
@@ -22,7 +17,8 @@
 
 <div class="mainform">
   <% form_for :bundle,
-              :html => { 
+              :url => bundles_url,
+              :html => {
                 :multipart => true
               } do |f| 
   %>

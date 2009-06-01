@@ -15,7 +15,7 @@
       %>
       <%= render :partial => "shared/listed", :locals => {
         :listed => event.affected, 
-        :colourclass => event.event_type, 
+        :colourclass => event.event_type,
         :addendum => "#{event.event_type} by #{who} #{time_ago_in_words(event.at)} ago"
       } %>
     <% end %>

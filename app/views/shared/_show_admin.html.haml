@@ -27,9 +27,9 @@
       - if account_admin?
         %li
           = link_to "delete", {:controller => item.class.to_s.pluralize.underscore, :action => 'predelete', :id => item}, {:class => 'mildwarning'}
-      - else
-        %li
-          = link_to "delete", {:controller => item.class.to_s.pluralize.underscore, :action => 'destroy', :id => item}, {:class => 'warning', :method => :delete}
+    - else
+      %li
+        = link_to "delete", {:controller => item.class.to_s.pluralize.underscore, :action => 'destroy', :id => item}, {:class => 'warning', :method => :delete}
 
   - else
     %li

@@ -1,0 +1,39 @@
+- if @thing
+  - @title = "undelete"
+
+  .preamble
+    %p
+      The
+      = @thing.class.nice_title
+      %strong
+        = @thing.name 
+      has been deleted.
+      Would you like to recover it? This will also recover all of its associated objects, taggings and discussions.
+
+  .contentblock
+    - form_for :thing, :url => {:action => 'recover', :id => @thing} do |f|
+      = submit_tag "recover", :class => 'bigbutton'
+    %p
+      These are the immediate children that would be recovered with this object: 
+      %strong
+      = @thing.retrievable_associates_summary
+  
+  %div{:class => "contentblock warning"}
+    %p
+      To remove this - and its associates - altogether, click the 'eliminate' button below. It will disappear entirely from your collections and from your records. You probably only want to do this for duplicates and tests: most objects can be left in a recoverable state indefinitely.
+      - form_for :thing, :url => {:action => 'eliminate', :id => @thing} do |f|
+        = submit_tag "eliminate", :class => 'bigbutton '
+
+- else
+  - @title = "not found"
+
+  %div{:class => "contentblock error"}
+    %p
+      Sorry: There is no 
+      = request.parameters[:controller].to_s._as_class.nice_title
+      here with the id 
+      %strong<
+        = params[:id]
+      , and nothing in the trash either.
+
+
