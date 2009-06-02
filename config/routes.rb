@@ -1,17 +1,15 @@
 ActionController::Routing::Routes.draw do |map|
                                   
-  map.home '', :controller => 'login', :action => 'index'
-  map.login '/login', :controller => 'login', :action => 'login'
-  map.logout '/logout', :controller => 'login', :action => 'logout'
-  map.repassword '/repassword', :controller => 'login', :action => 'repassword'
-  map.forbidden '/forbidden', :controller => 'login', :action => 'forbidden'
-  map.activate '/activate/:id/:activation_code', :controller => 'login', :action => 'activate'
+  
+  # map.login '/login', :controller => 'login', :action => 'login'
+  # map.logout '/logout', :controller => 'login', :action => 'logout'
+  # map.repassword '/repassword', :controller => 'login', :action => 'repassword'
+  # map.forbidden '/forbidden', :controller => 'login', :action => 'forbidden'
 
   map.collection_upload '/collection/:collection_id/upload', :controller => 'sources', :action => 'upload'
   map.uploader '/uploader', :controller => 'sources', :action => 'upload'
   map.describer '/describer', :controller => 'sources', :action => 'describe'
 
-  map.dashboard '/accounts/home', :controller => 'accounts', :action => 'home'
   
   # catch and drop are dispatched by controllers and can't be restful
   
@@ -21,6 +19,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :accounts, :has_many => [:users, :collections, :events, :deletions, :tags], :member => { :permissions => :any }
   map.resources :collections, :has_many => [:events, :topics, :annotations, :permissions, :sources, :nodes, :bundles, :topics, :occasions], :member => {:recover => :post, :eliminate => :post, :predelete => :get}, :collection => { :gallery => :get }
   map.resources :users, :has_many => [:activations, :user_preferences, :permissions, :scratchpads, :events, :sources, :nodes, :bundles, :people, :topics, :posts], :collection => { :gallery => :get }, :member => { :home => :get, :recover => :post, :eliminate => :post, :reinvite => :any, :predelete => :get }
+
   map.resources :annotations
   map.resources :preferences
   map.resources :events
@@ -43,5 +42,10 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :annotation_types, :has_many => [:annotations]
   
   map.resource :search, :member => { :list => :any, :gallery => :any }
+  map.resource :user_session
+
+  map.root :controller => "accounts", :action => "index"
+  map.dashboard '/accounts/show', :controller => 'accounts', :action => 'show'
+  
   
 end

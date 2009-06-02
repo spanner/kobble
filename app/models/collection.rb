@@ -1,5 +1,4 @@
 class Collection < ActiveRecord::Base
-
   cattr_accessor :current
 
   before_destroy :reassign_associates

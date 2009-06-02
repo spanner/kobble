@@ -1,4 +1,4 @@
-class BundlesController < CollectedController
+class BundlesController < CollectionScopedController
 
   # change this to pass around member set
   # not use scratchpad directly

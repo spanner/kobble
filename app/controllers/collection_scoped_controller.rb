@@ -1,6 +1,12 @@
-class CollectedController < ActionController::Base
+class CollectionScopedController < AccountScopedController
 
-  before_filter :get_collection
+  # this is the main resource controller and defined most activities
+  # model-specific controllers only deviate from this template to offer
+  # specific functional paths
+  
+  helper_method :current_collection
+  before_filter :require_collection
+  
   before_filter :get_item, :only => [:show, :edit, :update, :destroy]
   before_filter :get_deleted_item, :only => [:recover, :eliminate]
   before_filter :get_items, :only => [:index]
@@ -110,61 +116,74 @@ class CollectedController < ActionController::Base
   
   
   
-  protected
-    def working_on
-      request.parameters[:controller].to_s
-    end
-
-    def model_class
-      working_on.as_class
-    end
-
-    def association
-      working_on.downcase.pluralize.intern
-    end
-
-    def parameter_head
-      working_on.downcase.intern
-    end
-
-    def get_collection
-      current_collection = current_account.collections.find(params[:collection_id])
-    end
-    
-    def get_item
-      @thing = current_collection.send(association).find(params[:id])
-    end
-    
-    def get_deleted_item
-      @thing = model_class.find_only_deleted( params[:id] )
-    end
-    
-    def get_items
-      @list = current_collection.send(association).paginate(paging)
-    end
-    
-    def paging
-      {
-        :page => params[:page] || 1,
-        :per_page => params[:per_page] || 100,
-      }
-    end
-
-    def render_thing_or_response
-      respond_to do |format|
-        format.html { redirect_to url_for(@thing) }
-        format.json { render :json => @response.to_json }
-      end
-    end
-
-  private
+protected
   
-    def update_index
-      if ActsAsXapian::ActsAsXapianJob.count > 0
-        spawn(:nice => 7) do
-          %x(rake xapian:update_index) 
-        end
+  def current_collection
+    return @current_collection if defined?(@current_collection)
+    @current_collection = Collection.find_by_id(params[:collection_id])
+  end
+  
+  def require_collection
+    if current_collection
+      Collection.current = current_collection
+    else
+      store_location
+      flash[:notice] = "Please choose a collection"
+      redirect_to dashboard_url
+      return false
+    end
+  end
+
+  def working_on
+    request.parameters[:controller].to_s
+  end
+
+  def model_class
+    working_on.as_class
+  end
+
+  def association
+    working_on.downcase.pluralize.intern
+  end
+
+  def parameter_head
+    working_on.downcase.intern
+  end
+  
+  def get_item
+    @thing = current_collection.send(association).find(params[:id])
+  end
+  
+  def get_deleted_item
+    @thing = model_class.find_only_deleted(params[:id])
+  end
+  
+  def get_items
+    @list = current_collection.send(association).paginate(paging)
+  end
+  
+  def paging
+    {
+      :page => params[:page] || 1,
+      :per_page => params[:per_page] || 100,
+    }
+  end
+
+  def render_thing_or_response
+    respond_to do |format|
+      format.html { redirect_to url_for(@thing) }
+      format.json { render :json => @response.to_json }
+    end
+  end
+
+private
+
+  def update_index
+    if ActsAsXapian::ActsAsXapianJob.count > 0
+      spawn(:nice => 7) do
+        %x(rake xapian:update_index) 
       end
     end
+  end
 
 end

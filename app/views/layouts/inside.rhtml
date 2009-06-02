@@ -6,9 +6,9 @@
 <html>
 <head>
   <title>kobble<% if @title %> - <%= @title %><% end%></title>
-  <%= javascript_include_tag 'mootools', 'mootools-more', 'extensions', 'autocomplete', 'materialist', 'slimbox', 'swfupload/swfupload', 'swfupload/swfupload.cookies', 'swfupload/swfupload.queue', 'swfupload/swfupload.speed', :cache => "cache/materialist" %>
+  <%= javascript_include_tag 'mootools', 'mootools-more', 'extensions', 'autocomplete', 'kobble', 'slimbox', 'swfupload/swfupload', 'swfupload/swfupload.cookies', 'swfupload/swfupload.queue', 'swfupload/swfupload.speed', :cache => "cache/kobble" %>
   <%= yield :extra_js %>
-  <%= stylesheet_link_tag 'materialist', 'slimbox', :cache => "cache/materialist" %>
+  <%= stylesheet_link_tag 'kobble', :cache => "cache/kobble" %>
   <%= yield :extra_css %>
 </head>
 <body>
@@ -16,7 +16,7 @@
   <div id="masthead">
     <p>
       <%= link_to "kobble/", "/" %><br />
-      <%= link_to "#{current_user.account.name}/", {:controller => 'accounts', :action => 'home'}, {:class => 'account'} %><br />
+      <%= link_to "#{current_account.name}/", url_for(current_account), {:class => 'account'} %><br />
       <% if current_collection %>
         <%= link_to "#{current_collection.name}/", url_for(current_collection), {:class => 'collection'} %><br />
       <% end %>
@@ -34,13 +34,13 @@
 
   <div id="mastfoot">
 	  <div id="navigation">
-      <%= link_to 'home', {:controller => 'accounts', :action => 'home'}, {:class => request.parameters[:action] == 'home' ? " fg" : ''} %>
+      <%= link_to 'home', dashboard_url, {:class => request.parameters[:action] == 'home' ? " fg" : ''} %>
       <% [Source, Node, Bundle, Person, Tag].each do |klass| %>
         <%= link_to klass.nice_title.pluralize, {:controller => klass.to_s.underscore.pluralize}, {:class => (request.parameters[:controller] == klass.to_s.underscore.pluralize ? "fg" : '')} %>
       <% end %>
       <%= link_to 'search', search_url, {:class => request.parameters[:controller] == 'searches' ? " fg" : 'rollup'} %>
       <%= link_to 'discussion', {:controller => 'topics', :action => 'index'}, {:class => request.parameters[:controller] == 'topics' ? " fg" : ''} if current_account.can_have_discussion? %>
-      <%= link_to 'log out', {:controller => 'login', :action => 'logout'}, {:class => 'administrative'} %>
+      <%= link_to 'log out', user_session_path, :method => :delete, :class => 'administrative' %>
     </div>
   </div> 
 

@@ -10,11 +10,11 @@
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 require 'mime/types'
-require 'rubygems'
-gem 'mislav-will_paginate'
 
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence those specified here
+
+  config.gem "authlogic"
   
   # Skip frameworks you're not going to use
   # config.frameworks -= [ :action_web_service, :action_mailer ]
@@ -22,7 +22,6 @@ Rails::Initializer.run do |config|
   # Add additional load paths for your own custom dirs
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
   config.load_paths += %W( #{RAILS_ROOT}/app/middleware )
-  # config.middleware.use FlashSession, '_materialist'
   
   # Force all environments to use the same logger level 
   # (by default production uses :info, the others :debug)
@@ -43,29 +42,15 @@ Rails::Initializer.run do |config|
   # Activate observers that should always be running
   # config.active_record.observers = :cacher, :garbage_collector
 
-  config.active_record.observers = :edit_observer, :user_observer, :post_observer, :topic_observer, :permission_observer
+  config.active_record.observers = :edit_observer, :post_observer, :topic_observer
 
   # Make Active Record use UTC-base instead of local time
   # config.active_record.default_timezone = :utc
   
   # See Rails::Configuration for more options
   
+  config.action_view.field_error_proc = Proc.new do |html_tag, instance_tag| 
+    %{<span class="errordetail">#{html_tag}</span>}
+  end
+  
 end
-
-ExceptionNotifier.sender_address = "sysadmin@spanner.org"
-ExceptionNotifier.exception_recipients = "will@spanner.org"
-ExceptionNotifier.email_prefix = "[m.st] "
-
-# Ultrasphinx::Search.excerpting_options = HashWithIndifferentAccess.new({
-#   :before_match => '<strong>',
-#   :after_match => '</strong>',
-#   :chunk_separator => "...",
-#   :limit => 256,
-#   :around => 3,
-#   :content_methods => [['name'], ['body', 'description', 'extracted_text'], ['field_notes']]
-# })
-# 
-# Ultrasphinx::Search.client_options[:with_subtotals] = true
-# Ultrasphinx::Search.client_options[:with_global_rank] = true
-
-

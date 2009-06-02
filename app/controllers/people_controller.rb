@@ -1,3 +1,3 @@
-class PeopleController < CollectedController
+class PeopleController < CollectionScopedController
 
 end

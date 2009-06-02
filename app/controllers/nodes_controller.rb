@@ -1,4 +1,4 @@
-class NodesController < CollectedController
+class NodesController < CollectionScopedController
   require 'uri'
   
   def new

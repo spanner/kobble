@@ -1,0 +1,50 @@
+-@title = 'login'
+
+- if logged_in?
+  %p
+    You are currently logged in as
+    %strong
+      = current_user.name 
+    %br
+    If that's not you, or you want to log in with another account, please 
+    = link_to "log out", destroy_user_session_url(@user_session)
+
+- else
+
+  - if @error
+    %p.haserror
+      Sorry: we don't recognise that combination of username and password.<br />
+      If you've forgotten your password we can always 
+      = link_to 'make you a new one', :action => 'repassword'
+  
+  .mainform
+    - form_for @user_session, :url => user_session_path do |f|
+      %p{ :class => @user_session.errors.on(:login) ? 'haserror' : '' }
+        %label{:for => "user_session_login"}
+          Username
+        %br
+        = f.text_field :login, :class => 'login' 
+        - if @user_session.errors.on(:login)
+          %br
+          = @user_session.errors.on(:login).to_a.to_sentence
+
+        %p{ :class => @user_session.errors.on(:password) ? 'haserror' : '' }
+          %label{:for => "user_session_password"}
+            Password
+          %br
+          = f.password_field :password, :class => 'login'
+          - if @user_session.errors.on(:password)
+            %br
+            = @user_session.errors.on(:password).to_a.to_sentence
+        
+        %p
+          = f.check_box :remember_me
+          %label{:for => "user_session_remember_me"}
+            Remember me
+
+        %p
+          = f.submit 'Log in'
+
+
+%pre
+  = @user_session.errors.inspect

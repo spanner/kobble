@@ -1,4 +1,4 @@
-- if account_admin?
+- if current_user.account_admin?
   %ul.admin
     %li
       = link_to "add material", uploader_url, {:class => 'create'}

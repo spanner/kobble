@@ -1,20 +1,42 @@
-class AccountsController < ApplicationController
-  skip_before_filter :login_required, :only => [:new, :create]  
-  skip_before_filter :check_activations  
-  before_filter :admin_or_owner_required, :except => [:create, :new, :home]
-
+class AccountsController < AccountScopedController
+  
+  skip_before_filter :require_user, :only => [:index, :new, :create]
+  skip_before_filter :require_account, :only => [:index, :new, :create]
+  before_filter :require_no_account, :only => [:new, :create] 
+  before_filter :require_admin_or_owner, :except => [:index, :create, :new, :home]
+  layout :choose_layout
+  
   def index
-    home
-    render :action => 'home'
+    if current_account
+      if current_user
+        home
+      else
+        redirect_to new_user_session_url
+      end
+    end
+    # index view is the main promotional front page
+  end
+  
+  def home
+    @account = current_account
+    @collections = current_user.collections_available.sort_by{ |collection| collection.last_event_at }.reverse
+    case params[:since]
+    when 'today'
+      @since = Time.now.beginning_of_day
+    when 'week'
+      @since = 1.week.ago
+    when 'month'
+      @since = 1.month.ago
+    when 'login'
+      @since = current_user.previously_logged_in_at
+    else
+      @since = nil
+    end
+    render :action => 'show'
   end
 
   def show
-    home
-    render :action => 'home'
-  end
-
-  def home
-    @account = current_user.account
+    @account = current_account
     @collections = current_user.collections_available.sort_by{ |collection| collection.last_event_at }.reverse
     case params[:since]
     when 'today'
@@ -31,14 +53,13 @@ class AccountsController < ApplicationController
   end
 
   def show
-    @account = admin? ? Account.find(params[:id]) : current_user.account
+    @account = current_user.admin? && params[:id] ? Account.find(params[:id]) : current_account
   end
 
   def new
     @account = Account.new(params[:account])
     @account.account_type = AccountType.find_by_name('personal')
     @user = User.new(params[:user])
-    render :layout => 'login'
   end
 
   def create
@@ -53,7 +74,7 @@ class AccountsController < ApplicationController
     end
   rescue ActiveRecord::RecordInvalid
     @known_user = User.find_by_email(@user.email)
-    render :action => 'new', :layout => 'login'
+    render :action => 'new'
   end
 
   def edit
@@ -71,16 +92,21 @@ class AccountsController < ApplicationController
   end
   
   def permissions
-    @account = Account.find(params[:id]) if admin?
+    @account = Account.find(params[:id]) if current_user.admin?
     @account ||= current_account
   end
 
-  private
+protected
+
+  def choose_layout
+    current_user ? 'inside' : 'outside'
+  end
+
+private
   
-  def admin_or_owner_required
+  def require_admin_or_owner
     return true if current_user.admin?
-    @account = Account.find(params[:id])
-    return true if @account && @account.user == current_user
+    return true if current_account.user == current_user
     access_insufficient
   end
 

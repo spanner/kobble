@@ -1,15 +1,24 @@
 class Account < ActiveRecord::Base
+  cattr_accessor :current
 
   is_material :only => [:illustration, :owners]
   
   belongs_to :user
   belongs_to :account_type
   has_many :users, :order => 'name', :dependent => :destroy
+  authenticates_many :user_sessions
+  
   has_many :collections, :order => 'name', :dependent => :destroy
   has_many :tags, :dependent => :destroy
   has_many :events, :order => 'at DESC', :dependent => :destroy
   
-  validates_presence_of :name, :user, :account_type
+  
+  validates_presence_of :name, :user, :account_type, :subdomain
+  validates_format_of :subdomain, :with => /^[A-Za-z0-9-]+$/, :message => 'The subdomain can only contain alphanumeric characters and dashes.', :allow_blank => true
+  validates_uniqueness_of :subdomain, :case_sensitive => false
+  validates_exclusion_of :subdomain, :in => %w( support blog www billing help api get discuss about faq ), :message => "The subdomain <strong>{{value}}</strong> is reserved and unavailable."
+
+  before_validation :downcase_subdomain
   
   def self.nice_title
     "account"
@@ -45,6 +54,12 @@ class Account < ActiveRecord::Base
 
   def can_add_collection?
     self.account_type.collections_limit > self.collections.count
+  end
+  
+protected
+
+  def downcase_subdomain
+    self.subdomain.downcase! if attribute_present?("subdomain")
   end
   
 end

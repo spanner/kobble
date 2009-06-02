@@ -5,7 +5,8 @@ class Permission < ActiveRecord::Base
   belongs_to :user
   belongs_to :collection
   named_scope :activated, { :select => "active > 0" }
-
+  after_create :activate_if_trusted
+  
   def activate
     self.active = true
   end
@@ -24,5 +25,13 @@ class Permission < ActiveRecord::Base
     save!
   end
 
+
+protected
+  
+  def activate_if_trusted(permission)
+    permission.active = permission.user.trusted? || permission.collection.public?
+    permission.save if permission.changed?
+  end
+  
 end
 

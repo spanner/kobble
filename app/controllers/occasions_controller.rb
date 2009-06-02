@@ -1,3 +1,3 @@
-class OccasionsController < CollectedController
+class OccasionsController < CollectionScopedController
   
 end

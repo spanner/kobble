@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+        "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+<head>
+  <title>kobble<% if @title %> &middot; <%= @title %><% end%></title>
+  <%= javascript_include_tag 'mootools', 'mootools-more', 'extensions', 'autocomplete', 'kobble', :cache => "cache/kobble" %>
+  <%= yield :extra_js %>
+  <%= stylesheet_link_tag 'kobble', :cache => "cache/kobble" %>
+  <%= yield :extra_css %>
+</head>
+<body>
+  <div id="masthead">
+    <p>
+      <%= link_to "kobble/", "/" %><br />
+      <% if current_account %><%= link_to "#{current_account.name}/", url_for(current_account), {:class => 'account'} %><br /><% end %>
+    </p>
+  </div>
+
+  <div id="pagetitle">
+    <h1<% if @title && @title.size > 50 %> class="longtitle"<% end %>><%= @title || 'welcome' %></h1>
+  </div>
+
+  <div id="canvas">
+    <%= yield %>
+  </div>
+
+  <div id="mastfoot">
+    <div id="navigation">
+      <%= link_to 'welcome', '/', {:class => (request.parameters[:action] == 'index' ? "fg" : '')} %>
+      <%= link_to 'background', 'http://about.kobble.net/' %>
+      <%= link_to 'how it works', 'http://about.kobble.net/how/' %>
+      <%= link_to 'faq', 'http://about.kobble.net/faq/' %>
+      <%= link_to 'examples',  'http://about.kobble.net/examples/' %>
+      <%= link_to 'forum', 'http://discuss.kobble.net/' %>
+      <%= link_to 'sign up', new_account_url, {:class => (request.parameters[:action] == 'signup' ? "fg" : '')} %>
+      <%= link_to 'spanner', 'http://spanner.org/', {:class => 'pale'} %> 
+    </div>
+  </div> 
+
+  <div id="notification"><h4></h4><p></p></div>
+
+  <% if flash[:notice] %>
+    <script type="text/javascript">
+      //<![CDATA[
+        window.addEvent('load', function(){ intf.announce('<%= escape_javascript(flash[:notice]) %>'); });
+      //]]>
+    </script>
+  <% end %>
+  <% if flash[:error] %>
+    <script type="text/javascript">
+      //<![CDATA[
+        window.addEvent('load', function(){ intf.complain('<%= escape_javascript(flash[:error]) %>'); });
+      //]]>
+    </script>
+  <% end %>
+
+</body>
+</html>

@@ -1,4 +1,4 @@
-class SourcesController < CollectedController
+class SourcesController < CollectionScopedController
     
   def upload
     if request.post?
