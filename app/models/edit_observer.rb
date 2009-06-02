@@ -1,14 +1,12 @@
 class EditObserver < ActiveRecord::Observer
   observe Collection, Source, Node, Bundle, Tag, Occasion, Topic, Post, Annotation
-  
-  cattr_accessor :current_user
-  
+    
   def before_create(model)
-    model.creator = @@current_user if model.record_timestamps
+    model.creator = User.current if model.record_timestamps
   end
   
   def before_update(model)
-    model.updater = @@current_user if model.record_timestamps
+    model.updater = User.current if model.record_timestamps
   end
  
   def after_create(model)
@@ -39,12 +37,12 @@ class EditObserver < ActiveRecord::Observer
     collection = model if model.class == Collection
     collection ||= model.has_collection? ? model.collection : nil
     collection.last_active_at = Time.now if collection
-    @@current_user.last_active_at = Time.now unless @@current_user.nil?
+    User.current.last_active_at = Time.now if User.current
 
     Event.create({
       :affected => model,
-      :user => (@@current_user unless @@current_user.nil?),
-      :account => (@@current_user.account unless @@current_user.nil?),
+      :user => (User.current if User.current),
+      :account => (User.current.account if User.current),
       :collection => collection,
       :affected_name => model.name,
       :event_type => type,

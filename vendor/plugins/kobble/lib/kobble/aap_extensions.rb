@@ -1,13 +1,13 @@
-module Material
+module Kobble
   module AapExtensions
 
     def self.included(base) # :nodoc:
       base.extend ClassMethods
     end
 
-    # cascading recover
+    # cascading recovery
     # for inclusion into ActiveRecord::Base
-    # but better thought of as an extension to acts_as_paranoid
+    # but really an extension to acts_as_paranoid
 
     def retrievable_associates
       associates = []

@@ -9,19 +9,17 @@
       <%= link_to 'show only active collections', :action => 'cloud' %>
     </span><br />
   <% else %>
-    Showing <%= @list.size %> tags used in <%= link_to pluralize(current_collections.count, 'collection'), {:controller => 'accounts', :action => 'home'}, {:class => 'choosecollections'} %>
     <span class="modifier">
-      <%= link_to 'show whole account', :action => 'cloud', :show => 'all' %>
+      <%= link_to 'show whole cloud', :action => 'cloud', :show => 'all' %>
     </span><br />
   <% end %>
-  back to: <%= render :partial => 'shared/viewcontrol' %>
 </div>
 
 <div class="cloud">
   <% if @list && @list.size > 0 %>
     <%= render :partial => 'shared/tag_cloud', :locals => { :cloud => @list } %>
   <% else %>
-  	<p>There are no tags to display in this collection</p>
+  	<p>There are no tags to display</p>
   <% end %>
 </div>
 

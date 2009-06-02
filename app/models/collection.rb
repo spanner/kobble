@@ -1,5 +1,7 @@
 class Collection < ActiveRecord::Base
 
+  cattr_accessor :current
+
   before_destroy :reassign_associates
   is_material :only => [:owners, :illustration, :discussion, :annotation, :log, :undelete]
   belongs_to :account
@@ -25,7 +27,6 @@ class Collection < ActiveRecord::Base
   has_many :taggings  
   has_many :tags, :through => :taggings  
   
-  cattr_accessor :current_collections
 
   named_scope :in_account, lambda { |account| {:conditions => { :account_id => account.id }} }
 

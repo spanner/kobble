@@ -10,13 +10,15 @@ ActionController::Routing::Routes.draw do |map|
   map.collection_upload '/collection/:collection_id/upload', :controller => 'sources', :action => 'upload'
   map.uploader '/uploader', :controller => 'sources', :action => 'upload'
   map.describer '/describer', :controller => 'sources', :action => 'describe'
+
+  map.dashboard '/accounts/home', :controller => 'accounts', :action => 'home'
   
   # catch and drop are dispatched by controllers and can't be restful
   
   map.catch '/:controller/catch/:id/:caughtClass/:caughtID', :action => 'catch'
   map.drop '/:controller/drop/:id/:droppedClass/:droppedID', :action => 'drop'
   
-  map.resources :accounts, :has_many => [:users, :collections, :events, :deletions, :tags], :collection => { :home => :any }, :member => { :permissions => :any }
+  map.resources :accounts, :has_many => [:users, :collections, :events, :deletions, :tags], :member => { :permissions => :any }
   map.resources :collections, :has_many => [:events, :topics, :annotations, :permissions, :sources, :nodes, :bundles, :topics, :occasions], :member => {:recover => :post, :eliminate => :post, :predelete => :get}, :collection => { :gallery => :get }
   map.resources :users, :has_many => [:activations, :user_preferences, :permissions, :scratchpads, :events, :sources, :nodes, :bundles, :people, :topics, :posts], :collection => { :gallery => :get }, :member => { :home => :get, :recover => :post, :eliminate => :post, :reinvite => :any, :predelete => :get }
   map.resources :annotations

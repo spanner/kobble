@@ -1,20 +1,6 @@
 class TagsController < ApplicationController
 
-  def views
-    ['cloud', 'gallery']
-  end
-
-  def list_columns
-    4
-  end
-
-  def list_length
-    80
-  end
-
-  def view_scope
-    'account'
-  end
+  #! add option to autocomplete only current collection tags
 
   def matching
     @tags = Tag.in_account(current_account).matching(params[:stem])
@@ -28,7 +14,7 @@ class TagsController < ApplicationController
     if params[:show] == 'all'
       @list = Tag.all_with_popularity(current_account)
     else
-      taggings = Tagging.in_collections(current_collections).grouped_with_popularity
+      taggings = Tagging.in_collection(current_collection).grouped_with_popularity
       taggings.each {|t| t.tag.used = t.use_count }
       @list = taggings.map {|t| t.tag }.uniq.sort{|a,b| a.name <=> b.name}
     end

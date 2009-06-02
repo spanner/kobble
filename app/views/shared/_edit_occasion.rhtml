@@ -2,7 +2,7 @@
 
 <div class="formpart<%= ' witherrors' if item.errors.on(:occasion) %>">
   <label for="<%= item.class.to_s.underscore %>_speaker_id">Occasion or event</label> <%= link_to "create occasion*", new_occasion_url(:collection_id => item.collection), {:class=>'inlinecreate', :id => "extend_#{item.class.to_s.downcase}_occasion_id"} %><br />
-  <%= select(item.class.to_s.underscore, "occasion_id", Occasion.in_collections(current_collections).collect{|o| [o.name, o.id] }, {:include_blank => true}, {:class => 'standard'}) %>
+  <%= select(item.class.to_s.underscore, "occasion_id", current_collection.occasions.collect{|o| [o.name, o.id] }, {:include_blank => true}, {:class => 'standard'}) %>
   <% if item.errors.on(:occasion) %><br />
     This <%= item.errors.on(:occasion).to_a.to_sentence %>
   <% end %>

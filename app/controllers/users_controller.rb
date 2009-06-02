@@ -9,14 +9,6 @@ class UsersController < ApplicationController
   before_filter :account_admin_or_password_given, :only => [:update]
   before_filter :admin_or_same_account_required
   
-  def list_columns
-    4
-  end
-
-  def list_length
-    80
-  end
-
   # this is user review and management for admins
   # only accessible as nested resource of account
   # logging in and registration are in account_controller

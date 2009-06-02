@@ -22,7 +22,7 @@ namespace :xapian do
     desc 'Completely rebuilds Xapian search index (must specify all models)'
     task (:rebuild_index => :environment) do
         # raise "specify ALL your models with models=\"ModelName1 ModelName2\" as parameter" if ENV['models'].nil?
-        models = ENV['models'].nil? ? Material::Polymorphs.indexed_models : ENV['models'].split(" ")
+        models = ENV['models'].nil? ? Kobble.indexed_models : ENV['models'].split(" ")
         ActsAsXapian.rebuild_index(models.map{|m| m.to_s._as_class}, ENV['verbose'] ? true : false)
     end
 
@@ -32,7 +32,7 @@ namespace :xapian do
     task (:query => :environment) do
         # raise "specify models=\"ModelName1 ModelName2\" as parameter" if ENV['models'].nil?
         raise "specify query=\"your terms\" as parameter" if ENV['query'].nil?
-        models = ENV['models'].nil? ? Material::Polymorphs.indexed_models : ENV['models'].split(" ")
+        models = ENV['models'].nil? ? Kobble.indexed_models : ENV['models'].split(" ")
         s = ActsAsXapian::Search.new(models.map{|m| m.to_s._as_class}, 
             ENV['query'],
             :offset => (ENV['offset'] || 0), :limit => (ENV['limit'] || 10),

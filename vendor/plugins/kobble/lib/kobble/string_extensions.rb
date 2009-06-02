@@ -1,6 +1,6 @@
 # most of these were originally lifted from has_many_polymorphs 
 
-module Material
+module Kobble
   module StringExtensions
     require 'redcloth'
 

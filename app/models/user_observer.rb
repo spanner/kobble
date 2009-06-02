@@ -1,7 +1,5 @@
 class UserObserver < ActiveRecord::Observer
 
-  cattr_accessor :current_user
-
   def before_update(user)
     if user.activated_at_changed?
       user.newly_activated = true
@@ -12,10 +10,10 @@ class UserObserver < ActiveRecord::Observer
 
   def after_create(user)
     if user.record_timestamps
-      if user == current_user
+      if user == User.current
         UserNotifier.deliver_welcome(user)
       else
-        UserNotifier.deliver_invitation(user, current_user)
+        UserNotifier.deliver_invitation(user, User.current)
       end
     end
   end

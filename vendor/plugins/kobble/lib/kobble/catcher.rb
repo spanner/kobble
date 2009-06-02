@@ -1,4 +1,4 @@
-module Material
+module Kobble
   module Catcher #:nodoc:
     def self.included(base)
       base.class_eval {

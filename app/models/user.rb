@@ -2,6 +2,7 @@ require 'digest/sha1'
 include EmailColumn
 
 class User < ActiveRecord::Base
+  cattr_accessor :current
 
   attr_protected :activated_at
   attr_accessor :password_confirmation
@@ -20,8 +21,8 @@ class User < ActiveRecord::Base
   
   has_many :permissions, :dependent => :destroy
   has_many :permitted_collections, :through => :permissions, :conditions => ['permissions.active = ?', true], :source => :collection
-  has_many :activations, :dependent => :destroy
-  has_many :collections, :through => :activations, :conditions => ['activations.active = ?', true], :source => :collection
+  # has_many :activations, :dependent => :destroy
+  # has_many :collections, :through => :activations, :conditions => ['activations.active = ?', true], :source => :collection
   has_many :monitorships, :dependent => :destroy
   has_many :monitored_topics, :through => :monitorships, :conditions => ['monitorships.active = ?', true], :order => 'topics.replied_at desc', :source => :topic
   has_many :user_preferences, :dependent => :destroy

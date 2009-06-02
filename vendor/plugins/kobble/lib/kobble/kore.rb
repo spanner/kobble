@@ -1,7 +1,7 @@
 require 'active_support'
 
-module Material #:nodoc:
-  module Core
+module Kobble #:nodoc:
+  module Kore
 
     def self.included(base)
       base.class_eval {
@@ -129,7 +129,7 @@ module Material #:nodoc:
           self.can_catch(Tag)
           self.can_drop(Tag)
           Tag.can_catch(self)
-          Material::Polymorphs.described_model(self)
+          Kobble.described_model(self)
         end
 
         if definitions.include?(:organisation)
@@ -141,23 +141,23 @@ module Material #:nodoc:
           has_many :bundles, :through => :bundlings, :source => :superbundle      
           Bundle.can_catch(self)
           Bundle.can_drop(self)
-          Material::Polymorphs.organised_model(self)
+          Kobble.organised_model(self)
         end
 
         if definitions.include?(:annotation)
           has_many :annotations, :as => :annotated, :dependent => :destroy
           self.can_catch(Annotation)
-          Material::Polymorphs.annotated_model(self)
+          Kobble.annotated_model(self)
         end
 
         if definitions.include?(:discussion)
           has_many :topics, :as => :referent, :dependent => :destroy, :order => 'topics.created_at DESC'
-          Material::Polymorphs.discussed_model(self)
+          Kobble.discussed_model(self)
         end
 
         if definitions.include?(:log)
           has_many :logged_events, :class_name => 'Event', :as => :affected, :dependent => :destroy, :order => 'at DESC'
-          Material::Polymorphs.logged_model(self)
+          Kobble.logged_model(self)
         end
       
         if definitions.include?(:undelete)
@@ -180,24 +180,24 @@ module Material #:nodoc:
       
         if definitions.include?(:index)
           acts_as_xapian :texts => [:name, :description, :body].select{ |m| column_names.include?(m.to_s) }
-          Material::Polymorphs.indexed_model(self)
+          Kobble.indexed_model(self)
         end
 
         class_eval {
-          extend Material::Core::MaterialClassMethods
-          include Material::Core::MaterialInstanceMethods
+          extend Kobble::Kore::KobbleClassMethods
+          include Kobble::Kore::KobbleInstanceMethods
         }
       end
      
     end #classmethods
 
-    module MaterialClassMethods
+    module KobbleClassMethods
       def is_material?
         material and not material.nil?
       end
     end
     
-    module MaterialInstanceMethods
+    module KobbleInstanceMethods
     
       def nice_title
         self.class.nice_title

@@ -26,23 +26,29 @@ module AuthenticatedSystem
     end
     
     def current_user
-      @current_user ||= (session[:user] && User.find_by_id(session[:user])) || :false
+      @current_user ||= User.find_by_id(session[:user]) if session[:user]
     end
     
     def current_account
       @current_account ||= current_user.account
     end
     
-    def current_user=(new_user)
-      session[:user] = (new_user.nil? || new_user.is_a?(Symbol)) ? nil : new_user.id
-      @current_user = EditObserver.current_user = new_user
-      Collection.current_collections = current_collections
+    def current_user=(user)
+      session[:user] = user.id
+      @current_user = EditObserver.current_user = user
       update_last_seen_at
     end
 
-    # handy access to the foreground collection
-    def current_collections
-      logged_in? && current_user.collections
+    def current_collection
+      @current_collection ||= current_account.collections.find_by_id(session[:collection]) if session[:collection]
+      raise Kobble::CollectionNotChosen unless @current_collection
+      @current_collection
+    end
+    
+    def current_collection=(collection)
+      session[:collection] = collection.id
+      @current_collection = Collection.current = current_collection
+      update_last_seen_at
     end
     
     def update_last_seen_at

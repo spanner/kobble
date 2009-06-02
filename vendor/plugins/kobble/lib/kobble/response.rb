@@ -1,5 +1,5 @@
-module Material
-  class CatchResponse
+module Kobble
+  class Response
     attr_accessor :consequence, :message, :outcome
 
     # consequence is the interface action to perform on the dragged item
