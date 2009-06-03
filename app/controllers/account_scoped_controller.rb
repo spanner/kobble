@@ -3,10 +3,15 @@ class AccountScopedController < ApplicationController
   # this defines most of our authentication and scoping routines
   # but not much else.
 
-  helper_method(:current_account, :current_user_session, :current_user, :logged_in?, :account_domain, :account_subdomain, :account_url, :default_account_subdomain, :default_account_url, :current_collection)
+  helper_method :current_account, :current_user_session, :current_user, :current_collection
+  helper_method :logged_in?, :admin?, :account_admin?
   before_filter :require_account
   before_filter :require_user
   layout 'inside'
+
+  def current_collection
+    nil
+  end
 
 protected
   
@@ -46,15 +51,13 @@ protected
     "http://"
   end
     
-  def with_default_subdomain
+  def with_default_subdomain(link)
     # force links to general site
   end
   
-  def with_account_subdomain
+  def with_account_subdomain(link)
     # force links to local site
   end
-  
-  
 
 private
 
@@ -75,6 +78,14 @@ private
   
   def logged_in?
     current_account && current_user
+  end
+  
+  def admin?
+    current_user.admin?    
+  end
+  
+  def account_admin?
+    current_user == current_account.user
   end
   
   def require_account
@@ -98,7 +109,15 @@ private
       return false
     end
   end
-
+  
+  def require_admin
+   false unless current_user && current_user.admin?
+  end
+  
+  def require_account_admin
+   false unless current_user && current_user.account_holder?
+  end
+  
   def require_no_account
     if current_account
       store_location
@@ -126,8 +145,4 @@ private
     session[:return_to] = nil
   end
   
-  def current_collection
-    nil
-  end
-
 end

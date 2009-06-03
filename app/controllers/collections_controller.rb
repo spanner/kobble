@@ -1,36 +1,32 @@
-class CollectionsController < ApplicationController
+class CollectionsController < AccountScopedController
   
-  before_filter :find_account
-  # before_filter :account_admin_required, :except => [:index, :show]
-  before_filter :admin_or_same_account_required
-  
-  # only accessible as nested resource of account
-  # but if no account specified then current_user's account is assumed to provide context
-    
-  def view_scope
-    'account'
+  before_filter :require_account_admin, :except => [:index, :show]
+  before_filter :get_collection, :except => [:index, :new, :create]
+
+  def show
+    # @thing = Collection.find(params[:id])
   end
-  
+
   def new
-    @collection = @account.collections.build
+    @thing = @account.collections.build
     respond_to do |format| 
       format.html
-      format.json { render :json => @collection.to_json }
+      format.json { render :json => @thing.to_json }
       format.js { render :layout => false }
     end
   end
   
   def create
-    @collection = @account.collections.build(params[:collection])
-    @collection.last_active_at = Time.now
-    @collection.abbreviation = @collection.name.initials_or_beginning if @collection.abbreviation.nil? || @collection.abbreviation == ""  #defined in spoke_content plugin's StringExtensions
-    if @collection.save
-      current_user.permission_for(@collection).activate
-      current_user.activation_of(@collection).activate
+    @thing = @account.collections.build(params[:collection])
+    @thing.last_active_at = Time.now
+    @thing.abbreviation = @thing.name.initials_or_beginning if @thing.abbreviation.nil? || @thing.abbreviation == ""  #defined in spoke_content plugin's StringExtensions
+    if @thing.save
+      current_user.permission_for(@thing).activate
+      current_user.activation_of(@thing).activate
       flash[:notice] = 'Collection was created.'
       respond_to do |format| 
-        format.html { redirect_to url_for(@collection) }
-        format.json { render :json => @collection.to_json }
+        format.html { redirect_to url_for(@thing) }
+        format.json { render :json => @thing.to_json }
         format.js { render :layout => false }
       end
     else
@@ -39,21 +35,21 @@ class CollectionsController < ApplicationController
   end
 
   def edit
-    @collection = @account.collections.find(params[:id])
+    @thing = @account.collections.find(params[:id])
     respond_to do |format| 
       format.html
-      format.json { render :json => @collection.to_json }
+      format.json { render :json => @thing.to_json }
       format.js { render :layout => false }
     end
   end
 
   def update
-    @collection = @account.collections.find(params[:id])
-    if @collection.update_attributes(params[:collection])
+    @thing = @account.collections.find(params[:id])
+    if @thing.update_attributes(params[:collection])
       flash[:notice] = 'Collection was updated.'
       respond_to do |format| 
         format.html { redirect_to :action => 'show' }
-        format.json { render :json => @collection.to_json }
+        format.json { render :json => @thing.to_json }
         format.js { render :layout => false }
       end
     else
@@ -62,20 +58,24 @@ class CollectionsController < ApplicationController
   end
 
   def predelete
-    @collection = @account.collections.find(params[:id])
-    @other_collections = @account.collections.select{|c| c != @collection}
+    @thing = @account.collections.find(params[:id])
+    @other_collections = @account.collections.select{|c| c != @thing}
   end
   
-  private
-  
-  def find_account
-    @account = admin? && params[:account_id] ? Account.find(params[:account_id]) : current_account
+protected
+
+  def current_collection
+    @thing ||= current_account.collections.find(params[:id])
   end
   
-  def admin_or_same_account_required
-    return true if current_user.admin?
-    return true if current_user.account == @account
-    access_insufficient
+private
+    
+  def get_collection
+    if current_collection
+      Collection.current = current_collection
+    else
+      return false
+    end
   end
   
 

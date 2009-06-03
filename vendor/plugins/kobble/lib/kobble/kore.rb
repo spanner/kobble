@@ -384,7 +384,7 @@ module Kobble #:nodoc:
           counter = 0
           self.class.reassignable_associations.each do |a|
             association = self.class.reflect_on_association(a)
-            association.class_name._as_class.find_with_deleted(:all, :conditions => ["#{association.primary_key_name} = ?", self.id]).each do |associate|
+            association.class_name.as_class.find_with_deleted(:all, :conditions => ["#{association.primary_key_name} = ?", self.id]).each do |associate|
               associate.write_attribute(association.primary_key_name, self.reassign_to.id)
               associate.save_with_validation(false)
               counter = counter + 1

@@ -30,7 +30,7 @@
   %div{:class => "contentblock error"}
     %p
       Sorry: There is no 
-      = request.parameters[:controller].to_s._as_class.nice_title
+      = request.parameters[:controller].to_s.as_class.nice_title
       here with the id 
       %strong<
         = params[:id]

@@ -12,7 +12,7 @@ module Kobble
     def retrievable_associates
       associates = []
       self.class.retrievable_associations.each do |association| 
-        associates += association.class_name._as_class.find_with_deleted(:all, :conditions => conditions_for(association))
+        associates += association.class_name.as_class.find_with_deleted(:all, :conditions => conditions_for(association))
       end
       associates
     end
@@ -20,8 +20,8 @@ module Kobble
     def retrievable_associates_summary
       totals = []
       self.class.retrievable_associations.each do |association| 
-        total = association.class_name._as_class.count_with_deleted(:conditions => conditions_for(association))
-        designation = association.class_name._as_class.nice_title
+        total = association.class_name.as_class.count_with_deleted(:conditions => conditions_for(association))
+        designation = association.class_name.as_class.nice_title
         designation = designation.pluralize unless total == 1
         totals.push("#{total} #{designation}") if total > 0
       end
@@ -40,7 +40,7 @@ module Kobble
     
     module ClassMethods
       def retrievable_associations
-        reflect_on_all_associations.select{ |a| a.options[:dependent] == :destroy && a.class_name._as_class.paranoid? }
+        reflect_on_all_associations.select{ |a| a.options[:dependent] == :destroy && a.class_name.as_class.paranoid? }
       end
     end
 

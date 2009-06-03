@@ -1,3 +1,5 @@
+- item ||= @thing
+
 - if item
   - collection = item if item.is_a?(Collection)
   - collection ||= item.collection if item.has_collection?

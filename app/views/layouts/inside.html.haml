@@ -1,0 +1,62 @@
+!!! 1.1
+- @inline = false
+- @title ||= 'welcome'
+
+%html
+  %head
+    %title
+      kobble
+      - if @title
+        \:
+      = @title
+    = javascript_include_tag 'mootools', 'mootools-more', 'extensions', 'autocomplete', 'kobble', 'slimbox', 'swfupload/swfupload', 'swfupload/swfupload.cookies', 'swfupload/swfupload.queue', 'swfupload/swfupload.speed', :cache => "cache/kobble"
+    = yield :extra_js
+    = stylesheet_link_tag 'kobble', :cache => "cache/kobble"
+    = yield :extra_css
+
+%body
+  #masthead
+    %p
+      - unless current_collection
+        &nbsp;
+        %br
+      = link_to "kobble/", "/"
+      %br
+      = link_to "#{current_account.name}/", root_url, {:class => current_collection ? '' : 'emphatic'} 
+      %br
+      - if current_collection
+        = link_to "#{current_collection.abbreviation}/", url_for(current_collection), {:class => 'emphatic'} 
+    
+  #pagetitle
+    %h1{:class => @title.size > 50  ? "long_title" : "short_title"}
+      = @title
+
+  #canvas
+    = yield
+
+  #mastfoot
+    #navigation
+      = link_to 'home', dashboard_url, {:class => 'administrative'}
+      
+      - if current_collection
+        = link_to "sources", collection_sources_url(current_collection), {:class => (request.parameters[:controller] == 'sources' ? "fg" : '')}
+        = link_to "fragments", collection_nodes_url(current_collection), {:class => (request.parameters[:controller] == 'nodes' ? "fg" : '')}
+        = link_to "sets", collection_bundles_url(current_collection), {:class => (request.parameters[:controller] == 'bundles' ? "fg" : '')}
+        = link_to "people", collection_people_url(current_collection), {:class => (request.parameters[:controller] == 'people' ? "fg" : '')}
+        = link_to "tags", collection_tags_url(current_collection), {:class => (request.parameters[:controller] == 'tags' ? "fg" : '')}
+        = link_to 'discussion', collection_topics_url(current_collection), {:class => request.parameters[:controller] == 'topics' ? " fg" : ''} if current_account.can_have_discussion?
+
+      - if current_account
+        = link_to 'search', search_url, {:class => 'administrative'}
+        = link_to 'log out', user_session_path, :method => :delete, :class => 'administrative'
+
+  / #scratchpad
+  /   = render :partial => 'shared/scratchpad', :collection => current_user.scratchpads
+  
+  #admin
+    = yield :admin
+
+  - if flash[:notice]
+    = javascript_tag %{window.addEvent('load', function(){ intf.announce('#{escape_javascript(flash[:notice])}'); });}
+  - if flash[:error]
+    = javascript_tag %{window.addEvent('load', function(){ intf.complain('#{escape_javascript(flash[:error])}'); });}

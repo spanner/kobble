@@ -109,10 +109,11 @@ blockquote {
 
 div#masthead {
   position: fixed;
-  left: 0;
-  top: 42px;
-  width: 122px;
   text-align: right;
+  left: 0;
+  top: 28px;
+  height: 40px;
+  width: 122px;
 }
 
 div#masthead p {
@@ -122,17 +123,19 @@ div#masthead p {
   margin: 0;
 }
 
-div#masthead a.account {
-  font-weight: bold;
-}
-
 div#masthead a, div#masthead a:visited {
   color: #4d4e53;
 }
 
+div#masthead a.emphatic, div#masthead a.emphatic:visited {
+  font-weight: bold;
+  color: #d1005d;
+}
+
+
 div#pagetitle {
   position: relative;
-  margin: 34px 180px 20px 130px;
+  margin: 36px 180px 20px 130px;
   max-width: 640px;
 }
 

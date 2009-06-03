@@ -7,12 +7,14 @@ class CollectionScopedController < AccountScopedController
   helper_method :current_collection
   before_filter :require_collection
   
+  before_filter :get_working_class
   before_filter :get_item, :only => [:show, :edit, :update, :destroy]
   before_filter :get_deleted_item, :only => [:recover, :eliminate]
   before_filter :get_items, :only => [:index]
   after_filter :update_index, :only => [:create, :update, :destroy, :describe]
    
   def index
+    @klass = 
     respond_to do |format|
       format.html { render :template => 'shared/list' }
       format.js { render :template => 'shared/list', :layout => 'inline' }
@@ -93,7 +95,7 @@ class CollectionScopedController < AccountScopedController
   # eg. collections.
 
   def catch
-    @caught = params[:caughtClass].to_s._as_class.find( params[:caughtID] )
+    @caught = params[:caughtClass].to_s.as_class.find( params[:caughtID] )
     @response = @thing.catch_this(@caught) if @thing and @caught
     render_thing_or_response
   rescue => e
@@ -103,7 +105,7 @@ class CollectionScopedController < AccountScopedController
   end
     
   def drop
-    @dropped = params[:droppedClass]._as_class.find(params[:droppedID])
+    @dropped = params[:droppedClass].as_class.find(params[:droppedID])
     @response = @thing.drop_this(@dropped) if @thing and @dropped
     render_thing_or_response
   rescue => e
@@ -134,20 +136,8 @@ protected
     end
   end
 
-  def working_on
-    request.parameters[:controller].to_s
-  end
-
-  def model_class
-    working_on.as_class
-  end
-
-  def association
-    working_on.downcase.pluralize.intern
-  end
-
-  def parameter_head
-    working_on.downcase.intern
+  def get_working_class
+    @klass = model_class
   end
   
   def get_item
@@ -168,6 +158,23 @@ protected
       :per_page => params[:per_page] || 100,
     }
   end
+
+  def working_on
+    request.parameters[:controller].to_s
+  end
+
+  def model_class
+    working_on.as_class
+  end
+
+  def association
+    working_on.downcase.pluralize.intern
+  end
+
+  def parameter_head
+    working_on.downcase.intern
+  end
+  
 
   def render_thing_or_response
     respond_to do |format|

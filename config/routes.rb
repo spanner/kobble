@@ -17,7 +17,7 @@ ActionController::Routing::Routes.draw do |map|
   map.drop '/:controller/drop/:id/:droppedClass/:droppedID', :action => 'drop'
   
   map.resources :accounts, :has_many => [:users, :collections, :events, :deletions, :tags], :member => { :permissions => :any }
-  map.resources :collections, :has_many => [:events, :topics, :annotations, :permissions, :sources, :nodes, :bundles, :topics, :occasions], :member => {:recover => :post, :eliminate => :post, :predelete => :get}, :collection => { :gallery => :get }
+  map.resources :collections, :has_many => [:events, :topics, :annotations, :permissions, :sources, :nodes, :bundles, :people, :tags, :topics, :occasions], :member => {:recover => :post, :eliminate => :post, :predelete => :get}, :collection => { :gallery => :get }
   map.resources :users, :has_many => [:activations, :user_preferences, :permissions, :scratchpads, :events, :sources, :nodes, :bundles, :people, :topics, :posts], :collection => { :gallery => :get }, :member => { :home => :get, :recover => :post, :eliminate => :post, :reinvite => :any, :predelete => :get }
 
   map.resources :annotations

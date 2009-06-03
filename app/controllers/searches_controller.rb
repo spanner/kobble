@@ -25,7 +25,7 @@ class SearchesController < ApplicationController
   def perform_search
     models = Kobble.indexed_models.map{|m| m.to_s.classify}
     if params[:only] and models.include?(params[:only])
-      @klass = params[:only]._as_class 
+      @klass = params[:only].as_class 
       models = [params[:only].classify]
     elsif params[:among] && params[:among].any?
       models = models & params[:among]
@@ -40,7 +40,7 @@ class SearchesController < ApplicationController
 
     if params[:like]
       cue_klass, cue_id = params[:like].split('_')
-      @cue = cue_klass._as_class.find(cue_id) rescue nil
+      @cue = cue_klass.as_class.find(cue_id) rescue nil
       @search = ActsAsXapian::Similar.new(models, @cue.class == Bundle ? @cue.members.select{|m| m.is_searchable?} : @cue.to_a, limits)
     elsif params[:q]
       @query = params[:q]

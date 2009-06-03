@@ -4,7 +4,7 @@ module Kobble
   module StringExtensions
     require 'redcloth'
 
-    def _as_class
+    def as_class
       self.classify.constantize
     end
 

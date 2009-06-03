@@ -21,8 +21,8 @@ var Interface = new Class({
     this.floaters = [];
     this.debug_level = 0;
     this.clickthreshold = 20;
-    this.announcer = $E('div#notification');
-    this.admin = $E('div#admin');
+    this.announcer = new Element('div', {'class' : 'notification'}).insert(document.body);
+    this.admin = $('admin');
     this.squeezebox = null;
     this.draghelper = null;
     this.floater = null;
@@ -1367,15 +1367,14 @@ var TagSuggester = new Class ({
 var Squeezebox = new Class ({
   Extends: Accordion,
   options: {
-    display: 0,
-    show: false,
+    display: -1,
     height: true,
     width: false,
     opacity: true,
     fixedHeight: false,
     fixedWidth: false,
     wait: false,
-    alwaysHide: true,
+    alwaysHide: false,
     onActive: function (toggler, element) {
       toggler.addClass('expanded');
       toggler.removeClass('squeezed');
