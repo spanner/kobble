@@ -37,7 +37,6 @@ class EditObserver < ActiveRecord::Observer
     collection = model if model.class == Collection
     collection ||= model.has_collection? ? model.collection : nil
     collection.last_active_at = Time.now if collection
-    User.current.last_active_at = Time.now if User.current
 
     Event.create({
       :affected => model,

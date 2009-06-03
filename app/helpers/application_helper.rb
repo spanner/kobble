@@ -55,5 +55,47 @@ module ApplicationHelper
     end
     datetime.strftime(format)
   end
+  
+  def text_field_with_errors(form, thing, column, options={})
+    field_with_errors(form, thing, column, 'text', options)
+  end
+
+  def password_field_with_errors(form, thing, column, options={})
+    field_with_errors(form, thing, column, 'password', options)
+  end
+
+  def file_field_with_errors(form, thing, column, options={})
+    field_with_errors(form, thing, column, 'file', options)
+  end
+
+  def text_area_with_errors(form, thing, column, options={})
+    field_with_errors(form, thing, column, 'text_area', {:rows => 8}.merge(options))
+  end
+
+  def field_with_errors(form, thing, column, type, options={})
+    render :partial => 'shared/form_field', :locals => {
+      :form => form,
+      :thing => thing,
+      :tag => {
+        :type => type,
+        :column => column,
+        :symbol => column.intern,
+        :fieldid => "#{thing.class.to_s.downcase.underscore}_#{column.downcase}",
+        :required => options[:required] || false,
+        :class => 'standard',
+        :label => column,
+        :help => ''
+      }.merge(options)
+    }
+  end
+  
+  def with_errors_on(column)
+    
+  end
+
+  # scoped link
+  def collected_url_for(thing)
+    @controller.send(:collected_url_for, thing)
+  end
 
 end

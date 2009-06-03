@@ -36,7 +36,7 @@
 
   #mastfoot
     #navigation
-      = link_to 'home', dashboard_url, {:class => 'administrative'}
+      = link_to 'home', root_url, {:class => 'administrative'}
       
       - if current_collection
         = link_to "sources", collection_sources_url(current_collection), {:class => (request.parameters[:controller] == 'sources' ? "fg" : '')}

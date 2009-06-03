@@ -131,7 +131,7 @@ private
     if current_user
       store_location
       flash[:notice] = "You must log out to see that page"
-      redirect_to dashboard_url
+      redirect_to root_url
       return false
     end
   end

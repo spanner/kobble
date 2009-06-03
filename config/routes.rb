@@ -45,7 +45,6 @@ ActionController::Routing::Routes.draw do |map|
   map.resource :user_session
 
   map.root :controller => "accounts", :action => "index"
-  map.dashboard '/accounts/show', :controller => 'accounts', :action => 'show'
   
   
 end

@@ -1,0 +1,39 @@
+.preamble
+  %p
+    'Source documents' are whole texts or recordings, uploaded intact and suitable for segmenting. 
+    At the moment we can accept text, mp3 audio, pdf and .doc files. 
+
+%div{:class => "mainform contentblock"}
+
+= render :partial => 'shared/error_report'
+
+%fieldset
+  %legend
+    Description
+
+  = render :partial => 'shared/edit_name', :locals => {:item => @source, :f => f, :required => true}
+  = render :partial => 'shared/edit_tags', :locals => {:item => @source, :f => f}
+  = render :partial => 'shared/edit_description', :locals => {:item => @source, :f => f, :required => true}
+  = render :partial => 'shared/edit_image', :locals => {:item => @source, :f => f}
+
+= yield :buttons
+
+%fieldset
+  %legend
+    Contents
+
+  = render :partial => 'shared/edit_clip', :locals => {:item => @source, :f => f}
+  = render :partial => 'shared/edit_body', :locals => {:item => @source, :f => f}
+  = render :partial => 'shared/edit_file', :locals => {:item => @source, :f => f}
+
+= yield :buttons
+
+%fieldset
+  %legend
+    Filing
+
+  = render :partial => 'shared/edit_collection', :locals => {:item => @source, :f => f, :required => true}
+  = render :partial => 'shared/edit_speaker', :locals => {:item => @source, :f => f}
+  = render :partial => 'shared/edit_occasion', :locals => {:item => @source, :f => f}
+
+= yield :buttons

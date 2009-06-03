@@ -1,0 +1,14 @@
+- @title = "Edit #{@thing.name || 'source'}"
+
+- content_for :buttons do
+  .formbuttons
+    = submit_tag "Update Document"
+    or
+    = link_to 'cancel', url_for(@thing)
+
+.mainform
+  = form_for :thing, :url => collection_source_url(current_collection, @thing), :html => { :method => "put", :multipart => true } do |f| 
+    = render :partial => 'form', :locals => {:f => f}
+    
+- content_for :admin do
+  = render :partial => 'shared/show_admin'

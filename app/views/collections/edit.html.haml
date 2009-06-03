@@ -1,0 +1,12 @@
+- @title = "Edit #{@thing.name}"
+
+- form_for :thing, :url => account_collection_url(current_account, @thing), :html => { :method => "put", :multipart => true } do |f| 
+  = render :partial => 'form', :locals => {:f => f}
+
+  .formbuttons
+    = f.submit "update collection"
+    or
+    = link_to 'cancel', root_url
+
+- content_for :admin do
+  = render :partial => 'shared/show_admin'

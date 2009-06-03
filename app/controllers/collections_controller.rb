@@ -8,7 +8,7 @@ class CollectionsController < AccountScopedController
   end
 
   def new
-    @thing = @account.collections.build
+    @thing = current_account.collections.build
     respond_to do |format| 
       format.html
       format.json { render :json => @thing.to_json }
@@ -17,7 +17,7 @@ class CollectionsController < AccountScopedController
   end
   
   def create
-    @thing = @account.collections.build(params[:collection])
+    @thing = current_account.collections.build(params[:collection])
     @thing.last_active_at = Time.now
     @thing.abbreviation = @thing.name.initials_or_beginning if @thing.abbreviation.nil? || @thing.abbreviation == ""  #defined in spoke_content plugin's StringExtensions
     if @thing.save
@@ -35,7 +35,6 @@ class CollectionsController < AccountScopedController
   end
 
   def edit
-    @thing = @account.collections.find(params[:id])
     respond_to do |format| 
       format.html
       format.json { render :json => @thing.to_json }
@@ -44,8 +43,7 @@ class CollectionsController < AccountScopedController
   end
 
   def update
-    @thing = @account.collections.find(params[:id])
-    if @thing.update_attributes(params[:collection])
+    if @thing.update_attributes(params[:thing])
       flash[:notice] = 'Collection was updated.'
       respond_to do |format| 
         format.html { redirect_to :action => 'show' }
@@ -58,8 +56,7 @@ class CollectionsController < AccountScopedController
   end
 
   def predelete
-    @thing = @account.collections.find(params[:id])
-    @other_collections = @account.collections.select{|c| c != @thing}
+    @other_collections = current_account.collections.select{|c| c != @thing}
   end
   
 protected

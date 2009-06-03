@@ -1,0 +1,32 @@
+.preamble
+  %p
+    = link_to "Collections", collections_url 
+    are your broad filing drawers and usually correspond to projects or subjects or some other natural division in your body of materials.
+
+  - if current_account.account_type.collections_limit > 0
+    %p
+      Your account has 
+      %strong
+        = current_account.collections.count 
+      of the
+      %strong
+        = current_account.account_type.collections_limit
+        collections
+      it is allowed.
+
+%div{:class => "contentblock mainform"}
+
+  = render :partial => 'shared/error_report'
+  
+  = text_field_with_errors(f, @thing, 'name', {:label => 'Name', :required => true, :class => 'titular'})
+  = text_field_with_errors(f, @thing, 'abbreviation', {:label => 'Abbreviation', :help => 'defaults to the initials or (if one word) first few letters of the collection name', :required => false})
+  = text_area_with_errors(f, @thing, 'description', {:label => 'Description', :required => false})
+
+  %div.formpart
+    = f.check_box 'private' 
+    %label{:for => "collection_private"}
+      this is a restricted collection
+    %span.formnote
+      not visible to other people without express permission
+
+  = render :partial => 'shared/edit_image', :locals => {:item => @collection, :f => f}

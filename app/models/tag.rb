@@ -30,8 +30,8 @@ class Tag < ActiveRecord::Base
     Material::CatchResponse.new("#{subsumed.name} merged into #{self.name}", "delete")
   end
     
-  def self.from_list(taglist)
-    taglist.split(/[,;]\s*/).uniq.map { |t| Tag.find_or_create_by_name(t) }
+  def self.from_list(taglist, collection=Collection.current)
+    taglist.split(/[,;]\s*/).uniq.map { |name| Tag.find_or_create_by_name_and_collection_id(name.downcase, collection.id) }
   end
 
   def tagged

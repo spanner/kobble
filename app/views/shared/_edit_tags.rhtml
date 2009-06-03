@@ -1,9 +1,0 @@
-<% @load_editing_scripts = true %>
-
-<div class="formpart<%= ' witherrors' if item.errors.on(:tag_list) %>">
-  <label for="tag_list">Choose or create tags</label> comma-separated list<br />
-	<input id="tag_list" name="tag_list" class="tagbox" value="<%= params[:tag_list] || item.tag_list %>" />
-  <% if item.errors.on(:tag_list) %><br />
-    This <%= item.errors.on(:tag_list).to_a.to_sentence %>
-  <% end %>
-</div>

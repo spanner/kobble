@@ -1,22 +1,23 @@
-- addendum ||= ''
-- colourclass ||= nil
-- single ||= false
-- inactive ||= listed.deleted?
-- inactive ||= listed.inactive? if listed.respond_to?('inactive?')
-- catch ||= false
-- catch = false if inactive
-- catch_class = 'catcher' if catch && listed.catcher?
-- aclass = inactive ? "listed inactive" : "listed"
 - name ||= listed.name
 - name = "nameless #{listed.nice_title}" if name.nil? || name == ''
-- collection_name = listed.has_collection? ? "#{listed.collection.abbreviation}: " : ''
-- catch_list = listed.catchlist if catch && listed.catcher?
+- collection_name = listed.is_a?(Collection) ? listed.abbreviation : listed.collection.abbreviation
+- url = listed.is_a?(Collection) ? url_for(listed) : collected_url_for(listed)
 
-%li{:id => "#{listed.class.to_s.downcase}_#{listed.id}", :class => "#{colourclass}#{"_" if colourclass}#{listed.class.to_s.downcase} #{colourclass} #{'single' if single} #{'draggable tippable' unless inactive} #{catch_class}", :catches => catch_list}
-  = link_to name, url_for(listed), :class => aclass, :title => "#{collection_name} : #{name}"
+- colourclass ||= false
+- inactive ||= false
+- inactive = true if listed.deleted?
+- catching = true unless catching == false
+- catching = false unless listed.catcher?
+
+- cssclasses = [listed.class.to_s.downcase]
+- cssclasses << colourclass if colourclass
+- cssclasses << "#{colourclass}_#{listed.class.to_s.downcase}" if colourclass
+- cssclasses << 'draggable' unless inactive
+- cssclasses << 'inactive' if inactive
+- cssclasses << 'catcher' if catching
+
+%li{:id => "#{listed.class.to_s.downcase}_#{listed.id}", :class => cssclasses.join(' '), :catches => (listed.catchlist if catching)}
+  = link_to name, url, :class => 'listed', :title => "#{collection_name} : #{name}"
   = render :partial => 'shared/note_flags', :locals => {:item => listed}
-  - unless addendum.nil?
-    %span.listnote
-      = addendum
-    %br
-    = truncate( listed.find_some_text, 100 )
+  %br
+  = truncate( listed.find_some_text, 100 )

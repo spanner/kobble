@@ -28,12 +28,12 @@ class CollectionScopedController < AccountScopedController
   end
     
   def new
-    @thing = current_collection.send(association).build(params[parameter_head])
+    @thing = current_collection.send(association).build(params[:thing])
     @thing.tags << Tag.from_list(params[:tag_list]) if params[:tag_list]
   end
 
   def create
-    @thing = current_collection.send(association).build(params[parameter_head])
+    @thing = current_collection.send(association).build(params[:thing])
     if @thing.save
       @thing.tags << Tag.from_list(params[:tag_list])
       flash[:notice] = "#{model_class} was successfully created."
@@ -48,11 +48,13 @@ class CollectionScopedController < AccountScopedController
   end
   
   def update
-    if @thing.update_attributes(params[parameter_head])
-      @thing.taggings.clear
-      @thing.tags << Tag.from_list(params[:tag_list])
+    if @thing.update_attributes(params[:thing])
+      unless @thing.tag_list == params[:tag_list]
+        @thing.taggings.clear
+        @thing.tags << Tag.from_list(params[:tag_list])
+      end
       flash[:notice] = "#{model_class} was successfully updated."
-      redirect_to url_for(@thing)
+      redirect_to collected_url_for(@thing)
     else
       flash[:notice] = 'failed to update.'
       render :action => 'edit'
@@ -131,9 +133,14 @@ protected
     else
       store_location
       flash[:notice] = "Please choose a collection"
-      redirect_to dashboard_url
+      redirect_to root_url
       return false
     end
+  end
+  
+  def collected_url_for(thing)
+    url_method = "collection_#{thing.class.to_s.downcase}_url".intern
+    send(url_method, thing.collection, thing)
   end
 
   def get_working_class
@@ -174,7 +181,6 @@ protected
   def parameter_head
     working_on.downcase.intern
   end
-  
 
   def render_thing_or_response
     respond_to do |format|

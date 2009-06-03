@@ -1,4 +1,4 @@
-class SearchesController < ApplicationController
+class SearchesController < AccountScopedController
 
   def show
     if params.any?
