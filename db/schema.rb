@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090602094656) do
+ActiveRecord::Schema.define(:version => 20090603100014) do
 
   create_table "account_types", :force => true do |t|
     t.string   "name"
@@ -428,6 +428,7 @@ ActiveRecord::Schema.define(:version => 20090602094656) do
     t.string   "clip_content_type"
     t.integer  "clip_file_size"
     t.datetime "clip_updated_at"
+    t.integer  "collection_id"
   end
 
   add_index "tags", ["created_at"], :name => "index_tags_on_created_at"

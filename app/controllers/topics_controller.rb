@@ -1,17 +1,8 @@
-class TopicsController < ApplicationController
+class TopicsController < CollectionScopedController
 
   before_filter :find_referent
   before_filter :find_topic, :except => [:new, :preview, :create, :index]
   before_filter :build_topic, :only => [:new, :preview, :create]
-
-  def views
-    'list'
-  end
-  
-  def list
-    @topics = paged_list
-    @klass = Topic
-  end
 
   def show
     page = params[:page] || 1

@@ -1,7 +1,7 @@
 class Tag < ActiveRecord::Base
 
   attr_accessor :used
-  is_material :except => [:collection, :index, :description]
+  is_material :except => [:index, :description]
   belongs_to :account
   has_many :taggings, :dependent => :destroy
   can_catch :tags # in addition to all the catches set up by is_material in other classes
@@ -21,13 +21,11 @@ class Tag < ActiveRecord::Base
     
   def subsume(subsumed)
     self.taggings += subsumed.taggings
+    self.notes += subsumed.annotations
     self.description = subsumed.description if self.description.nil? or self.description.size == 0
     self.body = subsumed.body if self.body.nil? or self.body.size == 0
     self.image = subsumed.image if self.image.nil? or self.image.size == 0
     self.clip = subsumed.clip if self.clip.nil? or self.clip.size == 0
-    self.emotions = subsumed.clip if self.emotions.nil? or self.emotions.size == 0
-    self.arising = subsumed.clip if self.arising.nil? or self.arising.size == 0
-    self.observations = subsumed.observations if self.observations.nil? or self.observations.size == 0
     subsumed.destroy
     Material::CatchResponse.new("#{subsumed.name} merged into #{self.name}", "delete")
   end

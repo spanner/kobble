@@ -1,0 +1,24 @@
+- @title = "Tags"
+
+- if @list && @list.any?
+  %p
+    The
+    = link_to current_collection.name, url_for (current_collection)
+    collection has 
+    %span.current
+      = (pluralize @list.size, 'tag') + ':'
+
+  .cloud
+    = render :partial => 'shared/tag_cloud', :locals => { :cloud => @list }
+
+  = render :partial => 'searches/form'
+
+- else
+  %p
+    = current_collection.name 
+    has no 
+    = @klass.nice_title.pluralize
+
+- content_for :admin do
+  = render :partial => 'shared/show_admin', :locals => {:item => nil}
+

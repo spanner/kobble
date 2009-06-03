@@ -12,7 +12,8 @@
 
 - else
   %p
-    We have no 
+    = current_collection.name 
+    has no 
     = @klass.nice_title.pluralize
 
 - content_for :admin do

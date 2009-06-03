@@ -160,7 +160,7 @@ protected
   end
 
   def working_on
-    request.parameters[:controller].to_s
+    request.parameters[:controller].singularize.to_s
   end
 
   def model_class

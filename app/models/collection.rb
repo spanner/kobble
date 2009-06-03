@@ -11,6 +11,7 @@ class Collection < ActiveRecord::Base
   has_many :sources, :order => 'name', :dependent => :destroy, :conditions => "deleted_at IS NULL"
   has_many :nodes, :order => 'name', :dependent => :destroy, :conditions => "deleted_at IS NULL"
   has_many :bundles, :order => 'name', :dependent => :destroy, :conditions => "deleted_at IS NULL"
+  has_many :people, :order => 'name', :dependent => :destroy, :conditions => "deleted_at IS NULL"
   has_many :occasions, :order => 'name', :dependent => :destroy, :conditions => "deleted_at IS NULL"
   has_many :topics, :order => 'name', :dependent => :destroy, :conditions => "deleted_at IS NULL"
   has_many :events, :order => 'at DESC'
