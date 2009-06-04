@@ -1,5 +1,5 @@
 - if item && item.is_notable?
   - item.warnings.each do |warning|
-    %img{:class => "flag", :src => "/images/furniture/spoke/pink/flag.png", :size => "7x13", alt => "warning", :title => "#{warning.annotation_type.name}: #{warning.body}"}
+    %img{:class => "flag", :src => "/images/furniture/spoke/pink/flag.png", :size => "7x13", :alt => "warning", :title => "#{warning.annotation_type.name}: #{warning.body}"}
   - item.approvals.each do |approval|
-    %img{:class => "flag", :src => "/images/furniture/spoke/green/flag.png", :size => "7x13", alt => "approval", :title => "#{approval.annotation_type.name}: #{approval.body}"}
+    %img{:class => "flag", :src => "/images/furniture/spoke/green/flag.png", :size => "7x13", :alt => "approval", :title => "#{approval.annotation_type.name}: #{approval.body}"}

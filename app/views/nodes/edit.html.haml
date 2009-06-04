@@ -1,0 +1,12 @@
+- @title = "Edit: #{@thing.name}"
+.mainform
+  - form_for :thing, :url => collected_url_for(@thing), :html => { :method => "put", :multipart => true } do |f| 
+    = render :partial => 'form', :locals => {:f => f}
+
+    .formbuttons
+      = f.submit "Update Fragment"
+      or
+      = link_to 'cancel', collected_url_for(@thing)
+
+- content_for :admin do
+  = render :partial => 'shared/show_admin'

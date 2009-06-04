@@ -1,0 +1,41 @@
+.preamble
+  %p
+    'Fragments' here are individual pieces of evidence or narrative excerpted from a source document.
+
+%div{:class => "mainform contentblock"}
+
+  = render :partial => 'shared/error_report'
+
+  #editing_summary
+    
+    %fieldset
+      %legend
+        Description
+
+      = render :partial => 'shared/edit_name', :locals => {:f => f, :required => true}
+      = render :partial => 'shared/edit_description', :locals => {:item => @thing, :f => f, :required => true, :heading => 'Synopsis'}
+      = render :partial => 'shared/edit_tags', :locals => {:item => @thing, :f => f}
+      = render :partial => 'shared/edit_image', :locals => {:item => @thing, :f => f}
+      
+    = yield :buttons
+
+    %fieldset
+      %legend
+        Contents
+      
+      = render :partial => 'shared/edit_body', :locals => {:item => @thing, :f => f, :short => @inline, :required => false}
+      = render :partial => 'shared/edit_clip', :locals => {:item => @thing, :f => f, :required => false}
+
+      
+
+
+    = yield :buttons
+
+    %fieldset
+      %legend
+        Filing
+
+        = render :partial => 'shared/edit_source', :locals => {:item => @thing, :f => f}
+        = render :partial => 'shared/edit_speaker', :locals => {:item => @thing, :f => f}
+
+    = yield :buttons

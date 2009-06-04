@@ -1,4 +1,0 @@
-<p>
-  <label for="<%= item.class.to_s.downcase %>_source_id">Taken from:<br />
-  <%= select(item.class.to_s.downcase, "source_id", @sources.collect{|s| [s.name, s.id] }, {:include_blank => true}, {:class => 'standard'}) %></label>
-</p>

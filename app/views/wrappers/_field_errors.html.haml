@@ -1,0 +1,6 @@
+%p{ :class => errors ? 'with_errors' : '' }
+  = yield
+  - if errors
+    %br
+    This
+    = errors.to_a.to_sentence

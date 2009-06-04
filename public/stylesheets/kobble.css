@@ -1376,13 +1376,13 @@ img.mugshot {
 
 /* edit forms */
 
-.formnote {
+div.mainform .formnote {
   font-size: 0.8em;
   line-height: 1.1;
   color: #8c8d8e;
 }
 
-.minorfield {
+div.mainform .minorfield {
   font-size: 0.9em;
   line-height: 1.1;
   color: #4d4e53;
@@ -1409,6 +1409,11 @@ div.mainform label a {
 label.required {
 	font-weight: bold;
 }
+
+div.mainform .formnote label {
+  color: #8c8d8e;
+}
+
 
 div.mainform input.titular {
   width: 97%;
