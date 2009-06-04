@@ -93,13 +93,6 @@ module Kobble #:nodoc:
         end
       
         if definitions.include?(:illustration)
-          if self.column_names.include?('clip_file_name')
-            has_attached_file :clip, 
-              :path => ":rails_root/public/:class/:attachment/:id/:basename.:extension", 
-              :url => "/:class/:attachment/:id/:basename.:extension" 
-          else
-            logger.warn("!! #{self.to_s} should be illustrated but has no clip columns")
-          end
           if self.column_names.include?('image_file_name')
             has_attached_file :image, 
               :path => ":rails_root/public/:class/:attachment/:id/:style/:basename.:extension", 
@@ -111,7 +104,7 @@ module Kobble #:nodoc:
                 "preview" => "750x540>"
               }
           else
-            logger.warn("!! #{self.to_s} should be illustrated but has no image columns")
+            logger.warn("!! #{self.to_s} should be illustrated but lacks necessary image columns")
           end
         end
 
@@ -120,6 +113,9 @@ module Kobble #:nodoc:
             has_attached_file :file, 
               :path => ":rails_root/public/:class/:attachment/:id/:basename.:extension",
               :url => "/:class/:attachment/:id/:basename.:extension"
+              
+              #! processors for audio, video and documents
+              
           end
         end
 
@@ -302,27 +298,7 @@ module Kobble #:nodoc:
       end
 
       def image_exists?
-        self.has_image? and File.file? self.image
-      end
-
-      def has_clip?
-        self.respond_to?('clip') && !self.clip_file_name.blank?
-      end
-    
-      def clip_exists?
-        self.has_clip? and File.file? self.clip
-      end
-
-      def has_file?
-        self.respond_to?('file') && !self.file_file_name.blank?
-      end
-    
-      def file_exists?
-        self.has_file? and File.file? self.file
-      end
-
-      def filetype
-        self.has_file? ? self.file_file_name.split('.').last : nil
+        self.has_image? and File.file? self.image.path
       end
 
       def has_topics?

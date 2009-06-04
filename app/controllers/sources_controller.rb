@@ -6,8 +6,7 @@ class SourcesController < CollectionScopedController
       @source.uploaded_file = params[:Filedata]
       @source.save!
       session["upload_#{params[:Filename]}".intern] = @source.id
-      logger.warn "    and session is #{session.inspect}"
-      render :nothing => true
+      render :nothing => true                                                             # SWFupload only cares about response status
     end
   rescue => e
     logger.warn "%%% file upload error: #{e.inspect}"
@@ -16,11 +15,11 @@ class SourcesController < CollectionScopedController
     
   def describe
     if params[:id]
-      @source = Source.find(params[:id])
+      @source = current_collection.sources.find(params[:id])
     elsif params[:upload]
-      @source = Source.find_by_name(params[:upload])
+      @source = current_collection.sources.find_by_name(params[:upload])
     else
-      raise "source id or upload parameter required"
+      raise Kobble::Error => "source id or upload parameter required"
     end
     if request.put?
       @source.update_attributes(params[:source])

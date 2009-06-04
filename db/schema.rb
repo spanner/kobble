@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090603100014) do
+ActiveRecord::Schema.define(:version => 20090604103449) do
 
   create_table "account_types", :force => true do |t|
     t.string   "name"
@@ -363,7 +363,6 @@ ActiveRecord::Schema.define(:version => 20090603100014) do
     t.text     "description"
     t.integer  "speaker_id"
     t.text     "body",               :limit => 2147483647
-    t.string   "clip_file_name"
     t.integer  "duration",           :limit => 10,         :precision => 10, :scale => 0
     t.integer  "collection_id"
     t.integer  "created_by"
@@ -378,9 +377,6 @@ ActiveRecord::Schema.define(:version => 20090603100014) do
     t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
-    t.string   "clip_content_type"
-    t.integer  "clip_file_size"
-    t.datetime "clip_updated_at"
     t.string   "file_content_type"
     t.integer  "file_file_size"
     t.datetime "file_updated_at"

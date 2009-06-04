@@ -12,4 +12,9 @@ class ApplicationController < ActionController::Base
     admin?
   end
 
+  def collected_url_for(thing)
+    url_method = "collection_#{thing.class.to_s.downcase}_url".intern
+    send(url_method, thing.collection, thing)
+  end
+
 end

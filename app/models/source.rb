@@ -5,32 +5,51 @@ class Source < ActiveRecord::Base
   has_many :nodes, :dependent => :destroy
 
   validates_presence_of :name, :collection
-  validate :must_have_body_clip_or_file
+  validate :must_have_body_or_file
 
   def uploaded_file=(upload)
-    
-    logger.warn "!!! setting uploaded_file type"
-    
     upload.content_type = MIME::Types.type_for(upload.original_filename).to_s
-    
-    logger.warn "    gives #{upload.content_type}"
-    
-    case upload.content_type
-    when /^video/
-      self.clip = upload
-    when /^video/
-      self.clip = upload
-    when /^audio/
-      self.clip = upload
-    when /^image/
-      self.image = upload
-    else
-      self.file = upload
-    end
+    self.file = upload
   end
 
   def self.nice_title
     "source"
+  end
+  
+  def has_file?
+    not file.nil?
+  end
+
+  def file_exists?
+    has_file? and File.file? file.path
+  end
+
+  def file_extension
+    has_file? ? file_file_name.split('.').last : nil
+  end
+  
+  def is_audio?
+    true if has_file? && file.content_type =~ /^audio/i
+  end
+
+  def is_video?
+    true if has_file? && file.content_type =~ /^video/i
+  end
+  
+  def is_audio_or_video?
+    is_audio? or is_video?
+  end
+
+  def is_pdf?
+    true if has_file? && file.content_type =~ /^application\/pdf/i
+  end
+
+  def is_doc?
+    true if has_file? && file.content_type =~ /msword/i
+  end
+
+  def file_type
+    %w{audio video pdf doc}.detect {|type| self.send("is_#{type}?".intern) }
   end
 
   def catch_this(object)
@@ -46,11 +65,10 @@ class Source < ActiveRecord::Base
 
   private 
   
-  def must_have_body_clip_or_file
-    if body.blank? and clip.blank? and file.blank?
-      errors.add(:body, "source must have at least one of body, clip or file") 
-      errors.add(:clip, "source must have at least one of body, clip or file") 
-      errors.add(:file, "source must have at least one of body, clip or file") 
+  def must_have_body_or_file
+    if body.blank? and file.nil?
+      errors.add(:body, "source must have body text or file") 
+      errors.add(:file, "source must have body text or file") 
     end
   end
   
