@@ -424,7 +424,7 @@ div.contentblock {
     float: right;
     margin: 0 0 20px 40px; }
 
-/* squeezebox */ */
+/* ******* squeezebox */
 h3.pagesection {
   margin: 0;
   clear: left; }
@@ -443,7 +443,7 @@ div.squeezed {
 h3.empty a {
   text-decoration: line-through; }
 
-/* field notes */ */
+/* field notes */
 div.fieldnote h4 {
   margin-top: 4px;
   margin-bottom: 0;
@@ -458,7 +458,7 @@ div.badnote h4, div.badnote p {
 div.goodnote h4, div.goodnote p {
   color: #5da454; }
 
-/* standard content formatting */ */
+/* standard content formatting */
 p.standfirst {
   font-weight: bold; }
 
@@ -488,7 +488,8 @@ div.floatcolumn {
 
 h3.listheader {
   margin: 20px 0 10px 0;
-  border-bottom-width: 1px;
+  font-weight: bold;
+  border-bottom-width: 3px;
   border-bottom-style: dotted;
   border-bottom-color: #4d4e53; }
   h3.listheader a.listhead {
@@ -496,9 +497,8 @@ h3.listheader {
 
 h4.listheader {
   margin: 20px 0 10px 0;
-  width: 50%;
   font-weight: bold;
-  border-bottom-weight: 1px;
+  border-bottom-width: 3px;
   border-bottom-style: dotted;
   border-bottom-color: #4d4e53; }
   h4.listheader a.listhead {
@@ -737,30 +737,30 @@ ul.cloud {
       line-height: 20px; }
     ul.cloud li a:hover {
       color: #cc6e1f; }
+    ul.cloud li a.cloud0 {
+      font-size: 0.9em;
+      color: #cfe4ee;
+      font-family: 'HelveticaNeue-Roman', helvetica, arial, sans-serif; }
+    ul.cloud li a.cloud1 {
+      font-size: 1.2em;
+      color: #b1d2e3;
+      font-family: 'HelveticaNeue-Roman', helvetica, arial, sans-serif; }
+    ul.cloud li a.cloud2 {
+      font-size: 1.5em;
+      color: #a0c8de; }
+    ul.cloud li a.cloud3 {
+      font-size: 1.8em;
+      color: #85b8d5; }
+    ul.cloud li a.cloud4 {
+      font-size: 2.1em;
+      color: #71adce; }
+    ul.cloud li a.cloud5 {
+      font-size: 2.4em;
+      color: #559dc4; }
+    ul.cloud li a.unpopular {
+      display: none; }
   ul.cloud li.waiting a {
     color: #8c8d8e; }
-  ul.cloud li.waiting a.cloud0 {
-    font-size: 0.9em;
-    color: #cfe4ee;
-    font-family: 'HelveticaNeue-Roman', helvetica, arial, sans-serif; }
-  ul.cloud li.waiting a.cloud1 {
-    font-size: 1.2em;
-    color: #b1d2e3;
-    font-family: 'HelveticaNeue-Roman', helvetica, arial, sans-serif; }
-  ul.cloud li.waiting a.cloud2 {
-    font-size: 1.5em;
-    color: #a0c8de; }
-  ul.cloud li.waiting a.cloud3 {
-    font-size: 1.8em;
-    color: #85b8d5; }
-  ul.cloud li.waiting a.cloud4 {
-    font-size: 2.1em;
-    color: #71adce; }
-  ul.cloud li.waiting a.cloud5 {
-    font-size: 2.4em;
-    color: #559dc4; }
-  ul.cloud li.waiting a.unpopular {
-    display: none; }
 
 /* ****** fancy checkboxes */
 a.ticked, a.crossed, a.toggling {

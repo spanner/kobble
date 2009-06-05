@@ -451,7 +451,7 @@ div.contentblock
     :float right
     :margin 0 0 20px 40px
 
-/* squeezebox */
+/******** squeezebox
 
 h3.pagesection
   :margin 0
@@ -471,7 +471,7 @@ div.squeezed
 h3.empty a
   :text-decoration line-through
 
-/* field notes */
+/* field notes
 
 div.fieldnote 
   h4
@@ -491,7 +491,7 @@ div.goodnote
     :color = !green
 
 
-/* standard content formatting */
+/* standard content formatting
 
 p.standfirst
   :font-weight bold
@@ -522,18 +522,18 @@ div.floatcolumn
 
 h3.listheader
   :margin 20px 0 10px 0
+  :font-weight bold
   :border-bottom
-    :width 1px
+    :width 3px
     :style dotted
     :color = !coolgrey11
   a.listhead
     :color = !coolgrey11
 h4.listheader
   :margin 20px 0 10px 0
-  :width 50%
   :font-weight bold
   :border-bottom
-    :weight 1px
+    :width 3px
     :style dotted 
     :color = !coolgrey11
   a.listhead
@@ -787,9 +787,6 @@ ul.cloud
       :line-height 20px
     a:hover
       :color = !orange
-  li.waiting 
-    a
-      :color = !coolgrey8
     a.cloud0
       :font-size 0.9em 
       :color #cfe4ee 
@@ -812,6 +809,9 @@ ul.cloud
       :color = !blue
     a.unpopular  
       :display none 
+  li.waiting 
+    a
+      :color = !coolgrey8
 
 
 /******* fancy checkboxes
