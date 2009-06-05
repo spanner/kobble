@@ -3,23 +3,28 @@
 - collection_name = listed.is_a?(Collection) ? listed.abbreviation : listed.collection.abbreviation
 - url = listed.is_a?(Collection) ? url_for(listed) : collected_url_for(listed)
 - addendum ||= false
-- colourclass ||= 'quietnote'
-- inactive ||= false
-- inactive = true if listed.deleted?
-- catching = true unless catching == false
-- catching = false unless listed.catcher?
 
-- cssclasses = listed.is_a?(Source) ? [listed.file_type] : [listed.class.to_s.downcase]
-- cssclasses << "#{colourclass}_#{listed.class.to_s.downcase}" if colourclass
-- cssclasses << 'draggable' unless inactive
-- cssclasses << 'inactive' if inactive
-- cssclasses << 'catcher' if catching
+- inactive ||= listed.deleted? || listed.new_record?
+- catching = inactive.nil? && listed.catcher?
+- type_class = listed.is_a?(Source) ? [listed.file_type] : [listed.class.to_s.downcase]
+- status_class ||= ''
 
-%li{:id => "#{listed.class.to_s.downcase}_#{listed.id}", :class => cssclasses.join(' '), :catches => (listed.catchlist if catching)}
-  = link_to name, url, :class => 'listed', :title => "#{collection_name} : #{name}"
+- liclasses = [status_class]
+- aclasses = [type_class]
+- aclasses << 'draggable' unless inactive
+- aclasses << 'catcher' if catching
+
+%li{:class => liclasses.join(' '), :catches => (listed.catchlist if catching)}
+  = link_to name, url, :id => "#{listed.class.to_s.downcase}_#{listed.id}", :class => aclasses.join(' '), :title => "#{collection_name} : #{name}"
   = render :partial => 'shared/note_flags', :locals => {:item => listed}
   - if addendum
-    %span{:class => "listnote #{colourclass}"}
+    %span{:class => "listnote"}
       = addendum
   %br
   = truncate( listed.find_some_text, 100 )
+
+
+// list class is status
+// a class is object type and contains only title
+// only the a is draggable:
+// on drop it gets cloned and wrapped in an li.

@@ -6,7 +6,7 @@
 
 <h3 class="pagesection">
   <a href="#" class="squeezebox">
-    <% if events.count > count %>recent <% end %>event log 
+    latest changes
     <span class="headernote">
       <% if events.count > 0 %>
         <%
@@ -51,7 +51,7 @@
         <%= render :partial => "shared/listed", :locals => {
           :listed => event.affected,
           :name => event.affected_name || event.affected.name,
-          :colourclass => event.event_type, 
+          :status_class => event.event_type, 
           :addendum => "#{event.event_type} by #{who} #{time_ago_in_words(event.at)} ago"
         } %>
       <% end %>

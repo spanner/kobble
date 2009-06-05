@@ -1,7 +1,5 @@
 <% 
-  @title = 'Account history' 
-  @title = "#{@collection.abbreviation} history" if @collection
-  @title = "#{@user.name} history" if @user
+  @title = @user ? 'User history' : 'Collection history'
 
   case params[:type]
   when 'deleted'
@@ -16,13 +14,12 @@
 
 <div class="preamble">
   <p>
-    <% if @collection %>
-      This is a log of activity in the <strong><%= link_to @collection.name, url_for(@collection) %></strong> collection. 
-    <% elsif @user %>
+    <% if @user %>
       This is a log of activity by <%= link_to @user.name, url_for(@user) %>
     <% else %>
-      This is a log of activity in this account. 
+      This is a log of all activity in this collection. 
     <% end %>
+    
     You can review <%= link_to 'everything at once', :type => nil %> or limit the list to
     <%= link_to 'creations', {:type => 'created'}, {:class => 'created'} %>,
     <%= link_to 'updates', {:type => 'updated'}, {:class => 'updated'} %> or
@@ -50,7 +47,7 @@
         %>
         <%= render :partial => "shared/listed", :locals => {
           :listed => event.affected, 
-          :colourclass => event.event_type, 
+          :status_class => event.event_type, 
           :addendum => "#{event.event_type} by #{who} #{time_ago_in_words(event.at)} ago"
         } %>
       <% end %>
