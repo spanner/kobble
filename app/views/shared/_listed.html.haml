@@ -2,15 +2,14 @@
 - name = "nameless #{listed.nice_title}" if name.nil? || name == ''
 - collection_name = listed.is_a?(Collection) ? listed.abbreviation : listed.collection.abbreviation
 - url = listed.is_a?(Collection) ? url_for(listed) : collected_url_for(listed)
-
-- colourclass ||= false
+- addendum ||= false
+- colourclass ||= 'quietnote'
 - inactive ||= false
 - inactive = true if listed.deleted?
 - catching = true unless catching == false
 - catching = false unless listed.catcher?
 
-- cssclasses = [listed.class.to_s.downcase]
-- cssclasses << colourclass if colourclass
+- cssclasses = listed.is_a?(Source) ? [listed.file_type] : [listed.class.to_s.downcase]
 - cssclasses << "#{colourclass}_#{listed.class.to_s.downcase}" if colourclass
 - cssclasses << 'draggable' unless inactive
 - cssclasses << 'inactive' if inactive
@@ -19,5 +18,8 @@
 %li{:id => "#{listed.class.to_s.downcase}_#{listed.id}", :class => cssclasses.join(' '), :catches => (listed.catchlist if catching)}
   = link_to name, url, :class => 'listed', :title => "#{collection_name} : #{name}"
   = render :partial => 'shared/note_flags', :locals => {:item => listed}
+  - if addendum
+    %span{:class => "listnote #{colourclass}"}
+      = addendum
   %br
   = truncate( listed.find_some_text, 100 )

@@ -27,7 +27,7 @@
 <% @collections.each do |collection| %>
   <div class="mainlist">
     <h3 class="listheader">
-      <%= link_to collection.name, url_for(collection) %>
+      <%= link_to collection.name, url_for(collection), :class => 'listhead' %>
       <% if current_user.account_admin? %>
         <span class="headernote">
           <%= link_to "edit", edit_collection_url(collection), :class => 'edit' %>

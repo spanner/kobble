@@ -17,23 +17,23 @@ class Source < ActiveRecord::Base
   end
   
   def has_file?
-    not file.nil?
+    not self.file_file_name.blank?
   end
 
   def file_exists?
-    has_file? and File.file? file.path
+    self.has_file? and File.file? self.file.path
   end
 
   def file_extension
-    has_file? ? file_file_name.split('.').last : nil
+    self.has_file? ? self.file_file_name.split('.').last : nil
   end
   
   def is_audio?
-    true if has_file? && file.content_type =~ /^audio/i
+    true if self.has_file? && self.file.content_type =~ /^audio/i
   end
 
   def is_video?
-    true if has_file? && file.content_type =~ /^video/i
+    true if self.has_file? && self.file.content_type =~ /^video/i
   end
   
   def is_audio_or_video?
@@ -41,15 +41,19 @@ class Source < ActiveRecord::Base
   end
 
   def is_pdf?
-    true if has_file? && file.content_type =~ /^application\/pdf/i
+    true if has_file? && file.content_type =~ /pdf/i
   end
 
   def is_doc?
     true if has_file? && file.content_type =~ /msword/i
   end
 
+  def is_text?
+    true unless has_file?
+  end
+
   def file_type
-    %w{audio video pdf doc}.detect {|type| self.send("is_#{type}?".intern) }
+    %w{audio video pdf doc text}.detect {|type| self.send("is_#{type}?".intern) }
   end
 
   def catch_this(object)

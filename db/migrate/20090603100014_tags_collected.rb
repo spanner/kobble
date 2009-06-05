@@ -1,5 +1,8 @@
 class TagsCollected < ActiveRecord::Migration
   def self.up
+    Tag.reset_column_information
+    Tag.send :is_material, :only => [:collection]
+    
     Tag.find(:all).each do |tag|
       tag.tagged.each do |thing|
         case tag.collection
@@ -12,7 +15,6 @@ class TagsCollected < ActiveRecord::Migration
           new_tag.collection = thing.collection
           thing.tags.delete(tag)
           thing.tags << new_tag
-          puts "  #{tag.name} +> #{thing.collection.abbreviation}"
         end
       end
     end

@@ -20,8 +20,9 @@
         &nbsp;
         %br>
         = link_to "kobble/", "/"
-        %br>
-        = link_to "#{current_account.name}/", root_url, {:class => 'emphatic'} 
+        - if current_account
+          %br>
+          = link_to "#{current_account.name}/", root_url, {:class => 'emphatic'} 
 
   #pagetitle
     %h1{:class => @title.size > 50  ? "long_title" : "short_title"}

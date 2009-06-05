@@ -99,7 +99,7 @@ class AccountsController < AccountScopedController
 protected
 
   def choose_layout
-    current_user ? 'inside' : 'outside'
+    current_account && current_user ? 'inside' : 'outside'
   end
 
 private

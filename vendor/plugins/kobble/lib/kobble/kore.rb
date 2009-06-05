@@ -109,6 +109,15 @@ module Kobble #:nodoc:
         end
 
         if definitions.include?(:file)
+          
+          # during transition:
+          if self.column_names.include?('clip_file_name')
+            has_attached_file :clip, 
+              :path => ":rails_root/public/:class/:attachment/:id/:basename.:extension",
+              :url => "/:class/:attachment/:id/:basename.:extension"
+          end
+          
+          # but this is the real one.
           if self.column_names.include?('file_file_name')
             has_attached_file :file, 
               :path => ":rails_root/public/:class/:attachment/:id/:basename.:extension",

@@ -1570,7 +1570,7 @@ var Upload = new Class ({
     this.bar = new Element('div', {'class' : "progressBar"});
     this.canceller = new Element('a', {'href' : '#', 'class' : "progressCancel", 'style' : 'visibility: hidden;'}).set('text',"x");
     this.file_label = new Element('div', {'class' : "progressName"}).set('text', file.name);
-    this.message = new Element('div', {'class' : "progressBarStatus"});
+    this.message = new Element('div', {'class' : "progressStatus"});
     this.message.innerHTML = "&nbsp;";
 
     this.canceller.inject(this.progress);

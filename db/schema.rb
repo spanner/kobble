@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090604103449) do
+ActiveRecord::Schema.define(:version => 20090605123123) do
 
   create_table "account_types", :force => true do |t|
     t.string   "name"
@@ -41,13 +41,9 @@ ActiveRecord::Schema.define(:version => 20090604103449) do
     t.datetime "updated_at"
     t.integer  "created_by"
     t.integer  "updated_by"
-    t.string   "clip_file_name"
     t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
-    t.string   "clip_content_type"
-    t.integer  "clip_file_size"
-    t.datetime "clip_updated_at"
     t.string   "subdomain"
   end
 
@@ -113,13 +109,9 @@ ActiveRecord::Schema.define(:version => 20090604103449) do
     t.string   "image_file_name"
     t.string   "description"
     t.datetime "deleted_at"
-    t.string   "clip_file_name"
     t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
-    t.string   "clip_content_type"
-    t.integer  "clip_file_size"
-    t.datetime "clip_updated_at"
   end
 
   add_index "bundles", ["collection_id"], :name => "index_bundles_on_collection"
@@ -150,14 +142,10 @@ ActiveRecord::Schema.define(:version => 20090604103449) do
     t.datetime "deleted_at"
     t.datetime "last_active_at"
     t.string   "image_file_name"
-    t.string   "clip_file_name"
     t.boolean  "private"
     t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
-    t.string   "clip_content_type"
-    t.integer  "clip_file_size"
-    t.datetime "clip_updated_at"
   end
 
   add_index "collections", ["account_id"], :name => "index_collections_on_account_id"
@@ -197,7 +185,6 @@ ActiveRecord::Schema.define(:version => 20090604103449) do
     t.integer  "speaker_id"
     t.integer  "source_id"
     t.string   "image_file_name"
-    t.string   "clip_file_name"
     t.integer  "playfrom",           :limit => 10, :precision => 10, :scale => 0
     t.integer  "playto",             :limit => 10, :precision => 10, :scale => 0
     t.integer  "collection_id"
@@ -212,9 +199,6 @@ ActiveRecord::Schema.define(:version => 20090604103449) do
     t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
-    t.string   "clip_content_type"
-    t.integer  "clip_file_size"
-    t.datetime "clip_updated_at"
     t.string   "file_content_type"
     t.integer  "file_file_size"
     t.datetime "file_updated_at"
@@ -234,17 +218,9 @@ ActiveRecord::Schema.define(:version => 20090604103449) do
     t.datetime "updated_at"
     t.string   "name"
     t.text     "description"
-    t.string   "image_file_name"
-    t.string   "clip_file_name"
     t.integer  "collection_id"
     t.text     "body"
     t.datetime "deleted_at"
-    t.string   "image_content_type"
-    t.integer  "image_file_size"
-    t.datetime "image_updated_at"
-    t.string   "clip_content_type"
-    t.integer  "clip_file_size"
-    t.datetime "clip_updated_at"
   end
 
   add_index "occasions", ["collection_id"], :name => "index_occasions_on_collection_id"
@@ -266,7 +242,6 @@ ActiveRecord::Schema.define(:version => 20090604103449) do
   create_table "people", :force => true do |t|
     t.string   "name"
     t.string   "image_file_name"
-    t.string   "clip_file_name"
     t.text     "description"
     t.text     "body"
     t.integer  "collection_id"
@@ -285,9 +260,6 @@ ActiveRecord::Schema.define(:version => 20090604103449) do
     t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
-    t.string   "clip_content_type"
-    t.integer  "clip_file_size"
-    t.datetime "clip_updated_at"
   end
 
   add_index "people", ["created_at"], :name => "index_people_on_created_at"
@@ -413,17 +385,9 @@ ActiveRecord::Schema.define(:version => 20090604103449) do
     t.integer  "updated_by"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "image_file_name"
     t.integer  "account_id"
     t.text     "body"
     t.datetime "deleted_at"
-    t.string   "clip_file_name"
-    t.string   "image_content_type"
-    t.integer  "image_file_size"
-    t.datetime "image_updated_at"
-    t.string   "clip_content_type"
-    t.integer  "clip_file_size"
-    t.datetime "clip_updated_at"
     t.integer  "collection_id"
   end
 
@@ -464,18 +428,17 @@ ActiveRecord::Schema.define(:version => 20090604103449) do
   add_index "user_preferences", ["user_id"], :name => "index_user_preferences_on_user_id"
 
   create_table "users", :force => true do |t|
-    t.string   "login",                     :limit => 80,                     :null => false
-    t.string   "crypted_password",          :limit => 40,  :default => "",    :null => false
-    t.string   "email",                     :limit => 60,                     :null => false
+    t.string   "login",                     :limit => 80,                 :null => false
+    t.string   "crypted_password",          :limit => 40, :default => "", :null => false
+    t.string   "email",                     :limit => 60,                 :null => false
     t.string   "diminutive",                :limit => 40
-    t.string   "password_salt",             :limit => 40,                     :null => false
+    t.string   "password_salt",             :limit => 40,                 :null => false
     t.string   "remember_token",            :limit => 40
     t.datetime "remember_token_expires_at"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "last_login_at"
-    t.integer  "status",                                   :default => 10
-    t.string   "image_file_name"
+    t.integer  "status",                                  :default => 10
     t.text     "description"
     t.integer  "created_by"
     t.integer  "updated_by"
@@ -490,23 +453,12 @@ ActiveRecord::Schema.define(:version => 20090604103449) do
     t.datetime "deleted_at"
     t.datetime "last_request_at"
     t.datetime "previously_logged_in_at"
-    t.string   "clip_file_name"
     t.boolean  "trusted"
-    t.string   "image_content_type"
-    t.integer  "image_file_size"
-    t.datetime "image_updated_at"
-    t.string   "clip_content_type"
-    t.integer  "clip_file_size"
-    t.datetime "clip_updated_at"
-    t.string   "encrypted_password",        :limit => 128
-    t.string   "token",                     :limit => 128
-    t.datetime "token_expires_at"
-    t.boolean  "email_confirmed",                          :default => false, :null => false
-    t.string   "persistence_token",                                           :null => false
-    t.string   "single_access_token",                                         :null => false
-    t.string   "perishable_token",                                            :null => false
-    t.integer  "login_count",                              :default => 0,     :null => false
-    t.integer  "failed_login_count",                       :default => 0,     :null => false
+    t.string   "persistence_token",                                       :null => false
+    t.string   "single_access_token",                                     :null => false
+    t.string   "perishable_token",                                        :null => false
+    t.integer  "login_count",                             :default => 0,  :null => false
+    t.integer  "failed_login_count",                      :default => 0,  :null => false
     t.string   "current_login_ip"
     t.string   "last_login_ip"
   end
@@ -514,9 +466,7 @@ ActiveRecord::Schema.define(:version => 20090604103449) do
   add_index "users", ["account_id"], :name => "index_users_on_account_id"
   add_index "users", ["deleted_at"], :name => "index_users_on_deleted_at"
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
-  add_index "users", ["id", "token"], :name => "index_users_on_id_and_token"
   add_index "users", ["last_seen_at"], :name => "index_users_on_last_seen_at"
   add_index "users", ["login"], :name => "index_users_on_login"
-  add_index "users", ["token"], :name => "index_users_on_token"
 
 end
