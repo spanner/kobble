@@ -1,0 +1,34 @@
+div.post 
+  h3
+    :color = !coolgrey11
+    :font-weight bold
+    :font-size 1.6em
+    :line-height 1
+  span.headernote
+    :color = !coolgrey8
+    :font-weight lighter
+    :font-size 1em
+  span.when
+    :font-size 11px
+  a.quoteme
+    :font-size 11px
+    :color = !rubinered
+
+div.previewing h3
+  :color = !rubinered
+
+div.topicbody, div.postbody
+  :margin-bottom 10px
+  :padding-bottom 10px
+  :border-bottom 1px dotted = !coolgrey11
+  p
+    +inputfonts
+    :font-size 1.2em
+
+div#replywrapper 
+  form
+    :margin 10px 0 20px 0
+
+div.previewing
+  :color = !rubinered
+

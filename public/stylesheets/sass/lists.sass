@@ -1,0 +1,74 @@
+div.preamble
+  :width 85%
+
+div.mainlist
+  :clear left
+  :width 85%
+  :margin 0 20px 20px 0
+  ul
+    :padding-left 20px
+    :color = !coolgrey8
+    li
+      :margin 0 10px 4px 0
+      :font-size 16px
+      :line-height 24px
+      :list-style-position outside
+      img
+        :float left
+        :margin 0 8px 0 0
+    li.waiting
+      :list-style-image url(/images/furniture/signals/wait_16_grey.gif) 
+      a  
+        :color = !coolgrey11
+
+/* list icons and colour-codes
+
+div.mainlist
+  ul
+    :padding 0
+    li
+      :list-style none
+      :padding-left 20px
+      a
+        :padding-left 20px
+        :margin-left -20px
+        :background
+          :color transparent
+          :position top left
+          :repeat no-repeat
+      a:hover
+        :color = !rubinered
+
+@import listicons.sass
+
+/* gallery view
+
+div.gallery 
+  ul
+    :margin 0
+    :padding 0
+  li
+    :display block
+    :width 143px
+    :float left
+    img
+      :margin 4px
+
+/* pagination
+
+.pagination
+  :clear both
+  :margin 16px 3px 20px 0
+  +bodyfonts
+  :font-size 18px
+  :line-height 1.1
+  :color = !coolgrey8
+  a 
+    :color = !blue 
+  a:hover, a:active 
+    :color = !rubinered 
+  span.current 
+    :color = !coolgrey11 
+  span.disabled 
+    :color = !coolgrey8 
+

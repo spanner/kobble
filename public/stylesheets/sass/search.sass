@@ -1,0 +1,56 @@
+div#searchform
+  :display none
+  :font-family 'HelveticaNeue-Roman', helvetica, arial, sans-serif
+  :color black
+  :font-size 12px
+  :line-height 24px
+  :float left
+  :height 24px
+  :margin 0 5px 10px 30px
+  :clear both
+  :padding-top 50px
+  h2
+    :margin 0
+  label
+    :font-size 18px
+    +inputfonts
+    :letter-spacing -0.05em
+    :line-height 20px
+    :color = !coolgrey11
+    :clear both
+  label.required
+    :font-weight bold
+    :font-size 30px
+  input.search
+    :width 77%
+    :height 28px
+    +inputfonts
+    :font-size 22px
+    :font-weight bold
+    :line-height 22px
+    :color black
+  input.submit
+    :height 28px
+  h3, p
+    :margin-bottom 0
+    :color = !coolgrey11
+  ul
+    :margin 0
+    :padding 0
+    :font-size 90%
+    :color = !coolgrey11
+    li
+      :list-style square inside
+      span.explanatory
+        :color = !coolgrey8
+
+
+/******** search results
+
+li.significant a
+  :font-weight bold
+  :font-size 130%
+
+span.rating
+  :font-size 10px
+  :color = !coolgrey8

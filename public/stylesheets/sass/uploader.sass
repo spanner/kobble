@@ -1,0 +1,94 @@
+.upload_controls
+  :clear both
+  :margin-top 32px
+
+div.progressWrapper
+  :width 100%
+  :margin 2px 0
+  :overflow hidden
+  :background-color = !coolgrey11
+  :color white
+  .progressContainer
+    :position relative
+    :padding 0
+    :height 46px
+    :overflow hidden
+    .progressName
+      :position absolute
+      :top 6px
+      :left 6px
+      +headerfonts
+      :font-weight bold
+      :font-size 1.1em
+      :line-height 1
+      :text-align left
+      :white-space nowrap
+      :overflow hidden
+      :z-index 1000
+      .progressStatus
+        +bodyfonts
+    .progressBar
+      :position absolute
+      :top 0
+      :left 0
+      :height 100%
+      :width 0
+      :background-color = !rubinered
+      :z-index 990
+    a.progressCancel
+      :font-size 0
+      :display block
+      :height 14px
+      :width 14px
+      :float right
+  .fileform
+    :z-index 1010
+    :position absolute
+    :background-color = !rubinered
+    :left 120px
+    :height 46px
+    :overflow hidden
+    :min-width 400px
+    td
+      :padding 2px 10px
+      :overflow hidden
+    label
+      :display block
+      :margin 0
+      +headerfonts
+      :color white
+      :font-size 75%
+      :font-weight bold
+    input.textbox
+      +inputfonts
+      :width 100%
+      :padding 3px
+      :border 1px solid #988A50
+  p
+    :margin 0
+    :padding 4px
+    +bodyfonts
+    :font-size 0.8em
+    :width 100%
+    :line-height 1.1
+  p.file_uploaded
+    :font-size 1.1em
+    a
+      :font-weight bold
+      :color white
+    span.tags
+      :color #95e38b
+      :font-size 80%
+    img
+      :float left
+      :margin -4px 20px 0 4px
+
+div.progressFinished
+  :background-color = !green
+
+div.progressFailed
+  :background-color #c00
+
+.swfupload
+  :vertical-align top
+

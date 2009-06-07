@@ -1,15 +1,4 @@
-/* ******* page background rules */
-body {
-  margin: 0;
-  padding: 0;
-  font-family: 'HelveticaNeue-Light', helvetica, arial, sans-serif;
-  font-size: 0.9em;
-  line-height: 1.6;
-  background-color: white;
-  color: black;
-  overflow-x: hidden; }
-
-/* ******* a few widely-applicable modifications */
+/* ******* default entity formatting and some generally useful display and layout control */
 .clear {
   clear: both;
   margin: 20px 0 20px 0; }
@@ -41,16 +30,6 @@ body {
 .showable {
   display: none; }
 
-.inactive {
-  color: #4d4e53; }
-
-.warnings {
-  color: #cc6e1f; }
-
-.greenlit {
-  color: #5da454; }
-
-/* ******* default entity formatting */
 img {
   border: 0;
   margin: 0;
@@ -95,7 +74,17 @@ blockquote {
   border-left-style: solid;
   border-left-color: #8c8d8e; }
 
-/* ******* furniture */
+/* ******* furniture (including body) */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'HelveticaNeue-Light', helvetica, arial, sans-serif;
+  font-size: 0.9em;
+  line-height: 1.6;
+  background-color: white;
+  color: black;
+  overflow-x: hidden; }
+
 div#masthead {
   position: fixed;
   text-align: right;
@@ -212,7 +201,7 @@ div#scratchpad {
   height: 100%;
   overflow: hidden; }
 
-/* ******* admin block */
+/* ******* admin block (not much in here) */
 div#admin ul {
   margin: 0;
   padding-left: 10px;
@@ -228,22 +217,21 @@ div#admin p {
   line-height: 1.1;
   color: #8c8d8e; }
 
-/* ******* actions */
-a.annotate {
+/* ******* colours denote actions past and present */
+a.annotate, .annotated {
   color: #cc6e1f; }
 
-a.warning {
-  color: white;
-  background-color: #d1005d; }
-
-a.create {
+a.create, .created {
   color: #5da454; }
 
-a.edit {
+a.edit, .edited {
   color: #cc6e1f; }
 
-a.delete {
+a.delete, .deleted {
   color: #d1005d; }
+
+a.update {
+  color: #cc6e1f; }
 
 a.mildwarning {
   color: #d1005d; }
@@ -251,13 +239,27 @@ a.mildwarning {
 a.admin {
   color: #4d4e53; }
 
-a.warning:hover, a.create:hover, a.edit:hover, a.mildwarning:hover, a.admin:hover {
+.warning {
+  color: white;
+  background-color: #d1005d; }
+
+a.create:hover, a.edit:hover, a.delete:hover, a.annotate:hover, a.mildwarning:hover, a.admin:hover {
   color: #d1005d; }
 
-div.warning {
-  color: #d1005d; }
+a.warning:hover {
+  color: #d1005d;
+  background-color: white; }
 
-/* ******* list pages */
+.inactive {
+  color: #4d4e53; }
+
+.warnings {
+  color: #cc6e1f; }
+
+.greenlit {
+  color: #5da454; }
+
+/* ******* list pages (also imports listicons) */
 div.preamble {
   width: 85%; }
 
@@ -295,62 +297,63 @@ div.mainlist ul {
       background-repeat: no-repeat; }
     div.mainlist ul li a:hover {
       color: #d1005d; }
-    div.mainlist ul li a.collection {
-      background-image: url(/images/furniture/kobble/16/blue/collection.png); }
-    div.mainlist ul li a.video {
-      background-image: url(/images/furniture/kobble/16/blue/video.png); }
-    div.mainlist ul li a.audio {
-      background-image: url(/images/furniture/kobble/16/blue/audio.png); }
-    div.mainlist ul li a.doc {
-      background-image: url(/images/furniture/kobble/16/blue/text.png); }
-    div.mainlist ul li a.pdf {
-      background-image: url(/images/furniture/kobble/16/blue/text.png); }
-    div.mainlist ul li a.text {
-      background-image: url(/images/furniture/kobble/16/blue/text.png); }
-    div.mainlist ul li a.source {
-      background-image: url(/images/furniture/kobble/16/blue/text.png); }
-    div.mainlist ul li a.node {
-      background-image: url(/images/furniture/kobble/16/blue/node.png); }
-    div.mainlist ul li a.bundle {
-      background-image: url(/images/furniture/kobble/16/blue/bundle.png); }
-    div.mainlist ul li a.user {
-      background-image: url(/images/furniture/kobble/16/blue/person.png); }
-    div.mainlist ul li a.person {
-      background-image: url(/images/furniture/kobble/16/blue/person.png); }
-    div.mainlist ul li a.tag {
-      background-image: url(/images/furniture/kobble/16/blue/tag.png); }
-    div.mainlist ul li a.topic {
-      background-image: url(/images/furniture/kobble/16/blue/topic.png); }
-    div.mainlist ul li a.post {
-      background-image: url(/images/furniture/kobble/16/blue/post.png); }
-    div.mainlist ul li a.collection:hover {
-      background-image: url(/images/furniture/kobble/16/pink/collection.png); }
-    div.mainlist ul li a.video:hover {
-      background-image: url(/images/furniture/kobble/16/pink/video.png); }
-    div.mainlist ul li a.audio:hover {
-      background-image: url(/images/furniture/kobble/16/pink/audio.png); }
-    div.mainlist ul li a.doc:hover {
-      background-image: url(/images/furniture/kobble/16/pink/text.png); }
-    div.mainlist ul li a.pdf:hover {
-      background-image: url(/images/furniture/kobble/16/pink/text.png); }
-    div.mainlist ul li a.text:hover {
-      background-image: url(/images/furniture/kobble/16/pink/text.png); }
-    div.mainlist ul li a.source:hover {
-      background-image: url(/images/furniture/kobble/16/pink/text.png); }
-    div.mainlist ul li a.node:hover {
-      background-image: url(/images/furniture/kobble/16/pink/node.png); }
-    div.mainlist ul li a.bundle:hover {
-      background-image: url(/images/furniture/kobble/16/pink/bundle.png); }
-    div.mainlist ul li a.user:hover {
-      background-image: url(/images/furniture/kobble/16/pink/person.png); }
-    div.mainlist ul li a.person:hover {
-      background-image: url(/images/furniture/kobble/16/pink/person.png); }
-    div.mainlist ul li a.tag:hover {
-      background-image: url(/images/furniture/kobble/16/pink/tag.png); }
-    div.mainlist ul li a.topic:hover {
-      background-image: url(/images/furniture/kobble/16/pink/topic.png); }
-    div.mainlist ul li a.post:hover {
-      background-image: url(/images/furniture/kobble/16/pink/post.png); }
+
+div.mainlist ul li a.collection {
+  background-image: url(/images/furniture/kobble/16/blue/collection.png); }
+div.mainlist ul li a.video {
+  background-image: url(/images/furniture/kobble/16/blue/video.png); }
+div.mainlist ul li a.audio {
+  background-image: url(/images/furniture/kobble/16/blue/audio.png); }
+div.mainlist ul li a.doc {
+  background-image: url(/images/furniture/kobble/16/blue/text.png); }
+div.mainlist ul li a.pdf {
+  background-image: url(/images/furniture/kobble/16/blue/text.png); }
+div.mainlist ul li a.text {
+  background-image: url(/images/furniture/kobble/16/blue/text.png); }
+div.mainlist ul li a.source {
+  background-image: url(/images/furniture/kobble/16/blue/text.png); }
+div.mainlist ul li a.node {
+  background-image: url(/images/furniture/kobble/16/blue/node.png); }
+div.mainlist ul li a.bundle {
+  background-image: url(/images/furniture/kobble/16/blue/bundle.png); }
+div.mainlist ul li a.user {
+  background-image: url(/images/furniture/kobble/16/blue/person.png); }
+div.mainlist ul li a.person {
+  background-image: url(/images/furniture/kobble/16/blue/person.png); }
+div.mainlist ul li a.tag {
+  background-image: url(/images/furniture/kobble/16/blue/tag.png); }
+div.mainlist ul li a.topic {
+  background-image: url(/images/furniture/kobble/16/blue/topic.png); }
+div.mainlist ul li a.post {
+  background-image: url(/images/furniture/kobble/16/blue/post.png); }
+div.mainlist ul li a.collection:hover {
+  background-image: url(/images/furniture/kobble/16/pink/collection.png); }
+div.mainlist ul li a.video:hover {
+  background-image: url(/images/furniture/kobble/16/pink/video.png); }
+div.mainlist ul li a.audio:hover {
+  background-image: url(/images/furniture/kobble/16/pink/audio.png); }
+div.mainlist ul li a.doc:hover {
+  background-image: url(/images/furniture/kobble/16/pink/text.png); }
+div.mainlist ul li a.pdf:hover {
+  background-image: url(/images/furniture/kobble/16/pink/text.png); }
+div.mainlist ul li a.text:hover {
+  background-image: url(/images/furniture/kobble/16/pink/text.png); }
+div.mainlist ul li a.source:hover {
+  background-image: url(/images/furniture/kobble/16/pink/text.png); }
+div.mainlist ul li a.node:hover {
+  background-image: url(/images/furniture/kobble/16/pink/node.png); }
+div.mainlist ul li a.bundle:hover {
+  background-image: url(/images/furniture/kobble/16/pink/bundle.png); }
+div.mainlist ul li a.user:hover {
+  background-image: url(/images/furniture/kobble/16/pink/person.png); }
+div.mainlist ul li a.person:hover {
+  background-image: url(/images/furniture/kobble/16/pink/person.png); }
+div.mainlist ul li a.tag:hover {
+  background-image: url(/images/furniture/kobble/16/pink/tag.png); }
+div.mainlist ul li a.topic:hover {
+  background-image: url(/images/furniture/kobble/16/pink/topic.png); }
+div.mainlist ul li a.post:hover {
+  background-image: url(/images/furniture/kobble/16/pink/post.png); }
 div.mainlist li.created a {
   color: #5da454; }
 div.mainlist li.created a.collection {
@@ -505,25 +508,6 @@ div.mainlist ul.inactive li a.topic {
 div.mainlist ul.inactive li a.post {
   background-image: url(/images/furniture/kobble/16/mid/post.png); }
 
-div.drophere, ul.drophere {
-  background-color: #cacac8; }
-
-ul.dropzone {
-  min-height: 100px; }
-
-li.drophere {
-  color: white;
-  background-color: #cacac8; }
-  li.drophere a {
-    color: #4d4e53; }
-
-li a.draggable {
-  font-weight: bold;
-  font-size: 120%; }
-
-li.deleted a, span.deleted {
-  text-decoration: line-through; }
-
 /* gallery view */
 div.gallery ul {
   margin: 0;
@@ -552,6 +536,42 @@ div.gallery li {
   .pagination span.disabled {
     color: #8c8d8e; }
 
+/* ******* drag and drop signalling */
+/* ******* drag and drop signalling */
+div.drophere, ul.drophere {
+  background-color: #cacac8; }
+
+ul.dropzone {
+  min-height: 100px; }
+
+li.drophere {
+  color: white;
+  background-color: #cacac8; }
+  li.drophere a {
+    color: #4d4e53; }
+
+li a.draggable {
+  font-weight: bold;
+  font-size: 120%; }
+
+li.deleted a, span.deleted {
+  text-decoration: line-through; }
+
+div.waiting {
+  background-image: url('/images/furniture/signals/wait_16_grey.gif');
+  background-position: 5px 5px;
+  background-repeat: no-repeat;
+  padding-left: 24px; }
+
+div.setdrop div.waiting {
+  background-image: url('/images/furniture/signals/wait_32_grey.gif');
+  background-position: 10px 10px;
+  width: 52px;
+  height: 52px; }
+
+div.waiting input {
+  visibility: hidden; }
+
 /* ******* item detail pages */
 div.player {
   width: 300px;
@@ -575,7 +595,7 @@ div.contentblock {
     float: right;
     margin: 0 0 20px 40px; }
 
-/* ******* squeezebox */
+/* squeezebox */
 h3.pagesection {
   margin: 0;
   clear: left; }
@@ -780,7 +800,7 @@ input.bigbutton {
 div.warning input.bigbutton {
   color: #d1005d; }
 
-/* ******* floating form holder */
+/* ******* floating forms and controls */
 a.snipper {
   font-size: 20px;
   font-weight: lighter;
@@ -849,25 +869,6 @@ div.confirming {
 
 input.waiting {
   background: white url(/images/furniture/signals/wait_32_blue.gif) no-repeat center right; }
-
-/* ******* signals */
-div.previewing {
-  color: #d1005d; }
-
-div.waiting {
-  background-image: url('/images/furniture/signals/wait_16_grey.gif');
-  background-position: 5px 5px;
-  background-repeat: no-repeat;
-  padding-left: 24px; }
-
-div.setdrop div.waiting {
-  background-image: url('/images/furniture/signals/wait_32_grey.gif');
-  background-position: 10px 10px;
-  width: 52px;
-  height: 52px; }
-
-div.waiting input {
-  visibility: hidden; }
 
 /* ****** tag cloud */
 ul.cloud {
@@ -1011,6 +1012,9 @@ div.topicbody, div.postbody {
 
 div#replywrapper form {
   margin: 10px 0 20px 0; }
+
+div.previewing {
+  color: #d1005d; }
 
 /* ******* uploader progress bars */
 .upload_controls {

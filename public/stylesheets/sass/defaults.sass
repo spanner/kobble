@@ -1,0 +1,69 @@
+.clear
+  :clear both 
+  :margin 20px 0 20px 0
+.clearleft
+  :clear left 
+  :margin 20px 0 20px 0
+.pale 
+  :color = !coolgrey8
+.error
+  :color = !orange
+.small
+  :font-size 0.7em 
+  :line-height 1.4
+.hide, .hidden, .temporary
+  :display none
+.separator
+  :color white
+.modifier
+  :font
+    :size 0.7em
+    :weight bold
+.showable
+  :display none
+
+img
+  :border 0
+  :margin 0
+  :padding 0
+
+td
+  :vertical-align top
+
+a, a:link, a:visited
+  :color = !blue
+  :text-decoration none
+
+a:hover
+  :color = !rubinered
+
+h1, h2, h3, h4
+  :font
+    :weight lighter
+    +headerfonts
+  :line-height  1.2
+  :letter-spacing -0.04em
+  :clear left
+  :margin-bottom 0
+  :color = !coolgrey11
+  
+h1
+  :font-size 2em
+
+h2, h3
+  :font-size 1.6em
+
+h4
+  :font-size 1.2em
+
+h1 a, h2 a, h3 a, h4 a
+  :text-decoration none
+
+blockquote
+  :color = !coolgrey8
+  :margin 10px 10px 10px 0
+  :padding-left 10px
+  :border-left
+    :width 4px
+    :style solid
+    :color = !coolgrey8

@@ -1,0 +1,226 @@
+div.mainlist
+  ul
+    li
+      a.collection
+        :background-image url(/images/furniture/kobble/16/blue/collection.png) 
+      a.video 
+        :background-image url(/images/furniture/kobble/16/blue/video.png) 
+      a.audio 
+        :background-image url(/images/furniture/kobble/16/blue/audio.png) 
+      a.doc 
+        :background-image url(/images/furniture/kobble/16/blue/text.png) 
+      a.pdf 
+        :background-image url(/images/furniture/kobble/16/blue/text.png) 
+      a.text 
+        :background-image url(/images/furniture/kobble/16/blue/text.png) 
+      a.source 
+        :background-image url(/images/furniture/kobble/16/blue/text.png) 
+      a.node 
+        :background-image url(/images/furniture/kobble/16/blue/node.png) 
+      a.bundle 
+        :background-image url(/images/furniture/kobble/16/blue/bundle.png) 
+      a.user 
+        :background-image url(/images/furniture/kobble/16/blue/person.png) 
+      a.person 
+        :background-image url(/images/furniture/kobble/16/blue/person.png) 
+      a.tag 
+        :background-image url(/images/furniture/kobble/16/blue/tag.png) 
+      a.topic 
+        :background-image url(/images/furniture/kobble/16/blue/topic.png) 
+      a.post 
+        :background-image url(/images/furniture/kobble/16/blue/post.png)
+      a.collection:hover
+        :background-image url(/images/furniture/kobble/16/pink/collection.png) 
+      a.video:hover
+        :background-image url(/images/furniture/kobble/16/pink/video.png) 
+      a.audio:hover
+        :background-image url(/images/furniture/kobble/16/pink/audio.png) 
+      a.doc:hover
+        :background-image url(/images/furniture/kobble/16/pink/text.png) 
+      a.pdf:hover
+        :background-image url(/images/furniture/kobble/16/pink/text.png) 
+      a.text:hover
+        :background-image url(/images/furniture/kobble/16/pink/text.png) 
+      a.source:hover
+        :background-image url(/images/furniture/kobble/16/pink/text.png) 
+      a.node:hover
+        :background-image url(/images/furniture/kobble/16/pink/node.png) 
+      a.bundle:hover
+        :background-image url(/images/furniture/kobble/16/pink/bundle.png) 
+      a.user:hover
+        :background-image url(/images/furniture/kobble/16/pink/person.png) 
+      a.person:hover
+        :background-image url(/images/furniture/kobble/16/pink/person.png) 
+      a.tag:hover
+        :background-image url(/images/furniture/kobble/16/pink/tag.png) 
+      a.topic:hover
+        :background-image url(/images/furniture/kobble/16/pink/topic.png) 
+      a.post:hover
+        :background-image url(/images/furniture/kobble/16/pink/post.png)
+
+  // status types are taken outside the ul to make them less specific
+  // so that the :hover rules above will override them  
+  // (but left inside mainlist until I decide how the scratchpad will be presented)
+  
+  li.created 
+    a
+      :color = !green
+    a.collection
+      :background-image url(/images/furniture/kobble/16/green/collection.png) 
+    a.video 
+      :background-image url(/images/furniture/kobble/16/green/video.png) 
+    a.audio 
+      :background-image url(/images/furniture/kobble/16/green/audio.png) 
+    a.doc 
+      :background-image url(/images/furniture/kobble/16/green/text.png) 
+    a.pdf 
+      :background-image url(/images/furniture/kobble/16/green/text.png) 
+    a.text 
+      :background-image url(/images/furniture/kobble/16/green/text.png) 
+    a.source 
+      :background-image url(/images/furniture/kobble/16/green/text.png) 
+    a.node 
+      :background-image url(/images/furniture/kobble/16/green/node.png) 
+    a.bundle 
+      :background-image url(/images/furniture/kobble/16/green/bundle.png) 
+    a.user 
+      :background-image url(/images/furniture/kobble/16/green/person.png) 
+    a.person 
+      :background-image url(/images/furniture/kobble/16/green/person.png) 
+    a.tag 
+      :background-image url(/images/furniture/kobble/16/green/tag.png) 
+    a.topic 
+      :background-image url(/images/furniture/kobble/16/green/topic.png) 
+    a.post 
+      :background-image url(/images/furniture/kobble/16/green/post.png) 
+
+  li.updated 
+    a
+      :color = !orange
+    a.collection
+      :background-image url(/images/furniture/kobble/16/orange/collection.png) 
+    a.video 
+      :background-image url(/images/furniture/kobble/16/orange/video.png) 
+    a.audio 
+      :background-image url(/images/furniture/kobble/16/orange/audio.png) 
+    a.doc 
+      :background-image url(/images/furniture/kobble/16/orange/text.png) 
+    a.pdf 
+      :background-image url(/images/furniture/kobble/16/orange/text.png) 
+    a.text 
+      :background-image url(/images/furniture/kobble/16/orange/text.png) 
+    a.source 
+      :background-image url(/images/furniture/kobble/16/orange/text.png) 
+    a.node 
+      :background-image url(/images/furniture/kobble/16/orange/node.png) 
+    a.bundle 
+      :background-image url(/images/furniture/kobble/16/orange/bundle.png) 
+    a.user 
+      :background-image url(/images/furniture/kobble/16/orange/person.png) 
+    a.person 
+      :background-image url(/images/furniture/kobble/16/orange/person.png) 
+    a.tag 
+      :background-image url(/images/furniture/kobble/16/orange/tag.png) 
+    a.topic 
+      :background-image url(/images/furniture/kobble/16/orange/topic.png) 
+    a.post 
+      :background-image url(/images/furniture/kobble/16/orange/post.png) 
+
+  li.deleted
+    :text-decoration line-through
+    :color = !coolgrey3
+    a
+      :color = !coolgrey8
+    a.collection
+      :background-image url(/images/furniture/kobble/16/mid/collection.png) 
+    a.video 
+      :background-image url(/images/furniture/kobble/16/mid/video.png) 
+    a.audio 
+      :background-image url(/images/furniture/kobble/16/mid/audio.png) 
+    a.doc 
+      :background-image url(/images/furniture/kobble/16/mid/text.png) 
+    a.pdf 
+      :background-image url(/images/furniture/kobble/16/mid/text.png) 
+    a.text 
+      :background-image url(/images/furniture/kobble/16/mid/text.png) 
+    a.source 
+      :background-image url(/images/furniture/kobble/16/mid/text.png) 
+    a.node 
+      :background-image url(/images/furniture/kobble/16/mid/node.png) 
+    a.bundle 
+      :background-image url(/images/furniture/kobble/16/mid/bundle.png) 
+    a.user 
+      :background-image url(/images/furniture/kobble/16/mid/person.png) 
+    a.person 
+      :background-image url(/images/furniture/kobble/16/mid/person.png) 
+    a.tag 
+      :background-image url(/images/furniture/kobble/16/mid/tag.png) 
+    a.topic 
+      :background-image url(/images/furniture/kobble/16/mid/topic.png) 
+    a.post 
+      :background-image url(/images/furniture/kobble/16/mid/post.png) 
+
+  li.annotated 
+    a
+      :color = !orange
+    a.collection
+      :background-image url(/images/furniture/kobble/16/orange/collection.png) 
+    a.video 
+      :background-image url(/images/furniture/kobble/16/orange/video.png) 
+    a.audio 
+      :background-image url(/images/furniture/kobble/16/orange/audio.png) 
+    a.doc 
+      :background-image url(/images/furniture/kobble/16/orange/text.png) 
+    a.pdf 
+      :background-image url(/images/furniture/kobble/16/orange/text.png) 
+    a.text 
+      :background-image url(/images/furniture/kobble/16/orange/text.png) 
+    a.source 
+      :background-image url(/images/furniture/kobble/16/orange/text.png) 
+    a.node 
+      :background-image url(/images/furniture/kobble/16/orange/node.png) 
+    a.bundle 
+      :background-image url(/images/furniture/kobble/16/orange/bundle.png) 
+    a.user 
+      :background-image url(/images/furniture/kobble/16/orange/person.png) 
+    a.person 
+      :background-image url(/images/furniture/kobble/16/orange/person.png) 
+    a.tag 
+      :background-image url(/images/furniture/kobble/16/orange/tag.png) 
+    a.topic 
+      :background-image url(/images/furniture/kobble/16/orange/topic.png) 
+    a.post 
+      :background-image url(/images/furniture/kobble/16/orange/post.png) 
+
+  ul.inactive
+    li
+      a
+        :color = !coolgrey8
+      a.collection 
+        :background-image url(/images/furniture/kobble/16/mid/collection.png) 
+      a.video 
+        :background-image url(/images/furniture/kobble/16/mid/video.png) 
+      a.audio 
+        :background-image url(/images/furniture/kobble/16/mid/audio.png) 
+      a.doc 
+        :background-image url(/images/furniture/kobble/16/mid/text.png) 
+      a.pdf 
+        :background-image url(/images/furniture/kobble/16/mid/text.png) 
+      a.text 
+        :background-image url(/images/furniture/kobble/16/mid/text.png) 
+      a.source 
+        :background-image url(/images/furniture/kobble/16/mid/text.png) 
+      a.node 
+        :background-image url(/images/furniture/kobble/16/mid/node.png) 
+      a.bundle 
+        :background-image url(/images/furniture/kobble/16/mid/bundle.png) 
+      a.user 
+        :background-image url(/images/furniture/kobble/16/mid/person.png) 
+      a.person 
+        :background-image url(/images/furniture/kobble/16/mid/person.png) 
+      a.tag 
+        :background-image url(/images/furniture/kobble/16/mid/tag.png) 
+      a.topic 
+        :background-image url(/images/furniture/kobble/16/mid/topic.png) 
+      a.post 
+        :background-image url(/images/furniture/kobble/16/mid/post.png) 

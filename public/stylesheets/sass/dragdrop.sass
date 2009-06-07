@@ -1,0 +1,37 @@
+/******** drag and drop signalling
+
+div.drophere, ul.drophere
+  :background-color = !coolgrey3
+
+ul.dropzone
+  :min-height 100px
+
+li.drophere
+  :color white
+  :background-color = !coolgrey3
+  a
+    :color = !coolgrey11
+
+li 
+  a.draggable
+    :font-weight bold
+    :font-size 120%
+
+li.deleted a, span.deleted
+  :text-decoration line-through
+
+div.waiting
+  :background-image url('/images/furniture/signals/wait_16_grey.gif')
+  :background-position 5px 5px
+  :background-repeat no-repeat
+  :padding-left 24px
+
+div.setdrop div.waiting
+  :background-image url('/images/furniture/signals/wait_32_grey.gif')
+  :background-position 10px 10px
+  :width 52px
+  :height 52px
+
+div.waiting input
+  :visibility hidden
+

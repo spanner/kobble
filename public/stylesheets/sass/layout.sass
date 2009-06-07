@@ -1,0 +1,125 @@
+body
+  :margin 0
+  :padding 0 
+  +bodyfonts
+  :font-size 0.9em
+  :line-height 1.6
+  :background-color white
+  :color black
+  :overflow-x hidden 
+
+div#masthead
+  :position fixed
+  :text-align right
+  :left 0
+  :top 28px
+  :height 40px
+  :width 122px
+  p
+    :font-size 1.1em
+    :line-height 0.9
+    :color = !coolgrey11
+    :margin 0
+  a, a:visited
+    :color = !coolgrey11
+  a.emphatic, a.emphatic:visited
+    :font-weight bold
+    :color = !rubinered
+
+div#pagetitle
+  :position relative
+  :margin 36px 180px 20px 130px
+  :max-width 640px
+  h1
+    :font-size 3em
+    :line-height 1.1
+    :margin 0
+    :color = !rubinered
+  h1.longtitle
+    :font-size 2.2em
+    :padding-top 0.8em
+
+div#canvas
+  :position relative
+  :padding 0
+  :margin 0 80px 40px 130px
+
+div#mastfoot
+  :position fixed
+  :left 0
+  :right 0
+  :bottom 0
+  :height 39px
+  :background-color white
+
+div#navigation
+  :margin 10px 100px 5px 125px
+  a, a:link
+    :padding 4px 6px 10px 6px
+    :color = !rubinered
+  a.fg 
+    :background white url(/images/furniture/materialist/thislink.png) no-repeat center bottom 
+  a.louder 
+    :color = !blue 
+  a:hover
+    :color black 
+  a.pale 
+    :color = !coolgrey8 
+  a.administrative
+    :color = !coolgrey11
+
+div#notification
+  :position fixed
+  :left 40px
+  :bottom 20px
+  :width 360px
+  :z-index 13000
+  :visibility hidden
+  :background-color #0c3
+  :border 3px solid #7FE699
+  :color white
+  :padding 10px 20px
+
+div#notification.error
+  :background-color #c00
+  :border 3px solid #e67f00
+
+div#admin
+  :position fixed
+  :left 20px
+  :bottom 12px
+  :width 100px
+  :z-index 12000
+
+div#trashholder
+  :position fixed
+  :left 20px
+  :bottom 10px
+  :height 80px
+  :width 90px
+  :z-index 12000
+  :visibility hidden
+
+div#trash
+  :width 90px
+  :height 80px
+  :background-color white
+  :border 1px solid red
+  :color red
+  p
+    :font-size 11px
+    :line-height 13px
+    :text-align center
+    :margin 28px 6px 0 6px
+
+div#trash.drophere
+  :background-color red
+  :color white
+
+div#scratchpad
+  :position fixed
+  :top 0
+  :right 0
+  :width 130px
+  :height 100%
+  :overflow hidden

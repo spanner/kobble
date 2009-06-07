@@ -1,0 +1,115 @@
+div.player
+  :width 300px
+  :height 32px
+  :margin 8px 0
+
+div.summary
+  :clear left
+  :margin-bottom 16px
+  img.thumbnail
+    :float left
+    :margin 0 10px 6px 0
+
+div.contentblock
+  :max-width = !main_width
+  :clear left
+  p
+    :margin-top 0
+  div.illustration
+    :width 240px
+    :float right
+    :margin 0 0 20px 40px
+
+
+/* squeezebox
+
+h3.pagesection
+  :margin 0
+  :clear left
+  a.squeezebox
+    :background url(/images/furniture/materialist/rightarrow.png) center left no-repeat
+    :color = !rubinered
+    :padding 0 0 0 12px
+  a.expanded
+    :background url(/images/furniture/materialist/downarrow.png) center left no-repeat
+    span.headernote
+      :display none
+
+div.squeezed
+  :margin 6px 0 6px 24px
+
+h3.empty a
+  :text-decoration line-through
+
+/* field notes
+
+div.fieldnote 
+  h4
+    :margin-top 4px
+    :margin-bottom 0
+    :clear left
+
+div.importantnote
+  :font-weight bold
+
+div.badnote 
+  h4, p
+    :color = !rubinered
+
+div.goodnote 
+  h4, p
+    :color = !green
+
+
+/* standard content formatting
+
+p.standfirst
+  :font-weight bold
+
+p.subhead
+  :margin -4px 0 6px 0
+  :font-size 12px
+  :font-family 'HelveticaNeue-Roman', helvetica, arial, sans-serif
+  :color = !coolgrey11
+
+div.synopsis
+  :clear left
+  p
+    :font-family Helvetica, arial, sans-serif
+    :font-size 0.8em
+    :line-height 1.3
+    :color = !coolgrey11
+    :margin-top 0
+
+div.floatcolumn
+  :float right
+  :width 400px
+  :margin-top 0
+  :margin-bottom 40px
+  :margin-left 40px
+  :margin-right 0
+  :padding 0
+
+h3.listheader
+  :margin 20px 0 10px 0
+  :font-weight bold
+  :border-bottom
+    :width 3px
+    :style dotted
+    :color = !coolgrey11
+  a.listhead
+    :color = !coolgrey11
+h4.listheader
+  :margin 20px 0 10px 0
+  :font-weight bold
+  :border-bottom
+    :width 3px
+    :style dotted 
+    :color = !coolgrey11
+  a.listhead
+    :color = !coolgrey11
+
+span.headernote, span.listnote
+  :font-size 0.7em
+  :font-weight lighter
+  :color = !coolgrey8

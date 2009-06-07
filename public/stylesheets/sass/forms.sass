@@ -1,0 +1,110 @@
+div.mainform 
+  .formnote
+    :font-size 0.8em
+    :line-height 1.1
+    :color = !coolgrey8
+  .minorfield
+    :font-size 0.9em
+    :line-height 1.1
+    :color = !coolgrey11
+  h2
+    :color = !rubinered
+  fieldset
+    :border 1px dotted #cacac8
+    :padding 0 16px 0 16px
+    :margin-bottom 10px
+    legend
+      :font-family HelveticaNeue-Light, helvetica, arial, sans-serif
+      :font-size 22px
+      :color #cacac8
+  fieldset.authentication
+    :border 1px solid = !rubinered
+    :padding-top 6px
+    label
+      :color = !rubinered
+  label
+    :font-size 18px
+    +headerfonts
+    :letter-spacing -0.05em
+    :line-height 20px
+    :color = !coolgrey11
+    :clear both
+    a
+      :color = !blue
+      :text-decoration none
+  label.required
+    :font-weight bold
+  label.decision
+    :color = !coolgrey8
+  input
+    :color black
+  input.titular
+    +inputfonts
+    :width 97%
+    :height 28px
+    :font-size 22px
+    :font-weight bold
+    :line-height 22px
+  input.login
+    +inputfonts
+    :font-size 18px
+    :line-height 18px
+    :width 340px
+  input.friendly
+    +inputfonts
+    :font-size 14px
+    :line-height 18px
+    :width 540px
+  input.standard, select.standard, textarea.standard
+    +inputfonts
+    :font-size 14px
+    :line-height 18px
+    :width 97%
+  input.tagbox
+    +inputfonts
+    :font-size 22px
+    :line-height 22px
+    :width 97%
+    :color = !blue
+  input.noborder
+    :border 0
+  input.gobutton
+    :height 28px
+    +headerfonts
+    :font-size 22px
+  div.formbuttons
+    :max-width 640px
+    :clear both
+    :text-align right
+
+div.floatspinner
+  :background-image url('/images/furniture/signals/wait_32_grey.gif')
+  :background-position top left
+  :background-repeat no-repeat
+  :height 32px
+  :width 32px
+  :margin 10px
+  :display none
+
+div.linkspinner
+  :background-image url('/images/furniture/signals/wait_16_grey.gif')
+  :width 16px
+  :height 16px
+  :position absolute
+  :display none
+
+
+/******** error reporting
+
+.haserror
+  :border-left 4px solid = !rubinered
+  :margin-left -16px
+  :padding-left 12px
+  :color = !rubinered !important
+  input, textarea
+    :border
+      :width 1px
+      :style solid
+      :color = !rubinered
+  label
+    :color = !rubinered

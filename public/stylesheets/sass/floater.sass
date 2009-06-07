@@ -1,0 +1,69 @@
+a.snipper
+  :font-size 20px
+  :font-weight lighter
+  :font-family 'HelveticaNeue-Light', helvetica, arial, sans-serif
+  :color = !green
+
+div.overlay
+  :position absolute
+  :left 0
+  :width 100%
+  :background-color white
+  :cursor pointer
+  :z-index 20000
+  :opacity 0
+
+div.floater
+  :position absolute
+  :visibility hidden
+  :left 150px
+  :top 70px
+  :width 510px
+  :padding 0 10px
+  :overflow auto
+  :background-color white
+  :border
+    :width 4px
+    :style solid
+    :color = !rubinered
+  :z-index 21000
+  :overflow hidden
+  h1
+    :height 32px
+    :overflow hidden
+    :margin 20px 10px 6px 20px
+    :color = !rubinered
+  div.preamble
+    :display none
+  div.modalform
+    :width 500px
+    :overflow hidden
+  form
+    :margin 0 20px
+    fieldset
+      :border 0
+      :padding 0
+      :margin 0
+      legend
+        :display none
+  a.canceller, a.canceller:visited
+    :display block
+    :position absolute
+    :top 0
+    :right 0
+    :width 24px
+    :height 24px
+    :font-size 20px
+    :font-family 'HelveticaNeue-Black', helvetica, arial, sans-serif
+    :padding 2px 2px 4px 2px
+    :text-align center
+    :background-color = !rubinered
+    :color white
+
+div.confirming
+  :border-color = !green
+  a.canceller, a.canceller:visited
+    :background-color = !green
+
+input.waiting
+  :background white url(/images/furniture/signals/wait_32_blue.gif) no-repeat center right

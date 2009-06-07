@@ -1,0 +1,39 @@
+div.autocompleter-loading
+  :float left
+  :clear right
+  :background #fff url(/images/furniture/signals/wait_16_grey.gif) no-repeat center
+  :width 20px
+  :height 16px
+  :display none
+
+
+ul.tagsuggestions
+  :position absolute
+  :margin 0
+  :padding 0
+  :list-style none
+  :background-color white
+  :border 1px solid #eee
+  :border-right-color #ddd
+  :border-bottom-color #ddd
+  :text-align left
+  +inputfonts
+  :font-size 14px
+  :font-weight lighter
+  :line-height 14px
+  :color = !coolgrey11
+  :margin-left 5px
+  li
+    :position relative
+    :padding 0.2em 1.5em 0.2em 1em
+    :display block
+    :margin-top -2px
+    :cursor pointer
+    :font-weight normal
+    :font-size 1em
+    :line-height 1.5em
+  li.autocompleter-selected
+    :background-color = !blue
+    :color white
+  span.autocompleter-queried
+    :font-weight bold
