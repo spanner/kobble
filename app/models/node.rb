@@ -1,9 +1,7 @@
 class Node < ActiveRecord::Base
 
   is_material
-
   belongs_to :source
-  belongs_to :collection
 
   validates_presence_of :name, :description, :collection
   validate :must_have_body_clip_or_file

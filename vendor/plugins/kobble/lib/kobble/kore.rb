@@ -83,11 +83,11 @@ module Kobble #:nodoc:
         end
       
         if definitions.include?(:owners)
-          belongs_to :creator, :class_name => 'User', :foreign_key => 'created_by'
-          belongs_to :updater, :class_name => 'User', :foreign_key => 'updated_by'
-          named_scope :created_by_user, lambda { |user| {:conditions => { :created_by => user.id }} }
+          belongs_to :created_by, :class_name => 'User'
+          belongs_to :updated_by, :class_name => 'User'
+          named_scope :created_by_user, lambda { |user| {:conditions => { :created_by_id => user.id }} }
           if column_names.include?('speaker_id')
-            belongs_to :speaker, :class_name => 'Person', :foreign_key => 'speaker_id'
+            belongs_to :speaker, :class_name => 'Person'
             named_scope :spoken_by_person, lambda { |person| {:conditions => { :speaker_id => person.id }} }
           end
         end
@@ -211,7 +211,7 @@ module Kobble #:nodoc:
       def owned_by
         return self.account if self.respond_to?('account')
         return self.collection.account if self.respond_to?('collection')
-        return self.creator.account if self.respond_to?('creator')
+        return self.created_by.account if self.respond_to?('created_by')
       end
     
       def has_collection?
@@ -287,7 +287,7 @@ module Kobble #:nodoc:
       def has_origins?
         (self.respond_to?('source') && source.nil?) && 
         (self.respond_to?('speaker') && speaker.nil?) && 
-        (self.respond_to?('creator') && creator.nil?) ? false : true
+        (self.respond_to?('created_by') && created_by.nil?) ? false : true
       end
 
       def has_body?
@@ -345,8 +345,8 @@ module Kobble #:nodoc:
         "No text available"
       end
             
-      def has_creator?
-        self.respond_to?('creator') && !self.creator.nil?
+      def has_created_by?
+        self.respond_to?('created_by') && !self.created_by.nil?
       end
     
       def has_speaker?
@@ -355,7 +355,7 @@ module Kobble #:nodoc:
 
       def main_person
         return speaker if has_speaker?
-        return creator
+        return created_by
       end
     
       def last_event_at

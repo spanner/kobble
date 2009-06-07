@@ -1,3 +1,5 @@
+@import constants.sass
+
 body
   :margin 0
   :padding 0 
@@ -12,7 +14,7 @@ div#masthead
   :position fixed
   :text-align right
   :left 0
-  :top 28px
+  :top 30px
   :height 40px
   :width 122px
   p
@@ -26,23 +28,33 @@ div#masthead
     :font-weight bold
     :color = !rubinered
 
-div#pagetitle
+div#mainpage
   :position relative
-  :margin 36px 180px 20px 130px
-  :max-width 640px
-  h1
-    :font-size 3em
-    :line-height 1.1
-    :margin 0
-    :color = !rubinered
-  h1.longtitle
-    :font-size 2.2em
-    :padding-top 0.8em
-
-div#canvas
-  :position relative
-  :padding 0
-  :margin 0 80px 40px 130px
+  :width 72%
+  div#pagetitle
+    :position relative
+    :margin 36px 180px 20px 130px
+    :max-width 640px
+    h1
+      :font-size 3em
+      :line-height 1.1
+      :margin 0
+      :color = !rubinered
+    h1.longtitle
+      :font-size 2.2em
+      :padding-top 0.8em
+  div#canvas
+    :position relative
+    :padding 0
+    :margin 0 20px 40px 130px
+  
+div#scratchpad
+  :position fixed
+  :top 0
+  :right 0
+  :width 25%
+  :height 100%
+  :overflow hidden
 
 div#mastfoot
   :position fixed
@@ -116,10 +128,3 @@ div#trash.drophere
   :background-color red
   :color white
 
-div#scratchpad
-  :position fixed
-  :top 0
-  :right 0
-  :width 130px
-  :height 100%
-  :overflow hidden

@@ -16,16 +16,25 @@ class User < ActiveRecord::Base
   has_many :user_preferences, :dependent => :destroy
   has_many :preferences, :through => :user_preferences, :conditions => ['user_preferences.active = ?', true], :source => :preference
 
-  has_many :created_collections, :class_name => 'Collection', :foreign_key => 'created_by', :dependent => :destroy
-  has_many :created_sources, :class_name => 'Source', :foreign_key => 'created_by', :dependent => :destroy
-  has_many :created_nodes, :class_name => 'Node', :foreign_key => 'created_by', :dependent => :destroy
-  has_many :created_bundles, :class_name => 'Bundle', :foreign_key => 'created_by', :dependent => :destroy
-  has_many :created_topics, :class_name => 'Topic', :foreign_key => 'created_by', :dependent => :destroy
-  has_many :created_posts, :class_name => 'Post', :foreign_key => 'created_by', :dependent => :destroy  
-  has_many :created_scratchpads, :class_name => 'Scratchpad', :foreign_key => 'created_by', :dependent => :destroy
-  has_many :created_tags, :class_name => 'Tag', :foreign_key => 'created_by', :dependent => :destroy
-  has_many :created_taggings, :class_name => 'Tagging', :foreign_key => 'created_by', :dependent => :nullify
+  has_many :created_collections, :class_name => 'Collection', :foreign_key => 'created_by_id', :dependent => :destroy
+  has_many :created_sources, :class_name => 'Source', :foreign_key => 'created_by_id', :dependent => :destroy
+  has_many :created_nodes, :class_name => 'Node', :foreign_key => 'created_by_id', :dependent => :destroy
+  has_many :created_bundles, :class_name => 'Bundle', :foreign_key => 'created_by_id', :dependent => :destroy
+  has_many :created_topics, :class_name => 'Topic', :foreign_key => 'created_by_id', :dependent => :destroy
+  has_many :created_posts, :class_name => 'Post', :foreign_key => 'created_by_id', :dependent => :destroy  
+  has_many :created_tags, :class_name => 'Tag', :foreign_key => 'created_by_id', :dependent => :destroy
+  has_many :created_taggings, :class_name => 'Tagging', :foreign_key => 'created_by_id', :dependent => :nullify
   has_many :events, :order => 'at DESC', :dependent => :nullify
+
+  # simplified scratchpad relationship
+  # polymorphic. we can't go :through
+  # so see scraps below
+
+  has_many :scrappings, :foreign_key => 'created_by_id', :order => 'position', :dependent => :destroy
+
+  # and the old one is kept for transition but soon to be removed
+  
+  has_many :created_scratchpads, :class_name => 'Scratchpad', :foreign_key => 'created_by_id', :dependent => :destroy
 
   named_scope :in_account, lambda { |account| {:conditions => { :account_id => account.id }} }
 
@@ -34,15 +43,6 @@ class User < ActiveRecord::Base
   
   def self.nice_title
     "user"
-  end
-
-  def scratchpads
-    if self.created_scratchpads.empty?
-      ['a scratchpad', 'another scratchpad', 'miscellaneous', 'other'].each do |name|
-        self.created_scratchpads.create({:name => name})
-      end
-    end
-    self.created_scratchpads
   end
 
   def account_admin?
@@ -125,6 +125,35 @@ public
     preference = Preference.find_by_abbr(abbr)
     UserPreference.find_or_create_by_user_id_and_preference_id(self.id, preference.id).is_active?
   end
+  
+  # scratchpad functions
+  
+  def scraps
+    self.scrappings.map {|s| s.scrap}
+  end
+  
+  def current_scraps(collection = Collection.current)
+    self.scrappings.in_collection(collection).map {|s| s.scrap}
+  end
+  
+  def catch_this(object)
+    if self.scrappings.of(object).empty?
+      self.scrappings.create!(:scrap => object)
+      return Kobble::Response.new("#{object.name} added to scratchpad", 'copy', 'success')
+    else
+      return Kobble::Response.new("#{object.name} already in scratchpad", '', 'refusal')
+    end
+  end
+
+  def drop_this(object)
+    if self.scrappings.of(object).empty?
+      return Kobble::Response.new("#{object.name} not in scratchpad: hello?", 'delete', 'success')
+    else
+      self.scrappings.delete(self.scrappings.of(object))
+      return Kobble::Response.new("#{object.name} removed from scratchpad", '', 'refusal')
+    end
+  end
+  
   
 protected
 

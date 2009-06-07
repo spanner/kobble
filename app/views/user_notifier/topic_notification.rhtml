@@ -1,6 +1,6 @@
 Hello <%= @user.name %>.
 
-<% if @user == @topic.referent.creator %>A new conversation has been started by <%= @topic.creator.name %> about your <%= @topic.referent.class.nice_name %> <%= @topic.referent.name %>.<% else%>A new conversation has been started by <%= @topic.creator.name %> about the <%= @topic.referent.class.nice_name %> '<%= @topic.referent.name %>' and the creator has chosen to notify you.<% end %>
+<% if @user == @topic.referent.created_by %>A new conversation has been started by <%= @topic.created_by.name %> about your <%= @topic.referent.class.nice_name %> <%= @topic.referent.name %>.<% else%>A new conversation has been started by <%= @topic.created_by.name %> about the <%= @topic.referent.class.nice_name %> '<%= @topic.referent.name %>' and the created_by has chosen to notify you.<% end %>
 
 _______________________________________________________________________
 

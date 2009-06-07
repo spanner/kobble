@@ -1,6 +1,6 @@
 <% @title = @thing.name %>
 
-<p>A scratchpad belonging to <%= @thing.creator.name %></p>
+<p>A scratchpad belonging to <%= @thing.created_by.name %></p>
 
 <div class="mainlist">
   <%= render :partial => "scrap", :collection => @thing.scraps %>

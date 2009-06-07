@@ -1,0 +1,7 @@
+- if scrapping.scrap
+  - scrap = scrapping.scrap
+  - name = scrap.name.nil? || scrap.name.blank? ? "nameless #{scrap.class.nice_title}" : scrap.name 
+
+  %li{:id => "scrapping_#{scrapping.id}", :class => "padded selectable sortable #{cycle('alternate', '')}"}
+    = check_box_tag 'scrappings[]', scrapping.id, false, :id => "cb_scrappings_#{scrapping.id}", :class => 'selector'
+    = link_to name, url_for(scrap), :id => "#{scrap.class.to_s.downcase}_#{scrap.id}", :class => "#{scrap.class.to_s.downcase} draggable"

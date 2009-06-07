@@ -4,4 +4,4 @@
 <% else %>
   Loose fragment created 
 <% end %>
-by <%= link_to (item.creator.name, :controller => 'users', :action => 'show', :id => item.creator) if item.creator %>.
+by <%= link_to (item.created_by.name, :controller => 'users', :action => 'show', :id => item.created_by) if item.created_by %>.

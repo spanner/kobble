@@ -89,7 +89,7 @@ div#masthead {
   position: fixed;
   text-align: right;
   left: 0;
-  top: 28px;
+  top: 30px;
   height: 40px;
   width: 122px; }
   div#masthead p {
@@ -103,23 +103,33 @@ div#masthead {
     font-weight: bold;
     color: #d1005d; }
 
-div#pagetitle {
+div#mainpage {
   position: relative;
-  margin: 36px 180px 20px 130px;
-  max-width: 640px; }
-  div#pagetitle h1 {
-    font-size: 3em;
-    line-height: 1.1;
-    margin: 0;
-    color: #d1005d; }
-  div#pagetitle h1.longtitle {
-    font-size: 2.2em;
-    padding-top: 0.8em; }
+  width: 72%; }
+  div#mainpage div#pagetitle {
+    position: relative;
+    margin: 36px 180px 20px 130px;
+    max-width: 640px; }
+    div#mainpage div#pagetitle h1 {
+      font-size: 3em;
+      line-height: 1.1;
+      margin: 0;
+      color: #d1005d; }
+    div#mainpage div#pagetitle h1.longtitle {
+      font-size: 2.2em;
+      padding-top: 0.8em; }
+  div#mainpage div#canvas {
+    position: relative;
+    padding: 0;
+    margin: 0 20px 40px 130px; }
 
-div#canvas {
-  position: relative;
-  padding: 0;
-  margin: 0 80px 40px 130px; }
+div#scratchpad {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 25%;
+  height: 100%;
+  overflow: hidden; }
 
 div#mastfoot {
   position: fixed;
@@ -193,14 +203,6 @@ div#trash.drophere {
   background-color: red;
   color: white; }
 
-div#scratchpad {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 130px;
-  height: 100%;
-  overflow: hidden; }
-
 /* ******* admin block (not much in here) */
 div#admin ul {
   margin: 0;
@@ -264,9 +266,7 @@ div.preamble {
   width: 85%; }
 
 div.mainlist {
-  clear: left;
-  width: 85%;
-  margin: 0 20px 20px 0; }
+  clear: left; }
   div.mainlist ul {
     padding-left: 20px;
     color: #8c8d8e; }
@@ -298,214 +298,219 @@ div.mainlist ul {
     div.mainlist ul li a:hover {
       color: #d1005d; }
 
-div.mainlist ul li a.collection {
+ul li a.collection {
   background-image: url(/images/furniture/kobble/16/blue/collection.png); }
-div.mainlist ul li a.video {
+ul li a.video {
   background-image: url(/images/furniture/kobble/16/blue/video.png); }
-div.mainlist ul li a.audio {
+ul li a.audio {
   background-image: url(/images/furniture/kobble/16/blue/audio.png); }
-div.mainlist ul li a.doc {
+ul li a.doc {
   background-image: url(/images/furniture/kobble/16/blue/text.png); }
-div.mainlist ul li a.pdf {
+ul li a.pdf {
   background-image: url(/images/furniture/kobble/16/blue/text.png); }
-div.mainlist ul li a.text {
+ul li a.text {
   background-image: url(/images/furniture/kobble/16/blue/text.png); }
-div.mainlist ul li a.source {
+ul li a.source {
   background-image: url(/images/furniture/kobble/16/blue/text.png); }
-div.mainlist ul li a.node {
+ul li a.node {
   background-image: url(/images/furniture/kobble/16/blue/node.png); }
-div.mainlist ul li a.bundle {
+ul li a.bundle {
   background-image: url(/images/furniture/kobble/16/blue/bundle.png); }
-div.mainlist ul li a.user {
+ul li a.user {
   background-image: url(/images/furniture/kobble/16/blue/person.png); }
-div.mainlist ul li a.person {
+ul li a.person {
   background-image: url(/images/furniture/kobble/16/blue/person.png); }
-div.mainlist ul li a.tag {
+ul li a.tag {
   background-image: url(/images/furniture/kobble/16/blue/tag.png); }
-div.mainlist ul li a.topic {
+ul li a.topic {
   background-image: url(/images/furniture/kobble/16/blue/topic.png); }
-div.mainlist ul li a.post {
+ul li a.post {
   background-image: url(/images/furniture/kobble/16/blue/post.png); }
-div.mainlist ul li a.collection:hover {
+ul li a.collection:hover {
   background-image: url(/images/furniture/kobble/16/pink/collection.png); }
-div.mainlist ul li a.video:hover {
+ul li a.video:hover {
   background-image: url(/images/furniture/kobble/16/pink/video.png); }
-div.mainlist ul li a.audio:hover {
+ul li a.audio:hover {
   background-image: url(/images/furniture/kobble/16/pink/audio.png); }
-div.mainlist ul li a.doc:hover {
+ul li a.doc:hover {
   background-image: url(/images/furniture/kobble/16/pink/text.png); }
-div.mainlist ul li a.pdf:hover {
+ul li a.pdf:hover {
   background-image: url(/images/furniture/kobble/16/pink/text.png); }
-div.mainlist ul li a.text:hover {
+ul li a.text:hover {
   background-image: url(/images/furniture/kobble/16/pink/text.png); }
-div.mainlist ul li a.source:hover {
+ul li a.source:hover {
   background-image: url(/images/furniture/kobble/16/pink/text.png); }
-div.mainlist ul li a.node:hover {
+ul li a.node:hover {
   background-image: url(/images/furniture/kobble/16/pink/node.png); }
-div.mainlist ul li a.bundle:hover {
+ul li a.bundle:hover {
   background-image: url(/images/furniture/kobble/16/pink/bundle.png); }
-div.mainlist ul li a.user:hover {
+ul li a.user:hover {
   background-image: url(/images/furniture/kobble/16/pink/person.png); }
-div.mainlist ul li a.person:hover {
+ul li a.person:hover {
   background-image: url(/images/furniture/kobble/16/pink/person.png); }
-div.mainlist ul li a.tag:hover {
+ul li a.tag:hover {
   background-image: url(/images/furniture/kobble/16/pink/tag.png); }
-div.mainlist ul li a.topic:hover {
+ul li a.topic:hover {
   background-image: url(/images/furniture/kobble/16/pink/topic.png); }
-div.mainlist ul li a.post:hover {
+ul li a.post:hover {
   background-image: url(/images/furniture/kobble/16/pink/post.png); }
-div.mainlist li.created a {
+
+li.created a {
   color: #5da454; }
-div.mainlist li.created a.collection {
+li.created a.collection {
   background-image: url(/images/furniture/kobble/16/green/collection.png); }
-div.mainlist li.created a.video {
+li.created a.video {
   background-image: url(/images/furniture/kobble/16/green/video.png); }
-div.mainlist li.created a.audio {
+li.created a.audio {
   background-image: url(/images/furniture/kobble/16/green/audio.png); }
-div.mainlist li.created a.doc {
+li.created a.doc {
   background-image: url(/images/furniture/kobble/16/green/text.png); }
-div.mainlist li.created a.pdf {
+li.created a.pdf {
   background-image: url(/images/furniture/kobble/16/green/text.png); }
-div.mainlist li.created a.text {
+li.created a.text {
   background-image: url(/images/furniture/kobble/16/green/text.png); }
-div.mainlist li.created a.source {
+li.created a.source {
   background-image: url(/images/furniture/kobble/16/green/text.png); }
-div.mainlist li.created a.node {
+li.created a.node {
   background-image: url(/images/furniture/kobble/16/green/node.png); }
-div.mainlist li.created a.bundle {
+li.created a.bundle {
   background-image: url(/images/furniture/kobble/16/green/bundle.png); }
-div.mainlist li.created a.user {
+li.created a.user {
   background-image: url(/images/furniture/kobble/16/green/person.png); }
-div.mainlist li.created a.person {
+li.created a.person {
   background-image: url(/images/furniture/kobble/16/green/person.png); }
-div.mainlist li.created a.tag {
+li.created a.tag {
   background-image: url(/images/furniture/kobble/16/green/tag.png); }
-div.mainlist li.created a.topic {
+li.created a.topic {
   background-image: url(/images/furniture/kobble/16/green/topic.png); }
-div.mainlist li.created a.post {
+li.created a.post {
   background-image: url(/images/furniture/kobble/16/green/post.png); }
-div.mainlist li.updated a {
+
+li.updated a {
   color: #cc6e1f; }
-div.mainlist li.updated a.collection {
+li.updated a.collection {
   background-image: url(/images/furniture/kobble/16/orange/collection.png); }
-div.mainlist li.updated a.video {
+li.updated a.video {
   background-image: url(/images/furniture/kobble/16/orange/video.png); }
-div.mainlist li.updated a.audio {
+li.updated a.audio {
   background-image: url(/images/furniture/kobble/16/orange/audio.png); }
-div.mainlist li.updated a.doc {
+li.updated a.doc {
   background-image: url(/images/furniture/kobble/16/orange/text.png); }
-div.mainlist li.updated a.pdf {
+li.updated a.pdf {
   background-image: url(/images/furniture/kobble/16/orange/text.png); }
-div.mainlist li.updated a.text {
+li.updated a.text {
   background-image: url(/images/furniture/kobble/16/orange/text.png); }
-div.mainlist li.updated a.source {
+li.updated a.source {
   background-image: url(/images/furniture/kobble/16/orange/text.png); }
-div.mainlist li.updated a.node {
+li.updated a.node {
   background-image: url(/images/furniture/kobble/16/orange/node.png); }
-div.mainlist li.updated a.bundle {
+li.updated a.bundle {
   background-image: url(/images/furniture/kobble/16/orange/bundle.png); }
-div.mainlist li.updated a.user {
+li.updated a.user {
   background-image: url(/images/furniture/kobble/16/orange/person.png); }
-div.mainlist li.updated a.person {
+li.updated a.person {
   background-image: url(/images/furniture/kobble/16/orange/person.png); }
-div.mainlist li.updated a.tag {
+li.updated a.tag {
   background-image: url(/images/furniture/kobble/16/orange/tag.png); }
-div.mainlist li.updated a.topic {
+li.updated a.topic {
   background-image: url(/images/furniture/kobble/16/orange/topic.png); }
-div.mainlist li.updated a.post {
+li.updated a.post {
   background-image: url(/images/furniture/kobble/16/orange/post.png); }
-div.mainlist li.deleted {
+
+li.deleted {
   text-decoration: line-through;
   color: #cacac8; }
-  div.mainlist li.deleted a {
+  li.deleted a {
     color: #8c8d8e; }
-  div.mainlist li.deleted a.collection {
+  li.deleted a.collection {
     background-image: url(/images/furniture/kobble/16/mid/collection.png); }
-  div.mainlist li.deleted a.video {
+  li.deleted a.video {
     background-image: url(/images/furniture/kobble/16/mid/video.png); }
-  div.mainlist li.deleted a.audio {
+  li.deleted a.audio {
     background-image: url(/images/furniture/kobble/16/mid/audio.png); }
-  div.mainlist li.deleted a.doc {
+  li.deleted a.doc {
     background-image: url(/images/furniture/kobble/16/mid/text.png); }
-  div.mainlist li.deleted a.pdf {
+  li.deleted a.pdf {
     background-image: url(/images/furniture/kobble/16/mid/text.png); }
-  div.mainlist li.deleted a.text {
+  li.deleted a.text {
     background-image: url(/images/furniture/kobble/16/mid/text.png); }
-  div.mainlist li.deleted a.source {
+  li.deleted a.source {
     background-image: url(/images/furniture/kobble/16/mid/text.png); }
-  div.mainlist li.deleted a.node {
+  li.deleted a.node {
     background-image: url(/images/furniture/kobble/16/mid/node.png); }
-  div.mainlist li.deleted a.bundle {
+  li.deleted a.bundle {
     background-image: url(/images/furniture/kobble/16/mid/bundle.png); }
-  div.mainlist li.deleted a.user {
+  li.deleted a.user {
     background-image: url(/images/furniture/kobble/16/mid/person.png); }
-  div.mainlist li.deleted a.person {
+  li.deleted a.person {
     background-image: url(/images/furniture/kobble/16/mid/person.png); }
-  div.mainlist li.deleted a.tag {
+  li.deleted a.tag {
     background-image: url(/images/furniture/kobble/16/mid/tag.png); }
-  div.mainlist li.deleted a.topic {
+  li.deleted a.topic {
     background-image: url(/images/furniture/kobble/16/mid/topic.png); }
-  div.mainlist li.deleted a.post {
+  li.deleted a.post {
     background-image: url(/images/furniture/kobble/16/mid/post.png); }
-div.mainlist li.annotated a {
+
+li.annotated a {
   color: #cc6e1f; }
-div.mainlist li.annotated a.collection {
+li.annotated a.collection {
   background-image: url(/images/furniture/kobble/16/orange/collection.png); }
-div.mainlist li.annotated a.video {
+li.annotated a.video {
   background-image: url(/images/furniture/kobble/16/orange/video.png); }
-div.mainlist li.annotated a.audio {
+li.annotated a.audio {
   background-image: url(/images/furniture/kobble/16/orange/audio.png); }
-div.mainlist li.annotated a.doc {
+li.annotated a.doc {
   background-image: url(/images/furniture/kobble/16/orange/text.png); }
-div.mainlist li.annotated a.pdf {
+li.annotated a.pdf {
   background-image: url(/images/furniture/kobble/16/orange/text.png); }
-div.mainlist li.annotated a.text {
+li.annotated a.text {
   background-image: url(/images/furniture/kobble/16/orange/text.png); }
-div.mainlist li.annotated a.source {
+li.annotated a.source {
   background-image: url(/images/furniture/kobble/16/orange/text.png); }
-div.mainlist li.annotated a.node {
+li.annotated a.node {
   background-image: url(/images/furniture/kobble/16/orange/node.png); }
-div.mainlist li.annotated a.bundle {
+li.annotated a.bundle {
   background-image: url(/images/furniture/kobble/16/orange/bundle.png); }
-div.mainlist li.annotated a.user {
+li.annotated a.user {
   background-image: url(/images/furniture/kobble/16/orange/person.png); }
-div.mainlist li.annotated a.person {
+li.annotated a.person {
   background-image: url(/images/furniture/kobble/16/orange/person.png); }
-div.mainlist li.annotated a.tag {
+li.annotated a.tag {
   background-image: url(/images/furniture/kobble/16/orange/tag.png); }
-div.mainlist li.annotated a.topic {
+li.annotated a.topic {
   background-image: url(/images/furniture/kobble/16/orange/topic.png); }
-div.mainlist li.annotated a.post {
+li.annotated a.post {
   background-image: url(/images/furniture/kobble/16/orange/post.png); }
-div.mainlist ul.inactive li a {
+
+ul.inactive li a {
   color: #8c8d8e; }
-div.mainlist ul.inactive li a.collection {
+ul.inactive li a.collection {
   background-image: url(/images/furniture/kobble/16/mid/collection.png); }
-div.mainlist ul.inactive li a.video {
+ul.inactive li a.video {
   background-image: url(/images/furniture/kobble/16/mid/video.png); }
-div.mainlist ul.inactive li a.audio {
+ul.inactive li a.audio {
   background-image: url(/images/furniture/kobble/16/mid/audio.png); }
-div.mainlist ul.inactive li a.doc {
+ul.inactive li a.doc {
   background-image: url(/images/furniture/kobble/16/mid/text.png); }
-div.mainlist ul.inactive li a.pdf {
+ul.inactive li a.pdf {
   background-image: url(/images/furniture/kobble/16/mid/text.png); }
-div.mainlist ul.inactive li a.text {
+ul.inactive li a.text {
   background-image: url(/images/furniture/kobble/16/mid/text.png); }
-div.mainlist ul.inactive li a.source {
+ul.inactive li a.source {
   background-image: url(/images/furniture/kobble/16/mid/text.png); }
-div.mainlist ul.inactive li a.node {
+ul.inactive li a.node {
   background-image: url(/images/furniture/kobble/16/mid/node.png); }
-div.mainlist ul.inactive li a.bundle {
+ul.inactive li a.bundle {
   background-image: url(/images/furniture/kobble/16/mid/bundle.png); }
-div.mainlist ul.inactive li a.user {
+ul.inactive li a.user {
   background-image: url(/images/furniture/kobble/16/mid/person.png); }
-div.mainlist ul.inactive li a.person {
+ul.inactive li a.person {
   background-image: url(/images/furniture/kobble/16/mid/person.png); }
-div.mainlist ul.inactive li a.tag {
+ul.inactive li a.tag {
   background-image: url(/images/furniture/kobble/16/mid/tag.png); }
-div.mainlist ul.inactive li a.topic {
+ul.inactive li a.topic {
   background-image: url(/images/furniture/kobble/16/mid/topic.png); }
-div.mainlist ul.inactive li a.post {
+ul.inactive li a.post {
   background-image: url(/images/furniture/kobble/16/mid/post.png); }
 
 /* gallery view */
@@ -536,7 +541,101 @@ div.gallery li {
   .pagination span.disabled {
     color: #8c8d8e; }
 
-/* ******* drag and drop signalling */
+/* ******* scratchpad */
+div#scratchpad {
+  background-color: #4d4e53; }
+  div#scratchpad h3 {
+    margin: 4px;
+    color: #8c8d8e; }
+  div#scratchpad p.explanatory {
+    position: absolute;
+    bottom: 0;
+    font-size: 80%;
+    padding: 10px;
+    margin: 0;
+    background-color: #4d4e53;
+    color: #8c8d8e; }
+  div#scratchpad ul.padlist {
+    padding: 0;
+    margin: 0; }
+    div#scratchpad ul.padlist li {
+      list-style: none;
+      margin: 0;
+      padding: 4px 4px 4px 24px; }
+      div#scratchpad ul.padlist li a, div#scratchpad ul.padlist li a.draggable {
+        font-size: 100%;
+        color: #afafaf;
+        font-weight: normal;
+        line-height: 1.1;
+        padding-left: 20px;
+        margin-left: -20px;
+        background-color: transparent;
+        background-position: top left;
+        background-repeat: no-repeat; }
+      div#scratchpad ul.padlist li a:hover {
+        color: white; }
+      div#scratchpad ul.padlist li input.selector {
+        display: none; }
+    div#scratchpad ul.padlist li.alternate {
+      background-color: #616265; }
+
+li.padded a.collection {
+  background-image: url(/images/furniture/kobble/16/mid/collection.png); }
+li.padded a.video {
+  background-image: url(/images/furniture/kobble/16/mid/video.png); }
+li.padded a.audio {
+  background-image: url(/images/furniture/kobble/16/mid/audio.png); }
+li.padded a.doc {
+  background-image: url(/images/furniture/kobble/16/mid/text.png); }
+li.padded a.pdf {
+  background-image: url(/images/furniture/kobble/16/mid/text.png); }
+li.padded a.text {
+  background-image: url(/images/furniture/kobble/16/mid/text.png); }
+li.padded a.source {
+  background-image: url(/images/furniture/kobble/16/mid/text.png); }
+li.padded a.node {
+  background-image: url(/images/furniture/kobble/16/mid/node.png); }
+li.padded a.bundle {
+  background-image: url(/images/furniture/kobble/16/mid/bundle.png); }
+li.padded a.user {
+  background-image: url(/images/furniture/kobble/16/mid/person.png); }
+li.padded a.person {
+  background-image: url(/images/furniture/kobble/16/mid/person.png); }
+li.padded a.tag {
+  background-image: url(/images/furniture/kobble/16/mid/tag.png); }
+li.padded a.topic {
+  background-image: url(/images/furniture/kobble/16/mid/topic.png); }
+li.padded a.post {
+  background-image: url(/images/furniture/kobble/16/mid/post.png); }
+li.padded a.collection:hover {
+  background-image: url(/images/furniture/kobble/16/white/collection.png); }
+li.padded a.video:hover {
+  background-image: url(/images/furniture/kobble/16/white/video.png); }
+li.padded a.audio:hover {
+  background-image: url(/images/furniture/kobble/16/white/audio.png); }
+li.padded a.doc:hover {
+  background-image: url(/images/furniture/kobble/16/white/text.png); }
+li.padded a.pdf:hover {
+  background-image: url(/images/furniture/kobble/16/white/text.png); }
+li.padded a.text:hover {
+  background-image: url(/images/furniture/kobble/16/white/text.png); }
+li.padded a.source:hover {
+  background-image: url(/images/furniture/kobble/16/white/text.png); }
+li.padded a.node:hover {
+  background-image: url(/images/furniture/kobble/16/white/node.png); }
+li.padded a.bundle:hover {
+  background-image: url(/images/furniture/kobble/16/white/bundle.png); }
+li.padded a.user:hover {
+  background-image: url(/images/furniture/kobble/16/white/person.png); }
+li.padded a.person:hover {
+  background-image: url(/images/furniture/kobble/16/white/person.png); }
+li.padded a.tag:hover {
+  background-image: url(/images/furniture/kobble/16/white/tag.png); }
+li.padded a.topic:hover {
+  background-image: url(/images/furniture/kobble/16/white/topic.png); }
+li.padded a.post:hover {
+  background-image: url(/images/furniture/kobble/16/white/post.png); }
+
 /* ******* drag and drop signalling */
 div.drophere, ul.drophere {
   background-color: #cacac8; }
@@ -586,7 +685,6 @@ div.summary {
     margin: 0 10px 6px 0; }
 
 div.contentblock {
-  max-width: 500px;
   clear: left; }
   div.contentblock p {
     margin-top: 0; }

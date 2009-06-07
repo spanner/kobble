@@ -1,82 +1,40 @@
-/*
-Sass::SyntaxError: Undefined mixin 'bodyfonts'.
-on line 11 of /private/var/www/materialist/public/stylesheets/sass/tagcloud.sass
-
-7:     :display inline 
-8:     :margin 0 
-9:     :padding 0
-10:     a
-11:       +bodyfonts
-12:       :letter-spacing -0.04em
-13:       :white-space nowrap
-14:       :line-height 20px
-15:     a:hover
-16:       :color = !orange
-17:     a.cloud0
-
-
-Backtrace:
-/private/var/www/materialist/public/stylesheets/sass/tagcloud.sass:11
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/engine.rb:389:in `parse_mixin_include'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/engine.rb:302:in `parse_line'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/engine.rb:187:in `build_tree'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/engine.rb:237:in `build_tree'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/engine.rb:116:in `render_to_tree'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/engine.rb:88:in `render'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/plugin.rb:65:in `update_stylesheets'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/plugin.rb:53:in `each'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/plugin.rb:53:in `update_stylesheets'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/plugin/rails.rb:16:in `process'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/base.rb:391:in `process'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/base.rb:386:in `call'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/routing/route_set.rb:433:in `call'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/dispatcher.rb:88:in `dispatch'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/dispatcher.rb:111:in `_call'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/dispatcher.rb:82:in `initialize'
-/Library/Ruby/Gems/1.8/gems/activerecord-2.3.2/lib/active_record/query_cache.rb:29:in `call'
-/Library/Ruby/Gems/1.8/gems/activerecord-2.3.2/lib/active_record/query_cache.rb:29:in `call'
-/Library/Ruby/Gems/1.8/gems/activerecord-2.3.2/lib/active_record/connection_adapters/abstract/query_cache.rb:34:in `cache'
-/Library/Ruby/Gems/1.8/gems/activerecord-2.3.2/lib/active_record/query_cache.rb:9:in `cache'
-/Library/Ruby/Gems/1.8/gems/activerecord-2.3.2/lib/active_record/query_cache.rb:28:in `call'
-/Library/Ruby/Gems/1.8/gems/activerecord-2.3.2/lib/active_record/connection_adapters/abstract/connection_pool.rb:361:in `call'
-/private/var/www/materialist/app/middleware/flash_session_cookie_middleware.rb:14:in `call'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/head.rb:9:in `call'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/methodoverride.rb:24:in `call'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/params_parser.rb:15:in `call'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/rewindable_input.rb:25:in `call'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/session/cookie_store.rb:93:in `call'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/reloader.rb:9:in `call'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/failsafe.rb:11:in `call'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/lock.rb:11:in `call'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/lock.rb:11:in `synchronize'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/lock.rb:11:in `call'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/dispatcher.rb:106:in `call'
-/Library/Ruby/Gems/1.8/gems/rails-2.3.2/lib/rails/rack/static.rb:31:in `call'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/urlmap.rb:46:in `call'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/urlmap.rb:40:in `each'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/urlmap.rb:40:in `call'
-/Library/Ruby/Gems/1.8/gems/rails-2.3.2/lib/rails/rack/log_tailer.rb:17:in `call'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/content_length.rb:13:in `call'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/chunked.rb:15:in `call'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/handler/mongrel.rb:61:in `process'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:159:in `orig_process_client'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:158:in `each'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:158:in `orig_process_client'
-/private/var/www/materialist/vendor/plugins/spawn/lib/patches.rb:59:in `process_client'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `run'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `initialize'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `new'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `run'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:268:in `initialize'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:268:in `new'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:268:in `run'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/handler/mongrel.rb:34:in `run'
-/Library/Ruby/Gems/1.8/gems/rails-2.3.2/lib/commands/server.rb:111
-/Library/Ruby/Site/1.8/rubygems/custom_require.rb:31:in `gem_original_require'
-/Library/Ruby/Site/1.8/rubygems/custom_require.rb:31:in `require'
-script/server:3
-*/
-body:before {
-  white-space: pre;
-  font-family: monospace;
-  content: "Sass::SyntaxError: Undefined mixin 'bodyfonts'.\A on line 11 of /private/var/www/materialist/public/stylesheets/sass/tagcloud.sass\A \A 7:     :display inline \A 8:     :margin 0 \A 9:     :padding 0\A 10:     a\A 11:       +bodyfonts\A 12:       :letter-spacing -0.04em\A 13:       :white-space nowrap\A 14:       :line-height 20px\A 15:     a:hover\A 16:       :color = !orange\A 17:     a.cloud0\A "; }
+ul.cloud {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  line-height: 20px; }
+  ul.cloud li {
+    display: inline;
+    margin: 0;
+    padding: 0; }
+    ul.cloud li a {
+      font-family: 'HelveticaNeue-Light', helvetica, arial, sans-serif;
+      letter-spacing: -0.04em;
+      white-space: nowrap;
+      line-height: 20px; }
+    ul.cloud li a:hover {
+      color: #cc6e1f; }
+    ul.cloud li a.cloud0 {
+      font-size: 0.9em;
+      color: #cfe4ee;
+      font-family: 'HelveticaNeue-Roman', helvetica, arial, sans-serif; }
+    ul.cloud li a.cloud1 {
+      font-size: 1.2em;
+      color: #b1d2e3;
+      font-family: 'HelveticaNeue-Roman', helvetica, arial, sans-serif; }
+    ul.cloud li a.cloud2 {
+      font-size: 1.5em;
+      color: #a0c8de; }
+    ul.cloud li a.cloud3 {
+      font-size: 1.8em;
+      color: #85b8d5; }
+    ul.cloud li a.cloud4 {
+      font-size: 2.1em;
+      color: #71adce; }
+    ul.cloud li a.cloud5 {
+      font-size: 2.4em;
+      color: #559dc4; }
+    ul.cloud li a.unpopular {
+      display: none; }
+  ul.cloud li.waiting a {
+    color: #8c8d8e; }

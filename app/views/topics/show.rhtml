@@ -2,7 +2,7 @@
 
 <div class="preamble">
   <p>
-	  A conversation started by <%= link_to @topic.creator.name, url_for(@topic.creator) %>
+	  A conversation started by <%= link_to @topic.created_by.name, url_for(@topic.created_by) %>
     <%= time_ago_in_words(@topic.created_at) %> ago
 	  about the <%= @topic.referent.nice_title %> <%= link_to @topic.referent.name, url_for(@topic.referent) %>.
   </p>
@@ -11,8 +11,8 @@
 <div class="contentblock topicbody">
   <%= render :partial => 'shared/show_mugshot', :locals => {:item => @topic} %>
 	<h3 class="postheader">
-    <a href="<%= url_for(@topic.creator) %>" name="<%= @topic.dom_id %>">
-		  <strong><%= h(@topic.creator.name) %></strong>
+    <a href="<%= url_for(@topic.created_by) %>" name="<%= @topic.dom_id %>">
+		  <strong><%= h(@topic.created_by.name) %></strong>
 	  </a><br />
 	  <span class="headernote"><%= friendly_date(@topic.created_at) %></span>
 	</h3>

@@ -1,0 +1,14 @@
+- user ||= current_user
+- user = current_user unless current_user.admin?
+- collection ||= false
+
+%h3
+  - if collection
+    %strong
+      = collection.abbreviation
+  Scratchpad
+- form_for current_user do |f|
+  %ul{:id => "dropzone_scratchpad", :class => "padlist catcher", :catches => "#{Kobble.organised_models.join(',')}"}
+    = render :partial => 'users/scrapping', :collection => collection ? user.scrappings.in_collection(collection) : user.scrappings
+%p.explanatory
+  Click on a listing to select it. Shift- or cmd-click to select several. Options will appear. Drag up and down to sort this list. Drag out into space to remove. Drag onto something else to apply.

@@ -13,7 +13,7 @@ class TopicsController < CollectionScopedController
         @posts = Post.paginate(:all, 
           :page => page, 
           :per_page => perpage,
-          :include => :creator, 
+          :include => :created_by, 
           :conditions => ['posts.topic_id = ?', params[:id]], 
           :order => 'posts.created_at'
         )
@@ -36,7 +36,7 @@ class TopicsController < CollectionScopedController
     
   def preview
     logger.warn('@@@@ topic preview!')
-    @topic.creator = current_user
+    @topic.created_by = current_user
     @topic.created_at = Time.now()
     if (@topic.valid?)
       respond_to do |format|

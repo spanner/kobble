@@ -1,6 +1,6 @@
 <%
   item ||= @thing
-  pictured = item.class == User ? item : item.creator
+  pictured = item.class == User ? item : item.created_by
   src = pictured.has_image? ? pictured.image.url(:thumb) : '/images/furniture/icons/nomugshot.jpg'
 %>
 <%= link_to image_tag(src, {:alt => pictured.name, :class => 'mugshot', :size => '42x42'}), url_for(pictured) %>

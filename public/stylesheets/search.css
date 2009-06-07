@@ -1,82 +1,54 @@
-/*
-Sass::SyntaxError: Undefined mixin 'inputfonts'.
-on line 16 of /private/var/www/materialist/public/stylesheets/sass/search.sass
+div#searchform {
+  display: none;
+  font-family: 'HelveticaNeue-Roman', helvetica, arial, sans-serif;
+  color: black;
+  font-size: 12px;
+  line-height: 24px;
+  float: left;
+  height: 24px;
+  margin: 0 5px 10px 30px;
+  clear: both;
+  padding-top: 50px; }
+  div#searchform h2 {
+    margin: 0; }
+  div#searchform label {
+    font-size: 18px;
+    font-family: Georgia, "Times New Roman", serif;
+    letter-spacing: -0.05em;
+    line-height: 20px;
+    color: #4d4e53;
+    clear: both; }
+  div#searchform label.required {
+    font-weight: bold;
+    font-size: 30px; }
+  div#searchform input.search {
+    width: 77%;
+    height: 28px;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 22px;
+    font-weight: bold;
+    line-height: 22px;
+    color: black; }
+  div#searchform input.submit {
+    height: 28px; }
+  div#searchform h3, div#searchform p {
+    margin-bottom: 0;
+    color: #4d4e53; }
+  div#searchform ul {
+    margin: 0;
+    padding: 0;
+    font-size: 90%;
+    color: #4d4e53; }
+    div#searchform ul li {
+      list-style: square inside; }
+      div#searchform ul li span.explanatory {
+        color: #8c8d8e; }
 
-12:   h2
-13:     :margin 0
-14:   label
-15:     :font-size 18px
-16:     +inputfonts
-17:     :letter-spacing -0.05em
-18:     :line-height 20px
-19:     :color = !coolgrey11
-20:     :clear both
-21:   label.required
-22:     :font-weight bold
+/* ******* search results */
+li.significant a {
+  font-weight: bold;
+  font-size: 130%; }
 
-
-Backtrace:
-/private/var/www/materialist/public/stylesheets/sass/search.sass:16
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/engine.rb:389:in `parse_mixin_include'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/engine.rb:302:in `parse_line'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/engine.rb:187:in `build_tree'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/engine.rb:237:in `build_tree'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/engine.rb:116:in `render_to_tree'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/engine.rb:88:in `render'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/plugin.rb:65:in `update_stylesheets'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/plugin.rb:53:in `each'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/plugin.rb:53:in `update_stylesheets'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/plugin/rails.rb:16:in `process'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/base.rb:391:in `process'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/base.rb:386:in `call'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/routing/route_set.rb:433:in `call'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/dispatcher.rb:88:in `dispatch'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/dispatcher.rb:111:in `_call'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/dispatcher.rb:82:in `initialize'
-/Library/Ruby/Gems/1.8/gems/activerecord-2.3.2/lib/active_record/query_cache.rb:29:in `call'
-/Library/Ruby/Gems/1.8/gems/activerecord-2.3.2/lib/active_record/query_cache.rb:29:in `call'
-/Library/Ruby/Gems/1.8/gems/activerecord-2.3.2/lib/active_record/connection_adapters/abstract/query_cache.rb:34:in `cache'
-/Library/Ruby/Gems/1.8/gems/activerecord-2.3.2/lib/active_record/query_cache.rb:9:in `cache'
-/Library/Ruby/Gems/1.8/gems/activerecord-2.3.2/lib/active_record/query_cache.rb:28:in `call'
-/Library/Ruby/Gems/1.8/gems/activerecord-2.3.2/lib/active_record/connection_adapters/abstract/connection_pool.rb:361:in `call'
-/private/var/www/materialist/app/middleware/flash_session_cookie_middleware.rb:14:in `call'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/head.rb:9:in `call'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/methodoverride.rb:24:in `call'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/params_parser.rb:15:in `call'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/rewindable_input.rb:25:in `call'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/session/cookie_store.rb:93:in `call'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/reloader.rb:9:in `call'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/failsafe.rb:11:in `call'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/lock.rb:11:in `call'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/lock.rb:11:in `synchronize'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/lock.rb:11:in `call'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/dispatcher.rb:106:in `call'
-/Library/Ruby/Gems/1.8/gems/rails-2.3.2/lib/rails/rack/static.rb:31:in `call'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/urlmap.rb:46:in `call'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/urlmap.rb:40:in `each'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/urlmap.rb:40:in `call'
-/Library/Ruby/Gems/1.8/gems/rails-2.3.2/lib/rails/rack/log_tailer.rb:17:in `call'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/content_length.rb:13:in `call'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/chunked.rb:15:in `call'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/handler/mongrel.rb:61:in `process'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:159:in `orig_process_client'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:158:in `each'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:158:in `orig_process_client'
-/private/var/www/materialist/vendor/plugins/spawn/lib/patches.rb:59:in `process_client'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `run'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `initialize'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `new'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `run'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:268:in `initialize'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:268:in `new'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:268:in `run'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/handler/mongrel.rb:34:in `run'
-/Library/Ruby/Gems/1.8/gems/rails-2.3.2/lib/commands/server.rb:111
-/Library/Ruby/Site/1.8/rubygems/custom_require.rb:31:in `gem_original_require'
-/Library/Ruby/Site/1.8/rubygems/custom_require.rb:31:in `require'
-script/server:3
-*/
-body:before {
-  white-space: pre;
-  font-family: monospace;
-  content: "Sass::SyntaxError: Undefined mixin 'inputfonts'.\A on line 16 of /private/var/www/materialist/public/stylesheets/sass/search.sass\A \A 12:   h2\A 13:     :margin 0\A 14:   label\A 15:     :font-size 18px\A 16:     +inputfonts\A 17:     :letter-spacing -0.05em\A 18:     :line-height 20px\A 19:     :color = !coolgrey11\A 20:     :clear both\A 21:   label.required\A 22:     :font-weight bold\A "; }
+span.rating {
+  font-size: 10px;
+  color: #8c8d8e; }

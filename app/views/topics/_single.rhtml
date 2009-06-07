@@ -9,7 +9,7 @@
     <strong><%= link_to single.name, item_topic_url(single.referent, single) %></strong>
 	  <br />
 	  <span class="headernote">
-      <%= link_to single.creator.name, url_for(single.creator) %>,
+      <%= link_to single.created_by.name, url_for(single.created_by) %>,
   		<%= friendly_date(single.created_at) %>.
 		</span>
 	</h3>

@@ -28,7 +28,7 @@ class Topic < ActiveRecord::Base
   end
   
   def voices
-    @voices ||= posts.map{|p| p.creator}.uniq
+    @voices ||= posts.map{|p| p.created_by}.uniq
   end
 
   def index_concatenation

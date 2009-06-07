@@ -12,7 +12,7 @@ class PostsController < ApplicationController
   end
   
   def new
-    @post.creator = current_user
+    @post.created_by = current_user
     @post.created_at = Time.now()
     respond_to do |format|
       format.html  { render :template => 'posts/new' }
@@ -22,7 +22,7 @@ class PostsController < ApplicationController
   end
 
   def preview
-    @post.creator = current_user
+    @post.created_by = current_user
     @post.created_at = Time.now()
     respond_to do |format|
       format.html { render :template => 'posts/preview' }

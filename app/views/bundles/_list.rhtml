@@ -14,7 +14,7 @@
     <p>
       <% if list.description %><%= truncate( list.description, 240 ) %><br /><% end %>
       <span class="pale">
-        Created by <%= link_to (list.creator.name, :controller => 'users', :action => 'show', :id => list.creator) if list.creator %>.
+        Created by <%= link_to (list.created_by.name, :controller => 'users', :action => 'show', :id => list.created_by) if list.created_by %>.
         Contains <%= pluralize(list.members.size, 'item') %>
       </span>
     </p>

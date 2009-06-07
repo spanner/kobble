@@ -10,7 +10,7 @@ class ScratchpadsController < ApplicationController
 
   def new
     @scratchpad = Scratchpad.new
-    @scratchpad.creator = current_user
+    @scratchpad.created_by = current_user
     respond_to do |format|
       format.html {  }
       format.js { render :layout => false }
@@ -20,7 +20,7 @@ class ScratchpadsController < ApplicationController
   def create
     @scratchpad = Scratchpad.new(params[:scratchpad])
     @scratchpad.name ||= 'new pad'
-    @scratchpad.creator = current_user
+    @scratchpad.created_by = current_user
     if @scratchpad.save!
       render :json => @scratchpad.to_json
     end

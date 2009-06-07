@@ -14,9 +14,9 @@
   - if item.respond_to?('occasion') && item.occasion
     Occasion:
     = link_to item.occasion.name, url_for(item.occasion)
-  - if item.creator
+  - if item.created_by
     Added by:
-    = link_to item.creator.name, url_for(item.creator)
+    = link_to item.created_by.name, url_for(item.created_by)
   - if item.updater
     Last updated by:
     = link_to item.updater.name, url_for(item.updater)

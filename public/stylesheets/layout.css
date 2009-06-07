@@ -1,81 +1,127 @@
-/*
-Sass::SyntaxError: Undefined mixin 'bodyfonts'.
-on line 4 of /private/var/www/materialist/public/stylesheets/sass/layout.sass
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'HelveticaNeue-Light', helvetica, arial, sans-serif;
+  font-size: 0.9em;
+  line-height: 1.6;
+  background-color: white;
+  color: black;
+  overflow-x: hidden; }
 
-1: body
-2:   :margin 0
-3:   :padding 0 
-4:   +bodyfonts
-5:   :font-size 0.9em
-6:   :line-height 1.6
-7:   :background-color white
-8:   :color black
-9:   :overflow-x hidden 
-10: 
+div#masthead {
+  position: fixed;
+  text-align: right;
+  left: 0;
+  top: 30px;
+  height: 40px;
+  width: 122px; }
+  div#masthead p {
+    font-size: 1.1em;
+    line-height: 0.9;
+    color: #4d4e53;
+    margin: 0; }
+  div#masthead a, div#masthead a:visited {
+    color: #4d4e53; }
+  div#masthead a.emphatic, div#masthead a.emphatic:visited {
+    font-weight: bold;
+    color: #d1005d; }
 
+div#mainpage {
+  position: relative;
+  width: 72%; }
+  div#mainpage div#pagetitle {
+    position: relative;
+    margin: 36px 180px 20px 130px;
+    max-width: 640px; }
+    div#mainpage div#pagetitle h1 {
+      font-size: 3em;
+      line-height: 1.1;
+      margin: 0;
+      color: #d1005d; }
+    div#mainpage div#pagetitle h1.longtitle {
+      font-size: 2.2em;
+      padding-top: 0.8em; }
+  div#mainpage div#canvas {
+    position: relative;
+    padding: 0;
+    margin: 0 20px 40px 130px; }
 
-Backtrace:
-/private/var/www/materialist/public/stylesheets/sass/layout.sass:4
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/engine.rb:389:in `parse_mixin_include'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/engine.rb:302:in `parse_line'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/engine.rb:187:in `build_tree'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/engine.rb:237:in `build_tree'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/engine.rb:116:in `render_to_tree'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/engine.rb:88:in `render'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/plugin.rb:65:in `update_stylesheets'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/plugin.rb:53:in `each'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/plugin.rb:53:in `update_stylesheets'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/plugin/rails.rb:16:in `process'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/base.rb:391:in `process'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/base.rb:386:in `call'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/routing/route_set.rb:433:in `call'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/dispatcher.rb:88:in `dispatch'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/dispatcher.rb:111:in `_call'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/dispatcher.rb:82:in `initialize'
-/Library/Ruby/Gems/1.8/gems/activerecord-2.3.2/lib/active_record/query_cache.rb:29:in `call'
-/Library/Ruby/Gems/1.8/gems/activerecord-2.3.2/lib/active_record/query_cache.rb:29:in `call'
-/Library/Ruby/Gems/1.8/gems/activerecord-2.3.2/lib/active_record/connection_adapters/abstract/query_cache.rb:34:in `cache'
-/Library/Ruby/Gems/1.8/gems/activerecord-2.3.2/lib/active_record/query_cache.rb:9:in `cache'
-/Library/Ruby/Gems/1.8/gems/activerecord-2.3.2/lib/active_record/query_cache.rb:28:in `call'
-/Library/Ruby/Gems/1.8/gems/activerecord-2.3.2/lib/active_record/connection_adapters/abstract/connection_pool.rb:361:in `call'
-/private/var/www/materialist/app/middleware/flash_session_cookie_middleware.rb:14:in `call'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/head.rb:9:in `call'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/methodoverride.rb:24:in `call'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/params_parser.rb:15:in `call'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/rewindable_input.rb:25:in `call'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/session/cookie_store.rb:93:in `call'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/reloader.rb:9:in `call'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/failsafe.rb:11:in `call'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/lock.rb:11:in `call'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/lock.rb:11:in `synchronize'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/lock.rb:11:in `call'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/dispatcher.rb:106:in `call'
-/Library/Ruby/Gems/1.8/gems/rails-2.3.2/lib/rails/rack/static.rb:31:in `call'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/urlmap.rb:46:in `call'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/urlmap.rb:40:in `each'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/urlmap.rb:40:in `call'
-/Library/Ruby/Gems/1.8/gems/rails-2.3.2/lib/rails/rack/log_tailer.rb:17:in `call'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/content_length.rb:13:in `call'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/chunked.rb:15:in `call'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/handler/mongrel.rb:61:in `process'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:159:in `orig_process_client'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:158:in `each'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:158:in `orig_process_client'
-/private/var/www/materialist/vendor/plugins/spawn/lib/patches.rb:59:in `process_client'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `run'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `initialize'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `new'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `run'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:268:in `initialize'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:268:in `new'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:268:in `run'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/handler/mongrel.rb:34:in `run'
-/Library/Ruby/Gems/1.8/gems/rails-2.3.2/lib/commands/server.rb:111
-/Library/Ruby/Site/1.8/rubygems/custom_require.rb:31:in `gem_original_require'
-/Library/Ruby/Site/1.8/rubygems/custom_require.rb:31:in `require'
-script/server:3
-*/
-body:before {
-  white-space: pre;
-  font-family: monospace;
-  content: "Sass::SyntaxError: Undefined mixin 'bodyfonts'.\A on line 4 of /private/var/www/materialist/public/stylesheets/sass/layout.sass\A \A 1: body\A 2:   :margin 0\A 3:   :padding 0 \A 4:   +bodyfonts\A 5:   :font-size 0.9em\A 6:   :line-height 1.6\A 7:   :background-color white\A 8:   :color black\A 9:   :overflow-x hidden \A 10: \A "; }
+div#scratchpad {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 25%;
+  height: 100%;
+  overflow: hidden; }
+
+div#mastfoot {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 39px;
+  background-color: white; }
+
+div#navigation {
+  margin: 10px 100px 5px 125px; }
+  div#navigation a, div#navigation a:link {
+    padding: 4px 6px 10px 6px;
+    color: #d1005d; }
+  div#navigation a.fg {
+    background: white url(/images/furniture/materialist/thislink.png) no-repeat center bottom; }
+  div#navigation a.louder {
+    color: #559dc4; }
+  div#navigation a:hover {
+    color: black; }
+  div#navigation a.pale {
+    color: #8c8d8e; }
+  div#navigation a.administrative {
+    color: #4d4e53; }
+
+div#notification {
+  position: fixed;
+  left: 40px;
+  bottom: 20px;
+  width: 360px;
+  z-index: 13000;
+  visibility: hidden;
+  background-color: #0c3;
+  border: 3px solid #7FE699;
+  color: white;
+  padding: 10px 20px; }
+
+div#notification.error {
+  background-color: #c00;
+  border: 3px solid #e67f00; }
+
+div#admin {
+  position: fixed;
+  left: 20px;
+  bottom: 12px;
+  width: 100px;
+  z-index: 12000; }
+
+div#trashholder {
+  position: fixed;
+  left: 20px;
+  bottom: 10px;
+  height: 80px;
+  width: 90px;
+  z-index: 12000;
+  visibility: hidden; }
+
+div#trash {
+  width: 90px;
+  height: 80px;
+  background-color: white;
+  border: 1px solid red;
+  color: red; }
+  div#trash p {
+    font-size: 11px;
+    line-height: 13px;
+    text-align: center;
+    margin: 28px 6px 0 6px; }
+
+div#trash.drophere {
+  background-color: red;
+  color: white; }

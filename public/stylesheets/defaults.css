@@ -1,86 +1,74 @@
-/*
-Sass::SyntaxError: Undefined constant: "!coolgrey8".
-on line 8 of /private/var/www/materialist/public/stylesheets/sass/defaults.sass
+.clear {
+  clear: both;
+  margin: 20px 0 20px 0; }
 
-4: .clearleft
-5:   :clear left 
-6:   :margin 20px 0 20px 0
-7: .pale 
-8:   :color = !coolgrey8
-9: .error
-10:   :color = !orange
-11: .small
-12:   :font-size 0.7em 
-13:   :line-height 1.4
-14: .hide, .hidden, .temporary
+.clearleft {
+  clear: left;
+  margin: 20px 0 20px 0; }
 
+.pale {
+  color: #8c8d8e; }
 
-Backtrace:
-/private/var/www/materialist/public/stylesheets/sass/defaults.sass:8
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/constant.rb:211:in `get_constant'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/constant.rb:194:in `operationalize'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/constant.rb:184:in `operationalize'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/constant.rb:47:in `parse'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/engine.rb:329:in `parse_attribute'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/engine.rb:282:in `parse_line'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/engine.rb:187:in `build_tree'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/engine.rb:237:in `build_tree'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/engine.rb:116:in `render_to_tree'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/engine.rb:88:in `render'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/plugin.rb:65:in `update_stylesheets'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/plugin.rb:53:in `each'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/plugin.rb:53:in `update_stylesheets'
-/Library/Ruby/Gems/1.8/gems/haml-2.0.9/lib/sass/plugin/rails.rb:16:in `process'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/base.rb:391:in `process'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/base.rb:386:in `call'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/routing/route_set.rb:433:in `call'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/dispatcher.rb:88:in `dispatch'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/dispatcher.rb:111:in `_call'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/dispatcher.rb:82:in `initialize'
-/Library/Ruby/Gems/1.8/gems/activerecord-2.3.2/lib/active_record/query_cache.rb:29:in `call'
-/Library/Ruby/Gems/1.8/gems/activerecord-2.3.2/lib/active_record/query_cache.rb:29:in `call'
-/Library/Ruby/Gems/1.8/gems/activerecord-2.3.2/lib/active_record/connection_adapters/abstract/query_cache.rb:34:in `cache'
-/Library/Ruby/Gems/1.8/gems/activerecord-2.3.2/lib/active_record/query_cache.rb:9:in `cache'
-/Library/Ruby/Gems/1.8/gems/activerecord-2.3.2/lib/active_record/query_cache.rb:28:in `call'
-/Library/Ruby/Gems/1.8/gems/activerecord-2.3.2/lib/active_record/connection_adapters/abstract/connection_pool.rb:361:in `call'
-/private/var/www/materialist/app/middleware/flash_session_cookie_middleware.rb:14:in `call'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/head.rb:9:in `call'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/methodoverride.rb:24:in `call'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/params_parser.rb:15:in `call'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/rewindable_input.rb:25:in `call'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/session/cookie_store.rb:93:in `call'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/reloader.rb:9:in `call'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/failsafe.rb:11:in `call'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/lock.rb:11:in `call'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/lock.rb:11:in `synchronize'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/lock.rb:11:in `call'
-/Library/Ruby/Gems/1.8/gems/actionpack-2.3.2/lib/action_controller/dispatcher.rb:106:in `call'
-/Library/Ruby/Gems/1.8/gems/rails-2.3.2/lib/rails/rack/static.rb:31:in `call'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/urlmap.rb:46:in `call'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/urlmap.rb:40:in `each'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/urlmap.rb:40:in `call'
-/Library/Ruby/Gems/1.8/gems/rails-2.3.2/lib/rails/rack/log_tailer.rb:17:in `call'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/content_length.rb:13:in `call'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/chunked.rb:15:in `call'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/handler/mongrel.rb:61:in `process'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:159:in `orig_process_client'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:158:in `each'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:158:in `orig_process_client'
-/private/var/www/materialist/vendor/plugins/spawn/lib/patches.rb:59:in `process_client'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `run'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `initialize'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `new'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:285:in `run'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:268:in `initialize'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:268:in `new'
-/Library/Ruby/Gems/1.8/gems/mongrel-1.1.5/lib/mongrel.rb:268:in `run'
-/Library/Ruby/Gems/1.8/gems/rack-1.0.0/lib/rack/handler/mongrel.rb:34:in `run'
-/Library/Ruby/Gems/1.8/gems/rails-2.3.2/lib/commands/server.rb:111
-/Library/Ruby/Site/1.8/rubygems/custom_require.rb:31:in `gem_original_require'
-/Library/Ruby/Site/1.8/rubygems/custom_require.rb:31:in `require'
-script/server:3
-*/
-body:before {
-  white-space: pre;
-  font-family: monospace;
-  content: "Sass::SyntaxError: Undefined constant: \"!coolgrey8\".\A on line 8 of /private/var/www/materialist/public/stylesheets/sass/defaults.sass\A \A 4: .clearleft\A 5:   :clear left \A 6:   :margin 20px 0 20px 0\A 7: .pale \A 8:   :color = !coolgrey8\A 9: .error\A 10:   :color = !orange\A 11: .small\A 12:   :font-size 0.7em \A 13:   :line-height 1.4\A 14: .hide, .hidden, .temporary\A "; }
+.error {
+  color: #cc6e1f; }
+
+.small {
+  font-size: 0.7em;
+  line-height: 1.4; }
+
+.hide, .hidden, .temporary {
+  display: none; }
+
+.separator {
+  color: white; }
+
+.modifier {
+  font-size: 0.7em;
+  font-weight: bold; }
+
+.showable {
+  display: none; }
+
+img {
+  border: 0;
+  margin: 0;
+  padding: 0; }
+
+td {
+  vertical-align: top; }
+
+a, a:link, a:visited {
+  color: #559dc4;
+  text-decoration: none; }
+
+a:hover {
+  color: #d1005d; }
+
+h1, h2, h3, h4 {
+  font-weight: lighter;
+  font-font-family: 'HelveticaNeue-Light', helvetica, arial, sans-serif;
+  line-height: 1.2;
+  letter-spacing: -0.04em;
+  clear: left;
+  margin-bottom: 0;
+  color: #4d4e53; }
+
+h1 {
+  font-size: 2em; }
+
+h2, h3 {
+  font-size: 1.6em; }
+
+h4 {
+  font-size: 1.2em; }
+
+h1 a, h2 a, h3 a, h4 a {
+  text-decoration: none; }
+
+blockquote {
+  color: #8c8d8e;
+  margin: 10px 10px 10px 0;
+  padding-left: 10px;
+  border-left-width: 4px;
+  border-left-style: solid;
+  border-left-color: #8c8d8e; }
