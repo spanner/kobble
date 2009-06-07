@@ -9,11 +9,16 @@
       = render :partial => 'listed', :collection => @search.results, :locals => {:catch => true}
 
 - else
-
-  %p
-    Sorry: we found nothing matching 
-    %strong
-      = params[:q]
+  
+  - if @cue
+    %p
+      Sorry: we found nothing else like 
+      = link_to @cue.name, collected_url_for(@cue)
+  - else
+    %p
+      Sorry: we found nothing matching 
+      %strong
+        = params[:q]
 
 = render :partial => 'form', :locals => {:search_url => list_search_path}
 

@@ -19,7 +19,7 @@ a.mildwarning {
 a.admin {
   color: #4d4e53; }
 
-.warning {
+a.warning, .warning {
   color: white;
   background-color: #d1005d; }
 

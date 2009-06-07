@@ -1,9 +1,10 @@
 - item = listed[:model]
-- sizeclass = 'significant' if listed[:percent] > 25
+- size_class = 'significant' if listed[:percent] > 25
+- type_class = listed.is_a?(Source) ? [item.file_type] : [item.class.to_s.downcase]
 
-%li{:id => "#{item.class.to_s.downcase}_#{item.id}", :class => "draggable #{item.class.to_s.downcase}", :style => "margin-bottom: 10px;"}
+%li{:id => "#{item.class.to_s.downcase}_#{item.id}", :class => "found", :style => "margin-bottom: 10px;"}
   - name = item.name.blank? ? "nameless #{item.class.nice_title}" : item.name 
-  = link_to name, url_for(item), :id => item.id, :style => "font-size: #{70 + (1.6 * listed[:percent])}%; line-height: 1.#{listed[:percent]/5};"
+  = link_to name, collected_url_for(item), :id => item.id, :style => "font-size: #{70 + (1.6 * listed[:percent])}%; line-height: 1.#{listed[:percent]/5};", :class => "draggable #{type_class}"
   = render :partial => 'shared/note_flags', :locals => {:item => item}
   %span.rating
     match:

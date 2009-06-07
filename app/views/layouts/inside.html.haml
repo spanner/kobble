@@ -39,19 +39,22 @@
       = link_to 'home', root_url, {:class => 'administrative'}
       
       - if current_collection
+        &gt;
+        = link_to current_collection.abbreviation, url_for(current_collection), {:class => 'administrative'}
+        [
         = link_to "sources", collection_sources_url(current_collection), {:class => (request.parameters[:controller] == 'sources' ? "fg" : '')}
         = link_to "fragments", collection_nodes_url(current_collection), {:class => (request.parameters[:controller] == 'nodes' ? "fg" : '')}
         = link_to "sets", collection_bundles_url(current_collection), {:class => (request.parameters[:controller] == 'bundles' ? "fg" : '')}
         = link_to "people", collection_people_url(current_collection), {:class => (request.parameters[:controller] == 'people' ? "fg" : '')}
         = link_to "tags", collection_tags_url(current_collection), {:class => (request.parameters[:controller] == 'tags' ? "fg" : '')}
         = link_to 'discussion', collection_topics_url(current_collection), {:class => request.parameters[:controller] == 'topics' ? " fg" : ''} if current_account.can_have_discussion?
-
+        ]
       - if current_account
         = link_to 'search', search_url, {:class => 'administrative'}
         = link_to 'log out', user_session_path, :method => :delete, :class => 'administrative'
-  - if current_collection
-    #scratchpad
-      = render :partial => 'users/scratchpad', :locals => {:collection => current_collection}
+
+  #scratchpad
+    = render :partial => 'users/scratchpad', :locals => {:collection => current_collection}
   
   #admin
     = yield :admin

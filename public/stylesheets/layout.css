@@ -65,18 +65,17 @@ div#mastfoot {
 div#navigation {
   margin: 10px 100px 5px 125px; }
   div#navigation a, div#navigation a:link {
-    padding: 4px 6px 10px 6px;
-    color: #d1005d; }
+    padding: 4px 6px 10px 6px; }
   div#navigation a.fg {
     background: white url(/images/furniture/materialist/thislink.png) no-repeat center bottom; }
   div#navigation a.louder {
     color: #559dc4; }
-  div#navigation a:hover {
-    color: black; }
   div#navigation a.pale {
     color: #8c8d8e; }
   div#navigation a.administrative {
     color: #4d4e53; }
+  div#navigation a.administrative:hover {
+    color: #d1005d; }
 
 div#notification {
   position: fixed;

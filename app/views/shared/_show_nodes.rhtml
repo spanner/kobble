@@ -13,7 +13,7 @@
   <div class="mainlist">
     <ul id="nodelist">
       <% if item.nodes.count %>
-        <%= render :partial => 'shared/listed', :collection => item.nodes %>
+        <%= render :partial => 'shared/listed', :collection => item.nodes, :type_class => 'node' %>
       <% else %>
         Extract a fragment from this and it will appear here.
       <% end %>

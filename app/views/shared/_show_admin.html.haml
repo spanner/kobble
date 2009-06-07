@@ -15,10 +15,7 @@
   - if item
     %li
       %strong
-      = link_to_unless_current "edit #{item.nice_title}" , {:controller => item.class.to_s.pluralize.underscore, :action => 'edit', :id => item}
-    - if item.is_searchable?
-      %li
-        = link_to "find similar", search_url(:like => "#{item.class.to_s.downcase}_#{item.id}")
+      = link_to_unless_current "edit #{item.nice_title}" , {:controller => item.class.to_s.pluralize.underscore, :action => 'edit', :id => item}, {:class => 'update'}
     - if item.is_notable?
       %li
         = link_to "add note*", item_new_note_url(item), {:id => 'admin_extend_notelist', :class => 'annotate'}
@@ -32,6 +29,9 @@
     - else
       %li
         = link_to "delete", {:controller => item.class.to_s.pluralize.underscore, :action => 'destroy', :id => item}, {:class => 'warning', :method => :delete}
+    - if item.is_searchable?
+      %li
+        = link_to "find similar", search_url(:like => "#{item.class.to_s.downcase}_#{item.id}")
 
   - else
     %li
