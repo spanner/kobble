@@ -23,7 +23,7 @@ div.mainlist
 
 /* list icons and colour-codes
 
-div.mainlist
+div.mainlist, div.wordlist
   ul
     :padding 0
     li
@@ -38,6 +38,13 @@ div.mainlist
           :repeat no-repeat
       a:hover
         :color = !rubinered
+
+div.wordlist
+  ul
+    li
+      :display inline
+      :padding-left 20px
+      :margin-right 10px
 
 @import listicons.sass
 

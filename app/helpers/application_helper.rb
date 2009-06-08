@@ -49,9 +49,9 @@ module ApplicationHelper
     elsif (date == Date.yesterday)
       format = "Yesterday at %l:%M%p"
     elsif (date.year == Date.today.year)
-      format = "%B %e at %l:%M%p"
+      format = "%B %e"
     else
-      format = "%B %e %Y at %l:%M%p"
+      format = "%B %e, %Y"
     end
     datetime.strftime(format)
   end

@@ -1,0 +1,14 @@
+-@title = @thing.name || 'nameless set'
+
+= render :partial => 'shared/show_summary'
+= render :partial => 'members'
+= render :partial => 'shared/show_text'
+= render :partial => 'shared/show_field_notes'
+= render :partial => 'shared/show_topics'
+= render :partial => 'shared/show_history', :locals => {:events => @thing.logged_events}
+
+- content_for :admin do
+  %p
+    = link_to "snip*", new_source_node_path(@thing), {:id => 'admin_extend_nodelist', :class => 'snipper create'}
+    %br
+    = render :partial => 'shared/show_admin', :locals => {:item => @thing}

@@ -1,0 +1,19 @@
+- @title = @thing.name || 'nameless fragment'
+
+- if @thing.has_file?
+  - if @thing.is_video?
+    = render :partial => 'shared/video_player', :locals => { :url => @thing.file.url }
+  - elsif @thing.is_audio?
+    = render :partial => 'shared/audio_player', :locals => { :url => @thing.file.url }
+  = render :partial => 'shared/download_file', :locals => {:item => @thing}
+
+= render :partial => 'shared/show_summary'
+= render :partial => 'shared/show_text'
+= render :partial => 'shared/show_tags'
+= render :partial => 'shared/show_field_notes'
+= render :partial => 'shared/show_topics'
+= render :partial => 'shared/show_history', :locals => {:events => @thing.logged_events}
+
+- content_for :admin do
+  %p
+    = render :partial => 'shared/show_admin', :locals => {:item => @thing}

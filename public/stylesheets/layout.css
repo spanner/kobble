@@ -67,7 +67,8 @@ div#navigation {
   div#navigation a, div#navigation a:link {
     padding: 4px 6px 10px 6px; }
   div#navigation a.fg {
-    background: white url(/images/furniture/materialist/thislink.png) no-repeat center bottom; }
+    background: white url(/images/furniture/kobble/pointers/thislink.png) no-repeat center bottom;
+    font-weight: bold; }
   div#navigation a.louder {
     color: #559dc4; }
   div#navigation a.pale {

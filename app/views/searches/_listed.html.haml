@@ -11,4 +11,4 @@
     = "#{listed[:percent]}%"
     = link_to "find similar", list_search_url(:like => "#{item.class.to_s.downcase}_#{item.id}")
   %br
-  = truncate( item.find_some_text, 100 )
+  = truncate( item.find_some_text, 64 )

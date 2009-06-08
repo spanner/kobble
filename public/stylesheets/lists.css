@@ -20,19 +20,24 @@ div.mainlist {
         color: #4d4e53; }
 
 /* list icons and colour-codes */
-div.mainlist ul {
+div.mainlist ul, div.wordlist ul {
   padding: 0; }
-  div.mainlist ul li {
+  div.mainlist ul li,   div.wordlist ul li {
     list-style: none;
     padding-left: 20px; }
-    div.mainlist ul li a {
+    div.mainlist ul li a,     div.wordlist ul li a {
       padding-left: 20px;
       margin-left: -20px;
       background-color: transparent;
       background-position: top left;
       background-repeat: no-repeat; }
-    div.mainlist ul li a:hover {
+    div.mainlist ul li a:hover,     div.wordlist ul li a:hover {
       color: #d1005d; }
+
+div.wordlist ul li {
+  display: inline;
+  padding-left: 20px;
+  margin-right: 10px; }
 
 ul li a.collection {
   background-image: url(/images/furniture/kobble/16/blue/collection.png); }

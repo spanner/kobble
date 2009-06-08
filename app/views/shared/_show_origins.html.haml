@@ -17,6 +17,6 @@
   - if item.created_by
     Added by:
     = link_to item.created_by.name, url_for(item.created_by)
-  - if item.updater
+  - if item.updated_by
     Last updated by:
-    = link_to item.updater.name, url_for(item.updater)
+    = link_to item.updated_by.name, url_for(item.updated_by)

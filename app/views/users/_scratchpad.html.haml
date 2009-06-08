@@ -4,9 +4,10 @@
 
 %h3
   - if collection
-    %strong
-      = collection.abbreviation
-  Scratchpad
+    = collection.abbreviation
+  - else
+    combined
+  scratchpad
 - form_for current_user do |f|
   %ul{:id => "dropzone_scratchpad", :class => "padlist catcher", :catches => "#{Kobble.organised_models.join(',')}"}
     = render :partial => 'users/scrapping', :collection => collection ? user.scrappings.in_collection(collection) : user.scrappings

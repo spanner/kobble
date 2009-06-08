@@ -6,7 +6,7 @@ class EditObserver < ActiveRecord::Observer
   end
   
   def before_update(model)
-    model.updater = User.current if model.record_timestamps
+    model.updated_by = User.current if model.record_timestamps
   end
  
   def after_create(model)

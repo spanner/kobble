@@ -2,7 +2,10 @@ div.drophere, ul.drophere {
   background-color: #cacac8; }
 
 ul.dropzone {
-  min-height: 100px; }
+  min-height: 30px;
+  border-weight: 1px;
+  border-style: dotted;
+  border-color: #cacac8; }
 
 li.drophere {
   color: white;

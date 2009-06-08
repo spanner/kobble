@@ -24,11 +24,11 @@ h3.pagesection {
   margin: 0;
   clear: left; }
   h3.pagesection a.squeezebox {
-    background: url(/images/furniture/materialist/rightarrow.png) center left no-repeat;
+    background: url(/images/furniture/kobble/pointers/rightarrow.png) center left no-repeat;
     color: #d1005d;
     padding: 0 0 0 12px; }
   h3.pagesection a.expanded {
-    background: url(/images/furniture/materialist/downarrow.png) center left no-repeat; }
+    background: url(/images/furniture/kobble/pointers/downarrow.png) center left no-repeat; }
     h3.pagesection a.expanded span.headernote {
       display: none; }
 
@@ -99,7 +99,7 @@ h4.listheader {
   h4.listheader a.listhead {
     color: #4d4e53; }
 
-span.headernote, span.listnote {
+.headernote, .listnote {
   font-size: 0.7em;
   font-weight: lighter;
   color: #afafaf; }

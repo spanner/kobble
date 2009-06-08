@@ -122,8 +122,7 @@ module Kobble #:nodoc:
             has_attached_file :file, 
               :path => ":rails_root/public/:class/:attachment/:id/:basename.:extension",
               :url => "/:class/:attachment/:id/:basename.:extension"
-              
-              #! processors for audio, video and documents
+              #! here we add the :processors for audio, video and documents
               
           end
         end
@@ -300,6 +299,46 @@ module Kobble #:nodoc:
 
       def has_extracted_text?
         self.respond_to?('extracted_text') && !self.extracted_text.nil? and self.extracted_text.length != 0
+      end
+
+      def has_file?
+        not self.file_file_name.blank?
+      end
+
+      def file_exists?
+        self.has_file? and File.file? self.file.path
+      end
+
+      def file_extension
+        self.has_file? ? self.file_file_name.split('.').last : nil
+      end
+
+      def is_audio?
+        true if self.has_file? && self.file.content_type =~ /^audio/i
+      end
+
+      def is_video?
+        true if self.has_file? && self.file.content_type =~ /^video/i
+      end
+
+      def is_audio_or_video?
+        is_audio? or is_video?
+      end
+
+      def is_pdf?
+        true if has_file? && file.content_type =~ /pdf/i
+      end
+
+      def is_doc?
+        true if has_file? && file.content_type =~ /msword/i
+      end
+
+      def is_text?
+        true unless has_file?
+      end
+
+      def file_type
+        %w{audio video pdf doc text}.detect {|type| self.send("is_#{type}?".intern) }
       end
 
       def has_image?
