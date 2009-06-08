@@ -38,6 +38,8 @@ div#mainpage {
       line-height: 1.1;
       margin: 0;
       color: #d1005d; }
+      div#mainpage div#pagetitle h1 span.header_icon img {
+        vertical-align: top; }
     div#mainpage div#pagetitle h1.longtitle {
       font-size: 2.2em;
       padding-top: 0.8em; }

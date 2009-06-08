@@ -42,18 +42,21 @@ module ApplicationHelper
   end
 
   def friendly_date(datetime)
-    today = Date.today
-    date = datetime.to_date
-    if (date == Date.today)
-      format = "Today at %l:%M%p"
-    elsif (date == Date.yesterday)
-      format = "Yesterday at %l:%M%p"
-    elsif (date.year == Date.today.year)
-      format = "%B %e"
-    else
-      format = "%B %e, %Y"
+    if datetime
+      date = datetime.to_date
+      if (date == Date.today)
+        format = "Today at %l:%M%p"
+      elsif (date == Date.yesterday)
+        format = "Yesterday at %l:%M%p"
+      elsif (date.year == Date.today.year)
+        format = "%B %e"
+      else
+        format = "%B %e, %Y"
+      end
+      datetime.strftime(format)
+    else 
+      "unknown date"
     end
-    datetime.strftime(format)
   end
 
   # wraps the block in a p with the right class and shows the errors nicely, if there are any
@@ -65,6 +68,11 @@ module ApplicationHelper
   # scoped link
   def collected_url_for(thing)
     @controller.send(:collected_url_for, thing)
+  end
+  
+  def icon_for(thing, size=16, color='blue', options={})
+    image_name = thing.is_a?(Source) ? thing.file_type : thing.class.to_s.downcase
+    image_tag "/images/furniture/kobble/#{size}/#{color}/#{image_name}.png", :size => "#{size}x#{size}", :class => options[:class]
   end
 
 end

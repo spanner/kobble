@@ -19,6 +19,10 @@
     #pagetitle
       %h1{:class => @title.size > 50  ? "long_title" : "short_title"}
         = @title
+        - if @thing
+          %span.header_icon<>
+            = link_to icon_for(@thing), collected_url_for(@thing), :id => "#{@thing.class.to_s.downcase}_#{@thing.id}", :class => "draggable #{@thing.class.to_s.downcase}", :title => "drag me"
+          
     #canvas
       = yield
 
