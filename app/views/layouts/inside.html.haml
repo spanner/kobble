@@ -65,6 +65,6 @@
     = yield :admin
 
   - if flash[:notice]
-    = javascript_tag %{window.addEvent('load', function(){ intf.announce('#{escape_javascript(flash[:notice])}'); });}
+    = javascript_tag %{window.addEvent('load', function(){ k.announce('#{escape_javascript(flash[:notice])}'); });}
   - if flash[:error]
-    = javascript_tag %{window.addEvent('load', function(){ intf.complain('#{escape_javascript(flash[:error])}'); });}
+    = javascript_tag %{window.addEvent('load', function(){ k.complain('#{escape_javascript(flash[:error])}'); });}

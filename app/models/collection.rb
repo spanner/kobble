@@ -15,7 +15,7 @@ class Collection < ActiveRecord::Base
   has_many :occasions, :order => 'name', :dependent => :destroy, :conditions => "deleted_at IS NULL"
   has_many :topics, :order => 'name', :dependent => :destroy, :conditions => "deleted_at IS NULL"
   has_many :events, :order => 'at DESC'
-  has_many :markers
+  has_many :benchings #ugh!
   
   validates_presence_of :name
   validates_presence_of :description

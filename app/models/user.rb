@@ -30,7 +30,7 @@ class User < ActiveRecord::Base
   # simplified scratchpad relationship
   # polymorphic. we can't go :through so see 'selections' below
 
-  has_many :markers, :foreign_key => 'created_by_id', :order => 'position', :dependent => :destroy
+  has_many :benchings, :foreign_key => 'created_by_id', :order => 'position', :dependent => :destroy
 
   # and the old one is kept for transition but soon to be removed
   
@@ -128,18 +128,17 @@ public
   
   # scratchpad/bookmark functions
   
-  def selections
-    self.markers.map {|s| s.selection}
+  def bench
+    self.benchings.map {|s| s.benched}
   end
     
-  def current_markers(collection = Collection.current)
-    self.markers.in_collection(collection)
+  def current_bench(collection = Collection.current)
+    self.benchings.in_collection(collection)
   end
 
-  def current_selections(collection = Collection.current)
-    self.current_markers(collection).map {|s| s.selection}
+  def items_on_bench(collection = Collection.current)
+    self.current_bench(collection).map {|s| s.benched}
   end
-  
   
 protected
 

@@ -146,10 +146,10 @@ module Kobble #:nodoc:
         # manipulation -> workbench drag and droppability
         
         if definitions.include?(:bench)
-          has_many :markers, :as => :selection, :dependent => :destroy
-          has_many :selectors, :through => :markers, :source => :created_by
+          has_many :benchings, :as => :benched, :dependent => :destroy
+          has_many :benchers, :through => :benchings, :source => :created_by
           
-          User.catches_and_drops( self.to_s.downcase.intern, :through => :markers )
+          User.catches_and_drops( self.to_s.downcase.intern, :through => :benchings )
           Kobble.benched_model(self)
         end
         
@@ -161,7 +161,6 @@ module Kobble #:nodoc:
 
           Bundle.catches_and_drops( self.to_s.downcase.intern, :through => :bundlings )
           Kobble.organised_model(self)
-
         end
 
         # organisation -> attached field notes

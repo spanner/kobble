@@ -16,7 +16,6 @@ module Kobble
   module CatcherClassMethods #:nodoc:
       
     def catches_and_drops(klass, options={})
-      STDERR.puts ">>> #{self}.catches_and_drops( #{klass}, #{options.inspect} )"
       self.catches(klass, options)
       self.drops(klass, options)
     end

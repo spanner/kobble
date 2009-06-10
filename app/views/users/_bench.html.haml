@@ -10,6 +10,6 @@
       - else
         combined
       workbench
-    = render :partial => 'users/marker', :collection => collection ? user.current_markers : user.markers
+    = render :partial => 'users/benching', :collection => collection ? user.current_bench : user.bench
     %p.explanatory
       Click on a listing to select it. Shift- or cmd-click to select several. Actions will be offered. Drag up and down to sort this list. Drag out into space to remove. Drag onto something else to apply.
