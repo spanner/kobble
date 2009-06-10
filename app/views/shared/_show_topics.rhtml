@@ -19,7 +19,7 @@
   <%= render :partial => 'topics/single', :collection => topics %>
 
 	<% unless hide_new_discussion_link %>
-	  <p><%= link_to "discuss*", item_new_topic_url(item), {:id => 'discussion_extend_topiclist', :class => 'inlinediscuss create'} %></p>
+	  <p><%= link_to "discuss*", item_new_topic_url(item), {:id => 'discussion_extend_topiclist', :class => 'create inline'} %></p>
   <% end %>
 </div>
 

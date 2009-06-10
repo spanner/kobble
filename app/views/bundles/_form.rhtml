@@ -1,7 +1,7 @@
 <div class="preamble">
   <p>
   	'Sets' are gatherings of material. They can include almost anything: sources, fragments, people, tags, other sets, conversations, etc. 
-  	The easiest way to make one is to browse around your collections dragging material onto a scratchpad and then press 'turn into set' at the top of that pad.
+  	The easiest way to make one is to browse around your collections dragging material onto your bench, select the collection you want and press 'turn into set'.
   </p>
 </div>
 
@@ -31,7 +31,6 @@
 	  <% if @bundle.new_record? %>
 	  
 	    <% if @members %>
-        <%= hidden_field_tag 'scratchpad_id', params[:scratchpad_id] %>
         <%= render :partial => 'members', :locals => {:item => @bundle, :members => @members, :inactive => true} %>
 	    <% else %>
 	      <p>Once the set has been created you will be able to manage its population by dragging items into and out of this space (and the similar space on the main set page).</p>

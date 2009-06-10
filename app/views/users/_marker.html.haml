@@ -1,0 +1,7 @@
+- if marker
+  - selection = marker.selection
+  - name = selection.name.nil? || selection.name.blank? ? "nameless #{selection.class.nice_title}" : selection.name 
+
+  %li{:id => "marker_#{marker.id}", :class => "benched selectable sortable #{cycle('alternate', '', :name => "bench_rows")}"}
+    = check_box_tag 'markers[]', marker.id, false, :id => "cb_markers_#{marker.id}", :class => 'selector'
+    = link_to name, collected_url_for(selection), :id => "#{selection.class.to_s.downcase}_#{selection.id}", :class => "#{selection.class.to_s.downcase} draggable"

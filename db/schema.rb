@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090607115039) do
+ActiveRecord::Schema.define(:version => 20090609110839) do
 
   create_table "account_types", :force => true do |t|
     t.string   "name"
@@ -167,6 +167,17 @@ ActiveRecord::Schema.define(:version => 20090607115039) do
   add_index "events", ["at"], :name => "index_events_on_at"
   add_index "events", ["user_id"], :name => "index_events_on_user_id"
 
+  create_table "markers", :force => true do |t|
+    t.string   "selection_type", :limit => 20
+    t.integer  "selection_id"
+    t.integer  "collection_id"
+    t.integer  "position"
+    t.integer  "created_by_id"
+    t.datetime "created_at"
+    t.integer  "updated_by_id"
+    t.datetime "updated_at"
+  end
+
   create_table "monitorships", :force => true do |t|
     t.integer  "topic_id"
     t.integer  "user_id"
@@ -305,17 +316,6 @@ ActiveRecord::Schema.define(:version => 20090607115039) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "default_true"
-  end
-
-  create_table "scrappings", :force => true do |t|
-    t.string   "scrap_type",    :limit => 20
-    t.integer  "scrap_id"
-    t.integer  "collection_id"
-    t.integer  "position"
-    t.integer  "created_by_id"
-    t.datetime "created_at"
-    t.integer  "updated_by_id"
-    t.datetime "updated_at"
   end
 
   create_table "scratchpads", :force => true do |t|

@@ -15,6 +15,7 @@ class Collection < ActiveRecord::Base
   has_many :occasions, :order => 'name', :dependent => :destroy, :conditions => "deleted_at IS NULL"
   has_many :topics, :order => 'name', :dependent => :destroy, :conditions => "deleted_at IS NULL"
   has_many :events, :order => 'at DESC'
+  has_many :markers
   
   validates_presence_of :name
   validates_presence_of :description
@@ -26,18 +27,8 @@ class Collection < ActiveRecord::Base
   
   has_many :taggings  
   has_many :tags, :through => :taggings  
-  
 
   named_scope :in_account, lambda { |account| {:conditions => { :account_id => account.id }} }
-
-  def catch_this(object)
-    if object.collection != self
-      object.collection = self
-      return Material::CatchResponse.new("#{object.name} moved to #{self.name} collection", 'copy', 'success')
-    else
-      return Material::CatchResponse.new("#{object.name} already in #{self.name} collection", 'copy', 'failure')
-    end
-  end
   
   def tags_with_popularity
     taggings = self.taggings.grouped_with_popularity

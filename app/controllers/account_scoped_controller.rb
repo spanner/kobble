@@ -1,8 +1,9 @@
 class AccountScopedController < ApplicationController
 
   # this defines most of our authentication and scoping routines
-  # but not much else.
-
+  # and also the catch/drop interface
+  # (since users are not collected)
+  
   helper_method :current_account, :current_user_session, :current_user, :current_collection
   helper_method :logged_in?, :admin?, :account_admin?
   before_filter :require_account
@@ -57,6 +58,24 @@ protected
   
   def with_account_subdomain(link)
     # force links to local site
+  end
+  
+  
+  
+  
+  
+  def catch
+    # identify catching object
+    # identify dropped object
+    # call catching.catch_this(dropped)
+    # return json response
+  end
+  
+  def drop
+    # identify dropping object
+    # identify dropped object
+    # call dropping.drop_this(dropped)
+    # return json response
   end
 
 private

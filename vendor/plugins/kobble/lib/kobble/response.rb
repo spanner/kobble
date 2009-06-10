@@ -4,7 +4,7 @@ module Kobble
 
     # consequence is the interface action to perform on the dragged item
     # should be one of: move, insert, delete. The default is 'insert' 
-    # for eg duplicate representation of item on scratchpad
+    # for eg duplicate representation of item on bench
 
     def initialize(m=nil, c=nil, o=nil)
       @message = m

@@ -128,14 +128,6 @@ div#mainpage {
     padding: 0;
     margin: 0 20px 40px 130px; }
 
-div#scratchpad {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 25%;
-  height: 100%;
-  overflow: hidden; }
-
 div#mastfoot {
   position: fixed;
   left: 0;
@@ -552,27 +544,38 @@ div.gallery li {
     color: #8c8d8e; }
 
 /* ******* scratchpad */
-div#scratchpad {
+div#workbench {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 25%;
+  height: 100%;
+  overflow: hidden;
   background-color: #4d4e53; }
-  div#scratchpad h3 {
+  div#workbench form.benchform {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; }
+  div#workbench h3 {
     margin: 6px 6px 6px 26px;
     color: #8c8d8e; }
-  div#scratchpad p.explanatory {
+  div#workbench p.explanatory {
     position: absolute;
     bottom: 0;
     font-size: 80%;
     padding: 10px;
     margin: 0;
-    background-color: #4d4e53;
     color: #8c8d8e; }
-  div#scratchpad ul.padlist {
+  div#workbench ul.benchlist {
     padding: 0;
-    margin: 0; }
-    div#scratchpad ul.padlist li {
+    margin: 0;
+    height: 100%; }
+    div#workbench ul.benchlist li {
       list-style: none;
       margin: 0;
       padding: 6px 6px 6px 26px; }
-      div#scratchpad ul.padlist li a, div#scratchpad ul.padlist li a.draggable {
+      div#workbench ul.benchlist li a, div#workbench ul.benchlist li a.draggable {
         display: block;
         font-size: 100%;
         color: #afafaf;
@@ -583,73 +586,149 @@ div#scratchpad {
         background-color: transparent;
         background-position: top left;
         background-repeat: no-repeat; }
-      div#scratchpad ul.padlist li a:hover {
+      div#workbench ul.benchlist li a:hover {
         color: white; }
-      div#scratchpad ul.padlist li input.selector {
+      div#workbench ul.benchlist li input.selector {
         display: none; }
-    div#scratchpad ul.padlist li.alternate {
+    div#workbench ul.benchlist li.alternate {
       background-color: #616265; }
+  div#workbench ul.drophere {
+    background-color: #d1005d; }
+    div#workbench ul.drophere li.alternate {
+      background-color: #dc0b68; }
 
-li.padded a.collection {
+li.benched a.collection {
   background-image: url(/images/furniture/kobble/16/mid/collection.png); }
-li.padded a.video {
+li.benched a.video {
   background-image: url(/images/furniture/kobble/16/mid/video.png); }
-li.padded a.audio {
+li.benched a.audio {
   background-image: url(/images/furniture/kobble/16/mid/audio.png); }
-li.padded a.doc {
+li.benched a.doc {
   background-image: url(/images/furniture/kobble/16/mid/text.png); }
-li.padded a.pdf {
+li.benched a.pdf {
   background-image: url(/images/furniture/kobble/16/mid/text.png); }
-li.padded a.text {
+li.benched a.text {
   background-image: url(/images/furniture/kobble/16/mid/text.png); }
-li.padded a.source {
+li.benched a.source {
   background-image: url(/images/furniture/kobble/16/mid/text.png); }
-li.padded a.node {
+li.benched a.node {
   background-image: url(/images/furniture/kobble/16/mid/node.png); }
-li.padded a.bundle {
+li.benched a.bundle {
   background-image: url(/images/furniture/kobble/16/mid/bundle.png); }
-li.padded a.user {
+li.benched a.user {
   background-image: url(/images/furniture/kobble/16/mid/person.png); }
-li.padded a.person {
+li.benched a.person {
   background-image: url(/images/furniture/kobble/16/mid/person.png); }
-li.padded a.tag {
+li.benched a.tag {
   background-image: url(/images/furniture/kobble/16/mid/tag.png); }
-li.padded a.topic {
+li.benched a.topic {
   background-image: url(/images/furniture/kobble/16/mid/topic.png); }
-li.padded a.post {
+li.benched a.post {
   background-image: url(/images/furniture/kobble/16/mid/post.png); }
-li.padded a.collection:hover {
+li.benched a.collection:hover {
   background-image: url(/images/furniture/kobble/16/white/collection.png); }
-li.padded a.video:hover {
+li.benched a.video:hover {
   background-image: url(/images/furniture/kobble/16/white/video.png); }
-li.padded a.audio:hover {
+li.benched a.audio:hover {
   background-image: url(/images/furniture/kobble/16/white/audio.png); }
-li.padded a.doc:hover {
+li.benched a.doc:hover {
   background-image: url(/images/furniture/kobble/16/white/text.png); }
-li.padded a.pdf:hover {
+li.benched a.pdf:hover {
   background-image: url(/images/furniture/kobble/16/white/text.png); }
-li.padded a.text:hover {
+li.benched a.text:hover {
   background-image: url(/images/furniture/kobble/16/white/text.png); }
-li.padded a.source:hover {
+li.benched a.source:hover {
   background-image: url(/images/furniture/kobble/16/white/text.png); }
-li.padded a.node:hover {
+li.benched a.node:hover {
   background-image: url(/images/furniture/kobble/16/white/node.png); }
-li.padded a.bundle:hover {
+li.benched a.bundle:hover {
   background-image: url(/images/furniture/kobble/16/white/bundle.png); }
-li.padded a.user:hover {
+li.benched a.user:hover {
   background-image: url(/images/furniture/kobble/16/white/person.png); }
-li.padded a.person:hover {
+li.benched a.person:hover {
   background-image: url(/images/furniture/kobble/16/white/person.png); }
-li.padded a.tag:hover {
+li.benched a.tag:hover {
   background-image: url(/images/furniture/kobble/16/white/tag.png); }
-li.padded a.topic:hover {
+li.benched a.topic:hover {
   background-image: url(/images/furniture/kobble/16/white/topic.png); }
-li.padded a.post:hover {
+li.benched a.post:hover {
   background-image: url(/images/furniture/kobble/16/white/post.png); }
 
 /* ******* drag and drop signalling */
 div.drophere, ul.drophere {
   background-color: #cacac8; }
+
+div.dragging {
+  padding: 4px;
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
+  border-style: solid;
+  border-width: 4px;
+  border-color: #d1005d;
+  background-color: white; }
+  div.dragging a {
+    padding-left: 20px;
+    font-weight: bold;
+    font-size: 1.2em;
+    background-color: transparent;
+    background-position: top left;
+    background-repeat: no-repeat; }
+  div.dragging a.collection {
+    background-image: url(/images/furniture/kobble/16/blue/collection.png); }
+  div.dragging a.video {
+    background-image: url(/images/furniture/kobble/16/blue/video.png); }
+  div.dragging a.audio {
+    background-image: url(/images/furniture/kobble/16/blue/audio.png); }
+  div.dragging a.doc {
+    background-image: url(/images/furniture/kobble/16/blue/text.png); }
+  div.dragging a.pdf {
+    background-image: url(/images/furniture/kobble/16/blue/text.png); }
+  div.dragging a.text {
+    background-image: url(/images/furniture/kobble/16/blue/text.png); }
+  div.dragging a.source {
+    background-image: url(/images/furniture/kobble/16/blue/text.png); }
+  div.dragging a.node {
+    background-image: url(/images/furniture/kobble/16/blue/node.png); }
+  div.dragging a.bundle {
+    background-image: url(/images/furniture/kobble/16/blue/bundle.png); }
+  div.dragging a.user {
+    background-image: url(/images/furniture/kobble/16/blue/person.png); }
+  div.dragging a.person {
+    background-image: url(/images/furniture/kobble/16/blue/person.png); }
+  div.dragging a.tag {
+    background-image: url(/images/furniture/kobble/16/blue/tag.png); }
+  div.dragging a.topic {
+    background-image: url(/images/furniture/kobble/16/blue/topic.png); }
+  div.dragging a.post {
+    background-image: url(/images/furniture/kobble/16/blue/post.png); }
+  div.dragging a.collection:hover {
+    background-image: url(/images/furniture/kobble/16/pink/collection.png); }
+  div.dragging a.video:hover {
+    background-image: url(/images/furniture/kobble/16/pink/video.png); }
+  div.dragging a.audio:hover {
+    background-image: url(/images/furniture/kobble/16/pink/audio.png); }
+  div.dragging a.doc:hover {
+    background-image: url(/images/furniture/kobble/16/pink/text.png); }
+  div.dragging a.pdf:hover {
+    background-image: url(/images/furniture/kobble/16/pink/text.png); }
+  div.dragging a.text:hover {
+    background-image: url(/images/furniture/kobble/16/pink/text.png); }
+  div.dragging a.source:hover {
+    background-image: url(/images/furniture/kobble/16/pink/text.png); }
+  div.dragging a.node:hover {
+    background-image: url(/images/furniture/kobble/16/pink/node.png); }
+  div.dragging a.bundle:hover {
+    background-image: url(/images/furniture/kobble/16/pink/bundle.png); }
+  div.dragging a.user:hover {
+    background-image: url(/images/furniture/kobble/16/pink/person.png); }
+  div.dragging a.person:hover {
+    background-image: url(/images/furniture/kobble/16/pink/person.png); }
+  div.dragging a.tag:hover {
+    background-image: url(/images/furniture/kobble/16/pink/tag.png); }
+  div.dragging a.topic:hover {
+    background-image: url(/images/furniture/kobble/16/pink/topic.png); }
+  div.dragging a.post:hover {
+    background-image: url(/images/furniture/kobble/16/pink/post.png); }
 
 ul.dropzone {
   min-height: 30px;

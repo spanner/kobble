@@ -1,6 +1,6 @@
 module Kobble  #:nodoc:
   
-  mattr_accessor :indexed_models, :discussed_models, :described_models, :organised_models, :annotated_models, :logged_models
+  mattr_accessor :indexed_models, :discussed_models, :described_models, :organised_models, :benched_models, :annotated_models, :logged_models
   
   # all of these methods keep the model name as a (singular) symbol
   # holding classes in plugin causes staleness in dev mode
@@ -23,6 +23,11 @@ module Kobble  #:nodoc:
   def Kobble.organised_model(klass)
     @@organised_models ||= []
     @@organised_models.push(klass.to_s.underscore.intern) unless @@organised_models.include?(klass.to_s.underscore.intern)
+  end
+
+  def Kobble.benched_model(klass)
+    @@benched_models ||= []
+    @@benched_models.push(klass.to_s.underscore.intern) unless @@benched_models.include?(klass.to_s.underscore.intern)
   end
 
   def Kobble.annotated_model(klass)

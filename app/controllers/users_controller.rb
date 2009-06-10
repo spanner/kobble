@@ -1,4 +1,4 @@
-class UsersController < ApplicationController
+class UsersController < AccountScopedController
 
   before_filter :i_am_me
   before_filter :find_account

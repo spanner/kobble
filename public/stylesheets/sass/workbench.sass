@@ -1,7 +1,18 @@
 @import constants.sass
 
-div#scratchpad
+div#workbench
+  :position fixed
+  :top 0
+  :right 0
+  :width 25%
+  :height 100%
+  :overflow hidden
   :background-color = !coolgrey11
+  form.benchform
+    :height 100%
+    :margin 0
+    :padding 0
+    :overflow hidden
   h3
     :margin 6px 6px 6px 26px
     :color = !coolgrey8
@@ -11,11 +22,11 @@ div#scratchpad
     :font-size 80%
     :padding 10px
     :margin 0
-    :background-color = !coolgrey11
     :color = !coolgrey8
-  ul.padlist
+  ul.benchlist
     :padding 0
     :margin 0
+    :height 100%
     li
       :list-style none
       :margin 0
@@ -38,8 +49,12 @@ div#scratchpad
         :display none
     li.alternate
       :background-color = !coolgrey10
+  ul.drophere
+    :background-color = !rubinered
+    li.alternate
+      :background-color = !rubinered + 11
 
-li.padded
+li.benched
   a.collection
     :background-image url(/images/furniture/kobble/16/mid/collection.png) 
   a.video 

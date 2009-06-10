@@ -18,10 +18,10 @@
       = link_to_unless_current "edit #{item.nice_title}" , {:controller => item.class.to_s.pluralize.underscore, :action => 'edit', :id => item}, {:class => 'update'}
     - if item.is_notable?
       %li
-        = link_to "add note*", item_new_note_url(item), {:id => 'admin_extend_notelist', :class => 'annotate'}
+        = link_to "add note*", item_new_note_url(item), {:id => 'admin_extend_notelist', :class => 'annotate inline'}
     - if item.is_discussable?
       %li
-        = link_to "discuss*", item_new_topic_url(item), {:id => 'admin_extend_topiclist', :class => 'inlinediscuss'}
+        = link_to "discuss*", item_new_topic_url(item), {:id => 'admin_extend_topiclist', :class => 'discuss inline'}
     - if item.is_a?(Collection)
       - if account_admin?
         %li

@@ -5,7 +5,8 @@ class User < ActiveRecord::Base
     config.transition_from_restful_authentication = true
   end
   
-  is_material :except => [:collection, :index, :discussion, :annotation, :selection]
+  is_material :only => [:owners, :illustration, :log, :undelete]
+
   belongs_to :account
   belongs_to :person
   
@@ -25,12 +26,11 @@ class User < ActiveRecord::Base
   has_many :created_tags, :class_name => 'Tag', :foreign_key => 'created_by_id', :dependent => :destroy
   has_many :created_taggings, :class_name => 'Tagging', :foreign_key => 'created_by_id', :dependent => :nullify
   has_many :events, :order => 'at DESC', :dependent => :nullify
-
+  
   # simplified scratchpad relationship
-  # polymorphic. we can't go :through
-  # so see scraps below
+  # polymorphic. we can't go :through so see 'selections' below
 
-  has_many :scrappings, :foreign_key => 'created_by_id', :order => 'position', :dependent => :destroy
+  has_many :markers, :foreign_key => 'created_by_id', :order => 'position', :dependent => :destroy
 
   # and the old one is kept for transition but soon to be removed
   
@@ -126,32 +126,18 @@ public
     UserPreference.find_or_create_by_user_id_and_preference_id(self.id, preference.id).is_active?
   end
   
-  # scratchpad functions
+  # scratchpad/bookmark functions
   
-  def scraps
-    self.scrappings.map {|s| s.scrap}
+  def selections
+    self.markers.map {|s| s.selection}
   end
-  
-  def current_scraps(collection = Collection.current)
-    self.scrappings.in_collection(collection).map {|s| s.scrap}
-  end
-  
-  def catch_this(object)
-    if self.scrappings.of(object).empty?
-      self.scrappings.create!(:scrap => object)
-      return Kobble::Response.new("#{object.name} added to scratchpad", 'copy', 'success')
-    else
-      return Kobble::Response.new("#{object.name} already in scratchpad", '', 'refusal')
-    end
+    
+  def current_markers(collection = Collection.current)
+    self.markers.in_collection(collection)
   end
 
-  def drop_this(object)
-    if self.scrappings.of(object).empty?
-      return Kobble::Response.new("#{object.name} not in scratchpad: hello?", 'delete', 'success')
-    else
-      self.scrappings.delete(self.scrappings.of(object))
-      return Kobble::Response.new("#{object.name} removed from scratchpad", '', 'refusal')
-    end
+  def current_selections(collection = Collection.current)
+    self.current_markers(collection).map {|s| s.selection}
   end
   
   

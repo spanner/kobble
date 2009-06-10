@@ -5,7 +5,7 @@ module Kobble
     require 'redcloth'
 
     def as_class
-      self.classify.constantize
+      self.singularize.classify.constantize
     end
 
     def titlecase

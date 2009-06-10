@@ -53,7 +53,7 @@ module Kobble #:nodoc:
       # the main business of the module is to apply to each class the common machinery of materialist
 
       def is_material(options={})
-        possible_definitions = [:collection, :owners, :illustration, :file, :organisation, :description, :annotation, :discussion, :index, :log, :undelete, :selection]
+        possible_definitions = [:collection, :owners, :illustration, :file, :organisation, :bench, :description, :annotation, :discussion, :index, :log, :undelete, :selection]
         cattr_accessor possible_definitions.map{|d| "_has_#{d.to_s}".intern }
             
         if options[:except]
@@ -70,17 +70,20 @@ module Kobble #:nodoc:
         possible_definitions.each do |d|
           send( "_has_#{d.to_s}=".intern, definitions.include?(d))      # note that _has_x doesn't mean that the necesary columns are there, just that they ought to be
         end
+
+        # collection -> attachment to (and usually confinement within) a collection
     
         if definitions.include?(:collection)
           if self.column_names.include?('collection_id')
             belongs_to :collection
             named_scope :in_collection, lambda { |collection| {:conditions => { :collection_id => collection.id }} }
             named_scope :in_collections, lambda { |collections| {:conditions => ["#{table_name}.collection_id in (" + collections.map{'?'}.join(',') + ")"] + collections.map { |c| c.id }} }
-            Collection.can_catch(self)
           else
             logger.warn("!! #{self.to_s} should belong_to collection but has no collection_id column")
           end
         end
+      
+        # owners -> standard creator and updater relationships
       
         if definitions.include?(:owners)
           belongs_to :created_by, :class_name => 'User'
@@ -91,6 +94,8 @@ module Kobble #:nodoc:
             named_scope :spoken_by_person, lambda { |person| {:conditions => { :speaker_id => person.id }} }
           end
         end
+      
+        # illustration -> attached image file
       
         if definitions.include?(:illustration)
           if self.column_names.include?('image_file_name')
@@ -107,6 +112,8 @@ module Kobble #:nodoc:
             logger.warn("!! #{self.to_s} should be illustrated but lacks necessary image columns")
           end
         end
+
+        # file -> attached document or media file
 
         if definitions.include?(:file)
           
@@ -127,42 +134,58 @@ module Kobble #:nodoc:
           end
         end
 
+        # description -> tagging
+
         if definitions.include?(:description)
           has_many :taggings, :as => :taggable, :dependent => :destroy
           has_many :tags, :through => :taggings
-          self.can_catch(Tag)
-          self.can_drop(Tag)
-          Tag.can_catch(self)
+          self.catches_and_drops( :tag )
           Kobble.described_model(self)
         end
-
+        
+        # manipulation -> workbench drag and droppability
+        
+        if definitions.include?(:bench)
+          has_many :markers, :as => :selection, :dependent => :destroy
+          has_many :selectors, :through => :markers, :source => :created_by
+          
+          User.catches_and_drops( self.to_s.downcase.intern, :through => :markers )
+          Kobble.benched_model(self)
+        end
+        
+        # organisation -> bundling
+        
         if definitions.include?(:organisation)
-          has_many :paddings, :as => :scrap, :dependent => :destroy
-          has_many :scratchpads, :through => :paddings       
-          Scratchpad.can_catch(self)
-          Scratchpad.can_drop(self)
           has_many :bundlings, :as => :member, :dependent => :destroy
           has_many :bundles, :through => :bundlings, :source => :superbundle      
-          Bundle.can_catch(self)
-          Bundle.can_drop(self)
+
+          Bundle.catches_and_drops( self.to_s.downcase.intern, :through => :bundlings )
           Kobble.organised_model(self)
+
         end
+
+        # organisation -> attached field notes
 
         if definitions.include?(:annotation)
           has_many :annotations, :as => :annotated, :dependent => :destroy
-          self.can_catch(Annotation)
           Kobble.annotated_model(self)
         end
+
+        # organisation -> attached topics
 
         if definitions.include?(:discussion)
           has_many :topics, :as => :referent, :dependent => :destroy, :order => 'topics.created_at DESC'
           Kobble.discussed_model(self)
         end
 
+        # organisation -> attached events
+
         if definitions.include?(:log)
           has_many :logged_events, :class_name => 'Event', :as => :affected, :dependent => :destroy, :order => 'at DESC'
           Kobble.logged_model(self)
         end
+      
+        # undelete -> acts_as_paranoid
       
         if definitions.include?(:undelete)
           if self.column_names.include?('deleted_at')
@@ -174,6 +197,8 @@ module Kobble #:nodoc:
           end
         end
 
+        # selection -> some named scopes useful for limiting lists in the interface
+
         if definitions.include?(:selection)
           named_scope :latest, { :limit => 20, :order => 'created_at DESC' }
           named_scope :latest_few, { :limit => 5, :order => 'created_at DESC' }
@@ -181,6 +206,8 @@ module Kobble #:nodoc:
           named_scope :changed_since, lambda {|start| { :conditions => ['created_at > ? or updated_at > ?', start, start] } }
           named_scope :created_by, lambda {|user| { :conditions => ['created_by = ?', user.id] } }
         end
+      
+        # index -> searchability (and also find-like-thisability)
       
         if definitions.include?(:index)
           acts_as_xapian :texts => [:name, :description, :body].select{ |m| column_names.include?(m.to_s) }

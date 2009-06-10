@@ -9,7 +9,8 @@
       - if @title
         \:
       = @title
-    = javascript_include_tag 'mootools', 'mootools-more', 'extensions', 'autocomplete', 'kobble', 'slimbox', 'swfupload/swfupload', 'swfupload/swfupload.cookies', 'swfupload/swfupload.queue', 'swfupload/swfupload.speed', :cache => "cache/kobble"
+    = javascript_include_tag 'mootools', 'mootools-more', 'kobble/dragdrop', 'kobble'
+    /= javascript_include_tag 'mootools', 'mootools-more', 'kobble/dragdrop', 'kobble', 'slimbox', 'swfupload/swfupload', 'swfupload/swfupload.cookies', 'swfupload/swfupload.queue', 'swfupload/swfupload.speed', :cache => "cache/kobble"
     = yield :extra_js
     = stylesheet_link_tag 'kobble', :cache => "cache/kobble"
     = yield :extra_css
@@ -57,8 +58,8 @@
         = link_to 'search', search_url, {:class => 'administrative'}
         = link_to 'log out', user_session_path, :method => :delete, :class => 'administrative'
 
-  #scratchpad
-    = render :partial => 'users/scratchpad', :locals => {:collection => current_collection}
+  #workbench
+    = render :partial => 'users/bench', :locals => {:collection => current_collection}
   
   #admin
     = yield :admin

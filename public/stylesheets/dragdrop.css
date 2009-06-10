@@ -1,6 +1,78 @@
 div.drophere, ul.drophere {
   background-color: #cacac8; }
 
+div.dragging {
+  padding: 4px;
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
+  border-style: solid;
+  border-width: 4px;
+  border-color: #d1005d;
+  background-color: white; }
+  div.dragging a {
+    padding-left: 20px;
+    font-weight: bold;
+    font-size: 1.2em;
+    background-color: transparent;
+    background-position: top left;
+    background-repeat: no-repeat; }
+  div.dragging a.collection {
+    background-image: url(/images/furniture/kobble/16/blue/collection.png); }
+  div.dragging a.video {
+    background-image: url(/images/furniture/kobble/16/blue/video.png); }
+  div.dragging a.audio {
+    background-image: url(/images/furniture/kobble/16/blue/audio.png); }
+  div.dragging a.doc {
+    background-image: url(/images/furniture/kobble/16/blue/text.png); }
+  div.dragging a.pdf {
+    background-image: url(/images/furniture/kobble/16/blue/text.png); }
+  div.dragging a.text {
+    background-image: url(/images/furniture/kobble/16/blue/text.png); }
+  div.dragging a.source {
+    background-image: url(/images/furniture/kobble/16/blue/text.png); }
+  div.dragging a.node {
+    background-image: url(/images/furniture/kobble/16/blue/node.png); }
+  div.dragging a.bundle {
+    background-image: url(/images/furniture/kobble/16/blue/bundle.png); }
+  div.dragging a.user {
+    background-image: url(/images/furniture/kobble/16/blue/person.png); }
+  div.dragging a.person {
+    background-image: url(/images/furniture/kobble/16/blue/person.png); }
+  div.dragging a.tag {
+    background-image: url(/images/furniture/kobble/16/blue/tag.png); }
+  div.dragging a.topic {
+    background-image: url(/images/furniture/kobble/16/blue/topic.png); }
+  div.dragging a.post {
+    background-image: url(/images/furniture/kobble/16/blue/post.png); }
+  div.dragging a.collection:hover {
+    background-image: url(/images/furniture/kobble/16/pink/collection.png); }
+  div.dragging a.video:hover {
+    background-image: url(/images/furniture/kobble/16/pink/video.png); }
+  div.dragging a.audio:hover {
+    background-image: url(/images/furniture/kobble/16/pink/audio.png); }
+  div.dragging a.doc:hover {
+    background-image: url(/images/furniture/kobble/16/pink/text.png); }
+  div.dragging a.pdf:hover {
+    background-image: url(/images/furniture/kobble/16/pink/text.png); }
+  div.dragging a.text:hover {
+    background-image: url(/images/furniture/kobble/16/pink/text.png); }
+  div.dragging a.source:hover {
+    background-image: url(/images/furniture/kobble/16/pink/text.png); }
+  div.dragging a.node:hover {
+    background-image: url(/images/furniture/kobble/16/pink/node.png); }
+  div.dragging a.bundle:hover {
+    background-image: url(/images/furniture/kobble/16/pink/bundle.png); }
+  div.dragging a.user:hover {
+    background-image: url(/images/furniture/kobble/16/pink/person.png); }
+  div.dragging a.person:hover {
+    background-image: url(/images/furniture/kobble/16/pink/person.png); }
+  div.dragging a.tag:hover {
+    background-image: url(/images/furniture/kobble/16/pink/tag.png); }
+  div.dragging a.topic:hover {
+    background-image: url(/images/furniture/kobble/16/pink/topic.png); }
+  div.dragging a.post:hover {
+    background-image: url(/images/furniture/kobble/16/pink/post.png); }
+
 ul.dropzone {
   min-height: 30px;
   border-weight: 1px;

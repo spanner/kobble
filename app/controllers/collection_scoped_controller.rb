@@ -37,7 +37,7 @@ class CollectionScopedController < AccountScopedController
     if @thing.save
       @thing.tags << Tag.from_list(params[:tag_list])
       flash[:notice] = "#{model_class} was successfully created."
-      redirect_to url_for(@thing)
+      redirect_to collected_url_for(@thing)
     else
       render :action => 'new'
     end
@@ -92,33 +92,7 @@ class CollectionScopedController < AccountScopedController
       format.json { render :json => @thing.to_json }
     end
   end
-  
-  # do uncollected controllers need to implement catch?
-  # eg. collections.
-
-  def catch
-    @caught = params[:caughtClass].to_s.as_class.find( params[:caughtID] )
-    @response = @thing.catch_this(@caught) if @thing and @caught
-    render_thing_or_response
-  rescue => e
-    flash[:error] = e.message
-    @response = Material::CatchResponse.new(e.message, '', 'failure')
-    render_thing_or_response
-  end
     
-  def drop
-    @dropped = params[:droppedClass].as_class.find(params[:droppedID])
-    @response = @thing.drop_this(@dropped) if @thing and @dropped
-    render_thing_or_response
-  rescue => e
-    flash[:error] = e.message
-    @response = Material::CatchResponse.new(e.message, '', 'failure')
-    render_thing_or_response
-  end
-  
-  
-  
-  
   
 protected
   

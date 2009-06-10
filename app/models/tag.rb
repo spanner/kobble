@@ -1,10 +1,9 @@
 class Tag < ActiveRecord::Base
 
   attr_accessor :used
-  is_material :except => [:index, :description]
+  is_material :except => [:index, :description, :organisation]
   belongs_to :account
   has_many :taggings, :dependent => :destroy
-  can_catch :tags # in addition to all the catches set up by is_material in other classes
 
   named_scope :with_popularity, {
     :select => "tags.*, count(taggings.id) as use_count", 
@@ -38,21 +37,6 @@ class Tag < ActiveRecord::Base
     taggings.map{|t| t.taggable }
   end
   
-  def catch_this(object)
-    case object.class.to_s
-    when 'Tag'
-      subsume(object)
-      return Material::CatchResponse.new("#{object.name} subsumed into #{self.name}", 'delete', 'success')
-    else
-      if self.taggings.of(object).empty?
-        self.taggings.create!(:taggable => object)
-        return Material::CatchResponse.new("#{object.name} tagged with #{self.name}", 'copy', 'success')
-      else
-        return Material::CatchResponse.new("#{self.name} already attached to #{object.name}", '', 'failure')
-      end
-    end
-  end
-
   def drop_this(object)
     self.taggings.delete(self.taggings.of(object))
     return Material::CatchResponse.new("#{self.name} tag removed from #{object.name}", 'delete', 'success')
