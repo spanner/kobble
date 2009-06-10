@@ -97,11 +97,11 @@ var Kobble = new Class({
     // scope.getElementsIncludingSelf('div.fixed').each(function (el) { el.pin(); });
     scope.getElementsIncludingSelf('.catcher').each (function (el) { new Catcher(el); });
     scope.getElementsIncludingSelf('.draggable').each(function (el) { el.prepDraggable(); });
-    // scope.getElementsIncludingSelf('input.tagbox').each(function (el) { new Suggester(el); });
-    // scope.getElementsIncludingSelf('a.inline').each(function (el) { new Zoomer(el); });
-    // scope.getElementsIncludingSelf('a.snipper').each(function (el) { new Zoomer(el, Snipper); });
-    // scope.getElementsIncludingSelf('div.uploader').each( function (el) { new Uploader(element); });
-    // if(scope.getElements('a.squeezebox')) new Collapser(scope.getElements('a.squeezebox'), scope.getElements('div.squeezed'));
+    scope.getElementsIncludingSelf('input.tagbox').each(function (el) { new Suggester(el); });
+    scope.getElementsIncludingSelf('a.inline').each(function (el) { new Zoomer(el, 'JsonForm'); });
+    scope.getElementsIncludingSelf('a.snipper').each(function (el) { new Snipper(el, 'Snipper'); });
+    scope.getElementsIncludingSelf('div.uploader').each( function (el) { new Uploader(element); });
+    if(scope.getElements('a.squeezebox')) new Collapser(scope.getElements('a.squeezebox'), scope.getElements('div.squeezed'));
   },
   
   // instantiates and stops the supplied event

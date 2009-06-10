@@ -9,8 +9,11 @@
       - if @title
         \:
       = @title
-    = javascript_include_tag 'mootools', 'mootools-more', 'kobble/dragdrop', 'kobble'
-    /= javascript_include_tag 'mootools', 'mootools-more', 'kobble/dragdrop', 'kobble', 'slimbox', 'swfupload/swfupload', 'swfupload/swfupload.cookies', 'swfupload/swfupload.queue', 'swfupload/swfupload.speed', :cache => "cache/kobble"
+    = javascript_include_tag 'mootools', 'mootools-more'
+    = javascript_include_tag 'autocompleter/Autocompleter.js', 'autocompleter/Autocompleter.Request.js', 'autocompleter/Observer.js'
+    = javascript_include_tag 'swfupload/swfupload', 'swfupload/swfupload.cookies', 'swfupload/swfupload.queue', 'swfupload/swfupload.speed'
+    = javascript_include_tag 'kobble/dragdrop', 'kobble/collapser', 'kobble/suggester', 'kobble/inline_links', 'kobble/zoomer', 'kobble/kore'
+
     = yield :extra_js
     = stylesheet_link_tag 'kobble', :cache => "cache/kobble"
     = yield :extra_css

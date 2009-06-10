@@ -34,9 +34,9 @@ var Collapser = new Class ({
 });
 
 Element.implement({
-  lookForCollapsed: function () {
+  lookForCollapsedParent: function () {
     if (this.collapsed) return this;
-    else if (this.getParent()) return this.getParent().lookForCollapsed();
+    else if (this.getParent()) return this.getParent().lookForCollapsedParent();
     else return null;
   }
 });

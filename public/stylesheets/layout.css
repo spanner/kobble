@@ -63,6 +63,8 @@ div#navigation {
   div#navigation a.fg {
     background: white url(/images/furniture/kobble/pointers/thislink.png) no-repeat center bottom;
     font-weight: bold; }
+  div#navigation a.fg:hover {
+    background-image: url(/images/furniture/kobble/pointers/thislink_pink.png); }
   div#navigation a.louder {
     color: #559dc4; }
   div#navigation a.pale {

@@ -1,8 +1,7 @@
 class Tag < ActiveRecord::Base
 
   attr_accessor :used
-  is_material :except => [:index, :description, :organisation]
-  belongs_to :account
+  is_material :except => [:description, :organisation]
   has_many :taggings, :dependent => :destroy
 
   named_scope :with_popularity, {
@@ -35,11 +34,6 @@ class Tag < ActiveRecord::Base
 
   def tagged
     taggings.map{|t| t.taggable }
-  end
-  
-  def drop_this(object)
-    self.taggings.delete(self.taggings.of(object))
-    return Material::CatchResponse.new("#{self.name} tag removed from #{object.name}", 'delete', 'success')
   end
   
   def self.all_with_popularity(account)
