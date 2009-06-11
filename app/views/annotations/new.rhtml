@@ -17,7 +17,7 @@
   
   <%= error_messages_for :note %>
 
-  <% form_for ([@annotated, @annotation]) do |f| %>
+  <% form_for ([@annotated, @thing]) do |f| %>
     <%= render :partial => "form", :locals => {:f => f} %>
   <% end %>
 

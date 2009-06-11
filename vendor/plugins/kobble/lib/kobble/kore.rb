@@ -53,9 +53,12 @@ module Kobble #:nodoc:
       # the main business of the module is to apply to each class the common machinery of materialist
 
       def is_material(options={})
-        possible_definitions = [:collection, :owners, :illustration, :file, :organisation, :bench, :description, :annotation, :discussion, :index, :log, :undelete, :selection]
+
+        Kobble.object_model(self)
+
+        possible_definitions = [:collection, :owners, :illustration, :file, :organisation, :bookmarking, :description, :annotation, :discussion, :index, :log, :undelete, :selection]
         cattr_accessor possible_definitions.map{|d| "_has_#{d.to_s}".intern }
-            
+        
         if options[:except]
           definitions = possible_definitions - Array(options[:except]) 
         elsif options[:only]
@@ -139,18 +142,18 @@ module Kobble #:nodoc:
         if definitions.include?(:description)
           has_many :taggings, :as => :taggable, :dependent => :destroy
           has_many :tags, :through => :taggings
-          self.catches_and_drops( :tag )
+          # self.catches_and_drops( :tag )
           Kobble.described_model(self)
         end
         
         # manipulation -> workbench drag and droppability
         
-        if definitions.include?(:bench)
-          has_many :benchings, :as => :benched, :dependent => :destroy
-          has_many :benchers, :through => :benchings, :source => :created_by
+        if definitions.include?(:bookmarking)
+          has_many :bookmarkings, :as => :bookmark, :dependent => :destroy
+          has_many :bookmarkers, :through => :bookmarkings, :source => :created_by
           
-          User.catches_and_drops( self.to_s.downcase.intern, :through => :benchings )
-          Kobble.benched_model(self)
+          # User.catches_and_drops( self.to_s.downcase.intern, :through => :bookmarkings )
+          Kobble.bookmarked_model(self)
         end
         
         # organisation -> bundling
@@ -159,7 +162,7 @@ module Kobble #:nodoc:
           has_many :bundlings, :as => :member, :dependent => :destroy
           has_many :bundles, :through => :bundlings, :source => :superbundle      
 
-          Bundle.catches_and_drops( self.to_s.downcase.intern, :through => :bundlings )
+          # Bundle.catches_and_drops( self.to_s.downcase.intern, :through => :bundlings )
           Kobble.organised_model(self)
         end
 
@@ -199,6 +202,7 @@ module Kobble #:nodoc:
         # selection -> some named scopes useful for limiting lists in the interface
 
         if definitions.include?(:selection)
+          named_scope :other_than, lambda {|thing| {:conditions => ['id != ?', thing.id]}}
           named_scope :latest, { :limit => 20, :order => 'created_at DESC' }
           named_scope :latest_few, { :limit => 5, :order => 'created_at DESC' }
           named_scope :latest_many, { :limit => 100, :order => 'created_at DESC' }
@@ -231,7 +235,16 @@ module Kobble #:nodoc:
     
       def nice_title
         self.class.nice_title
-      end        
+      end
+      
+      def simplified
+        {
+          :class => self.class.to_s,
+          :id => self.id,
+          :name => self.name,
+          :description => self.description
+        }
+      end   
 
       def owned_by
         return self.account if self.respond_to?('account')

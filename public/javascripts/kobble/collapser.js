@@ -1,3 +1,5 @@
+var collapser = null;
+
 var Collapser = new Class ({
   Extends: Accordion,
   options: {
@@ -22,7 +24,8 @@ var Collapser = new Class ({
   },
   initialize: function (togglers, elements) {
     this.parent(togglers, elements);
-    if (elements) elements.each(function (element) { element.squeezed = true; });
+    if (elements) elements.each(function (element) { element.collapsed = true; });
+    collapser = this;
   },
   addSections: function (togglers, elements) {
     togglers.each(function (toggler) {
@@ -30,6 +33,16 @@ var Collapser = new Class ({
       this.addSection(toggler, element);
       element.collapsed = true; 
     }, this);
+  },
+  redisplay: function() {
+		var obj = {};
+		this.elements.each( function(el, i){
+		  if (i == this.previous) {
+		    obj[i] = {};
+		    for (var fx in this.effects) obj[i][fx] = el[this.effects[fx]];
+		  }
+    }, this);
+		return this.start(obj);
   }
 });
 
@@ -40,8 +53,6 @@ Element.implement({
     else return null;
   }
 });
-
-
 
 
 

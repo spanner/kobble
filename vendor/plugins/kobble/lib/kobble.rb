@@ -1,9 +1,18 @@
 module Kobble  #:nodoc:
   
-  mattr_accessor :indexed_models, :discussed_models, :described_models, :organised_models, :benched_models, :annotated_models, :logged_models
+  mattr_accessor :object_models, :indexed_models, :discussed_models, :described_models, :organised_models, :bookmarked_models, :annotated_models, :logged_models
   
   # all of these methods keep the model name as a (singular) symbol
   # holding classes in plugin causes staleness in dev mode
+
+  # this first one holds all models for which is_material has been declared
+
+  def Kobble.object_model(klass)
+    @@object_models ||= []
+    @@object_models.push(klass.to_s.underscore.intern) unless @@object_models.include?(klass.to_s.underscore.intern)
+  end
+
+  # these others hold lists of models that participate in specific kobble functions
 
   def Kobble.indexed_model(klass)
     @@indexed_models ||= []
@@ -25,9 +34,9 @@ module Kobble  #:nodoc:
     @@organised_models.push(klass.to_s.underscore.intern) unless @@organised_models.include?(klass.to_s.underscore.intern)
   end
 
-  def Kobble.benched_model(klass)
-    @@benched_models ||= []
-    @@benched_models.push(klass.to_s.underscore.intern) unless @@benched_models.include?(klass.to_s.underscore.intern)
+  def Kobble.bookmarked_model(klass)
+    @@bookmarked_models ||= []
+    @@bookmarked_models.push(klass.to_s.underscore.intern) unless @@bookmarked_models.include?(klass.to_s.underscore.intern)
   end
 
   def Kobble.annotated_model(klass)

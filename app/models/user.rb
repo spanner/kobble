@@ -28,9 +28,9 @@ class User < ActiveRecord::Base
   has_many :events, :order => 'at DESC', :dependent => :nullify
   
   # simplified scratchpad relationship
-  # polymorphic. we can't go :through so see 'selections' below
+  # polymorphic. we can't go :through so see 'bookmarks' below
 
-  has_many :benchings, :foreign_key => 'created_by_id', :order => 'position', :dependent => :destroy
+  has_many :bookmarkings, :foreign_key => 'created_by_id', :order => 'position', :dependent => :destroy
 
   # and the old one is kept for transition but soon to be removed
   
@@ -40,6 +40,7 @@ class User < ActiveRecord::Base
 
   after_create :send_welcome
   before_destroy :reassign_associates
+  before_validation :set_login_if_blank
   
   def self.nice_title
     "user"
@@ -64,10 +65,7 @@ class User < ActiveRecord::Base
   def is_trusted?
     account_admin? || account_holder? || trusted
   end
-  
 
-
-  # did they activate within the last five minutes?
   def recently_activated?
     return false unless activated?
     (Time.now - activated_at) <= 5.minutes
@@ -128,20 +126,24 @@ public
   
   # scratchpad/bookmark functions
   
-  def bench
-    self.benchings.map {|s| s.benched}
+  def bookmarks
+    self.bookmarkings.map {|b| b.bookmark}
   end
     
-  def current_bench(collection = Collection.current)
-    self.benchings.in_collection(collection)
+  def current_bookmarkings(collection = Collection.current)
+    self.bookmarkings.in_collection(collection)
   end
 
-  def items_on_bench(collection = Collection.current)
-    self.current_bench(collection).map {|s| s.benched}
+  def current_bookmarks(collection = Collection.current)
+    self.bookmarkings(collection).map {|b| b.bookmark}
   end
   
 protected
 
+  def set_login_if_blank
+    self.login = self.email if self.login.blank?
+  end
+  
   def self.reassignable_associations
     [:created_collections, :created_sources, :created_nodes, :created_bundles, :created_tags]
   end

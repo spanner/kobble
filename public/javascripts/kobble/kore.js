@@ -6,13 +6,17 @@ var SelfSelection = {
   }
 };
 
+// all kobble DOM ids take the form controller_id[_association]
+// not model not controller: must be singular
+// eg node_16, node_16_tags, bundle_23_members, user_1_bookmarks
+
 var KobbleParameters = {
   idparts: function () {
       var parts = this.id.split('_');
       return {
-        'id' : parts[parts.length-1],
-        'type' : parts[parts.length-2],
-        'context' : parts[parts.length-3]
+        'type' : parts[0],
+        'id' : parts[1],
+        'association' : parts[2]
       };
     },
   kobbleID: function () {
@@ -21,13 +25,14 @@ var KobbleParameters = {
   kobbleKlass: function () {
     return this.idparts().type;
   },
+  kobbleAssociation: function () {
+    return this.idparts().association;
+  },
   pluralKobbleKlass: function () {
 		var type = this.idparts().type;
     switch (type ) {
-      case 'person':
-        return 'people';
-      default:
-        return type + 's';
+      case 'person': return 'people';
+      default: return type + 's';
     }
   },
   kobbleTag: function () {
@@ -68,7 +73,8 @@ var k = null;
 window.addEvent('domready', function(){
   // console.profile();
   k = new Kobble();
-  k.activate();         // sometimes it needs to refer to itself.
+  k.activate();
+  if($$('a.squeezebox')) new Collapser($$('a.squeezebox'), $$('div.squeezed'));
   // console.profileEnd();    //in materialist: 65.38ms, 7517 calls
 });
 
@@ -85,7 +91,7 @@ var Kobble = new Class({
     this.floaters = [];
     
     // logging control
-    this.debug_level = 5;
+    this.debug_level = 0;
   },
 
   // getElementsIncludingSelf calls getElements 
@@ -94,14 +100,12 @@ var Kobble = new Class({
   
   activate: function (element) {
     var scope = element || document;
-    // scope.getElementsIncludingSelf('div.fixed').each(function (el) { el.pin(); });
     scope.getElementsIncludingSelf('.catcher').each (function (el) { new Catcher(el); });
     scope.getElementsIncludingSelf('.draggable').each(function (el) { el.prepDraggable(); });
     scope.getElementsIncludingSelf('input.tagbox').each(function (el) { new Suggester(el); });
     scope.getElementsIncludingSelf('a.inline').each(function (el) { new Zoomer(el, 'JsonForm'); });
     scope.getElementsIncludingSelf('a.snipper').each(function (el) { new Snipper(el, 'Snipper'); });
     scope.getElementsIncludingSelf('div.uploader').each( function (el) { new Uploader(element); });
-    if(scope.getElements('a.squeezebox')) new Collapser(scope.getElements('a.squeezebox'), scope.getElements('div.squeezed'));
   },
   
   // instantiates and stops the supplied event
@@ -117,7 +121,7 @@ var Kobble = new Class({
   // rails flashes and other notifications
   
   announcer: function () {
-    if (!this.message_holder) this.message_holder = new Element('div', {'class' : 'notification'}).inject(document.body);
+    if (!this.message_holder) this.message_holder = new Element('div', {'id' : 'notification'}).inject(document.body);
     return this.message_holder;
   },
   announce: function (message, title) {

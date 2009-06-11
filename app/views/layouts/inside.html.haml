@@ -61,8 +61,7 @@
         = link_to 'search', search_url, {:class => 'administrative'}
         = link_to 'log out', user_session_path, :method => :delete, :class => 'administrative'
 
-  #workbench
-    = render :partial => 'users/bench', :locals => {:collection => current_collection}
+  = render :partial => 'users/bench', :locals => {:collection => current_collection}
   
   #admin
     = yield :admin

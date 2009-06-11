@@ -1,44 +1,60 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
 
+  def collected_url_for(thing)
+    @controller.send(:collected_url_for, thing)
+  end
+  
+  def item_tags_path(item)
+    url_method = "#{item.class.to_s.underscore.downcase}_tags_path"
+    send url_method.intern, item
+  end
+
+  def item_catch_path(item)
+    url_method = "catch_#{item.class.to_s.underscore.downcase}_path"
+    send url_method.intern, item
+  end
+
+  
+
   def item_new_topic_url(item)    
     url_method = 'new_' + item.class.to_s.underscore.downcase + '_topic_url'
-    eval(url_method + '(item)')
+    send url_method.intern, item
   end
 
   def item_topics_path(item)    
     url_method = item.class.to_s.underscore.downcase + '_topics_path'
-    eval(url_method + '(item)')
+    send url_method.intern, item
   end
 
   def item_create_topic_path(item)    
     url_method = 'create_' + item.class.to_s.underscore.downcase + '_topic_path'
-    eval(url_method + '(item)')
+    send url_method.intern, item
   end
   
   def item_topic_url(item, topic)
     url_method = item.class.to_s.underscore.downcase + '_topic_url'
-    eval(url_method + '(item, topic)')
+    send url_method.intern, item, topic
   end
 
   def item_new_note_url(item)    
     url_method = 'new_' + item.class.to_s.underscore.downcase + '_annotation_url'
-    eval(url_method + '(item)')
+    send url_method.intern, item
   end
 
   def item_notes_path(item)    
     url_method = item.class.to_s.underscore.downcase + '_annotations_path'
-    eval(url_method + '(item)')
+    send url_method.intern, item
   end
 
   def item_create_note_path(item)    
     url_method = 'create_' + item.class.to_s.underscore.downcase + '_annotation_path'
-    eval(url_method + '(item)')
+    send url_method.intern, item
   end
 
   def item_history_url(item)
     url_method = item.class.to_s.underscore.downcase + '_events_url'
-    eval(url_method + '(item)')
+    send url_method.intern, item
   end
 
   def friendly_date(datetime)
@@ -63,11 +79,6 @@ module ApplicationHelper
   
   def with_error_report(errors, &block)
     render({:layout => 'wrappers/field_errors', :locals => {:errors => errors}}, {}, &block)
-  end
-
-  # scoped link
-  def collected_url_for(thing)
-    @controller.send(:collected_url_for, thing)
   end
   
   def icon_for(thing, size=16, color='blue', options={})

@@ -49,12 +49,21 @@ div#workbench
         :display none
     li.alternate
       :background-color = !coolgrey10
+    li.waiter
+      a.waiting
+        :background-image url('/images/furniture/signals/wait_16_white.gif')
+    
   ul.drophere
     :background-color = !rubinered
     li.alternate
       :background-color = !rubinered + 11
+  ul.receptive
+    :border 0
+  ul.catcher
+    :border 0
+  
 
-li.benched
+li.bookmarked
   a.collection
     :background-image url(/images/furniture/kobble/16/mid/collection.png) 
   a.video 

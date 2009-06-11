@@ -1,8 +1,5 @@
 @import constants.sass
 
-div.drophere, ul.drophere
-  :background-color = !coolgrey3
-
 div.dragging
   :padding 4px
   :-moz-border-radius 8px
@@ -78,19 +75,26 @@ div.dragging
   a.post:hover
     :background-image url(/images/furniture/kobble/16/pink/post.png)
 
-
-
-
-ul.dropzone
-  :min-height 30px
+ul.catcher
+  :min-height 40px
+  :-moz-border-radius 8px
+  :-webkit-border-radius 8px
+  :padding 4px
   :border
-    :weight 1px
+    :width 4px
+    :style solid
+    :color white
+
+ul.receptive
+  :border
     :style dotted
-    :color = !coolgrey3
+    :color = !rubinered
+
+div.drophere, ul.drophere
+  :background-color = !palepink
 
 li.drophere
-  :color white
-  :background-color = !coolgrey3
+  :background-color = !palepink
   a
     :color = !coolgrey11
 
@@ -101,19 +105,4 @@ li
 
 li.deleted a, span.deleted
   :text-decoration line-through
-
-div.waiting
-  :background-image url('/images/furniture/signals/wait_16_grey.gif')
-  :background-position 5px 5px
-  :background-repeat no-repeat
-  :padding-left 24px
-
-div.setdrop div.waiting
-  :background-image url('/images/furniture/signals/wait_32_grey.gif')
-  :background-position 10px 10px
-  :width 52px
-  :height 52px
-
-div.waiting input
-  :visibility hidden
 

@@ -26,6 +26,8 @@ ul li a.topic {
   background-image: url(/images/furniture/kobble/16/blue/topic.png); }
 ul li a.post {
   background-image: url(/images/furniture/kobble/16/blue/post.png); }
+ul li a.waiter {
+  background-image: url(/images/furniture/signals/wait_16_grey.gif); }
 ul li a.collection:hover {
   background-image: url(/images/furniture/kobble/16/pink/collection.png); }
 ul li a.video:hover {

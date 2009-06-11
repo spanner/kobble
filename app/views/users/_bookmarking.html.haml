@@ -1,0 +1,7 @@
+- if bookmarking
+  - item = bookmarking.bookmark
+  - name = item.name.nil? || item.name.blank? ? "nameless #{item.class.nice_title}" : item.name 
+
+  %li{:id => "bookmark_#{bookmarking.id}", :class => "bookmarked selectable sortable #{cycle('alternate', '', :name => "bench_rows")}"}
+    = check_box_tag 'bookmarking[]', bookmarking.id, false, :id => "cb_bookmarking_#{bookmarking.id}", :class => 'selector'
+    = link_to name, collected_url_for(item), :id => "#{item.class.to_s.downcase}_#{item.id}", :class => "#{item.class.to_s.downcase} draggable"

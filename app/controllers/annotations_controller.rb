@@ -1,4 +1,4 @@
-class AnnotationsController < ApplicationController
+class AnnotationsController < AccountScopedController
 
   # only accessible as nested resource of annotated object
   # and normally only as a jsonised ajax call
@@ -9,23 +9,23 @@ class AnnotationsController < ApplicationController
   before_filter :find_note_types, :only => [:new, :edit]
   
   def new
-    @annotation = Annotation.new
-    @annotation.annotated = @annotated
+    @thing = Annotation.new
+    @thing.annotated = @annotated
     respond_to do |format|
       format.html { }
       format.js { render :layout => 'inline' }
-      format.json { render :json => @annotation.to_json }
+      format.json { render :json => @thing.to_json }
     end
   end
   
   def create
-    @annotation = Annotation.new(params[:annotation])
-    @annotation.annotated = @annotated
-    if @annotation.save
+    @thing = Annotation.new(params[:annotation])
+    @thing.annotated = @annotated
+    if @thing.save
       respond_to do |format|
         format.html { redirect_to url_for(@annotated) }
         format.js { render :layout => false }             # annotations/create.rhtml is a bare note div
-        format.json { render :json => @annotation.to_json }
+        format.json { render :json => @thing.to_json }
       end
     else
       find_note_types
@@ -38,13 +38,13 @@ class AnnotationsController < ApplicationController
   end
   
   def update
-    @annotation = Annotation.find(params[:id])
-    @annotation.attributes = params[:annotation]
-    @annotation.save!
+    @thing = Annotation.find(params[:id])
+    @thing.attributes = params[:annotation]
+    @thing.save!
     respond_to do |format|
-      format.html { redirect_to url_for(@annotation) }
+      format.html { redirect_to url_for(@thing) }
       format.js { render :layout => false }             # annotations/update.rhtml is also a bare note div
-      format.json { render :json => @annotation.to_json }
+      format.json { render :json => @thing.to_json }
     end
   end
   

@@ -1,131 +1,71 @@
 class UsersController < AccountScopedController
 
   before_filter :i_am_me
-  before_filter :find_account
-  before_filter :find_user, :except => [:new, :create]
-  before_filter :build_user, :only => [:new, :create]
-  before_filter :account_admin_required, :except => [:edit, :update, :show]
-  before_filter :account_admin_or_self_required, :only => [:edit, :update]
-  before_filter :account_admin_or_password_given, :only => [:update]
-  before_filter :admin_or_same_account_required
-  
-  # this is user review and management for admins
-  # only accessible as nested resource of account
-  # logging in and registration are in account_controller
+  before_filter :require_account_admin, :except => [:index, :edit, :update, :show]
+  before_filter :require_account_admin_or_password_given, :only => [:update]
 
   def view_scope
     'account'
   end
 
-  def new
-    respond_to do |format|
-      format.html
-      format.js { render :layout => false }
-    end
-  end
-
-  def create
-    @user.login = @user.email if @user.login.blank?
-    if @user.save
-      flash[:notice] = 'User created.'
-      respond_to do |format|
-        format.html { redirect_to :action => 'show', :id => @user }
-        format.json { render :json => @user.to_json }
-      end
-    else
-      render :action => 'new'
-    end
-  end
-
-  def edit
-
-  end
-
-  def update
-    if @user.update_attributes(params[:user])
-      flash[:notice] = 'User was updated.'
-      respond_to do |format|
-        format.html { redirect_to :action => 'show' }
-        format.json { render :json => @user.to_json }
-      end
-    else
-      flash[:error] = 'Validation problems.'
-      render :action => 'edit'
-    end
-  end
-  
   def activate
-    @user.activate
+    @thing.activate
     respond_to do |format|
-      format.html { redirect_to :action => 'show', :id => @user }
+      format.html { redirect_to :action => 'show', :id => @thing }
       format.js { render :layout => false }
-      format.json { render :json => @user.to_json }
+      format.json { render :json => @thing.to_json }
     end
   end
 
   def deactivate
-    @user.deactivate
+    @thing.deactivate
     respond_to do |format|
-      format.html { redirect_to :action => 'show', :id => @user }
+      format.html { redirect_to :action => 'show', :id => @thing }
       format.js { render :layout => false }
-      format.json { render :json => @user.to_json }
+      format.json { render :json => @thing.to_json }
     end
   end
   
   def predelete
-    @other_users = @account.users.select{|u| u != @user}
+    @other_users = current_account.users.other_than(@thing)
   end
   
   def reinvite
     if request.post?
-      @user.update_attributes(params[:user])
-      @user.save
-      UserNotifier.deliver_invitation(@user, current_user)
+      @thing.update_attributes(params[:user])
+      @thing.save
+      UserNotifier.deliver_invitation(@thing, current_user)
       flash[:notice] = 'Invitation message was sent.'
-      @thing = @user
+      @thing = @thing
       render :action => 'show'
     end
   end
 
-  private
+private
   
   def i_am_me
     params[:id] = current_user.id if params[:id] == 'me'
   end
-  
-  def find_account
-    @account = admin? && params[:account_id] ? Account.find(params[:account_id]) : current_account
-  end
-  
-  def find_user
-    @user = account_admin? && params[:id] ? User.find(params[:id]) : current_user
-  end
-  
+    
   def build_user
-    @user = @account.users.build(params[:user])
+    @thing = current_account.users.build(params[:user])
   end
 
   def account_admin_or_self_required
     return true if current_user.account_admin?
-    return true if @user == current_user
+    return true if @thing == current_user
     access_insufficient
   end
   
-  def account_admin_or_password_given
+  def require_account_admin_or_password_given
     return true if current_user.account_admin?
-    @user.attributes = params[:user]
-    return true if @user.authenticated?(@user.old_password)
+    @thing.attributes = params[:user]
+    return true if @thing.authenticated?(@thing.old_password)
     flash[:error] = 'Wrong password.'
-    @user.valid?    # might as well display the other validation messages while we're there
-    @user.errors.add(:old_password, "was not correct")
+    @thing.valid?    # might as well display the other validation messages while we're there
+    @thing.errors.add(:old_password, "was not correct")
     render :action => 'edit'
     false
-  end
-  
-  def admin_or_same_account_required
-    return true if current_user.admin?
-    return true if current_user.account == @account
-    access_insufficient
   end
   
 end

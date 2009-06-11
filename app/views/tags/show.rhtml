@@ -17,8 +17,6 @@
   <div class="mainlist">
   	<ul 
   	  id="taggedby_tag_<%= @thing.id %>"
-  	  class="catcher"
-  	  catches="<%= @thing.catchlist %>"
   	>
 	    <%= render :partial => 'shared/listed', :collection => @thing.tagged.uniq, :locals => {:catch => false} %>
     </ul>

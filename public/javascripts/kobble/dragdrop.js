@@ -18,22 +18,21 @@ var Catcher = new Class({
   initialize: function (element) {
     this.container = element;
     this.tag = element.id;
-    this.receiptAction = 'catch';
     this.catches = this.container.getProperty('catches');
-    this.container.dropzone = this;   // when a draggee is picked up we climb the tree to see if it is being dragged from somewhere
     this.is_list = this.container.tagName == 'UL';
+    this.waiter = null;
+    this.container.dropzone = this;   // when a draggee is picked up we climb the tree to see if it is being dragged from somewhere
     catchers.push(this);
   },
 
   can_catch: function (klass) { if (this.catches) return this.catches == 'all' || this.catches.split(',').contains(klass); },
   contents: function () { return this.container.getElements('.draggable').map(function(el){ return el.kobbleTag(); }); },
   contains: function (tag) { return this.contents().contains(tag); },
-
   makeReceptiveTo: function (hopper) {
     if (this.can_catch(hopper.klass) && this != hopper.origin && !this.contains(hopper.tag)) {
       this.container.addClass('receptive');
       this.container.addEvents({
-        'drop': this.receiveHopper.bind(this, hopper),
+        'drop': function (hopper) { this.receiveHopper(hopper); }.bind(this),
         'enter': this.showInterest.bind(this),
         'leave': this.loseInterest.bind(this)
       });
@@ -42,26 +41,31 @@ var Catcher = new Class({
       return false;
     }
   },
-  
   makeUnreceptive: function () {
     if (this.container && this.container.hasClass('receptive')) {
       this.container.removeClass('receptive'); 
-      ['enter', 'leave', 'drop'].each(function (trigger) { this.container.removeEvents(trigger); }, this);  
+      ['enter', 'leave', 'drop'].each(function (trigger) { 
+        console.log('removing', trigger, 'events from', this.tag);
+        this.container.removeEvents(trigger); 
+      }, this);  
     }
   },
     
-  showInterest: function () { 
-    this.container.addClass('drophere');
+  showInterest: function () { this.container.addClass('drophere'); },
+  loseInterest: function () { this.container.removeClass('drophere'); },
+
+  catch_url: function () { 
+    var parts = ['', this.container.pluralKobbleKlass(), this.container.kobbleID()];
+    if (this.container.kobbleAssociation()) parts.push(this.container.kobbleAssociation());
+    return parts.join('/');
   },
   
-  loseInterest: function () { 
-    this.container.removeClass('drophere');
-  },
-          
+  drop_url: function () { return this.tag.replace('_','/') + '?object=' + tag; },
+
   receiveHopper: function (hopper) {
-    this.log('receiveHopper:', hopper);
     disableCatchers();
-    this.loseInterest();
+    this.loseInterest(); 
+    // this.makeUnreceptive();
 
     if (this == hopper.from) {
       hopper.flyback();
@@ -71,43 +75,34 @@ var Catcher = new Class({
       hopper.flyback();
       
     } else {
-      new Request.JSON({
-        url: this.urlToReceive(hopper.cargo),
-        method: this.httpMethod(),
-        onRequest: this.waiting.bind(this, hopper),
-        onSuccess: this.dropComplete.bind(this, hopper),
-        onFailure: this.dropFailed.bind(this, hopper)
-      }).send();
+      hopper.hide();
+      this.container.set('load', {
+        emulation: true,
+        method: 'post',
+        data : {object : hopper.tag},
+        onRequest: this.waiting.bind(this),
+        onSuccess: this.dropComplete.bind(this),
+        onFailure: this.dropFailed.bind(this)
+      });
+      this.container.load(this.catch_url(hopper.tag));
+      hopper.remove();
+      delete hopper;
     }
   },
 
-  dropComplete: function (response, hopper) {
-    hopper.hide();
-    this.notWaiting();
-    this.log('drop successful. response = ', response);
-    if (response.insertion) this.assimilate(hopper); //*
-    if (response.delete_original) hopper.original.disappear();
-    if (response.message) k.announce(response.message);
-    if (response.error) k.complain(response.error);
-    hopper.remove();
+  dropComplete: function (response) {
+    k.activate(this.container);
+    if (collapser && this.container.lookForCollapsedParent()) collapser.redisplay();
+    k.announce('all right then');
   },
 
-  dropFailed: function (response, hopper) { 
-    hopper.hide();
+  dropFailed: function (xhr, hopper) { 
     this.notWaiting();
-    this.log('drop failed!');
-    this.log('response = ', response);
     k.complain('remote call failed');
-    hopper.remove();
   },
   
-  urlToReceive: function (draggee) { 
-    return '/' + this.spokeType() + 's/' + this.receiptAction + '/' + this.spokeID() + '/' + draggee.spokeType() + '/' + draggee.spokeID();  
-    return "/markers/new?selection=node_13"
-  },
-  
-  urlToRemove: function (draggee) { 
-    return '/' + this.spokeType() + 's/' + this.removeAction + '/' + this.spokeID() + '/' + draggee.spokeType() + '/' + draggee.spokeID(); 
+  actionFor: function (hopper) { 
+    return this.action + '/' + hopper.taghopper;
   },
   
   httpMethod: function () {
@@ -116,17 +111,18 @@ var Catcher = new Class({
   
   waiting: function () {
     if (this.is_list) {
-      this.waitSignal = new Element('li', { 'id': 'waiter', 'class': 'waiting' });
-      this.waitSignal.set('text','working...');
-      this.waitSignal.inject(this.container);
-      return this.waitSignal;
+      if (!this.waiter) {
+        this.waiter = new Element('li', {'class': 'waiter'}).grab(new Element('a', {'class' : 'waiting'} ).set('text','working...'));
+        this.waiter.inject(this.container);
+      }
+      this.waiter.show();
     } else {
       this.container.addClass('waiting');
     }
   },
   
   notWaiting: function () { 
-    if (this.waitSignal) this.waitSignal.destroy();
+    if (this.waiter) this.waiter.hide();
     this.container.removeClass('waiting');
   },
   
@@ -145,11 +141,13 @@ var Hopper = new Class({
   initialize: function(element, e){
     k.block(e);
     this.original = element;
-    this.cargo = element.clone();
-    this.cargo.set('text', '1');
     this.klass = element.kobbleKlass();
     this.tag = element.kobbleTag();
     this.notaclick = false;
+
+    this.cargo = element.clone();
+    this.cargo.set('text', '1');
+    this.cargo.addClass(this.klass);
     
     this.container = new Element('div', {'class': 'dragging', 'style' : 'display: none;'});
     this.container.grab(this.cargo).inject(document.body);

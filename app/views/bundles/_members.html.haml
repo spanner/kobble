@@ -1,19 +1,18 @@
 - item ||= @thing
-- members ||= item.members
 - inactive ||= false
 - ulclass = inactive ? 'inactive' : 'catcher'
-- catches = inactive ? '' : item.catchlist
+- catches = inactive ? '' : "#{Kobble.organised_models.join(',')}"
 
 %h3.pagesection
   %a{:href => "#", :class => "squeezebox"}
     contents 
     %span.headernote
-      = pluralize(members.length, 'members')
+      = pluralize(item.members.length, 'members')
 
 %div{:id => 'bundle_members', :class => 'squeezed contentblock'}
   .mainlist
-    %ul{:id => "members_bundle_#{item.id}", :class => ulclass, :catches => catches}
-      = render :partial => 'shared/listed', :collection => members, :locals => {:inactive => inactive}
+    %ul{:id => "bundle_#{item.id}_bundlings", :class => ulclass, :catches => catches}
+      = render :partial => 'components/bundling_list', :locals => {:item => item, :inactive => inactive}
     - if inactive
       %p.listnote
         This list will be editable by drag and drop once the set has been created.

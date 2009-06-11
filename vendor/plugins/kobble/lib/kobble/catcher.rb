@@ -30,18 +30,24 @@ module Kobble
         # we assume that if we're going :through it is to reach a polymorphic associate
         options[:as] ||= options[:through].to_s.as_class.find_polymorphic_target
         define_method :"catch_#{klass}" do |object|
+
+          STDERR.puts ">>> catching #{object.name} into polymorphic association #{options[:through]}->#{options[:as]}}"
+
           if self.send(options[:through]).of(object).empty?
             raise Kobble::CatchAlreadyPresent if send(options[:through]).of(object).any?
             options[:as] ||= options[:through].as_class.find_polymorphic_target
             send(options[:through]).create!(options[:as] => object) 
-            Kobble::Response.new :message => "#{object.name} caught"
+            Kobble::Response.new :message => "#{object.name} caught", :object => object
           end
         end
       else
         define_method :"catch_#{klass}" do |object|
+
+          STDERR.puts ">>> catching #{object.name} into simple association #{klass.to_s.pluralize.downcase}}"
+
           raise Kobble::CatchAlreadyPresent if send(klass.to_s.pluralize.downcase.intern).include?(object)
           send(klass.to_s.pluralize.downcase.intern) << object
-          Kobble::Response.new :message => "#{object.name} caught"
+          Kobble::Response.new :message => "#{object.name} caught", :object => object.simplified
         end
       end
       self.catchable.push(klass)
@@ -82,7 +88,6 @@ module Kobble
     
     def find_polymorphic_target
       association = self.reflect_on_all_associations.find{ |ass| ass.options[:polymorphic] }
-      logger.warn ">>> first polymorphic association in #{self} is #{association.name}"
       return association.name
     end
   end

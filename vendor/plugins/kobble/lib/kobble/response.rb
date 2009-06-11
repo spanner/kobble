@@ -1,22 +1,24 @@
 module Kobble
   class Response
-    attr_accessor :consequence, :message, :outcome
+    attr_accessor :action, :message, :outcome, :object
 
     # consequence is the interface action to perform on the dragged item
     # should be one of: move, insert, delete. The default is 'insert' 
     # for eg duplicate representation of item on bench
 
-    def initialize(m=nil, c=nil, o=nil)
-      @message = m
-      @consequence = c
-      @outcome = o
+    def initialize(options={})
+      @message = options[:message]
+      @action = options[:action] || 'insert'
+      @outcome = options[:outcome] || 'success'
+      @object = options[:object]
     end  
 
     def to_json 
       {
         :message => self.message.formatted,
-        :consequence => self.consequence || 'insert',
-        :outcome => self.outcome || 'success',
+        :action => self.action,
+        :outcome => self.outcome,
+        :object => self.object.simplified
       }.to_json
     end
   end

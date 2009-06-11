@@ -1,0 +1,4 @@
+- item ||= @thing
+- item.tags.uniq.each do |tag|
+  %li
+    = link_to tag.name, collected_url_for(tag), :class => "draggable tag"

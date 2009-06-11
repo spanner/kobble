@@ -1,3 +1,5 @@
+var zoomers = {};
+
 var Zoomer = new Class({
   initialize: function (element, klass) {
     this.link = element;
@@ -7,7 +9,6 @@ var Zoomer = new Class({
     this.link.addEvent('click', this.launch.bindWithEvent(this));
   },
   launch: function (e) {
-    k.block(e);
     if (!this.zoombox) this.zoombox = new ZoomBox(this);
     this.zoombox.launch(e);
   },
@@ -40,10 +41,12 @@ var ZoomBox = new Class({
       onRequest: this.waiting.bind(this),
       onComplete: this.bindForm.bind(this)
     });
+    
     this.canceller.addEvent('click', this.collapse.bind(this));
   },
   
-  launch: function (event) {
+  launch: function (e) {
+    event = k.block(e);
     this.click_at = event.page;
     this.relocate();
     if (!this.form) {
@@ -83,7 +86,7 @@ var ZoomBox = new Class({
         case "Snipper": this.form = new Snipper(form, this); break;
       }
     } else {
-      this.formHolder.set('text', "Sorry: there was a problem at the big end.");
+      this.formHolder.set('text', "Sorry: big end's gone.");
     }
     this.zoom();
   },
@@ -130,6 +133,13 @@ var ZoomBox = new Class({
       height: 0,
       opacity: 0
     });
+  },
+  
+  // this is just a shortcut for triggers
+
+  collapseBack: function (e) {
+    k.block(e);
+    this.collapse();
   },
   
   // sometimes the outcome is different than the starting point
@@ -203,8 +213,8 @@ var JsonForm = new Class ({
   
   bindForm: function () {
     this.form.onsubmit = this.sendForm.bindWithEvent(this);
-    this.form.getElements('a.cancelform').each(function (a) { a.addEvent('click', this.container.collapse.bind(this.container)); }, this);
-    this.form.getElements('.fillWithSelection').each(function (input) { if (input.get('value') == '') input.set('value', this.quoteSelectedText()); });
+    this.form.getElements('a.cancelform').each(function (a) { a.addEvent('click', this.container.collapseBack.bindWithEvent(this.container)); }, this);
+    this.form.getElements('.fillWithSelection').each(function (input) { if (input.get('value') == '') input.set('value', this.quoteSelectedText()); }, this);
     this.form.getElements('input.tagbox').each(function (el) { new Suggester(el); });
     var first = this.form.getElement('.pickme');
     if (first) first.focus();
