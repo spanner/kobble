@@ -22,6 +22,12 @@ var Catcher = new Class({
     this.is_list = this.container.tagName == 'UL';
     this.waiter = null;
     this.container.dropzone = this;   // when a draggee is picked up we climb the tree to see if it is being dragged from somewhere
+    this.container.addEvents({
+      'catch': function (hopper) { this.receiveHopper(hopper); }.bind(this),
+      'enter': this.showInterest.bind(this),
+      'leave': this.loseInterest.bind(this)
+    });
+    
     catchers.push(this);
   },
 
@@ -31,24 +37,13 @@ var Catcher = new Class({
   makeReceptiveTo: function (hopper) {
     if (this.can_catch(hopper.klass) && this != hopper.origin && !this.contains(hopper.tag)) {
       this.container.addClass('receptive');
-      this.container.addEvents({
-        'drop': function (hopper) { this.receiveHopper(hopper); }.bind(this),
-        'enter': this.showInterest.bind(this),
-        'leave': this.loseInterest.bind(this)
-      });
       return true;
     } else {
       return false;
     }
   },
   makeUnreceptive: function () {
-    if (this.container && this.container.hasClass('receptive')) {
-      this.container.removeClass('receptive'); 
-      ['enter', 'leave', 'drop'].each(function (trigger) { 
-        console.log('removing', trigger, 'events from', this.tag);
-        this.container.removeEvents(trigger); 
-      }, this);  
-    }
+    this.container.removeClass('receptive'); 
   },
     
   showInterest: function () { this.container.addClass('drophere'); },
@@ -85,13 +80,13 @@ var Catcher = new Class({
         onFailure: this.dropFailed.bind(this)
       });
       this.container.load(this.catch_url(hopper.tag));
-      hopper.remove();
-      delete hopper;
     }
+    hopper.drop();
+    delete hopper;
   },
 
   dropComplete: function (response) {
-    k.activate(this.container);
+    this.container.getChildren().each(function (el) { k.activate(el); });
     if (collapser && this.container.lookForCollapsedParent()) collapser.redisplay();
     k.announce('all right then');
   },
@@ -158,7 +153,7 @@ var Hopper = new Class({
       droppables: enableCatchers(this),
       snap: click_zone_radius,
       onSnap: this.reveal.bind(this),
-      onDrop: function(element, catcher, e){ catcher ? catcher.fireEvent('drop', this, e) : this.emptydrop(); }.bind(this),        // dropzone events are declared in a closure 
+      onDrop: function(element, catcher, e){ catcher ? catcher.fireEvent('catch', this, e) : this.emptydrop(); }.bind(this),        // dropzone events are declared in a closure 
       onEnter: function(element, catcher, e){ if (catcher) catcher.fireEvent('enter', this, e); },                                 // with the hopper in context
       onLeave: function(element, catcher, e){ if (catcher) catcher.fireEvent('leave', this, e); }                                  // so here we only need to fire them
     });
@@ -180,7 +175,7 @@ var Hopper = new Class({
   },
   show: function (event) { this.container.show(); },
   hide: function () { this.container.hide(); },
-  remove: function () { this.container.destroy(); }
+  drop: function () { this.container.destroy(); }
 });
 
 

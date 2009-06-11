@@ -1024,7 +1024,6 @@ var Accordion = Fx.Accordion = new Class({
 	},
 
 	display: function(index, useFx){
-		console.log('display: previous is', this.previous);
 		useFx = $pick(useFx, true);
 		index = ($type(index) == 'element') ? this.elements.indexOf(index) : index;
 		if ((this.timer && this.options.wait) || (index === this.previous && !this.options.alwaysHide)) return this;
@@ -1036,7 +1035,6 @@ var Accordion = Fx.Accordion = new Class({
 			this.fireEvent(hide ? 'background' : 'active', [this.togglers[i], el]);
 			for (var fx in this.effects) obj[i][fx] = hide ? 0 : el[this.effects[fx]];
 		}, this);
-		console.log('displaying with', obj, 'and previous is now', this.previous);
 		return useFx ? this.start(obj) : this.set(obj);
 	}
 
