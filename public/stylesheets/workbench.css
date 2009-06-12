@@ -56,8 +56,8 @@ div#workbench {
     background-color: #47484d; }
   div#workbench ul.drophere {
     background-color: #d1005d; }
-    div#workbench ul.drophere li.alternate {
-      background-color: #dc0b68; }
+    div#workbench ul.drophere li {
+      border-top-color: #dc0b68; }
   div#workbench ul.catcher {
     border: 0; }
 

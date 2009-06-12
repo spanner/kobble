@@ -12,7 +12,7 @@
     = javascript_include_tag 'mootools', 'mootools-more'
     = javascript_include_tag 'autocompleter/Autocompleter.js', 'autocompleter/Autocompleter.Request.js', 'autocompleter/Observer.js'
     = javascript_include_tag 'swfupload/swfupload', 'swfupload/swfupload.cookies', 'swfupload/swfupload.queue', 'swfupload/swfupload.speed'
-    = javascript_include_tag 'kobble/dragdrop', 'kobble/collapser', 'kobble/suggester', 'kobble/inline_links', 'kobble/zoomer', 'kobble/kore'
+    = javascript_include_tag 'kobble/dragdrop', 'kobble/collapser', 'kobble/navigation', 'kobble/suggester', 'kobble/inline_links', 'kobble/zoomer', 'kobble/kore'
     = yield :extra_js
     = stylesheet_link_tag 'kobble', :cache => "cache/kobble"
     = yield :extra_css
@@ -30,17 +30,51 @@
       = yield
 
   #masthead
-    %p
+    %ul
       - unless current_collection
-        &nbsp;
-        %br
-      = link_to "kobble/", "/"
-      %br
-      = link_to "#{current_account.name}/", root_url, {:class => current_collection ? '' : 'emphatic'} 
-      %br
+        %li
+          &nbsp;
+      %li.mi<>
+        = link_to "kobble", "/"
+        %ul.sm
+          %li.smi
+            = link_to "help", '#'
+          %ul.sm
+            %li.smi
+              = link_to "about", '#'
+          %ul.sm
+            %li.smi
+              = link_to "forum", '#'
+          %ul.sm
+            %li.smi
+              = link_to "logout", '#'
+        
+      %li.mi<>
+        = link_to "#{current_account.name}", root_url, {:class => current_collection ? '' : 'emphatic'} 
+        %ul.sm
+          %li.smi
+            = link_to "home", '#'
+          %ul.sm
+            %li.smi
+              = link_to "collections", '#'
+          %ul.sm
+            %li.smi
+              = link_to "users", '#'
+          %ul.sm
+            %li.smi
+              = link_to "settings", '#'
+              
       - if current_collection
-        = link_to "#{current_collection.abbreviation}/", url_for(current_collection), {:class => 'emphatic'} 
-    
+        %li.mi<>
+          = link_to "#{current_collection.abbreviation}", url_for(current_collection), {:class => 'emphatic'} 
+          %ul.sm
+            %li 
+              jump to:
+            - current_account.collections.each do |collection|
+              - unless collection == current_collection
+                %li.smi
+                  = link_to collection.name, url_for(collection)
+          
   #mastfoot
     #navigation
       = link_to 'home', root_url, {:class => 'administrative'}

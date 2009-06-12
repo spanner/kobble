@@ -3,6 +3,7 @@
 - collection_name = listed.is_a?(Collection) ? listed.abbreviation : listed.collection.abbreviation
 - url = listed.is_a?(Collection) ? url_for(listed) : collected_url_for(listed)
 - addendum ||= false
+- idprefix ||= ''
 
 - inactive ||= listed.deleted? || listed.new_record?
 - type_class = listed.is_a?(Source) ? [listed.file_type] : [listed.class.to_s.downcase]

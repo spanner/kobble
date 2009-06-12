@@ -66,14 +66,14 @@ Document.implement(SelfSelection);
 Element.implement(SelfSelection);
 Element.implement(KobbleParameters);
 
-
 var k = null;
 
 window.addEvent('domready', function(){
   // console.profile();
   k = new Kobble();
   k.activate();
-  if($$('a.squeezebox')) new Collapser($$('a.squeezebox'), $$('div.squeezed'));
+  if ($$('a.squeezebox')) new Collapser($$('a.squeezebox'), $$('div.squeezed'));
+  if ($('masthead')) new Navigation($('masthead'));
   // console.profileEnd();    //in materialist: 65.38ms, 7517 calls
 });
 

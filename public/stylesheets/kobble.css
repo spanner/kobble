@@ -77,7 +77,7 @@ blockquote {
   border-left-style: solid;
   border-left-color: #8c8d8e; }
 
-/* ******* furniture (including body) */
+/* ******* furniture (mostly positioning) */
 body {
   margin: 0;
   padding: 0;
@@ -90,21 +90,10 @@ body {
 
 div#masthead {
   position: fixed;
-  text-align: right;
   left: 0;
-  top: 30px;
+  top: 27px;
   height: 40px;
-  width: 122px; }
-  div#masthead p {
-    font-size: 1.1em;
-    line-height: 0.9;
-    color: #4d4e53;
-    margin: 0; }
-  div#masthead a, div#masthead a:visited {
-    color: #4d4e53; }
-  div#masthead a.emphatic, div#masthead a.emphatic:visited {
-    font-weight: bold;
-    color: #d1005d; }
+  width: 130px; }
 
 div#mainpage {
   position: relative;
@@ -201,6 +190,49 @@ div#trash {
 div#trash.drophere {
   background-color: red;
   color: white; }
+
+/* ******* navigation */
+div#masthead ul {
+  font-size: 1.1em;
+  line-height: 0.9;
+  color: #4d4e53;
+  margin: 0;
+  padding: 0;
+  list-style: none; }
+  div#masthead ul li.mi {
+    display: block;
+    position: relative;
+    margin: 3px;
+    padding: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    font-size: 14px;
+    border: 3px; }
+    div#masthead ul li.mi a, div#masthead ul li.mi a:visited {
+      margin: 2px 10px 2px 2px; }
+    div#masthead ul li.mi a.emphatic, div#masthead ul li.mi a.emphatic:visited {
+      font-weight: bold;
+      color: #d1005d; }
+    div#masthead ul li.mi a.head {
+      font-weight: bold; }
+    div#masthead ul li.mi ul.sm {
+      line-height: 1.4;
+      display: none;
+      overflow: hidden;
+      color: #8c8d8e; }
+      div#masthead ul li.mi ul.sm li {
+        text-align: left; }
+  div#masthead ul li.hidden ul.sm {
+    display: none;
+    font-size: 10px;
+    margin: 6px; }
+  div#masthead ul li.over {
+    background-color: #4d4e53;
+    padding-top: 4px; }
+    div#masthead ul li.over ul.sm {
+      display: block; }
+      div#masthead ul li.over ul.sm a {
+        color: white; }
 
 /* ******* admin block (not much in here) */
 div#admin ul {
@@ -607,8 +639,8 @@ div#workbench {
     background-color: #47484d; }
   div#workbench ul.drophere {
     background-color: #d1005d; }
-    div#workbench ul.drophere li.alternate {
-      background-color: #dc0b68; }
+    div#workbench ul.drophere li {
+      border-top-color: #dc0b68; }
   div#workbench ul.catcher {
     border: 0; }
 

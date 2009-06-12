@@ -1,0 +1,25 @@
+- @title = @thing.name
+
+= render :partial => 'shared/show_summary'
+
+%h3.pagesection
+  %a{:href => "#", :class => "squeezebox"}
+    tagged items 
+    %span.headernote
+      = pluralize(@thing.tagged.size, 'uses')
+
+#tag_usage.squeezed
+  .mainlist
+    %ul{:id => "tag_#{@thing.id}_taggings"}
+      = render :partial => 'shared/listed', :collection => @thing.tagged.uniq, :locals => {:catch => false, :idprefix => 'tagged'}
+  %p.listnote
+    Drag items into the list (or space) above to apply this tag to them.
+
+
+= render :partial => 'shared/show_field_notes'
+= render :partial => 'shared/show_topics'
+= render :partial => 'shared/show_history', :locals => {:events => @thing.logged_events}
+
+
+- content_for :admin do
+  = render :partial => 'shared/show_admin', :locals => {:item => @thing}
