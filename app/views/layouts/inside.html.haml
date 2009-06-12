@@ -24,8 +24,8 @@
         = @title
         - if @thing && !@thing.is_a?(Collection)
           %span.header_icon<>
-            = link_to icon_for(@thing), collected_url_for(@thing), :id => "#{@thing.class.to_s.downcase}_#{@thing.id}", :class => "draggable #{@thing.class.to_s.downcase}", :title => "drag me"
-          
+            = link_to icon_for(@thing), collected_url_for(@thing), :id => "#{@thing.class.to_s.downcase}_#{@thing.id}", :class => "draggable #{@thing.class.to_s.downcase}", :title => @thing.name
+                      
     #canvas
       = yield
 

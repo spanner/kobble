@@ -1,7 +1,7 @@
 class BookmarkingsController < ObjectScopedController
   
-  skip_before_filter :build_item
   before_filter :request_collection
+  before_filter :get_bookmarking, :only => [:destroy]
 
   def create
     @bookmarked = thing_from_tag( params[:object] )
@@ -10,11 +10,14 @@ class BookmarkingsController < ObjectScopedController
   end
   
   def destroy
-    @thing.bookmarkings.of(thing_from_tag(params[:object])).each { |bm| bm.delete }
+    @bookmarking.destroy
     render :partial => 'components/bookmarking_list'
   end
   
 protected
   
+  def get_bookmarking
+    @bookmarking = @thing.bookmarkings.find(params[:id])
+  end
   
 end

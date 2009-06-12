@@ -13,8 +13,13 @@
 - aclasses << 'draggable' unless inactive
 - aclasses << 'catcher' unless inactive
 
+- liid = []
+- liid << idprefix if idprefix
+- liid << listed.class.to_s.downcase
+- liid << listed.id
+
 %li{:class => liclasses.join(' ')}
-  = link_to name, url, :id => "#{listed.class.to_s.downcase}_#{listed.id}", :class => aclasses.join(' '), :title => "#{listed.nice_title}: #{listed.name}", :catches => (listed.catchlist unless inactive)
+  = link_to name, url, :id => liid.join('_'), :class => aclasses.join(' '), :title => "#{listed.nice_title}: #{listed.name}", :catches => (listed.catchlist unless inactive)
   = render :partial => 'shared/note_flags', :locals => {:item => listed}
   - if addendum
     %span{:class => "listnote"}

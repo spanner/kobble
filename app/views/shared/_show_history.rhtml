@@ -52,7 +52,8 @@
           :listed => event.affected,
           :name => event.affected_name || event.affected.name,
           :status_class => event.event_type, 
-          :addendum => "#{event.event_type} by #{who} #{time_ago_in_words(event.at)} ago"
+          :addendum => "#{event.event_type} by #{who} #{time_ago_in_words(event.at)} ago",
+          :idprefix => 'historical'
         } %>
       <% end %>
     </ul>

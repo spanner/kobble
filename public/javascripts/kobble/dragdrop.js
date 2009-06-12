@@ -23,7 +23,7 @@ var Catcher = new Class({
     this.catches = this.container.getProperty('catches');
     this.is_list = this.container.tagName == 'UL';
     this.waiter = null;
-    this.container.dropzone = this;   // when a draggee is picked up we climb the tree to see if it is being dragged from somewhere
+    this.container.catcher = this;   // when a hopper is created up we climb the tree to see if the cargo is being dragged from somewhere
     this.container.addEvents({
       'catch': function (hopper) { this.receiveHopper(hopper); }.bind(this),
       'enter': this.showInterest.bind(this),
@@ -51,7 +51,7 @@ var Catcher = new Class({
   showInterest: function () { this.container.addClass('drophere'); },
   loseInterest: function () { this.container.removeClass('drophere'); },
 
-  catch_url: function (hopper) { 
+  catchURL: function (hopper) { 
     var parts = [this.container.pluralKobbleKlass(), this.container.kobbleID()];
 
     if (this.container.kobbleCollection()) {
@@ -75,15 +75,15 @@ var Catcher = new Class({
     return parts.join('/');
   },
   
-  drop_url: function () { 
-    return this.tag.replace('_','/') + '?object=' + tag; 
+  dropURL: function (hopper) { 
+    return this.catchURL(hopper) + '/' + hopper.associate_id;
   },
 
   receiveHopper: function (hopper) {
     disableCatchers();
     this.loseInterest(); 
 
-    if (this == hopper.from) {
+    if (this == hopper.dragfrom) {
       hopper.flyback();
       
     } else if (this.contains(hopper.tag)) {
@@ -95,7 +95,7 @@ var Catcher = new Class({
       this.success_message = hopper.title + " added to " + this.title;
       this.failure_message = hopper.title + " was not added to " + this.title;
       var request_options = {
-        url: this.catch_url(hopper),
+        url: this.catchURL(hopper),
         onRequest: this.waiting.bind(this),
         onSuccess: this.dropComplete.bind(this),
         onFailure: this.dropFailed.bind(this)
@@ -107,12 +107,30 @@ var Catcher = new Class({
     delete hopper;
   },
 
+  releaseHopper: function (hopper) {
+    if (this == hopper.dragfrom && this.contains(hopper.tag)) {
+      this.success_message = hopper.title + " removed from " + this.title;
+      this.failure_message = hopper.title + " was not removed from " + this.title;
+      var request_options = {
+        url: this.dropURL(hopper),
+        onRequest: hopper.waiting.bind(hopper),
+        onSuccess: this.dropComplete.bind(this),
+        onFailure: this.dropFailed.bind(this)
+      };
+      if (this.is_list) request_options['update'] = this.container;
+      new Request.HTML(request_options).post({object : hopper.tag, _method : 'DELETE'});
+    } else {
+      k.complain(hopper.cargo.name + ' is not in' + this.name + '. WTF?');
+    }
+    hopper.drop();
+    delete hopper;
+  },
+  
   dropComplete: function (response) {
     this.notWaiting();
     if (this.is_list) {
       this.container.getChildren().each(function (el) { k.activate(el); });
       if (collapser && this.container.lookForCollapsedParent()) collapser.redisplay();
-      // scroll to new item?
     } else {
       this.container.highlight('#d1005d');
     }
@@ -123,11 +141,7 @@ var Catcher = new Class({
     this.notWaiting();
     k.complain(this.failure_message);
   },
-  
-  actionFor: function (hopper) { 
-    return this.action + '/' + hopper.taghopper;
-  },
-  
+    
   httpMethod: function () {
     return 'get';
   },
@@ -164,9 +178,15 @@ var Hopper = new Class({
   initialize: function(element, e){
     k.block(e);
     this.original = element;
+    this.dragfrom = element.lookForParentCatcher();
     this.klass = element.kobbleKlass();
     this.tag = element.kobbleTag();
+    this.associate_klass = element.getParent().kobbleKlass();
+    this.associate_id = element.getParent().kobbleID();
     this.title = element.getProperty('title') || this.klass;
+    
+    console.log("dragfrom of ", this.tag, " is ", this.dragfrom);
+    
     this.notaclick = false;
 
     this.cargo = element.clone();
@@ -194,8 +214,15 @@ var Hopper = new Class({
   },
   emptydrop: function () {
     disableCatchers();
-    if (this.notaclick) this.flyback();
-    else this.original.fireEvent('click');
+    if (this.notaclick) {
+      if (this.dragfrom) {
+        this.dragfrom.releaseHopper(this);
+      } else {
+        this.flyback();
+      }
+    } else {
+      this.original.fireEvent('click');
+    }
   },
   flyback: function () {
     this.container.set('morph', { duration: 'long', transition: 'back:out', onComplete: this.drop.bind(this) });
@@ -203,7 +230,8 @@ var Hopper = new Class({
   },
   show: function (event) { this.container.show(); },
   hide: function () { this.container.hide(); },
-  drop: function () { this.container.destroy(); }
+  drop: function () { this.container.destroy(); },
+  waiting: function () { this.original.addClass('waiting'); }
 });
 
 
@@ -224,10 +252,11 @@ Element.implement({
 
   // find a catcher around this element (usually on pickup but also possibly useful on drop)
 
-  lookForCatcher: function () {
-    if (this.catcher) return this.catcher;
-    else if (this.getParent()) return this.getParent().lookForCatcher();
-    else return null;
+  lookForParentCatcher: function () {
+    var parent = this.getParent();
+    if (!parent) return null;
+    if (parent.catcher) return parent.catcher;
+    else return parent.lookForParentCatcher();
   }
 });
 

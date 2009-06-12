@@ -575,11 +575,15 @@ div#workbench {
   div#workbench ul.benchlist {
     padding: 0;
     margin: 0;
+    background-color: #4d4e53;
     height: 100%; }
     div#workbench ul.benchlist li {
       list-style: none;
       margin: 0;
-      padding: 6px 6px 6px 26px; }
+      padding: 8px 6px 6px 26px;
+      border-top-width: 1px;
+      border-top-color: #58595e;
+      border-top-style: solid; }
       div#workbench ul.benchlist li a, div#workbench ul.benchlist li a.draggable {
         display: block;
         font-size: 100%;
@@ -595,10 +599,9 @@ div#workbench {
         color: white; }
       div#workbench ul.benchlist li input.selector {
         display: none; }
-    div#workbench ul.benchlist li.alternate {
-      background-color: #616265; }
-    div#workbench ul.benchlist li.waiter a.waiting {
-      background-image: url('/images/furniture/signals/wait_16_white.gif'); }
+      div#workbench ul.benchlist li a.waiting {
+        background-image: url('/images/furniture/signals/wait_16_white.gif');
+        color: #8c8d8e; }
   div#workbench ul.receptive {
     border: 0;
     background-color: #47484d; }

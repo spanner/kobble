@@ -4,7 +4,8 @@ class ObjectScopedController < AccountScopedController
   # between objects. its children handle drag and drop events.
 
   skip_before_filter :build_item
-  before_filter :get_scope_object, :only => :create
+  skip_before_filter :get_item
+  before_filter :get_scope_object, :only => [:create, :destroy]
 
 protected
   
@@ -19,5 +20,5 @@ protected
   def get_scope
     Kobble.object_models.find { |klass| not params["#{klass.to_s.downcase}_id".intern].blank? }
   end  
-
+  
 end
