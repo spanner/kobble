@@ -1,7 +1,10 @@
 class SearchesController < AccountScopedController
 
+  skip_before_filter :get_working_class
+  skip_before_filter :get_item
+  
   def show
-    if params.any?
+    if params[:q] || params[:like]
       list
       render :action => "list"
     else
@@ -46,9 +49,6 @@ class SearchesController < AccountScopedController
       @query = params[:q]
       @search = ActsAsXapian::Search.new(models, @query, limits)
     end
-
-
-
 
   end
 end

@@ -144,7 +144,6 @@ module Kobble #:nodoc:
           has_many :taggings, :as => :taggable, :dependent => :destroy
           has_many :tags, :through => :taggings
           self.can_catch( :tag )
-          Tag.can_catch( self.to_s.downcase.intern )
           Kobble.described_model(self)
         end
         
@@ -162,7 +161,6 @@ module Kobble #:nodoc:
         if definitions.include?(:organisation)
           has_many :bundlings, :as => :member, :dependent => :destroy
           has_many :bundles, :through => :bundlings, :source => :superbundle      
-          self.can_catch( :bundle )
           Bundle.can_catch( self.to_s.downcase.intern )
           Kobble.organised_model(self)
         end

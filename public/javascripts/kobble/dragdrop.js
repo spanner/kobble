@@ -115,7 +115,7 @@ var Catcher = new Class({
 
   dropFailed: function (xhr) { 
     this.notWaiting();
-    k.announce(this.failure_message);
+    k.complain(this.failure_message);
   },
   
   actionFor: function (hopper) { 
