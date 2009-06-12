@@ -1,24 +1,23 @@
 - name ||= listed.name
-- name = "nameless #{listed.nice_title}" if name.nil? || name == ''
+- name = "nameless #{listed.nice_title}" if name.blank?
 - collection_name = listed.is_a?(Collection) ? listed.abbreviation : listed.collection.abbreviation
 - url = listed.is_a?(Collection) ? url_for(listed) : collected_url_for(listed)
 - addendum ||= false
 
 - inactive ||= listed.deleted? || listed.new_record?
-- catching = inactive.nil? && listed.catcher?
 - type_class = listed.is_a?(Source) ? [listed.file_type] : [listed.class.to_s.downcase]
-- status_class ||= ''
+- status_class ||= 'listed'
 
 - liclasses = [status_class]
 - aclasses = [type_class]
 - aclasses << 'draggable' unless inactive
-- aclasses << 'catcher' if catching
+- aclasses << 'catcher' unless inactive
 
-%li{:class => liclasses.join(' '), :catches => (listed.catchlist if catching)}
-  = link_to name, url, :id => "#{listed.class.to_s.downcase}_#{listed.id}", :class => aclasses.join(' '), :title => "#{collection_name} : #{name}"
+%li{:class => liclasses.join(' ')}
+  = link_to name, url, :id => "#{listed.class.to_s.downcase}_#{listed.id}", :class => aclasses.join(' '), :title => "#{listed.nice_title}: #{listed.name}", :catches => (listed.catchlist unless inactive)
   = render :partial => 'shared/note_flags', :locals => {:item => listed}
   - if addendum
     %span{:class => "listnote"}
       = addendum
   %br
-  = truncate( listed.find_some_text, 64 )
+  = truncate( listed.find_some_text, 128 )

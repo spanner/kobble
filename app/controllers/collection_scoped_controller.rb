@@ -41,14 +41,6 @@ class CollectionScopedController < AccountScopedController
     end
   end
   
-  # ajax partials
-  
-  def tags
-    render :partial => 'shared/tags'
-  end
-  
-  
-  
 protected
   
   def current_collection

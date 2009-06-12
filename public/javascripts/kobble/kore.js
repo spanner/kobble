@@ -84,6 +84,8 @@ var Kobble = new Class({
 
     // errors and notices
     this.message_holder = null;
+    this.message_fader = null;
+    this.message_timer = null;
         
     // zoomy forms
     this.zoomlinks = [];
@@ -121,16 +123,27 @@ var Kobble = new Class({
   // rails flashes and other notifications
   
   announcer: function () {
-    if (!this.message_holder) this.message_holder = new Element('div', {'id' : 'notification'}).inject(document.body);
+    if (!this.message_holder) {
+      this.message_holder = new Element('div', {'id' : 'notification'}).inject(document.body);
+      this.message_fader = function () { this.message_holder.fade('out'); }.bind(this);
+    }
+    if (this.message_timer) $clear(this.message_timer);
+    this.message_holder.fade('hide');
     return this.message_holder;
   },
   announce: function (message, title) {
     this.announcer().removeClass('error');
     this.announcer().set('html', message);
+    this.flashMessage();
   },
   complain: function (message, title) {
     this.announcer().addClass('error');
     this.announcer().set('html', message);
+    this.flashMessage();
+  },
+  flashMessage: function () {
+    this.announcer().fade('in');
+    this.message_timer = this.message_fader.delay(4000);
   },
 
   // selective logger

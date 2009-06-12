@@ -71,25 +71,16 @@ div.dragging {
     background-image: url(/images/furniture/kobble/16/pink/post.png); }
 
 ul.catcher {
-  min-height: 40px;
-  -moz-border-radius: 8px;
-  -webkit-border-radius: 8px;
-  padding: 4px;
-  border-width: 4px;
-  border-style: solid;
-  border-color: white; }
+  min-height: 24px;
+  padding: 6px; }
 
-ul.receptive {
-  border-style: dotted;
-  border-color: #d1005d; }
+.receptive {
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  background-color: #e2e1dd; }
 
-div.drophere, ul.drophere {
+.drophere {
   background-color: #f2dde6; }
-
-li.drophere {
-  background-color: #f2dde6; }
-  li.drophere a {
-    color: #4d4e53; }
 
 li a.draggable {
   font-weight: bold;

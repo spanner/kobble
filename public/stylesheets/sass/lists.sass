@@ -16,10 +16,6 @@ div.mainlist
       img
         :float left
         :margin 0 8px 0 0
-    li.waiting
-      :list-style-image url(/images/furniture/signals/wait_16_grey.gif) 
-      a  
-        :color = !coolgrey11
 
 /* list icons and colour-codes
 
@@ -29,16 +25,20 @@ div.mainlist, div.wordlist
     li
       :list-style none
       :padding-left 20px
+      :font-size 0.8em
+      :line-height 1.3
       a
-        :padding-left 20px
+        :font-size 1.6em
+        :padding 5px 5px 5px 20px
         :margin-left -20px
         :background
-          :color transparent
-          :position top left
+          :position 2px 5px
           :repeat no-repeat
       a:hover
         :color = !rubinered
-
+      a.waiting
+        :color = !coolgrey8
+        :background-image url(/images/furniture/signals/wait_16_grey.gif) 
 div.wordlist
   ul
     li

@@ -18,6 +18,8 @@ var Catcher = new Class({
   initialize: function (element) {
     this.container = element;
     this.tag = element.id;
+    this.klass = element.kobbleKlass();
+    this.title = this.container.getProperty('title') || this.klass;
     this.catches = this.container.getProperty('catches');
     this.is_list = this.container.tagName == 'UL';
     this.waiter = null;
@@ -49,18 +51,31 @@ var Catcher = new Class({
   showInterest: function () { this.container.addClass('drophere'); },
   loseInterest: function () { this.container.removeClass('drophere'); },
 
-  catch_url: function () { 
+  catch_url: function (hopper) { 
     var parts = ['', this.container.pluralKobbleKlass(), this.container.kobbleID()];
-    if (this.container.kobbleAssociation()) parts.push(this.container.kobbleAssociation());
+    if (this.container.kobbleAssociation()) {
+      parts.push(this.container.kobbleAssociation());
+      
+    } else if (this.klass == 'tag' || hopper.klass == 'tag') {
+      parts.push('taggings');
+      
+    } else if (this.klass == 'bundle' || hopper.klass == 'bundle') {
+      parts.push('bundlings');
+      
+    } else if (this.klass == 'user' || hopper.klass == 'user') {
+      parts.push('sendings');
+      
+    }
     return parts.join('/');
   },
   
-  drop_url: function () { return this.tag.replace('_','/') + '?object=' + tag; },
+  drop_url: function () { 
+    return this.tag.replace('_','/') + '?object=' + tag; 
+  },
 
   receiveHopper: function (hopper) {
     disableCatchers();
     this.loseInterest(); 
-    // this.makeUnreceptive();
 
     if (this == hopper.from) {
       hopper.flyback();
@@ -71,29 +86,36 @@ var Catcher = new Class({
       
     } else {
       hopper.hide();
-      this.container.set('load', {
-        emulation: true,
-        method: 'post',
-        data : {object : hopper.tag},
+      this.success_message = hopper.title + " added to " + this.title;
+      this.failure_message = hopper.title + " was not added to " + this.title;
+      var request_options = {
+        url: this.catch_url(hopper),
         onRequest: this.waiting.bind(this),
         onSuccess: this.dropComplete.bind(this),
         onFailure: this.dropFailed.bind(this)
-      });
-      this.container.load(this.catch_url(hopper.tag));
+      };
+      if (this.is_list) request_options['update'] = this.container;
+      new Request.HTML(request_options).post({object : hopper.tag});
     }
     hopper.drop();
     delete hopper;
   },
 
   dropComplete: function (response) {
-    this.container.getChildren().each(function (el) { k.activate(el); });
-    if (collapser && this.container.lookForCollapsedParent()) collapser.redisplay();
-    k.announce('all right then');
+    this.notWaiting();
+    if (this.is_list) {
+      this.container.getChildren().each(function (el) { k.activate(el); });
+      if (collapser && this.container.lookForCollapsedParent()) collapser.redisplay();
+      // scroll to new item?
+    } else {
+      this.container.highlight('#d1005d');
+    }
+    k.announce(this.success_message);
   },
 
-  dropFailed: function (xhr, hopper) { 
+  dropFailed: function (xhr) { 
     this.notWaiting();
-    k.complain('remote call failed');
+    k.announce(this.failure_message);
   },
   
   actionFor: function (hopper) { 
@@ -138,6 +160,7 @@ var Hopper = new Class({
     this.original = element;
     this.klass = element.kobbleKlass();
     this.tag = element.kobbleTag();
+    this.title = element.getProperty('title') || this.klass;
     this.notaclick = false;
 
     this.cargo = element.clone();
@@ -157,7 +180,6 @@ var Hopper = new Class({
       onEnter: function(element, catcher, e){ if (catcher) catcher.fireEvent('enter', this, e); },                                 // with the hopper in context
       onLeave: function(element, catcher, e){ if (catcher) catcher.fireEvent('leave', this, e); }                                  // so here we only need to fire them
     });
-    
     this.mover.start(e);
   },
   reveal: function () {
@@ -170,7 +192,7 @@ var Hopper = new Class({
     else this.original.fireEvent('click');
   },
   flyback: function () {
-    this.container.set('morph', { duration: 'long', transition: 'back:out', onComplete: this.remove.bind(this) });
+    this.container.set('morph', { duration: 'long', transition: 'back:out', onComplete: this.drop.bind(this) });
     this.container.morph( $merge(this.startingpoint, {'opacity': 0.1}) );
   },
   show: function (event) { this.container.show(); },

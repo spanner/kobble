@@ -8,6 +8,7 @@ module Kobble #:nodoc:
         class_inheritable_accessor :material, :material_definitions
         @material = false
         @material_definitions = []
+        @catches = []
         extend ClassMethods
       }
     end
@@ -50,7 +51,7 @@ module Kobble #:nodoc:
         self.to_s.downcase
       end
 
-      # the main business of the module is to apply to each class the common machinery of materialist
+      # the main business of the module is to apply to each class the common machinery of kobble
 
       def is_material(options={})
 
@@ -142,7 +143,8 @@ module Kobble #:nodoc:
         if definitions.include?(:description)
           has_many :taggings, :as => :taggable, :dependent => :destroy
           has_many :tags, :through => :taggings
-          # self.catches_and_drops( :tag )
+          self.can_catch( :tag )
+          Tag.can_catch( self.to_s.downcase.intern )
           Kobble.described_model(self)
         end
         
@@ -151,8 +153,7 @@ module Kobble #:nodoc:
         if definitions.include?(:bookmarking)
           has_many :bookmarkings, :as => :bookmark, :dependent => :destroy
           has_many :bookmarkers, :through => :bookmarkings, :source => :created_by
-          
-          # User.catches_and_drops( self.to_s.downcase.intern, :through => :bookmarkings )
+          User.can_catch( self.to_s.downcase.intern )
           Kobble.bookmarked_model(self)
         end
         
@@ -161,8 +162,8 @@ module Kobble #:nodoc:
         if definitions.include?(:organisation)
           has_many :bundlings, :as => :member, :dependent => :destroy
           has_many :bundles, :through => :bundlings, :source => :superbundle      
-
-          # Bundle.catches_and_drops( self.to_s.downcase.intern, :through => :bundlings )
+          self.can_catch( :bundle )
+          Bundle.can_catch( self.to_s.downcase.intern )
           Kobble.organised_model(self)
         end
 

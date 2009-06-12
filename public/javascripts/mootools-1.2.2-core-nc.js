@@ -3809,7 +3809,6 @@ var Request = new Class({
 			data = null;
 		}
 
-
 		this.xhr.open(method.toUpperCase(), url, this.options.async);
 
 		this.xhr.onreadystatechange = this.onStateChange.bind(this);

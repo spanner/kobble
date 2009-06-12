@@ -6,7 +6,7 @@
       - else
         combined
       workbench
-    %ul{:id => "user_#{current_user.id}_bookmarkings", :class => "benchlist catcher", :catches => "#{Kobble.bookmarked_models.join(',')}"}
+    %ul{:id => "user_#{current_user.id}_bookmarkings", :class => "benchlist catcher", :catches => "#{Kobble.bookmarked_models.join(',')}", :title => 'workbench'}
       = render :partial => 'components/bookmarking_list'
     %p.explanatory
-      Click on a listing to select it. Shift- or cmd-click to select several. Actions will be offered. Drag up and down to sort this list. Drag out into space to remove. Drag onto something else to apply.
+      Click on a listing to select it. Shift- or cmd-click to select several. Actions will be offered. Drag out into space to remove. Drag onto something else to apply.

@@ -48,12 +48,13 @@ div#workbench {
       background-color: #616265; }
     div#workbench ul.benchlist li.waiter a.waiting {
       background-image: url('/images/furniture/signals/wait_16_white.gif'); }
+  div#workbench ul.receptive {
+    border: 0;
+    background-color: #47484d; }
   div#workbench ul.drophere {
     background-color: #d1005d; }
     div#workbench ul.drophere li.alternate {
       background-color: #dc0b68; }
-  div#workbench ul.receptive {
-    border: 0; }
   div#workbench ul.catcher {
     border: 0; }
 

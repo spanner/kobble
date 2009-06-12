@@ -4,4 +4,4 @@
 
   %li{:id => "bookmark_#{bookmarking.id}", :class => "bookmarked selectable sortable #{cycle('alternate', '', :name => "bench_rows")}"}
     = check_box_tag 'bookmarking[]', bookmarking.id, false, :id => "cb_bookmarking_#{bookmarking.id}", :class => 'selector'
-    = link_to name, collected_url_for(item), :id => "#{item.class.to_s.downcase}_#{item.id}", :class => "#{item.class.to_s.downcase} draggable"
+    = link_to name, collected_url_for(item), :id => "#{item.class.to_s.downcase}_#{item.id}", :class => "#{item.class.to_s.downcase} draggable", :title => "#{item.nice_title}: #{item.name}"
