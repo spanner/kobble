@@ -12,22 +12,21 @@ var SelfSelection = {
 
 var KobbleParameters = {
   idparts: function () {
-      var parts = this.id.split('_');
-      return {
-        'type' : parts[0],
-        'id' : parts[1],
-        'association' : parts[2]
-      };
-    },
-  kobbleID: function () {
-    return this.idparts().id;
+    var parts = this.id.split('_');
+    var parameters = {};
+    if (parts[parts.length-1] != parseInt(parts[parts.length-1], 10)) parameters['association'] = parts.pop();
+    parameters['id'] = parts.pop();
+    parameters['type'] = parts.pop();
+    if (parts[parts.length-1] != parseInt(parts[parts.length-1], 10)) parameters['context'] = parts.pop();
+    else parameters['collection'] = parts.pop();
+    return parameters;
   },
-  kobbleKlass: function () {
-    return this.idparts().type;
-  },
-  kobbleAssociation: function () {
-    return this.idparts().association;
-  },
+  kobbleID: function () { return this.idparts().id; },
+  kobbleKlass: function () { return this.idparts().type; },
+  kobbleCollection: function () { return this.idparts().collection; },
+  kobbleAssociation: function () { return this.idparts().association; },
+  kobbleContext: function () { return this.idparts().context; },
+  
   pluralKobbleKlass: function () {
 		var type = this.idparts().type;
     switch (type ) {

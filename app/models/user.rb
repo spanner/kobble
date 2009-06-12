@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
   cattr_accessor :current
+
   acts_as_authentic do |config|
     config.validations_scope = :account_id
     config.transition_from_restful_authentication = true
@@ -135,7 +136,7 @@ public
   end
 
   def current_bookmarks(collection = Collection.current)
-    self.bookmarkings(collection).map {|b| b.bookmark}
+    self.current_bookmarkings(collection).map {|b| b.bookmark}
   end
   
 protected

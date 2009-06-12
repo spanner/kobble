@@ -7,11 +7,7 @@
 </p> 
 
 <p>
-  <% if logged_in? %>
-    <h2 class="invitation"><%= link_to "&rarr; your home page &larr;", :controller => 'accounts', :action => 'home' %></h2>
-  <% else %>
-    <h2 class="invitation"><%= link_to "&rarr; try it now &larr;", new_account_url %></h2>
-  <% end %>
+  <h2 class="invitation"><%= link_to "&rarr; try it now &larr;", new_account_url %></h2>
 </p>
   
 <p>This toolkit has emerged from several years of oral history work, in which interview recordings, written anecdotes and archival material have to be combined into a representative synthesis that retains connections back to the gathered evidence. There was too much to keep in our heads, so we made a simple machine to remember things for us and quickly became addicted to it. We found ourselves using it for everything else too, and when our clients started to ask for their own versions, we thought we'd polish up a general offering and see what happened. If you have suggestions, comments or any other feedback we'd be delighted to <%= link_to "hear them", 'mailto:will@kobble.net' %>.

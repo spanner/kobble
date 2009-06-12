@@ -43,22 +43,6 @@ class CollectionScopedController < AccountScopedController
   
 protected
   
-  def current_collection
-    return @current_collection if defined?(@current_collection)
-    @current_collection = Collection.find_by_id(params[:collection_id])
-  end
-  
-  def require_collection
-    if current_collection
-      Collection.current = current_collection
-    else
-      store_location
-      flash[:notice] = "Please choose a collection"
-      redirect_to root_url
-      return false
-    end
-  end
-  
   def get_item
     @thing = current_collection.send(association).find(params[:id])
   end

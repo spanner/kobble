@@ -52,7 +52,12 @@ var Catcher = new Class({
   loseInterest: function () { this.container.removeClass('drophere'); },
 
   catch_url: function (hopper) { 
-    var parts = ['', this.container.pluralKobbleKlass(), this.container.kobbleID()];
+    var parts = [this.container.pluralKobbleKlass(), this.container.kobbleID()];
+
+    if (this.container.kobbleCollection()) {
+      parts.unshift(this.container.kobbleCollection());
+      parts.unshift('collections');
+    }
     if (this.container.kobbleAssociation()) {
       parts.push(this.container.kobbleAssociation());
       
@@ -66,6 +71,7 @@ var Catcher = new Class({
       parts.push('sendings');
       
     }
+    parts.unshift('');
     return parts.join('/');
   },
   

@@ -26,6 +26,7 @@
         = f.text_field :login, :class => 'login' 
         - if @user_session.errors.on(:login)
           %br
+          This
           = @user_session.errors.on(:login).to_a.to_sentence
 
         %p{ :class => @user_session.errors.on(:password) ? 'haserror' : '' }
@@ -35,6 +36,7 @@
           = f.password_field :password, :class => 'login'
           - if @user_session.errors.on(:password)
             %br
+            This
             = @user_session.errors.on(:password).to_a.to_sentence
         
         %p

@@ -2,6 +2,9 @@ class AccountsController < AccountScopedController
   
   skip_before_filter :require_user, :only => [:index, :new, :create]
   skip_before_filter :require_account, :only => [:index, :new, :create]
+  skip_before_filter :get_items
+  skip_before_filter :build_item
+  
   before_filter :require_no_account, :only => [:new, :create] 
   before_filter :require_admin_or_owner, :except => [:index, :create, :new, :home]
   layout :choose_layout

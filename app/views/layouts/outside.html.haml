@@ -1,6 +1,6 @@
 !!! 1.1
 - @inline = false
-- @title ||= 'welcome'
+- @title ||= 'Welcome'
 
 %html
   %head
@@ -9,12 +9,21 @@
       - if @title
         \:
       = @title
-    = javascript_include_tag 'mootools', 'mootools-more', 'extensions', 'autocomplete', 'kobble', 'slimbox', 'swfupload/swfupload', 'swfupload/swfupload.cookies', 'swfupload/swfupload.queue', 'swfupload/swfupload.speed', :cache => "cache/kobble"
+    = javascript_include_tag 'mootools', 'mootools-more'
+    = javascript_include_tag 'kobble/kore'
     = yield :extra_js
     = stylesheet_link_tag 'kobble', :cache => "cache/kobble"
     = yield :extra_css
 
   %body
+    #mainpage
+      #pagetitle
+        %h1{:class => @title.size > 50  ? "long_title" : "short_title"}
+          = @title
+          
+      #canvas
+        = yield
+
     #masthead
       %p<
         &nbsp;
@@ -24,28 +33,21 @@
           %br>
           = link_to "#{current_account.name}/", root_url, {:class => 'emphatic'} 
 
-  #pagetitle
-    %h1{:class => @title.size > 50  ? "long_title" : "short_title"}
-      = @title
+    #mastfoot
+      #navigation
+        = link_to 'welcome', '/', {:class => (request.parameters[:action] == 'index' ? "fg" : '')}
+        = link_to 'background', 'http://about.kobble.net/'
+        = link_to 'how it works', 'http://about.kobble.net/how/'
+        = link_to 'faq', 'http://about.kobble.net/faq/'
+        = link_to 'examples',  'http://about.kobble.net/examples/'
+        = link_to 'forum', 'http://discuss.kobble.net/'
+        = link_to 'sign up', new_account_url, {:class => (request.parameters[:action] == 'signup' ? "fg" : '')}
+        = link_to 'spanner', 'http://spanner.org/', {:class => 'pale'} 
 
-  #canvas
-    = yield
+    #admin
+      = yield :admin
 
-  #mastfoot
-    #navigation
-      = link_to 'welcome', '/', {:class => (request.parameters[:action] == 'index' ? "fg" : '')}
-      = link_to 'background', 'http://about.kobble.net/'
-      = link_to 'how it works', 'http://about.kobble.net/how/'
-      = link_to 'faq', 'http://about.kobble.net/faq/'
-      = link_to 'examples',  'http://about.kobble.net/examples/'
-      = link_to 'forum', 'http://discuss.kobble.net/'
-      = link_to 'sign up', new_account_url, {:class => (request.parameters[:action] == 'signup' ? "fg" : '')}
-      = link_to 'spanner', 'http://spanner.org/', {:class => 'pale'} 
-
-  #admin
-    = yield :admin
-
-  - if flash[:notice]
-    = javascript_tag %{window.addEvent('load', function(){ intf.announce('#{escape_javascript(flash[:notice])}'); });}
-  - if flash[:error]
-    = javascript_tag %{window.addEvent('load', function(){ intf.complain('#{escape_javascript(flash[:error])}'); });}
+- if flash[:notice]
+  = javascript_tag %{window.addEvent('load', function(){ intf.announce('#{escape_javascript(flash[:notice])}'); });}
+- if flash[:error]
+  = javascript_tag %{window.addEvent('load', function(){ intf.complain('#{escape_javascript(flash[:error])}'); });}

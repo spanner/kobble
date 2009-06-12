@@ -1,3 +1,7 @@
+- benchid = ""
+- benchid << "collections_#{current_collection.id}_" if current_collection
+- benchid << "user_#{current_user.id}_bookmarkings"
+
 #workbench
   - form_for current_user, :html => {:class => 'benchform'} do |f|
     %h3
@@ -6,7 +10,7 @@
       - else
         combined
       workbench
-    %ul{:id => "user_#{current_user.id}_bookmarkings", :class => "benchlist catcher", :catches => "#{Kobble.bookmarked_models.join(',')}", :title => 'workbench'}
+    %ul{:id => benchid, :class => "benchlist catcher", :catches => "#{Kobble.bookmarked_models.join(',')}", :title => 'workbench'}
       = render :partial => 'components/bookmarking_list'
     %p.explanatory
       Click on a listing to select it. Shift- or cmd-click to select several. Actions will be offered. Drag out into space to remove. Drag onto something else to apply.

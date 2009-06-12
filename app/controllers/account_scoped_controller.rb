@@ -20,10 +20,6 @@ class AccountScopedController < ApplicationController
 
   layout 'inside'
 
-  def current_collection
-    nil
-  end
-
   def index
     render :template => 'shared/list'
   end
@@ -167,6 +163,11 @@ protected
     return @current_account if defined?(@current_account)
     @current_account = Account.find_by_subdomain(request_subdomain)
   end
+  
+  def current_collection
+    return @current_collection if defined?(@current_collection)
+    @current_collection = Collection.find_by_id(params[:collection_id]) if params[:collection_id]
+  end
 
   def current_user_session
     return @current_user_session if defined?(@current_user_session)
@@ -253,6 +254,21 @@ protected
     end
   end
 
+  def require_collection
+    if current_collection
+      Collection.current = current_collection
+    else
+      store_location
+      flash[:notice] = "Please choose a collection"
+      redirect_to root_url
+      return false
+    end
+  end
+  
+  def request_collection
+    Collection.current = current_collection
+  end
+  
   def require_user
     if current_user
       User.current = current_user

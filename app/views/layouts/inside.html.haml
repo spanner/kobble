@@ -13,7 +13,6 @@
     = javascript_include_tag 'autocompleter/Autocompleter.js', 'autocompleter/Autocompleter.Request.js', 'autocompleter/Observer.js'
     = javascript_include_tag 'swfupload/swfupload', 'swfupload/swfupload.cookies', 'swfupload/swfupload.queue', 'swfupload/swfupload.speed'
     = javascript_include_tag 'kobble/dragdrop', 'kobble/collapser', 'kobble/suggester', 'kobble/inline_links', 'kobble/zoomer', 'kobble/kore'
-
     = yield :extra_js
     = stylesheet_link_tag 'kobble', :cache => "cache/kobble"
     = yield :extra_css
@@ -23,7 +22,7 @@
     #pagetitle
       %h1{:class => @title.size > 50  ? "long_title" : "short_title"}
         = @title
-        - if @thing
+        - if @thing && !@thing.is_a?(Collection)
           %span.header_icon<>
             = link_to icon_for(@thing), collected_url_for(@thing), :id => "#{@thing.class.to_s.downcase}_#{@thing.id}", :class => "draggable #{@thing.class.to_s.downcase}", :title => "drag me"
           

@@ -22,7 +22,10 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :collections, 
                 :has_many => [:events, :topics, :annotations, :permissions, :sources, :nodes, :bundles, :people, :tags, :topics, :occasions], 
-                :member => {:recover => :post, :eliminate => :post, :predelete => :get}
+                :member => {:recover => :post, :eliminate => :post, :predelete => :get} do |collection|
+
+    collection.resources :users, :has_many => [:bookmarkings]
+  end
 
   map.resources :users, 
                 :has_many => [:events, :sources, :nodes, :bundles, :people, :topics, :posts, :permissions, :activations, :user_preferences, :bookmarkings], 
