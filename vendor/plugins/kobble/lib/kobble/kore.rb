@@ -371,12 +371,20 @@ module Kobble #:nodoc:
         true if has_file? && file.content_type =~ /msword/i
       end
 
+      def is_xls?
+        true if has_file? && file.content_type =~ /excel/i
+      end
+
+      def is_ppt?
+        true if has_file? && file.content_type =~ /powerpoint/i
+      end
+
       def is_text?
         true unless has_file?
       end
 
       def file_type
-        %w{audio video pdf doc text}.detect {|type| self.send("is_#{type}?".intern) }
+        %w{audio video pdf doc xls ppt text}.detect {|type| self.send("is_#{type}?".intern) }
       end
 
       def has_image?

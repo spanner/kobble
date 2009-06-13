@@ -1,7 +1,7 @@
 .preamble
   %p
     = link_to "Collections", collections_url 
-    are your broad filing drawers and usually correspond to projects or subjects or some other natural division in your body of materials.
+    are your broad filing drawers and usually correspond to projects or subjects or some other natural division in your body of materials. Each collection has its own completely distinct set of documents, fragments, tags and speakers.
 
   - if current_account.account_type.collections_limit > 0
     %p
@@ -18,9 +18,15 @@
 
   = render :partial => 'shared/error_report'
   
-  = text_field_with_errors(f, @thing, 'name', {:label => 'Name', :required => true, :class => 'titular'})
-  = text_field_with_errors(f, @thing, 'abbreviation', {:label => 'Abbreviation', :help => 'defaults to the initials or (if one word) first few letters of the collection name', :required => false})
-  = text_area_with_errors(f, @thing, 'description', {:label => 'Description', :required => false})
+  = render :partial => 'shared/edit_name', :locals => {:item => @thing, :f => f, :required => true}
+
+  - with_error_report(@thing.errors.on(:abbreviation)) do
+    = f.label :abbreviation, 'Abbreviation', :class => 'optional'
+    %span.formnote
+      defaults to the initials or (if one word) first few letters of the collection name
+    = f.text_field :abbreviation, :class => 'standard'
+
+  = render :partial => 'shared/edit_description', :locals => {:item => @thing, :f => f, :required => true, :heading => 'Description'}
 
   %div.formpart
     = f.check_box 'private' 
@@ -28,5 +34,3 @@
       this is a restricted collection
     %span.formnote
       not visible to other people without express permission
-
-  = render :partial => 'shared/edit_image', :locals => {:item => @collection, :f => f}

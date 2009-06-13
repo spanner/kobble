@@ -39,11 +39,11 @@ div.mainform input {
   color: black; }
 div.mainform input.titular {
   font-family: Georgia, "Times New Roman", serif;
+  color: #d1005d;
   width: 97%;
-  height: 28px;
-  font-size: 22px;
-  font-weight: bold;
-  line-height: 22px; }
+  height: 32px;
+  font-size: 26px;
+  line-height: 32px; }
 div.mainform input.login {
   font-family: Georgia, "Times New Roman", serif;
   font-size: 18px;

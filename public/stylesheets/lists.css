@@ -50,6 +50,10 @@ ul li a.doc {
   background-image: url(/images/furniture/kobble/16/blue/text.png); }
 ul li a.pdf {
   background-image: url(/images/furniture/kobble/16/blue/text.png); }
+ul li a.ppt {
+  background-image: url(/images/furniture/kobble/16/blue/ppt.png); }
+ul li a.xls {
+  background-image: url(/images/furniture/kobble/16/blue/xls.png); }
 ul li a.text {
   background-image: url(/images/furniture/kobble/16/blue/text.png); }
 ul li a.source {
@@ -111,6 +115,10 @@ li.created a.doc {
   background-image: url(/images/furniture/kobble/16/green/text.png); }
 li.created a.pdf {
   background-image: url(/images/furniture/kobble/16/green/text.png); }
+li.created a.ppt {
+  background-image: url(/images/furniture/kobble/16/green/ppt.png); }
+li.created a.xls {
+  background-image: url(/images/furniture/kobble/16/green/xls.png); }
 li.created a.text {
   background-image: url(/images/furniture/kobble/16/green/text.png); }
 li.created a.source {
@@ -142,6 +150,10 @@ li.updated a.doc {
   background-image: url(/images/furniture/kobble/16/orange/text.png); }
 li.updated a.pdf {
   background-image: url(/images/furniture/kobble/16/orange/text.png); }
+li.updated a.ppt {
+  background-image: url(/images/furniture/kobble/16/orange/ppt.png); }
+li.updated a.xls {
+  background-image: url(/images/furniture/kobble/16/orange/xls.png); }
 li.updated a.text {
   background-image: url(/images/furniture/kobble/16/orange/text.png); }
 li.updated a.source {
@@ -176,6 +188,10 @@ li.deleted {
     background-image: url(/images/furniture/kobble/16/mid/text.png); }
   li.deleted a.pdf {
     background-image: url(/images/furniture/kobble/16/mid/text.png); }
+  li.deleted a.ppt {
+    background-image: url(/images/furniture/kobble/16/mid/ppt.png); }
+  li.deleted a.xls {
+    background-image: url(/images/furniture/kobble/16/mid/xls.png); }
   li.deleted a.text {
     background-image: url(/images/furniture/kobble/16/mid/text.png); }
   li.deleted a.source {
@@ -207,6 +223,10 @@ li.annotated a.doc {
   background-image: url(/images/furniture/kobble/16/orange/text.png); }
 li.annotated a.pdf {
   background-image: url(/images/furniture/kobble/16/orange/text.png); }
+li.annotated a.ppt {
+  background-image: url(/images/furniture/kobble/16/orange/ppt.png); }
+li.annotated a.xls {
+  background-image: url(/images/furniture/kobble/16/orange/xls.png); }
 li.annotated a.text {
   background-image: url(/images/furniture/kobble/16/orange/text.png); }
 li.annotated a.source {
@@ -238,6 +258,10 @@ ul.inactive li a.doc {
   background-image: url(/images/furniture/kobble/16/mid/text.png); }
 ul.inactive li a.pdf {
   background-image: url(/images/furniture/kobble/16/mid/text.png); }
+ul.inactive li a.ppt {
+  background-image: url(/images/furniture/kobble/16/mid/ppt.png); }
+ul.inactive li a.xls {
+  background-image: url(/images/furniture/kobble/16/mid/xls.png); }
 ul.inactive li a.text {
   background-image: url(/images/furniture/kobble/16/mid/text.png); }
 ul.inactive li a.source {

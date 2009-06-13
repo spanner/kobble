@@ -71,6 +71,10 @@ li.bookmarked a.doc {
   background-image: url(/images/furniture/kobble/16/mid/text.png); }
 li.bookmarked a.pdf {
   background-image: url(/images/furniture/kobble/16/mid/text.png); }
+li.bookmarked a.ppt {
+  background-image: url(/images/furniture/kobble/16/mid/ppt.png); }
+li.bookmarked a.xls {
+  background-image: url(/images/furniture/kobble/16/mid/xls.png); }
 li.bookmarked a.text {
   background-image: url(/images/furniture/kobble/16/mid/text.png); }
 li.bookmarked a.source {

@@ -1,7 +1,9 @@
 - if bookmarking
   - item = bookmarking.bookmark
   - name = item.name.nil? || item.name.blank? ? "nameless #{item.class.nice_title}" : item.name 
+  - type_class = item.is_a?(Source) ? [item.file_type] : [item.class.to_s.downcase]
+  
 
   %li{:id => "bookmarking_#{bookmarking.id}", :class => "bookmarked selectable"}
     = check_box_tag 'bookmarking[]', bookmarking.id, false, :id => "cb_bookmarking_#{bookmarking.id}", :class => 'selector'
-    = link_to name, collected_url_for(item), :id => "bench_#{item.class.to_s.downcase}_#{item.id}", :class => "#{item.class.to_s.downcase} draggable", :title => "#{item.nice_title}: #{item.name}"
+    = link_to name, collected_url_for(item), :id => "bench_#{item.class.to_s.downcase}_#{item.id}", :class => "#{type_class} draggable", :title => "#{item.nice_title}: #{item.name}"
