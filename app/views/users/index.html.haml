@@ -6,6 +6,7 @@
 - @list.each do |user|
   .mainlist
     %h3.listheader
+      = gravatar_for(user)
       = link_to user.name, url_for(user), :class => 'listhead'
       %span.headernote
         = pluralize(user.created_sources.count, 'source') + ','

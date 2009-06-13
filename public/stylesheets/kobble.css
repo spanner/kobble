@@ -941,6 +941,10 @@ div.floatcolumn {
   font-weight: lighter;
   color: #afafaf; }
 
+img.gravatar {
+  float: left;
+  margin: 4px 10px 0 0; }
+
 /* ******* main edit forms */
 div.mainform .formnote {
   font-size: 0.8em;

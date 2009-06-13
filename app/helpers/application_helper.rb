@@ -86,4 +86,7 @@ module ApplicationHelper
     image_tag "/images/furniture/kobble/#{size}/#{color}/#{image_name}.png", :size => "#{size}x#{size}", :class => options[:class]
   end
 
+  def gravatar_for(user, size=32)
+    image_tag user.gravatar_url(:size => size), :class => 'gravatar', :size => "#{size}x#{size}"
+  end
 end

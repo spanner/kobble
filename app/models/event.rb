@@ -14,7 +14,7 @@ class Event < ActiveRecord::Base
   # override so that we can see deleted objects too
   
   def affected
-    self.affected_type.as_class.find_with_deleted(self.affected_id)
+    self.affected_type.as_class.find_with_deleted(self.affected_id) rescue nil
   end
   
 end

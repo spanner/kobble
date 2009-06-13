@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
   end
   
   is_material :only => [:owners, :illustration, :log, :undelete]
+  is_gravtastic
 
   belongs_to :account
   belongs_to :person
@@ -45,6 +46,12 @@ class User < ActiveRecord::Base
   
   def self.nice_title
     "user"
+  end
+
+  #! reinstate activation machinery
+
+  def inactive?
+    false
   end
 
   def account_admin?

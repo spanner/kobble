@@ -85,3 +85,7 @@ div.floatcolumn {
   font-size: 0.7em;
   font-weight: lighter;
   color: #afafaf; }
+
+img.gravatar {
+  float: left;
+  margin: 4px 10px 0 0; }

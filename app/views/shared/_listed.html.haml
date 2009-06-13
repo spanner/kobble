@@ -1,6 +1,7 @@
 - name ||= listed.name
 - name = "nameless #{listed.nice_title}" if name.blank?
-- collection_name = listed.is_a?(Collection) ? listed.abbreviation : listed.collection.abbreviation
+- collection = listed.is_a?(Collection) ? listed : listed.collection
+- collection_name = collection.name if collection
 - url = listed.is_a?(Collection) ? url_for(listed) : collected_url_for(listed)
 - addendum ||= false
 - idprefix ||= ''

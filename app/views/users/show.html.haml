@@ -1,0 +1,34 @@
+- itsme = (current_user == @thing)
+- @title = gravatar_for(@thing) + @thing.name 
+
+.preamble
+  %p
+    %strong
+      Last here:
+    - if @thing.login_count == 0
+      never
+    - else
+      = time_ago_in_words(@thing.last_request_at)
+      ago. 
+    %strong
+      Contact:
+      = link_to @thing.email, "mailto:#{@thing.email}"
+  
+    - if @thing.inactive?
+      .witherrors
+        %p
+          %strong
+            This user has not activated his or her account.
+        You may want to 
+        = link_to "revise the user", edit_user_url(@thing) 
+        and/or 
+        = link_to "resend the invitation message.", reinvite_user_url(@thing)
+
+= render :partial => 'shared/show_summary'
+= render :partial => 'shared/show_permissions' if current_user.account_admin?
+= render :partial => 'shared/show_contributions'
+= render :partial => 'shared/show_history'
+= render :partial => 'shared/show_tag_cloud'
+
+- content_for :admin do
+  = render :partial => 'shared/show_admin', :locals => {:item => @thing}

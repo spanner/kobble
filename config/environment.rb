@@ -15,6 +15,7 @@ Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence those specified here
 
   config.gem "authlogic"
+  config.gem 'gravtastic'
   
   # Skip frameworks you're not going to use
   # config.frameworks -= [ :action_web_service, :action_mailer ]
