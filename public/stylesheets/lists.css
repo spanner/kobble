@@ -284,3 +284,14 @@ div.gallery li {
     color: #4d4e53; }
   .pagination span.disabled {
     color: #8c8d8e; }
+
+h3.listheader, h4.listheader {
+  margin: 20px 0 10px 0;
+  font-weight: bold;
+  border-bottom-width: 3px;
+  border-bottom-style: dotted;
+  border-bottom-color: #4d4e53; }
+  h3.listheader a.listhead,   h4.listheader a.listhead {
+    color: #4d4e53; }
+  h3.listheader a.listhead:hover,   h4.listheader a.listhead:hover {
+    color: #d1005d; }

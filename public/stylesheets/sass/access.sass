@@ -6,13 +6,18 @@ table.spacy
   :border-collapse collapse
   tr
     td, th
-      :font-family HelveticaNeue-Roman, helvetica, arial, sans-serif
+      +bodyfonts
       :padding 4px
+      :font-weight lighter
+      :border-bottom
+        :style solid
+        :width 1px
+        :color = !coolgrey1
+      a
+        :color = !coolgrey11
+      a:hover
+        :color = !rubinered
     td.emphatic 
       a
         :font-weight bold
-        :color = !green
-  tr.odd 
-    td
-      :background-color #e2e1dd
 

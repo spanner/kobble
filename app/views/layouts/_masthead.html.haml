@@ -1,0 +1,40 @@
+#masthead
+  %ul.nav
+    %li#kobble_navigation.mi<>
+      = link_to "kobble/", "/", :class => 'head'
+      %ul.body
+        %li.smi
+          = link_to "kobble", default_url, {:class => 'emphatic'}
+        %li.smi
+          = link_to "help", '#', :class => 'notyet'
+        %li.smi
+          = link_to "about", '#', :class => 'notyet'
+        %li.smi
+          = link_to "forum", '#', :class => 'notyet'
+        %li.smi
+          = link_to "logout", user_session_path, :method => :delete, :class => 'administrative'
+      
+    %li#account_navigation.mi<>
+      = link_to "#{current_account.name}/", root_url, {:class => current_collection ? 'head ' : 'head emphatic'} 
+      %ul.body
+        %li.smi
+          = link_to "#{current_account.name}/", root_url, {:class => 'emphatic'} 
+        %li.smi
+          = link_to "collections", collections_url, :class => 'administrative'
+        %li.smi
+          = link_to "users", users_url, :class => 'administrative'
+        %li.smi
+          = link_to "access", permissions_account_url(current_account), :class => 'administrative'
+        %li.smi
+          = link_to "settings", edit_account_url(current_account), :class => 'administrative'
+            
+    - if current_collection
+      %li#collection_navigation.mi<>
+        = link_to "#{current_collection.abbreviation}/", url_for(current_collection), {:class => 'head emphatic'} 
+        %ul.body
+          %li 
+            = link_to "#{current_collection.abbreviation}", url_for(current_collection), {:class => 'emphatic'}
+            choose a collection:
+          - current_user.permitted_collections.each do |collection|
+            %li.smi
+              = link_to collection.name, url_for(collection)

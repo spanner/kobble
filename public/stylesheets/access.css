@@ -3,10 +3,15 @@ table.spacy {
   border: 0;
   border-collapse: collapse; }
   table.spacy tr td, table.spacy tr th {
-    font-family: HelveticaNeue-Roman, helvetica, arial, sans-serif;
-    padding: 4px; }
+    font-family: 'HelveticaNeue-Light', helvetica, arial, sans-serif;
+    padding: 4px;
+    font-weight: lighter;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #e2e1dd; }
+    table.spacy tr td a,     table.spacy tr th a {
+      color: #4d4e53; }
+    table.spacy tr td a:hover,     table.spacy tr th a:hover {
+      color: #d1005d; }
   table.spacy tr td.emphatic a {
-    font-weight: bold;
-    color: #5da454; }
-  table.spacy tr.odd td {
-    background-color: #e2e1dd; }
+    font-weight: bold; }

@@ -1,0 +1,32 @@
+- @title = 'Home' 
+
+.preamble
+  %p
+    Hello 
+    = link_to current_user.best_name, url_for(current_user)
+    This is a summary of recent activity across the collections to which you have access.
+
+- @collections.each do |collection|
+  .mainlist
+    %h3.listheader
+      = link_to collection.name, url_for(collection), :class => 'listhead'
+      - if current_user.account_admin?
+        %span.headernote
+          = link_to "edit", edit_collection_url(collection), :class => 'edit'
+          = link_to "delete", predelete_collection_url(collection), :class => 'delete'
+
+    - if collection.events.count
+      %p.subhead
+        last activity 
+        = time_ago_in_words(collection.last_event_at)
+        ago:
+      %div{:id => "history_#{collection.id}"}
+        = render :partial => 'collections/history', :locals => {:collection => collection}
+    - else
+      %p.subhead
+        no recent activity
+
+
+- content_for :admin do
+  = render :partial => 'shared/account_admin'
+

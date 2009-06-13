@@ -1,0 +1,20 @@
+- @title = 'Users in your account' 
+
+%p
+  Soon - but not yet - you will be able to send things to people by dropping them on a name. 
+  
+- @list.each do |user|
+  .mainlist
+    %h3.listheader
+      = link_to user.name, url_for(user), :class => 'listhead'
+      %span.headernote
+        = pluralize(user.created_sources.count, 'source') + ','
+        = pluralize(user.created_nodes.count, 'fragment') + ','
+        = pluralize(user.created_bundles.count, 'set') + '.'
+    - if user.description
+      .listnote
+        = user.description.formatted
+
+- content_for :admin do
+  = render :partial => 'shared/account_admin'
+

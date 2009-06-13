@@ -1,10 +1,13 @@
 class CollectionsController < AccountScopedController
   
   before_filter :require_account_admin, :except => [:index, :show]
-  before_filter :get_collection, :except => [:index, :new, :create]
+
+  def index
+    @list = current_user.collections_available
+  end
 
   def show
-    # @thing = Collection.find(params[:id])
+
   end
 
   def new
@@ -60,23 +63,10 @@ class CollectionsController < AccountScopedController
   end
   
 protected
-
+  
   def current_collection
-    @thing ||= current_account.collections.find(params[:id])
+    return @current_collection if defined?(@current_collection)
+    Collection.current = @current_collection = Collection.find_by_id(params[:collection_id] || params[:id])
   end
   
-private
-    
-  def get_collection
-    if current_collection
-      Collection.current = current_collection
-    else
-      return false
-    end
-  end
-  
-
-
-
-
 end

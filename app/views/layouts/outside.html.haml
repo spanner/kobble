@@ -25,24 +25,23 @@
         = yield
 
     #masthead
-      %p<
-        &nbsp;
-        %br>
-        = link_to "kobble/", "/"
+      %ul.nav
+        %li.mi
+          = link_to "kobble/", "/"
         - if current_account
-          %br>
-          = link_to "#{current_account.name}/", root_url, {:class => 'emphatic'} 
+          %li.mi
+            = link_to "#{current_account.name}/", root_url, {:class => 'emphatic'} 
 
     #mastfoot
       #navigation
         = link_to 'welcome', '/', {:class => (request.parameters[:action] == 'index' ? "fg" : '')}
-        = link_to 'background', 'http://about.kobble.net/'
-        = link_to 'how it works', 'http://about.kobble.net/how/'
-        = link_to 'faq', 'http://about.kobble.net/faq/'
-        = link_to 'examples',  'http://about.kobble.net/examples/'
-        = link_to 'forum', 'http://discuss.kobble.net/'
+        = link_to 'background', 'http://about.kobble.net/', :class => 'notyet'
+        = link_to 'how it works', 'http://about.kobble.net/how/', :class => 'notyet'
+        = link_to 'faq', 'http://about.kobble.net/faq/', :class => 'notyet'
+        = link_to 'examples',  'http://about.kobble.net/examples/', :class => 'notyet'
+        = link_to 'forum', 'http://discuss.kobble.net/', :class => 'notyet'
         = link_to 'sign up', new_account_url, {:class => (request.parameters[:action] == 'signup' ? "fg" : '')}
-        = link_to 'spanner', 'http://spanner.org/', {:class => 'pale'} 
+        = link_to 'spanner', 'http://spanner.org/', {:class => 'administrative'} 
 
     #admin
       = yield :admin

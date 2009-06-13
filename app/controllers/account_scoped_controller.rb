@@ -4,7 +4,7 @@ class AccountScopedController < ApplicationController
   # and also the catch/drop interface
   # (since users are not collected)
   
-  helper_method :current_account, :current_user_session, :current_user, :current_collection
+  helper_method :current_account, :current_user_session, :current_user, :current_collection, :default_url, :current_url
   helper_method :logged_in?, :admin?, :account_admin?
 
   before_filter :require_account
@@ -168,7 +168,7 @@ protected
     return @current_collection if defined?(@current_collection)
     @current_collection = Collection.find_by_id(params[:collection_id]) if params[:collection_id]
   end
-
+  
   def current_user_session
     return @current_user_session if defined?(@current_user_session)
     @current_user_session = UserSession.find
@@ -177,6 +177,10 @@ protected
   def current_user
     return @current_user if defined?(@current_user)
     @current_user = current_user_session && current_user_session.record
+  end
+
+  def current_user=(user)
+    User.current = @current_user = user
   end
 
   # crud before_filters

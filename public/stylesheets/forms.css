@@ -13,7 +13,7 @@ div.mainform fieldset {
   padding: 0 16px 0 16px;
   margin-bottom: 10px; }
   div.mainform fieldset legend {
-    font-family: HelveticaNeue-Light, helvetica, arial, sans-serif;
+    font-family: 'HelveticaNeue-Light', helvetica, arial, sans-serif;
     font-size: 22px;
     color: #cacac8; }
 div.mainform fieldset.authentication {

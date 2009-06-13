@@ -81,24 +81,6 @@ div.floatcolumn {
   margin-right: 0;
   padding: 0; }
 
-h3.listheader {
-  margin: 20px 0 10px 0;
-  font-weight: bold;
-  border-bottom-width: 3px;
-  border-bottom-style: dotted;
-  border-bottom-color: #4d4e53; }
-  h3.listheader a.listhead {
-    color: #4d4e53; }
-
-h4.listheader {
-  margin: 20px 0 10px 0;
-  font-weight: bold;
-  border-bottom-width: 3px;
-  border-bottom-style: dotted;
-  border-bottom-color: #4d4e53; }
-  h4.listheader a.listhead {
-    color: #4d4e53; }
-
 .headernote, .listnote {
   font-size: 0.7em;
   font-weight: lighter;

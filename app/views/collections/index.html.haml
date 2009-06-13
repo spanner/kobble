@@ -1,0 +1,23 @@
+- @title = 'Collections' 
+
+.preamble
+  %p
+    These are all the collections to which you have access.
+
+- @list.each do |collection|
+  .mainlist
+    %h3.listheader
+      = link_to collection.name, url_for(collection), :class => 'listhead'
+      %span.headernote
+        = pluralize(collection.sources.count, 'source') + ','
+        = pluralize(collection.nodes.count, 'fragment') + ','
+        = pluralize(collection.bundles.count, 'set') + '.'
+    .listnote
+      = collection.description.formatted
+
+
+
+
+- content_for :admin do
+  = render :partial => 'shared/account_admin'
+

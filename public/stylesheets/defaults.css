@@ -29,6 +29,9 @@
 .showable {
   display: none; }
 
+.notyet {
+  text-decoration: line-through; }
+
 img {
   border: 0;
   margin: 0;
@@ -43,6 +46,9 @@ td {
 a, a:link, a:visited {
   color: #559dc4;
   text-decoration: none; }
+
+a.notyet, a.notyet:link, a.notyet:visited {
+  text-decoration: line-through; }
 
 a:hover {
   color: #d1005d; }

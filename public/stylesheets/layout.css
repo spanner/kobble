@@ -61,6 +61,8 @@ div#navigation {
     color: #4d4e53; }
   div#navigation a.administrative:hover {
     color: #d1005d; }
+  div#navigation a.notyet {
+    color: #8c8d8e; }
 
 div#notification {
   position: fixed;

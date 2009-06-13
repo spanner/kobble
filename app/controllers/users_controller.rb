@@ -8,6 +8,10 @@ class UsersController < AccountScopedController
     'account'
   end
 
+  def index
+    @list = current_account.users
+  end
+
   def activate
     @thing.activate
     respond_to do |format|

@@ -3,7 +3,6 @@ class AccountsController < AccountScopedController
   skip_before_filter :require_user, :only => [:index, :new, :create]
   skip_before_filter :require_account, :only => [:index, :new, :create]
   skip_before_filter :get_items
-  skip_before_filter :build_item
   
   before_filter :require_no_account, :only => [:new, :create] 
   before_filter :require_admin_or_owner, :except => [:index, :create, :new, :home]
@@ -23,6 +22,7 @@ class AccountsController < AccountScopedController
   def home
     @account = current_account
     @collections = current_user.collections_available.sort_by{ |collection| collection.last_event_at }.reverse
+    
     case params[:since]
     when 'today'
       @since = Time.now.beginning_of_day
@@ -103,6 +103,14 @@ protected
 
   def choose_layout
     current_account && current_user ? 'inside' : 'outside'
+  end
+  
+  def build_item
+    @thing = Account.build(params[:thing])
+  end
+
+  def get_item
+    @thing = current_account
   end
 
 private

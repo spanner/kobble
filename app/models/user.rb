@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   belongs_to :person
   
   has_many :permissions, :dependent => :destroy
-  has_many :permitted_collections, :through => :permissions, :conditions => ['permissions.active = ?', true], :source => :collection
+  has_many :permitted_collections, :through => :permissions, :conditions => ['permissions.active = ?', true], :order => 'collections.name', :source => :collection
   has_many :monitorships, :dependent => :destroy
   has_many :monitored_topics, :through => :monitorships, :conditions => ['monitorships.active = ?', true], :order => 'topics.replied_at desc', :source => :topic
   has_many :user_preferences, :dependent => :destroy

@@ -4,17 +4,18 @@ div#masthead
   ul.nav
     :position relative
     :font-size 14px
-    :line-height 1.2
+    :line-height 1.4
     :color = !coolgrey11
     :margin 0
     :padding 0
-    :list-style none
     li.mi
       :position relative
       :margin 0
       :white-space nowrap
       :overflow hidden
       :padding 1px
+      :list-style none
+      :text-align right
       a, a:visited
         :margin 2px 10px 2px 2px
         :font-weight lighter
@@ -22,32 +23,39 @@ div#masthead
       a.emphatic, a.emphatic:visited
         :font-weight bold
         :color = !rubinered
-      a.head
-
+      a:hover
+        :color = !rubinered
       ul.body
         :position relative
-        :float left
+        :text-align left
         :overflow hidden
         :color = !coolgrey8
         :background-color white
-        :padding 3px
+        :padding 6px
+        :-moz-border-radius 6px
+        :-webkit-border-radius 6px
         :border
           :width 3px
           :style solid
           :color = !rubinered
+        li
+          :list-style none
       ul.over
         :visibility visible
       ul.out
         :visibility hidden
     li#kobble_navigation.mi
-      :height 20px
-      ul
+      ul.body
+        :display inline
+        :height 18px
         li
           :display inline
           :float left
     li#account_navigation.mi
-      :height 20px
       ul.body
+        :display inline
+        :height 18px
         li
           :display inline
           :float left
+          
