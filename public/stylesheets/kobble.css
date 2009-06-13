@@ -91,9 +91,8 @@ body {
 div#masthead {
   position: fixed;
   left: 0;
-  top: 27px;
-  height: 40px;
-  width: 130px; }
+  top: 30px;
+  width: 135px; }
 
 div#mainpage {
   position: relative;
@@ -192,47 +191,51 @@ div#trash.drophere {
   color: white; }
 
 /* ******* navigation */
-div#masthead ul {
-  font-size: 1.1em;
-  line-height: 0.9;
+div#masthead ul.nav {
+  position: relative;
+  font-size: 14px;
+  line-height: 1.2;
   color: #4d4e53;
   margin: 0;
   padding: 0;
   list-style: none; }
-  div#masthead ul li.mi {
-    display: block;
+  div#masthead ul.nav li.mi {
     position: relative;
-    margin: 3px;
-    padding: 0;
+    margin: 0;
     white-space: nowrap;
     overflow: hidden;
-    font-size: 14px;
-    border: 3px; }
-    div#masthead ul li.mi a, div#masthead ul li.mi a:visited {
-      margin: 2px 10px 2px 2px; }
-    div#masthead ul li.mi a.emphatic, div#masthead ul li.mi a.emphatic:visited {
+    padding: 1px; }
+    div#masthead ul.nav li.mi a, div#masthead ul.nav li.mi a:visited {
+      margin: 2px 10px 2px 2px;
+      font-weight: lighter;
+      color: #4d4e53; }
+    div#masthead ul.nav li.mi a.emphatic, div#masthead ul.nav li.mi a.emphatic:visited {
       font-weight: bold;
       color: #d1005d; }
-    div#masthead ul li.mi a.head {
-      font-weight: bold; }
-    div#masthead ul li.mi ul.sm {
-      line-height: 1.4;
-      display: none;
+    div#masthead ul.nav li.mi ul.body {
+      position: relative;
+      float: left;
       overflow: hidden;
-      color: #8c8d8e; }
-      div#masthead ul li.mi ul.sm li {
-        text-align: left; }
-  div#masthead ul li.hidden ul.sm {
-    display: none;
-    font-size: 10px;
-    margin: 6px; }
-  div#masthead ul li.over {
-    background-color: #4d4e53;
-    padding-top: 4px; }
-    div#masthead ul li.over ul.sm {
-      display: block; }
-      div#masthead ul li.over ul.sm a {
-        color: white; }
+      color: #8c8d8e;
+      background-color: white;
+      padding: 3px;
+      border-width: 3px;
+      border-style: solid;
+      border-color: #d1005d; }
+    div#masthead ul.nav li.mi ul.over {
+      visibility: visible; }
+    div#masthead ul.nav li.mi ul.out {
+      visibility: hidden; }
+  div#masthead ul.nav li#kobble_navigation.mi {
+    height: 20px; }
+    div#masthead ul.nav li#kobble_navigation.mi ul li {
+      display: inline;
+      float: left; }
+  div#masthead ul.nav li#account_navigation.mi {
+    height: 20px; }
+    div#masthead ul.nav li#account_navigation.mi ul.body li {
+      display: inline;
+      float: left; }
 
 /* ******* admin block (not much in here) */
 div#admin ul {

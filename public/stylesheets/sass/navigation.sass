@@ -1,0 +1,53 @@
+@import constants.sass
+
+div#masthead
+  ul.nav
+    :position relative
+    :font-size 14px
+    :line-height 1.2
+    :color = !coolgrey11
+    :margin 0
+    :padding 0
+    :list-style none
+    li.mi
+      :position relative
+      :margin 0
+      :white-space nowrap
+      :overflow hidden
+      :padding 1px
+      a, a:visited
+        :margin 2px 10px 2px 2px
+        :font-weight lighter
+        :color = !coolgrey11
+      a.emphatic, a.emphatic:visited
+        :font-weight bold
+        :color = !rubinered
+      a.head
+
+      ul.body
+        :position relative
+        :float left
+        :overflow hidden
+        :color = !coolgrey8
+        :background-color white
+        :padding 3px
+        :border
+          :width 3px
+          :style solid
+          :color = !rubinered
+      ul.over
+        :visibility visible
+      ul.out
+        :visibility hidden
+    li#kobble_navigation.mi
+      :height 20px
+      ul
+        li
+          :display inline
+          :float left
+    li#account_navigation.mi
+      :height 20px
+      ul.body
+        li
+          :display inline
+          :float left

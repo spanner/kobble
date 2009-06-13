@@ -1,0 +1,45 @@
+div#masthead ul.nav {
+  position: relative;
+  font-size: 14px;
+  line-height: 1.2;
+  color: #4d4e53;
+  margin: 0;
+  padding: 0;
+  list-style: none; }
+  div#masthead ul.nav li.mi {
+    position: relative;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    padding: 1px; }
+    div#masthead ul.nav li.mi a, div#masthead ul.nav li.mi a:visited {
+      margin: 2px 10px 2px 2px;
+      font-weight: lighter;
+      color: #4d4e53; }
+    div#masthead ul.nav li.mi a.emphatic, div#masthead ul.nav li.mi a.emphatic:visited {
+      font-weight: bold;
+      color: #d1005d; }
+    div#masthead ul.nav li.mi ul.body {
+      position: relative;
+      float: left;
+      overflow: hidden;
+      color: #8c8d8e;
+      background-color: white;
+      padding: 3px;
+      border-width: 3px;
+      border-style: solid;
+      border-color: #d1005d; }
+    div#masthead ul.nav li.mi ul.over {
+      visibility: visible; }
+    div#masthead ul.nav li.mi ul.out {
+      visibility: hidden; }
+  div#masthead ul.nav li#kobble_navigation.mi {
+    height: 20px; }
+    div#masthead ul.nav li#kobble_navigation.mi ul li {
+      display: inline;
+      float: left; }
+  div#masthead ul.nav li#account_navigation.mi {
+    height: 20px; }
+    div#masthead ul.nav li#account_navigation.mi ul.body li {
+      display: inline;
+      float: left; }

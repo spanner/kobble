@@ -30,13 +30,12 @@
       = yield
 
   #masthead
-    %ul
-      - unless current_collection
-        %li
-          &nbsp;
-      %li.mi<>
-        = link_to "kobble", "/"
-        %ul.sm
+    %ul.nav
+      %li#kobble_navigation.mi<>
+        = link_to "kobble/", "/", :class => 'head'
+        %ul.body
+          %li.smi
+            = link_to "kobble", '/'
           %li.smi
             = link_to "help", '#'
           %ul.sm
@@ -49,11 +48,13 @@
             %li.smi
               = link_to "logout", '#'
         
-      %li.mi<>
-        = link_to "#{current_account.name}", root_url, {:class => current_collection ? '' : 'emphatic'} 
-        %ul.sm
+      %li#account_navigation.mi<>
+        = link_to "#{current_account.name}/", root_url, {:class => current_collection ? 'head ' : 'head emphatic'} 
+        %ul.body
           %li.smi
-            = link_to "home", '#'
+            = link_to "#{current_account.name}/", root_url, {:class => current_collection ? ' ' : 'emphatic'} 
+          %li.smi
+            = link_to "kobble", '/'
           %ul.sm
             %li.smi
               = link_to "collections", '#'
@@ -65,11 +66,11 @@
               = link_to "settings", '#'
               
       - if current_collection
-        %li.mi<>
-          = link_to "#{current_collection.abbreviation}", url_for(current_collection), {:class => 'emphatic'} 
-          %ul.sm
+        %li#collection_navigation.mi<>
+          = link_to "#{current_collection.abbreviation}/", url_for(current_collection), {:class => 'head emphatic'} 
+          %ul.body
             %li 
-              jump to:
+              = link_to "#{current_collection.abbreviation}/", url_for(current_collection), {:class => 'emphatic'} 
             - current_account.collections.each do |collection|
               - unless collection == current_collection
                 %li.smi
