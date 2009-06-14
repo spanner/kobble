@@ -17,7 +17,7 @@
     <%= pluralize(item.sources.count, "Source document") %>
     <% if item.sources.count > 5 %>
       <span class="headernote">
-        <%= link_to "show all", collection_sources_url(item) %>
+        <%= link_to "show all", sources_url(item) %>
       </span>
     <% end %>
   </h4>
@@ -31,7 +31,7 @@
     <%= pluralize(item.nodes.count, "Fragment") %>
     <% if item.nodes.count > 5 %>
       <span class="headernote">
-        <%= link_to "show all", collection_nodes_url(item) %>
+        <%= link_to "show all", nodes_url(item) %>
       </span>
     <% end %>
   </h4>
@@ -45,7 +45,7 @@
     <%= pluralize(item.bundles.count, "Set") %>
     <% if item.bundles.count > 5 %>
       <span class="headernote">
-        <%= link_to "show all", collection_bundles_url(item) %>
+        <%= link_to "show all", bundles_url(item) %>
       </span>
     <% end %>
   </h4>

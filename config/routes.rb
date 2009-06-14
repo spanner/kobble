@@ -22,46 +22,42 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :users, 
                 :has_many => [:events, :user_preferences, :bookmarkings], 
-                :collection => { :gallery => :get }, 
                 :member => {:home => :get, :recover => :post, :eliminate => :post, :reinvite => :any, :predelete => :get, :catch => :get, :drop => :get}
 
   map.resources :collections, 
-                :has_many => [:events, :annotations, :permissions], 
+                :has_many => [:events, :annotations, :permissions, :topics], 
                 :member => {:recover => :post, :eliminate => :post, :predelete => :get} do |collection|
+
+    collection.resources :users, :has_many => :bookmarkings      # nasty hack to supply both user and collection to bench drops
 
     collection.resources :sources, :name_prefix => nil,
                   :has_many => [:topics, :nodes, :annotations, :taggings],
-                  :collection => { :gallery => :get }, 
                   :member => {:annotate => :post, :recover => :post, :eliminate => :post, :describe => :put, :catch => :get}
 
     collection.resources :nodes, :name_prefix => nil,
                   :has_many => [:topics, :annotations, :taggings],
-                  :collection => { :gallery => :get }, 
                   :member => {:annotate => :post, :recover => :post, :eliminate => :post, :catch => :get}
 
     collection.resources :bundles, :name_prefix => nil,
                   :has_many => [:topics, :bundlings, :annotations, :taggings],
-                  :collection => { :gallery => :get }, 
                   :member => {:annotate => :post, :recover => :post, :eliminate => :post, :catch => :get, :drop => :get}
 
     collection.resources :people, :name_prefix => nil,
                   :has_many => [:topics, :annotations, :taggings],
-                  :collection => { :gallery => :get }, 
                   :member => {:annotate => :post, :recover => :post, :eliminate => :post, :catch => :get}
 
     collection.resources :occasions, :name_prefix => nil,
                   :has_many => [:topics, :annotations, :taggings],
-                  :collection => { :gallery => :get }, 
                   :member => {:annotate => :post, :recover => :post, :eliminate => :post, :catch => :get}
 
     collection.resources :tags, :name_prefix => nil,
                   :has_many => [:taggings, :topics, :annotations],
-                  :collection => { :gallery => :get, :cloud => :get, :tree => :get, :treemap => :get, :matching => :any, :drop => :get}, 
+                  :collection => {:cloud => :get, :tree => :get, :treemap => :get, :matching => :any, :drop => :get}, 
                   :member => {:recover => :post, :eliminate => :post, :catch => :get}
 
     collection.resources :topics, :name_prefix => nil,
                   :has_many => [:posts], 
-                  :collection => { :latest => :get },
+                  :collection => {:latest => :get},
                   :member => {:recover => :post, :eliminate => :post}
 
     collection.resources :posts, :name_prefix => nil,

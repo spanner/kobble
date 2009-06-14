@@ -7,7 +7,7 @@
     = link_to 'cancel', url_for(@thing)
 
 .mainform
-  - form_for :thing, :url => collection_source_url(current_collection, @thing), :html => { :method => "put", :multipart => true } do |f| 
+  - form_for :thing, :url => source_url(current_collection, @thing), :html => { :method => "put", :multipart => true } do |f| 
     = render :partial => 'form', :locals => {:f => f}
     
 - content_for :admin do

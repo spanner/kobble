@@ -13,8 +13,8 @@ class ApplicationController < ActionController::Base
   end
 
   def collected_url_for(thing)
-    url_method = "collection_#{thing.class.to_s.downcase}_url".intern
-    send(url_method, thing.collection, thing)
+    url_method = "#{thing.class.to_s.downcase}_url".intern
+    send(url_method, current_collection.id, thing)
   end
 
 end

@@ -1,0 +1,11 @@
+- @title = "Extract fragment <br /><span class='headernote'>from #{@node.source.name}</span>"
+
+- content_for :buttons do
+  .formbuttons
+    = submit_tag "Create Fragment"
+    or
+    = link_to 'cancel', {:action => 'index'}, {:class => 'cancelform'}
+
+.mainform
+  - form_for :node, :html => { :multipart => true, :id => 'nodeform'} do |f| 
+    = render :partial => 'form', :locals => {:f => f}

@@ -22,7 +22,7 @@
     #pagetitle
       %h1{:class => @title.size > 50  ? "long_title" : "short_title"}
         = @title
-        - if @thing && @thing.has_collection?
+        - if @thing && @thing.has_collection? && !@thing.new_record?
           %span.header_icon<>
             = link_to icon_for(@thing), collected_url_for(@thing), :id => "#{@thing.class.to_s.downcase}_#{@thing.id}", :class => "draggable #{@thing.class.to_s.downcase}", :title => @thing.name
                       
@@ -39,12 +39,12 @@
         &gt;
         = link_to current_collection.abbreviation, url_for(current_collection), {:class => 'administrative'}
         [
-        = link_to "sources", collection_sources_url(current_collection), {:class => (request.parameters[:controller] == 'sources' ? "fg" : '')}
-        = link_to "fragments", collection_nodes_url(current_collection), {:class => (request.parameters[:controller] == 'nodes' ? "fg" : '')}
-        = link_to "sets", collection_bundles_url(current_collection), {:class => (request.parameters[:controller] == 'bundles' ? "fg" : '')}
-        = link_to "people", collection_people_url(current_collection), {:class => (request.parameters[:controller] == 'people' ? "fg" : '')}
-        = link_to "tags", collection_tags_url(current_collection), {:class => (request.parameters[:controller] == 'tags' ? "fg" : '')}
-        = link_to 'discussion', collection_topics_url(current_collection), {:class => request.parameters[:controller] == 'topics' ? " fg" : ''} if current_account.can_have_discussion?
+        = link_to "sources", sources_url(current_collection), {:class => (request.parameters[:controller] == 'sources' ? "fg" : '')}
+        = link_to "fragments", nodes_url(current_collection), {:class => (request.parameters[:controller] == 'nodes' ? "fg" : '')}
+        = link_to "sets", bundles_url(current_collection), {:class => (request.parameters[:controller] == 'bundles' ? "fg" : '')}
+        = link_to "people", people_url(current_collection), {:class => (request.parameters[:controller] == 'people' ? "fg" : '')}
+        = link_to "tags", tags_url(current_collection), {:class => (request.parameters[:controller] == 'tags' ? "fg" : '')}
+        = link_to 'discussion', topics_url(current_collection), {:class => request.parameters[:controller] == 'topics' ? " fg" : ''} if current_account.can_have_discussion?
         ]
       - if current_account
         = link_to 'search', search_url, {:class => 'administrative'}

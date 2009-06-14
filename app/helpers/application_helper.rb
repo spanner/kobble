@@ -7,22 +7,22 @@ module ApplicationHelper
   
   def item_tags_path(item)
     url_method = "#{item.class.to_s.underscore.downcase}_tags_path"
-    send url_method.intern, item
+    send url_method.intern, current_collection, item
   end
 
   def item_new_topic_url(item)    
     url_method = 'new_' + item.class.to_s.underscore.downcase + '_topic_url'
-    send url_method.intern, item
+    send url_method.intern, current_collection, item
   end
 
   def item_topics_path(item)    
     url_method = item.class.to_s.underscore.downcase + '_topics_path'
-    send url_method.intern, item
+    send url_method.intern, current_collection, item
   end
 
   def item_create_topic_path(item)    
     url_method = 'create_' + item.class.to_s.underscore.downcase + '_topic_path'
-    send url_method.intern, item
+    send url_method.intern, current_collection, item
   end
   
   def item_topic_url(item, topic)
@@ -32,17 +32,17 @@ module ApplicationHelper
 
   def item_new_note_url(item)    
     url_method = 'new_' + item.class.to_s.underscore.downcase + '_annotation_url'
-    send url_method.intern, item
+    send url_method.intern, current_collection, item
   end
 
   def item_notes_path(item)    
     url_method = item.class.to_s.underscore.downcase + '_annotations_path'
-    send url_method.intern, item
+    send url_method.intern, current_collection, item
   end
 
   def item_create_note_path(item)    
     url_method = 'create_' + item.class.to_s.underscore.downcase + '_annotation_path'
-    send url_method.intern, item
+    send url_method.intern, current_collection, item
   end
 
   def item_history_url(item)
