@@ -55,6 +55,10 @@ protected
     @list = current_collection.send(association).paginate(paging)
   end
   
+  def build_item
+    @thing = current_collection ? current_collection.send(association).build(params[:thing]) : model_class.new(params[:thing])
+  end
+  
   def thing_or_response
     respond_to do |format|
       format.html { redirect_to collected_url_for(@thing) }

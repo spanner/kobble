@@ -11,7 +11,6 @@ class NodesController < CollectionScopedController
     @node.source = current_collection.sources.find(params[:source_id]) if params[:source_id]
     if @node.source
       @node.speaker ||= @node.source.speaker
-      @node.collection ||= @node.source.collection
     end
     respond_to do |format|
       format.html { render }

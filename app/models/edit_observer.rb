@@ -1,6 +1,10 @@
 class EditObserver < ActiveRecord::Observer
   observe Collection, Source, Node, Bundle, Tag, Occasion, Topic, Post, Annotation
-    
+
+  def before_save(model)
+    model.collection ||= Collection.current
+  end
+
   def before_create(model)
     model.created_by = User.current if model.record_timestamps
   end

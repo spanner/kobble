@@ -2,7 +2,7 @@
   
 <div class="mainform">
   <% form_for :bundle,
-              :url => bundle_url(@bundle),
+              :url => collection_bundle_url(current_collection, @bundle),
               :html => { 
                 :method => "put",
                 :multipart => true

@@ -10,13 +10,6 @@ module ApplicationHelper
     send url_method.intern, item
   end
 
-  def item_catch_path(item)
-    url_method = "catch_#{item.class.to_s.underscore.downcase}_path"
-    send url_method.intern, item
-  end
-
-  
-
   def item_new_topic_url(item)    
     url_method = 'new_' + item.class.to_s.underscore.downcase + '_topic_url'
     send url_method.intern, item

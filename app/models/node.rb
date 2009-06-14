@@ -27,20 +27,10 @@ class Node < ActiveRecord::Base
     end
   end
   
-  def has_clip?
-    return false if self.clip.nil? && self.source.clip.nil?
-    return false if self.playfrom_seconds == self.playto_seconds
-    return true
-  end
-  
-  def duration
-    if (self.clip || self.source && self.source.clip)
-      read_attribute(:playto) - read_attribute(:playfrom)
-    else
-      0
-    end
-  end
-  
+  # nodes can have files
+  # or they can make reference to their source files
+  # with audio and video and perhaps pdf excerpts
+    
   def playfrom=(timecode)
     write_attribute(:playfrom, to_seconds(timecode))
   end
@@ -104,8 +94,8 @@ class Node < ActiveRecord::Base
 
   def must_have_body_or_file
     if body.blank? and file.blank?
-      errors.add(:body, "fragment must have at least one of body, clip or file") 
-      errors.add(:file, "fragment must have at least one of body, clip or file") 
+      errors.add(:body, "fragment must have at least one of body or file") 
+      errors.add(:file, "fragment must have at least one of body or file") 
     end
   end
     

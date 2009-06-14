@@ -1,7 +1,7 @@
 <% item ||= @thing %>
 
 <div class="formpart<%= ' witherrors' if item.errors.on(:speaker) %>">
-  <label for="<%= item.class.to_s.underscore %>_speaker_id">Primary speaker</label> <%= link_to "create speaker*", new_person_url(:collection_id => item.collection), {:class=>'create inline', :id => "extend_#{item.class.to_s.downcase}_speaker_id"} %><br />
+  <label for="<%= item.class.to_s.underscore %>_speaker_id">Primary speaker</label> <%= link_to "create speaker*", new_person_url, {:class=>'create inline', :id => "extend_#{item.class.to_s.downcase}_speaker_id"} %><br />
   <%= select(item.class.to_s.underscore, "speaker_id", current_collection.people.collect{|p| [p.name, p.id] }, {:include_blank => true}, {:class => 'standard'}) %>
   <% if item.errors.on(:speaker) %><br />
     This <%= item.errors.on(:speaker).to_a.to_sentence %>
