@@ -3,17 +3,24 @@
 .preamble
   %p
     These are all the collections to which you have access.
+    - if account_admin?
+      Would you like to 
+      = link_to "create another collection?", new_collection_url 
+      
 
 - @list.each do |collection|
   .mainlist
-    %h3.listheader
-      = link_to collection.name, url_for(collection), :class => 'listhead'
-      %span.headernote
+    %ul
+      %li.listed
+        = link_to collection.name, url_for(collection), :class => 'collection'
+        - if current_user.account_admin?
+          %span.listnote
+            = link_to "edit", edit_collection_url(collection), :class => 'update'
+            = link_to "delete", predelete_collection_url(collection), :class => 'delete'
+        %br
         = pluralize(collection.sources.count, 'source') + ','
         = pluralize(collection.nodes.count, 'fragment') + ','
         = pluralize(collection.bundles.count, 'set') + '.'
-    .listnote
-      = collection.description.formatted
 
 
 

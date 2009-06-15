@@ -50,6 +50,8 @@ Rails::Initializer.run do |config|
   
   # See Rails::Configuration for more options
   
+  config.plugins = [:all, :kobble]
+  
   config.action_view.field_error_proc = Proc.new do |html_tag, instance_tag| 
     %{<span class="errordetail">#{html_tag}</span>}
   end

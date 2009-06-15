@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
 
   def collected_url_for(thing)
     url_method = "#{thing.class.to_s.downcase}_url".intern
-    logger.warn ">   finding a collected_url for #{thing.class} #{thing.id}"
+    return send(url_method) if thing.is_a?(Collection)
     collection = thing.collection || current_collection
     send(url_method, collection.id, thing)
   end

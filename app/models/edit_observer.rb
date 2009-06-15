@@ -1,16 +1,13 @@
 class EditObserver < ActiveRecord::Observer
   observe Collection, Source, Node, Bundle, Tag, Occasion, Topic, Post, Annotation
 
-  def before_save(model)
-    model.collection ||= Collection.current
-  end
-
   def before_create(model)
-    model.created_by = User.current if model.record_timestamps
+    model.collection ||= Collection.current unless model.is_a?(Collection)
+    model.created_by = User.current
   end
   
   def before_update(model)
-    model.updated_by = User.current if model.record_timestamps
+    model.updated_by = User.current
   end
  
   def after_create(model)
@@ -38,9 +35,9 @@ class EditObserver < ActiveRecord::Observer
   end
 
   def record_event(model, type)
-    collection = model if model.class == Collection
+    collection = model if model.is_a?(Collection)
     collection ||= model.has_collection? ? model.collection : nil
-    collection.last_active_at = Time.now if collection
+    collection.last_active_at = Time.now if collection && !collection.frozen?
 
     Event.create({
       :affected => model,

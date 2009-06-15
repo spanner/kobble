@@ -91,7 +91,6 @@ div.mainform input.gobutton {
   font-family: 'HelveticaNeue-Light', helvetica, arial, sans-serif;
   font-size: 22px; }
 div.mainform div.formbuttons {
-  max-width: 640px;
   clear: both;
   text-align: right; }
 div.mainform table p {

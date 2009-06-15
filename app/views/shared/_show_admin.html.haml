@@ -7,14 +7,14 @@
 - collection ||= current_collection
 
 %ul
-  - if collection
+  - if collection && !collection.deleted?
     %li
       = link_to "add material to collection", upload_sources_url(collection), {:class => 'create'}
   - else
     %li
       = link_to "add material", uploader_url, {:class => 'create'}
 
-  - if item && !item.new_record?
+  - if item && !item.new_record? && !item.deleted?
     %li
       = link_to_unless_current "edit #{item.nice_title}" , edit_url_for(item), {:class => 'update'}
     - if item.is_notable?
@@ -26,10 +26,10 @@
     - if item.is_a?(Collection)
       - if account_admin?
         %li
-          = link_to "delete", {:controller => item.class.to_s.pluralize.underscore, :action => 'predelete', :id => item}, {:class => 'mildwarning'}
+          = link_to "delete", url_for(item), {:class => 'warning', :method => 'delete'}
     - else
       %li
-        = link_to "delete", {:controller => item.class.to_s.pluralize.underscore, :action => 'destroy', :id => item}, {:class => 'warning', :method => :delete}
+        = link_to "delete", collected_url_for(item), {:class => 'warning', :method => 'delete'}
     - if item.is_searchable?
       %li
         = link_to "find similar", search_url(:like => "#{item.class.to_s.downcase}_#{item.id}")

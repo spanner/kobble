@@ -3,11 +3,18 @@ module Kobble
 
     def self.included(base) # :nodoc:
       base.extend ClassMethods
+      
     end
 
     # cascading recovery
     # for inclusion into ActiveRecord::Base
     # but really an extension to acts_as_paranoid
+
+    def recover_with_associations!
+      self.recover!
+      self.newly_undeleted = true
+      self.retrievable_associates.each { |other| other.recover_with_associations! }
+    end
 
     def retrievable_associates
       associates = []
@@ -40,7 +47,7 @@ module Kobble
     
     module ClassMethods
       def retrievable_associations
-        reflect_on_all_associations.select{ |a| a.options[:dependent] == :destroy && a.class_name.as_class.paranoid? }
+        reflect_on_all_associations.select{ |a| a.options[:dependent] == :destroy && a.class.paranoid? }
       end
     end
 

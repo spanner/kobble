@@ -6,10 +6,6 @@ class CollectionsController < AccountScopedController
     @list = current_user.collections_available
   end
 
-  def show
-
-  end
-
   def new
     @thing = current_account.collections.build
     respond_to do |format| 
@@ -59,7 +55,7 @@ class CollectionsController < AccountScopedController
   end
 
   def predelete
-    @other_collections = current_account.collections.select{|c| c != @thing}
+    @thing = current_account.collections.find(params[:id])
   end
   
 protected

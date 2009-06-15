@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
   has_many :user_preferences, :dependent => :destroy
   has_many :preferences, :through => :user_preferences, :conditions => ['user_preferences.active = ?', true], :source => :preference
 
-  has_many :created_collections, :class_name => 'Collection', :foreign_key => 'created_by_id', :dependent => :destroy
+  has_many :created_collections, :class_name => 'Collection', :foreign_key => 'created_by_id', :dependent => :nullify
   has_many :created_sources, :class_name => 'Source', :foreign_key => 'created_by_id', :dependent => :destroy
   has_many :created_nodes, :class_name => 'Node', :foreign_key => 'created_by_id', :dependent => :destroy
   has_many :created_bundles, :class_name => 'Bundle', :foreign_key => 'created_by_id', :dependent => :destroy
@@ -153,16 +153,14 @@ protected
   end
   
   def self.reassignable_associations
-    [:created_collections, :created_sources, :created_nodes, :created_bundles, :created_tags]
+    [:created_sources, :created_nodes, :created_bundles, :created_tags]
   end
 
   def send_welcome
-    if self.record_timestamps
-      if self == User.current
-        UserNotifier.deliver_welcome(self)
-      else
-        UserNotifier.deliver_invitation(self, User.current)
-      end
+    if self == User.current
+      UserNotifier.deliver_welcome(self)
+    else
+      UserNotifier.deliver_invitation(self, User.current)
     end
   end
 

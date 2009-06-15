@@ -1,6 +1,6 @@
 - @title = "Edit #{@thing.name}"
 
-- form_for :thing, :url => account_collection_url(current_account, @thing), :html => { :method => "put", :multipart => true } do |f| 
+- form_for :thing, :url => collection_url(@thing), :html => { :method => "put", :multipart => true } do |f| 
   = render :partial => 'form', :locals => {:f => f}
 
   .formbuttons

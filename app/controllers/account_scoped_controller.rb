@@ -37,9 +37,6 @@ class AccountScopedController < ApplicationController
   end
 
   def show
-  rescue ActiveRecord::RecordNotFound
-    @thing = model_class.find_only_deleted(params[:id])
-    render :template => 'shared/deleted'
   end
   
   def edit; end
@@ -55,24 +52,25 @@ class AccountScopedController < ApplicationController
   end
 
   def destroy
-    @thing.reassign_to = model_class.find(params[:reassign_to]) if params[:reassign_to] && @thing.respond_to?('reassign_to')
+    if params[:reassign_to] && !params[:reassign_to].blank? && @thing.respond_to?('reassign_to')
+      @thing.reassign_to = model_class.find(params[:reassign_to])
+    end
+
     @thing.class.transaction { @thing.destroy }
-    flash[:notice] = "#{@deleted.name} has been deleted"
-    @response = Kobble::Response.new("#{@thing.name} deleted", 'delete')
-    thing_or_response
+    flash[:notice] = "#{@thing.name} has been deleted"
+    redirect_to collected_url_for(@thing)
   rescue => e
     flash[:error] = e.message
-    @response = Kobble::Response.new(e.message, '', 'failure')
-    thing_or_response
+    redirect_to collected_url_for(@thing)
   end
 
   def recover
     model_class.transaction {
       @thing.recover!
     }
-    flash[:notice] = "#{@recovered.name} recovered"
+    flash[:notice] = "#{@thing.name} recovered"
     respond_to do |format|
-      format.html { redirect_to url_for(@thing) }
+      format.html { redirect_to collected_url_for(@thing) }
       format.json { render :json => @thing.to_json }
     end
   end
@@ -88,26 +86,6 @@ class AccountScopedController < ApplicationController
     end
   end
 
-  def catch
-    @dropped = thing_from_tag(params[:dropped])
-    
-    logger.warn ">>> #{self.class.to_s.downcase}.catch_this #{@dropped.class.to_s.downcase}"
-    
-    @response = @thing.catch_this(@dropped)
-    respond_to do |format|
-      format.html { render :partial => 'shared/caught' }
-      format.json { render :json => @response.to_json }
-    end
-  end
-  
-  def drop
-    @dropped = thing_from_tag(params[:dropped])
-    @response = @thing.drop_this(@dropped)
-    respond_to do |format|
-      format.html { render :partial => 'shared/dropped' }
-      format.json { render :json => @response.to_json }
-    end
-  end
 
 protected
   
@@ -188,6 +166,9 @@ protected
 
   def get_item
     @thing = current_account.send(association).find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    @thing = model_class.find_only_deleted(params[:id])
+    render :template => 'shared/deleted'
   end
   
   def get_deleted_item

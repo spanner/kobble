@@ -4,7 +4,7 @@
 - help ||= false
 
 - with_error_report(item.errors.on(:speaker)) do
-  = f.label :speaker, heading, :class => required ? 'required' : 'optional'
+  = f.label :speaker_id, heading, :class => required ? 'required' : 'optional'
   %span.formnote
     = link_to "create speaker*", new_person_url(:collection_id => item.collection), {:class => 'create inline', :id => "extend_#{item.class.to_s.downcase}_speaker_id"}
-  = f.select(:speaker, current_collection.people.collect{|p| [p.name, p.id] }, {:include_blank => true}, {:class => 'standard'})
+  = f.select(:speaker_id, current_collection.people.collect{|p| [p.name, p.id] }, {:include_blank => true}, {:class => 'standard'})

@@ -18,9 +18,11 @@
       %strong
       = @thing.retrievable_associates_summary
   
-  %div{:class => "contentblock warning"}
+  %div{:class => "contentblock mildwarning"}
     %p
-      To remove this - and its associates - altogether, click the 'eliminate' button below. It will disappear entirely from your collections and from your records. You probably only want to do this for duplicates and tests: most objects can be left in a recoverable state indefinitely.
+      To remove this - and its associates - altogether, click the 'eliminate' button below. 
+      It will disappear entirely from your collections and from your records. 
+      You would normally only want to do this for duplicates.
       - form_for :thing, :url => {:action => 'eliminate', :id => @thing} do |f|
         = submit_tag "eliminate", :class => 'bigbutton '
 
@@ -37,3 +39,6 @@
       , and nothing in the trash either.
 
 
+- content_for :admin do
+  %p
+    = render :partial => 'shared/show_admin'

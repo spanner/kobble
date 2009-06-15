@@ -1,0 +1,48 @@
+- @title = "delete #{@thing.name}"
+- other_collections = current_account.collections.find(:all, :conditions => ["id != ?", params[:id]])
+
+.preamble
+  %p
+    Everything in materiali.st is undeleteable: that is, if you delete it by mistake, you can always get it back.
+    Users and collections are slightly different in that sometimes you really want to delete them in order to make room in your account for something new. 
+    In that case you will usually want to reassign their materials to some other user or collection. You can use this form to do that.
+    
+  = render :partial => 'shared/error_report'
+
+
+%h3.pagesection
+  %a{:href => "#", :class => "squeezebox"}
+    deletion options 
+    %span.headernote
+      handle with care!
+
+%div{:id => "collection_deletion", :class => 'squeezed contentblock'}
+
+  .mainform
+
+    %p
+      If you want to keep using the materials in this collection, you can transfer them to one of your other collections. 
+      Please be aware that 
+      %strong 
+        transferring materials is not undoable: 
+      even if you later restore the collection, the materials will not return to it. 
+      If you leave the drop-down field blank then the materials will be deleted with the collection, unavailable in the short term but restorable later.
+
+    - form_for :thing, :url => collection_url(@thing), :html => {:method => 'delete'} do |f|
+      
+      %p
+        %label{:for => "reassign_to"}
+          transfer materials to:
+        %br
+        %select{:name => "reassign_to", :id => "reassign_to"}
+          %option{ :value => "", :selected => "selected"}
+            nowhere: just delete
+          %option{ :value => ""}
+          = options_from_collection_for_select(other_collections, 'id', 'name')
+        = f.submit "delete collection", :class => "warningbutton"
+                                                                              
+= render :partial => 'shared/show_summary', :locals => {:item => @thing} 
+= render :partial => 'shared/show_contents', :locals => {:item => @thing}
+= render :partial => 'shared/show_history', :locals => {:item => @thing} 
+                                                                              
+                                                                              

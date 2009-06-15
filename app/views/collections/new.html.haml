@@ -1,0 +1,23 @@
+- @title = "start a new collection"
+
+- if current_account.can_add_collection?
+  .mainform
+    - form_for :collection, :url => collections_url, :html => { :multipart => true, :id => 'collectionform'} do |f| 
+      = render :partial => 'form', :locals => {:f => f}
+      .formbuttons
+        = f.submit "create collection"
+        or
+        = link_to 'cancel', root_url
+  
+- else
+
+  %p
+    Sorry: your account has all of the
+    %strong
+      = current_account.account_type.collections_limit
+      collections
+    it is allowed. To make space, you can either archive an existing collection or upgrade your account.
+
+- content_for :admin do
+  %p
+    = render :partial => 'shared/show_admin'
