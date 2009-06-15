@@ -1,0 +1,32 @@
+%h1
+  Extract fragment
+  %br
+  %span.headernote
+    from 
+    = @thing.source.name
+
+.mainform
+  - form_for :thing, :url => source_nodes_url, :html => { :multipart => true, :id => 'snipper'} do |f| 
+    = render :partial => 'shared/error_report'
+    = render :partial => 'shared/edit_name', :locals => {:f => f, :required => true}
+    = render :partial => 'shared/edit_body', :locals => {:item => @thing, :f => f, :short => true, :required => false}
+    - if @thing.source.is_audio_or_video?
+      %table.twocolumn
+        %tr
+          %td
+            - with_error_report(@thing.errors.on(:playfrom)) do
+              = f.label :playfrom, "Clip from"
+              %br
+              = f.text_field 'playfrom', :class => 'standard playfrom'
+          %td
+            - with_error_report(@thing.errors.on(:playto)) do
+              = f.label :playto, "Clip to"
+              %br
+              = f.text_field 'playto', :class => 'standard playto'
+      %p.formnote
+        To fill in this form automatically, choose a start and end time in the player and select some text on the page.
+    
+    .formbuttons
+      = f.submit 'snip fragment'
+      or
+      = link_to 'hide form', collected_url_for(@thing.source), :class => 'cancelform'

@@ -105,8 +105,9 @@ var Kobble = new Class({
     scope.getElementsIncludingSelf('.draggable').each(function (el) { el.prepDraggable(); });
     scope.getElementsIncludingSelf('input.tagbox').each(function (el) { new Suggester(el); });
     scope.getElementsIncludingSelf('a.inline').each(function (el) { new Zoomer(el, 'JsonForm'); });
-    scope.getElementsIncludingSelf('a.snipper').each(function (el) { new Snipper(el, 'Snipper'); });
-    scope.getElementsIncludingSelf('div.uploader').each( function (el) { new Uploader(element); });
+    scope.getElementsIncludingSelf('a.snipper').each(function (el) { new Zoomer(el, 'Snipper'); });
+    scope.getElementsIncludingSelf('div.uploader').each( function (el) { new Uploader(el); });
+    scope.getElementsIncludingSelf('.choices').each( function (el) { new Chooser(el); });
   },
   
   // instantiates and stops the supplied event

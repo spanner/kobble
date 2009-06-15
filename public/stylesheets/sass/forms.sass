@@ -1,6 +1,6 @@
 @import constants.sass
 
-div.mainform 
+div.mainform
   .formnote
     :font-size 0.8em
     :line-height 1.1
@@ -20,7 +20,10 @@ div.mainform
       :font-size 22px
       :color #cacac8
   fieldset.authentication
-    :border 1px solid = !rubinered
+    :border
+      :width 1px
+      :style solid 
+      :color = !rubinered
     :padding-top 6px
     label
       :color = !rubinered
@@ -41,30 +44,44 @@ div.mainform
   input.titular
     +inputfonts
     :color = !rubinered
-    :width 97%
+    :width 100%
     :height 32px
     :font-size 26px
     :line-height 32px
+    :padding 6px
+    :border
+      :width 1px
+      :style solid 
+      :color = !coolgrey8
   input.login
     +inputfonts
     :font-size 18px
     :line-height 18px
     :width 340px
+    :padding 4px
   input.friendly
     +inputfonts
     :font-size 14px
     :line-height 18px
     :width 540px
+    :padding 4px
   input.standard, select.standard, textarea.standard
     +inputfonts
+    :color = !coolgrey11
+    :width 100%
     :font-size 14px
     :line-height 18px
-    :width 97%
+    :padding 4px
+    :border
+      :width 1px
+      :style solid 
+      :color = !coolgrey8
   input.tagbox
     +inputfonts
     :font-size 22px
     :line-height 22px
-    :width 97%
+    :width 100%
+    :padding 4px
     :color = !blue
   input.noborder
     :border 0
@@ -76,6 +93,15 @@ div.mainform
     :max-width 640px
     :clear both
     :text-align right
+  table
+    p
+      :margin 0
+  table.twocolumn
+    :width 100%
+    td
+      :width 50%
+      input
+        :margin-right 6px
 
 div.floatspinner
   :background-image url('/images/furniture/signals/wait_32_grey.gif')

@@ -7,6 +7,7 @@ class NodesController < CollectionScopedController
     @source = current_collection.sources.find(params[:source_id])
     
     @thing = @source.nodes.build params[:node]
+    @thing.collection = current_collection
     @thing.body = URI.unescape(params[:excerpt]) if params[:excerpt]
     @thing.playfrom = params[:inat]
     @thing.playto = params[:outat]
@@ -15,26 +16,27 @@ class NodesController < CollectionScopedController
 
     respond_to do |format|
       format.html { render }
-      format.js { render :template => 'snipper', :layout => false }
+      format.js { render :partial => 'snipper', :layout => false }
     end
   end
   
   def create
-    @node = Node.new(params[:node])
-    @node.source = Source.find(params[:source_id]) if params[:source_id] and @node.source.nil?
-    if @node.save
-      @node.tags << Tag.from_list(params[:tag_list])
-      flash[:notice] = "Fragment #{@node.name} created."
+    @source = Source.find(params[:source_id])
+    @thing = @source.nodes.build(params[:thing])
+    @thing.collection = current_collection
+    if @thing.save
+      @thing.tags << Tag.from_list(params[:tag_list]) if params[:tag_list]
+      flash[:notice] = "Fragment #{@thing.name} created."
       respond_to do |format|
-        format.html { redirect_to :action => 'show', :id => @node }
+        format.html { redirect_to :action => 'show', :id => @thing }
         format.js { render :layout => false }         # nodes/create.rhml is a bare <li>
-        format.json { render :json => {:created => @node}.to_json }
+        format.json { render :json => {:created => @thing}.to_json }
       end
     else
       respond_to do |format|
         format.html { render :action => 'new' }
-        format.js { render :action => 'new', :layout => 'inline' }
-        format.json { render :json => {:errors => @node.errors}.to_json }
+        format.js { render :partial => 'snipper', :layout => false }
+        format.json { render :json => {:errors => @thing.errors}.to_json }
       end
     end
   end

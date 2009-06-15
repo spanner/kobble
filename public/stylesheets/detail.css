@@ -89,3 +89,6 @@ div.floatcolumn {
 img.gravatar {
   float: left;
   margin: 4px 10px 0 0; }
+
+a.floating {
+  float: right; }

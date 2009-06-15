@@ -9,6 +9,7 @@ var Zoomer = new Class({
     this.link.addEvent('click', this.launch.bindWithEvent(this));
   },
   launch: function (e) {
+    console.log('zoomer clicked: klass will be ', this.klass);
     if (!this.zoombox) this.zoombox = new ZoomBox(this);
     this.zoombox.launch(e);
   },
@@ -93,6 +94,7 @@ var ZoomBox = new Class({
   
   zoom: function (width, height) {
     this.floater.removeClass('floater_collapsing');
+    this.link.addClass('zoomed');
     
     var at = this.floater.getCoordinates();
     var towidth = width || 510;
@@ -124,6 +126,7 @@ var ZoomBox = new Class({
 
   collapse: function (x, y) {
     this.floater.addClass('floater_collapsing');   // no scroll bars
+    this.link.removeClass('zoomed');
     if (!x) x = this.click_at.x;
     if (!y) y = this.click_at.y;
     this.floater.morph({
@@ -319,13 +322,13 @@ var HtmlForm = new Class ({
   sendForm: function (e) {
     var event = k.block(e);
     this.responseholder = new Element(this.destination_type);
-    var req = new Request.HTML({
+    this.responseholder.set('load', {
       url: this.form.get('action'),
-      update: this.responseholder,
       onRequest: this.waiting.bind(this),
-      onSuccess: this.processResponse.bind(this, response),
-      onFailure: this.fail.bind(this, response)
-    }).post(this.form);
+      onSuccess: this.processResponse.bind(this),
+      onFailure: this.fail.bind(this)
+    });
+    this.responseholder.get('load').post(this.form);
   },
 
   // confirm and revise set the hidden 'dispatch' parameter to control whether we save or re-edit after a preview
@@ -340,15 +343,15 @@ var HtmlForm = new Class ({
     return true;  // and submit form
   },
 
-  processResponse: function (response) {
+  processResponse: function () {
     this.notWaiting();
     if (this.responseholder.getElement('form')) {
-      this.formHolder.empty();
-      this.formHolder.adopt(this.responseholder.getChildren());
-      this.bindForm();      // loop back and prepare form for submission again
+      this.container.formHolder.empty();
+      this.container.formHolder.adopt(this.responseholder.getChildren());
+      this.container.bindForm();      // loop back and prepare form for submission again
     } else {
-      this.hide();
-      this.updatePage(response);
+      this.updatePage(this.responseholder);
+      this.container.collapse();
     }
   },
 
@@ -356,39 +359,45 @@ var HtmlForm = new Class ({
     var elements = this.responseholder.getChildren(); 
     this.created_item = elements[0];
     this.created_item.inject(this.destination, this.destination.hasClass('addToBottom') ? 'bottom' : 'top');
-    this.showOnPage();
-    k.activateElement( this.created_item );
+//    this.showOnPage( this.created_item );
+    k.announce( "Fragment created" );
+    k.activate( this.created_item );
+    this.container.reset();
   },
   
-  showOnPage: function () {
-    if (this.destination_squeeze && this.destination_squeeze.offsetHeight == 0) k.squeezebox.display(this.destination_squeeze);
-    var mf = this;
-    new Fx.Scroll(window).toElement(mf.created_item).chain(function(){ mf.created_item.highlight(); });
+  showOnPage: function (element) {
+    if (this.destination_squeeze && this.destination_squeeze.offsetHeight == 0) collapser.display(this.destination_squeeze);
+    new Fx.Scroll(window).toElement(element).chain(function(){ element.highlight(); });
   }
 });
 
 
-// snipper is a special case of htmlForm that does more work to prepare the form
+// snipper is a special case of htmlForm that gets information from the audio or video player while populating the form
 
 var Snipper = new Class ({
   Extends: HtmlForm,
   bindForm: function () {
     this.parent();
-    this.form.getElements('#node_playfrom').each( function (input) { input.set('value', this.getPlayerIn()); });
-    this.form.getElements('#node_playto').each( function (input) { input.set('value', this.getPlayerOut()); });
+    this.form.getElements('input.playfrom').each( function (input) { input.set('value', this.getPlayerIn()); }, this);
+    this.form.getElements('input.playto').each( function (input) { input.set('value', this.getPlayerOut()); }, this);
   },
   announceSuccess: function () {
     k.announce('fragment created');
   },
-  
   getPlayerIn: function () {
     var player = document.spannerplayer;
-    if (player && player.playerOk() ) return player.playerIn();
+    if (player && player.playerOk() ) {
+      var inat = player.playerIn();
+      console.log('inat', inat);
+      return inat;
+    } 
   },
-  
   getPlayerOut: function () {
     var player = document.spannerplayer;
-    if (player && player.playerOk() ) return player.playerOut();
+    if (player && player.playerOk() ) {
+      var outat = player.playerOut();
+      console.log('outat', outat);
+      return outat;
+    }
   }
-  
 });

@@ -1,4 +1,8 @@
-- @title = "Extract fragment <br /><span class='headernote'>from #{@thing.source.name}</span>"
+- @title = "Extract fragment"
+
+%p.subheader
+  from 
+  = link_to @thing.source.name, collected_url_for(@thing.source)
 
 - content_for :buttons do
   .formbuttons
@@ -9,3 +13,9 @@
 .mainform
   - form_for :node, :html => { :multipart => true, :id => 'nodeform'} do |f| 
     = render :partial => 'form', :locals => {:f => f}
+
+- content_for :admin do
+  %p
+    = link_to "^ source", collected_url_for(@thing.source)
+    %br
+    = render :partial => 'shared/show_admin', :locals => {:item => @thing}

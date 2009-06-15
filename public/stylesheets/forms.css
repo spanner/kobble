@@ -17,7 +17,9 @@ div.mainform fieldset {
     font-size: 22px;
     color: #cacac8; }
 div.mainform fieldset.authentication {
-  border: 1px solid = !rubinered;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #d1005d;
   padding-top: 6px; }
   div.mainform fieldset.authentication label {
     color: #d1005d; }
@@ -38,30 +40,42 @@ div.mainform input {
 div.mainform input.titular {
   font-family: Georgia, "Times New Roman", serif;
   color: #d1005d;
-  width: 97%;
+  width: 100%;
   height: 32px;
   font-size: 26px;
-  line-height: 32px; }
+  line-height: 32px;
+  padding: 6px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #8c8d8e; }
 div.mainform input.login {
   font-family: Georgia, "Times New Roman", serif;
   font-size: 18px;
   line-height: 18px;
-  width: 340px; }
+  width: 340px;
+  padding: 4px; }
 div.mainform input.friendly {
   font-family: Georgia, "Times New Roman", serif;
   font-size: 14px;
   line-height: 18px;
-  width: 540px; }
+  width: 540px;
+  padding: 4px; }
 div.mainform input.standard, div.mainform select.standard, div.mainform textarea.standard {
   font-family: Georgia, "Times New Roman", serif;
+  color: #4d4e53;
+  width: 100%;
   font-size: 14px;
   line-height: 18px;
-  width: 97%; }
+  padding: 4px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #8c8d8e; }
 div.mainform input.tagbox {
   font-family: Georgia, "Times New Roman", serif;
   font-size: 22px;
   line-height: 22px;
-  width: 97%;
+  width: 100%;
+  padding: 4px;
   color: #559dc4; }
 div.mainform input.noborder {
   border: 0; }
@@ -73,6 +87,14 @@ div.mainform div.formbuttons {
   max-width: 640px;
   clear: both;
   text-align: right; }
+div.mainform table p {
+  margin: 0; }
+div.mainform table.twocolumn {
+  width: 100%; }
+  div.mainform table.twocolumn td {
+    width: 50%; }
+    div.mainform table.twocolumn td input {
+      margin-right: 6px; }
 
 div.floatspinner {
   background-image: url('/images/furniture/signals/wait_32_grey.gif');

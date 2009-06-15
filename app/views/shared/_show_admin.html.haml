@@ -12,9 +12,9 @@
     %li
       = link_to "add material", uploader_url, {:class => 'create'}
 
-  - if item
+  - if item && !item.new_record?
     %li
-      = link_to_unless_current "edit #{item.nice_title}" , {:controller => item.class.to_s.pluralize.underscore, :action => 'edit', :id => item}, {:class => 'update'}
+      = link_to_unless_current "edit #{item.nice_title}" , edit_url_for(item), {:class => 'update'}
     - if item.is_notable?
       %li
         = link_to "add note*", item_new_note_url(item), {:id => 'admin_extend_notelist', :class => 'annotate inline'}

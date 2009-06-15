@@ -1,8 +1,13 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
 
-  def collected_url_for(thing)
-    @controller.send(:collected_url_for, thing)
+  def collected_url_for(item)
+    @controller.send(:collected_url_for, item)
+  end
+  
+  def edit_url_for(item)
+    url_method = "edit_#{item.class.to_s.underscore.downcase}_url"
+    send url_method.intern, current_collection.id, item.id
   end
   
   def item_tags_path(item)

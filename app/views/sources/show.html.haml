@@ -1,12 +1,7 @@
 - @title = @thing.name || 'nameless source'
 
-- if @thing.has_file?
-  - if @thing.is_video?
-    = render :partial => 'shared/video_player', :locals => { :url => @thing.file.url }
-  - elsif @thing.is_audio?
-    = render :partial => 'shared/audio_player', :locals => { :url => @thing.file.url }
-  = render :partial => 'shared/download_file', :locals => {:item => @thing}
 
+= render :partial => 'shared/show_file'
 = render :partial => 'shared/show_warnings'
 = render :partial => 'shared/show_summary'
 = render :partial => 'shared/show_text'

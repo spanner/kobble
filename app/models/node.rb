@@ -3,7 +3,7 @@ class Node < ActiveRecord::Base
   is_material
   belongs_to :source
 
-  validates_presence_of :name, :description, :collection
+  validates_presence_of :name, :collection
   validate :must_have_body_or_file
 
   def self.nice_title

@@ -23,30 +23,38 @@
       
       = render :partial => 'shared/edit_body', :locals => {:item => @thing, :f => f, :short => @inline, :required => false}
         
-      %p
-        = f.radio_button :file_from, "source"
-        %label{:for => 'show_thing_body_from_text', :class => 'decision'}
-          cut a segment from the source clip
+      %p.choices
+        = f.radio_button :file_from, "source", :id => 'show_use_source_file', :class => 'choice'
+        %label{:for => 'show_use_source_file'}
+          cut a segment from the source file
 
-        = f.radio_button :file_from, "file"
-        %label{:for => 'show_thing_body_from_file', :class => 'decision'}
-          upload a clip
+        = f.radio_button :file_from, "file", :id => 'show_use_own_file', :class => 'choice'
+        %label{:for => 'show_use_own_file'}
+          upload a file
       
-      #use_source_file.playerwidth
-        = render :partial => 'shared/audio_player', :locals => { :url => @thing.source.file.url, :inat => @thing.playfrom, :outat => @thing.playto }
-        %table
-          %tr
-            %td
-              - with_error_report(@thing.errors.on(:playfrom)) do
-                = f.label :playfrom, "From"
-                %br
-                = f.text_field 'playfrom', :style =>  "width: 140px;"
-            %td
-              - with_error_report(@thing.errors.on(:playto)) do
-                = f.label :playto, "To"
-                %br
-                = f.text_field 'playfrom', :style =>  "width: 140px;"
-          
+      - if @thing.source.is_audio_or_video?
+        #use_source_file.playerwidth
+          = render :partial => 'shared/audio_player', :locals => { :url => @thing.source.file.url, :inat => @thing.playfrom, :outat => @thing.playto }
+          %table.twocolumn
+            %tr
+              %td
+                - with_error_report(@thing.errors.on(:playfrom)) do
+                  = f.label :playfrom, "Clip from"
+                  %br
+                  = f.text_field 'playfrom', :class => 'standard playfrom'
+              %td
+                - with_error_report(@thing.errors.on(:playto)) do
+                  = f.label :playto, "Clip to"
+                  %br
+                  = f.text_field 'playto', :class => 'standard playto'
+          %p.formnote
+            Please enter timecodes in the form mm:ss.x or hh:mm:ss.x. The player should display the right values. 
+            Soon there will be a new player that fills in these values for you.
+      - else 
+        #use_source_file
+          %p
+            Soon it will be possible to excerpt pages from pdf files. But not yet.
+        
       #use_own_file
         - with_error_report(@thing.errors.on(:clip)) do
           = f.file_field :clip
