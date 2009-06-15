@@ -182,6 +182,7 @@ module Kobble #:nodoc:
         # organisation -> attached events
 
         if definitions.include?(:log)
+          attr_accessor :just_changed
           has_many :logged_events, :class_name => 'Event', :as => :affected, :dependent => :destroy, :order => 'at DESC'
           Kobble.logged_model(self)
         end

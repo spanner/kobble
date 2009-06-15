@@ -19,4 +19,4 @@
 %ul.cloud
   - cloud.each do |tag| 
     %li{:class => "clouded"}
-      = link_to tag.name, url_for(tag), {:id => "tag_#{tag.id}", :class => "draggable #{cssclass[tag.id]}", :title => "tag: #{tag.name}"}
+      = link_to tag.name, collected_url_for(tag), {:id => "tag_#{tag.id}", :class => "draggable #{cssclass[tag.id]}", :title => "tag: #{tag.name}"}

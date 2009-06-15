@@ -7,6 +7,7 @@ class EditObserver < ActiveRecord::Observer
   end
   
   def before_update(model)
+    # model.just_changed = model.changed.to_sentence
     model.updated_by = User.current
   end
  
