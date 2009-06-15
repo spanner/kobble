@@ -20,13 +20,16 @@ class CollectionScopedController < AccountScopedController
   def create
     if @thing.save
       @thing.tags << Tag.from_list(params[:tag_list]) if params[:tag_list]
-      flash[:notice] = "#{model_class} was successfully created."
       respond_to do |format|
-        format.html { redirect_to collected_url_for(@thing) }
+        format.html { 
+          flash[:notice] = "#{@thing.nice_title} created."
+          redirect_to collected_url_for(@thing) 
+        }
         format.js { render :layout => false }
       end
     else
       respond_to do |format|
+        flash[:error] = "Problem saving #{@thing.nice_title}."
         format.html { render :action => 'new' }
         format.js { render :action => 'new', :layout => 'inline' }
       end

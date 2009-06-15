@@ -9,7 +9,6 @@ var Zoomer = new Class({
     this.link.addEvent('click', this.launch.bindWithEvent(this));
   },
   launch: function (e) {
-    console.log('zoomer clicked: klass will be ', this.klass);
     if (!this.zoombox) this.zoombox = new ZoomBox(this);
     this.zoombox.launch(e);
   },
@@ -23,7 +22,6 @@ var ZoomBox = new Class({
     this.zoomer = zoomer;
     this.link = zoomer.link;
     this.destination = zoomer.destination;
-    
     this.initial_form_url = this.link.get('href');
     this.click_at = null;
     this.form = null;
@@ -101,7 +99,6 @@ var ZoomBox = new Class({
     var toheight = height || this.formHolder.getHeight() + 10;
     var expansion = this.choose_expansion(at, towidth, toheight);
     var toleft, totop;
-    console.log('floater expanding towards ' + expansion.y + ' ' + expansion.x);
     
     switch (expansion.x) {
       case "right": toleft = (at.left - towidth) + at.width; break;
@@ -242,7 +239,6 @@ var JsonForm = new Class ({
   // in subclasses this is usually a previewing or validation mechanism
 
   processResponse: function (response) {
-    console.log('jsonForm.processResponse: ', arguments);
     this.notWaiting();
     if (response.errors) {
       k.complain(response.errors);      // really ought to try and present failed validations here
@@ -387,17 +383,13 @@ var Snipper = new Class ({
   getPlayerIn: function () {
     var player = document.spannerplayer;
     if (player && player.playerOk() ) {
-      var inat = player.playerIn();
-      console.log('inat', inat);
-      return inat;
+      return player.playerIn();
     } 
   },
   getPlayerOut: function () {
     var player = document.spannerplayer;
     if (player && player.playerOk() ) {
-      var outat = player.playerOut();
-      console.log('outat', outat);
-      return outat;
+      return player.playerOut();
     }
   }
 });
