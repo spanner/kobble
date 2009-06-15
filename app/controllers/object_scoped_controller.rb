@@ -10,15 +10,15 @@ class ObjectScopedController < AccountScopedController
 protected
   
   def get_scope_object
-    @thing = scope_class.find(params["#{get_scope}_id".intern])
+    @thing = scope_class.find(params["#{get_scoper}_id".intern])
   end
 
   def scope_class
-    get_scope.to_s.as_class
+    get_scoper.to_s.as_class
   end
 
-  def get_scope
-    Kobble.object_models.find { |klass| not params["#{klass.to_s.downcase}_id".intern].blank? }
+  def get_scoper
+    Kobble.object_models.find { |klass| not( klass == :collection || params["#{klass.to_s.downcase}_id".intern].blank? )}
   end  
   
 end

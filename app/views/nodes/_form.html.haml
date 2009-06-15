@@ -22,34 +22,32 @@
         Contents
       
       = render :partial => 'shared/edit_body', :locals => {:item => @thing, :f => f, :short => @inline, :required => false}
-
-      %h3
-        Audio or video clipping
-      - if @thing.source && @thing.source.is_audio_or_video?
-        %p
-          = radio_button_tag "thing_clip_from", "source", true, :id => 'show_use_source_clip', :class => 'toggler'
-          %label{:for => 'show_thing_body_from_text', :class => 'decision'}
-            cut a segment from the source clip
-          = radio_button_tag "thing_clip_from", "file", false, :id => 'show_use_own_clip', :class => 'toggler'
-          %label{:for => 'show_thing_body_from_file', :class => 'decision'}
-            upload a clip
         
-        #use_source_clip.playerwidth
-          = render :partial => 'shared/audio_player', :locals => { :url => @thing.file.url, :inat => @thing.playfrom, :outat => @thing.playto }
-          %table
-            %tr
-              %td
-                - with_error_report(@thing.errors.on(:playfrom)) do
-                  = f.label :playfrom, "From"
-                  %br
-                  = f.text_field 'playfrom', :style =>  "width: 140px;"
-              %td
-                - with_error_report(@thing.errors.on(:playto)) do
-                  = f.label :playto, "To"
-                  %br
-                  = f.text_field 'playfrom', :style =>  "width: 140px;"
+      %p
+        = f.radio_button :file_from, "source"
+        %label{:for => 'show_thing_body_from_text', :class => 'decision'}
+          cut a segment from the source clip
+
+        = f.radio_button :file_from, "file"
+        %label{:for => 'show_thing_body_from_file', :class => 'decision'}
+          upload a clip
+      
+      #use_source_file.playerwidth
+        = render :partial => 'shared/audio_player', :locals => { :url => @thing.source.file.url, :inat => @thing.playfrom, :outat => @thing.playto }
+        %table
+          %tr
+            %td
+              - with_error_report(@thing.errors.on(:playfrom)) do
+                = f.label :playfrom, "From"
+                %br
+                = f.text_field 'playfrom', :style =>  "width: 140px;"
+            %td
+              - with_error_report(@thing.errors.on(:playto)) do
+                = f.label :playto, "To"
+                %br
+                = f.text_field 'playfrom', :style =>  "width: 140px;"
           
-      #use_own_clip
+      #use_own_file
         - with_error_report(@thing.errors.on(:clip)) do
           = f.file_field :clip
           

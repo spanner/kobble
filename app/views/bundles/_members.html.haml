@@ -11,7 +11,7 @@
 
 %div{:id => 'bundle_members', :class => 'squeezed contentblock'}
   .mainlist
-    %ul{:id => "bundle_#{item.id}_bundlings", :class => ulclass, :catches => catches, :title => "members of set #{item.name}"}
+    %ul{:id => "collection_#{current_collection.id}_bundle_#{item.id}_bundlings", :class => ulclass, :catches => catches, :title => "members of set #{item.name}"}
       = render :partial => 'components/bundling_list', :locals => {:item => item, :inactive => inactive}
     - if inactive
       %p.listnote

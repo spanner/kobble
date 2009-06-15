@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090609110839) do
+ActiveRecord::Schema.define(:version => 20090615071351) do
 
   create_table "account_types", :force => true do |t|
     t.string   "name"
@@ -97,6 +97,17 @@ ActiveRecord::Schema.define(:version => 20090609110839) do
   add_index "annotations", ["annotation_type_id"], :name => "index_annotations_on_annotation_type_id"
   add_index "annotations", ["deleted_at"], :name => "index_annotations_on_deleted_at"
 
+  create_table "bookmarkings", :force => true do |t|
+    t.string   "bookmark_type", :limit => 20
+    t.integer  "bookmark_id"
+    t.integer  "collection_id"
+    t.integer  "position"
+    t.integer  "created_by_id"
+    t.datetime "created_at"
+    t.integer  "updated_by_id"
+    t.datetime "updated_at"
+  end
+
   create_table "bundles", :force => true do |t|
     t.string   "name"
     t.integer  "user_id"
@@ -167,17 +178,6 @@ ActiveRecord::Schema.define(:version => 20090609110839) do
   add_index "events", ["at"], :name => "index_events_on_at"
   add_index "events", ["user_id"], :name => "index_events_on_user_id"
 
-  create_table "markers", :force => true do |t|
-    t.string   "selection_type", :limit => 20
-    t.integer  "selection_id"
-    t.integer  "collection_id"
-    t.integer  "position"
-    t.integer  "created_by_id"
-    t.datetime "created_at"
-    t.integer  "updated_by_id"
-    t.datetime "updated_at"
-  end
-
   create_table "monitorships", :force => true do |t|
     t.integer  "topic_id"
     t.integer  "user_id"
@@ -213,6 +213,7 @@ ActiveRecord::Schema.define(:version => 20090609110839) do
     t.string   "file_content_type"
     t.integer  "file_file_size"
     t.datetime "file_updated_at"
+    t.string   "file_from",                                                       :default => "source"
   end
 
   add_index "nodes", ["collection_id"], :name => "index_nodes_on_collection"
@@ -440,10 +441,10 @@ ActiveRecord::Schema.define(:version => 20090609110839) do
 
   create_table "users", :force => true do |t|
     t.string   "login",                     :limit => 80,                 :null => false
-    t.string   "crypted_password",          :limit => 40, :default => "", :null => false
+    t.string   "crypted_password",                        :default => "", :null => false
     t.string   "email",                     :limit => 60,                 :null => false
     t.string   "diminutive",                :limit => 40
-    t.string   "password_salt",             :limit => 40,                 :null => false
+    t.string   "password_salt",                                           :null => false
     t.string   "remember_token",            :limit => 40
     t.datetime "remember_token_expires_at"
     t.datetime "created_at"

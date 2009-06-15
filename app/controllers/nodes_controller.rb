@@ -4,17 +4,18 @@ class NodesController < CollectionScopedController
   def new
     @sources = current_collection.sources
     @people = current_collection.people
-    @node = Node.new params[:node]
-    @node.body = URI.unescape(params[:excerpt]) if params[:excerpt]
-    @node.playfrom = params[:inat]
-    @node.playto = params[:outat]
-    @node.source = current_collection.sources.find(params[:source_id]) if params[:source_id]
-    if @node.source
-      @node.speaker ||= @node.source.speaker
-    end
+    @source = current_collection.sources.find(params[:source_id])
+    
+    @thing = @source.nodes.build params[:node]
+    @thing.body = URI.unescape(params[:excerpt]) if params[:excerpt]
+    @thing.playfrom = params[:inat]
+    @thing.playto = params[:outat]
+    @thing.speaker ||= @thing.source.speaker
+    @thing.file_from ||= 'source'
+
     respond_to do |format|
       format.html { render }
-      format.js { render :layout => 'inline' }
+      format.js { render :template => 'snipper', :layout => false }
     end
   end
   

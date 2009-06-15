@@ -33,8 +33,6 @@ div.mainform label {
     text-decoration: none; }
 div.mainform label.required {
   font-weight: bold; }
-div.mainform label.decision {
-  color: #8c8d8e; }
 div.mainform input {
   color: black; }
 div.mainform input.titular {
