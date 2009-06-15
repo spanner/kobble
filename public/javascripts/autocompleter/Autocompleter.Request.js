@@ -29,7 +29,7 @@ Autocompleter.Request = new Class({
 		var data = $unlink(this.options.postData) || {};
 		data[this.options.postVar] = this.queryValue;
 		var indicator = $(this.options.indicator);
-		if (indicator) indicator.setStyle('display', '');
+		if (indicator) indicator.addClass('waiting');
 		var cls = this.options.indicatorClass;
 		if (cls) this.element.addClass(cls);
 		this.fireEvent('onRequest', [this.element, this.request, data, this.queryValue]);
@@ -43,7 +43,7 @@ Autocompleter.Request = new Class({
 	 */
 	queryResponse: function() {
 		var indicator = $(this.options.indicator);
-		if (indicator) indicator.setStyle('display', 'none');
+		if (indicator) indicator.removeClass('waiting');
 		var cls = this.options.indicatorClass;
 		if (cls) this.element.removeClass(cls);
 		return this.fireEvent('onComplete', [this.element, this.request]);

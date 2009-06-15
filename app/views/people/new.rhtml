@@ -13,8 +13,8 @@
 
 <div class="mainform">
 
-  <% form_for :person,
-              :url => people_url,
+  <% form_for :thing,
+              :url => people_url(current_collection),
               :html => { 
                 :multipart => true,
                 :id => 'personform'

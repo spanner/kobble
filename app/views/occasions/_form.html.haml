@@ -1,0 +1,16 @@
+.preamble
+  %p
+    'Occasions' here are events, dates, conversations or other well-defined places in time that 
+    naturally serve to gather up a set of source documents. 
+
+.mainform
+  = render :partial => 'shared/error_report'
+  = render :partial => 'shared/edit_name', :locals => {:item => @occasion, :f => f, :required => true}
+  = render :partial => 'shared/edit_description', :locals => {:item => @occasion, :f => f, :required => true}
+  
+  = yield :buttons
+
+  %fieldset.notinline
+    %legend
+      Filing
+    = render :partial => 'shared/edit_tags', :locals => {:item => @occasion, :f => f}

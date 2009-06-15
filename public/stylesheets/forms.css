@@ -74,9 +74,16 @@ div.mainform input.tagbox {
   font-family: Georgia, "Times New Roman", serif;
   font-size: 22px;
   line-height: 22px;
-  width: 100%;
+  width: 98%;
   padding: 4px;
-  color: #559dc4; }
+  color: #559dc4;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #559dc4; }
+div.mainform input.waiting {
+  background-image: url('/images/furniture/signals/wait_16_grey.gif');
+  background-position: center right;
+  background-repeat: no-repeat; }
 div.mainform input.noborder {
   border: 0; }
 div.mainform input.gobutton {
@@ -110,6 +117,9 @@ div.linkspinner {
   width: 16px;
   height: 16px;
   position: absolute;
+  display: none; }
+
+div.modalform .notinline {
   display: none; }
 
 /* ******* error reporting */

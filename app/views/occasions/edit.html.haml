@@ -1,0 +1,5 @@
+- @title = "Edit occasion"
+
+- form_for :thing, :url => collected_url_for(@occasion), :html => { :method => "put", :multipart => true } do |f| 
+  = render :partial => 'form', :locals => {:f => f}
+

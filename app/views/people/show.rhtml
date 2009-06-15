@@ -1,7 +1,5 @@
 <% @title = @thing.name %>
 
-<div class="preamble"><%= render :partial => 'shared/show_origins' %></div>
-
 <%= render :partial => 'shared/show_summary' %>
 
 <h3 class="pagesection">
@@ -79,3 +77,9 @@
 <%= render :partial => 'shared/show_field_notes' %>
 <%= render :partial => 'shared/show_topics' %>
 <%= render :partial => 'shared/show_history', :locals => {:events => @thing.logged_events} %>
+
+<% content_for :admin do -%>
+  <p>
+    <%= render :partial => 'shared/show_admin', :locals => {:item => @thing} %>
+  </p>
+<% end -%>

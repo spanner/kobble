@@ -1,0 +1,11 @@
+- @title = "Create occasion"
+
+- content_for :buttons do
+  .formbuttons
+    = submit_tag "Create Occasion"
+    or
+    = link_to 'cancel', occasions_url(current_collection), {:class => 'cancelform'}
+
+.mainform
+  - form_for :thing, :url => occasions_url(current_collection), :html => { :multipart => true, :id => 'occasionform'} do |f| 
+    = render :partial => 'form', :locals => {:f => f}

@@ -1,16 +1,16 @@
-<% @title = "Edit: #{@person.name}" %>
+<% @title = "Edit: #{@thing.name}" %>
 
 <div class="mainform">
 
-  <% form_for :person,
-              :url => person_url(@person),
+  <% form_for :thing,
+              :url => collected_url_for(@thing),
               :html => { 
                 :method => "put",
                 :multipart => true
               } do |f| 
   %>
 
-  <%= render :partial => 'form' %>
+  <%= render :partial => 'form', :locals => {:f => f} %>
 
   <div class="formbuttons">
     <%= submit_tag "Update Person" %> or
@@ -22,6 +22,7 @@
 
 <% content_for :admin do %>
   <p>
-    back to <%= link_to 'person page', url_for(@person) %>
+    <%= link_to '^ person', collected_url_for(@thing) %>
+    <%= render :partial => 'shared/show_admin', :locals => {:item => @thing} %>
   </p>
 <% end %>

@@ -1025,9 +1025,16 @@ div.mainform input.tagbox {
   font-family: Georgia, "Times New Roman", serif;
   font-size: 22px;
   line-height: 22px;
-  width: 100%;
+  width: 98%;
   padding: 4px;
-  color: #559dc4; }
+  color: #559dc4;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #559dc4; }
+div.mainform input.waiting {
+  background-image: url('/images/furniture/signals/wait_16_grey.gif');
+  background-position: center right;
+  background-repeat: no-repeat; }
 div.mainform input.noborder {
   border: 0; }
 div.mainform input.gobutton {
@@ -1061,6 +1068,9 @@ div.linkspinner {
   width: 16px;
   height: 16px;
   position: absolute;
+  display: none; }
+
+div.modalform .notinline {
   display: none; }
 
 /* ******* error reporting */
@@ -1245,17 +1255,13 @@ ul.tagsuggestions {
   margin: 0;
   padding: 0;
   list-style: none;
-  background-color: white;
-  border: 1px solid #eee;
-  border-right-color: #ddd;
-  border-bottom-color: #ddd;
+  background-color: #559dc4;
+  color: white;
   text-align: left;
   font-family: Georgia, "Times New Roman", serif;
   font-size: 14px;
   font-weight: lighter;
-  line-height: 14px;
-  color: #4d4e53;
-  margin-left: 5px; }
+  line-height: 14px; }
   ul.tagsuggestions li {
     position: relative;
     padding: 0.2em 1.5em 0.2em 1em;
@@ -1266,7 +1272,7 @@ ul.tagsuggestions {
     font-size: 1em;
     line-height: 1.5em; }
   ul.tagsuggestions li.autocompleter-selected {
-    background-color: #559dc4;
+    background-color: #d1005d;
     color: white; }
   ul.tagsuggestions span.autocompleter-queried {
     font-weight: bold; }

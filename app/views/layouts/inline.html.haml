@@ -1,0 +1,6 @@
+- @inline = true
+- if @title
+  %h1{:class => @title.size > 50 ? "longtitle" : "shorttitle"}
+    = @title
+
+= yield

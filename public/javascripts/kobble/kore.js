@@ -15,7 +15,7 @@ var KobbleParameters = {
     var parts = this.id.split('_');
     var parameters = {};
     if (parts[parts.length-1] != parseInt(parts[parts.length-1], 10)) parameters['association'] = parts.pop();
-    parameters['id'] = parts.pop();
+    if (parts[parts.length-1] == parseInt(parts[parts.length-1], 10)) parameters['id'] = parts.pop();
     parameters['type'] = parts.pop();
     if (parts[parts.length-1] != parseInt(parts[parts.length-1], 10)) parameters['context'] = parts.pop();
     else parameters['collection'] = parts.pop();
@@ -104,7 +104,7 @@ var Kobble = new Class({
     scope.getElementsIncludingSelf('.catcher').each (function (el) { new Catcher(el); });
     scope.getElementsIncludingSelf('.draggable').each(function (el) { el.prepDraggable(); });
     scope.getElementsIncludingSelf('input.tagbox').each(function (el) { new Suggester(el); });
-    scope.getElementsIncludingSelf('a.inline').each(function (el) { new Zoomer(el, 'JsonForm'); });
+    scope.getElementsIncludingSelf('a.inline').each(function (el) { new Zoomer(el, 'HtmlForm'); });
     scope.getElementsIncludingSelf('a.snipper').each(function (el) { new Zoomer(el, 'Snipper'); });
     scope.getElementsIncludingSelf('div.uploader').each( function (el) { new Uploader(el); });
     scope.getElementsIncludingSelf('.choices').each( function (el) { new Chooser(el); });

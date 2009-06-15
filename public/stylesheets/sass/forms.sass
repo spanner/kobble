@@ -80,9 +80,18 @@ div.mainform
     +inputfonts
     :font-size 22px
     :line-height 22px
-    :width 100%
+    :width 98%
     :padding 4px
     :color = !blue
+    :border
+      :width 1px
+      :style solid 
+      :color = !blue
+  input.waiting
+    :background
+      :image url('/images/furniture/signals/wait_16_grey.gif')
+      :position center right
+      :repeat no-repeat
   input.noborder
     :border 0
   input.gobutton
@@ -119,6 +128,8 @@ div.linkspinner
   :position absolute
   :display none
 
+div.modalform .notinline
+  :display none
 
 /******** error reporting
 
@@ -134,3 +145,5 @@ div.linkspinner
       :color = !rubinered
   label
     :color = !rubinered
+
+

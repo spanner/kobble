@@ -43,7 +43,7 @@ var ZoomBox = new Class({
       onComplete: this.bindForm.bind(this)
     });
     
-    this.canceller.addEvent('click', this.collapse.bind(this));
+    this.canceller.addEvent('click', this.collapseBack.bindWithEvent(this));
   },
   
   launch: function (e) {
@@ -231,8 +231,8 @@ var JsonForm = new Class ({
     var req = new Request.JSON({
       url: this.form.get('action'),
       onRequest: this.waiting.bind(this),
-      onSuccess: this.processResponse.bind(this, response),
-      onFailure: this.fail.bind(this, response)
+      onSuccess: this.processResponse.bind(this),
+      onFailure: this.fail.bind(this)
     }).post(this.form);
   },
 
@@ -242,7 +242,7 @@ var JsonForm = new Class ({
   // in subclasses this is usually a previewing or validation mechanism
 
   processResponse: function (response) {
-    k.debug('jsonForm.processResponse', 5);
+    console.log('jsonForm.processResponse: ', arguments);
     this.notWaiting();
     if (response.errors) {
       k.complain(response.errors);      // really ought to try and present failed validations here
