@@ -26,8 +26,8 @@ var Catcher = new Class({
     this.container.catcher = this;   // when a hopper is created up we climb the tree to see if the cargo is being dragged from somewhere
     this.container.addEvents({
       'catch': function (hopper) { this.receiveHopper(hopper); }.bind(this),
-      'enter': this.showInterest.bind(this),
-      'leave': this.loseInterest.bind(this)
+      'enter': function (hopper) { this.showInterest(hopper); }.bind(this),
+      'leave': function (hopper) { this.loseInterest(hopper); }.bind(this)
     });
     
     catchers.push(this);
@@ -37,8 +37,8 @@ var Catcher = new Class({
   contents: function () { return this.container.getElements('.draggable').map(function(el){ return el.kobbleTag(); }); },
   contains: function (tag) { return this.contents().contains(tag); },
   makeReceptiveTo: function (hopper) {
-    if (this.can_catch(hopper.klass) && this != hopper.origin && !this.contains(hopper.tag)) {
-      this.container.addClass('receptive');
+    if (this.can_catch(hopper.klass)) {
+      if (this != hopper.dragfrom && !this.contains(hopper.tag)) this.container.addClass('receptive');
       return true;
     } else {
       return false;
@@ -48,8 +48,12 @@ var Catcher = new Class({
     this.container.removeClass('receptive'); 
   },
     
-  showInterest: function () { this.container.addClass('drophere'); },
-  loseInterest: function () { this.container.removeClass('drophere'); },
+  showInterest: function (hopper) { 
+    if (this.container.hasClass('receptive')) this.container.addClass('drophere'); 
+  },
+  loseInterest: function (hopper) { 
+    this.container.removeClass('drophere'); 
+  },
 
   catchURL: function (hopper) { 
     var parts = [this.container.pluralKobbleKlass(), this.container.kobbleID()];
@@ -83,7 +87,7 @@ var Catcher = new Class({
     disableCatchers();
     this.loseInterest(); 
 
-    if (this == hopper.dragfrom) {
+    if (hopper.dragfrom == this) {
       hopper.flyback();
       
     } else if (this.contains(hopper.tag)) {
@@ -102,9 +106,9 @@ var Catcher = new Class({
       };
       if (this.is_list) request_options['update'] = this.container;
       new Request.HTML(request_options).post({object : hopper.tag});
+      hopper.drop();
+      delete hopper;
     }
-    hopper.drop();
-    delete hopper;
   },
 
   releaseHopper: function (hopper) {
