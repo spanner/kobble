@@ -91,7 +91,7 @@ var Catcher = new Class({
       hopper.flyback();
       
     } else if (this.contains(hopper.tag)) {
-      k.complain(hopper.cargo.name + ' is already in' + this.name);
+      k.complain(hopper.title + ' is already in ' + this.title);
       hopper.flyback();
       
     } else {
