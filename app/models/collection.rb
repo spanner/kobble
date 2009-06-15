@@ -2,7 +2,7 @@ class Collection < ActiveRecord::Base
   cattr_accessor :current
 
   before_destroy :reassign_associates
-  is_material :only => [:owners, :illustration, :discussion, :annotation, :log, :undelete]
+  is_material :only => [:owners, :illustration, :log, :undelete]
   belongs_to :account
   
   has_many :activations, :dependent => :destroy

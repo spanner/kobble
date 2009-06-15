@@ -25,7 +25,7 @@ ActionController::Routing::Routes.draw do |map|
                 :member => {:home => :get, :recover => :post, :eliminate => :post, :reinvite => :any, :predelete => :get, :catch => :get, :drop => :get}
 
   map.resources :collections, 
-                :has_many => [:events, :annotations, :permissions, :topics], 
+                :has_many => [:events, :permissions, :topics], 
                 :member => {:recover => :post, :eliminate => :post, :predelete => :get} do |collection|
 
     collection.resources :users, :has_many => :bookmarkings      # nasty hack to supply both user and collection to bench drops

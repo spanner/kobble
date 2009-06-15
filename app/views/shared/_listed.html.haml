@@ -4,7 +4,7 @@
 - collection_name = collection.name if collection
 - url = listed.is_a?(Collection) ? url_for(listed) : collected_url_for(listed)
 - addendum ||= false
-- idprefix ||= ''
+- idprefix ||= 'listed'
 
 - inactive ||= listed.deleted? || listed.new_record?
 - type_class = listed.is_a?(Source) ? [listed.file_type] : [listed.class.to_s.downcase]
@@ -17,6 +17,8 @@
 
 - liid = []
 - liid << idprefix if idprefix
+- liid << 'collections'
+- liid << listed.collection.id
 - liid << listed.class.to_s.downcase
 - liid << listed.id
 

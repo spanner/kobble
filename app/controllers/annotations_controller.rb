@@ -1,4 +1,4 @@
-class AnnotationsController < AccountScopedController
+class AnnotationsController < CollectionScopedController
 
   # only accessible as nested resource of annotated object
   # and normally only as a jsonised ajax call

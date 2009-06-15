@@ -3,7 +3,6 @@
 = render :partial => 'shared/show_summary'
 = render :partial => 'shared/show_history'
 = render :partial => 'shared/show_contents'
-= render :partial => 'shared/show_field_notes'
 = render :partial => 'shared/show_topics', :locals => {:hide_new_discussion_link => true, :blocktitle => 'discussions in this collection'} if @thing.account.can_have_discussion?
 = render :partial => 'shared/show_tag_cloud'
 = render :partial => 'shared/show_permitted' if account_admin?
