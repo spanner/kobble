@@ -6,7 +6,7 @@ ActionController::Routing::Routes.draw do |map|
   # map.repassword '/repassword', :controller => 'login', :action => 'repassword'
   # map.forbidden '/forbidden', :controller => 'login', :action => 'forbidden'
 
-  map.collection_upload '/collection/:collection_id/upload', :controller => 'sources', :action => 'upload'
+  # map.collection_upload '/collection/:collection_id/upload', :controller => 'sources', :action => 'upload'
   map.uploader '/uploader', :controller => 'sources', :action => 'upload'
   map.describer '/describer', :controller => 'sources', :action => 'describe'
 
@@ -32,7 +32,8 @@ ActionController::Routing::Routes.draw do |map|
 
     collection.resources :sources, :name_prefix => nil,
                   :has_many => [:topics, :nodes, :annotations, :taggings],
-                  :member => {:annotate => :post, :recover => :post, :eliminate => :post, :describe => :put, :catch => :get}
+                  :collection => {:upload => :any},
+                  :member => {:annotate => :post, :recover => :post, :eliminate => :post, :describe => :put}
 
     collection.resources :nodes, :name_prefix => nil,
                   :has_many => [:topics, :annotations, :taggings],

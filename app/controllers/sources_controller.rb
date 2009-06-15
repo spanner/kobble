@@ -1,5 +1,8 @@
 class SourcesController < CollectionScopedController
-    
+  
+  skip_before_filter :require_collection, :only => [:upload, :describe]
+  before_filter :request_collection, :only => [:upload, :describe]
+  
   def upload
     if request.post?
       @source = Source.new(:name => params[:Filename], :collection_id => params[:collection_id])
@@ -15,9 +18,9 @@ class SourcesController < CollectionScopedController
     
   def describe
     if params[:id]
-      @source = current_collection.sources.find(params[:id])
+      @source = Source.find(params[:id])
     elsif params[:upload]
-      @source = current_collection.sources.find_by_name(params[:upload])
+      @source = Source.find_by_name(params[:upload])
     else
       raise Kobble::Error => "source id or upload parameter required"
     end

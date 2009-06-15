@@ -10,20 +10,21 @@ class Node < ActiveRecord::Base
     "fragment"
   end
 
-  def clipped
-    clipfile = read_attribute(:clip)
-    unless (clipfile)
-      if (self.source && self.source.clip) then
-        sourcefile = self.source.clip
+  def clip_url
+    if self.file_from == 'source'
+      if (self.source && self.source.file) then
+        sourcefile = source.file.path
         if (self.playfrom || self.playto) then
-          logger.warn("#{RAILS_ROOT}/audiocutter/mp3cut -file #{sourcefile} -in #{self.playfrom} -out #{self.playto}")
-          clipfile = File.basename(`#{RAILS_ROOT}/audiocutter/mp3cut -file #{sourcefile} -in #{self.playfrom} -out #{self.playto}`);
-          write_attribute(:clip, clipfile)
+          STDERR.puts("#{RAILS_ROOT}/audiocutter/mp3cut -file #{sourcefile} -in #{self.playfrom_seconds} -out #{self.playto_seconds}")
+          clipfile = `#{RAILS_ROOT}/audiocutter/mp3cut -file #{sourcefile} -in #{self.playfrom_seconds} -out #{self.playto_seconds}`;      # cutter only cuts if target file missing or out of date, and returns the file name with path
         else
           clipfile = sourcefile
         end
       end
-      "/#{self.source.clip_options[:base_url]}/#{self.source.clip_relative_dir}/#{clipfile}"
+      #! got to do this properly at some point
+      "/sources/files/#{source.id}/#{File.basename(clipfile)}"
+    else
+      self.file.url
     end
   end
   

@@ -1,6 +1,12 @@
 - @title = @thing.name || 'nameless fragment'
 
-- if @thing.has_file?
+- if @thing.file_from == 'source'
+  - if @thing.source.is_video?
+    = render :partial => 'shared/video_player', :locals => { :url => @thing.clip_url }
+  - elsif @thing.source.is_audio?
+    = render :partial => 'shared/audio_player', :locals => { :url => @thing.clip_url }
+
+- elsif @thing.has_file?
   - if @thing.is_video?
     = render :partial => 'shared/video_player', :locals => { :url => @thing.file.url }
   - elsif @thing.is_audio?

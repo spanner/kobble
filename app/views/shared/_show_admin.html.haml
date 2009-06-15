@@ -4,10 +4,12 @@
   - collection = item if item.is_a?(Collection)
   - collection ||= item.collection if item.has_collection?
 
+- collection ||= current_collection
+
 %ul
   - if collection
     %li
-      = link_to "add material", collection_upload_url(collection), {:class => 'create'}
+      = link_to "add material to collection", upload_sources_url(collection), {:class => 'create'}
   - else
     %li
       = link_to "add material", uploader_url, {:class => 'create'}

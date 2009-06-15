@@ -17,8 +17,9 @@
 
 - liid = []
 - liid << idprefix if idprefix
-- liid << 'collections'
-- liid << listed.collection.id
+- if listed.has_collection?
+  - liid << 'collections'
+  - liid << listed.collection.id
 - liid << listed.class.to_s.downcase
 - liid << listed.id
 

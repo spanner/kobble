@@ -41,7 +41,7 @@ var Uploader = new Class ({
     this.swfu = new SWFUpload(this.settings);
   },
   fileDialogComplete : function (selected, queued, total) {
-    this.swfu.addPostParam('collection_id', this.collection_select.value);
+    if (this.collection_select) this.swfu.addPostParam('collection_id', this.collection_select.value);
     this.swfu.startUpload();
   },
   fileQueued : function (file) {
@@ -238,6 +238,7 @@ var Upload = new Class ({
   grabDescriptionForm: function () {
     console.log('grabDescriptionForm');
     this.description_form = this.form_holder.getElement('form');
+    this.description_form.getElements('input.tagbox').each(function (el) { new Suggester(el); });
     this.description_form.addEvent('submit', this.sendDescriptionForm.bind(this));
   },
   sendDescriptionForm: function (e) {

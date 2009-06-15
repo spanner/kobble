@@ -15,12 +15,16 @@
   .upload_queue
   .upload_controls
     .mainform
-      %form.instructions{:action => uploader_path_with_session}
-        %p
-          %label{:for => 'collection_id'}
-            Upload into collection:
-          %br
-          = select_tag "collection_id", options_for_select(current_user.collections_available.collect{|s| [s.name, s.id] })
+      %form.instructions{:action => current_collection ? collected_uploader_path_with_session : uploader_path_with_session}
+        - unless current_collection
+          %p
+            %label{:for => 'collection_id'}
+              Upload into collection:
+            %br
+            = select_tag "collection_id", options_for_select(current_user.collections_available.collect{|s| [s.name, s.id] })
       
         %button#swf_placeholder.chooser
 
+#source_describer.describer
+  %form.instructions{:action => describer_path}
+    = hidden_field :upload, ''

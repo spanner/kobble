@@ -90,4 +90,5 @@ div.progressFailed {
   background-color: #c00; }
 
 .swfupload {
-  vertical-align: top; }
+  vertical-align: top;
+  cursor: hand; }

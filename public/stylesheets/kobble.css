@@ -128,7 +128,8 @@ div#mastfoot {
   right: 0;
   bottom: 0;
   height: 39px;
-  background-color: white; }
+  background-color: white;
+  color: #d6d6d4; }
 
 div#navigation {
   margin: 10px 100px 5px 125px; }
@@ -1403,7 +1404,8 @@ div.progressFailed {
   background-color: #c00; }
 
 .swfupload {
-  vertical-align: top; }
+  vertical-align: top;
+  cursor: hand; }
 
 /* ******* search form */
 div.searchform {

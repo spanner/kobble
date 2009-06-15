@@ -1,5 +1,5 @@
 %div{:id => "holder_#{@source.id}"}
-  - form_for @source, :url => describe_source_path(@source), :html => {:id => "file_form_#{@source.id}"} do |f|
+  - form_for @source, :url => describe_source_path(@source.collection, @source), :html => {:id => "file_form_#{@source.id}"} do |f|
     = hidden_field_tag :id, @source.id
     %table{:style => 'width: 100%'}
       %tbody
@@ -12,6 +12,6 @@
             = f.text_field :description, :class => 'textbox'
           %td
             %label{ :for => "tag_list" } Tags
-            = text_field_tag :tag_list, '', :class => 'textbox'
+            = text_field_tag :tag_list, '', :class => 'textbox tagbox', :id => "collections_#{@source.collection.id}_tags"
           %td{:style => 'vertical-align: bottom; padding: 4px;'}
             = f.submit "save", :class => 'submit'

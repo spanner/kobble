@@ -12,7 +12,7 @@
     = javascript_include_tag 'mootools', 'mootools-more'
     = javascript_include_tag 'autocompleter/Autocompleter.js', 'autocompleter/Autocompleter.Request.js', 'autocompleter/Observer.js'
     = javascript_include_tag 'swfupload/swfupload', 'swfupload/swfupload.cookies', 'swfupload/swfupload.queue', 'swfupload/swfupload.speed'
-    = javascript_include_tag 'kobble/dragdrop', 'kobble/collapser', 'kobble/navigation', 'kobble/suggester', 'kobble/inline_links', 'kobble/zoomer', 'kobble/forms', 'kobble/kore'
+    = javascript_include_tag 'kobble/dragdrop', 'kobble/collapser', 'kobble/navigation', 'kobble/suggester', 'kobble/inline_links', 'kobble/zoomer', 'kobble/uploader', 'kobble/forms', 'kobble/kore'
     = yield :extra_js
     = stylesheet_link_tag 'kobble', :cache => "cache/kobble"
     = yield :extra_css
@@ -46,10 +46,15 @@
         = link_to "tags", tags_url(current_collection), {:class => (request.parameters[:controller] == 'tags' ? "fg" : '')}
         = link_to 'discussion', topics_url(current_collection), {:class => request.parameters[:controller] == 'topics' ? " fg" : ''} if current_account.can_have_discussion?
         ]
+      - else
+        = link_to "collections", collections_url, {:class => (request.parameters[:controller] == 'collections' ? "fg administrative" : 'administrative')}
+        = link_to "users", users_url, {:class => (request.parameters[:controller] == 'users' ? "fg administrative" : 'administrative')}
       - if current_account
         = link_to 'search', search_url, {:class => 'administrative'}
         = link_to 'log out', user_session_path, :method => :delete, :class => 'administrative'
-
+      - unless current_collection
+        choose a collection to see more navigation
+      
   = render :partial => 'users/bench', :locals => {:collection => current_collection}
   
   #admin
