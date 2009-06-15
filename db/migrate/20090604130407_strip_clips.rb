@@ -29,10 +29,6 @@ class StripClips < ActiveRecord::Migration
     remove_column :occasions, :clip_content_type
     remove_column :occasions, :clip_file_size
     remove_column :occasions, :clip_updated_at
-    remove_column :occasions, :image_file_name
-    remove_column :occasions, :image_content_type
-    remove_column :occasions, :image_file_size
-    remove_column :occasions, :image_updated_at
     
     remove_column :people, :clip_file_name
     remove_column :people, :clip_content_type
@@ -43,10 +39,6 @@ class StripClips < ActiveRecord::Migration
     remove_column :tags, :clip_content_type
     remove_column :tags, :clip_file_size
     remove_column :tags, :clip_updated_at
-    remove_column :tags, :image_file_name
-    remove_column :tags, :image_content_type
-    remove_column :tags, :image_file_size
-    remove_column :tags, :image_updated_at
     
     remove_column :users, :clip_file_name
     remove_column :users, :clip_content_type

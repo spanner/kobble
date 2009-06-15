@@ -78,7 +78,7 @@ module Kobble #:nodoc:
         # collection -> attachment to (and usually confinement within) a collection
     
         if definitions.include?(:collection)
-          if self.column_names.include?('collection_id')
+          if table_exists? && self.column_names.include?('collection_id')
             belongs_to :collection
             named_scope :in_collection, lambda { |collection| {:conditions => { :collection_id => collection.id }} }
             named_scope :in_collections, lambda { |collections| {:conditions => ["#{table_name}.collection_id in (" + collections.map{'?'}.join(',') + ")"] + collections.map { |c| c.id }} }
@@ -93,7 +93,7 @@ module Kobble #:nodoc:
           belongs_to :created_by, :class_name => 'User'
           belongs_to :updated_by, :class_name => 'User'
           named_scope :created_by_user, lambda { |user| {:conditions => { :created_by_id => user.id }} }
-          if column_names.include?('speaker_id')
+          if table_exists? && self.column_names.include?('speaker_id')
             belongs_to :speaker, :class_name => 'Person'
             named_scope :spoken_by_person, lambda { |person| {:conditions => { :speaker_id => person.id }} }
           end
@@ -102,7 +102,7 @@ module Kobble #:nodoc:
         # illustration -> attached image file
       
         if definitions.include?(:illustration)
-          if self.column_names.include?('image_file_name')
+          if table_exists? && self.column_names.include?('image_file_name')
             has_attached_file :image, 
               :path => ":rails_root/public/:class/:attachment/:id/:style/:basename.:extension", 
               :url => "/:class/:attachment/:id/:style/:basename.:extension",
@@ -122,14 +122,14 @@ module Kobble #:nodoc:
         if definitions.include?(:file)
           
           # during transition:
-          if self.column_names.include?('clip_file_name')
+          if table_exists? && self.column_names.include?('clip_file_name')
             has_attached_file :clip, 
               :path => ":rails_root/public/:class/:attachment/:id/:basename.:extension",
               :url => "/:class/:attachment/:id/:basename.:extension"
           end
           
           # but this is the real one.
-          if self.column_names.include?('file_file_name')
+          if table_exists? && self.column_names.include?('file_file_name')
             has_attached_file :file, 
               :path => ":rails_root/public/:class/:attachment/:id/:basename.:extension",
               :url => "/:class/:attachment/:id/:basename.:extension"
@@ -189,7 +189,7 @@ module Kobble #:nodoc:
         # undelete -> acts_as_paranoid
       
         if definitions.include?(:undelete)
-          if self.column_names.include?('deleted_at')
+          if table_exists? && self.column_names.include?('deleted_at')
             acts_as_paranoid
             attr_accessor :newly_undeleted
             attr_accessor :reassign_to

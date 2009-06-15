@@ -1,8 +1,8 @@
 class SimplifyScratchpads < ActiveRecord::Migration
   def self.up
-    create_table :scrappings do |table|
-      table.column :scrap_type, :string, :limit => 20
-      table.column :scrap_id, :integer
+    create_table :bookmarkings do |table|
+      table.column :bookmark_type, :string, :limit => 20
+      table.column :bookmark_id, :integer
       table.column :collection_id, :integer
       table.column :position, :integer
       table.column :created_by_id, :integer
@@ -13,6 +13,6 @@ class SimplifyScratchpads < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :scrappings
+    drop_table :bookmarkings
   end
 end
