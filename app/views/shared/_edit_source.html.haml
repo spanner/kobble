@@ -1,0 +1,4 @@
+%p
+  = f.label :source, "Taken from"
+  = collection_select(:thing, :source_id, current_collection.sources, :id, :name, {:include_blank => true}, {:class => 'standard'})
+  

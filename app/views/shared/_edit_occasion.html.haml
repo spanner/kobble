@@ -1,0 +1,9 @@
+- item ||= @thing
+- heading ||= 'Occasion or event'
+- required ||= false
+
+- with_error_report(item.errors.on(:occasion)) do
+  = f.label :occasion, heading, :class => required ? 'required' : 'optional'
+  %span.formnote
+    = link_to "create occasion*", new_occasion_url(:collection_id => item.collection), {:class=>'create inline', :id => "extend_#{item.class.to_s.downcase}_occasion_id"}
+  = f.select(:occasion, current_collection.occasions.collect{|p| [p.name, p.id] }, {:include_blank => true}, {:class => 'standard'})

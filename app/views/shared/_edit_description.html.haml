@@ -1,0 +1,11 @@
+- item ||= @thing
+- heading ||= 'Description'
+- help ||= false
+- required ||= false
+- with_error_report(item.errors.on(:description)) do
+  = f.label :description, heading
+  - if help
+    %span.formnote
+      = help
+    %br
+  = f.text_area :description, :rows => 8, :class => 'standard'

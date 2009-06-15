@@ -1,0 +1,12 @@
+- item ||= @thing 
+- heading ||= "Audio or video clip"
+- required ||= false
+- help ||= false
+
+- with_error_report(@thing.errors.on(:clip)) do
+  = f.label :clip, heading
+  - if help
+    %span.formnote
+      = help
+  %br
+  = f.file_field :clip

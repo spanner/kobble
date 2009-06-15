@@ -1,0 +1,16 @@
+- item ||= @thing
+
+%h3.pagesection
+  %a{:href => "#", :class => "squeezebox"}
+    tags 
+    %span.headernote
+      = pluralize(item.tags.count, 'tag')
+
+#source_tags.squeezed
+  .wordlist
+    %ul{:id => "collection_#{current_collection.id}_#{item.class.to_s.downcase}_#{item.id}_taggings", :class => "catcher taglist", :catches => "tag", :title => "tag list for #{item.name}"}
+      = render :partial => 'components/tagging_list', :locals => {:item => item}
+    %p.listnote
+      Drop tags above to apply them to this 
+      = item.class.nice_title
+

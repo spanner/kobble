@@ -1,0 +1,15 @@
+- item ||= @thing
+
+%h3.pagesection
+  %a{:href => "#", :class => "squeezebox"}
+    fragments 
+    %span.headernote
+      = pluralize(item.nodes.count, 'fragment')
+
+#source_nodes.squeezed
+  .mainlist
+    %ul#nodelist.addToBottom
+      - if item.nodes.count
+        = render :partial => 'shared/listed', :collection => item.nodes, :type_class => 'node'
+      - else
+        Extract a fragment from this and it will appear here.

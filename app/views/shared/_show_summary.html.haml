@@ -1,0 +1,38 @@
+- item ||= @thing
+
+%h3.pagesection
+  %a{:href => "#", :class => "squeezebox"}
+    summary 
+    %span.headernote
+      - if item.has_description? 
+        = truncate(item.description, 32)
+      - else
+        no summary given
+
+%div{:id => 'summary', :class => 'squeezed contentblock'}
+  - if item.has_description?
+    = item.description.formatted
+  - else
+    %p
+      No summary given.
+    
+  %p.listnote
+    - if item.is_a?(Node) && item.source
+      Excerpted from
+      = link_to item.source.name, collected_url_for(item.source)
+    - else
+      Created
+    by
+    - if item.created_by
+      = link_to item.created_by.name, url_for(item.created_by)
+    - else
+      someone
+    on
+    = friendly_date(item.created_at)
+    - if item.updated_by && item.updated_by != item.created_by
+      and updated by:
+      = link_to item.updated_by.name, url_for(item.updated_by)
+      on
+      = friendly_date(item.updated_at)
+      
+    

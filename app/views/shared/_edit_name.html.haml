@@ -1,0 +1,12 @@
+- item ||= @thing
+- heading ||= "#{item.nice_title.to_s.titlecase} name"
+- help ||= false
+- required ||= false
+
+- with_error_report(item.errors.on(:name)) do
+  = f.label :name, heading, :class => required ? 'required' : 'optional'
+  - if help
+    %span.formnote
+      = help
+    %br
+  = f.text_field :name, :class => 'titular'

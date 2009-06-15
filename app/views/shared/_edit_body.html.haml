@@ -1,0 +1,18 @@
+- item ||= @thing
+- heading ||= 'Text or transcript'
+- required ||= false
+- short ||= false
+- rows = short ? 5 : 12
+- if item.body.blank? && item.respond_to?('extracted_text') && !item.extracted_text.blank?
+  - item.body = item.extracted_text
+  - help = "extracted from file and will need formatting"
+- else
+  - help ||= false
+
+- with_error_report(@thing.errors.on(:body)) do
+  = f.label :body, heading
+  - if help
+    %span.formnote
+      = help
+    %br
+  = f.text_area :body, {:rows => rows, :class => "standard fillWithSelection"}

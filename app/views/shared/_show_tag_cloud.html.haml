@@ -1,0 +1,21 @@
+- item ||= @thing 
+- weighted_tags ||= item.tags_with_popularity
+- popular_tags = weighted_tags.select{|t| t.used.to_i > 1 }
+- tags = popular_tags.size < 50 ? weighted_tags : popular_tags
+- heading ||= ''
+
+%h3.pagesection
+  %a{:href => "#", :class => "squeezebox"}
+    - if popular_tags.size >= 50
+      - if @thing.class == User
+        favourite
+      - else
+        popular
+    tag cloud 
+    %span.headernote
+      = pluralize(tags.size, 'tag')
+      - if popular_tags.size >= 50
+        used more than once
+
+#tag_cloud.squeezed
+  = render :partial => 'shared/tag_cloud', :locals => { :cloud => tags }

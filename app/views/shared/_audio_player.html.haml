@@ -1,0 +1,14 @@
+- playername ||= 'spannerplayer';
+- divname ||= 'player';
+- url ||= 'nope.mp3';
+- inat ||= 0;
+- outat ||= 0;
+- autostart ||= current_user.prefers?('play_audio');
+
+%div{:id => divname, :class => 'player'}
+  %object{:type => "application/x-shockwave-flash", :data => "/flash/spannerplayer.swf", :width => "300", :height => "31", :id => playername}
+    %param{:name => "flashvars", :value => "mp3url=#{url}&amp;autostart=#{autostart}&amp;mp3in=#{inat}&amp;mp3out=#{outat}"}
+    %param{:name => "allowScriptAccess", :value => "sameDomain"}
+    %param{:name => "movie", :value => "/flash/spannerplayer.swf"}
+    %param{:name => "quality", :value => "high"}
+    %param{:name => "bgcolor", :value => "#ffffff"}

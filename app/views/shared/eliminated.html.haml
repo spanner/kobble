@@ -1,0 +1,10 @@
+- if @thing
+  - @title = "#{@thing.name} eliminated"
+
+  .preamble
+    %p
+      The
+      = link_to @thing.class.nice_title, :controller => @thing.class.to_s.downcase.pluralize, :action => 'index'
+      %strong
+        = @thing.name 
+      has been removed.

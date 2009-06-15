@@ -1,0 +1,15 @@
+- item ||= @thing
+
+%h3.pagesection
+  %a{:href => "#", :class => "squeezebox"}
+    notes 
+    %span.headernote
+      - if item.has_notes? 
+        = truncate(item.annotations.first.body, 32)
+      - else
+        nope
+
+%div{:id => 'notelist', :class => 'squeezed contentblock'}
+  = render :partial => 'annotations/note', :collection => item.annotations
+  %p
+    = link_to "add note*", item_new_note_url(item), {:id => 'notes_extend_notelist', :class => 'annotate inline'}

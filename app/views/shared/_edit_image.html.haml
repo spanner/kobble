@@ -1,0 +1,18 @@
+- item ||= @thing 
+- heading ||= "Add an image"
+- required ||= false
+- help ||= "don't worry about size and format: we'll sort that out"
+
+- with_error_report(@thing.errors.on(:image)) do
+  = f.label :image, heading
+  %span.formnote
+    don't worry about size and format: we'll sort that out
+  %br
+  = f.file_field :image
+
+  - if item.has_image?
+    %br
+    %a{:class => "formnote", :href => item.image.url(:preview), :rel => 'lightbox'}
+      = image_tag(item.image.url(:thumb), :size => "28x20", :alt => '')
+      current image is 
+      = item.image_file_name

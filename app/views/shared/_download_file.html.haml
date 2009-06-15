@@ -1,0 +1,7 @@
+- item ||= @thing 
+
+%p.downloadlink
+  Download: 
+  = link_to image_tag("/images/furniture/fileicons/#{item.file_extension}.png"), item.file.url
+  = link_to File.basename(item.file_file_name), item.file.url
+

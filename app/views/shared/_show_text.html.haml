@@ -1,0 +1,28 @@
+- item ||= @thing 
+- extracted = false
+- if item.has_body?
+  - text = item.body
+- elsif item.has_extracted_text?
+  - extracted = true
+  - text = item.extracted_text
+- else
+  - text = nil
+
+%h3.pagesection
+  %a{:href => "#", :class => "squeezebox"}
+    main text 
+    %span.headernote
+      - if text 
+        = truncate(text, 32)
+      - else
+        no text found
+
+%div{:id => "#{item.class.to_s.downcase}_text", :class => 'squeezed contentblock'}
+  - if text
+    - if extracted
+      %p.listnote
+        This text was extracted from an uploaded file and might be a bit scrappy:
+    = text.formatted
+  - else
+    %p
+      No text found.
