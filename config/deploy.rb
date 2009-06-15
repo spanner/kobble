@@ -1,4 +1,4 @@
-set :application, "analyst"
+set :application, "kobble"
 set :scm, :git
 set :repository, "git@github.com:spanner/materialist.git"
 set :git_enable_submodules, 1

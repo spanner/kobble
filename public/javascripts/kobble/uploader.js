@@ -57,7 +57,10 @@ var Uploader = new Class ({
   },
   uploadProgress : function (file, bytesLoaded, bytesTotal) {
     var percent = Math.ceil((bytesLoaded / bytesTotal) * 100);
+    var speed = SWFUpload.speed.formatBPS(file.movingAverageSpeed);
+    console.log(speed);
     this.uploads[file.id].setProgress(percent);
+    this.uploads[file.id].setStatus("Uploading at " + speed + ": " + file.timeRemaining + " remaining.");
     if (percent == 100) this.uploads[file.id].setProcessing();
     else this.uploads[file.id].setUploading();
   },
@@ -236,13 +239,11 @@ var Upload = new Class ({
     this.setCancelled();
   },
   grabDescriptionForm: function () {
-    console.log('grabDescriptionForm');
     this.description_form = this.form_holder.getElement('form');
     this.description_form.getElements('input.tagbox').each(function (el) { new Suggester(el); });
     this.description_form.addEvent('submit', this.sendDescriptionForm.bind(this));
   },
   sendDescriptionForm: function (e) {
-    console.log('sendDescriptionForm');
     event = k.block(e);
     var button = this.description_form.getElement('input.submit');
     var spinner = new Element('img', {src: '/images/furniture/signals/wait_32_on_pink.gif', 'class': 'waiter'});
