@@ -37,7 +37,6 @@ var Uploader = new Class ({
       swfupload_pre_load_handler : this.swfUploadPreLoad.bind(this),
       swfupload_load_failed_handler : this.swfUploadLoadFailed.bind(this)
     };
-    console.log(this.settings['post_params']);
     this.swfu = new SWFUpload(this.settings);
   },
   fileDialogComplete : function (selected, queued, total) {
@@ -60,9 +59,11 @@ var Uploader = new Class ({
     var speed = SWFUpload.speed.formatBPS(file.movingAverageSpeed);
     console.log(speed);
     this.uploads[file.id].setProgress(percent);
-    this.uploads[file.id].setStatus("Uploading at " + speed + ": " + file.timeRemaining + " remaining.");
-    if (percent == 100) this.uploads[file.id].setProcessing();
-    else this.uploads[file.id].setUploading();
+    if (percent == 100) {
+      this.uploads[file.id].setProcessing();
+    } else {
+      this.uploads[file.id].setStatus("Uploading at " + speed + ": " + file.timeRemaining + " remaining.");
+    }
   },
   uploadSuccess : function (file) {
     this.uploads[file.id].setStatus("Uploaded");

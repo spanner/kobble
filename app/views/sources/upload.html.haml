@@ -1,7 +1,3 @@
-- content_for :admin do
-  %p
-    = link_to 'sources list', sources_url
-
 - @title = 'Upload material'
 
 .preamble
@@ -25,6 +21,6 @@
       
         %button#swf_placeholder.chooser
 
-#source_describer.describer
-  %form.instructions{:action => describer_path}
-    = hidden_field :upload, ''
+
+- content_for :admin do
+  = render :partial => 'shared/show_admin'

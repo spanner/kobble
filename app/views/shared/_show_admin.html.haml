@@ -16,7 +16,10 @@
 
   - if item && !item.new_record? && !item.deleted?
     %li
-      = link_to_unless_current "edit #{item.nice_title}" , edit_url_for(item), {:class => 'update'}
+      - if item.is_a?(Collection)
+        = link_to_unless_current "edit collection" , edit_collection_url(item), {:class => 'update'}
+      - else
+        = link_to_unless_current "edit #{item.nice_title}" , edit_url_for(item), {:class => 'update'}
     - if item.is_notable?
       %li
         = link_to "add note*", item_new_note_url(item), {:id => 'admin_extend_notelist', :class => 'annotate inline'}

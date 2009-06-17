@@ -176,6 +176,13 @@ var Catcher = new Class({
   }
 });
 
+var Bench = new Class({
+  Extends: Catcher,
+  initialize: function (element) {
+    
+  }
+});
+
 // the dragged representation is a Hopper object with useful abilities
 
 var Hopper = new Class({
