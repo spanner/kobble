@@ -8,10 +8,6 @@ class ApplicationController < ActionController::Base
   
   layout 'outside'
   
-  def local_request?
-    admin?
-  end
-
   def collected_url_for(thing)
     url_method = "#{thing.class.to_s.downcase}_url".intern
     return send(url_method) if thing.is_a?(Collection)
