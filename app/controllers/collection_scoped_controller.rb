@@ -54,10 +54,14 @@ protected
   
   def get_item
     @thing = current_collection.send(association).find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    request_collection
+    get_deleted_item
+    render :template => 'shared/deleted'
   end
   
   def get_deleted_item
-    @thing = current_collection.send(association).find_only_deleted(params[:id])
+    @thing = model_class.find_with_deleted(params[:id])
   end
   
   def get_items

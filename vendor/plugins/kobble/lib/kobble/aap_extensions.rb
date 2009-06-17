@@ -47,7 +47,7 @@ module Kobble
     
     module ClassMethods
       def retrievable_associations
-        reflect_on_all_associations.select{ |a| a.options[:dependent] == :destroy && a.class.paranoid? }
+        reflect_on_all_associations.select{ |a| a.options[:dependent] == :destroy && a.class_name.as_class.paranoid? }
       end
     end
 

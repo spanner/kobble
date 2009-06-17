@@ -7,6 +7,4 @@
     - if item.is_a?(Source)
       = link_to "snip*", new_source_node_path(current_collection, item), {:id => 'player_extend_nodelist', :class => 'snipper create floating'}
     = render :partial => 'shared/audio_player', :locals => { :url => item.file.url }
-    - else 
-      This isn't a source
   = render :partial => 'shared/download_file', :locals => {:item => item}

@@ -56,13 +56,14 @@ var Uploader = new Class ({
   },
   uploadProgress : function (file, bytesLoaded, bytesTotal) {
     var percent = Math.ceil((bytesLoaded / bytesTotal) * 100);
-    var speed = SWFUpload.speed.formatBPS(file.movingAverageSpeed);
+    var speed = SWFUpload.speed.formatBPS(file.averageSpeed);
+    var remaining = SWFUpload.speed.formatTime(file.timeRemaining);
     console.log(speed);
     this.uploads[file.id].setProgress(percent);
     if (percent == 100) {
       this.uploads[file.id].setProcessing();
     } else {
-      this.uploads[file.id].setStatus("Uploading at " + speed + ": " + file.timeRemaining + " remaining.");
+      this.uploads[file.id].setStatus("Uploading at " + speed + ": " + remaining + " remaining.");
     }
   },
   uploadSuccess : function (file) {
