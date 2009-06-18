@@ -1,6 +1,6 @@
 - item ||= @thing 
 - url ||= item.file.url
-- extension ||= File.extname(url).split('?').first.delete('.')
+- extension ||= File.extname(url).split('?').first.delete('.') if url
 
 %p.downloadlink
   = link_to image_tag("/images/furniture/fileicons/#{extension}.png") + " Download #{extension} file", url
