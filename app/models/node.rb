@@ -12,17 +12,21 @@ class Node < ActiveRecord::Base
 
   def clip_url
     if self.file_from == 'source'
-      if (self.source && self.source.file) then
-        sourcefile = source.file.path
-        if (self.playfrom || self.playto) then
-          STDERR.puts("#{RAILS_ROOT}/audiocutter/mp3cut -file #{sourcefile} -in #{self.playfrom_seconds} -out #{self.playto_seconds}")
-          clipfile = `#{RAILS_ROOT}/audiocutter/mp3cut -file #{sourcefile} -in #{self.playfrom_seconds} -out #{self.playto_seconds}`;      # cutter only cuts if target file missing or out of date, and returns the file name with path
-        else
-          clipfile = sourcefile
+      if self.has_in_or_out
+        if (self.source && self.source.file_exists?) then
+          sourcefile = source.file.path
+          if (self.playfrom || self.playto) then
+            STDERR.puts("#{RAILS_ROOT}/audiocutter/mp3cut -file #{sourcefile} -in #{self.playfrom_seconds} -out #{self.playto_seconds}")
+            clipfile = `#{RAILS_ROOT}/audiocutter/mp3cut -file #{sourcefile} -in #{self.playfrom_seconds} -out #{self.playto_seconds}`;      # cutter only cuts if target file missing or out of date, and returns the file name with path
+          else
+            clipfile = sourcefile
+          end
         end
+        #! got to do this properly at some point
+        "/sources/files/#{source.id}/#{File.basename(clipfile)}"
+      else
+        nil
       end
-      #! got to do this properly at some point
-      "/sources/files/#{source.id}/#{File.basename(clipfile)}"
     else
       self.file.url
     end
@@ -31,7 +35,11 @@ class Node < ActiveRecord::Base
   # nodes can have files
   # or they can make reference to their source files
   # with audio and video and perhaps pdf excerpts
-    
+  
+  def has_in_or_out
+    (self.playfrom && self.playfrom_seconds.to_i > 0) || (self.playto && self.playto_seconds.to_i > 0) && self.playfrom_seconds != self.playto_seconds
+  end
+  
   def playfrom=(timecode)
     write_attribute(:playfrom, to_seconds(timecode))
   end

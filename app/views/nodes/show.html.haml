@@ -5,7 +5,8 @@
     = render :partial => 'shared/video_player', :locals => { :url => @thing.clip_url }
   - elsif @thing.source.is_audio?
     = render :partial => 'shared/audio_player', :locals => { :url => @thing.clip_url }
-  = render :partial => 'shared/download_file', :locals => {:item => @thing, :url => @thing.clip_url}
+  - if url = @thing.clip_url
+    = render :partial => 'shared/download_file', :locals => {:item => @thing, :url => url}
 
 - elsif @thing.has_file?
   - if @thing.is_video?

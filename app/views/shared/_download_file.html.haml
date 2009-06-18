@@ -1,7 +1,11 @@
 - item ||= @thing 
-- url ||= item.file.url
-- extension ||= File.extname(url).split('?').first.delete('.') if url
+- if item.file_exists?
+  - url ||= item.file.url
+  - extension ||= File.extname(url) if url
+  - extension = extension.split('?').first if extension && extension =~ /\?/
+  - extension = extension.delete('.') if extension && extension =~ /^./
 
-%p.downloadlink
-  = link_to image_tag("/images/furniture/fileicons/#{extension}.png") + " Download #{extension} file", url
+- if url
+  %p.downloadlink
+    = link_to image_tag("/images/furniture/fileicons/#{extension}.png") + " Download #{extension} file", url
 

@@ -341,11 +341,12 @@ module Kobble #:nodoc:
       end
 
       def has_file?
-        not self.file_file_name.blank?
+        return true if self.file && ! self.file_file_name.blank?
+        return false
       end
 
       def file_exists?
-        self.has_file? and File.file? self.file.path
+        self.has_file? && File.file?(self.file.path)
       end
 
       def file_extension
