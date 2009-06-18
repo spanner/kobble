@@ -15,7 +15,6 @@ Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence those specified here
 
   config.gem "authlogic"
-  config.gem 'gravtastic'
   
   # Skip frameworks you're not going to use
   # config.frameworks -= [ :action_web_service, :action_mailer ]
@@ -41,7 +40,7 @@ Rails::Initializer.run do |config|
   
   # See Rails::Configuration for more options
   
-  config.plugins = [:all, :kobble]
+  config.plugins = [:all, :gravtastic, :kobble]
   
   config.action_view.field_error_proc = Proc.new do |html_tag, instance_tag| 
     %{<span class="errordetail">#{html_tag}</span>}

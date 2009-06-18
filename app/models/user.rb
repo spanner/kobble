@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  include Gravtastic
   cattr_accessor :current
 
   acts_as_authentic do |config|
@@ -7,7 +8,7 @@ class User < ActiveRecord::Base
   end
   
   is_material :only => [:owners, :illustration, :log, :undelete]
-  is_gravtastic
+  is_gravtastic!
 
   belongs_to :account
   belongs_to :person
