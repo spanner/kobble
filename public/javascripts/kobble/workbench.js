@@ -8,8 +8,7 @@ var Bench = new Class({
     this.legend = element.getParent().getElement('.explanatory');
     this.controls = element.getParent().getElement('.controls');
     this.setter = this.controls.getElement('a.setter');
-    this.setter.addEvent('click', this.setThese.bindWithEvent(this));
-    
+    if (this.setter) this.setter.addEvent('click', this.setThese.bindWithEvent(this));
     this.captureList();
     this.toggleControls();
     bench = this;
