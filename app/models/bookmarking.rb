@@ -14,4 +14,8 @@ class Bookmarking < ActiveRecord::Base
     self.created_by = User.current
   end
   
+  def release_bookmark
+    self.destroy
+    return self.bookmark
+  end
 end

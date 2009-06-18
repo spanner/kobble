@@ -11,7 +11,7 @@
     = link_to 'cancel', {:action => 'index'}, {:class => 'cancelform'}
 
 .mainform
-  - form_for :node, :html => { :multipart => true, :id => 'nodeform'} do |f| 
+  - form_for :thing, :url => nodes_url(current_collection), :html => { :multipart => true, :id => 'nodeform'} do |f| 
     = render :partial => 'form', :locals => {:f => f}
 
 - content_for :admin do

@@ -1,0 +1,20 @@
+- @title = 'create set' 
+
+- content_for :buttons do
+  .formbuttons
+    = submit_tag "Create Set"
+    or
+    = link_to 'cancel', {:action => 'index'}, {:class => 'cancelform'}
+
+.preamble
+  %p
+    'Sets' are gatherings of material. They can include almost anything: sources, fragments, people, tags, other sets, conversations, etc. 
+    The easiest way to make one is to browse around your collections dragging material onto your bench, then select the items you want and click on the 'Create set' link that appears.
+
+.mainform
+  - form_for :thing, :url => bundles_url(current_collection), :html => { :multipart => true, :id => 'bundleform'} do |f| 
+    = render :partial => 'form', :locals => {:f => f}
+
+- content_for :admin do
+  %p
+    = render :partial => 'shared/show_admin', :locals => {:item => @thing}

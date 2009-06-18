@@ -1,8 +1,9 @@
 - item ||= @thing
+- taglist ||= item.tag_list
 
 - with_error_report(item.errors.on(:tags)) do
   %label{:for => "collection_#{current_collection.id}_tags"}
     Choose or create tags
   %span.formnote
     enter a comma-separated list. Spaces are fine.
-  %input{:id => "collections_#{current_collection.id}_tags", :name => "tag_list", :class => "tagbox", :value => params[:tag_list] || item.tag_list}
+  %input{:id => "collections_#{current_collection.id}_tags", :name => "tag_list", :class => "tagbox", :value => taglist}

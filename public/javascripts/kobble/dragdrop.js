@@ -132,12 +132,7 @@ var Catcher = new Class({
   
   dropComplete: function (response) {
     this.notWaiting();
-    if (this.is_list) {
-      this.container.getChildren().each(function (el) { k.activate(el); });
-      if (collapser && this.container.lookForCollapsedParent()) collapser.redisplay();
-    } else {
-      this.container.highlight('#d1005d');
-    }
+    this.refresh();
     k.announce(this.success_message);
   },
 
@@ -173,15 +168,17 @@ var Catcher = new Class({
       li.grab(hopper.cargo).inject(this.container);
       k.activate(li);
     }
+  },
+  refresh: function () {
+    if (this.is_list) {
+      this.container.getChildren().each(function (el) { k.activate(el); });
+      if (collapser && this.container.lookForCollapsedParent()) collapser.redisplay();
+    } else {
+      this.container.highlight('#d1005d');
+    }
   }
 });
 
-var Bench = new Class({
-  Extends: Catcher,
-  initialize: function (element) {
-    
-  }
-});
 
 // the dragged representation is a Hopper object with useful abilities
 
@@ -195,9 +192,6 @@ var Hopper = new Class({
     this.associate_klass = element.getParent().kobbleKlass();
     this.associate_id = element.getParent().kobbleID();
     this.title = element.getProperty('title') || this.klass;
-    
-    console.log("dragfrom of ", this.tag, " is ", this.dragfrom);
-    
     this.notaclick = false;
 
     this.cargo = element.clone();
@@ -244,11 +238,6 @@ var Hopper = new Class({
   drop: function () { this.container.destroy(); },
   waiting: function () { this.original.addClass('waiting'); }
 });
-
-
-
-
-
 
 
 Element.implement({

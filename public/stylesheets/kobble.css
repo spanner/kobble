@@ -653,13 +653,30 @@ div#workbench {
   div#workbench h3 {
     margin: 6px 6px 6px 26px;
     color: #8c8d8e; }
-  div#workbench p.explanatory {
+  div#workbench p.explanatory, div#workbench p.controls {
     position: absolute;
+    padding: 10px;
     bottom: 0;
     font-size: 80%;
-    padding: 10px;
     margin: 0;
     color: #8c8d8e; }
+  div#workbench p.controls {
+    visibility: hidden;
+    position: fixed;
+    bottom: 0;
+    right: 25%;
+    width: 120px;
+    padding: 0;
+    bottom: 0;
+    font-size: 11px;
+    margin: 0;
+    color: #8c8d8e;
+    text-align: right;
+    line-height: 17px; }
+    div#workbench p.controls a, div#workbench p.controls a:visited {
+      background-color: #d1005d;
+      color: white;
+      padding: 3px; }
   div#workbench ul.benchlist {
     padding: 0;
     margin: 0;
@@ -690,6 +707,10 @@ div#workbench {
       div#workbench ul.benchlist li a.waiting {
         background-image: url('/images/furniture/signals/wait_16_white.gif');
         color: #8c8d8e; }
+    div#workbench ul.benchlist li.selected {
+      background-color: #d1005d; }
+      div#workbench ul.benchlist li.selected a, div#workbench ul.benchlist li.selected a:visited {
+        color: white; }
   div#workbench ul.receptive {
     border: 0;
     background-color: #47484d; }
@@ -759,6 +780,67 @@ li.bookmarked a.tag:hover {
 li.bookmarked a.topic:hover {
   background-image: url(/images/furniture/kobble/16/white/topic.png); }
 li.bookmarked a.post:hover {
+  background-image: url(/images/furniture/kobble/16/white/post.png); }
+
+li.selected a.collection {
+  background-image: url(/images/furniture/kobble/16/white/collection.png); }
+li.selected a.video {
+  background-image: url(/images/furniture/kobble/16/white/video.png); }
+li.selected a.audio {
+  background-image: url(/images/furniture/kobble/16/white/audio.png); }
+li.selected a.doc {
+  background-image: url(/images/furniture/kobble/16/white/text.png); }
+li.selected a.pdf {
+  background-image: url(/images/furniture/kobble/16/white/text.png); }
+li.selected a.ppt {
+  background-image: url(/images/furniture/kobble/16/white/ppt.png); }
+li.selected a.xls {
+  background-image: url(/images/furniture/kobble/16/white/xls.png); }
+li.selected a.text {
+  background-image: url(/images/furniture/kobble/16/white/text.png); }
+li.selected a.source {
+  background-image: url(/images/furniture/kobble/16/white/text.png); }
+li.selected a.node {
+  background-image: url(/images/furniture/kobble/16/white/node.png); }
+li.selected a.bundle {
+  background-image: url(/images/furniture/kobble/16/white/bundle.png); }
+li.selected a.user {
+  background-image: url(/images/furniture/kobble/16/white/person.png); }
+li.selected a.person {
+  background-image: url(/images/furniture/kobble/16/white/person.png); }
+li.selected a.tag {
+  background-image: url(/images/furniture/kobble/16/white/tag.png); }
+li.selected a.topic {
+  background-image: url(/images/furniture/kobble/16/white/topic.png); }
+li.selected a.post {
+  background-image: url(/images/furniture/kobble/16/white/post.png); }
+li.selected a.collection:hover {
+  background-image: url(/images/furniture/kobble/16/white/collection.png); }
+li.selected a.video:hover {
+  background-image: url(/images/furniture/kobble/16/white/video.png); }
+li.selected a.audio:hover {
+  background-image: url(/images/furniture/kobble/16/white/audio.png); }
+li.selected a.doc:hover {
+  background-image: url(/images/furniture/kobble/16/white/text.png); }
+li.selected a.pdf:hover {
+  background-image: url(/images/furniture/kobble/16/white/text.png); }
+li.selected a.text:hover {
+  background-image: url(/images/furniture/kobble/16/white/text.png); }
+li.selected a.source:hover {
+  background-image: url(/images/furniture/kobble/16/white/text.png); }
+li.selected a.node:hover {
+  background-image: url(/images/furniture/kobble/16/white/node.png); }
+li.selected a.bundle:hover {
+  background-image: url(/images/furniture/kobble/16/white/bundle.png); }
+li.selected a.user:hover {
+  background-image: url(/images/furniture/kobble/16/white/person.png); }
+li.selected a.person:hover {
+  background-image: url(/images/furniture/kobble/16/white/person.png); }
+li.selected a.tag:hover {
+  background-image: url(/images/furniture/kobble/16/white/tag.png); }
+li.selected a.topic:hover {
+  background-image: url(/images/furniture/kobble/16/white/topic.png); }
+li.selected a.post:hover {
   background-image: url(/images/furniture/kobble/16/white/post.png); }
 
 /* ******* drag and drop signalling */
@@ -1074,16 +1156,18 @@ div.modalform .notinline {
   display: none; }
 
 /* ******* error reporting */
-.haserror {
-  border-left: 4px solid = !rubinered;
+.haserror, div.mainform .haserror {
+  border-left-width: 4px;
+  border-left-style: solid;
+  border-left-color: #d1005d;
   margin-left: -16px;
   padding-left: 12px;
-  color: #d1005d !important; }
-  .haserror input, .haserror textarea {
+  color: #d1005d; }
+  .haserror input, .haserror textarea,   div.mainform .haserror input, div.mainform .haserror textarea {
     border-width: 1px;
     border-style: solid;
     border-color: #d1005d; }
-  .haserror label {
+  .haserror label,   div.mainform .haserror label {
     color: #d1005d; }
 
 /* ******* recovery or elimination form */

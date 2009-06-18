@@ -1,10 +1,3 @@
-.preamble
-  %p
-    'Sets' are gatherings of material. They can include almost anything: sources, fragments, people, tags, other sets, conversations, etc. 
-    The easiest way to make one is to browse around your collections dragging material onto your bench, 
-    %span.notyet
-      select the items you want and press 'turn into set'.
-
 .mainform
 
   = render :partial => 'shared/error_report'
@@ -14,27 +7,43 @@
       Description
 
     = render :partial => 'shared/edit_name', :locals => {:item => @thing, :f => f, :required => true}
-    = render :partial => 'shared/edit_tags', :locals => {:item => @thing, :f => f}
-    = render :partial => 'shared/edit_description', :locals => {:item => @thing, :f => f, :heading => 'Synopsis or summary', :required => true}
-    = render :partial => 'shared/edit_image', :locals => {:item => @thing, :f => f, :addendum => "by default we'll find one in the set"}
+    = render :partial => 'shared/edit_description', :locals => {:item => @thing, :f => f, :heading => 'Synopsis or summary', :required => true, :help => 'to remind people what this set is doing here'}
 
   = yield :buttons
 
-  %fieldset
+  %fieldset.notinline
     %legend
       Contents
     
-    = render :partial => 'shared/edit_body', :locals => {:item => @thing, :f => f, :heading => 'Main set text', :help => 'optional'}
+    - unless @thing.new_record?
+      = render :partial => 'shared/edit_body', :locals => {:item => @thing, :f => f, :heading => 'Main set text', :help => 'usually a working summary or chapter draft.'}
 
     - if @thing.new_record?
-    
-      - if @members
-        = render :partial => 'members', :locals => {:item => @thing, :members => @members, :inactive => true}
+      - if @bookmarkings && @bookmarkings.any?
+        %p
+          %label{:for => 'with'}
+            Initial set members
+        .mainlist
+          %ul{:class => 'inactive', :title => "future members of set"}
+            - @bookmarkings.each do |bm|
+              = render :partial => 'shared/listed', :object => bm.bookmark, :locals => {:inactive => true, :idprefix => 'bundling'}
+              = hidden_field_tag "with[]", bm.id, :id => "with_#{bm.id}"
+          %p
+            = check_box_tag "delete_bookmarkings", "delete", true
+            %label{:for => 'delete_bookmarkings'}
+              Remove items from bench when set is created
       - else
         %p
           Once the set has been created you will be able to manage its population by dragging items into and out of this space (and the similar space on the main set page).
     
     - else
       = render :partial => 'members'
+
+  %fieldset.notinline
+    %legend
+      Filing
+
+    = render :partial => 'shared/edit_tags', :locals => {:item => @thing, :f => f}
+    = render :partial => 'shared/edit_image', :locals => {:item => @thing, :f => f, :addendum => "by default we'll find one in the set"}
 
   = yield :buttons

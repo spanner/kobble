@@ -101,6 +101,7 @@ var Kobble = new Class({
   
   activate: function (element) {
     var scope = element || document;
+    scope.getElementsIncludingSelf('.benchlist').each (function (el) { new Bench(el); });
     scope.getElementsIncludingSelf('.catcher').each (function (el) { new Catcher(el); });
     scope.getElementsIncludingSelf('.draggable').each(function (el) { el.prepDraggable(); });
     scope.getElementsIncludingSelf('input.tagbox').each(function (el) { new Suggester(el); });

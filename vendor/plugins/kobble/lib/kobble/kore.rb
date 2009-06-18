@@ -273,7 +273,7 @@ module Kobble #:nodoc:
       end
     
       def has_tags?
-        is_taggable? && tags.count > 0
+        is_taggable? && tags.any?
       end
 
       def tag_list

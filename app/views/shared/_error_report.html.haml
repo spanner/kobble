@@ -3,3 +3,6 @@
     %strong
       Sorry: there were problems
     Please check the form. The affected fields will be highlighted in pink.
+
+%pre.haserror
+  = @thing.errors.full_messages

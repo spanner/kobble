@@ -16,13 +16,30 @@ div#workbench
   h3
     :margin 6px 6px 6px 26px
     :color = !coolgrey8
-  p.explanatory
+  p.explanatory, p.controls
     :position absolute
+    :padding 10px
     :bottom 0
     :font-size 80%
-    :padding 10px
     :margin 0
     :color = !coolgrey8
+  p.controls
+    :visibility hidden
+    :position fixed
+    :bottom 0
+    :right 25%
+    :width 120px
+    :padding 0
+    :bottom 0
+    :font-size 11px
+    :margin 0
+    :color = !coolgrey8
+    :text-align right
+    :line-height 17px
+    a, a:visited
+      :background-color = !rubinered
+      :color white
+      :padding 3px
   ul.benchlist
     :padding 0
     :margin 0
@@ -55,6 +72,10 @@ div#workbench
       a.waiting
         :background-image url('/images/furniture/signals/wait_16_white.gif')
         :color = !coolgrey8
+    li.selected
+      :background-color = !rubinered
+      a, a:visited
+        :color white
   ul.receptive
     :border 0
     :background-color = !coolgrey11 - 6
@@ -100,6 +121,68 @@ li.bookmarked
     :background-image url(/images/furniture/kobble/16/mid/topic.png) 
   a.post 
     :background-image url(/images/furniture/kobble/16/mid/post.png)
+  a.collection:hover
+    :background-image url(/images/furniture/kobble/16/white/collection.png) 
+  a.video:hover
+    :background-image url(/images/furniture/kobble/16/white/video.png) 
+  a.audio:hover
+    :background-image url(/images/furniture/kobble/16/white/audio.png) 
+  a.doc:hover
+    :background-image url(/images/furniture/kobble/16/white/text.png) 
+  a.pdf:hover
+    :background-image url(/images/furniture/kobble/16/white/text.png) 
+  a.text:hover
+    :background-image url(/images/furniture/kobble/16/white/text.png) 
+  a.source:hover
+    :background-image url(/images/furniture/kobble/16/white/text.png) 
+  a.node:hover
+    :background-image url(/images/furniture/kobble/16/white/node.png) 
+  a.bundle:hover
+    :background-image url(/images/furniture/kobble/16/white/bundle.png) 
+  a.user:hover
+    :background-image url(/images/furniture/kobble/16/white/person.png) 
+  a.person:hover
+    :background-image url(/images/furniture/kobble/16/white/person.png) 
+  a.tag:hover
+    :background-image url(/images/furniture/kobble/16/white/tag.png) 
+  a.topic:hover
+    :background-image url(/images/furniture/kobble/16/white/topic.png) 
+  a.post:hover
+    :background-image url(/images/furniture/kobble/16/white/post.png)
+
+li.selected
+  a.collection
+    :background-image url(/images/furniture/kobble/16/white/collection.png) 
+  a.video 
+    :background-image url(/images/furniture/kobble/16/white/video.png) 
+  a.audio 
+    :background-image url(/images/furniture/kobble/16/white/audio.png) 
+  a.doc 
+    :background-image url(/images/furniture/kobble/16/white/text.png) 
+  a.pdf 
+    :background-image url(/images/furniture/kobble/16/white/text.png) 
+  a.ppt 
+    :background-image url(/images/furniture/kobble/16/white/ppt.png) 
+  a.xls
+    :background-image url(/images/furniture/kobble/16/white/xls.png) 
+  a.text 
+    :background-image url(/images/furniture/kobble/16/white/text.png) 
+  a.source 
+    :background-image url(/images/furniture/kobble/16/white/text.png) 
+  a.node 
+    :background-image url(/images/furniture/kobble/16/white/node.png) 
+  a.bundle 
+    :background-image url(/images/furniture/kobble/16/white/bundle.png) 
+  a.user 
+    :background-image url(/images/furniture/kobble/16/white/person.png) 
+  a.person 
+    :background-image url(/images/furniture/kobble/16/white/person.png) 
+  a.tag 
+    :background-image url(/images/furniture/kobble/16/white/tag.png) 
+  a.topic 
+    :background-image url(/images/furniture/kobble/16/white/topic.png) 
+  a.post 
+    :background-image url(/images/furniture/kobble/16/white/post.png)
   a.collection:hover
     :background-image url(/images/furniture/kobble/16/white/collection.png) 
   a.video:hover

@@ -1,3 +1,4 @@
 - item ||= @thing
+- members ||= item.members
 - inactive ||= false
-= render :partial => 'shared/listed', :collection => item.members, :locals => {:inactive => inactive, :idprefix => 'bundled'}
+= render :partial => 'shared/listed', :collection => members, :locals => {:inactive => inactive, :idprefix => 'bundled'}

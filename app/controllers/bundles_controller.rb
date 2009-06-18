@@ -9,30 +9,46 @@ class BundlesController < CollectionScopedController
   def new
     @thing = Bundle.new
     @thing.tags << Tag.from_list(params[:tag_list]) if params[:tag_list]
-    if params[:scratchpad_id] && @expad = Scratchpad.find(params[:scratchpad_id])
-      @members = @expad.scraps.uniq
-      @thing.name = @expad.name if @bundle.name.blank?
-      @thing.body = @expad.body if @bundle.body.blank?
-    end
+    get_members_from_bookmarks
   end
 
   def create
-    @thing = Bundle.new(params[:bundle])
-    @expad = Scratchpad.find(params[:scratchpad_id]) if params[:scratchpad_id]
+    @thing = Bundle.new(params[:thing])
     if @thing.save
       @thing.tags << Tag.from_list(params[:tag_list]) if params[:tag_list]
-      if @expad
+      if params[:with]
         Bundle.transaction {
-          @thing.members = @expad.scraps.uniq
-          @expad.destroy
+          @thing.members = params[:with].collect {|bm| 
+            bm = Bookmarking.find_by_id(bm)
+            if bm
+              bm.destroy if params[:delete_bookmarkings] 
+              bm.bookmark
+            end
+          }
         }
-        flash[:notice] = "Bundle created from scratchpad #{@expad.name}"
+        flash[:notice] = "Bundle created from selection"
       else
         flash[:notice] = 'Bundle created'
       end
-      redirect_to url_for @bundle
+      redirect_to collected_url_for(@thing)
     else
+      get_members_from_bookmarks
       render :action => 'new'
+    end
+  end
+
+protected
+
+  def get_members_from_bookmarks
+    @bookmarkings = []
+    params[:with].each do |bmid| 
+      if bm = Bookmarking.find(bmid, :include => :bookmark) rescue nil
+        if bm.bookmark.is_a?(Tag)
+          @thing.tags.push(bm.bookmark) 
+        else
+          @bookmarkings.push(bm)
+        end
+      end
     end
   end
 

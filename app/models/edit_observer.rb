@@ -1,7 +1,7 @@
 class EditObserver < ActiveRecord::Observer
   observe Collection, Source, Node, Bundle, Tag, Occasion, Topic, Post, Annotation
 
-  def before_create(model)
+  def before_validation_on_create(model)
     model.collection ||= Collection.current unless model.is_a?(Collection)
     model.created_by = User.current
   end

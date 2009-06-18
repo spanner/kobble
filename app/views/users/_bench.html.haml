@@ -10,10 +10,14 @@
       - else
         combined
       workbench
-    %ul{:id => benchid, :class => "benchlist catcher", :catches => "#{Kobble.bookmarked_models.join(',')}", :title => 'workbench'}
+    %ul{:id => benchid, :class => "benchlist", :catches => "#{Kobble.bookmarked_models.join(',')}", :title => 'workbench'}
       = render :partial => 'components/bookmarking_list'
     %p.explanatory
-      Click on a listing to select it. 
+      Click on listings to select them. Actions will be offered. 
+      Drag one 
       %span.notyet
-        Shift- or cmd-click to select several. Actions will be offered. 
-      Drag out into space to remove. Drag onto something else to apply.
+        or many
+      out into space to remove. Drag onto something else to apply.
+    %p.controls
+      - if current_collection
+        = link_to "Create set &larr;", new_bundle_url(current_collection), :class => 'setter'

@@ -132,11 +132,14 @@ div.modalform .notinline
 
 /******** error reporting
 
-.haserror
-  :border-left 4px solid = !rubinered
+.haserror, div.mainform .haserror
+  :border-left
+    :width 4px
+    :style solid
+    :color = !rubinered
   :margin-left -16px
   :padding-left 12px
-  :color = !rubinered !important
+  :color = !rubinered
   input, textarea
     :border
       :width 1px

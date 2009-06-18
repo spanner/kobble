@@ -122,14 +122,16 @@ div.modalform .notinline {
   display: none; }
 
 /* ******* error reporting */
-.haserror {
-  border-left: 4px solid = !rubinered;
+.haserror, div.mainform .haserror {
+  border-left-width: 4px;
+  border-left-style: solid;
+  border-left-color: #d1005d;
   margin-left: -16px;
   padding-left: 12px;
-  color: #d1005d !important; }
-  .haserror input, .haserror textarea {
+  color: #d1005d; }
+  .haserror input, .haserror textarea,   div.mainform .haserror input, div.mainform .haserror textarea {
     border-width: 1px;
     border-style: solid;
     border-color: #d1005d; }
-  .haserror label {
+  .haserror label,   div.mainform .haserror label {
     color: #d1005d; }
