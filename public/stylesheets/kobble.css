@@ -677,6 +677,10 @@ div#workbench {
       background-color: #d1005d;
       color: white;
       padding: 3px; }
+    div#workbench p.controls span.benchnote {
+      display: inline;
+      color: #4d4e53;
+      padding: 3px; }
   div#workbench ul.benchlist {
     padding: 0;
     margin: 0;
@@ -711,6 +715,8 @@ div#workbench {
       background-color: #d1005d; }
       div#workbench ul.benchlist li.selected a, div#workbench ul.benchlist li.selected a:visited {
         color: white; }
+      div#workbench ul.benchlist li.selected a.waiting {
+        background-image: url('/images/furniture/signals/wait_16_on_pink.gif'); }
   div#workbench ul.receptive {
     border: 0;
     background-color: #47484d; }
@@ -1045,7 +1051,8 @@ div.mainform h2 {
 div.mainform fieldset {
   border: 1px dotted #cacac8;
   padding: 0 16px 0 16px;
-  margin-bottom: 10px; }
+  margin-bottom: 10px;
+  margin-left: -16px; }
   div.mainform fieldset legend {
     font-family: 'HelveticaNeue-Light', helvetica, arial, sans-serif;
     font-size: 22px;

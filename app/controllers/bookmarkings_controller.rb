@@ -17,7 +17,9 @@ class BookmarkingsController < ObjectScopedController
 protected
   
   def get_bookmarking
-    @bookmarking = @thing.bookmarkings.find(params[:id])
+    if params[:id]
+      @bookmarking = current_user.bookmarkings.find(params[:id])
+    end
   end
   
 end

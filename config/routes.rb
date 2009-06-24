@@ -22,13 +22,17 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :users, 
                 :has_many => [:events, :user_preferences, :bookmarkings], 
-                :member => {:home => :get, :recover => :post, :eliminate => :post, :reinvite => :any, :predelete => :get, :catch => :get, :drop => :get}
+                :member => {:home => :get, :recover => :post, :eliminate => :post, :reinvite => :any, :predelete => :get} do |user|
+                  
+    # user.resources :bookmarkings, :collection => {:remove => :post}
+    
+  end
 
   map.resources :collections, 
                 :has_many => [:events, :permissions, :topics], 
                 :member => {:recover => :post, :eliminate => :post, :predelete => :get} do |collection|
 
-    collection.resources :users, :has_many => :bookmarkings      # nasty hack to supply both user and collection to bench drops
+    collection.resources :users, :has_many => :bookmarkings      # nasty longcut to supply both user and collection to bench drop action
 
     collection.resources :sources, :name_prefix => nil,
                   :has_many => [:topics, :nodes, :annotations, :taggings],

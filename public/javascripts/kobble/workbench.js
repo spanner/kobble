@@ -9,6 +9,8 @@ var Bench = new Class({
     this.controls = element.getParent().getElement('.controls');
     this.setter = this.controls.getElement('a.setter');
     if (this.setter) this.setter.addEvent('click', this.setThese.bindWithEvent(this));
+    this.remover = this.controls.getElement('a.remover');
+    if (this.remover) this.remover.addEvent('click', this.removeThese.bindWithEvent(this));
     this.captureList();
     this.toggleControls();
     bench = this;
@@ -20,8 +22,11 @@ var Bench = new Class({
   selected: function () {
     return this.listed.filter(function (benched) { return benched.selected(); });
   },
+  numberSelected: function () {
+    return this.selected().length;
+  },
   anythingSelected: function () {
-    return (this.selected().length > 0);
+    return (this.numberSelected() > 0);
   },
   firstSelection: function () {
     return this.selected()[0];
@@ -36,9 +41,7 @@ var Bench = new Class({
   },
   showControls: function () {
     this.legend.fade('out');
-    // this.controls.setStyle('top', this.lastSelection().getBottom());
     var y = this.firstSelection().getTop() - window.getScroll().y;      // in kore.js getCoordinates on a fixed element includes scroll
-    console.log("setting ", this.controls, " top to", y);
     this.controls.setStyles({'bottom' : 'auto', 'top' : y});
     this.controls.fade('in');
   },
@@ -51,15 +54,16 @@ var Bench = new Class({
   },
   setThese: function (e) {
     k.block(e);
-    console.log("making a set from ", this.selected());
     var url = this.setter.get('href');
-    var qs = this.selected().map(function (benched) { return 'with[]=' + benched.kobbleID(); });
+    var qs = this.selected().map(function (sel) { return 'with[]=' + sel.kobbleID(); });
     url = url + '?' + qs.join('&amp;');
-    console.log("making a set with url ", url);
     window.location = url;
   },
   removeThese: function (e) {
     k.block(e);
+    this.hideControls();
+    var url = this.remover.get('href');
+    this.selected().each(function (sel) { sel.remove(url); });
   }
 });
 
@@ -88,6 +92,33 @@ var Benched = new Class({
   selected: function () {
     return this.checkbox.get('checked');
   },
+  waiting: function () {
+    this.link.addClass('waiting');
+  },
+  notWaiting: function () {
+    this.link.removeClass('waiting');
+  },
+  remove: function (url) {
+    url = url + '/' + this.kobbleID();
+    new Request.HTML({
+      emulation: true,
+      method: 'delete',
+      url: url,
+      onRequest: this.waiting.bind(this),
+      onSuccess: this.destroy.bind(this),
+      onFailure: this.removeFailed.bind(this)
+    }).send();
+  },
+  destroy: function (argument) {
+    this.deselect();
+    this.notWaiting();
+    this.container.nix();
+    k.announce('Removed ' + this.title + ' from bench');
+  },
+  removeFailed: function (response) {
+    this.notWaiting();
+    k.complain("could not unbench " + this.title);
+  },
   getTop: function () {
     var pos = this.container.getCoordinates();
     return pos.top;
@@ -103,3 +134,8 @@ var Benched = new Class({
     return this.container.kobbleID();
   }
 });
+
+
+
+
+

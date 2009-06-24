@@ -1,0 +1,48 @@
+- @title = "Add a new user to your account"
+
+- content_for :buttons do
+  .formbuttons
+    = submit_tag "Invite User"
+    or
+    = link_to 'cancel', users_url, {:class => 'cancelform'}
+
+- if current_account.can_add_user?
+
+  .preamble
+    %p
+      = link_to "Users", users_url
+      here are people who can log into and act within the system.
+      People who are referred to, eg as speakers or authors, are part of a collection and will be listed there.
+      By default new users are given access to all collections not marked private.
+
+    - if current_account.account_type.users_limit > 0
+      %p
+        Your account has
+        %strong
+          = current_account.users.count
+        of the 
+        %strong
+          = current_account.account_type.users_limit
+          users
+        it is allowed.
+
+    %p
+      When you press 'invite user' below an invitation message will be sent to the email address you have entered - so please make sure it's right - 
+      containing instructions and a link that will activate the new user and log that person into your account.
+
+  #inputform
+
+    - form_for :thing, :url => users_url, :html => { :multipart => true } do |f| 
+
+      = render :partial => 'form', :locals => {:f => f}
+
+- else
+
+  %p
+    Sorry: your account has all of the
+    = current_account.account_type.users_limit
+    users it is allowed. To add more people, please either remove an existing user or upgrade your account.
+
+- content_for :admin do
+  %p
+    = render :partial => 'shared/show_admin'

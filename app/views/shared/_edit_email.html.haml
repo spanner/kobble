@@ -1,0 +1,12 @@
+- item ||= @thing
+- heading ||= "Email address"
+- help ||= false
+- required ||= false
+
+- with_error_report(item.errors.on(:email)) do
+  = f.label :email, heading, :class => required ? 'required' : 'optional'
+  - if help
+    %span.formnote
+      = help
+    %br
+  = f.text_field :email, :class => 'standard'

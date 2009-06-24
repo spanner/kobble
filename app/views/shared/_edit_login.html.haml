@@ -1,0 +1,12 @@
+- item ||= @thing
+- heading ||= "Username for logging in"
+- help ||= 'defaults to email address. Otherwise must be unique.'
+- required ||= false
+
+- with_error_report(item.errors.on(:login)) do
+  = f.label :login, heading, :class => required ? 'required' : 'optional'
+  - if help
+    %span.formnote
+      = help
+    %br
+  = f.text_field :login, :class => 'standard'
