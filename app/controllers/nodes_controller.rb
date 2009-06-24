@@ -26,9 +26,11 @@ class NodesController < CollectionScopedController
     @thing.collection = current_collection
     if @thing.save
       @thing.tags << Tag.from_list(params[:tag_list]) if params[:tag_list]
-      flash[:notice] = "Fragment #{@thing.name} created."
       respond_to do |format|
-        format.html { redirect_to :action => 'show', :id => @thing }
+        format.html {
+          flash[:notice] = "Fragment #{@thing.name} created."
+          redirect_to :action => 'show', :id => @thing 
+        }
         format.js { render :layout => false }         # nodes/create.rhml is a bare <li>
         format.json { render :json => {:created => @thing}.to_json }
       end
