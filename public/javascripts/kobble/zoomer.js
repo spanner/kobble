@@ -355,14 +355,15 @@ var HtmlForm = new Class ({
     var elements = this.responseholder.getChildren(); 
     this.created_item = elements[0];
     this.created_item.inject(this.destination, this.destination.hasClass('addToBottom') ? 'bottom' : 'top');
-//    this.showOnPage( this.created_item );
-    k.announce( "Fragment created" );
+    this.showOnPage( this.created_item );
     k.activate( this.created_item );
     this.container.reset();
   },
   
   showOnPage: function (element) {
-    if (this.destination_squeeze && this.destination_squeeze.offsetHeight == 0) collapser.display(this.destination_squeeze);
+    if (this.destination_squeeze)
+      if (this.destination_squeeze.offsetHeight == 0) collapser.display(this.destination_squeeze);
+      else collapser.redisplay();
     new Fx.Scroll(window).toElement(element).chain(function(){ element.highlight(); });
   }
 });
@@ -391,5 +392,10 @@ var Snipper = new Class ({
     if (player && player.playerOk() ) {
       return player.playerOut();
     }
+  },
+  showOnPage: function (element) {
+    // they will want to snip another one, so we don't move the page
+    k.announce("fragment created");
   }
+  
 });
