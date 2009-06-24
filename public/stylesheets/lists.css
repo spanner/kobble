@@ -11,9 +11,9 @@ div.mainlist {
       font-size: 16px;
       line-height: 24px;
       list-style-position: outside; }
-      div.mainlist ul li img {
-        float: left;
-        margin: 0 8px 0 0; }
+      div.mainlist ul li img.flag {
+        margin: 2px 0 0 0;
+        vertical-align: top; }
 
 /* list icons and colour-codes */
 div.mainlist ul, div.wordlist ul {
