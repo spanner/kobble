@@ -45,8 +45,8 @@ module ApplicationHelper
     send url_method.intern, current_collection, item
   end
 
-  def item_create_note_path(item)    
-    url_method = 'create_' + item.class.to_s.underscore.downcase + '_annotation_path'
+  def item_notes_url(item)    
+    url_method = item.class.to_s.underscore.downcase + '_annotations_url'
     send url_method.intern, current_collection, item
   end
 

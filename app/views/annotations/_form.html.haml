@@ -1,0 +1,15 @@
+- with_error_report(@thing.errors.on(:annotation_type_id)) do
+  = f.label :annotation_type_id, "Note type"
+  %br
+  = f.select(:annotation_type_id, @annotation_types, { :include_blank => true}, {:class => 'standard'})
+
+= render :partial => 'shared/edit_body', :locals => {:item => @thing, :f => f, :short => @inline, :heading => 'Note text'}
+
+%p
+  = f.check_box :important
+  = f.label :important, "this is important?"
+
+.formbuttons
+  = submit_tag 'annotate'
+  or 
+  = link_to 'cancel', collected_url_for(@thing.annotated), {:class => 'cancelform'}

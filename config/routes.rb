@@ -29,7 +29,7 @@ ActionController::Routing::Routes.draw do |map|
   end
 
   map.resources :collections, 
-                :has_many => [:events, :permissions, :topics], 
+                :has_many => [:events, :permissions, :topics, :annotations], 
                 :member => {:recover => :post, :eliminate => :post, :predelete => :get} do |collection|
 
     collection.resources :users, :has_many => :bookmarkings      # nasty longcut to supply both user and collection to bench drop action
@@ -70,7 +70,6 @@ ActionController::Routing::Routes.draw do |map|
 
   end
 
-  map.resources :annotations
   map.resources :preferences
   map.resources :events
   map.resources :user_preferences, :member => {:activate => :any, :deactivate => :any, :toggle => :any}

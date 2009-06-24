@@ -29,7 +29,7 @@ class CollectionScopedController < AccountScopedController
       end
     else
       respond_to do |format|
-        flash[:error] = "Problem saving #{@thing.nice_title}."
+        flash[:error] = "Problem saving #{@thing.nice_title}"
         format.html { render :action => 'new' }
         format.js { render :action => 'new', :layout => 'inline' }
       end

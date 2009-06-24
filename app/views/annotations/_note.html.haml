@@ -1,0 +1,13 @@
+- note ||= @thing
+- cssclass = 'fieldnote'
+- cssclass << 'importantnote' if note.important?
+- cssclass << 'badnote' if note.badnews?
+- cssclass << 'goodnote' if note.goodnews?
+
+%div{:class => cssclass}
+  %h4
+    = note.annotation_type.name
+    %span.headernote
+      added by
+      = note.created_by.name
+  = note.body.formatted

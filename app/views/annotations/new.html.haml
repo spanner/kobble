@@ -1,0 +1,7 @@
+- @title = "add a note to #{truncate(@thing.annotated.name, 36)}"
+
+.mainform
+  = render :partial => 'shared/error_report'
+  - form_for :thing, :url => item_notes_url(@thing.annotated) do |f|
+    = render :partial => "form", :locals => {:f => f}
+
