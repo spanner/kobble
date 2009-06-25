@@ -214,7 +214,7 @@ var JsonForm = new Class ({
   bindForm: function () {
     this.form.onsubmit = this.sendForm.bindWithEvent(this);
     this.form.getElements('a.cancelform').each(function (a) { a.addEvent('click', this.container.collapseBack.bindWithEvent(this.container)); }, this);
-    this.form.getElements('.fillWithSelection').each(function (input) { if (input.get('value') == '') input.set('value', this.quoteSelectedText()); }, this);
+    this.form.getElements('.fillWithSelection').each(function (input) { if (input.get('value') == '') input.set('value', this.getSelectedText()); }, this);
     this.form.getElements('input.tagbox').each(function (el) { new Suggester(el); });
     var first = this.form.getElement('.pickme');
     if (first) first.focus();
