@@ -1000,7 +1000,7 @@ var Accordion = Fx.Accordion = new Class({
 				for (var fx in this.effects) el.setStyle(fx, 0);
 			}
 		}, this);
-		if ($chk(this.options.display)) this.display(this.options.display, this.options.initialDisplayFx);
+		if ($chk(this.options.display)) this.display(null, this.options.display, this.options.initialDisplayFx);
 	},
 
 	addSection: function(toggler, element){
@@ -1010,7 +1010,7 @@ var Accordion = Fx.Accordion = new Class({
 		this.togglers.include(toggler);
 		this.elements.include(element);
 		var idx = this.togglers.indexOf(toggler);
-		toggler.addEvent(this.options.trigger, this.display.bind(this, idx));
+		toggler.addEvent(this.options.trigger, this.display.bindWithEvent(this, idx));
 		if (this.options.height) element.setStyles({'padding-top': 0, 'border-top': 'none', 'padding-bottom': 0, 'border-bottom': 'none'});
 		if (this.options.width) element.setStyles({'padding-left': 0, 'border-left': 'none', 'padding-right': 0, 'border-right': 'none'});
 		element.fullOpacity = 1;
@@ -1023,7 +1023,8 @@ var Accordion = Fx.Accordion = new Class({
 		return this;
 	},
 
-	display: function(index, useFx){
+	display: function(e, index, useFx){
+	  if (e) new Event(e).stop().preventDefault();
 		useFx = $pick(useFx, true);
 		index = ($type(index) == 'element') ? this.elements.indexOf(index) : index;
 		if ((this.timer && this.options.wait) || (index === this.previous && !this.options.alwaysHide)) return this;
