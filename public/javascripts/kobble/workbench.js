@@ -49,7 +49,11 @@ var Bench = new Class({
     this.controls.fade('out');
   },
   refresh: function () {
+    this.container.getChildren().each(function (el) { k.activate(el); });
     this.captureList();
+    
+    // would be nice to remember and restore selections here
+    
     return true;
   },
   setThese: function (e) {
