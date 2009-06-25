@@ -12,7 +12,7 @@
       - if @thing.sources.any? && @thing.nodes.any?
         and
       - if @thing.nodes.any?
-        = pluralize(@thing.sources.count, 'fragment')
+        = pluralize(@thing.nodes.count, 'fragment')
 
 %div{:id => 'featured', :class => 'squeezed contentblock'}
   .mainlist

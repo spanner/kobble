@@ -1,0 +1,13 @@
+- item ||= @thing
+- if item.bundlings.any?
+
+  %h3.pagesection
+    %a{:href => "#", :class => "squeezebox"}
+      set memberships 
+      %span.headernote
+        = pluralize(@thing.bundles.count, 'set')
+
+  %div{:id => 'featured', :class => 'squeezed contentblock'}
+    .mainlist
+      %ul
+        = render :partial => 'shared/listed', :collection => @thing.bundles
