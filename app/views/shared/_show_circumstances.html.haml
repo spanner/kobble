@@ -2,11 +2,13 @@
 
 %h3.pagesection
   %a{:href => "#", :class => "squeezebox"}
-    filing 
+    circumstances 
     %span.headernote
       - if item.has_speaker?
+        speaker:
         = item.speaker.name
       - elsif item.has_occasion?
+        occasion:
         = item.occasion.name
       - else
         added by 
@@ -16,7 +18,7 @@
   %ul.details
     - if item.has_speaker?
       %li
-        Speaker or author:
+        Primary speaker:
         = link_to item.speaker.name, collected_url_for(item.speaker)
     - if item.has_occasion?
       %li

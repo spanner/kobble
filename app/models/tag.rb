@@ -17,17 +17,6 @@ class Tag < ActiveRecord::Base
     :conditions => "name like '#{stem}%'"} 
   }
     
-  def subsume(subsumed)
-    self.taggings += subsumed.taggings
-    self.notes += subsumed.annotations
-    self.description = subsumed.description if self.description.nil? or self.description.size == 0
-    self.body = subsumed.body if self.body.nil? or self.body.size == 0
-    self.image = subsumed.image if self.image.nil? or self.image.size == 0
-    self.clip = subsumed.clip if self.clip.nil? or self.clip.size == 0
-    subsumed.destroy
-    Material::CatchResponse.new("#{subsumed.name} merged into #{self.name}", "delete")
-  end
-    
   def self.from_list(taglist, collection=Collection.current)
     taglist.split(/[,;]\s*/).uniq.map { |name| Tag.find_or_create_by_name_and_collection_id(name.downcase, collection.id) }
   end
