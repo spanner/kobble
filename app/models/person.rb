@@ -8,6 +8,11 @@ class Person < ActiveRecord::Base
   
   validates_presence_of :name, :description, :collection
 
+  def sources_and_nodes
+    everything = self.sources + self.nodes
+    everything.sort{|a,b| a.name <=> b.name }
+  end
+
   def self.nice_title
     "person"
   end

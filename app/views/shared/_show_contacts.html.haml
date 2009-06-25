@@ -1,0 +1,43 @@
+- item ||= @thing
+
+%h3.pagesection
+  %a{:href => "#", :class => "squeezebox"}
+    contact 
+    %span.headernote
+      - if item.email
+        = item.email
+      - elsif item.phone
+        = item.phone
+      - elsif item.role || item.workplace
+        - if item.role
+          = item.role
+          at
+        = item.workplace
+      - elsif item.phone?
+        = item.phone
+      - else
+        no contact information
+
+%div{:id => 'contact', :class => 'squeezed contentblock'}
+  %ul.details
+    %li
+      Email:
+      - if item.email.blank?
+        unknown
+      - else 
+        = link_to item.email, "mailto:#{item.email}"
+    %li
+      Phone:
+      - if item.phone.blank?
+        unknown
+      - else 
+        = item.phone
+    %li
+      Role:
+      - if item.role.blank? && item.workplace.blank?
+        unknown
+      - else 
+        - if item.role
+          = item.role
+          at
+        = item.workplace
