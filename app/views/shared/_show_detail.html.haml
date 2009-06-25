@@ -1,0 +1,34 @@
+- item ||= @thing
+
+%h3.pagesection
+  %a{:href => "#", :class => "squeezebox"}
+    filing 
+    %span.headernote
+      - if item.has_speaker?
+        = item.speaker.name
+      - elsif item.has_occasion?
+        = item.occasion.name
+      - else
+        added by 
+        = item.created_by.name
+
+%div{:id => 'origins', :class => 'squeezed contentblock'}
+  %ul.details
+    - if item.has_speaker?
+      %li
+        Speaker or author:
+        = link_to item.speaker.name, collected_url_for(item.speaker)
+    - if item.has_occasion?
+      %li
+        Occasion:
+        = link_to item.occasion.name, collected_url_for(item.occasion)
+    - if item.created_by
+      %li
+        Added by:
+        = link_to item.created_by.name, url_for(item.created_by)
+        = friendly_date(item.created_at)
+    - if item.updated_by
+      %li
+        Last updated by:
+        = link_to item.updated_by.name, url_for(item.updated_by)
+        = friendly_date(item.updated_at)

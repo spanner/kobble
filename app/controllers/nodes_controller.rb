@@ -24,6 +24,9 @@ class NodesController < CollectionScopedController
     @source = Source.find(params[:source_id])
     @thing = @source.nodes.build(params[:thing])
     @thing.collection = current_collection
+    @thing.speaker ||= @thing.source.speaker
+    @thing.file_from ||= 'source'
+    
     if @thing.save
       @thing.tags << Tag.from_list(params[:tag_list]) if params[:tag_list]
       respond_to do |format|

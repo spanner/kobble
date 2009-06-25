@@ -440,6 +440,10 @@ module Kobble #:nodoc:
         self.respond_to?('speaker') && !self.speaker.nil?
       end
 
+      def has_occasion?
+        self.respond_to?('occasion') && !self.occasion.nil?
+      end
+
       def main_person
         return speaker if has_speaker?
         return created_by

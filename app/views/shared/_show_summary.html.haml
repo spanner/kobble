@@ -27,12 +27,9 @@
       = link_to item.created_by.name, url_for(item.created_by)
     - else
       someone
-    on
     = friendly_date(item.created_at)
     - if item.updated_by && item.updated_by != item.created_by
       and updated by:
       = link_to item.updated_by.name, url_for(item.updated_by)
-      on
       = friendly_date(item.updated_at)
-      
     

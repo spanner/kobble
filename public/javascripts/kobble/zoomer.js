@@ -346,8 +346,8 @@ var HtmlForm = new Class ({
       this.container.formHolder.adopt(this.responseholder.getChildren());
       this.container.bindForm();      // loop back and prepare form for submission again
     } else {
+      this.container.collapseTowards(this.responseholder);
       this.updatePage(this.responseholder);
-      this.container.collapse();
     }
   },
 

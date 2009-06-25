@@ -59,13 +59,13 @@ module ApplicationHelper
     if datetime
       date = datetime.to_date
       if (date == Date.today)
-        format = "Today at %l:%M%p"
+        format = "today at %l:%M%p"
       elsif (date == Date.yesterday)
-        format = "Yesterday at %l:%M%p"
+        format = "yesterday at %l:%M%p"
       elsif (date.year == Date.today.year)
-        format = "%B %e"
+        format = "on %B %e"
       else
-        format = "%B %e, %Y"
+        format = "on %B %e, %Y"
       end
       datetime.strftime(format)
     else 
