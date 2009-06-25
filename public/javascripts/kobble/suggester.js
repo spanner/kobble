@@ -16,3 +16,7 @@ var Suggester = new Class ({
   }
 });
 
+kobble_starters.push(function (scope) {
+  if (!scope) scope = document;
+  scope.getElementsIncludingSelf('input.tagbox').each(function (el) { new Suggester(el); });
+});

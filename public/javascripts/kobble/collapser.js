@@ -54,6 +54,9 @@ Element.implement({
   }
 });
 
+kobble_starters.push(function (scope) {
+  if ($$('a.squeezebox')) new Collapser($$('a.squeezebox'), $$('div.squeezed'));
+});
 
 
 

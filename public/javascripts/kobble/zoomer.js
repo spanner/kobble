@@ -397,5 +397,10 @@ var Snipper = new Class ({
     // they will want to snip another one, so we don't move the page
     k.announce("fragment created");
   }
-  
+});
+
+kobble_starters.push(function (scope) {
+  if (!scope) scope = document;
+  scope.getElementsIncludingSelf('a.inline').each(function (el) { new Zoomer(el, 'HtmlForm'); });
+  scope.getElementsIncludingSelf('a.snipper').each(function (el) { new Zoomer(el, 'Snipper'); });
 });

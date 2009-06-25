@@ -140,6 +140,9 @@ var Benched = new Class({
 });
 
 
-
+kobble_starters.push(function (scope) {
+  if (!scope) scope = document;
+  scope.getElementsIncludingSelf('.benchlist').each (function (el) { new Bench(el); });
+});
 
 

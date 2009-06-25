@@ -258,4 +258,8 @@ var Upload = new Class ({
   }
 });
 
+kobble_starters.push(function (scope) {
+  if (!scope) scope = document;
+  scope.getElementsIncludingSelf('div.uploader').each( function (el) { new Uploader(el); });
+});
 

@@ -261,3 +261,9 @@ Element.implement({
   }
 });
 
+kobble_starters.push(function (scope) {
+  if (!scope) scope = document;
+  scope.getElementsIncludingSelf('.catcher').each (function (el) { new Catcher(el); });
+  scope.getElementsIncludingSelf('.draggable').each(function (el) { el.prepDraggable(); });
+});
+

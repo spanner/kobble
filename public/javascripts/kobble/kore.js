@@ -1,3 +1,87 @@
+var kobble_starters = [];
+var k = null;
+
+window.addEvent('domready', function(){
+  // console.profile();
+  k = new Kobble();
+  k.activate();
+  // console.profileEnd();    //in materialist: 65.38ms, 7517 calls
+});
+
+var Kobble = new Class({
+  Implements: Log,
+  
+  initialize: function(){
+
+    // errors and notices
+    this.message_holder = null;
+    this.message_fader = null;
+    this.message_timer = null;
+        
+    // zoomy forms
+    this.zoomlinks = [];
+    this.floater = null;
+    this.floaters = [];
+    
+    // logging control
+    this.debug_level = 0;
+  },
+
+  // this is just a holder-together:
+  // each of kobble's functional components adds a few activation triggers
+  
+  activate: function (element) {
+    var scope = element || document;
+    kobble_starters.each(function (fun) { fun.attempt(scope); });
+  },
+  
+  // instantiates and stops the supplied event
+  
+  block: function (e) {
+    if (e) {
+      var event = new Event(e);
+      event.preventDefault();
+      return event;
+    }
+  },
+  
+  // rails flashes and other notifications
+  
+  announcer: function () {
+    if (!this.message_holder) {
+      this.message_holder = new Element('div', {'id' : 'notification'}).inject(document.body);
+      this.message_fader = function () { this.message_holder.fade('out'); }.bind(this);
+    }
+    if (this.message_timer) $clear(this.message_timer);
+    this.message_holder.fade('hide');
+    return this.message_holder;
+  },
+  announce: function (message, title) {
+    this.announcer().removeClass('error');
+    this.announcer().set('html', message);
+    this.flashMessage();
+  },
+  complain: function (message, title) {
+    this.announcer().addClass('error');
+    this.announcer().set('html', message);
+    this.flashMessage();
+  },
+  flashMessage: function () {
+    this.announcer().fade('in');
+    this.message_timer = this.message_fader.delay(4000);
+  },
+
+  // selective logger
+  
+  debug: function (message, level) {
+    if (!level) level = 2;
+    this.log(message);
+  }
+    
+});
+
+
+
 var SelfSelection = {
   getElementsIncludingSelf: function (selector) {
     var elements = this.getElements(selector);
@@ -5,6 +89,11 @@ var SelfSelection = {
     return elements;
   }
 };
+
+Document.implement(SelfSelection);
+Element.implement(SelfSelection);
+
+
 
 // all kobble DOM ids take the form controller_id[_association]
 // not model not controller: must be singular
@@ -58,103 +147,13 @@ var KobbleParameters = {
   }
 };
 
+Element.implement(KobbleParameters);
+
+
+
 function isBody(element){
 	return (/^(?:body|html)$/i).test(element.tagName);
 };
-
-Document.implement(SelfSelection);
-Element.implement(SelfSelection);
-Element.implement(KobbleParameters);
-
-var k = null;
-
-window.addEvent('domready', function(){
-  // console.profile();
-  k = new Kobble();
-  k.activate();
-  if ($$('a.squeezebox')) new Collapser($$('a.squeezebox'), $$('div.squeezed'));
-  if ($('masthead')) new Navigation($('masthead'));
-  // console.profileEnd();    //in materialist: 65.38ms, 7517 calls
-});
-
-var Kobble = new Class({
-  Implements: Log,
-  initialize: function(){
-
-    // errors and notices
-    this.message_holder = null;
-    this.message_fader = null;
-    this.message_timer = null;
-        
-    // zoomy forms
-    this.zoomlinks = [];
-    this.floater = null;
-    this.floaters = [];
-    
-    // logging control
-    this.debug_level = 0;
-  },
-
-  // getElementsIncludingSelf calls getElements 
-  // then adds the scope element to the beginning 
-  // of the array if it too matches the selector
-  
-  activate: function (element) {
-    var scope = element || document;
-    scope.getElementsIncludingSelf('.benchlist').each (function (el) { new Bench(el); });
-    scope.getElementsIncludingSelf('.catcher').each (function (el) { new Catcher(el); });
-    scope.getElementsIncludingSelf('.draggable').each(function (el) { el.prepDraggable(); });
-    scope.getElementsIncludingSelf('input.tagbox').each(function (el) { new Suggester(el); });
-    scope.getElementsIncludingSelf('a.inline').each(function (el) { new Zoomer(el, 'HtmlForm'); });
-    scope.getElementsIncludingSelf('a.snipper').each(function (el) { new Zoomer(el, 'Snipper'); });
-    scope.getElementsIncludingSelf('div.uploader').each( function (el) { new Uploader(el); });
-    scope.getElementsIncludingSelf('.choices').each( function (el) { new Chooser(el); });
-  },
-  
-  // instantiates and stops the supplied event
-  
-  block: function (e) {
-    if (e) {
-      var event = new Event(e);
-      event.preventDefault();
-      return event;
-    }
-  },
-  
-  // rails flashes and other notifications
-  
-  announcer: function () {
-    if (!this.message_holder) {
-      this.message_holder = new Element('div', {'id' : 'notification'}).inject(document.body);
-      this.message_fader = function () { this.message_holder.fade('out'); }.bind(this);
-    }
-    if (this.message_timer) $clear(this.message_timer);
-    this.message_holder.fade('hide');
-    return this.message_holder;
-  },
-  announce: function (message, title) {
-    this.announcer().removeClass('error');
-    this.announcer().set('html', message);
-    this.flashMessage();
-  },
-  complain: function (message, title) {
-    this.announcer().addClass('error');
-    this.announcer().set('html', message);
-    this.flashMessage();
-  },
-  flashMessage: function () {
-    this.announcer().fade('in');
-    this.message_timer = this.message_fader.delay(4000);
-  },
-
-  // selective logger
-  
-  debug: function (message, level) {
-    if (!level) level = 2;
-    this.log(message);
-  }
-    
-});
 
 
 
