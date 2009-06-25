@@ -1,0 +1,15 @@
+- @title = "edit tag #{@thing.name}"
+
+- content_for :buttons do
+  .formbuttons
+    = submit_tag "Update Tag"
+    or
+    = link_to 'cancel', collected_url_for(@thing)
+
+.mainform
+  - form_for :thing, :url => collected_url_for(@thing), :html => { :method => "put", :multipart => true } do |f| 
+    = render :partial => 'form', :locals => {:f => f}
+
+- content_for :admin do
+  = link_to "^ tag", collected_url_for(@thing)
+  = render :partial => 'shared/show_admin'

@@ -1,0 +1,17 @@
+.preamble
+  %p
+    'Tags' are just the simplest possible subject markers with just a word or two to attach to whatever you like. They're meant to be quick and easy things to drag around. tThe key to their usefulness is consistency of application...
+
+%div{:class => "mainform contentblock"}
+
+  = render :partial => 'shared/error_report'
+
+  %fieldset
+    %legend
+      Description
+
+    = render :partial => 'shared/edit_name', :locals => {:item => @thing, :f => f, :required => true}
+    = render :partial => 'shared/edit_description', :locals => {:item => @thing, :f => f, :required => true, :heading => 'Description'}
+
+  = yield :buttons
+
