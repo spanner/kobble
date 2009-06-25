@@ -10,10 +10,8 @@ var Suggester = new Class ({
       multiple: true,
       zIndex: 30000,
       overflow: 'scroll',
-      forceSelect: true,
-      typeAhead: true,
-      className: 'tagsuggestions'
-  		
+      className: 'tagsuggestions',
+  		selectMode: 'type-ahead'
     });
   }
 });

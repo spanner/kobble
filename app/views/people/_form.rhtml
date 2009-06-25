@@ -17,7 +17,6 @@
     <legend>Description</legend>
     <%= render :partial => 'shared/edit_name', :locals => {:item => @thing, :f => f, :required => true} %>
     <%= render :partial => 'shared/edit_description', :locals => {:item => @thing, :f => f, :required => true} %>
-    <%= render :partial => 'shared/edit_image', :locals => {:item => @thing, :f => f, :heading => "Mugshot"} %>
   </fieldset>
 
   <%= yield :buttons %>
@@ -25,6 +24,7 @@
   <fieldset class="notinline">
     <legend>Filing</legend>
     <%= render :partial => 'shared/edit_tags', :locals => {:item => @thing, :f => f} %>
+    <%= render :partial => 'shared/edit_image', :locals => {:item => @thing, :f => f, :heading => "Mugshot"} %>
   </fieldset>
 
   <fieldset class="notinline">

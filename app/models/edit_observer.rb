@@ -37,6 +37,10 @@ class EditObserver < ActiveRecord::Observer
 
   def record_event(model, type)
     collection = model if model.is_a?(Collection)
+    if model.is_a?(Annotation)
+      model = model.annotated
+      type = 'annotated'
+    end
     collection ||= model.has_collection? ? model.collection : nil
     collection.last_active_at = Time.now if collection && !collection.frozen?
 

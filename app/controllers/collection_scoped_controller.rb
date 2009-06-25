@@ -19,7 +19,7 @@ class CollectionScopedController < AccountScopedController
 
   def create
     if @thing.save
-      @thing.tags << Tag.from_list(params[:tag_list]) if params[:tag_list]
+      @thing.tags = Tag.from_list(params[:tag_list]) if params[:tag_list]
       respond_to do |format|
         format.html { 
           flash[:notice] = "#{@thing.nice_title} created."
