@@ -170,6 +170,7 @@ var Catcher = new Class({
       k.activate(li);
     }
   },
+
   refresh: function () {
     if (this.is_list) {
       this.container.getChildren().each(function (el) { k.activate(el); });

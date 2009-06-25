@@ -49,11 +49,9 @@ var TabSet = new Class({
 	select: function (tab) {
 	  this.tabs.each(function (t) { 
 	    if (t.tag == tab.tag) {
-        console.log('selecting ', t.name);
 	      t.show();
 	      this.foreground = t;
 	    } else {
-        console.log('not ', t.name);
         t.hide();
 	    }
 	  }, this);

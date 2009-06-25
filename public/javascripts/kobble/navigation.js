@@ -56,5 +56,6 @@ var MenuItem = new Class({
 });
 
 kobble_starters.push(function (scope) {
-  if ($('masthead')) new Navigation($('masthead'));
+  var mh = scope.getElement('#masthead');
+  if (mh) new Navigation(mh);
 });

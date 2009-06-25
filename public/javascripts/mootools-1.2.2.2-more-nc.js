@@ -1024,6 +1024,7 @@ var Accordion = Fx.Accordion = new Class({
 	},
 
 	display: function(e, index, useFx){
+	  console.log('display!');
 	  if (e) new Event(e).stop().preventDefault();
 		useFx = $pick(useFx, true);
 		index = ($type(index) == 'element') ? this.elements.indexOf(index) : index;
