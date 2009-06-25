@@ -3,6 +3,8 @@ class BookmarkingsController < ObjectScopedController
   before_filter :request_collection
   before_filter :get_bookmarking, :only => [:destroy]
 
+  # when we're object-scoped, @thing is the scoping object
+
   def create
     @bookmarked = thing_from_tag( params[:object] )
     @bookmarking = @thing.bookmarkings.create!(:bookmark => @bookmarked)

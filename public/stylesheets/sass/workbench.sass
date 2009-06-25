@@ -7,15 +7,26 @@ div#workbench
   :width 25%
   :height 100%
   :overflow hidden
-  :background-color = !coolgrey11
   form.benchform
     :height 100%
     :margin 0
     :padding 0
     :overflow hidden
-  h3
-    :margin 6px 6px 6px 26px
-    :color = !coolgrey8
+  div.tabs
+    :font-size 14px
+    :margin 0 2px 0 5px
+    a.tab
+      :margin 14px 1px 0 0
+      :padding 3px 8px
+      :color = !coolgrey4
+      :background-color = !coolgrey8
+      :float left
+    a.fg
+      :margin 10px 1px 0 0
+      :padding 5px 8px
+      :color white
+      :background-color = !coolgrey11
+      
   p.explanatory, p.controls
     :position absolute
     :padding 10px
@@ -44,54 +55,59 @@ div#workbench
       :display inline
       :color = !coolgrey11
       :padding 3px
-  ul.benchlist
-    :padding 0
-    :margin 0
-    :background-color = !coolgrey11
+  div.tabbed
     :height 100%
-    li
-      :list-style none
+    ul
+      :clear both
+      :padding 0
       :margin 0
-      :padding 8px 6px 6px 26px
-      :border-top
-        :width 1px
-        :color = !coolgrey11 + 11
-        :style solid
-      a, a.draggable
-        :display block
-        :font-size 100%
-        :color = !coolgrey6
-        :font-weight normal
-        :line-height 1.3
-        :padding 0 0 0 20px
-        :margin-left -20px
-        :background
-          :color transparent
-          :position top left
-          :repeat no-repeat
-      a:hover
-        :color white
-      input.selector
-        :display none
-      a.waiting
-        :background-image url('/images/furniture/signals/wait_16_white.gif')
-        :color = !coolgrey8
-    li.selected
+      :background-color = !coolgrey11
+      :height 100%
+      :overflow auto
+    ul.benchlist
+      li
+        :list-style none
+        :margin 0
+        :padding 8px 6px 6px 26px
+        :border-bottom
+          :width 1px
+          :color = !coolgrey11 + 11
+          :style solid
+        a, a.draggable
+          :display block
+          :font-size 100%
+          :color = !coolgrey6
+          :font-weight normal
+          :line-height 1.3
+          :padding 0 0 0 20px
+          :margin-left -20px
+          :background
+            :color transparent
+            :position top left
+            :repeat no-repeat
+        a:hover
+          :color white
+        input.selector
+          :display none
+        a.waiting
+          :background-image url('/images/furniture/signals/wait_16_white.gif')
+          :color = !coolgrey8
+      li.selected
+        :background-color = !rubinered
+        a, a:visited
+          :color white
+        a.waiting
+          :background-image url('/images/furniture/signals/wait_16_on_pink.gif')
+    ul.receptive
+      :border 0
+      :background-color = !coolgrey11 - 6
+    ul.drophere
       :background-color = !rubinered
-      a, a:visited
-        :color white
-      a.waiting
-        :background-image url('/images/furniture/signals/wait_16_on_pink.gif')
-  ul.receptive
-    :border 0
-    :background-color = !coolgrey11 - 6
-  ul.drophere
-    :background-color = !rubinered
-    li
-      :border-top
-        :color = !rubinered + 11
-  ul.catcher
-    :border 0
+      li
+        :border-bottom
+          :color = !rubinered + 11
+    ul.catcher
+      :border 0
   
 
 li.bookmarked

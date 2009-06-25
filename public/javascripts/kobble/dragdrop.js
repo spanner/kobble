@@ -117,14 +117,15 @@ var Catcher = new Class({
       this.failure_message = hopper.title + " was not removed from " + this.title;
       var request_options = {
         url: this.dropURL(hopper),
+        emulation: true,
         onRequest: hopper.waiting.bind(hopper),
         onSuccess: this.dropComplete.bind(this),
         onFailure: this.dropFailed.bind(this)
       };
       if (this.is_list) request_options['update'] = this.container;
-      new Request.HTML(request_options).post({object : hopper.tag, _method : 'DELETE'});
+      new Request.HTML(request_options).post({'_method': 'DELETE'});
     } else {
-      k.complain(hopper.cargo.name + ' is not in' + this.name + '. WTF?');
+      k.complain(hopper.cargo.name + ' is not in' + this.name + '. (WTF?)');
     }
     hopper.drop();
     delete hopper;

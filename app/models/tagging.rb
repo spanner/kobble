@@ -8,6 +8,7 @@ class Tagging < ActiveRecord::Base
   before_save :get_collection
   
   named_scope :of, lambda {|object| { :conditions => {:taggable_type => object.class.to_s, :taggable_id => object.id} } }
+  
   named_scope :in_collection, lambda { |collection| {:conditions => { :collection_id => collection.id }} }
   named_scope :in_collections, lambda { |collections| {:conditions => ["#{table_name}.collection_id in (" + collections.map{'?'}.join(',') + ")"] + collections.map { |c| c.id }} }
   named_scope :grouped_with_popularity, {

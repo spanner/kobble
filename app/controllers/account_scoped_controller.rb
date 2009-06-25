@@ -11,7 +11,7 @@ class AccountScopedController < ApplicationController
   before_filter :require_user
 
   before_filter :get_working_class
-  before_filter :get_item, :only => [:show, :edit, :update, :destroy, :catch, :drop]
+  before_filter :get_item, :only => [:show, :edit, :update, :destroy]
   before_filter :get_deleted_item, :only => [:recover, :eliminate]
   before_filter :get_items, :only => [:index]
   before_filter :build_item, :only => [:new, :create]
