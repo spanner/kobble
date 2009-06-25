@@ -26,44 +26,20 @@ div#workbench
       :padding 5px 8px
       :color white
       :background-color = !coolgrey11
-      
-  p.explanatory, p.controls
-    :position absolute
-    :padding 10px
-    :bottom 0
-    :font-size 80%
-    :margin 0
-    :color = !coolgrey8
-  p.controls
-    :visibility hidden
-    :position fixed
-    :bottom 0
-    :right 25%
-    :width 120px
-    :padding 0
-    :bottom 0
-    :font-size 11px
-    :margin 0
-    :color = !coolgrey8
-    :text-align right
-    :line-height 17px
-    a, a:visited
-      :background-color = !rubinered
-      :color white
-      :padding 3px
-    span.benchnote
-      :display inline
-      :color = !coolgrey11
-      :padding 3px
+
   div.tabbed
     :height 100%
+    :clear left
+    :background-color = !coolgrey11
+    :overflow auto
+    p 
+      :padding 8px
+      :color white
     ul
-      :clear both
       :padding 0
       :margin 0
       :background-color = !coolgrey11
       :height 100%
-      :overflow auto
     ul.benchlist
       li
         :list-style none
@@ -109,7 +85,40 @@ div#workbench
     ul.catcher
       :border 0
   
+    ul.taglist
+      :padding 20px 8px
+      
 
+  p.explanatory, p.controls
+    :position absolute
+    :padding 10px
+    :bottom 0
+    :font-size 80%
+    :margin 0
+    :color = !coolgrey8
+  p.controls
+    :visibility hidden
+    :position fixed
+    :bottom 0
+    :right 25%
+    :width 120px
+    :padding 0
+    :bottom 0
+    :font-size 11px
+    :margin 0
+    :color = !coolgrey8
+    :text-align right
+    :line-height 17px
+    a, a:visited
+      :background-color = !rubinered
+      :color white
+      :padding 3px
+    span.benchnote
+      :display inline
+      :color = !coolgrey11
+      :padding 3px
+
+    
 li.bookmarked
   a.collection
     :background-image url(/images/furniture/kobble/16/mid/collection.png) 
