@@ -1,7 +1,0 @@
-<% tabset ||= 'tabs' %>
-<% if item.has_extracted_text? %>
-	<div id="<%= tabset %>_extracted">
-	  <h2 class="boxhead">extracted text (as pulled from file)</h2>
-  	<%= item.extracted_text.formatted %>
-	</div>
-<% end %>

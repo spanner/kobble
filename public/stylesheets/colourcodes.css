@@ -13,7 +13,7 @@ a.delete, .deleted {
 a.update {
   color: #cc6e1f; }
 
-a.mildwarning {
+a.mildwarning, .mildwarning {
   color: #d1005d; }
 
 a.admin {

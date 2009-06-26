@@ -1,53 +1,65 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
 
+  def render_if_possible(*args)
+    render(*args)
+  end
+
   def collected_url_for(item)
     @controller.send(:collected_url_for, item)
   end
   
+  def collected_arguments_for(item)
+    if item.respond_to?(:collection)
+      [current_collection.id, item.id]
+    else 
+      [item.id]
+    end
+  end
+  
   def edit_url_for(item)
     url_method = "edit_#{item.class.to_s.underscore.downcase}_url"
-    send url_method.intern, current_collection.id, item.id
+    send url_method.intern, *collected_arguments_for(item)
   end
   
   def item_tags_path(item)
     url_method = "#{item.class.to_s.underscore.downcase}_tags_path"
-    send url_method.intern, current_collection, item
+    send url_method.intern, *collected_arguments_for(item)
   end
 
   def item_new_topic_url(item)    
     url_method = 'new_' + item.class.to_s.underscore.downcase + '_topic_url'
-    send url_method.intern, current_collection, item
+    send url_method.intern, *collected_arguments_for(item)
   end
 
   def item_topics_path(item)    
     url_method = item.class.to_s.underscore.downcase + '_topics_path'
-    send url_method.intern, current_collection, item
+    send url_method.intern, *collected_arguments_for(item)
   end
 
   def item_create_topic_path(item)    
     url_method = 'create_' + item.class.to_s.underscore.downcase + '_topic_path'
-    send url_method.intern, current_collection, item
+    send url_method.intern, *collected_arguments_for(item)
   end
   
   def item_topic_url(item, topic)
     url_method = item.class.to_s.underscore.downcase + '_topic_url'
-    send url_method.intern, item, topic
+    send url_method.intern, *collected_arguments_for(item)
   end
 
   def item_new_note_url(item)    
     url_method = 'new_' + item.class.to_s.underscore.downcase + '_annotation_url'
-    send url_method.intern, current_collection, item
+    send url_method.intern, *collected_arguments_for(item)
   end
 
   def item_notes_path(item)    
     url_method = item.class.to_s.underscore.downcase + '_annotations_path'
-    send url_method.intern, current_collection, item
+    send url_method.intern, *collected_arguments_for(item)
   end
 
   def item_notes_url(item)    
     url_method = item.class.to_s.underscore.downcase + '_annotations_url'
-    send url_method.intern, current_collection, item
+    send url_method.intern, *collected_arguments_for(item)
   end
 
   def item_history_url(item)

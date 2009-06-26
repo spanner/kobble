@@ -42,10 +42,4 @@
           = link_to "show full history", item_history_url(item)
 
     %ul
-      - events.each do |event|
-        - if event.affected
-          - if event.user
-            - who = event.user == current_user ? 'you' : event.user.name
-          - else
-            - who = 'someone'
-          = render :partial => "shared/listed", :locals => { :listed => event.affected, :name => event.affected_name || event.affected.name, :status_class => event.event_type, :addendum => "#{event.event_type} by #{who} #{time_ago_in_words(event.at)} ago", :idprefix => 'historical' }
+      = render :partial => "events/event", :collection => events

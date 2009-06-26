@@ -165,21 +165,21 @@ module Kobble #:nodoc:
           Kobble.organised_model(self)
         end
 
-        # organisation -> attached field notes
+        # annotation -> attached field notes
 
         if definitions.include?(:annotation)
           has_many :annotations, :as => :annotated, :dependent => :destroy
           Kobble.annotated_model(self)
         end
 
-        # organisation -> attached topics
+        # discussion -> attached topics
 
         if definitions.include?(:discussion)
           has_many :topics, :as => :referent, :dependent => :destroy, :order => 'topics.created_at DESC'
           Kobble.discussed_model(self)
         end
 
-        # organisation -> attached events
+        # log -> attached events
 
         if definitions.include?(:log)
           attr_accessor :just_changed
@@ -261,7 +261,7 @@ module Kobble #:nodoc:
       end
 
       def is_discussable?
-        true if self.class.reflect_on_association(:topics)
+        Kobble.discussed_model?(self.class)
       end
       
       def has_topics?
@@ -269,7 +269,7 @@ module Kobble #:nodoc:
       end
 
       def is_taggable?
-        true if self.class.reflect_on_association(:tags)
+        Kobble.described_model?(self.class)
       end
     
       def has_tags?
@@ -281,11 +281,11 @@ module Kobble #:nodoc:
       end
 
       def has_members?
-        respond_to?('members') && members.count > 0
+        respond_to?('members') && self.members.any?
       end
             
       def is_notable?
-        respond_to?('annotations')
+        Kobble.annotated_model?(self.class)
       end
     
       def has_notes?
@@ -319,7 +319,7 @@ module Kobble #:nodoc:
       end
     
       def is_searchable?
-        self.respond_to? :xapian_document_term
+        Kobble.indexed_model?(self.class) && self.respond_to?(:xapian_document_term)
       end
 
       def has_origins?
@@ -417,8 +417,12 @@ module Kobble #:nodoc:
         self.respond_to?('nodes') && self.nodes.count > 0
       end
     
+      def is_bundlable?
+        Kobble.organised_model?(self.class)
+      end
+    
       def has_bundles?
-        self.respond_to?('bundles') && self.bundles.count > 0
+        self.is_bundlable? && self.respond_to?('bundles') && self.bundles.count > 0
       end
 
       def editable_by?(user)
@@ -449,8 +453,18 @@ module Kobble #:nodoc:
         return created_by
       end
     
+      def is_logged?
+        Kobble.logged_model?(self.class)
+      end
+    
+      def is_new?
+        (self.updated_at.nil? || self.updated_at == self.created_at) && Time.now - self.created_at < 1.week && self.logged_events.count <= 1
+      end
+    
       def last_event_at
-        self.events.most_recent.empty? ? DateTime.new(0) : self.events.most_recent.first.at
+        if self.is_logged? 
+          self.events.most_recent.empty? ? DateTime.new(0) : self.events.most_recent.first.at
+        end
       end
     
       def reassign_associates

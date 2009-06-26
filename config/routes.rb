@@ -21,7 +21,7 @@ ActionController::Routing::Routes.draw do |map|
                 :member => { :permissions => :any }
 
   map.resources :users, 
-                :has_many => [:events, :user_preferences, :bookmarkings], 
+                :has_many => [:events, :user_preferences, :bookmarkings, :sources, :nodes, :bundles], 
                 :member => {:home => :get, :recover => :post, :eliminate => :post, :reinvite => :any, :predelete => :get} do |user|
                   
     # user.resources :bookmarkings, :collection => {:remove => :post}

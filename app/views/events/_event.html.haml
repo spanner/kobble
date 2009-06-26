@@ -1,0 +1,19 @@
+- affected = event.affected
+- if affected
+  - if event.user
+    - who = event.user == current_user ? 'you' : event.user.name
+  - else
+    - who = 'someone'
+  - type_class = affected.is_a?(Source) ? [affected.file_type] : [affected.class.to_s.downcase]
+  - name = affected.name
+  - name = "nameless #{affected.nice_title}" if name.blank?
+
+  %li{:class => event.event_type}
+    = link_to name, collected_url_for(affected), :id => "historical_#{affected.class.to_s.downcase}_#{affected.id}", :class => "#{type_class} draggable catcher", :catches => affected.catchlist, :title => name
+    %span{:class => "listnote"}
+      = affected.nice_title
+      = event.event_type
+      by
+      = who
+      = time_ago_in_words(event.at)
+      ago

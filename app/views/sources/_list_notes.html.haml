@@ -1,0 +1,7 @@
+- if listed.is_new?
+  = link_to "new", edit_url_for(listed), :class => 'create'
+- else
+  - if listed.has_occasion?
+    = link_to listed.occasion.name + '.', collected_url_for(listed.occasion)
+  - if listed.has_nodes?
+    = pluralize(listed.nodes.count, 'fragment')

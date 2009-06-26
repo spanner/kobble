@@ -1,4 +1,0 @@
-<% controller.views.select{|view| view != 'list'}.each do |view| %>
-  <%= link_to_unless_current view, :action => view, :page => params[:page], :collection_id => params[:collection_id], :user_id => params[:user_id]  %> &middot;
-<% end %>
-<%= link_to_unless_current 'list', :action => 'index', :page => params[:page] %>

@@ -16,7 +16,7 @@
     %p
       No summary given.
     
-  %p.listnote
+  %p.footnote
     - if item.is_a?(Node) && item.source
       Excerpted from
       = link_to item.source.name, collected_url_for(item.source)

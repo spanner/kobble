@@ -1,0 +1,21 @@
+- @title = @thing.name
+
+= render :partial => 'shared/show_summary'
+
+%h3.pagesection
+  %a{:href => "#", :class => "squeezebox"}
+    associated documents 
+    %span.headernote
+      - if @thing.sources.any?
+        = pluralize(@thing.sources.count, 'source')
+
+%div{:id => 'featured', :class => 'squeezed contentblock'}
+  .mainlist
+    %ul
+      = render :partial => 'shared/listed', :collection => @thing.sources
+
+= render :partial => 'shared/show_field_notes'
+= render :partial => 'shared/show_tags'
+= render :partial => 'shared/show_topics'
+= render :partial => 'shared/show_history', :locals => {:events => @thing.logged_events}
+

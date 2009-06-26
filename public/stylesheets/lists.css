@@ -5,7 +5,7 @@ div.mainlist {
   clear: left; }
   div.mainlist ul {
     padding-left: 20px;
-    color: #8c8d8e; }
+    color: #afafaf; }
     div.mainlist ul li {
       margin: 0 10px 4px 0;
       font-size: 16px;
@@ -14,6 +14,14 @@ div.mainlist {
       div.mainlist ul li img.flag {
         margin: 2px 0 0 0;
         vertical-align: top; }
+      div.mainlist ul li span.listnote {
+        font-size: 0.8em;
+        font-weight: lighter;
+        color: #4d4e53; }
+        div.mainlist ul li span.listnote a {
+          font-size: 1em; }
+        div.mainlist ul li span.listnote a:hover {
+          color: #d1005d; }
 
 /* list icons and colour-codes */
 div.mainlist ul, div.wordlist ul {
@@ -21,10 +29,9 @@ div.mainlist ul, div.wordlist ul {
   div.mainlist ul li,   div.wordlist ul li {
     list-style: none;
     padding-left: 20px;
-    font-size: 0.8em;
     line-height: 1.3; }
     div.mainlist ul li a,     div.wordlist ul li a {
-      font-size: 1.6em;
+      font-size: 1.2em;
       padding: 5px 5px 5px 20px;
       margin-left: -20px;
       background-position: 2px 5px;
@@ -66,6 +73,8 @@ ul li a.user {
   background-image: url(/images/furniture/kobble/16/blue/person.png); }
 ul li a.person {
   background-image: url(/images/furniture/kobble/16/blue/person.png); }
+ul li a.occasion {
+  background-image: url(/images/furniture/kobble/16/blue/occasion.png); }
 ul li a.tag {
   background-image: url(/images/furniture/kobble/16/blue/tag.png); }
 ul li a.topic {
@@ -96,6 +105,8 @@ ul li a.user:hover {
   background-image: url(/images/furniture/kobble/16/pink/person.png); }
 ul li a.person:hover {
   background-image: url(/images/furniture/kobble/16/pink/person.png); }
+ul li a.occasion:hover {
+  background-image: url(/images/furniture/kobble/16/pink/occasion.png); }
 ul li a.tag:hover {
   background-image: url(/images/furniture/kobble/16/pink/tag.png); }
 ul li a.topic:hover {
@@ -131,6 +142,8 @@ li.created a.user {
   background-image: url(/images/furniture/kobble/16/green/person.png); }
 li.created a.person {
   background-image: url(/images/furniture/kobble/16/green/person.png); }
+li.created a.occasion {
+  background-image: url(/images/furniture/kobble/16/green/occasion.png); }
 li.created a.tag {
   background-image: url(/images/furniture/kobble/16/green/tag.png); }
 li.created a.topic {
@@ -166,6 +179,8 @@ li.updated a.user {
   background-image: url(/images/furniture/kobble/16/orange/person.png); }
 li.updated a.person {
   background-image: url(/images/furniture/kobble/16/orange/person.png); }
+li.updated a.occasion {
+  background-image: url(/images/furniture/kobble/16/orange/occasion.png); }
 li.updated a.tag {
   background-image: url(/images/furniture/kobble/16/orange/tag.png); }
 li.updated a.topic {
@@ -204,6 +219,8 @@ li.deleted {
     background-image: url(/images/furniture/kobble/16/mid/person.png); }
   li.deleted a.person {
     background-image: url(/images/furniture/kobble/16/mid/person.png); }
+  li.deleted a.occasion {
+    background-image: url(/images/furniture/kobble/16/mid/occasion.png); }
   li.deleted a.tag {
     background-image: url(/images/furniture/kobble/16/mid/tag.png); }
   li.deleted a.topic {
@@ -239,6 +256,8 @@ li.annotated a.user {
   background-image: url(/images/furniture/kobble/16/orange/person.png); }
 li.annotated a.person {
   background-image: url(/images/furniture/kobble/16/orange/person.png); }
+li.annotated a.occasion {
+  background-image: url(/images/furniture/kobble/16/orange/occasion.png); }
 li.annotated a.tag {
   background-image: url(/images/furniture/kobble/16/orange/tag.png); }
 li.annotated a.topic {
@@ -274,6 +293,8 @@ ul.inactive li a.user {
   background-image: url(/images/furniture/kobble/16/mid/person.png); }
 ul.inactive li a.person {
   background-image: url(/images/furniture/kobble/16/mid/person.png); }
+ul.inactive li a.occasion {
+  background-image: url(/images/furniture/kobble/16/mid/occasion.png); }
 ul.inactive li a.tag {
   background-image: url(/images/furniture/kobble/16/mid/tag.png); }
 ul.inactive li a.topic {

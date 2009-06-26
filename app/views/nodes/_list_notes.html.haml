@@ -1,0 +1,6 @@
+- if listed.is_new?
+  = link_to "new", edit_url_for(listed), :class => 'create'
+- if listed.has_source?
+  %br
+  from
+  = link_to listed.source.name, collected_url_for(listed.source)

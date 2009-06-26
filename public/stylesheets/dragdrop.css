@@ -35,6 +35,8 @@ div.dragging {
     background-image: url(/images/furniture/kobble/16/blue/person.png); }
   div.dragging a.person {
     background-image: url(/images/furniture/kobble/16/blue/person.png); }
+  div.dragging a.occasion {
+    background-image: url(/images/furniture/kobble/16/pink/occasion.png); }
   div.dragging a.tag {
     background-image: url(/images/furniture/kobble/16/blue/tag.png); }
   div.dragging a.topic {
@@ -63,6 +65,8 @@ div.dragging {
     background-image: url(/images/furniture/kobble/16/pink/person.png); }
   div.dragging a.person:hover {
     background-image: url(/images/furniture/kobble/16/pink/person.png); }
+  div.dragging a.occasion:hover {
+    background-image: url(/images/furniture/kobble/16/pink/occasion.png); }
   div.dragging a.tag:hover {
     background-image: url(/images/furniture/kobble/16/pink/tag.png); }
   div.dragging a.topic:hover {

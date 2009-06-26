@@ -2,7 +2,6 @@
 - name = "nameless #{listed.nice_title}" if name.blank?
 - collection = listed.is_a?(Collection) ? listed : listed.collection
 - collection_name = collection.name if collection
-- url = listed.is_a?(Collection) ? url_for(listed) : collected_url_for(listed)
 - addendum ||= false
 - idprefix ||= 'listed'
 
@@ -24,10 +23,12 @@
 - liid << listed.id
 
 %li{:class => liclasses.join(' ')}
-  = link_to name, url, :id => liid.join('_'), :class => aclasses.join(' '), :title => "#{listed.nice_title}: #{listed.name}", :catches => (listed.catchlist unless inactive)
+  = link_to name, collected_url_for(listed), :id => liid.join('_'), :class => aclasses.join(' '), :title => "#{listed.nice_title}: #{listed.name}", :catches => (listed.catchlist unless inactive)
   = render :partial => 'shared/note_flags', :locals => {:item => listed}
-  - if addendum
-    %span{:class => "listnote"}
+  %span{:class => "listnote"}
+    - if addendum
       = addendum
+    - else
+      = render_if_possible :partial => "#{listed.class.to_s.downcase.pluralize}/list_notes", :locals => {:listed => listed}
   %br
-  = truncate( listed.find_some_text, 128 )
+  = truncate( listed.find_some_text, 200 )

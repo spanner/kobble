@@ -7,7 +7,7 @@ div.mainlist
   :clear left
   ul
     :padding-left 20px
-    :color = !coolgrey8
+    :color = !coolgrey6
     li
       :margin 0 10px 4px 0
       :font-size 16px
@@ -16,7 +16,15 @@ div.mainlist
       img.flag
         :margin 2px 0 0 0
         :vertical-align top
-
+      span.listnote
+        :font-size 0.8em
+        :font-weight lighter
+        :color = !coolgrey11
+        a
+          :font-size 1em
+        a:hover
+          :color = !rubinered
+          
 /* list icons and colour-codes
 
 div.mainlist, div.wordlist
@@ -25,10 +33,9 @@ div.mainlist, div.wordlist
     li
       :list-style none
       :padding-left 20px
-      :font-size 0.8em
       :line-height 1.3
       a
-        :font-size 1.6em
+        :font-size 1.2em
         :padding 5px 5px 5px 20px
         :margin-left -20px
         :background
@@ -98,3 +105,4 @@ h3.listheader, h4.listheader
     :color = !coolgrey11
   a.listhead:hover
     :color = !rubinered
+    

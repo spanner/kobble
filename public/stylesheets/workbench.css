@@ -134,6 +134,8 @@ li.bookmarked a.user {
   background-image: url(/images/furniture/kobble/16/mid/person.png); }
 li.bookmarked a.person {
   background-image: url(/images/furniture/kobble/16/mid/person.png); }
+li.bookmarked a.occasion {
+  background-image: url(/images/furniture/kobble/16/mid/occasion.png); }
 li.bookmarked a.tag {
   background-image: url(/images/furniture/kobble/16/mid/tag.png); }
 li.bookmarked a.topic {
@@ -162,6 +164,8 @@ li.bookmarked a.user:hover {
   background-image: url(/images/furniture/kobble/16/white/person.png); }
 li.bookmarked a.person:hover {
   background-image: url(/images/furniture/kobble/16/white/person.png); }
+li.bookmarked a.occasion:hover {
+  background-image: url(/images/furniture/kobble/16/white/occasion.png); }
 li.bookmarked a.tag:hover {
   background-image: url(/images/furniture/kobble/16/white/tag.png); }
 li.bookmarked a.topic:hover {
@@ -195,6 +199,8 @@ li.selected a.user {
   background-image: url(/images/furniture/kobble/16/white/person.png); }
 li.selected a.person {
   background-image: url(/images/furniture/kobble/16/white/person.png); }
+li.selected a.occasion {
+  background-image: url(/images/furniture/kobble/16/white/occasion.png); }
 li.selected a.tag {
   background-image: url(/images/furniture/kobble/16/white/tag.png); }
 li.selected a.topic {
@@ -223,6 +229,8 @@ li.selected a.user:hover {
   background-image: url(/images/furniture/kobble/16/white/person.png); }
 li.selected a.person:hover {
   background-image: url(/images/furniture/kobble/16/white/person.png); }
+li.selected a.occasion:hover {
+  background-image: url(/images/furniture/kobble/16/white/occasion.png); }
 li.selected a.tag:hover {
   background-image: url(/images/furniture/kobble/16/white/tag.png); }
 li.selected a.topic:hover {

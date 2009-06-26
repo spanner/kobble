@@ -1,0 +1,35 @@
+- item ||= @thing
+
+%h3.pagesection
+  %a{:href => "#", :class => "squeezebox"}
+    contributions 
+    %span.headernote
+      = pluralize(item.created_sources.count, 'source')
+      = pluralize(item.created_nodes.count, 'fragment') 
+      = pluralize(item.created_bundles.count, 'set')
+
+%div{:id => 'contributions', :class => 'squeezed'}
+
+  %h4.listheader
+    = pluralize(item.created_sources.count, "Source document")
+    - if item.created_sources.count > 5
+      %span.headernote= link_to "show all", user_sources_url(item)
+  .mainlist
+    %ul
+      = render :partial => "shared/listed", :collection => item.created_sources.latest_few
+
+  %h4.listheader
+    = pluralize(item.created_sources.count, "Fragment")
+    - if item.created_nodes.count > 5
+      %span.headernote= link_to "show all", user_nodes_url(item)
+  .mainlist
+    %ul
+      = render :partial => "shared/listed", :collection => item.created_nodes.latest_few
+
+  %h4.listheader
+    = pluralize(item.created_bundles.count, "Set")
+    - if item.created_nodes.count > 5
+      %span.headernote= link_to "show all", user_bundles_url(item)
+  .mainlist
+    %ul
+      = render :partial => "shared/listed", :collection => item.created_bundles.latest_few

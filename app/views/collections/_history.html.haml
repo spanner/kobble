@@ -1,0 +1,11 @@
+- events = @since ? collection.events.since(@since) : collection.events.latest_few
+
+- if events.empty?
+  %p
+    No activity recorded
+    - unless @since.nil?
+      in this period
+  
+-else
+  %ul
+    = render :partial => "events/event", :collection => events
