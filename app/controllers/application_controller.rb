@@ -9,10 +9,12 @@ class ApplicationController < ActionController::Base
   layout 'outside'
   
   def collected_url_for(thing)
+    logger.warn("collected_url_for #{thing.class.to_s} / #{thing.id} (cc is #{current_collection})")
     return url_for(thing) if thing.is_a?(Collection)
     url_method = "#{thing.class.to_s.downcase}_url".intern
     return send(url_method) unless thing.respond_to?(:collection)
-    send(url_method, current_collection.id, thing)
+    collection = thing.collection || current_collection
+    send(url_method, collection.id, thing)
   end
 
 end
