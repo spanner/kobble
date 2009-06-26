@@ -265,6 +265,43 @@ li.annotated a.topic {
 li.annotated a.post {
   background-image: url(/images/furniture/kobble/16/orange/post.png); }
 
+li.problematic a {
+  color: #d1005d; }
+li.problematic a.collection {
+  background-image: url(/images/furniture/kobble/16/pink/collection.png); }
+li.problematic a.video {
+  background-image: url(/images/furniture/kobble/16/pink/video.png); }
+li.problematic a.audio {
+  background-image: url(/images/furniture/kobble/16/pink/audio.png); }
+li.problematic a.doc {
+  background-image: url(/images/furniture/kobble/16/pink/text.png); }
+li.problematic a.pdf {
+  background-image: url(/images/furniture/kobble/16/pink/text.png); }
+li.problematic a.ppt {
+  background-image: url(/images/furniture/kobble/16/pink/ppt.png); }
+li.problematic a.xls {
+  background-image: url(/images/furniture/kobble/16/pink/xls.png); }
+li.problematic a.text {
+  background-image: url(/images/furniture/kobble/16/pink/text.png); }
+li.problematic a.source {
+  background-image: url(/images/furniture/kobble/16/pink/text.png); }
+li.problematic a.node {
+  background-image: url(/images/furniture/kobble/16/pink/node.png); }
+li.problematic a.bundle {
+  background-image: url(/images/furniture/kobble/16/pink/bundle.png); }
+li.problematic a.user {
+  background-image: url(/images/furniture/kobble/16/pink/person.png); }
+li.problematic a.person {
+  background-image: url(/images/furniture/kobble/16/pink/person.png); }
+li.problematic a.occasion {
+  background-image: url(/images/furniture/kobble/16/pink/occasion.png); }
+li.problematic a.tag {
+  background-image: url(/images/furniture/kobble/16/pink/tag.png); }
+li.problematic a.topic {
+  background-image: url(/images/furniture/kobble/16/pink/topic.png); }
+li.problematic a.post {
+  background-image: url(/images/furniture/kobble/16/pink/post.png); }
+
 ul.inactive li a {
   color: #8c8d8e; }
 ul.inactive li a.collection {

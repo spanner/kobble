@@ -10,6 +10,8 @@
 - status_class ||= 'listed'
 
 - liclasses = [status_class]
+- liclasses << 'problematic' if listed.has_warnings?
+
 - aclasses = [type_class]
 - aclasses << 'draggable' unless inactive
 - aclasses << 'catcher' unless inactive
