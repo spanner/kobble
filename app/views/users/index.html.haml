@@ -6,11 +6,11 @@
   
 #userlist
   = render :partial => 'user', :object => current_account.user
-  = render :partial => 'user', :collection => @list.select{|u| !u.account_admin?}
   - if current_user.is_admin?
     .user
       = link_to image_tag("/images/furniture/kobble/32/grey/person.png"), new_user_url, :class => 'newuser'
       = link_to 'add another user', new_user_url, :class => 'header admin'
+  = render :partial => 'user', :collection => @list.select{|u| !u.account_admin?}
 
   %p.explanatory
     The user icons are gravatars. If you don't have one, sign up at

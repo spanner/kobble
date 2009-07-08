@@ -11,4 +11,4 @@
   - elsif current_user.is_admin?
     = link_to 'edit', edit_user_url(user), :class => 'update'
     - unless user.account_admin?
-      = link_to 'delete', edit_user_url(user), :class => 'delete'
+      = link_to 'delete', user_url(user), :method => 'delete', :class => 'delete'
