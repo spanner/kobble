@@ -8,7 +8,6 @@ class SourcesController < CollectionScopedController
       @source = Source.new(:name => params[:Filename], :collection_id => params[:collection_id])
       @source.uploaded_file = params[:Filedata]
       @source.save!
-      session["upload_#{params[:Filename]}".intern] = @source.id
       render :nothing => true                                                             # SWFupload only cares about response status
     end
   rescue => e
@@ -20,7 +19,8 @@ class SourcesController < CollectionScopedController
     if params[:id]
       @source = Source.find(params[:id])
     elsif params[:upload]
-      @source = Source.find_by_name(params[:upload])
+      file_name = params[:upload].strip.gsub(/[^\w\d\.\-]+/, '_')                         # copied from paperclip to match filename processing on upload
+      @source = Source.find_by_name(file_name)
     else
       raise Kobble::Error => "source id or upload parameter required"
     end

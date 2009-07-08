@@ -12,9 +12,6 @@
   .mainlist
     %ul{:id => "tag_#{@thing.id}_taggings"}
       = render :partial => 'shared/listed', :collection => @thing.tagged.uniq, :locals => {:catch => false, :idprefix => 'tagged'}
-  %p.listnote
-    Drag items into the list (or space) above to apply this tag to them.
-
 
 = render :partial => 'shared/show_field_notes'
 = render :partial => 'shared/show_topics'

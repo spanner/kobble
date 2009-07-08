@@ -2,10 +2,6 @@
 - benchid << "collections_#{current_collection.id}_" if current_collection
 - benchid << "user_#{current_user.id}_bookmarkings"
 
-- if current_collection
-  - weighted_tags ||= current_collection.tags_with_popularity
-  - tags = weighted_tags.size > 100 ? weighted_tags : weighted_tags.select{|t| t.used.to_i > 1 }
-
 #workbench
   %div.tabs
     = link_to 'bench', '#', :class => 'tab fg', :id => 'show_bench_bench'
@@ -29,6 +25,9 @@
       = link_to "Remove &larr;", user_bookmarkings_url(current_user), :class => 'remover'
 
   - if current_collection
+    - weighted_tags ||= current_collection.tags_with_popularity
+    - tags = weighted_tags.size > 100 ? weighted_tags : weighted_tags.select{|t| t.used.to_i > 1 }
+
     %div{:id => "bench_tags", :class => "tabbed"}
       %ul{:class => "taglist"}
         = render :partial => 'shared/tag_cloud', :locals => {:cloud => tags}
