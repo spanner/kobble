@@ -1,0 +1,39 @@
+- if @thing && @thing.active?
+  - @title = "Welcome!"
+
+  .preamble
+    %p
+      %strong
+        Hello
+        = @thing.best_name + '.'
+      Thank you for persevering with the activation process. Your login is now live and you can start exploring. The best place to start is probably the
+      = link_to "account home page", '/'
+      which you can always reach by clicking on 
+      = link_to current_account.subdomain, '/'
+      at top left.
+    
+    %p
+      PS. You will be asked to log in before you can see any other pages. Sorry about that: fix soon.
+    
+- else 
+  - @title = "Please enter activation code"
+
+  %p.haserror
+    Sorry: can't find you! That link must have been truncated somewhere along the line. 
+    Please paste the 20-character activation code into the box below and we'll try again.
+  
+  - form_tag activate_user_path, :method => 'GET' do
+    = hidden_field_tag :id, params[:id]
+    %p
+      %label{:for => "token"}
+        ID code
+      %br
+      = text_field_tag 'token', '', :class => 'titular'
+
+    %p
+      = submit_tag 'try again'
+
+  %p
+    It is also possible that your confirmation code has expired. They only last ten minutes. In that case, please 
+    = link_to "enter your email address again", new_password_reset_url
+    and we'll send another one.

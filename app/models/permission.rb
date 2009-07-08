@@ -1,6 +1,6 @@
 class Permission < ActiveRecord::Base
 
-  is_material :only => :undelete
+  is_material :only => :undelete    # so that user on restoration gets the right permissions
 
   belongs_to :user
   belongs_to :collection
@@ -28,9 +28,9 @@ class Permission < ActiveRecord::Base
 
 protected
   
-  def activate_if_trusted(permission)
-    permission.active = permission.user.trusted? || permission.collection.public?
-    permission.save if permission.changed?
+  def activate_if_trusted
+    self.active = self.collection.public?
+    self.save if self.changed?
   end
   
 end

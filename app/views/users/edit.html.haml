@@ -1,0 +1,28 @@
+.mainform
+
+.mainform
+  - form_for :thing, :url => user_url(@thing), :html => { :method => "put", :multipart => true } do |f| 
+
+    - if @thing != current_user
+      - @title = "Edit User"
+      - content_for :buttons do
+        .formbuttons
+          = submit_tag "Update User"
+          or
+          = link_to 'cancel', url_for(@thing)
+		
+      = render :partial => 'form', :locals => {:f => f}
+
+    - else
+      - @title = "About yourself"
+      - content_for :buttons do
+        .formbuttons
+          = submit_tag "Save changes"
+          or
+          = link_to 'cancel', url_for(@thing)
+
+      = render :partial => 'self_form', :locals => {:f => f}
+
+- content_for :admin do
+  = render :partial => 'shared/show_admin'
+

@@ -12,14 +12,14 @@ div#masthead {
   position: fixed;
   left: 0;
   top: 30px;
-  width: 135px; }
+  width: 155px; }
 
 div#mainpage {
   position: relative;
   width: 72%; }
   div#mainpage div#pagetitle {
     position: relative;
-    margin: 36px 180px 20px 130px;
+    margin: 36px 180px 20px 150px;
     max-width: 640px; }
     div#mainpage div#pagetitle h1 {
       font-size: 3em;
@@ -34,7 +34,7 @@ div#mainpage {
   div#mainpage div#canvas {
     position: relative;
     padding: 0;
-    margin: 0 20px 40px 130px; }
+    margin: 0 30px 40px 150px; }
 
 div#mastfoot {
   position: fixed;
@@ -46,7 +46,7 @@ div#mastfoot {
   color: #d6d6d4; }
 
 div#navigation {
-  margin: 10px 100px 5px 125px; }
+  margin: 10px 100px 5px 145px; }
   div#navigation a, div#navigation a:link {
     padding: 4px 6px 10px 6px; }
   div#navigation a.fg {
@@ -83,9 +83,9 @@ div#notification.error {
 
 div#admin {
   position: fixed;
-  left: 20px;
+  left: 10px;
   bottom: 12px;
-  width: 100px;
+  width: 120px;
   z-index: 12000; }
 
 div#trashholder {

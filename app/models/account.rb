@@ -12,7 +12,6 @@ class Account < ActiveRecord::Base
   has_many :tags, :dependent => :destroy
   has_many :events, :order => 'at DESC', :dependent => :destroy
   
-  
   validates_presence_of :name, :user, :account_type, :subdomain
   validates_format_of :subdomain, :with => /^[A-Za-z0-9-]+$/, :message => 'The subdomain can only contain alphanumeric characters and dashes.', :allow_blank => true
   validates_uniqueness_of :subdomain, :case_sensitive => false

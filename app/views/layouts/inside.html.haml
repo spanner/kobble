@@ -52,6 +52,9 @@
       - if current_account
         = link_to 'search', search_url, {:class => 'administrative'}
         = link_to 'log out', user_session_path, :method => :delete, :class => 'administrative'
+        
+      = link_to 'bug!', 'https://spanner.lighthouseapp.com/projects/26910-materialist/tickets/new', :class => 'mildwarning'
+
       - unless current_collection
         choose a collection to see more navigation
       

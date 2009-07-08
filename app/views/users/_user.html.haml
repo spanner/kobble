@@ -1,0 +1,11 @@
+- user ||= @thing
+.user
+  = link_to gravatar_for(user, 140), url_for(user)
+  = link_to user.name, url_for(user), :class => user.account_admin? ? 'header account_admin' : 'header'
+  %br
+  - if user == current_user 
+    = link_to 'preferences', edit_user_url(user), :class => 'update'
+  - elsif current_user.is_admin?
+    = link_to 'edit', edit_user_url(user), :class => 'update'
+    - unless user.account_admin?
+      = link_to 'delete', edit_user_url(user), :class => 'delete'

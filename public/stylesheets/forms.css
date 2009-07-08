@@ -136,3 +136,6 @@ div.modalform .notinline {
     border-color: #d1005d; }
   .haserror label,   div.mainform .haserror label {
     color: #d1005d; }
+  .haserror a, .haserror a:visited,   div.mainform .haserror a, div.mainform .haserror a:visited {
+    color: #e71673;
+    font-weight: bold; }

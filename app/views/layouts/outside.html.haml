@@ -41,12 +41,13 @@
         = link_to 'examples',  'http://about.kobble.net/examples/', :class => 'notyet'
         = link_to 'forum', 'http://discuss.kobble.net/', :class => 'notyet'
         = link_to 'sign up', new_account_url, {:class => (request.parameters[:action] == 'signup' ? "fg" : '')}
+        = link_to 'bug!', 'https://spanner.lighthouseapp.com/projects/26910-materialist/tickets/new', :class => 'mildwarning'
         = link_to 'spanner', 'http://spanner.org/', {:class => 'administrative'} 
 
     #admin
       = yield :admin
 
 - if flash[:notice]
-  = javascript_tag %{window.addEvent('load', function(){ intf.announce('#{escape_javascript(flash[:notice])}'); });}
+  = javascript_tag %{window.addEvent('load', function(){ k.announce('#{escape_javascript(flash[:notice])}'); });}
 - if flash[:error]
-  = javascript_tag %{window.addEvent('load', function(){ intf.complain('#{escape_javascript(flash[:error])}'); });}
+  = javascript_tag %{window.addEvent('load', function(){ k.complain('#{escape_javascript(flash[:error])}'); });}

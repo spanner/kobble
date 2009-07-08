@@ -1,0 +1,50 @@
+= render :partial => 'shared/error_report'
+
+.preamble
+  %p
+    Hello
+    %strong
+      = @thing.best_name + '.' 
+    To make sure that you're you, please start by entering your existing password.
+
+- with_error_report(@thing.errors.on(:old_password)) do
+  %label{:for => 'old_password', :class => 'required'}
+    Your (present) password
+  %span.formnote
+    just to stop passers-by
+  %br
+  = password_field_tag :old_password, '', :class => 'standard'
+
+.preamble
+  %p
+    If you can't remember your present password, see the welcome message we sent out on 
+    = @thing.activated_at.strftime("%A %B %d %Y at %I:%M%p")
+    or use the 
+    = link_to "reset my password", new_password_reset_url
+    option to create a new random password that you can then replace.
+
+%fieldset
+  %legend
+    About you
+
+  = render :partial => 'shared/edit_name', :locals => {:item => @thing, :f => f, :heading => 'Your name', :required => true}
+  = render :partial => 'shared/edit_email', :locals => {:item => @thing, :f => f, :required => true, :help => "This has to work: we'll use it for confirmation messages"}
+  = render :partial => 'shared/edit_description', :locals => {:item => @thing, :f => f, :heading => "A bit of information about yourself", :help => "This will only appear on the page about you"}
+  
+  - with_error_report(@thing.errors.on(:diminutive)) do
+    = f.label :diminutive, "How shall we refer to (and address) you?", :class => 'optional'
+    %span.formnote
+      leave blank and we'll use your full name
+    %br
+    = f.text_field :diminutive, :class => 'standard'
+
+= yield :buttons
+
+%fieldset
+  %legend
+    Logging in
+
+  = render :partial => 'shared/edit_login', :locals => {:item => @thing, :f => f}
+  = render :partial => 'shared/edit_password', :locals => {:item => @thing, :f => f}
+
+= yield :buttons

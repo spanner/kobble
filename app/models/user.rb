@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   include Gravtastic
   cattr_accessor :current
+  attr_accessor :old_password
 
   acts_as_authentic do |config|
     config.validations_scope = :account_id
@@ -41,6 +42,7 @@ class User < ActiveRecord::Base
 
   named_scope :in_account, lambda { |account| {:conditions => { :account_id => account.id }} }
 
+  before_create :set_account_and_status
   after_create :send_welcome
   before_destroy :reassign_associates
   before_validation :set_login_if_blank
@@ -51,12 +53,30 @@ class User < ActiveRecord::Base
 
   #! reinstate activation machinery
 
+  def activate!
+    self.activated_at = Time.now
+    self.save!
+  end
+
+  def active?
+    !inactive?
+  end
+
   def inactive?
-    false
+    self.activated_at.nil? || self.activated_at > Time.now
+  end
+  
+  def deliver_password_reset_instructions
+    reset_perishable_token!  
+    UserNotifier.deliver_password_reset(self)  
+  end  
+
+  def is_admin?
+    self.account_admin? || self.admin?
   end
 
   def account_admin?
-    status >= 100
+    self.account.user == self
   end
 
   def admin?
@@ -155,6 +175,12 @@ protected
   
   def self.reassignable_associations
     [:created_sources, :created_nodes, :created_bundles, :created_tags]
+  end
+
+  def set_account_and_status
+    self.account = Account.current
+    self.created_by = User.current
+    self.status = 10
   end
 
   def send_welcome

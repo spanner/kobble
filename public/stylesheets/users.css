@@ -1,0 +1,34 @@
+div#userlist div.user {
+  float: left;
+  margin: 0 16px 16px 0;
+  width: 142px;
+  height: 200px;
+  overflow: hidden;
+  line-height: 1; }
+  div#userlist div.user a.header {
+    font-size: 130%; }
+  div#userlist div.user a.account_admin {
+    font-weight: bold; }
+  div#userlist div.user img.gravatar {
+    float: none;
+    border: 0;
+    margin: 0 0 5px 0;
+    width: 140px;
+    height: 140px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #cacac8; }
+  div#userlist div.user a.newuser {
+    display: block;
+    width: 140px;
+    height: 140px;
+    margin: 0 0 5px 0;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #cacac8; }
+    div#userlist div.user a.newuser img {
+      margin: 54px;
+      float: none; }
+div#userlist p.explanatory {
+  clear: both;
+  padding: 40px 0; }

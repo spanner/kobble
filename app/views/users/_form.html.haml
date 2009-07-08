@@ -1,28 +1,20 @@
-.mainform
+= render :partial => 'shared/error_report'
 
-  = render :partial => 'shared/error_report'
+%fieldset
+  %legend
+    Person
 
-  %fieldset
-    %legend
-      Person
+  = render :partial => 'shared/edit_name', :locals => {:item => @thing, :f => f, :required => true, :heading => "Proper name", :help => "As you would like it to appear on the site."}
+  = render :partial => 'shared/edit_email', :locals => {:item => @thing, :f => f, :required => true, :help => "This has to work or the account can't be confirmed"}
+  = render :partial => 'shared/edit_description', :locals => {:item => @thing, :f => f}
 
-    = render :partial => 'shared/edit_name', :locals => {:item => @thing, :f => f, :required => true, :heading => "Proper name", :help => "As you would like it to appear on the site."}
-    = render :partial => 'shared/edit_email', :locals => {:item => @thing, :f => f, :required => true, :help => "This has to work or the account can't be confirmed"}
+= yield :buttons
 
-  %fieldset
-    %legend
-      Login
+%fieldset
+  %legend
+    Login
 
-    = render :partial => 'shared/edit_login', :locals => {:item => @thing, :f => f}
-    = render :partial => 'shared/edit_password', :locals => {:item => @thing, :f => f, :required => @thing.new_record?}
+  = render :partial => 'shared/edit_login', :locals => {:item => @thing, :f => f}
+  = render :partial => 'shared/edit_password', :locals => {:item => @thing, :f => f, :required => @thing.new_record?}
 
-  = yield :buttons
-    
-  %fieldset
-    %legend
-      Description
-
-    = render :partial => 'shared/edit_description', :locals => {:item => @thing, :f => f}
-    = render :partial => 'shared/edit_image', :locals => {:item => @thing, :heading => "Mugshot", :f => f}
-
-  = yield :buttons
+= yield :buttons

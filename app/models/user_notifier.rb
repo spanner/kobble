@@ -6,12 +6,11 @@ class UserNotifier < ActionMailer::Base
     @body[:url] = "http://materiali.st/account"
   end
 
-  def newpassword(user)
+  def password_reset(user)
     setup_email(user)
-    @subject    += 'Your provisional new password'
-    @body[:url]  = "http://materiali.st/login/fixpassword/#{user.activation_code}"
-    @body[:code]  = user.activation_code
-    @body[:password]  = user.new_password
+    @subject    += 'Reset your password'
+    @body[:token] = user.perishable_token
+    @body[:url] = repassword_url(user, user.perishable_token)
   end
 
   def topic(user, topic)
@@ -30,15 +29,15 @@ class UserNotifier < ActionMailer::Base
 
   def invitation(user, inviter)
     setup_email(user)
-    @subject += "You have been invited to materiali.st"
-    @body[:url]  = "http://materiali.st/activate/#{user.id}/#{user.activation_code}"
+    @subject += "You have been invited to kobble"
+    @body[:url]  = activate_user_url(user, user.perishable_token)
     @body[:inviter] = inviter
   end
 
   def welcome(user)
     setup_email(user)
-    @subject += "Welcome to materiali.st"
-    @body[:url]  = "http://materiali.st/activate/#{user.id}/#{user.activation_code}"
+    @subject += "Welcome to kobble"
+    @body[:url]  = activate_user_url(user, user.perishable_token)
   end
 
   def account_details(user)
@@ -48,12 +47,13 @@ class UserNotifier < ActionMailer::Base
 
   protected
   def setup_email(user)
-    @from = "William Ross <will@materiali.st>"
+    default_url_options[:host] = "#{user.account.subdomain}.kobble.net"
+    @from = "William Ross <will@kobble.net>"
     @content_type = 'text/plain'
     @recipients  = "#{user.email}"
-    @subject     = "[m.st] "
+    @subject     = "[k] "
     @sent_on     = Time.now
     @body[:user] = user
-    @body[:prefsurl] = "http://materiali.st/accounts/me"
+    @body[:account]  = Account.current
   end
 end

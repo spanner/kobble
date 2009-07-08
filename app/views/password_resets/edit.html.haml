@@ -1,0 +1,55 @@
+.mainform
+  - if @user
+    - @title = "Change my password"
+
+    %p
+      %strong
+        Hello
+        = @user.best_name + '.'
+      Thank you for persevering with the authentication steps. 
+      %br
+      Please enter and confirm the new password you would like to use.
+
+    - form_for @user, :url => password_reset_path, :method => :put do |f|
+      - if @user.errors
+        %p.haserror
+          %strong
+            Sorry: there was a problem.
+          = @user.errors.full_messages.to_sentence
+
+      = hidden_field_tag :id, params[:id]
+      = hidden_field_tag :token, params[:token]
+
+      %p{:class => @user.errors ? 'haserror' : ''}
+        = f.label :password, "New password", :class => 'required'
+        %br
+        = f.password_field :password, :class => 'titular'
+
+      %p{:class => @user.errors ? 'haserror' : ''}
+        = f.label :password_confirmation, "Repeat for confirmation", :class => 'required'
+        %br
+        = f.password_field :password_confirmation, :class => 'titular'
+      %p
+        = f.submit "Update my password and log me in"
+  - else 
+    - @title = "Please enter confirmation code"
+
+    %p.haserror
+      Sorry: can't find you. That link must have been truncated somewhere along the line. 
+      Please paste the 20-character confirmation code into the box below and we'll try again.
+      
+    - form_tag edit_password_reset_path, :method => 'GET' do
+      = hidden_field_tag :id, params[:id]
+      %p
+        %label{:for => "token"}
+          ID code
+        %br
+        = text_field_tag 'token', '', :class => 'titular'
+
+      %p
+        = submit_tag 'try again'
+    
+    %p
+      It is also possible that your confirmation code has expired. They only last ten minutes. In that case, please 
+      = link_to "enter your email address again", new_password_reset_url
+      and we'll send another one.

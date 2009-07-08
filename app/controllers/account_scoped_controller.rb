@@ -18,7 +18,11 @@ class AccountScopedController < ApplicationController
 
   after_filter :update_index, :only => [:create, :update, :destroy, :describe]
 
-  layout 'inside'
+  layout :inside_if_user
+  
+  def inside_if_user
+    current_user ? 'inside' : 'outside'
+  end
 
   def index
     render :template => 'shared/list'

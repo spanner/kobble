@@ -2,36 +2,19 @@ class UsersController < AccountScopedController
 
   before_filter :i_am_me
   before_filter :require_account_admin, :except => [:index, :edit, :update, :show]
+  before_filter :require_account_admin_or_self, :only => [:edit, :update]
   before_filter :require_account_admin_or_password_given, :only => [:update]
 
-  def view_scope
-    'account'
-  end
+  skip_before_filter :require_user, :only => [:activate]
+  before_filter :get_user, :only => [:activate]
 
   def index
     @list = current_account.users
   end
 
   def activate
-    @thing.activate
-    respond_to do |format|
-      format.html { redirect_to :action => 'show', :id => @thing }
-      format.js { render :layout => false }
-      format.json { render :json => @thing.to_json }
-    end
-  end
-
-  def deactivate
-    @thing.deactivate
-    respond_to do |format|
-      format.html { redirect_to :action => 'show', :id => @thing }
-      format.js { render :layout => false }
-      format.json { render :json => @thing.to_json }
-    end
-  end
-  
-  def predelete
-    @other_users = current_account.users.other_than(@thing)
+    @thing.activate!
+    render
   end
   
   def reinvite
@@ -55,21 +38,30 @@ private
     @thing = current_account.users.build(params[:user])
   end
 
-  def account_admin_or_self_required
+  def require_account_admin_or_self
     return true if current_user.account_admin?
     return true if @thing == current_user
-    access_insufficient
+    false
   end
   
   def require_account_admin_or_password_given
     return true if current_user.account_admin?
-    @thing.attributes = params[:user]
-    return true if @thing.authenticated?(@thing.old_password)
+    return true if @thing.valid_password?(params[:old_password])
+
+    # might as well get any other validation messages while we're at it
+    @thing.attributes = params[:thing]
+    @thing.valid?
+    
     flash[:error] = 'Wrong password.'
-    @thing.valid?    # might as well display the other validation messages while we're there
     @thing.errors.add(:old_password, "was not correct")
     render :action => 'edit'
     false
   end
+  
+  def get_user
+    @thing = User.find_by_id_and_perishable_token(params[:id], params[:token])    #NB not using authlogic's find_using_perishable_token because I don't want the token to time out
+    logger.warn "UsersController.get_user: @thing is #{@thing.inspect}"
+    @thing
+  end  
   
 end

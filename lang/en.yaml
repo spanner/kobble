@@ -7,7 +7,7 @@ active_record_errors_empty: can't be empty
 active_record_errors_too_long: is too long (max is %d characters)
 active_record_errors_too_short: is too short (min is %d characters) 
 active_record_errors_wrong_length: is the wrong length (should be %d characters)
-active_record_errors_taken: has already been taken
+active_record_errors_taken: is already in use here
 active_record_errors_not_a_number: is not a number
 
 # Controller

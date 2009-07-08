@@ -1,0 +1,23 @@
+- email = current_user.email if current_user
+
+- @title = "Reset your password"
+%p
+  Please enter your email address below. If we recognise it, we'll send you a message with a link that you can use to enter a new password.
+  %strong
+    Your password will not change until you click on the activation link and fill in another short form,
+  so only you can complete this change.
+  
+- if @error
+  %p.haserror
+    = @error
+
+.mainform
+  - form_tag password_reset_path do
+    %p
+      %label{:for => "email"}
+        Email address
+      %br
+      = text_field_tag 'email', email, :class => 'titular'
+
+    %p
+      = submit_tag 'send me instructions'

@@ -22,7 +22,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :users, 
                 :has_many => [:events, :user_preferences, :bookmarkings, :sources, :nodes, :bundles], 
-                :member => {:home => :get, :recover => :post, :eliminate => :post, :reinvite => :any, :predelete => :get} do |user|
+                :member => {:home => :get, :recover => :post, :eliminate => :post, :reinvite => :any} do |user|
                   
     # user.resources :bookmarkings, :collection => {:remove => :post}
     
@@ -81,6 +81,9 @@ ActionController::Routing::Routes.draw do |map|
   
   map.resource :search, :member => { :list => :any, :gallery => :any }
   map.resource :user_session
+  map.resource :password_reset
+  map.repassword '/password_reset/:id/:token', :controller => 'password_resets', :action => 'edit'
+  map.activate_user '/activate/:id/:token', :controller => 'users', :action => 'activate'
 
   map.root :controller => "accounts", :action => "index"
   
