@@ -1,5 +1,8 @@
 - user ||= @thing
-.user
+- cssclass = 'user'
+- cssclass += ' inactive' if user.inactive?
+
+%div{:class => cssclass}
   = link_to gravatar_for(user, 140), url_for(user)
   = link_to user.name, url_for(user), :class => user.account_admin? ? 'header account_admin' : 'header'
   %br
