@@ -1,0 +1,18 @@
+- @title = "Reinvite #{@thing.name}"
+
+- content_for :admin do
+  = render :partial => 'shared/show_admin'
+
+.preamble
+  %p
+    Please check that the email address below is right and then hit the button to send out the invitation message again.
+
+.mainform
+  - form_for :thing, :url => reinvite_user_url(@thing) do |f| 
+
+    = render :partial => 'shared/edit_email', :locals => {:f => f, :item => @thing, :required => true}
+
+    %p
+      = submit_tag "Send invitation"
+      or
+      = link_to 'cancel', url_for(@thing)

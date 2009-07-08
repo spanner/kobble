@@ -18,12 +18,12 @@ class UsersController < AccountScopedController
   end
   
   def reinvite
+    get_item
     if request.post?
       @thing.update_attributes(params[:user])
       @thing.save
       UserNotifier.deliver_invitation(@thing, current_user)
-      flash[:notice] = 'Invitation message was sent.'
-      @thing = @thing
+      flash[:notice] = 'Invitation message was sent again.'
       render :action => 'show'
     end
   end
@@ -45,7 +45,7 @@ private
   end
   
   def require_account_admin_or_password_given
-    return true if current_user.account_admin?
+    return true if current_user.is_admin?
     return true if @thing.valid_password?(params[:old_password])
 
     # might as well get any other validation messages while we're at it
