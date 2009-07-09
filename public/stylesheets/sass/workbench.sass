@@ -32,9 +32,6 @@ div#workbench
     :clear left
     :background-color = !coolgrey11
     :overflow auto
-    p 
-      :padding 8px
-      :color white
     ul
       :padding 0
       :margin 0
@@ -88,15 +85,16 @@ div#workbench
     ul.taglist
       :padding 20px 8px
       
-
-  p.explanatory, p.controls
+  p.explanatory
     :position absolute
     :padding 10px
     :bottom 0
     :font-size 80%
     :margin 0
     :color = !coolgrey8
+
   p.controls
+    :position absolute
     :visibility hidden
     :position fixed
     :bottom 0

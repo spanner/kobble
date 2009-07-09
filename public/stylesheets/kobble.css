@@ -129,7 +129,7 @@ div#mastfoot {
   bottom: 0;
   height: 39px;
   background-color: white;
-  color: #d6d6d4; }
+  color: #8c8d8e; }
 
 div#navigation {
   margin: 10px 100px 5px 145px; }
@@ -733,9 +733,6 @@ div#workbench {
     clear: left;
     background-color: #4d4e53;
     overflow: auto; }
-    div#workbench div.tabbed p {
-      padding: 8px;
-      color: white; }
     div#workbench div.tabbed ul {
       padding: 0;
       margin: 0;
@@ -783,7 +780,7 @@ div#workbench {
       border: 0; }
     div#workbench div.tabbed ul.taglist {
       padding: 20px 8px; }
-  div#workbench p.explanatory, div#workbench p.controls {
+  div#workbench p.explanatory {
     position: absolute;
     padding: 10px;
     bottom: 0;
@@ -791,6 +788,7 @@ div#workbench {
     margin: 0;
     color: #8c8d8e; }
   div#workbench p.controls {
+    position: absolute;
     visibility: hidden;
     position: fixed;
     bottom: 0;

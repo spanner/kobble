@@ -10,7 +10,7 @@ var InlineLink = new Class({
     var event = k.block(e);
     this.link.blur();
     new Request.JSON({
-      url: al.link.getProperty('href'),
+      url: this.link.getProperty('href'),
       method: this.method(),
       onRequest: this.waiting.bind(this),
       onComplete: this.finished.bind(this),
@@ -54,3 +54,10 @@ var Toggle = new Class({
     return this.link.hasClass('ticked');
   }
 });
+
+kobble_starters.push(function (scope) {
+  if (!scope) scope = document;
+  scope.getElementsIncludingSelf('.toggle').each (function (el) { new Toggle(el); });
+
+});
+

@@ -24,5 +24,6 @@
       = render :partial => 'self_form', :locals => {:f => f}
 
 - content_for :admin do
+  = link_to "^ user", url_for(@thing)
   = render :partial => 'shared/show_admin'
 

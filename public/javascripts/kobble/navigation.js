@@ -24,8 +24,8 @@ var MenuItem = new Class({
     this.body = li.getElement('.body');
     
     var headsize = this.head.getSize();
-    var y = 22 + (nav.menu.length * 18);
-    var x = 120 - headsize.x;
+    var y = 14 + (nav.menu.length * 18);
+    var x = 140 - headsize.x;
 
     this.head.setStyles({
       position: 'fixed',

@@ -20,8 +20,7 @@ class UsersController < AccountScopedController
   def reinvite
     get_item
     if request.post?
-      @thing.update_attributes(params[:user])
-      @thing.save
+      @thing.update_attributes(params[:thing])
       UserNotifier.deliver_invitation(@thing, current_user)
       flash[:notice] = 'Invitation message was sent again.'
       render :action => 'show'
