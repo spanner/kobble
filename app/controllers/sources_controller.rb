@@ -19,8 +19,7 @@ class SourcesController < CollectionScopedController
     if params[:id]
       @source = Source.find(params[:id])
     elsif params[:upload]
-      file_name = params[:upload].strip.gsub(/[^\w\d\.\-]+/, '_')                         # copied from paperclip to match filename processing on upload
-      @source = Source.find_by_name(file_name)
+      @source = Source.find_by_name(params[:upload], :order => 'created_at DESC')
     else
       raise Kobble::Error => "source id or upload parameter required"
     end

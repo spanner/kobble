@@ -58,7 +58,6 @@ var Uploader = new Class ({
     var percent = Math.ceil((bytesLoaded / bytesTotal) * 100);
     var speed = SWFUpload.speed.formatBPS(file.averageSpeed);
     var remaining = SWFUpload.speed.formatTime(file.timeRemaining);
-    console.log(speed);
     this.uploads[file.id].setProgress(percent);
     if (percent == 100) {
       this.uploads[file.id].setProcessing();
