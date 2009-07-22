@@ -4,6 +4,7 @@ var Uploader = new Class ({
     this.upload_list = container.getElement('div.file_list');
     this.queue = container.getElement('div.upload_queue');
     this.form = container.getElement('form');
+    this.tagbox = this.form.getElement('input.tagbox');
     this.collection_select = this.form.getElement('select');
     this.uploads = {};
     
@@ -49,25 +50,21 @@ var Uploader = new Class ({
     } catch (ex) {
       this.swfu.debug(ex);
     }
+    this.uploads[file.id].setWidth(0);
   },
   uploadStart : function (file) {
     if (!this.uploads[file.id]) this.uploads[file.id] = new Upload(file, this);
+    this.swfu.addFileParam(file.id, 'FileID', this.uploads[file.id].identifier);
+    this.swfu.addFileParam(file.id, 'tag_list', this.tagbox.value);
     this.uploads[file.id].setUploading();
   },
   uploadProgress : function (file, bytesLoaded, bytesTotal) {
     var percent = Math.ceil((bytesLoaded / bytesTotal) * 100);
     var speed = SWFUpload.speed.formatBPS(file.averageSpeed);
     var remaining = SWFUpload.speed.formatTime(file.timeRemaining);
-    this.uploads[file.id].setProgress(percent);
-    if (percent == 100) {
-      this.uploads[file.id].setProcessing();
-    } else {
-      this.uploads[file.id].setStatus("Uploading at " + speed + ": " + remaining + " remaining.");
-    }
+    this.uploads[file.id].setProgress(percent, speed, remaining);
   },
   uploadSuccess : function (file) {
-    this.uploads[file.id].setStatus("Uploaded");
-    this.uploads[file.id].toggleCancel(false);
     this.uploads[file.id].setComplete();
   },
   queueError : function (file, errorCode, message) {
@@ -158,6 +155,7 @@ var Upload = new Class ({
   initialize: function(file, uploader) {
     this.file_id = file.id;
     this.file_name = file.name;
+    this.identifier = k.uuid();
     this.uploader = uploader;
     this.queue = uploader.queue;
     this.wrapper = new Element('div', {'class' : "progressWrapper", 'id' : this.file_id});
@@ -166,9 +164,10 @@ var Upload = new Class ({
     this.canceller = new Element('a', {'href' : '#', 'class' : "progressCancel", 'style' : 'visibility: hidden;'}).set('text',"x");
     this.file_label = new Element('div', {'class' : "progressName"}).set('text', file.name);
     this.message = new Element('div', {'class' : "progressBarStatus"});
-    this.message.innerHTML = "&nbsp;";
+    this.waiter = new Element('img', {'src': '/images/furniture/signals/wait_16_on_pink.gif', "class": 'waiter'});
 
     this.canceller.inject(this.progress);
+    this.waiter.inject(this.file_label, 'top');
     this.message.inject(this.file_label);
     this.file_label.inject(this.progress);
     this.bar.inject(this.progress);
@@ -180,7 +179,6 @@ var Upload = new Class ({
     this.setStatus("Queueing...");
     this.toggleCancel(true);
   },
-  
   setStatus: function (status) {
     this.message.set('html', status);
   },
@@ -191,37 +189,48 @@ var Upload = new Class ({
     }.bind(this));
   },
   setWidth: function (width) {
-    if (width) this.bar.setStyle('width', width + "%");
-    else this.bar.setStyle('width', "");
-  },
-  setProgress: function (percentage) {
-    this.setWidth(percentage);
-  },
-  setWaiting: function () {
-    if (this.waiter) {
-      this.waiter.show();
+    if (width) {
+      if (width < 5) width = 5;
+      this.bar.setStyle('width', width + "%");
     } else {
-      this.waiter = new Element('img', {src: '/images/furniture/signals/wait_16_on_pink.gif', "class": 'waiter'});
-      this.waiter.inject(this.message);
+      this.bar.setStyle('width', "");
     }
   },
-  setNotWaiting: function () {
-    if (this.waiter) this.waiter.hide();
+	setProgress: function (percent, speed, remaining) {
+    if (percent > 99) {
+    	this.setWidth(100);
+      this.setProcessing();
+    } else {
+    	this.setWidth(percent);
+      this.setStatus("Uploading at " + speed + ": " + remaining + " remaining.");
+    }
+	},
+  setWorking: function () {
+    this.waiter.show();
+  },
+  setNotWorking: function () {
+    this.waiter.hide();
+  },
+  setFinishedWorking: function () {
+    this.waiter.show();
+    this.waiter.set('src', '/images/furniture/buttons/tick/white.png');
   },
   setUploading: function () {
     this.setStatus("Uploading");
+    this.setWorking();
   },
   setProcessing: function () {
     this.setStatus("Processing: please wait ");
-    this.setWaiting();
+    this.setWorking();
   },
   setComplete: function (percentage) {
-    this.setNotWaiting();
+    this.setStatus("Uploaded");
     this.setWidth(100);
+    this.setFinishedWorking();
     this.form_holder = new Element('div', {'class' : "fileform"});
     this.form_holder.inject(this.progress);
     this.form_holder.set('load', {onComplete: this.grabDescriptionForm.bind(this)});
-    this.form_holder.load('/describer?upload=' + this.file_name);
+    this.form_holder.load('/describer?upload=' + this.identifier);
   },
   setError: function (percentage) {
     this.setColor("red");

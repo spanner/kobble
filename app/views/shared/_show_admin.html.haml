@@ -9,10 +9,7 @@
 %ul
   - if collection && !collection.deleted?
     %li
-      = link_to "add material to collection", upload_sources_url(collection), {:class => 'create'}
-  - else
-    %li
-      = link_to "add material", uploader_url, {:class => 'create'}
+      = link_to "upload into collection", upload_sources_url(collection), {:class => 'create'}
 
   - if item && !item.new_record? && !item.deleted?
     %li

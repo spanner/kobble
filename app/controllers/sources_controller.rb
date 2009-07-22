@@ -5,9 +5,10 @@ class SourcesController < CollectionScopedController
   
   def upload
     if request.post?
-      @source = Source.new(:name => params[:Filename], :collection_id => params[:collection_id])
-      @source.uploaded_file = params[:Filedata]
+      @source = Source.new(:name => params[:Filename], :collection_id => params[:collection_id], :upload_token => params[:FileID])
+      @source.uploaded_file = params[:Filedata]                                           # set mime-type from extension
       @source.save!
+      @source.tags << Tag.from_list(params[:tag_list]) if params[:tag_list]
       render :nothing => true                                                             # SWFupload only cares about response status
     end
   rescue => e
@@ -19,7 +20,7 @@ class SourcesController < CollectionScopedController
     if params[:id]
       @source = Source.find(params[:id])
     elsif params[:upload]
-      @source = Source.find_by_name(params[:upload], :order => 'created_at DESC')
+      @source = Source.find_by_upload_token(params[:upload])
     else
       raise Kobble::Error => "source id or upload parameter required"
     end

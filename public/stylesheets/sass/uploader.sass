@@ -27,14 +27,20 @@ div.progressWrapper
       :white-space nowrap
       :overflow hidden
       :z-index 1000
-      .progressStatus
+      img
+        :float left
+        :margin 0 6px 0 0
+      .progressBarStatus
         +bodyfonts
+        :font-weight lighter
+        :color = !rubinered + 99
+        :margin-left 22px
     .progressBar
       :position absolute
       :top 0
       :left 0
       :height 100%
-      :width 0
+      :width 5%
       :background-color = !rubinered
       :z-index 990
     a.progressCancel

@@ -1527,14 +1527,20 @@ div.progressWrapper {
       white-space: nowrap;
       overflow: hidden;
       z-index: 1000; }
-      div.progressWrapper .progressContainer .progressName .progressStatus {
-        font-family: 'HelveticaNeue-Light', helvetica, arial, sans-serif; }
+      div.progressWrapper .progressContainer .progressName img {
+        float: left;
+        margin: 0 6px 0 0; }
+      div.progressWrapper .progressContainer .progressName .progressBarStatus {
+        font-family: 'HelveticaNeue-Light', helvetica, arial, sans-serif;
+        font-weight: lighter;
+        color: #ff63c0;
+        margin-left: 22px; }
     div.progressWrapper .progressContainer .progressBar {
       position: absolute;
       top: 0;
       left: 0;
       height: 100%;
-      width: 0;
+      width: 5%;
       background-color: #d1005d;
       z-index: 990; }
     div.progressWrapper .progressContainer a.progressCancel {

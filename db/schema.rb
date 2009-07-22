@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090624094945) do
+ActiveRecord::Schema.define(:version => 20090722094527) do
 
   create_table "account_types", :force => true do |t|
     t.string   "name"
@@ -365,6 +365,7 @@ ActiveRecord::Schema.define(:version => 20090624094945) do
     t.string   "file_content_type"
     t.integer  "file_file_size"
     t.datetime "file_updated_at"
+    t.string   "upload_token"
   end
 
   add_index "sources", ["collection_id"], :name => "index_sources_on_collection"

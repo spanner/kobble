@@ -7,11 +7,11 @@
           %td
             %label{ :for => "source_name" } Name
             = f.text_field :name, :class => 'textbox'
-          %td{:style => 'width: 50%'}
+          %td
             %label{ :for => "source_description" } Description
             = f.text_field :description, :class => 'textbox'
           %td
             %label{ :for => "tag_list" } Tags
-            = text_field_tag :tag_list, '', :class => 'textbox tagbox', :id => "collections_#{@source.collection.id}_tags"
+            = text_field_tag :tag_list, '', :class => 'textbox tagbox', :id => "collections_#{@source.collection.id}_tags", :value => @source.tag_list
           %td{:style => 'vertical-align: bottom; padding: 4px;'}
             = f.submit "save", :class => 'submit'
