@@ -2,8 +2,10 @@
 
 .upload_controls
   :clear both
-  :margin-top 32px
 
+.upload_queue
+  :margin 10px 0
+  
 div.progressWrapper
   :width 100%
   :margin 2px 0
@@ -72,24 +74,25 @@ div.progressWrapper
       :width 100%
       :padding 3px
       :border 1px solid #988A50
+    img
+      :float left
+      :margin 0 6px 0 0
   p
-    :margin 0
-    :padding 4px
+    :margin 6px
     +bodyfonts
     :font-size 0.8em
     :width 100%
     :line-height 1.1
   p.file_uploaded
-    :font-size 1.1em
+    :padding-left 28px
+    :background transparent url("/images/furniture/buttons/tick/white.png") no-repeat top left
+    :white-space nowrap
     a
       :font-weight bold
       :color white
+      :font-size 125%
     span.tags
       :color #95e38b
-      :font-size 80%
-    img
-      :float left
-      :margin -4px 20px 0 4px
 
 div.progressFinished
   :background-color = !green

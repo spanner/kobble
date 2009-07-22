@@ -1133,6 +1133,16 @@ a.floating {
   float: right; }
 
 /* ******* main edit forms */
+fieldset {
+  border: 1px dotted #cacac8;
+  padding: 0 16px 0 16px;
+  margin-bottom: 10px;
+  margin-left: -16px; }
+  fieldset legend {
+    font-family: 'HelveticaNeue-Light', helvetica, arial, sans-serif;
+    font-size: 22px;
+    color: #cacac8; }
+
 div.mainform .formnote {
   font-size: 0.8em;
   line-height: 1.1;
@@ -1143,15 +1153,6 @@ div.mainform .minorfield {
   color: #4d4e53; }
 div.mainform h2 {
   color: #d1005d; }
-div.mainform fieldset {
-  border: 1px dotted #cacac8;
-  padding: 0 16px 0 16px;
-  margin-bottom: 10px;
-  margin-left: -16px; }
-  div.mainform fieldset legend {
-    font-family: 'HelveticaNeue-Light', helvetica, arial, sans-serif;
-    font-size: 22px;
-    color: #cacac8; }
 div.mainform fieldset.authentication {
   border-width: 1px;
   border-style: solid;
@@ -1237,6 +1238,8 @@ div.mainform table.twocolumn {
     width: 50%; }
     div.mainform table.twocolumn td input {
       margin-right: 6px; }
+div.mainform h2.spaced {
+  margin-top: 32px; }
 
 div.floatspinner {
   background-image: url('/images/furniture/signals/wait_32_grey.gif');
@@ -1501,8 +1504,10 @@ div.previewing {
 
 /* ******* uploader progress bars */
 .upload_controls {
-  clear: both;
-  margin-top: 32px; }
+  clear: both; }
+
+.upload_queue {
+  margin: 10px 0; }
 
 div.progressWrapper {
   width: 100%;
@@ -1572,24 +1577,25 @@ div.progressWrapper {
       width: 100%;
       padding: 3px;
       border: 1px solid #988A50; }
+    div.progressWrapper .fileform img {
+      float: left;
+      margin: 0 6px 0 0; }
   div.progressWrapper p {
-    margin: 0;
-    padding: 4px;
+    margin: 6px;
     font-family: 'HelveticaNeue-Light', helvetica, arial, sans-serif;
     font-size: 0.8em;
     width: 100%;
     line-height: 1.1; }
   div.progressWrapper p.file_uploaded {
-    font-size: 1.1em; }
+    padding-left: 28px;
+    background: transparent url("/images/furniture/buttons/tick/white.png") no-repeat top left;
+    white-space: nowrap; }
     div.progressWrapper p.file_uploaded a {
       font-weight: bold;
-      color: white; }
+      color: white;
+      font-size: 125%; }
     div.progressWrapper p.file_uploaded span.tags {
-      color: #95e38b;
-      font-size: 80%; }
-    div.progressWrapper p.file_uploaded img {
-      float: left;
-      margin: -4px 20px 0 4px; }
+      color: #95e38b; }
 
 div.progressFinished {
   background-color: #5da454; }

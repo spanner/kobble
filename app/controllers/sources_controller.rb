@@ -5,7 +5,7 @@ class SourcesController < CollectionScopedController
   
   def upload
     if request.post?
-      @source = Source.new(:name => params[:Filename], :collection_id => params[:collection_id], :upload_token => params[:FileID])
+      @source = Source.new(:name => params[:Filename], :collection_id => params[:collection_id], :occasion_id => params[:occasion_id], :upload_token => params[:FileID])
       @source.uploaded_file = params[:Filedata]                                           # set mime-type from extension
       @source.save!
       @source.tags << Tag.from_list(params[:tag_list]) if params[:tag_list]
@@ -13,7 +13,7 @@ class SourcesController < CollectionScopedController
     end
   rescue => e
     logger.warn "%%% file upload error: #{e.inspect}"
-    render :nothing => true, :status => 500                                               # SWFupload only cares about response status
+    render :nothing => true, :status => 500
   end
     
   def describe

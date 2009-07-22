@@ -5,6 +5,7 @@ var Uploader = new Class ({
     this.queue = container.getElement('div.upload_queue');
     this.form = container.getElement('form');
     this.tagbox = this.form.getElement('input.tagbox');
+    this.occasion = this.form.getElement('select.standard');
     this.collection_select = this.form.getElement('select');
     this.uploads = {};
     
@@ -19,11 +20,13 @@ var Uploader = new Class ({
       debug: false,
       
       button_width: "500",
-      button_height: "29",
+      button_height: "44",
       button_placeholder_id: 'swf_placeholder',
-      button_text: '<span class="biggish">add files to upload queue...</span>',
-      button_text_style: ".biggish { font-size: 22px; font-weight: lighter; font-family: HelveticaNeue-Bold, Helvetica, Arial, sans-serif; letter-spacing: -0.05em; color: #d1005d; cursor: pointer;}",
-      
+      // button_image_url: "/images/buttons/uploader.png",
+      button_text: '<span class="biggish">* add files to queue</span>',
+      button_text_style: ".biggish { font-size: 36px; font-weight: lighter; font-family: Arial, sans-serif; line-height: 1; letter-spacing: -0.05em; color: #5da454; cursor: pointer;}",
+      button_cursor: SWFUpload.CURSOR.HAND,
+  		
       // The event handler functions
       file_dialog_complete_handler : this.fileDialogComplete.bind(this),
       file_queued_handler : this.fileQueued.bind(this),
@@ -56,6 +59,7 @@ var Uploader = new Class ({
     if (!this.uploads[file.id]) this.uploads[file.id] = new Upload(file, this);
     this.swfu.addFileParam(file.id, 'FileID', this.uploads[file.id].identifier);
     this.swfu.addFileParam(file.id, 'tag_list', this.tagbox.value);
+    this.swfu.addFileParam(file.id, 'occasion_id', this.occasion.value);
     this.uploads[file.id].setUploading();
   },
   uploadProgress : function (file, bytesLoaded, bytesTotal) {

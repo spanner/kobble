@@ -1,5 +1,15 @@
 @import constants.sass
 
+fieldset
+  :border 1px dotted #cacac8
+  :padding 0 16px 0 16px
+  :margin-bottom 10px
+  :margin-left -16px
+  legend
+    +headerfonts
+    :font-size 22px
+    :color #cacac8
+
 div.mainform
   .formnote
     :font-size 0.8em
@@ -11,15 +21,6 @@ div.mainform
     :color = !coolgrey11
   h2
     :color = !rubinered
-  fieldset
-    :border 1px dotted #cacac8
-    :padding 0 16px 0 16px
-    :margin-bottom 10px
-    :margin-left -16px
-    legend
-      +headerfonts
-      :font-size 22px
-      :color #cacac8
   fieldset.authentication
     :border
       :width 1px
@@ -111,7 +112,9 @@ div.mainform
       :width 50%
       input
         :margin-right 6px
-
+  h2.spaced
+    :margin-top 32px
+  
 div.floatspinner
   :background-image url('/images/furniture/signals/wait_32_grey.gif')
   :background-position top left
