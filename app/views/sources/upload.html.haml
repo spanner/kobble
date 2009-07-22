@@ -1,13 +1,6 @@
 - @title = "Upload material"
 - @titlenote =  "into #{current_collection.name}"
 
-.preamble
-  %p
-    Each file you select - you can pick as many as you like in the file dialog - will begin to upload immediately. 
-    To add more to the queue, just click on 'add files to queue' again.
-    To set the occasion or tags for all your uploads, fill in those boxes first.
-
-  
 #source_uploader.uploader
   .upload_controls
     .mainform
@@ -34,7 +27,8 @@
       %button#swf_placeholder.chooser
 
       %p
-        You can add more files as often as you like, but you mustn't close this page until they're all complete.
+        Each file you select - you can pick as many as you like in the file dialog - will begin to upload immediately. 
+        To add more to the queue, just click on 'add files to queue' again. You mustn't close this page until all the uploads are complete.
 
       %h2.spaced
         3. Add detail to each file
@@ -44,10 +38,10 @@
   .postamble
 
     %p
-      When each upload is complete, you'll see a compact description form for that file. 
+      As each upload finishes, you'll see a compact description form for that file. 
       %strong
         The file is safely uploaded
-      but not yet very well described. You probably want to fill in a better title and description so that you can find it later.
+      but not yet very well described. You probably want to fill in a better title and description so that you can find it later. You can submit the description forms without interrupting the other uploads.
 
 
 - content_for :admin do
