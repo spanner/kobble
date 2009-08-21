@@ -3,6 +3,9 @@ module ApplicationHelper
 
   def render_if_possible(*args)
     render(*args)
+  rescue => e
+    logger.warn "!!  render not possible: #{e.message}"
+    ""
   end
 
   def collected_url_for(item)

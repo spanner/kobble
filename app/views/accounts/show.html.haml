@@ -10,9 +10,9 @@
   .mainlist
     %h3.listheader
       = link_to collection.name, url_for(collection), :class => 'listhead'
-      - if current_user.account_admin?
-        %span.headernote
-          = link_to "upload", upload_sources_url(collection), :class => 'create'
+      %span.headernote
+        = link_to "upload", upload_sources_url(collection), :class => 'create'
+        - if current_user.is_admin?
           = link_to "edit", edit_collection_url(collection), :class => 'edit'
           = link_to "delete", predelete_collection_url(collection), :class => 'delete'
 

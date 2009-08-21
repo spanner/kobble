@@ -4,6 +4,7 @@
 - collection_name = collection.name if collection
 - addendum ||= false
 - idprefix ||= 'listed'
+- linker ||= nil
 
 - inactive ||= listed.deleted? || listed.new_record?
 - type_class = listed.is_a?(Source) ? [listed.file_type] : [listed.class.to_s.downcase]
@@ -16,16 +17,19 @@
 - aclasses << 'draggable' unless inactive
 - aclasses << 'catcher' unless inactive
 
-- liid = []
-- liid << idprefix if idprefix
+- aid = []
+- aid << idprefix if idprefix
 - if listed.has_collection?
-  - liid << 'collections'
-  - liid << listed.collection.id
-- liid << listed.class.to_s.downcase
-- liid << listed.id
+  - aid << 'collections'
+  - aid << listed.collection.id
+- aid << listed.class.to_s.downcase
+- aid << listed.id
 
-%li{:class => liclasses.join(' ')}
-  = link_to name, collected_url_for(listed), :id => liid.join('_'), :class => aclasses.join(' '), :title => "#{listed.nice_title}: #{listed.name}", :catches => (listed.catchlist unless inactive)
+- if linker
+  - liid = [linker.class.to_s.downcase, linker.id].join('_')
+
+%li{:class => liclasses.join(' '), :id => liid}
+  = link_to name, collected_url_for(listed), :id => aid.join('_'), :class => aclasses.join(' '), :title => "#{listed.nice_title}: #{listed.name}", :catches => (listed.catchlist unless inactive)
   = render :partial => 'shared/note_flags', :locals => {:item => listed}
   %span{:class => "listnote"}
     - if addendum

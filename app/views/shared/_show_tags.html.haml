@@ -11,6 +11,6 @@
     %ul{:id => "collection_#{current_collection.id}_#{item.class.to_s.downcase}_#{item.id}_taggings", :class => "catcher taglist", :catches => "tag", :title => "tag list for #{item.name}"}
       = render :partial => 'components/tagging_list', :locals => {:item => item}
     %p.listnote
-      Drop tags above to apply them to this 
-      = item.class.nice_title
+      /link_to "Edit tag list", edit_tags_url_for(item), :class => 'inplace'
+      drag and drop tags in and out of the space above
 

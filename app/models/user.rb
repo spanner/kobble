@@ -51,8 +51,6 @@ class User < ActiveRecord::Base
     "user"
   end
 
-  #! reinstate activation machinery
-
   def activate!
     self.activated_at = Time.now
     self.save!

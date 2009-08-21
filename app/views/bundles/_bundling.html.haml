@@ -1,0 +1,5 @@
+- if bundling
+  - item = bundling.member
+  - idprefix ||= 'bundled'
+  
+  = render :partial => 'shared/listed', :object => item, :locals => {:idprefix => 'bundled', :linker => bundling}

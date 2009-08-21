@@ -21,7 +21,5 @@ class Tagging < ActiveRecord::Base
   def get_collection
     self.collection_id = self.taggable.collection_id
   end
-  
-
 
 end

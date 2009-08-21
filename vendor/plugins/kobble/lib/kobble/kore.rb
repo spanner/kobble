@@ -160,8 +160,9 @@ module Kobble #:nodoc:
         
         if definitions.include?(:organisation)
           has_many :bundlings, :as => :member, :dependent => :destroy
-          has_many :bundles, :through => :bundlings, :source => :superbundle      
+          has_many :bundles, :through => :bundlings, :source => :superbundle     
           Bundle.can_catch( self.to_s.downcase.intern )
+          Bundle.create_accessors_for(self)
           Kobble.organised_model(self)
         end
 

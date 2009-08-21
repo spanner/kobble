@@ -191,6 +191,7 @@ var Hopper = new Class({
     this.dragfrom = element.lookForParentCatcher();
     this.klass = element.kobbleKlass();
     this.tag = element.kobbleTag();
+    this.id = element.kobbleID();
     this.associate_klass = element.getParent().kobbleKlass();
     this.associate_id = element.getParent().kobbleID();
     this.title = element.getProperty('title') || this.klass;

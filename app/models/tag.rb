@@ -31,5 +31,11 @@ class Tag < ActiveRecord::Base
     tags
   end
   
+  def self.create_accessors_for(klass)
+    Tagging.send(:named_scope, "of_#{klass.to_s.downcase.pluralize}".intern, :conditions => { :taggable_type => klass.to_s })
+    define_method("#{klass.to_s.downcase}_taggings") { self.taggings.send("of_#{klass.to_s.downcase.pluralize}".intern) }
+    define_method("#{klass.to_s.downcase.pluralize}") { self.send("#{klass.to_s.to_s.downcase}_taggings".intern).map{|l| l.member}.uniq }
+  end
+  
 end
 

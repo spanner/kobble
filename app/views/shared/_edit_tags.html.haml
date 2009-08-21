@@ -1,5 +1,6 @@
 - item ||= @thing
-- taglist ||= item.tag_list
+- default_tag_list ||= ''
+- taglist ||= item.tag_list || default_tag_list
 
 - with_error_report(item.errors.on(:tags)) do
   %label{:for => "collection_#{current_collection.id}_tags"}

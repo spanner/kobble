@@ -53,7 +53,6 @@ var Uploader = new Class ({
     } catch (ex) {
       this.swfu.debug(ex);
     }
-    this.uploads[file.id].setWidth(0);
   },
   uploadStart : function (file) {
     if (!this.uploads[file.id]) this.uploads[file.id] = new Upload(file, this);

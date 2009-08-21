@@ -1,4 +1,4 @@
 - item ||= @thing
-- members ||= item.members
+- bundlings ||= item.contained_bundlings
 - inactive ||= false
-= render :partial => 'shared/listed', :collection => members, :locals => {:inactive => inactive, :idprefix => 'bundled'}
+= render :partial => 'bundles/bundling', :collection => bundlings, :locals => {:inactive => inactive, :idprefix => 'bundled'}

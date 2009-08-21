@@ -1,0 +1,10 @@
+- if listed.is_new?
+  = link_to "new", edit_url_for(listed), :class => 'create'
+- elsif listed.sources.any? || listed.nodes.any?
+  appears in
+  - if listed.sources.any?
+    = pluralize listed.sources.count, 'document'
+  - if listed.sources.any? && listed.nodes.any?
+    and
+  - if listed.nodes.any?
+    = pluralize listed.nodes.count, 'fragment'

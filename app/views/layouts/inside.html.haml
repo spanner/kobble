@@ -48,7 +48,7 @@
         = link_to "sets", bundles_url(current_collection), {:class => (request.parameters[:controller] == 'bundles' ? "fg" : '')}
         = link_to "people", people_url(current_collection), {:class => (request.parameters[:controller] == 'people' ? "fg" : '')}
         = link_to "tags", tags_url(current_collection), {:class => (request.parameters[:controller] == 'tags' ? "fg" : '')}
-        = link_to 'discussion', topics_url(current_collection), {:class => request.parameters[:controller] == 'topics' ? " fg" : ''} if current_account.can_have_discussion?
+        = link_to 'occasions', occasions_url(current_collection), {:class => request.parameters[:controller] == 'occasions' ? " fg" : ''}
         %strong
           ]
       - else

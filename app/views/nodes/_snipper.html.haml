@@ -9,6 +9,7 @@
   - form_for :thing, :url => source_nodes_url, :html => { :multipart => true, :id => 'snipper'} do |f| 
     = render :partial => 'shared/error_report'
     = render :partial => 'shared/edit_name', :locals => {:f => f, :required => true}
+    = render :partial => 'shared/edit_tags', :locals => {:item => @thing, :default_tag_list => @thing.source.tag_list, :f => f}
     = render :partial => 'shared/edit_body', :locals => {:item => @thing, :f => f, :short => true, :required => false}
     - if @thing.source.is_audio_or_video?
       %table.twocolumn

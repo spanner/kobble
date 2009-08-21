@@ -1,2 +1,4 @@
 - if listed.has_members?
-  = pluralize(listed.members.size, 'member')
+  = listed.summarise_members
+- else
+  empty
